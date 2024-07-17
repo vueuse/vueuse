@@ -103,3 +103,25 @@ const refHistory = useManualRefHistory(target, {
 
 refHistory.clear() // explicitly clear all the history
 ```
+
+### Asynchronous Usage
+
+By default, asynchronous parsing and dumping of data are disabled. However, you can enable them by setting the `async` option to `true`.
+
+Keep in mind that when `async` is set to `true`, certain methods such as `commit`, `undo`, `redo`, and `reset` will return promises.
+
+```ts
+useManualRefHistory(target, {
+  async: true,
+  dump: async (v) => {
+    /** Perform asynchronous request */
+
+    return JSON.stringify(await v)
+  },
+  parse: async (v) => {
+    /** Perform asynchronous request */
+
+    return JSON.parse(v)
+  },
+})
+```

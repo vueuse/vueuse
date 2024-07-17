@@ -11,10 +11,10 @@ import { useRefHistory } from '../useRefHistory'
  * @param source
  * @param options
  */
-export function useDebouncedRefHistory<Raw, Serialized = Raw>(
+export function useDebouncedRefHistory<Raw, Serialized = Raw, Async extends boolean = false>(
   source: Ref<Raw>,
-  options: Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & { debounce?: MaybeRefOrGetter<number> } = {},
-): UseRefHistoryReturn<Raw, Serialized> {
+  options: Omit<UseRefHistoryOptions<Raw, Serialized, Async>, 'eventFilter'> & { debounce?: MaybeRefOrGetter<number> } = {},
+): UseRefHistoryReturn<Raw, Serialized, Async> {
   const filter = options.debounce ? debounceFilter(options.debounce) : undefined
   const history = useRefHistory(source, { ...options, eventFilter: filter })
 
