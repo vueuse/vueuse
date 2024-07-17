@@ -44,7 +44,7 @@ describe('useWindowSize', () => {
   })
 
   it('should use outer size', () => {
-    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, useOuterSize: true })
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, type: 'outer' })
 
     expect(width.value).toBe(window.outerWidth)
     expect(height.value).toBe(window.outerHeight)
