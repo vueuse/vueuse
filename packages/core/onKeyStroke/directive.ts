@@ -8,8 +8,8 @@ type BindingValueFunction = (event: KeyboardEvent) => void
 type BindingValueArray = [BindingValueFunction, OnKeyStrokeOptions]
 
 export const vOnKeyStroke: ObjectDirective<
-HTMLElement,
-BindingValueFunction | BindingValueArray
+  HTMLElement,
+  BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {
     const keys = binding.arg?.split(',') ?? true

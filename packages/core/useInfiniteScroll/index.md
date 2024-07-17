@@ -16,7 +16,7 @@ import { useInfiniteScroll } from '@vueuse/core'
 const el = ref<HTMLElement | null>(null)
 const data = ref([1, 2, 3, 4, 5, 6])
 
-useInfiniteScroll(
+const { reset } = useInfiniteScroll(
   el,
   () => {
     // load more
@@ -24,6 +24,11 @@ useInfiniteScroll(
   },
   { distance: 10 }
 )
+
+function resetList() {
+  data.value = []
+  reset()
+}
 </script>
 
 <template>
@@ -32,6 +37,9 @@ useInfiniteScroll(
       {{ item }}
     </div>
   </div>
+  <button @click="resetList()">
+    Reset
+  </button>
 </template>
 ```
 

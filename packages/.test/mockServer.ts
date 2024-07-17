@@ -2,33 +2,34 @@
  * Network mocking with MSW.
  * Import this helper into the specific tests that need to make network requests.
  */
-
 import { setupServer } from 'msw/node'
-import type { RestContext, RestRequest } from 'msw'
-import { rest } from 'msw'
+import { HttpResponse, delay, http } from 'msw'
 import { afterAll, afterEach, beforeAll } from 'vitest'
 
 const defaultJsonMessage = { hello: 'world' }
 const defaultTextMessage = 'Hello World'
 const baseUrl = 'https://example.com'
 
-function commonTransformers(req: RestRequest, _: any, ctx: RestContext) {
-  const t = []
-  const qs = req.url.searchParams
+async function commonTransformers(req: Request) {
+  const url = new URL(req.url)
+  const qs = url.searchParams
+
+  let status = 200
 
   if (qs.get('delay'))
-    t.push(ctx.delay(Number(qs.get('delay'))))
-  if (qs.get('status'))
-    t.push(ctx.status(Number(qs.get('status'))))
+    await delay(Number(qs.get('delay')))
+  if (qs.get('status')) {
+    status = Number(qs.get('status'))
+  }
   if (qs.get('text') != null) {
-    t.push(ctx.text(qs.get('text') ?? defaultTextMessage))
+    return new HttpResponse(qs.get('text') ?? defaultTextMessage, { status })
   }
   else if (qs.get('json') != null) {
     const jsonVal = qs.get('json')
-    const jsonTransformer = ctx.json(jsonVal?.length ? JSON.parse(jsonVal) : defaultJsonMessage)
-    t.push(jsonTransformer)
+    return HttpResponse.json(jsonVal?.length ? JSON.parse(jsonVal) : defaultJsonMessage, { status })
   }
-  return t
+
+  return HttpResponse.json(defaultJsonMessage, { status })
 }
 
 /**
@@ -41,22 +42,34 @@ function commonTransformers(req: RestRequest, _: any, ctx: RestContext) {
  *          will respond in 1000ms with statusCode 300 and the response body "thanks" as a string
  */
 const server = setupServer(
-  rest.post(baseUrl, (req, res, ctx) => {
-    // Support all the normal examples (delay, status, text, and json)
-    const t = commonTransformers(req, res, ctx)
+  http.post(baseUrl, async ({ request }) => {
+    const url = new URL(request.url)
+    const qs = url.searchParams
+    let status = 200
+    if (qs.get('status'))
+      status = Number(qs.get('status'))
+
+    const text = await request.text()
+    const json = text.startsWith('{') ? JSON.parse(text) : null
 
     // Echo back the request payload
-    if (typeof req.body === 'number' || typeof req.body === 'string')
-      t.push(ctx.text(String(req.body)))
-    else t.push(ctx.json(req.body))
+    if (json)
+      return HttpResponse.json(json, { status })
+    else if (typeof request.body === 'number' || typeof request.body === 'string')
+      return new HttpResponse(text, { status })
 
-    return res(...t)
+    // Support all the normal examples (delay, status, text, and json)
+    return commonTransformers(request)
   }),
 
-  rest.get(baseUrl, (req, res, ctx) => res(...commonTransformers(req, res, ctx))),
+  http.get(baseUrl, ({ request }) => {
+    return commonTransformers(request)
+  }),
 
   // Another duplicate route for the sole purpose of re-triggering requests on url change.
-  rest.get(`${baseUrl}/test`, (req, res, ctx) => res(...commonTransformers(req, res, ctx))),
+  http.get(`${baseUrl}/test`, ({ request }) => {
+    return commonTransformers(request)
+  }),
 )
 
 beforeAll(() => server.listen())

@@ -48,7 +48,7 @@ async function generateSVG(fn: VueUseFunction, output: string) {
     line3: lines[2] || '',
   }
   const ogSVg = await ogSVGPromise
-  const svg = ogSVg.replace(/\{\{([^}]+)}}/g, (_, name: keyof typeof data) => data[name])
+  const svg = ogSVg.replace(/\{\{([^}]+)\}\}/g, (_, name: keyof typeof data) => data[name])
 
   // eslint-disable-next-line no-console
   console.log(`Generating ${output}`)

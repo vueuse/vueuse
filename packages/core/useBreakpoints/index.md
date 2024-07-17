@@ -43,3 +43,22 @@ const laptop = breakpoints.between('laptop', 'desktop')
   </div>
 </template>
 ```
+
+## Presets
+
+- Tailwind: `breakpointsTailwind`
+- Bootstrap v5: `breakpointsBootstrapV5`
+- Vuetify v2: `breakpointsVuetifyV2` (deprecated: `breakpointsVuetify`)
+- Vuetify v3: `breakpointsVuetifyV3`
+- Ant Design: `breakpointsAntDesign`
+- Quasar v2: `breakpointsQuasar`
+- Sematic: `breakpointsSematic`
+- Master CSS: `breakpointsMasterCss`
+- Prime Flex: `breakpointsPrimeFlex`
+
+_Breakpoint presets are deliberately not auto-imported, as they do not start with `use` to have the scope of VueUse. They have to be explicitly imported:_
+
+```js
+import { breakpointsTailwind } from '@vueuse/core'
+// and so on
+```

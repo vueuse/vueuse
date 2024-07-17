@@ -18,7 +18,7 @@ const obj = ref('vue-use')
 // changing the value from some external store/composables
 obj.value = 'VueUse'
 
-watchImmediate(nestedObject, (obj) => {
+watchImmediate(nestedObject, (updated) => {
   console.log(updated) // Console.log will be logged twice
 })
 ```

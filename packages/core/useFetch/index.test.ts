@@ -1,6 +1,6 @@
 import { until } from '@vueuse/shared'
 import { nextTick, ref } from 'vue-demi'
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { isBelowNode18, retry } from '../../.test'
 import { createFetch, useFetch } from '.'
@@ -11,13 +11,13 @@ const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage
 
 // Listen to make sure fetch is actually called.
 // Use msw to stub out the req/res
-let fetchSpy = vi.spyOn(window, 'fetch') as SpyInstance<any>
+let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
 let onFetchErrorSpy = vi.fn()
 let onFetchResponseSpy = vi.fn()
 let onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
-  return fetchSpy.mock.calls[idx][1]!.headers
+  return (fetchSpy.mock.calls[idx][1]! as any).headers
 }
 
 // The tests does not run properly below node 18
