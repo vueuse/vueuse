@@ -15,7 +15,12 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    * Ignore dragging so the handler does not fire if user drags instead of single clicks
    * @default false
    */
-  ignoreDragging?: boolean
+  ignoreDragging?: boolean | {
+    /**
+     * The distance in pixels the user should be able to drag without triggering the event.
+     */
+    distance?: number
+  }
   /**
    * Use capturing phase for internal event listener.
    * @default true
