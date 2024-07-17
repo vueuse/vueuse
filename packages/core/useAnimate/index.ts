@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue-demi'
-import { computed, nextTick, shallowReactive, shallowRef, watch } from 'vue-demi'
+import { computed, shallowReactive, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
 import { isObject, objectOmit, toValue, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeComputedElementRef } from '../unrefElement'
@@ -241,9 +241,7 @@ export function useAnimate(
     }
   }, { deep: true })
 
-  tryOnMounted(() => {
-    nextTick(() => update(true))
-  })
+  tryOnMounted(() => update(true), false)
 
   tryOnScopeDispose(cancel)
 
