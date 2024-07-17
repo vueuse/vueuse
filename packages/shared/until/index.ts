@@ -76,7 +76,10 @@ function createUntil<T>(r: any, isNot = false) {
         r,
         (v) => {
           if (condition(v) !== isNot) {
-            nextTick(() => stop?.())
+            if (stop)
+              stop()
+            else
+              nextTick(() => stop?.())
             resolve(v)
           }
         },
@@ -111,7 +114,10 @@ function createUntil<T>(r: any, isNot = false) {
         [r, value],
         ([v1, v2]) => {
           if (isNot !== (v1 === v2)) {
-            nextTick(() => stop?.())
+            if (stop)
+              stop()
+            else
+              nextTick(() => stop?.())
             resolve(v1)
           }
         },
