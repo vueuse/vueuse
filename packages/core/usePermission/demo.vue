@@ -36,7 +36,7 @@ const code = computed(() => YAML.dump(reactive({
   persistentStorage,
   push,
   speaker,
-  localFonts
+  localFonts,
 })))
 </script>
 
