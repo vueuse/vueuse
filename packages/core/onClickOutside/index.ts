@@ -12,10 +12,10 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    */
   ignore?: (MaybeElementRef | string)[]
   /**
-   * Ignore drag so the handler does not fire if user drags instead of single clicks
+   * Ignore dragging so the handler does not fire if user drags instead of single clicks
    * @default false
    */
-  ignoreDrag?: boolean
+  ignoreDragging?: boolean
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -45,7 +45,13 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore = [], ignoreDrag = false, capture = true, detectIframe = false } = options
+  const {
+    window = defaultWindow,
+    ignore = [],
+    ignoreDragging = false,
+    capture = true,
+    detectIframe = false,
+  } = options
 
   if (!window)
     return noop
@@ -68,7 +74,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
       const dY = Math.abs(y - e.y)
       if (dX + dY > 4) {
         shouldListen = false
-        stopDragListener && stopDragListener()
+        stopDragListener?.()
       }
     })
   }
@@ -87,7 +93,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   }
 
   const listener = (event: PointerEvent) => {
-    stopDragListener && stopDragListener()
+    stopDragListener?.()
     const el = unrefElement(target)
 
     if (!el || el === event.target || event.composedPath().includes(el))
@@ -109,7 +115,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
-      if (shouldListen && ignoreDrag)
+      if (shouldListen && ignoreDragging)
         startDragListener(e)
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
