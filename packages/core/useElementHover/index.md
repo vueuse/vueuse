@@ -42,3 +42,23 @@ function onHover(state: boolean) {
   </button>
 </template>
 ```
+
+You can also provide hover options:
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vElementHover } from '@vueuse/components'
+
+const isHovered = ref(false)
+function onHover(hovered: boolean) {
+  isHovered.value = hovered
+}
+</script>
+
+<template>
+  <button v-element-hover="[onHover, { delayEnter: 1000 }]">
+    <span>{{ isHovered ? 'Thank you!' : 'Hover me' }}</span>
+  </button>
+</template>
+```
