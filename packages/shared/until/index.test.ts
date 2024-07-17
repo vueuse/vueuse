@@ -209,6 +209,7 @@ describe('until', () => {
   })
 
   it('should type check', () => {
+    // eslint-disable-next-line ts/no-unused-expressions
     async () => {
       const x = ref<'x'>()
       // type checks are done this way to prevent unused variable warnings

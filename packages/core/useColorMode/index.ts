@@ -212,7 +212,7 @@ export function useColorMode<T extends string = BasicColorMode>(
   try {
     return Object.assign(auto, { store, system, state }) as UseColorModeReturn<T>
   }
-  catch (e) {
+  catch {
     // In Vue 2.6, ref might not be extensible
     return auto as any as UseColorModeReturn<T>
   }

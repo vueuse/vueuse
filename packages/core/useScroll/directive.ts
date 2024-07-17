@@ -8,7 +8,7 @@ type BindingValueFunction = (state: UseScrollReturn) => void
 type BindingValueArray = [BindingValueFunction, UseScrollOptions]
 
 export const vScroll: ObjectDirective<
-HTMLElement,
+  HTMLElement,
 BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {

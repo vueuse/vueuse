@@ -13,8 +13,8 @@ type VElementSizeOptions = RemoveFirstFromTuple<Parameters<typeof useElementSize
 type BindingValueArray = [BindingValueFunction, ...VElementSizeOptions]
 
 export const vElementSize: ObjectDirective<
-HTMLElement,
-BindingValueFunction | BindingValueArray
+  HTMLElement,
+  BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {
     const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]

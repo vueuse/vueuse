@@ -41,6 +41,6 @@
     "vue-demi": ">=0.14.8"
   },
   "devDependencies": {
-    "vue-router": "^4.3.3"
+    "vue-router": "^4.4.0"
   }
 }

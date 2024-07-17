@@ -1,11 +1,11 @@
 import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
 import { watch } from 'vue-demi'
 
-import type { MapOldSources, MapSources, MultiWatchSources } from '../utils/types'
+import type { MapOldSources, MapSources } from '../utils/types'
 
 // overloads
-export function watchImmediate<T extends Readonly<MultiWatchSources>>(
-  source: T,
+export function watchImmediate<T extends Readonly<WatchSource<unknown>[]>>(
+  source: [...T],
   cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
   options?: Omit<WatchOptions<true>, 'immediate'>
 ): WatchStopHandle

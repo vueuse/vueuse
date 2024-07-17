@@ -6,8 +6,8 @@ import { useElementHover } from '.'
 type BindingValueFunction = (state: boolean) => void
 
 export const vElementHover: ObjectDirective<
-HTMLElement,
-BindingValueFunction
+  HTMLElement,
+  BindingValueFunction
 > = {
   [directiveHooks.mounted](el, binding) {
     if (typeof binding.value === 'function') {

@@ -4,6 +4,26 @@ import { describe, expect, it } from 'vitest'
 import type { WakeLockSentinel } from '.'
 import { useWakeLock } from '.'
 
+class MockWakeLockSentinel extends EventTarget {
+  released = false
+  release() {
+    this.released = true
+    return Promise.resolve()
+  }
+}
+function defineWakeLockAPI() {
+  const sentinel = new MockWakeLockSentinel()
+  Object.defineProperty(navigator, 'wakeLock', {
+    value: { request: async () => sentinel as WakeLockSentinel },
+    writable: true,
+  })
+  return sentinel
+}
+
+class MockDocument extends EventTarget {
+  visibilityState = 'hidden'
+}
+
 describe('useWakeLock', () => {
   it('isActive not changed if not supported', async () => {
     const { isActive, request, release } = useWakeLock({ navigator: {} as Navigator })
@@ -20,28 +40,13 @@ describe('useWakeLock', () => {
   })
 
   it('isActive changed if supported', async () => {
-    const createWakeLock = () => {
-      let _released = false
-      return {
-        get released() {
-          return _released
-        },
-        release: () => {
-          _released = true
-          return Promise.resolve()
-        },
-      } as WakeLockSentinel
-    }
+    defineWakeLockAPI()
 
-    Object.defineProperty(navigator, 'wakeLock', {
-      value: { request: () => createWakeLock() },
-      writable: true,
-    })
-    const { isActive, request, release } = useWakeLock()
+    const { isActive, forceRequest, release } = useWakeLock()
 
     expect(isActive.value).toBeFalsy()
 
-    await request('screen')
+    await forceRequest('screen')
 
     expect(isActive.value).toBeTruthy()
 
@@ -51,23 +56,8 @@ describe('useWakeLock', () => {
   })
 
   it('isActive changed if show other tabs or minimize window', async () => {
-    const createWakeLock = () => {
-      let _released = false
-      return {
-        get released() {
-          return _released
-        },
-        release: () => {
-          _released = true
-          return Promise.resolve()
-        },
-      } as WakeLockSentinel
-    }
+    defineWakeLockAPI()
 
-    Object.defineProperty(navigator, 'wakeLock', {
-      value: { request: () => createWakeLock() },
-      writable: true,
-    })
     const { isActive, request } = useWakeLock()
 
     expect(isActive.value).toBeFalsy()
@@ -79,6 +69,78 @@ describe('useWakeLock', () => {
 
     document.dispatchEvent(new window.Event('visibilitychange'))
 
+    await nextTick()
+
+    expect(isActive.value).toBeTruthy()
+  })
+
+  it('it should delay requesting if document is hidden', async () => {
+    defineWakeLockAPI()
+    const mockDocument = new MockDocument()
+
+    const { isActive, request } = useWakeLock({ document: mockDocument as Document })
+
+    await request('screen')
+
+    expect(isActive.value).toBeFalsy()
+
+    mockDocument.visibilityState = 'visible'
+    mockDocument.dispatchEvent(new Event('visibilitychange'))
+
+    await nextTick()
+    await nextTick()
+
+    expect(isActive.value).toBeTruthy()
+  })
+
+  it('it should cancel requesting if released is called before document become visible', async () => {
+    defineWakeLockAPI()
+    const mockDocument = new MockDocument()
+
+    const { isActive, request, release } = useWakeLock({ document: mockDocument as Document })
+
+    await request('screen')
+
+    expect(isActive.value).toBeFalsy()
+
+    await release()
+
+    expect(isActive.value).toBeFalsy()
+
+    mockDocument.visibilityState = 'visible'
+    mockDocument.dispatchEvent(new Event('visibilitychange'))
+
+    await nextTick()
+    await nextTick()
+
+    expect(isActive.value).toBeFalsy()
+  })
+
+  it('it should be inactive if wake lock is released for some reasons', async () => {
+    const sentinel = defineWakeLockAPI()
+    const mockDocument = new MockDocument()
+    mockDocument.visibilityState = 'visible'
+
+    const { isActive, request } = useWakeLock({ document: mockDocument as Document })
+
+    await request('screen')
+
+    expect(isActive.value).toBeTruthy()
+
+    mockDocument.visibilityState = 'hidden'
+    mockDocument.dispatchEvent(new Event('visibilitychange'))
+    sentinel.dispatchEvent(new Event('release'))
+
+    await nextTick()
+    await nextTick()
+
+    expect(isActive.value).toBeFalsy()
+
+    mockDocument.visibilityState = 'visible'
+    mockDocument.dispatchEvent(new Event('visibilitychange'))
+    await request('screen')
+
+    await nextTick()
     await nextTick()
 
     expect(isActive.value).toBeTruthy()
