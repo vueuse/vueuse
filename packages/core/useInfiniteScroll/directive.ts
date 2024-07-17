@@ -7,7 +7,7 @@ type BindingValueFunction = Parameters<typeof useInfiniteScroll>[1]
 type BindingValueArray = [BindingValueFunction, UseInfiniteScrollOptions]
 
 export const vInfiniteScroll: ObjectDirective<
-HTMLElement,
+  HTMLElement,
 BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {
