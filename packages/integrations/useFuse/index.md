@@ -17,7 +17,7 @@ From the Fuse.js website:
 ### NPM
 
 ```bash
-npm install fuse.js@^6
+npm install fuse.js@^7
 ```
 
 ### Yarn

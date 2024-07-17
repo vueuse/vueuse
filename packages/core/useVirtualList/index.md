@@ -39,7 +39,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 ### Reactive list
 
 ```typescript
-import { useVirtualList, useToggle } from '@vueuse/core'
+import { useToggle, useVirtualList } from '@vueuse/core'
 import { computed } from 'vue'
 
 const [isEven, toggle] = useToggle()

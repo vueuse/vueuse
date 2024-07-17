@@ -34,7 +34,7 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
   types = types
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
-    .replace(/export {}/g, '')
+    .replace(/export \{\}/g, '')
 
   const prettier = await import('prettier')
   return (await prettier

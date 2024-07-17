@@ -56,7 +56,7 @@ export function useRouteParams<
       get() {
         track()
 
-        return transform(param !== undefined ? param : toValue(defaultValue))
+        return transform(param !== undefined && param !== '' ? param : toValue(defaultValue))
       },
       set(v) {
         if (param === v)
