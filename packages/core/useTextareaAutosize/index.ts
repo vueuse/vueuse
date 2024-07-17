@@ -42,11 +42,11 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
       height = `${textareaScrollHeight.value}px`
 
     textarea.value.style[styleProp] = height
-
-    options?.onResize?.()
   }
 
   watch([input, textarea], () => nextTick(triggerResize), { immediate: true })
+
+  watch(textareaScrollHeight, () => options?.onResize?.())
 
   useResizeObserver(textarea, () => triggerResize())
 

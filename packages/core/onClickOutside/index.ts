@@ -98,8 +98,9 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
         if (
           window.document.activeElement?.tagName === 'IFRAME'
           && !el?.contains(window.document.activeElement)
-        )
+        ) {
           handler(event as any)
+        }
       }, 0)
     }),
   ].filter(Boolean) as Fn[]

@@ -97,6 +97,20 @@ export interface UseDraggableOptions {
    * @default false
    */
   disabled?: MaybeRefOrGetter<boolean>
+
+  /**
+   * Mouse buttons that are allowed to trigger drag events.
+   *
+   * - `0`: Main button, usually the left button or the un-initialized state
+   * - `1`: Auxiliary button, usually the wheel button or the middle button (if present)
+   * - `2`: Secondary button, usually the right button
+   * - `3`: Fourth button, typically the Browser Back button
+   * - `4`: Fifth button, typically the Browser Forward button
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button#value
+   * @default [0]
+   */
+  buttons?: MaybeRefOrGetter<number[]>
 }
 
 /**
@@ -123,6 +137,7 @@ export function useDraggable(
     draggingElement = defaultWindow,
     containerElement,
     handle: draggingHandle = target,
+    buttons = [0],
   } = options
 
   const position = ref<Position>(
@@ -145,7 +160,7 @@ export function useDraggable(
   }
 
   const start = (e: PointerEvent) => {
-    if (e.button !== 0)
+    if (!toValue(buttons).includes(e.button))
       return
     if (toValue(options.disabled) || !filterEvent(e))
       return

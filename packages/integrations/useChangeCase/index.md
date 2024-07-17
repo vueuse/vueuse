@@ -11,7 +11,7 @@ Subsitutes `useCamelCase`, `usePascalCase`, `useSnakeCase`, `useSentenceCase`, `
 ## Install
 
 ```bash
-npm i change-case@^4
+npm i change-case@^5
 ```
 
 ## Usage

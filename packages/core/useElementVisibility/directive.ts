@@ -10,8 +10,8 @@ type BindingValueFunction = (state: boolean) => void
 type BindingValueArray = [BindingValueFunction, UseElementVisibilityOptions]
 
 export const vElementVisibility: ObjectDirective<
-HTMLElement,
-BindingValueFunction | BindingValueArray
+  HTMLElement,
+  BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {
     if (typeof binding.value === 'function') {

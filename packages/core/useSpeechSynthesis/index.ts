@@ -112,7 +112,8 @@ export function useSpeechSynthesis(
 
   const speak = () => {
     synth!.cancel()
-    utterance && synth!.speak(utterance.value)
+    if (utterance)
+      synth!.speak(utterance.value)
   }
 
   const stop = () => {

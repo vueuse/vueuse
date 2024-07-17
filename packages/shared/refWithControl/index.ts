@@ -19,7 +19,7 @@ export interface ControlledRefOptions<T> {
 }
 
 /**
- * Explicitly define the deps of computed.
+ * Fine-grained controls over ref and its reactivity.
  */
 export function refWithControl<T>(
   initial: T,

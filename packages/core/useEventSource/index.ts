@@ -81,6 +81,11 @@ export interface UseEventSourceReturn<Events extends string[]> {
    * Reference to the current EventSource instance.
    */
   eventSource: Ref<EventSource | null>
+  /**
+   * The last event ID string, for server-sent events.
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
+   */
+  lastEventId: Ref<string | null>
 }
 
 function resolveNestedOptions<T>(options: T | true): T {
@@ -109,6 +114,7 @@ export function useEventSource<Events extends string[]>(
   const eventSource = ref(null) as Ref<EventSource | null>
   const error = shallowRef(null) as Ref<Event | null>
   const urlRef = toRef(url)
+  const lastEventId = shallowRef<string | null>(null)
 
   let explicitlyClosed = false
   let retried = 0
@@ -169,6 +175,7 @@ export function useEventSource<Events extends string[]>(
     es.onmessage = (e: MessageEvent) => {
       event.value = null
       data.value = e.data
+      lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
@@ -201,5 +208,6 @@ export function useEventSource<Events extends string[]>(
     error,
     open,
     close,
+    lastEventId,
   }
 }
