@@ -5,7 +5,7 @@ import type { OnClickOutsideHandler, OnClickOutsideOptions } from '.'
 
 export const vOnClickOutside: ObjectDirective<
   HTMLElement,
-  OnClickOutsideHandler | [(evt: any) => void, OnClickOutsideOptions]
+  OnClickOutsideHandler | [OnClickOutsideHandler, OnClickOutsideOptions]
 > = {
   [directiveHooks.mounted](el, binding) {
     const capture = !binding.modifiers.bubble
