@@ -1,5 +1,5 @@
 import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
+import { toValue, tryOnUnmounted } from '@vueuse/shared'
 import type { UnwrapNestedRefs } from 'vue-demi'
 import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
 import { useElementVisibility } from '../useElementVisibility'
@@ -101,11 +101,13 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
     }
   }
 
-  watch(
+  const stop = watch(
     () => [state.arrivedState[direction], isElementVisible.value],
     checkAndLoad,
     { immediate: true },
   )
+
+  tryOnUnmounted(stop)
 
   return {
     isLoading,
