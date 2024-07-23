@@ -11,12 +11,26 @@ import { useResizeObserver } from '../useResizeObserver'
 import { defaultWindow } from '../_configurable'
 
 export interface UseElementOverflowOptions extends ConfigurableWindow {
+  /**
+   * Use MutationObserver to observe the target and its children.
+   *
+   * @default false
+   */
   observeMutation?: boolean | MutationObserverInit
+  /**
+   * Callback when observer triggered.
+   */
   onUpdated?: ResizeObserverCallback | MutationCallback
 }
 
+/**
+ * react a dom's overflow state
+ * @see https://vueuse.org/useElementOverflow
+ * @param target
+ * @param option
+ */
 export function useElementOverflow(target: MaybeComputedElementRef, option: UseElementOverflowOptions = {}) {
-  const { observeMutation, onUpdated, window = defaultWindow } = option
+  const { observeMutation = false, onUpdated, window = defaultWindow } = option
   const isXOverflowed = ref(false)
   const isYOverflowed = ref(false)
 
