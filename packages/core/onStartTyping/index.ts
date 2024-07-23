@@ -60,9 +60,9 @@ export function onStartTyping(callback: (event: KeyboardEvent) => void, options:
   const { document = defaultDocument } = options
 
   const keydown = (event: KeyboardEvent) => {
-    !isFocusedElementEditable()
-    && isTypedCharValid(event)
-    && callback(event)
+    if (!isFocusedElementEditable() && isTypedCharValid(event)) {
+      callback(event)
+    }
   }
 
   if (document)

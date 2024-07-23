@@ -12,8 +12,8 @@ type BindingValueArray = [
 ]
 
 export const vOnLongPress: ObjectDirective<
-HTMLElement,
-BindingValueFunction | BindingValueArray
+  HTMLElement,
+  BindingValueFunction | BindingValueArray
 > = {
   [directiveHooks.mounted](el, binding) {
     if (typeof binding.value === 'function')

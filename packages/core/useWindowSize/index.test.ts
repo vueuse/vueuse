@@ -43,6 +43,13 @@ describe('useWindowSize', () => {
     expect(height.value).toBe(window.document.documentElement.clientHeight)
   })
 
+  it('should use outer size', () => {
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, type: 'outer' })
+
+    expect(width.value).toBe(window.outerWidth)
+    expect(height.value).toBe(window.outerHeight)
+  })
+
   it('sets handler for window "resize" event', async () => {
     useWindowSize({ initialWidth: 100, initialHeight: 200, listenOrientation: false })
 

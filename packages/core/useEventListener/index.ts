@@ -99,7 +99,7 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
  * @param options
  */
 export function useEventListener<Names extends string, EventType = Event>(
-  target: InferEventTarget<Names>,
+  target: MaybeRefOrGetter<InferEventTarget<Names> | null | undefined>,
   event: Arrayable<Names>,
   listener: Arrayable<GeneralEventListener<EventType>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>

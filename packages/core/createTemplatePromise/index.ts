@@ -47,7 +47,7 @@ export interface TemplatePromiseOptions {
   transition?: TransitionGroupProps
 }
 
-export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<{}> & {
+export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<object> & {
   new(): {
     $slots: {
       default: (_: TemplatePromiseProps<Return, Args>) => any
@@ -119,8 +119,7 @@ export function createTemplatePromise<Return, Args extends any[] = []>(
     return renderList
   })
 
-  // eslint-disable-next-line ts/prefer-ts-expect-error
-  // @ts-ignore There's a breaking type change in Vue 3.3 <https://github.com/vuejs/core/pull/7963>
+  // @ts-expect-error There's a breaking type change in Vue 3.3 <https://github.com/vuejs/core/pull/7963>
   component.start = start
 
   return component as any

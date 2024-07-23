@@ -109,7 +109,8 @@ export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
 
         const done = curr(prevRes).then((currentRes: any) => {
           updateResult(promiseState.fulfilled, currentRes)
-          activeIndex.value === tasks.length - 1 && onFinished()
+          if (activeIndex.value === tasks.length - 1)
+            onFinished()
           return currentRes
         })
 

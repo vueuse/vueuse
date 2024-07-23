@@ -112,6 +112,7 @@ describe('controlledRef', () => {
     })
 
     watchEffect(() => {
+      // eslint-disable-next-line ts/no-unused-expressions
       ref.value
       dummy += 1
     }, { flush: 'sync' })
