@@ -1,6 +1,6 @@
 {
   "name": "@vueuse/router",
-  "version": "11.0.0-beta.1",
+  "version": "11.0.0-beta.2",
   "description": "Utilities for vue-router",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -41,6 +41,6 @@
     "vue-demi": ">=0.14.8"
   },
   "devDependencies": {
-    "vue-router": "^4.3.3"
+    "vue-router": "^4.4.0"
   }
 }

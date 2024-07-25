@@ -100,6 +100,8 @@ export type UseColorModeReturn<T extends string = BasicColorMode> =
     state: ComputedRef<T | BasicColorMode>
   }
 
+const CSS_DISABLE_TRANS = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
+
 /**
  * Reactive color mode with auto data persistence.
  *
@@ -152,13 +154,9 @@ export function useColorMode<T extends string = BasicColorMode>(
       if (!el)
         return
 
-      let style: HTMLStyleElement | undefined
-      if (disableTransition) {
-        style = window!.document.createElement('style')
-        const styleString = '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
-        style.appendChild(document.createTextNode(styleString))
-        window!.document.head.appendChild(style)
-      }
+      const classesToAdd = new Set<string>()
+      const classesToRemove = new Set<string>()
+      let attributeToChange: { key: string, value: string } | null = null
 
       if (attribute === 'class') {
         const current = value.split(/\s/g)
@@ -167,13 +165,34 @@ export function useColorMode<T extends string = BasicColorMode>(
           .filter(Boolean)
           .forEach((v) => {
             if (current.includes(v))
-              el.classList.add(v)
+              classesToAdd.add(v)
             else
-              el.classList.remove(v)
+              classesToRemove.add(v)
           })
       }
       else {
-        el.setAttribute(attribute, value)
+        attributeToChange = { key: attribute, value }
+      }
+
+      if (classesToAdd.size === 0 && classesToRemove.size === 0 && attributeToChange === null)
+        // Nothing changed so we can avoid reflowing the page
+        return
+
+      let style: HTMLStyleElement | undefined
+      if (disableTransition) {
+        style = window!.document.createElement('style')
+        style.appendChild(document.createTextNode(CSS_DISABLE_TRANS))
+        window!.document.head.appendChild(style)
+      }
+
+      for (const c of classesToAdd) {
+        el.classList.add(c)
+      }
+      for (const c of classesToRemove) {
+        el.classList.remove(c)
+      }
+      if (attributeToChange) {
+        el.setAttribute(attributeToChange.key, attributeToChange.value)
       }
 
       if (disableTransition) {
@@ -212,7 +231,7 @@ export function useColorMode<T extends string = BasicColorMode>(
   try {
     return Object.assign(auto, { store, system, state }) as UseColorModeReturn<T>
   }
-  catch (e) {
+  catch {
     // In Vue 2.6, ref might not be extensible
     return auto as any as UseColorModeReturn<T>
   }

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "packageManager": "pnpm@9.3.0",
+  "packageManager": "pnpm@9.5.0",
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
@@ -12,7 +12,7 @@
     "@vueuse/metadata": "file:../../packages/metadata/dist",
     "@vueuse/nuxt": "file:../../packages/nuxt/dist",
     "@vueuse/shared": "file:../../packages/shared/dist",
-    "nuxt": "^3.12.1"
+    "nuxt": "^3.12.3"
   },
   "resolutions": {
     "@vueuse/core": "file:../../packages/core/dist",

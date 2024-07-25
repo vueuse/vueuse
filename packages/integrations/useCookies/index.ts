@@ -75,7 +75,7 @@ export function useCookies(
       if (autoUpdateDependencies && watchingDependencies && !watchingDependencies.includes(args[0]))
         watchingDependencies.push(args[0])
 
-      // eslint-disable-next-line no-unused-expressions
+      // eslint-disable-next-line ts/no-unused-expressions
       touches.value // adds reactivity to method
       return cookies.get<T>(args[0], { doNotParse, ...args[1] })
     },
@@ -83,7 +83,7 @@ export function useCookies(
      * Reactive get all cookies
      */
     getAll: <T = any>(...args: Parameters<Cookie['getAll']>) => {
-      // eslint-disable-next-line no-unused-expressions
+      // eslint-disable-next-line ts/no-unused-expressions
       touches.value // adds reactivity to method
       return cookies.getAll<T>({ doNotParse, ...args[0] })
     },

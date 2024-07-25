@@ -35,8 +35,6 @@ export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getDisplayMedia)
 
-  // eslint-disable-next-line ts/prefer-ts-expect-error
-  // @ts-ignore Type mismatch in different version of TS
   const constraint: MediaStreamConstraints = { audio, video }
 
   const stream: Ref<MediaStream | undefined> = shallowRef()

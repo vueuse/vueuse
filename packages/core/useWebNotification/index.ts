@@ -117,7 +117,7 @@ export function useWebNotification(
       // eslint-disable-next-line no-new
       new Notification('')
     }
-    catch (e) {
+    catch {
       return false
     }
     return true
