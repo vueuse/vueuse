@@ -5,6 +5,8 @@ import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vu
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
+export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
+
 
 const DEFAULT_PING_MESSAGE = 'ping'
 
@@ -25,7 +27,7 @@ export interface UseWebSocketOptions {
      *
      * @default 'ping'
      */
-    message?: string | ArrayBuffer | Blob
+    message?: WebSocketHeartbeatMessage | (() => WebSocketHeartbeatMessage)
 
     /**
      * Response message for the heartbeat, if undefined the message will be used
@@ -276,7 +278,7 @@ export function useWebSocket<Data = any>(
 
     const { pause, resume } = useIntervalFn(
       () => {
-        send(message, false)
+        typeof message === "function" ? send(message(), false) : send(message, false)
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
