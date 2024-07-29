@@ -225,7 +225,7 @@ When reused templates are used in list scenarios, use `injectSlot` for better pe
 <script setup>
 import { createReusableTemplate } from '@vueuse/core'
 
-const [DefineTemplate, injectSlot] = createReusableTemplate()
+const [DefineTemplate, _, injectSlot] = createReusableTemplate()
 
 injectSlot('list-slot')
 </script>
