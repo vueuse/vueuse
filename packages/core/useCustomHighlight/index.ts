@@ -1,5 +1,5 @@
-import { computed, ref, toValue, watch } from 'vue-demi'
-import { type MaybeRefOrGetter, notNullish } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
+import { type MaybeRefOrGetter, notNullish, toValue } from '@vueuse/shared'
 import { type MaybeComputedElementRef, type MaybeElement, unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
 import { useSupported } from '../useSupported'
