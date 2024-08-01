@@ -8,6 +8,7 @@ import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
+export interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter { }
 export interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {}
 
 /**
@@ -35,9 +36,9 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     const onDeviceMotion = createFilterWrapper(
       eventFilter,
       (event: DeviceMotionEvent) => {
-        acceleration.value = event.acceleration
-        accelerationIncludingGravity.value = event.accelerationIncludingGravity
-        rotationRate.value = event.rotationRate
+        acceleration.value = { x: event.acceleration?.x || null, y: event.acceleration?.y || null, z: event.acceleration?.z || null }
+        accelerationIncludingGravity.value = { x: event.accelerationIncludingGravity?.x || null, y: event.accelerationIncludingGravity?.y || null, z: event.accelerationIncludingGravity?.z || null }
+        rotationRate.value = { alpha: event.rotationRate?.alpha || null, beta: event.rotationRate?.beta || null, gamma: event.rotationRate?.gamma || null }
         interval.value = event.interval
       },
     )
