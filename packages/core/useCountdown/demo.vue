@@ -4,10 +4,8 @@ import { ref } from 'vue'
 import { useCountdown } from './index'
 
 const countdownSeconds = ref(5)
-const repeatCount = ref(1)
 const rocketRef = ref<HTMLDivElement>()
 const { remaining, start, stop, pause, resume } = useCountdown(countdownSeconds, {
-  repeatCount,
   onComplete() {
     rocketRef.value!.classList.add('launching')
   },
@@ -35,9 +33,6 @@ useEventListener(rocketRef, 'animationend', () => {
 
     <div class="flex items-center gap-2 mt-4">
       Countdown: <input v-model="countdownSeconds" type="number">
-    </div>
-    <div class="flex items-center gap-2">
-      RepeatCount: <input v-model="repeatCount" type="number">
     </div>
     <div class="flex items-center gap-2 justify-center">
       <button @click="startCountdown">

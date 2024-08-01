@@ -10,11 +10,9 @@ describe('useCountdown', () => {
   let completeCallback = vi.fn()
   let countdown = 3
   let interval = 100
-  let repeatCount = 3
   const immediate = true
   let options: UseCountdownOptions = {
     interval,
-    repeatCount,
     onComplete: completeCallback,
     onTick: tickCallback,
     immediate,
@@ -24,10 +22,8 @@ describe('useCountdown', () => {
     completeCallback = vi.fn()
     countdown = 3
     interval = 100
-    repeatCount = 3
     options = {
       interval,
-      repeatCount,
       onComplete: completeCallback,
       onTick: tickCallback,
       immediate,
@@ -37,43 +33,41 @@ describe('useCountdown', () => {
   async function exec({ isActive, pause, resume }: Pausable) {
     expect(isActive.value).toBeTruthy()
     expect(completeCallback).toHaveBeenCalledTimes(0)
-
-    await promiseTimeout(700)
-    expect(tickCallback).toHaveBeenCalledTimes(6)
-    expect(completeCallback).toHaveBeenCalledTimes(2)
+    await promiseTimeout(110)
+    expect(tickCallback).toHaveBeenCalledTimes(1)
 
     pause()
     expect(isActive.value).toBeFalsy()
 
-    await promiseTimeout(100)
-    expect(tickCallback).toHaveBeenCalledTimes(6)
-    expect(completeCallback).toHaveBeenCalledTimes(2)
+    await promiseTimeout(110)
+    expect(tickCallback).toHaveBeenCalledTimes(1)
 
     resume()
     expect(isActive.value).toBeTruthy()
 
-    await promiseTimeout(100)
-    expect(tickCallback).toHaveBeenCalledTimes(7)
-    expect(completeCallback).toHaveBeenCalledTimes(2)
+    await promiseTimeout(110)
+    expect(tickCallback).toHaveBeenCalledTimes(2)
+
+    await promiseTimeout(110)
+    expect(tickCallback).toHaveBeenCalledTimes(3)
+    expect(completeCallback).toHaveBeenCalledTimes(1)
   }
 
   it('basic start/stop', async () => {
-    const { isActive, stop, start, remaining, completedCount } = useCountdown(countdown, options)
+    const { isActive, stop, start, remaining } = useCountdown(countdown, options)
     expect(isActive.value).toBeTruthy()
     expect(completeCallback).toHaveBeenCalledTimes(0)
-    await promiseTimeout(400)
 
-    expect(tickCallback).toHaveBeenCalledTimes(3)
-    expect(completeCallback).toHaveBeenCalledTimes(1)
+    await promiseTimeout(110)
+
+    expect(tickCallback).toHaveBeenCalledTimes(1)
+    expect(completeCallback).toHaveBeenCalledTimes(0)
 
     stop()
     expect(isActive.value).toBeFalsy()
-    await promiseTimeout(100)
+    await promiseTimeout(110)
 
-    expect(tickCallback).toHaveBeenCalledTimes(3)
-    expect(completeCallback).toHaveBeenCalledTimes(1)
-
-    expect(completedCount.value).toBe(0)
+    expect(tickCallback).toHaveBeenCalledTimes(1)
     expect(remaining.value).toBe(countdown)
 
     tickCallback.mockClear()
@@ -82,17 +76,16 @@ describe('useCountdown', () => {
     start()
 
     expect(isActive.value).toBeTruthy()
-    await promiseTimeout(800)
+    await promiseTimeout(210)
 
-    expect(tickCallback).toHaveBeenCalledTimes(7)
-    expect(completeCallback).toHaveBeenCalledTimes(2)
+    expect(tickCallback).toHaveBeenCalledTimes(2)
+    expect(completeCallback).toHaveBeenCalledTimes(0)
 
-    expect(completedCount.value).toBe(2)
-    expect(remaining.value).toBe(2)
+    expect(remaining.value).toBe(1)
 
-    await promiseTimeout(1000)
-    expect(completedCount.value).toBe(3)
+    await promiseTimeout(110)
     expect(remaining.value).toBe(0)
+    expect(completeCallback).toHaveBeenCalledTimes(1)
   })
 
   it('basic pause/resume', async () => {
@@ -106,7 +99,7 @@ describe('useCountdown', () => {
     })
     tickCallback.mockClear()
     await scope.stop()
-    await promiseTimeout(600)
+    await promiseTimeout(300)
     expect(tickCallback).toHaveBeenCalledTimes(0)
   })
 
