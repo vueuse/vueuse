@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
-import { useDeviceMotion } from '@vueuse/core'
+import { useDeviceMotion } from './index'
 
-const motion = reactive(useDeviceMotion())
-const text = computed(() => JSON.stringify(motion, null, 2))
+const { acceleration, accelerationIncludingGravity, rotationRate, interval, requirePermission, permissionGranted, trigger } = useDeviceMotion()
 </script>
 
 <template>
   <note class="mb-2">
     Device Motion:
   </note>
-  <pre lang="json">{{ text }}</pre>
+  <pre
+    v-if="!requirePermission || permissionGranted"
+    lang="json"
+  >{{ { acceleration, accelerationIncludingGravity, rotationRate, interval } }}</pre>
+  <div v-else>
+    Permission is required
+  </div>
+
+  <button v-if="requirePermission && !permissionGranted" @click="trigger">
+    Request Permission
+  </button>
 </template>
