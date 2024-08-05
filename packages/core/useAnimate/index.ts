@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue-demi'
-import { computed, nextTick, shallowReactive, shallowRef, watch } from 'vue-demi'
+import { computed, shallowReactive, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
 import { isObject, objectOmit, toValue, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeComputedElementRef } from '../unrefElement'
@@ -191,7 +191,8 @@ export function useAnimate(
   }
 
   const reverse = () => {
-    !animate.value && update()
+    if (!animate.value)
+      update()
     try {
       animate.value?.reverse()
       syncResume()
@@ -223,11 +224,13 @@ export function useAnimate(
   }
 
   watch(() => unrefElement(target), (el) => {
-    el && update()
+    if (el)
+      update()
   })
 
   watch(() => keyframes, (value) => {
-    !animate.value && update()
+    if (animate.value)
+      update()
 
     if (!unrefElement(target) && animate.value) {
       animate.value.effect = new KeyframeEffect(
@@ -238,9 +241,7 @@ export function useAnimate(
     }
   }, { deep: true })
 
-  tryOnMounted(() => {
-    nextTick(() => update(true))
-  })
+  tryOnMounted(() => update(true), false)
 
   tryOnScopeDispose(cancel)
 

@@ -35,6 +35,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'onMove',
     'onEnd',
     'disabled',
+    'buttons',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
