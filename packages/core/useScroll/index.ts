@@ -224,8 +224,8 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    const top = (scrollTop * directionMultipler) <= (offset.top || 0)
-    const bottom = (scrollTop * directionMultipler)
+    const top = scrollTop <= (offset.top || 0)
+    const bottom = scrollTop
       + el.clientHeight >= el.scrollHeight
       - (offset.bottom || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS
