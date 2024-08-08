@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import { useDevicesList, useUserMedia } from '@vueuse/core'
 
 const currentCamera = ref<string>()
@@ -19,6 +19,13 @@ const { stream, enabled } = useUserMedia({
 watchEffect(() => {
   if (video.value)
     video.value.srcObject = stream.value!
+})
+
+watch(() => currentCamera.value, () => {
+  enabled.value = false
+  setTimeout(() => {
+    enabled.value = true
+  }, 100)
 })
 </script>
 
