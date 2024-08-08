@@ -11,9 +11,10 @@ type ChangeCaseKeys = FilterKeys<typeof changeCase>
 
 export type ChangeCaseType = ChangeCaseKeys[keyof ChangeCaseKeys]
 
-const changeCaseTransforms: any = /* @__PURE__ */ Object.values(changeCase)
-  .filter(v => typeof v === 'function' && v.name.endsWith('Case')).reduce((acc, fn) => {
-    acc[fn.name] = fn
+const changeCaseTransforms: any = /* @__PURE__ */ Object.entries(changeCase)
+  .filter(([k, v]) => typeof v === 'function' && k.endsWith('Case'))
+  .reduce((acc, [k, v]) => {
+    acc[k] = v
     return acc
   }, {} as any)
 
