@@ -7,6 +7,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
+  margin?: string
   scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
 }
 
@@ -19,7 +20,12 @@ export function useElementVisibility(
   element: MaybeComputedElementRef,
   options: UseElementVisibilityOptions = {},
 ) {
-  const { window = defaultWindow, scrollTarget, threshold = 0 } = options
+  const {
+    window = defaultWindow,
+    scrollTarget,
+    threshold = 0,
+    margin = '0px',
+  } = options
   const elementIsVisible = ref(false)
 
   useIntersectionObserver(
@@ -41,6 +47,7 @@ export function useElementVisibility(
       root: scrollTarget,
       window,
       threshold,
+      rootMargin: margin,
     },
   )
 
