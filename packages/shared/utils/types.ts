@@ -67,6 +67,8 @@ export type ShallowUnwrapRef<T> = T extends Ref<infer P> ? P : T
 
 export type Awaitable<T> = Promise<T> | T
 
+export type Thenable<T> = T & PromiseLike<T>
+
 export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never
 
 /**

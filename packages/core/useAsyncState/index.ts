@@ -1,3 +1,4 @@
+import type { Thenable } from '@vueuse/shared'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
 import type { Ref, UnwrapRef } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
@@ -11,8 +12,7 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
 }
 
 export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> =
-  UseAsyncStateReturnBase<Data, Params, Shallow>
-  & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
+  Thenable<UseAsyncStateReturnBase<Data, Params, Shallow>>
 
 export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
   /**

@@ -1,8 +1,10 @@
-import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
+import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable, Thenable } from '@vueuse/shared'
 import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
 import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+
+export type UseFetchReturnThenable<T> = Thenable<UseFetchReturn<T>>
 
 export interface UseFetchReturn<T> {
   /**
@@ -72,20 +74,20 @@ export interface UseFetchReturn<T> {
   onFetchFinally: EventHookOn
 
   // methods
-  get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  get: () => UseFetchReturnThenable<T>
+  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturnThenable<T>
+  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturnThenable<T>
+  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturnThenable<T>
+  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturnThenable<T>
+  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturnThenable<T>
+  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturnThenable<T>
 
   // type
-  json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
-  text: () => UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>
-  blob: () => UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>
-  arrayBuffer: () => UseFetchReturn<ArrayBuffer> & PromiseLike<UseFetchReturn<ArrayBuffer>>
-  formData: () => UseFetchReturn<FormData> & PromiseLike<UseFetchReturn<FormData>>
+  json: <JSON = any>() => UseFetchReturnThenable<JSON>
+  text: () => UseFetchReturnThenable<string>
+  blob: () => UseFetchReturnThenable<Blob>
+  arrayBuffer: () => UseFetchReturnThenable<ArrayBuffer>
+  formData: () => UseFetchReturnThenable<FormData>
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
@@ -314,11 +316,11 @@ export function createFetch(config: CreateFetchOptions = {}) {
   return useFactoryFetch as typeof useFetch
 }
 
-export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturnThenable<T>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseFetchOptions): UseFetchReturnThenable<T>
+export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturnThenable<T>
 
-export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
+export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseFetchReturnThenable<T> {
   const supportsAbort = typeof AbortController === 'function'
 
   let fetchOptions: RequestInit = {}

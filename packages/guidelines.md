@@ -166,7 +166,8 @@ so the user is able to await the function. This is especially useful in the case
 
 - Use a `ref` to determine when the function should resolve e.g. `isFinished`
 - Store the return state in a variable as it must be returned twice, once in the return and once in the promise.
-- The return type should be an intersection between the return type and a PromiseLike, e.g. `UseFetchReturn & PromiseLike<UseFetchReturn>`
+- The return type should be an intersection between the return type and a
+  PromiseLike, e.g. `UseFetchReturn & PromiseLike<UseFetchReturn>` (with an alias `Thenable<UseFetchReturn>`).
 
 ```ts
 export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
