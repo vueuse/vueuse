@@ -12,6 +12,16 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    */
   ignore?: (MaybeElementRef | string)[]
   /**
+   * Ignore dragging so the handler does not fire if user drags instead of single clicks
+   * @default false
+   */
+  ignoreDragging?: boolean | {
+    /**
+     * The distance in pixels the user should be able to drag without triggering the event.
+     */
+    distance?: number
+  }
+  /**
    * Use capturing phase for internal event listener.
    * @default true
    */
@@ -40,7 +50,13 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
+  const {
+    window = defaultWindow,
+    ignore = [],
+    ignoreDragging = false,
+    capture = true,
+    detectIframe = false,
+  } = options
 
   if (!window)
     return noop
@@ -55,6 +71,18 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   }
 
   let shouldListen = true
+  let stopDragListener: undefined | Function
+
+  const startDragListener = ({ x, y }: PointerEvent) => {
+    stopDragListener = useEventListener(window, 'pointermove', (e) => {
+      const dX = Math.abs(x - e.x)
+      const dY = Math.abs(y - e.y)
+      if (dX + dY > 4) {
+        shouldListen = false
+        stopDragListener?.()
+      }
+    })
+  }
 
   const shouldIgnore = (event: PointerEvent) => {
     return ignore.some((target) => {
@@ -70,6 +98,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   }
 
   const listener = (event: PointerEvent) => {
+    stopDragListener?.()
     const el = unrefElement(target)
 
     if (!el || el === event.target || event.composedPath().includes(el))
@@ -91,6 +120,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
+      if (shouldListen && ignoreDragging)
+        startDragListener(e)
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {
