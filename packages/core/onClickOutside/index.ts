@@ -2,6 +2,7 @@ import type { Fn } from '@vueuse/shared'
 import { isIOS, noop } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
+import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
@@ -21,6 +22,11 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    * @default false
    */
   detectIframe?: boolean
+  /**
+   * The name of the event to listen for.
+   * @default 'click'
+   */
+  eventName?: WindowEventName
 }
 
 export type OnClickOutsideHandler<T extends { detectIframe: OnClickOutsideOptions['detectIframe'] } = { detectIframe: false }> = (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void
@@ -40,7 +46,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
-  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
+  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, eventName = 'click' } = options
 
   if (!window)
     return noop
@@ -50,8 +56,8 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
     Array.from(window.document.body.children)
-      .forEach(el => el.addEventListener('click', noop))
-    window.document.documentElement.addEventListener('click', noop)
+      .forEach(el => el.addEventListener(eventName, noop))
+    window.document.documentElement.addEventListener(eventName, noop)
   }
 
   let shouldListen = true
@@ -87,7 +93,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   }
 
   const cleanup = [
-    useEventListener(window, 'click', listener, { passive: true, capture }),
+    useEventListener(window, eventName, listener, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
