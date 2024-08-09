@@ -33,9 +33,14 @@ const result = useArrayDifference(list1, list2, (value, othVal) => value.id === 
 // result.value: [{ id: 1 }, { id: 2 }, { id: 3 }]
 ```
 
-### Use with reactive array and use mergeDiff strategy
+### Use with reactive array and use merge difference strategy
 
-```
+```js
 import { useArrayDifference } from '@vueuse/core'
 
+const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+const list2 = ref([{ id: 4 }, { id: 5 }, { id: 6 }])
+
+const result = useArrayDifference(list1, list2, (value, othVal) => value.id === othVal.id, { mergeDiff: true })
+// result.value: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 6 }]
 ```
