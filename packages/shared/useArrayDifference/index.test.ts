@@ -48,4 +48,33 @@ describe('useArrayDifference', () => {
     list1.value = [{ id: 1 }, { id: 2 }]
     expect(result.value).toEqual([])
   })
+
+  // merge1
+  it('case1: should return the merge difference of two array', () => {
+    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
+
+    const result = useArrayDifference(list1, list2, 'id', { mergeDiff: true })
+    expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 6 }])
+
+    list2.value = [{ id: 1 }, { id: 2 }]
+    expect(result.value).toEqual([{ id: 3 }, { id: 4 }, { id: 5 }])
+
+    list1.value = [{ id: 1 }, { id: 2 }]
+    expect(result.value).toEqual([])
+  })
+  // merge2
+  it('case2: should return the merge difference of two array', () => {
+    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
+
+    const result = useArrayDifference(list1, list2, (x, y) => x.id === y.id, { mergeDiff: true })
+    expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 6 }])
+
+    list2.value = [{ id: 6 }, { id: 7 }]
+    expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }, { id: 7 }])
+
+    list1.value = [{ id: 6 }, { id: 7 }]
+    expect(result.value).toEqual([])
+  })
 })
