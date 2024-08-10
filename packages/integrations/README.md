@@ -27,6 +27,7 @@ npm i @vueuse/integrations
 - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
 - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 - [`useSortable`](https://vueuse.org/integrations/useSortable/) — wrapper for [`sortable`](https://github.com/SortableJS/Sortable)
+- [`useUserAgent`](https://vueuse.org/integrations/useUserAgent/) — easily implement fuzzy search using a composable with [Fuse.js](https://github.com/krisk/fuse)
 
 <!--FUNCTIONS_LIST_ENDS-->
 

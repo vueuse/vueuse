@@ -54,6 +54,10 @@
       "import": "./useFuse.mjs",
       "require": "./useFuse.cjs"
     },
+    "./useUserAgent": {
+      "import": "./useUserAgent.mjs",
+      "require": "./useUserAgent.cjs"
+    },
     "./useJwt": {
       "import": "./useJwt.mjs",
       "require": "./useJwt.cjs"
@@ -104,6 +108,7 @@
     "nprogress": "^0.2",
     "qrcode": "^1.5",
     "sortablejs": "^1",
+    "ua-parser-js": "^1",
     "universal-cookie": "^7"
   },
   "peerDependenciesMeta": {
@@ -153,6 +158,7 @@
     "@types/nprogress": "^0.2.3",
     "@types/qrcode": "^1.5.5",
     "@types/sortablejs": "^1.15.8",
+    "@types/ua-parser-js": "^0.7.39",
     "async-validator": "^4.2.5",
     "axios": "^1.7.2",
     "change-case": "^5.4.4",
@@ -164,6 +170,7 @@
     "nprogress": "^0.2.0",
     "qrcode": "^1.5.3",
     "sortablejs": "^1.15.2",
+    "ua-parser-js": "^1",
     "universal-cookie": "^7.1.4"
   }
 }
