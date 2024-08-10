@@ -2,9 +2,9 @@
 category: '@Integrations'
 ---
 
-# useFuse
+# useUserAgent
 
-Easily implement User Agent parsing using a composable
+Parse User Agent with ease using a composable
 
 ## Install ua-parser-js as a peer dependency
 
