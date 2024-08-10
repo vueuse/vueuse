@@ -211,6 +211,9 @@ importers:
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
+      ua-parser-js:
+        specifier: ^1
+        version: 1.0.38
       unocss:
         specifier: ^0.61.5
         version: 0.61.5(postcss@8.4.39)(rollup@4.18.1)(vite@5.3.4(@types/node@20.14.11)(terser@5.24.0))
@@ -312,6 +315,9 @@ importers:
       '@types/sortablejs':
         specifier: ^1.15.8
         version: 1.15.8
+      '@types/ua-parser-js':
+        specifier: ^0.7.39
+        version: 0.7.39
       async-validator:
         specifier: ^4.2.5
         version: 4.2.5
@@ -345,6 +351,9 @@ importers:
       sortablejs:
         specifier: ^1.15.2
         version: 1.15.2
+      ua-parser-js:
+        specifier: ^1
+        version: 1.0.38
       universal-cookie:
         specifier: ^7.1.4
         version: 7.1.4
@@ -2794,6 +2803,9 @@ packages:
 
   '@types/trusted-types@2.0.3':
     resolution: {integrity: sha512-NfQ4gyz38SL8sDNrSixxU2Os1a5xcdFxipAFxYEuLUlvU2uDwS4NUpsImcf1//SlWItCVMMLiylsxbmNMToV/g==}
+
+  '@types/ua-parser-js@0.7.39':
+    resolution: {integrity: sha512-P/oDfpofrdtF5xw433SPALpdSchtJmY7nsJItf8h3KXqOslkbySh8zq4dSWXH2oTjRvJ5PczVEoCZPow6GicLg==}
 
   '@types/unist@2.0.6':
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
@@ -7182,6 +7194,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  ua-parser-js@1.0.38:
+    resolution: {integrity: sha512-Aq5ppTOfvrCMgAPneW1HfWj66Xi7XL+/mIy996R1/CLS/rcyJQm6QZdsKrUeivDFQ+Oc9Wyuwor8Ze8peEoUoQ==}
+
   ufo@1.5.3:
     resolution: {integrity: sha512-Y7HYmWaFwPUmkoQCUIAYpKqkOf+SbVj/2fJJZ4RJMCfZp0rTGwRbzQD+HghfnhKOjL9E01okqz+ncJskGYfBNw==}
 
@@ -10554,6 +10569,8 @@ snapshots:
   '@types/statuses@2.0.5': {}
 
   '@types/trusted-types@2.0.3': {}
+
+  '@types/ua-parser-js@0.7.39': {}
 
   '@types/unist@2.0.6': {}
 
@@ -15848,6 +15865,8 @@ snapshots:
   typedarray@0.0.6: {}
 
   typescript@5.5.3: {}
+
+  ua-parser-js@1.0.38: {}
 
   ufo@1.5.3: {}
 
