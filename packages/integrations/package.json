@@ -147,14 +147,14 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.8"
+    "vue-demi": ">=0.14.10"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.3",
     "@types/qrcode": "^1.5.5",
     "@types/sortablejs": "^1.15.8",
     "async-validator": "^4.2.5",
-    "axios": "^1.7.2",
+    "axios": "^1.7.3",
     "change-case": "^5.4.4",
     "drauu": "^0.4.0",
     "focus-trap": "^7.5.4",
@@ -162,8 +162,8 @@
     "idb-keyval": "^6.2.1",
     "jwt-decode": "^4.0.0",
     "nprogress": "^0.2.0",
-    "qrcode": "^1.5.3",
+    "qrcode": "^1.5.4",
     "sortablejs": "^1.15.2",
-    "universal-cookie": "^7.1.4"
+    "universal-cookie": "^7.2.0"
   }
 }

@@ -92,6 +92,9 @@ export function useRouteParams<
   watch(
     () => route.params[name],
     (v) => {
+      if (param === v)
+        return
+
       param = v
 
       _trigger()

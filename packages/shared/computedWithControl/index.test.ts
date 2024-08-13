@@ -25,6 +25,23 @@ describe('computedWithControl', () => {
     expect(computed.value).toBe('BAR')
   })
 
+  it.runIf(isVue3)('optional old value', () => {
+    const trigger = ref(0)
+
+    const computed = computedWithControl(trigger, (oldValue?: number) =>
+      oldValue ? oldValue * 2 : 1)
+
+    expect(computed.value).toBe(1)
+
+    trigger.value += 1
+
+    expect(computed.value).toBe(2)
+
+    trigger.value -= 1
+
+    expect(computed.value).toBe(4)
+  })
+
   it.runIf(isVue3)('custom trigger', () => {
     let count = 0
     const computed = computedWithControl(() => {}, () => count)
