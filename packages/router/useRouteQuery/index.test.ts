@@ -1,4 +1,4 @@
-import { effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
+import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
 import type { Ref } from 'vue-demi'
 import { useRouteQuery } from '.'
@@ -224,6 +224,28 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(1)
     expect(route.query.page).toBeUndefined()
     expect(onUpdate).not.toHaveBeenCalled()
+  })
+
+  it('should trigger effects only once', async () => {
+    const route = getRoute()
+    const router = { replace: (r: any) => Object.assign(route, r) } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteQuery('page', 1, { transform: Number, route, router })
+    const pageObj = computed(() => ({
+      page: page.value,
+    }))
+
+    watch(pageObj, onUpdate)
+
+    page.value = 2
+
+    await nextTick()
+    await nextTick()
+
+    expect(page.value).toBe(2)
+    expect(route.query.page).toBe(2)
+    expect(onUpdate).toHaveBeenCalledTimes(1)
   })
 
   it('should keep current query and hash', async () => {
