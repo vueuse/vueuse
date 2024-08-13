@@ -12,7 +12,11 @@ type ChangeCaseKeys = FilterKeys<typeof changeCase>
 export type ChangeCaseType = ChangeCaseKeys[keyof ChangeCaseKeys]
 
 const changeCaseTransforms: any = /* @__PURE__ */ Object.entries(changeCase)
-  .filter(([name, fn]) => typeof fn === 'function' && name.endsWith('Case')).reduce((acc, [name, fn]) => ({ ...acc, [name]: fn }), {} as any)
+  .filter(([name, fn]) => typeof fn === 'function' && name.endsWith('Case'))
+  .reduce((acc, [name, fn]) => {
+    acc[name] = fn
+    return acc
+  }, {} as any)
 
 export function useChangeCase(input: MaybeRef<string>, type: MaybeRefOrGetter<ChangeCaseType>, options?: MaybeRefOrGetter<Options> | undefined): WritableComputedRef<string>
 export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrGetter<ChangeCaseType>, options?: MaybeRefOrGetter<Options> | undefined): ComputedRef<string>
