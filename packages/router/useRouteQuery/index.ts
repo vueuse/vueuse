@@ -89,6 +89,9 @@ export function useRouteQuery<
   watch(
     () => route.query[name],
     (v) => {
+      if (query === v)
+        return
+
       query = v
 
       _trigger()

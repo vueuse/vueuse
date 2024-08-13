@@ -35,6 +35,6 @@
   "types": "./index.d.cts",
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.8"
+    "vue-demi": ">=0.14.10"
   }
 }
