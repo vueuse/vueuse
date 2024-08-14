@@ -24,7 +24,7 @@ export function createSharedComposable<Fn extends AnyFn>(composable: Fn): Fn {
 
   return <Fn>((...args) => {
     subscribers += 1
-    if (!state) {
+    if (!scope) {
       scope = effectScope(true)
       state = scope.run(() => composable(...args))
     }
