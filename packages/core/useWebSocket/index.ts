@@ -25,7 +25,7 @@ export interface UseWebSocketOptions {
      *
      * @default 'ping'
      */
-    message?: string | ArrayBuffer | Blob
+    message?: string | ArrayBuffer | Blob | (() => (string | ArrayBuffer | Blob))
 
     /**
      * Response message for the heartbeat, if undefined the message will be used
@@ -175,6 +175,7 @@ export function useWebSocket<Data = any>(
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
   let pongTimeoutWait: ReturnType<typeof setTimeout> | undefined
+  let triggerMessage: string | ArrayBuffer | Blob
 
   const _sendBuffer = () => {
     if (bufferedData.length && wsRef.value && status.value === 'OPEN') {
@@ -255,8 +256,7 @@ export function useWebSocket<Data = any>(
       if (options.heartbeat) {
         resetHeartbeat()
         const {
-          message = DEFAULT_PING_MESSAGE,
-          responseMessage = message,
+          responseMessage = triggerMessage,
         } = resolveNestedOptions(options.heartbeat)
         if (e.data === responseMessage)
           return
@@ -274,9 +274,11 @@ export function useWebSocket<Data = any>(
       pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
+    triggerMessage = typeof message === 'function' ? message() : message
+
     const { pause, resume } = useIntervalFn(
       () => {
-        send(message, false)
+        send(triggerMessage, false)
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
