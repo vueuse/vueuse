@@ -54,7 +54,7 @@ export function computedWithControl<T, S>(
     return {
       get() {
         if (dirty.value) {
-          v = get()
+          v = get(v)
           dirty.value = false
         }
         track()
