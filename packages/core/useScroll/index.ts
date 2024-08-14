@@ -193,8 +193,8 @@ export function useScroll(
     ) as Element
 
     const { display, flexDirection, direction } = getComputedStyle(el)
-    const directionMultipler = direction === 'rtl' ? -1 : 1;
-    
+    const directionMultipler = direction === 'rtl' ? -1 : 1
+
     const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
