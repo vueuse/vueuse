@@ -51,6 +51,9 @@ export function useRouteHash(
   watch(
     () => route.hash,
     () => {
+      if (route.hash === _hash)
+        return
+
       _hash = route.hash
       _trigger()
     },
