@@ -154,7 +154,7 @@
     "@types/qrcode": "^1.5.5",
     "@types/sortablejs": "^1.15.8",
     "async-validator": "^4.2.5",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
     "change-case": "^5.4.4",
     "drauu": "^0.4.0",
     "focus-trap": "^7.5.4",
