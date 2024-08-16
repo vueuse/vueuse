@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
 import { toValue, watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import { ref, shallowRef } from 'vue-demi'
@@ -15,6 +15,10 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
    * Custom data serialization
    */
   serializer?: SerializerAsync<T>
+  /**
+   * Callback when the first storage is loaded
+   */   
+  loaded?: Ref<boolean> | Fn
 }
 
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
@@ -50,6 +54,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     onError = (e) => {
       console.error(e)
     },
+    loaded: isLoaded,
   } = options
 
   const rawInit: T = toValue(initialValue)
@@ -96,6 +101,14 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   }
 
   read()
+  .then(()=>{
+    if(isLoaded)
+      if(typeof isLoaded === 'function'){
+        isLoaded()
+      }else{
+        isLoaded.value = true
+      }
+  })
 
   if (window && listenToStorageChanges)
     useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)))
