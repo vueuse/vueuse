@@ -1,7 +1,7 @@
 import type { Fn, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
 import { toValue, watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, shallowRef } from 'vue-demi'
+import { ref, shallowRef, watch } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
 import { getSSRHandler } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
@@ -17,7 +17,7 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
   serializer?: SerializerAsync<T>
   /**
    * Callback when the first storage is loaded
-   */   
+   */
   loaded?: Ref<boolean> | Fn
 }
 
@@ -36,8 +36,8 @@ export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRef
  * @param storage
  * @param options
  */
-export function useStorageAsync<T extends(string | number | boolean | object | null)>(
-  key: string,
+export function useStorageAsync<T extends (string | number | boolean | object | null)>(
+  key: MaybeRefOrGetter<string>,
   initialValue: MaybeRefOrGetter<T>,
   storage: StorageLikeAsync | undefined,
   options: UseStorageAsyncOptions<T> = {},
@@ -77,11 +77,11 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       return
 
     try {
-      const rawValue = event ? event.newValue : await storage.getItem(key)
+      const rawValue = event ? event.newValue : await storage.getItem(toValue(key))
       if (rawValue == null) {
         data.value = rawInit
         if (writeDefaults && rawInit !== null)
-          await storage.setItem(key, await serializer.write(rawInit))
+          await storage.setItem(toValue(key), await serializer.write(rawInit))
       }
       else if (mergeDefaults) {
         const value = await serializer.read(rawValue)
@@ -99,16 +99,25 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       onError(e)
     }
   }
-
-  read()
-  .then(()=>{
-    if(isLoaded)
-      if(typeof isLoaded === 'function'){
-        isLoaded()
-      }else{
-        isLoaded.value = true
-      }
-  })
+  watch(
+    () => toValue(key),
+    () => {
+      read()
+        .then(() => {
+          if (isLoaded) {
+            if (typeof isLoaded === 'function') {
+              isLoaded()
+            }
+            else {
+              isLoaded.value = true
+            }
+          }
+        })
+    },
+    {
+      immediate: true,
+    },
+  )
 
   if (window && listenToStorageChanges)
     useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)))
@@ -119,9 +128,9 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       async () => {
         try {
           if (data.value == null)
-            await storage!.removeItem(key)
+            await storage!.removeItem(toValue(key))
           else
-            await storage!.setItem(key, await serializer.write(data.value))
+            await storage!.setItem(toValue(key), await serializer.write(data.value))
         }
         catch (e) {
           onError(e)
