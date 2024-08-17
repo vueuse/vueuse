@@ -1,5 +1,5 @@
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { shallowRef, toRaw } from 'vue-demi'
 import { createSingletonPromise } from '@vueuse/shared'
 import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator } from '../_configurable'
@@ -67,32 +67,36 @@ export function usePermission(
   } = options
 
   const isSupported = useSupported(() => navigator && 'permissions' in navigator)
-  let permissionStatus: PermissionStatus | undefined
+  const permissionStatus = shallowRef<PermissionStatus>()
 
   const desc = typeof permissionDesc === 'string'
     ? { name: permissionDesc } as PermissionDescriptor
     : permissionDesc as PermissionDescriptor
-  const state = ref<PermissionState | undefined>()
+  const state = shallowRef<PermissionState | undefined>()
 
   const onChange = () => {
-    if (permissionStatus)
-      state.value = permissionStatus.state
+    if (permissionStatus.value)
+      state.value = permissionStatus.value.state
   }
+
+  useEventListener(permissionStatus, 'change', onChange)
 
   const query = createSingletonPromise(async () => {
     if (!isSupported.value)
       return
-    if (!permissionStatus) {
+
+    if (!permissionStatus.value) {
       try {
-        permissionStatus = await navigator!.permissions.query(desc)
-        useEventListener(permissionStatus, 'change', onChange)
+        permissionStatus.value = await navigator!.permissions.query(desc)
         onChange()
       }
       catch {
         state.value = 'prompt'
       }
     }
-    return permissionStatus
+
+    if (controls)
+      return toRaw(permissionStatus.value)
   })
 
   query()
