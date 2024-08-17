@@ -15,6 +15,11 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
    * Custom data serialization
    */
   serializer?: SerializerAsync<T>
+
+  /**
+   * On first value loaded hook.
+   */
+  onLoad?: (value: T) => void
 }
 
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
@@ -50,6 +55,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     onError = (e) => {
       console.error(e)
     },
+    onLoad,
   } = options
 
   const rawInit: T = toValue(initialValue)
@@ -95,7 +101,11 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     }
   }
 
-  read()
+  read().then(() => {
+    if (onLoad) {
+      onLoad(data.value)
+    }
+  })
 
   if (window && listenToStorageChanges)
     useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)))
