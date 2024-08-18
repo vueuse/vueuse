@@ -8,7 +8,7 @@ Reactive Storage in with async support.
 
 ## Usage
 
-The basic usage lease refer to `useStorage`.
+The basic usage please refer to `useStorage`.
 
 ## Wait First Loaded
 
