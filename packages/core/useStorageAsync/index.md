@@ -45,6 +45,32 @@ router.onReady(async () => {
 })
 ```
 
+You can simply use `resolve` as callback:
+
+```ts
+const accessToken = useStorageAsync('access.token', '', SomeAsyncStorage, {
+  onLoad: resolve
+})
+```
+
+Another way, use reactive variable with `until()`
+
+```ts
+import { until } from '@vueuse/core'
+
+const isLoaded = ref(false)
+
+const accessToken = useStorageAsync('access.token', '', SomeAsyncStorage, {
+  onLoad(value) {
+    isLoaded.value = true
+  }
+})
+
+// ...
+
+await until(isLoaded).toBe(true)
+```
+
 If you must wait multiple storages, use `Promise.all()`
 
 ```ts
