@@ -156,7 +156,7 @@
     "async-validator": "^4.2.5",
     "axios": "^1.7.4",
     "change-case": "^5.4.4",
-    "drauu": "^0.4.0",
+    "drauu": "^0.4.1",
     "focus-trap": "^7.5.4",
     "fuse.js": "^7.0.0",
     "idb-keyval": "^6.2.1",
