@@ -221,6 +221,7 @@ export function useWebSocket<Data = any>(
 
     ws.onopen = () => {
       status.value = 'OPEN'
+      retried = 0
       onConnected?.(ws!)
       heartbeatResume?.()
       _sendBuffer()
