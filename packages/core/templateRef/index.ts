@@ -9,8 +9,8 @@ import { tryOnMounted } from '@vueuse/shared'
  * @param key
  * @param initialValue
  */
-export function templateRef<T extends HTMLElement | SVGElement | Component | null>(
-  key: string,
+export function templateRef<T extends HTMLElement | SVGElement | Component | null, Keys extends string = string>(
+  key: Keys,
   initialValue: T | null = null,
 ): Readonly<Ref<T>> {
   const instance = getCurrentInstance()
