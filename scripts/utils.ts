@@ -173,7 +173,7 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 
   readme = readme.replace(
     /img\.shields\.io\/badge\/-(.+?)%20functions/,
-`img.shields.io/badge/-${functionsCount}%20functions`,
+    `img.shields.io/badge/-${functionsCount}%20functions`,
   ).trim().replace(/\r\n/g, '\n')
 
   await fs.writeFile('README.md', `${readme}\n`, 'utf-8')
