@@ -134,4 +134,20 @@ describe('createEventHook', () => {
     off(listener)
     expect(listener).toBeCalledTimes(1)
   })
+
+  it('multiple parameters on trigger with types', () => {
+    let id = ''
+    const list: unknown[] = []
+    const { on: onResult, trigger } = createEventHook<string>()
+
+    onResult(_id => id = _id)
+    onResult((str, ...rest) => {
+      list.push(str, ...rest)
+    })
+
+    trigger('foo', 1, true, 'bar')
+
+    expect(id).toEqual('foo')
+    expect(list).toEqual(['foo', 1, true, 'bar'])
+  })
 })

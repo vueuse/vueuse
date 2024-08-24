@@ -230,7 +230,7 @@ export function useWebSocket<Data = any>(
       status.value = 'CLOSED'
       onDisconnected?.(ws, ev)
 
-      if (!explicitlyClosed && options.autoReconnect) {
+      if (!explicitlyClosed && options.autoReconnect && ws === wsRef.value) {
         const {
           retries = -1,
           delay = 1000,
