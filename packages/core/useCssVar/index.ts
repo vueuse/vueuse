@@ -52,8 +52,8 @@ export function useCssVar(
   watch(
     [elRef, () => toValue(prop)],
     (_, old) => {
-      if (old[0] && old[1] && window)
-        window.getComputedStyle(old[0]).removeProperty(old[1])
+      if (old[0] && old[1])
+        old[0].style.removeProperty(old[1])
       updateCssVar()
     },
     { immediate: true },
