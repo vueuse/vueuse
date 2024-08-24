@@ -25,7 +25,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     eventFilter = bypassFilter,
   } = options
 
-  const requirePermission = 'requestPermission' in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function'
+  const ensurePermissions = 'requestPermission' in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function'
   const permissionGranted = ref(false)
   const acceleration: Ref<DeviceMotionEvent['acceleration']> = ref({ x: null, y: null, z: null })
   const rotationRate: Ref<DeviceMotionEvent['rotationRate']> = ref({ alpha: null, beta: null, gamma: null })
@@ -52,7 +52,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     }
   }
   const trigger = async () => {
-    if (requirePermission) {
+    if (ensurePermissions) {
       const requestPermission = (DeviceMotionEvent as unknown as DeviceMotionEventiOS).requestPermission
       try {
         const response = await requestPermission()
@@ -67,7 +67,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     }
   }
 
-  if (!requirePermission)
+  if (!ensurePermissions)
     init()
 
   return {
@@ -75,7 +75,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     accelerationIncludingGravity,
     rotationRate,
     interval,
-    requirePermission,
+    ensurePermissions,
     permissionGranted,
     trigger,
   }
