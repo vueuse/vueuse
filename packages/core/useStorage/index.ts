@@ -132,7 +132,7 @@ export function useStorage<T = unknown>(key: string, defaults: MaybeRefOrGetter<
  *
  * @see https://vueuse.org/useStorage
  */
-export function useStorage<T extends(string | number | boolean | object | null)>(
+export function useStorage<T extends (string | number | boolean | object | null)>(
   key: string,
   defaults: MaybeRefOrGetter<T>,
   storage: StorageLike | undefined,
@@ -179,7 +179,14 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   if (window && listenToStorageChanges) {
     tryOnMounted(() => {
-      // this should be fine since we are in a mounted hook
+      /**
+       * Attaching event listeners here should be fine since we are in a mounted hook
+       *
+       * The custom event is needed for same-document syncing when using custom
+       * storage backends, but it doesn't work across different documents.
+       *
+       * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
+       */
       if (storage instanceof Storage)
         useEventListener(window, 'storage', update)
       else
@@ -196,17 +203,20 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   function dispatchWriteEvent(oldValue: string | null, newValue: string | null) {
     // send custom event to communicate within same page
-    // importantly this should _not_ be a StorageEvent since those cannot
-    // be constructed with a non-built-in storage area
-    if (window && !(storage instanceof Storage)) {
-      window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
-        detail: {
-          key,
-          oldValue,
-          newValue,
-          storageArea: storage!,
-        },
-      }))
+    if (window) {
+      const payload = {
+        key,
+        oldValue,
+        newValue,
+        storageArea: storage as Storage,
+      }
+      // We also use a CustomEvent since StorageEvent cannot
+      // be constructed with a non-built-in storage area
+      window.dispatchEvent(storage instanceof Storage
+        ? new StorageEvent('storage', payload)
+        : new CustomEvent<StorageEventLike>(customStorageEventName, {
+          detail: payload,
+        }))
     }
   }
 
