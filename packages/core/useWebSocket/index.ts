@@ -241,10 +241,13 @@ export function useWebSocket<Data = any>(
         if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
           retried += 1
           setTimeout(_init, delay)
-        } else if (typeof retries === 'function' && retries())
+        }
+        else if (typeof retries === 'function' && retries()) {
           setTimeout(_init, delay)
-        else
+        }
+        else {
           onFailed?.()
+        }
       }
     }
 
