@@ -38,9 +38,9 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.10"
+    "vue-demi": "catalog:"
   },
   "devDependencies": {
-    "vue-router": "^4.4.3"
+    "vue-router": "catalog:"
   }
 }

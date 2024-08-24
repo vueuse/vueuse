@@ -37,9 +37,9 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.cts",
   "dependencies": {
-    "@types/web-bluetooth": "^0.0.20",
+    "@types/web-bluetooth": "catalog:",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.10"
+    "vue-demi": "catalog:"
   }
 }

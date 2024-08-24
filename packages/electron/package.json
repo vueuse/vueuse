@@ -37,9 +37,9 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.10"
+    "vue-demi": "catalog:"
   },
   "devDependencies": {
-    "electron": "^13.1.0"
+    "electron": "catalog:"
   }
 }
