@@ -1,6 +1,7 @@
 import { defaultDocument, toValue, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
+import type { MaybeRef } from 'vue-demi'
 import { isRef, nextTick } from 'vue-demi'
 
 export interface UseSortableReturn {
@@ -94,7 +95,7 @@ export function moveArrayElement<T>(
       array.splice(to, 0, element)
       // When list is ref, assign array to list.value
       if (_valueIsRef)
-        list.value = array
+        (list as MaybeRef).value = array
     })
   }
 }
