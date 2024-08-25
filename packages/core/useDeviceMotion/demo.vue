@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDeviceMotion } from './index'
 
-const { acceleration, accelerationIncludingGravity, rotationRate, interval, requirePermission, permissionGranted, trigger } = useDeviceMotion()
+const { acceleration, accelerationIncludingGravity, rotationRate, interval, ensurePermissions, permissionGranted, trigger } = useDeviceMotion()
 </script>
 
 <template>
@@ -9,14 +9,14 @@ const { acceleration, accelerationIncludingGravity, rotationRate, interval, requ
     Device Motion:
   </note>
   <pre
-    v-if="!requirePermission || permissionGranted"
+    v-if="!ensurePermissions || permissionGranted"
     lang="json"
   >{{ { acceleration, accelerationIncludingGravity, rotationRate, interval } }}</pre>
   <div v-else>
     Permission is required
   </div>
 
-  <button v-if="requirePermission && !permissionGranted" @click="trigger">
+  <button v-if="ensurePermissions && !permissionGranted" @click="trigger">
     Request Permission
   </button>
 </template>
