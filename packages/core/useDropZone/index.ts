@@ -57,13 +57,15 @@ export function useDropZone(
       event.preventDefault()
       counter += 1
       isOverDropZone.value = true
-      _options.onEnter?.(getFiles(event), event)
+      const files = getFiles(event)
+      _options.onEnter?.(files, event)
     })
     useEventListener<DragEvent>(target, 'dragover', (event) => {
       if (!isDataTypeIncluded)
         return
       event.preventDefault()
-      _options.onOver?.(getFiles(event), event)
+      const files = getFiles(event)
+      _options.onOver?.(files, event)
     })
     useEventListener<DragEvent>(target, 'dragleave', (event) => {
       if (!isDataTypeIncluded)
@@ -72,13 +74,15 @@ export function useDropZone(
       counter -= 1
       if (counter === 0)
         isOverDropZone.value = false
-      _options.onLeave?.(getFiles(event), event)
+      const files = getFiles(event)
+      _options.onLeave?.(files, event)
     })
     useEventListener<DragEvent>(target, 'drop', (event) => {
       event.preventDefault()
       counter = 0
       isOverDropZone.value = false
-      _options.onDrop?.(getFiles(event), event)
+      const files = getFiles(event)
+      _options.onDrop?.(files, event)
     })
   }
 
