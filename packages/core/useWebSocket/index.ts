@@ -221,6 +221,7 @@ export function useWebSocket<Data = any>(
 
     ws.onopen = () => {
       status.value = 'OPEN'
+      retried = 0
       onConnected?.(ws!)
       heartbeatResume?.()
       _sendBuffer()
@@ -236,14 +237,17 @@ export function useWebSocket<Data = any>(
           delay = 1000,
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
-        retried += 1
 
-        if (typeof retries === 'number' && (retries < 0 || retried < retries))
+        if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
+          retried += 1
           setTimeout(_init, delay)
-        else if (typeof retries === 'function' && retries())
+        }
+        else if (typeof retries === 'function' && retries()) {
           setTimeout(_init, delay)
-        else
+        }
+        else {
           onFailed?.()
+        }
       }
     }
 
