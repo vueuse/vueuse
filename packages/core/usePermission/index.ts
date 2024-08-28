@@ -74,12 +74,11 @@ export function usePermission(
     : permissionDesc as PermissionDescriptor
   const state = shallowRef<PermissionState | undefined>()
 
-  const onChange = () => {
-    if (permissionStatus.value)
-      state.value = permissionStatus.value.state
+  const update = () => {
+    state.value = permissionStatus.value?.state ?? 'prompt'
   }
 
-  useEventListener(permissionStatus, 'change', onChange)
+  useEventListener(permissionStatus, 'change', update)
 
   const query = createSingletonPromise(async () => {
     if (!isSupported.value)
@@ -88,10 +87,12 @@ export function usePermission(
     if (!permissionStatus.value) {
       try {
         permissionStatus.value = await navigator!.permissions.query(desc)
-        onChange()
       }
       catch {
-        state.value = 'prompt'
+        permissionStatus.value = undefined
+      }
+      finally {
+        update()
       }
     }
 
