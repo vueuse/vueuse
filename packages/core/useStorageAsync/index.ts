@@ -19,6 +19,11 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
    * Callback when the first storage is loaded
    */
   loaded?: Ref<boolean> | Fn
+
+  /**
+   * Reload Trigger
+   */
+  reloadTrigger?: Ref<any>
 }
 
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
@@ -55,6 +60,7 @@ export function useStorageAsync<T extends (string | number | boolean | object | 
       console.error(e)
     },
     loaded: isLoaded,
+    reloadTrigger,
   } = options
 
   const rawInit: T = toValue(initialValue)
@@ -100,7 +106,7 @@ export function useStorageAsync<T extends (string | number | boolean | object | 
     }
   }
   watch(
-    () => toValue(key),
+    [() => toValue(key), reloadTrigger],
     () => {
       read()
         .then(() => {
