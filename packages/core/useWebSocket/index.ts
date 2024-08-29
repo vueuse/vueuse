@@ -237,7 +237,8 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onclose = (ev) => {
-      if(ws !== wsRef.value) return
+      if (ws !== wsRef.value)
+        return
       status.value = 'CLOSED'
       onDisconnected?.(ws, ev)
 
