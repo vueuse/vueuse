@@ -13,9 +13,9 @@ export interface Serializer<T> {
   write: (value: T) => string
 }
 
-export interface SerializerAsync<T> {
-  read: (raw: string) => Awaitable<T>
-  write: (value: T) => Awaitable<string>
+export interface SerializerAsync<T, K = string> {
+  read: (raw: K) => Awaitable<T>
+  write: (value: T) => Awaitable<K>
 }
 
 export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {

@@ -14,7 +14,7 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
   /**
    * Custom data serialization
    */
-  serializer?: SerializerAsync<T>
+  serializer?: SerializerAsync<T, any>
   /**
    * Callback when the first storage is loaded
    */
