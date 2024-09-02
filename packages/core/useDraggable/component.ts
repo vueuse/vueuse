@@ -36,10 +36,12 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'onEnd',
     'disabled',
     'buttons',
+    'containerElement',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
     const handle = computed(() => props.handle ?? target.value)
+    const containerElement = computed(() => props.containerElement as (HTMLElement | SVGElement | null | undefined) ?? undefined)
     const disabled = computed(() => !!props.disabled)
     const storageValue = props.storageKey && useStorage(
       props.storageKey,
@@ -65,6 +67,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
       initialValue,
       onEnd,
       disabled,
+      containerElement,
     }))
 
     return () => {
