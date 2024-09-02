@@ -85,8 +85,8 @@ export function useMouse(options: UseMouseOptions = {}) {
   const y = ref(initialValue.y)
   const sourceType = ref<UseMouseSourceType>(null)
 
-  const preScrollX = ref(0)
-  const preScrollY = ref(0)
+  const prevScrollX = ref(0)
+  const prevScrollY = ref(0)
   const extractor = typeof type === 'function'
     ? type
     : UseMouseBuiltinExtractors[type]
@@ -98,8 +98,8 @@ export function useMouse(options: UseMouseOptions = {}) {
     if (result) {
       [x.value, y.value] = result
       sourceType.value = 'mouse'
-      preScrollX.value = window?.scrollX || 0
-      preScrollY.value = window?.scrollY || 0
+      prevScrollX.value = window?.scrollX || 0
+      prevScrollY.value = window?.scrollY || 0
     }
   }
 
@@ -119,8 +119,8 @@ export function useMouse(options: UseMouseOptions = {}) {
     const pos = extractor(_prevMouseEvent)
 
     if (_prevMouseEvent instanceof MouseEvent && pos) {
-      x.value = pos[0] + window.scrollX - preScrollX.value
-      y.value = pos[1] + window.scrollY - preScrollY.value
+      x.value = pos[0] + window.scrollX - prevScrollX.value
+      y.value = pos[1] + window.scrollY - prevScrollY.value
     }
   }
 
