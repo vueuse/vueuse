@@ -195,8 +195,7 @@ export function useEventSource<Events extends string[]>(
     _init()
   }
 
-  if (immediate)
-    watch(urlRef, open, { immediate: true })
+  watch(urlRef, open, { immediate })
 
   tryOnScopeDispose(close)
 
