@@ -19,7 +19,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
-  root?: MaybeComputedElementRef
+  root?: MaybeComputedElementRef | Document
 
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
