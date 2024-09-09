@@ -70,7 +70,7 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [targets.value, unrefElement(root), isActive.value] as const,
+      () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
       ([targets, root]) => {
         cleanup()
         if (!isActive.value)
