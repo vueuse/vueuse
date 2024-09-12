@@ -92,10 +92,10 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     useEventListener(window, 'click', (event: PointerEvent) => {
       if (!isProcessingClick) {
         isProcessingClick = true
-        listener(event)
         setTimeout(() => {
           isProcessingClick = false
         }, 0)
+        listener(event)
       }
     }, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
