@@ -86,8 +86,18 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     handler(event)
   }
 
+  let isProcessingClick = false
+
   const cleanup = [
-    useEventListener(window, 'click', listener, { passive: true, capture }),
+    useEventListener(window, 'click', (event: PointerEvent) => {
+      if (!isProcessingClick) {
+        isProcessingClick = true
+        setTimeout(() => {
+          isProcessingClick = false
+        }, 0)
+        listener(event)
+      }
+    }, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
