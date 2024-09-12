@@ -45,7 +45,7 @@ export function useMouseInElement(
       [targetRef, x, y],
       () => {
         const el = unrefElement(targetRef)
-        if (!el || !(el instanceof HTMLElement))
+        if (!el || !(el instanceof Element))
           return
 
         const {
