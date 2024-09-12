@@ -19,7 +19,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
-  root?: MaybeComputedElementRef
+  root?: MaybeComputedElementRef | Document
 
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
@@ -70,7 +70,7 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [targets.value, unrefElement(root), isActive.value] as const,
+      () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
       ([targets, root]) => {
         cleanup()
         if (!isActive.value)

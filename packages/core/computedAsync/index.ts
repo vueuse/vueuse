@@ -46,9 +46,19 @@ export interface AsyncComputedOptions {
  */
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState: T,
+  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+): Ref<T>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState?: undefined,
+  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+): Ref<T | undefined>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
   optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
-): Ref<T> {
+): Ref<T> | Ref<T | undefined> {
   let options: AsyncComputedOptions
 
   if (isRef(optionsOrRef)) {

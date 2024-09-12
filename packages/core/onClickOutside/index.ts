@@ -1,5 +1,5 @@
-import type { Fn } from '@vueuse/shared'
-import { isIOS, noop } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import { isIOS, noop, toValue } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -10,7 +10,7 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: (MaybeElementRef | string)[]
+  ignore?: MaybeRefOrGetter<(MaybeElementRef | string)[]>
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -57,7 +57,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   let shouldListen = true
 
   const shouldIgnore = (event: PointerEvent) => {
-    return ignore.some((target) => {
+    return toValue(ignore).some((target) => {
       if (typeof target === 'string') {
         return Array.from(window.document.querySelectorAll(target))
           .some(el => el === event.target || event.composedPath().includes(el))
