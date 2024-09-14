@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { computed, toRef } from 'vue'
+import { computed, onMounted, toRef } from 'vue'
 import Fuse from 'fuse.js'
 import { useEventListener, useUrlSearchParams } from '@vueuse/core'
 import { categoryNames, functions } from '../../../../packages/metadata/metadata'
@@ -8,7 +8,6 @@ import { categoryNames, functions } from '../../../../packages/metadata/metadata
 const coreCategories = categoryNames.filter(i => !i.startsWith('@'))
 const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
-
 useEventListener('click', (e) => {
   // @ts-expect-error cast
   if (e.target.tagName === 'A')
@@ -69,6 +68,14 @@ function toggleCategory(cate: string) {
 function toggleSort(method: string) {
   sortMethod.value = method as any
 }
+
+onMounted(() => {
+  // fix https://github.com/vueuse/vueuse/issues/4224
+  // desc Refresh browser query with missing values and no filtering performed
+  if (!category.value) {
+    toggleCategory(category.value)
+  }
+})
 </script>
 
 <template>
