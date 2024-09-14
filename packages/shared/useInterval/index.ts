@@ -19,6 +19,13 @@ export interface UseIntervalOptions<Controls extends boolean> {
   immediate?: boolean
 
   /**
+   * Increase step, need to bigger or less than 0
+   *
+   * @default 1
+   */
+  step?: number
+
+  /**
    * Callback on every interval
    */
   callback?: (count: number) => void
@@ -42,11 +49,12 @@ export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: 
   const {
     controls: exposeControls = false,
     immediate = true,
+    step,
     callback,
   } = options
 
   const counter = ref(0)
-  const update = () => counter.value += 1
+  const update = () => counter.value += (step || 1)
   const reset = () => {
     counter.value = 0
   }
