@@ -1,5 +1,5 @@
-import DefaultTheme from 'vitepress/theme'
 import TwoSlashFloatingVue from '@shikijs/vitepress-twoslash/client'
+import DefaultTheme from 'vitepress/theme'
 import { handleRedirects } from './redirects'
 import '@shikijs/vitepress-twoslash/style.css'
 

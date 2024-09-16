@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
-import { useIntersectionObserver } from '../useIntersectionObserver'
-import type { ConfigurableWindow } from '../_configurable'
+import { ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useIntersectionObserver } from '../useIntersectionObserver'
 
 export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
   scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>

@@ -1,9 +1,9 @@
 import type { ComputedRef } from 'vue-demi'
 
+import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 // eslint-disable-next-line no-restricted-imports
 import { computed, unref } from 'vue-demi'
 import { toValue } from '../toValue'
-import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 
 export type Reactified<T, Computed extends boolean> = T extends (...args: infer A) => infer R
   ? (...args: { [K in keyof A]: Computed extends true ? MaybeRefOrGetter<A[K]> : MaybeRef<A[K]> }) => ComputedRef<R>

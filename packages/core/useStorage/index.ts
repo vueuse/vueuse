@@ -1,11 +1,11 @@
-import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
+import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
+import { nextTick, ref, shallowRef } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import { guessSerializerType } from './guess'
 
 export interface Serializer<T> {

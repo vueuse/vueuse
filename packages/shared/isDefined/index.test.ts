@@ -1,5 +1,5 @@
-import { computed, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { computed, ref } from 'vue-demi'
 import { isDefined } from '.'
 
 describe('isDefined', () => {

@@ -1,7 +1,7 @@
-import type { Ref } from 'vue-demi'
-import { ref, shallowRef, watch } from 'vue-demi'
-import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { ref, shallowRef, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'

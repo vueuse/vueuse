@@ -1,7 +1,7 @@
 import type { ToRefs } from 'vue-demi'
+import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 import { toRefs as _toRefs, customRef, isRef } from 'vue-demi'
 import { toValue } from '../toValue'
-import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 
 export interface ToRefsOptions {
   /**

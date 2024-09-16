@@ -1,9 +1,9 @@
-import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
+import type { UseScrollOptions } from '.'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent } from 'vue-demi'
 import { vScroll } from './directive'
-import type { UseScrollOptions } from '.'
 
 const App = defineComponent({
   props: {

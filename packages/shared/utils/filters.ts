@@ -1,7 +1,7 @@
+import type { AnyFn, ArgumentsType, Awaited, MaybeRefOrGetter, Pausable, Promisify } from './types'
 import { isRef, readonly, ref } from 'vue-demi'
 import { toValue } from '../toValue'
 import { noop } from './is'
-import type { AnyFn, ArgumentsType, Awaited, MaybeRefOrGetter, Pausable, Promisify } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 

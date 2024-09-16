@@ -1,6 +1,6 @@
-import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
-import { describe, expect, it, vi } from 'vitest'
 import type { Ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
+import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {

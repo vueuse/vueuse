@@ -1,5 +1,5 @@
-import { noop } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
+import { noop } from '@vueuse/shared'
 import { reactive, ref } from 'vue-demi'
 
 export type UseAsyncQueueTask<T> = (...args: any[]) => T | Promise<T>

@@ -1,10 +1,10 @@
-import { ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
 import type { MaybeComputedElementRef } from '../unrefElement'
+import { tryOnMounted } from '@vueuse/shared'
+import { ref, watch } from 'vue-demi'
 import { unrefElement } from '../unrefElement'
-import { useResizeObserver } from '../useResizeObserver'
+import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface UseElementBoundingOptions {
   /**

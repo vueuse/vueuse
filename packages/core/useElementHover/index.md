@@ -27,8 +27,8 @@ const isHovered = useElementHover(myHoverableElement)
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { vElementHover } from '@vueuse/components'
+import { ref } from 'vue'
 
 const isHovered = ref(false)
 function onHover(state: boolean) {
@@ -47,8 +47,8 @@ You can also provide hover options:
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { vElementHover } from '@vueuse/components'
+import { ref } from 'vue'
 
 const isHovered = ref(false)
 function onHover(hovered: boolean) {

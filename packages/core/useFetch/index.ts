@@ -1,6 +1,6 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
+import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
 import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
@@ -592,9 +592,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
   function waitUntilFinished() {
     return new Promise<UseFetchReturn<T>>((resolve, reject) => {
-      until(isFinished).toBe(true)
-        .then(() => resolve(shell))
-        .catch(error => reject(error))
+      until(isFinished).toBe(true).then(() => resolve(shell)).catch(error => reject(error))
     })
   }
 

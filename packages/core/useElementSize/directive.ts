@@ -1,8 +1,8 @@
 import type { ObjectDirective } from 'vue-demi'
-import { watch } from 'vue-demi'
-import { directiveHooks } from '@vueuse/shared'
-import { useElementSize } from '.'
 import type { ElementSize } from '.'
+import { directiveHooks } from '@vueuse/shared'
+import { watch } from 'vue-demi'
+import { useElementSize } from '.'
 
 type RemoveFirstFromTuple<T extends any[]> =
   T['length'] extends 0 ? undefined :

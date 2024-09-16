@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
 import type { MaybeRefOrGetter } from '../utils'
+import { computed } from 'vue-demi'
 import { toValue } from '../toValue'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R

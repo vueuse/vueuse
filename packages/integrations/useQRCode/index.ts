@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient, toRef } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
 import QRCode from 'qrcode'
+import { ref, watch } from 'vue-demi'
 
 /**
  * Wrapper for qrcode.

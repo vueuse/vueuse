@@ -1,10 +1,10 @@
 import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import { toRef, toValue, tryOnBeforeUnmount } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import { watch } from 'vue-demi'
-import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableDocument } from '../_configurable'
+import { toRef, toValue, tryOnBeforeUnmount } from '@vueuse/shared'
+import { watch } from 'vue-demi'
 import { defaultDocument } from '../_configurable'
+import { useMutationObserver } from '../useMutationObserver'
 
 export type UseTitleOptionsBase = {
   /**

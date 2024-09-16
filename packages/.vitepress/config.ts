@@ -1,11 +1,11 @@
 import { resolve } from 'node:path'
-import { defineConfig } from 'vitepress'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { withPwa } from '@vite-pwa/vitepress'
-import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
+import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
-import viteConfig from './vite.config'
+import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { transformHead } from './transformHead'
+import viteConfig from './vite.config'
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },

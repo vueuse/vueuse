@@ -1,5 +1,5 @@
-import { isRef, isVue2, watch, watchEffect } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
+import { isRef, isVue2, watch, watchEffect } from 'vue-demi'
 import { controlledRef, refWithControl } from '.'
 
 describe('controlledRef', () => {

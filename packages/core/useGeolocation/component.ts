@@ -1,6 +1,6 @@
-import { defineComponent, reactive } from 'vue-demi'
 import type { UseGeolocationOptions } from '@vueuse/core'
 import { useGeolocation } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue-demi'
 
 export const UseGeolocation = /* #__PURE__ */ defineComponent<UseGeolocationOptions>({
   name: 'UseGeolocation',

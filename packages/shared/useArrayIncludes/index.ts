@@ -1,8 +1,8 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
-import { containsProp, isObject } from '../utils'
 import type { MaybeRefOrGetter } from '../utils'
+import { computed } from 'vue-demi'
 import { toValue } from '../toValue'
+import { containsProp, isObject } from '../utils'
 
 export type UseArrayIncludesComparatorFn<T, V> = ((element: T, value: V, index: number, array: MaybeRefOrGetter<T>[]) => boolean)
 

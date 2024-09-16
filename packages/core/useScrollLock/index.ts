@@ -1,9 +1,9 @@
-import { computed, ref, watch } from 'vue-demi'
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { isIOS, toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
 
-import { useEventListener } from '../useEventListener'
 import { resolveElement } from '../_resolve-element'
+import { useEventListener } from '../useEventListener'
 
 function checkOverflowScroll(ele: Element): boolean {
   const style = window.getComputedStyle(ele)

@@ -12,8 +12,8 @@ Shorthand for `useRefHistory` with throttled filter.
 This function takes the first snapshot right after the counter's value was changed and the second with a delay of 1000ms.
 
 ```ts
-import { ref } from 'vue'
 import { useThrottledRefHistory } from '@vueuse/core'
+import { ref } from 'vue'
 
 const counter = ref(0)
 const { history, undo, redo } = useThrottledRefHistory(counter, { deep: true, throttle: 1000 })

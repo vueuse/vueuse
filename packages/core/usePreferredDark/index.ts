@@ -1,5 +1,5 @@
-import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
+import { useMediaQuery } from '../useMediaQuery'
 
 /**
  * Reactive dark theme preference.
