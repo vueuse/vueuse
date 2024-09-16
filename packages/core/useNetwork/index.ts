@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { readonly, ref } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
@@ -12,43 +12,43 @@ export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
 export interface NetworkState {
-  isSupported: Ref<boolean>
+  isSupported: Readonly<Ref<boolean>>
   /**
    * If the user is currently connected.
    */
-  isOnline: Ref<boolean>
+  isOnline: Readonly<Ref<boolean>>
   /**
    * The time since the user was last connected.
    */
-  offlineAt: Ref<number | undefined>
+  offlineAt: Readonly<Ref<number | undefined>>
   /**
    * At this time, if the user is offline and reconnects
    */
-  onlineAt: Ref<number | undefined>
+  onlineAt: Readonly<Ref<number | undefined>>
   /**
    * The download speed in Mbps.
    */
-  downlink: Ref<number | undefined>
+  downlink: Readonly<Ref<number | undefined>>
   /**
    * The max reachable download speed in Mbps.
    */
-  downlinkMax: Ref<number | undefined>
+  downlinkMax: Readonly<Ref<number | undefined>>
   /**
    * The detected effective speed type.
    */
-  effectiveType: Ref<NetworkEffectiveType | undefined>
+  effectiveType: Readonly<Ref<NetworkEffectiveType | undefined>>
   /**
    * The estimated effective round-trip time of the current connection.
    */
-  rtt: Ref<number | undefined>
+  rtt: Readonly<Ref<number | undefined>>
   /**
    * If the user activated data saver mode.
    */
-  saveData: Ref<boolean | undefined>
+  saveData: Readonly<Ref<boolean | undefined>>
   /**
    * The detected connection/network type.
    */
-  type: Ref<NetworkType>
+  type: Readonly<Ref<NetworkType>>
 }
 
 /**
@@ -110,16 +110,16 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
   updateNetworkInformation()
 
   return {
-    isSupported,
-    isOnline,
-    saveData,
-    offlineAt,
-    onlineAt,
-    downlink,
-    downlinkMax,
-    effectiveType,
-    rtt,
-    type,
+    isSupported: readonly(isSupported),
+    isOnline: readonly(isOnline),
+    saveData: readonly(saveData),
+    offlineAt: readonly(offlineAt),
+    onlineAt: readonly(onlineAt),
+    downlink: readonly(downlink),
+    downlinkMax: readonly(downlinkMax),
+    effectiveType: readonly(effectiveType),
+    rtt: readonly(rtt),
+    type: readonly(type),
   }
 }
 
