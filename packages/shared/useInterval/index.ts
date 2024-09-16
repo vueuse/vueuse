@@ -49,12 +49,12 @@ export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: 
   const {
     controls: exposeControls = false,
     immediate = true,
-    step,
+    step = 1,
     callback,
   } = options
 
   const counter = ref(0)
-  const update = () => counter.value += (step || 1)
+  const update = () => counter.value += step
   const reset = () => {
     counter.value = 0
   }
