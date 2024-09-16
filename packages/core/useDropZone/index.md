@@ -21,7 +21,11 @@ function onDrop(files: File[] | null) {
 const { isOverDropZone } = useDropZone(dropZoneRef, {
   onDrop,
   // specify the types of data to be received.
-  dataTypes: ['image/jpeg']
+  dataTypes: ['image/jpeg'],
+  // control multi-file drop
+  multiple: true,
+  // whether to prevent default behavior for unhandled events
+  preventDefaultForUnhandled: false,
 })
 </script>
 
