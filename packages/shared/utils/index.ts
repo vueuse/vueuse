@@ -1,10 +1,10 @@
 import { getCurrentInstance } from 'vue-demi'
 
-export * from './is'
-export * from './filters'
-export * from './types'
 export * from './compatibility'
+export * from './filters'
+export * from './is'
 export * from './port'
+export * from './types'
 
 export function promiseTimeout(
   ms: number,

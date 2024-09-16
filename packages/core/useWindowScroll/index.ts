@@ -1,7 +1,7 @@
-import { computed, ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
+import { computed, ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export interface UseWindowScrollOptions extends ConfigurableWindow {
   behavior?: ScrollBehavior

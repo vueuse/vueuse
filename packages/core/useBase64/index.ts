@@ -1,7 +1,7 @@
-import type { Ref } from 'vue-demi'
-import { isRef, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
 import { isClient, toValue } from '@vueuse/shared'
+import { isRef, ref, watch } from 'vue-demi'
 import { getDefaultSerialization } from './serialization'
 
 export interface ToDataURLOptions {

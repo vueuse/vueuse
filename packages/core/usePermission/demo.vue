@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
-import YAML from 'js-yaml'
 import { usePermission } from '@vueuse/core'
+import YAML from 'js-yaml'
+import { computed, reactive } from 'vue'
 
 const accelerometer = usePermission('accelerometer')
 const accessibilityEvents = usePermission('accessibility-events')

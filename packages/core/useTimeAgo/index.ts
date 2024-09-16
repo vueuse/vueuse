@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
 import type { ComputedRef } from 'vue-demi'
+import { toValue } from '@vueuse/shared'
 import { computed } from 'vue-demi'
 import { useNow } from '../useNow'
 

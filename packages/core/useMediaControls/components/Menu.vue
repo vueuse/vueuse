@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
 import { onClickOutside, useEventListener } from '@vueuse/core'
+import { ref } from 'vue-demi'
 
 const menu = ref()
 const isOpen = ref()

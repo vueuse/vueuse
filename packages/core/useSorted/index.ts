@@ -1,5 +1,5 @@
-import type { Ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
 import { toValue } from '@vueuse/shared'
 import { computed, isRef, watchEffect } from 'vue-demi'
 

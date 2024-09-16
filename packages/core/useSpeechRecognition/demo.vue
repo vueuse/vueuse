@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import { useSpeechRecognition } from '@vueuse/core'
+import { ref, watch } from 'vue'
 
 const lang = ref('en-US')
 

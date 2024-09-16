@@ -1,10 +1,10 @@
+import type { ConfigurableDocument } from '../_configurable'
+import type { MaybeElement } from '../unrefElement'
+
 import { tryOnMounted } from '@vueuse/shared'
 import { computed, ref } from 'vue-demi'
-
-import type { MaybeElement } from '../unrefElement'
-import { useMutationObserver } from '../useMutationObserver'
-import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
+import { useMutationObserver } from '../useMutationObserver'
 
 export type UseTextDirectionValue = 'ltr' | 'rtl' | 'auto'
 

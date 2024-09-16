@@ -1,6 +1,6 @@
-import { effectScope, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
+import { effectScope, ref } from 'vue-demi'
 import { useTimeoutPoll } from '.'
 
 describe('useTimeoutPoll', () => {

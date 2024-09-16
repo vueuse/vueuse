@@ -1,5 +1,5 @@
-import { defineComponent, reactive } from 'vue-demi'
 import { useWindowFocus } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue-demi'
 
 export const UseWindowFocus = /* #__PURE__ */ defineComponent({
   name: 'UseWindowFocus',

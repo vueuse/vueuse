@@ -10,8 +10,8 @@ Detects that a target element's visibility.
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 const target = ref(null)
 const targetIsVisible = ref(false)
@@ -35,8 +35,8 @@ const { stop } = useIntersectionObserver(
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { vIntersectionObserver } from '@vueuse/components'
+import { ref } from 'vue'
 
 const root = ref(null)
 

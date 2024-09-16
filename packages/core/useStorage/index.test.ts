@@ -1,8 +1,8 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
+import { customStorageEventName, StorageSerializers, useStorage } from '.'
 import { mount, nextTwoTick, useSetup } from '../../.test'
-import { StorageSerializers, customStorageEventName, useStorage } from '.'
 
 const KEY = 'custom-key'
 

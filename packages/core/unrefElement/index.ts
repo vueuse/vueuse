@@ -1,5 +1,5 @@
-import type { ComponentPublicInstance } from 'vue-demi'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
+import type { ComponentPublicInstance } from 'vue-demi'
 import { toValue } from '@vueuse/shared'
 
 export type VueInstance = ComponentPublicInstance

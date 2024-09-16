@@ -1,6 +1,6 @@
 import type { DefineComponent, Slot } from 'vue-demi'
-import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
 import { camelize, makeDestructurable } from '@vueuse/shared'
+import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
 
 type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>
 

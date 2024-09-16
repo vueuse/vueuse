@@ -1,9 +1,9 @@
+import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
 import { ref, watch } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface UseWindowSizeOptions extends ConfigurableWindow {
   initialWidth?: number

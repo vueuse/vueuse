@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 const root = ref(null)
 const target = ref(null)

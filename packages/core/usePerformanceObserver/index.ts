@@ -1,7 +1,7 @@
-import { tryOnScopeDispose } from '@vueuse/shared'
-import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export type UsePerformanceObserverOptions = PerformanceObserverInit & ConfigurableWindow & {
   /**

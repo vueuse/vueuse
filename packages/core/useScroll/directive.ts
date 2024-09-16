@@ -1,6 +1,6 @@
 import type { ObjectDirective } from 'vue-demi'
-import { directiveHooks } from '@vueuse/shared'
 import type { UseScrollOptions, UseScrollReturn } from '.'
+import { directiveHooks } from '@vueuse/shared'
 import { useScroll } from '.'
 
 type BindingValueFunction = (state: UseScrollReturn) => void

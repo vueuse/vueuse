@@ -1,10 +1,10 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed, reactive } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { computed, reactive } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import { useScreenOrientation } from '../useScreenOrientation'
 
 export interface UseParallaxOptions extends ConfigurableWindow {

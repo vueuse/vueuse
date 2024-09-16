@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { useSetup } from '../../.test'
 import { useScriptTag } from '.'
+import { useSetup } from '../../.test'
 
 describe('useScriptTag', () => {
   const src = 'https://code.jquery.com/jquery-3.5.1.min.js'

@@ -1,6 +1,6 @@
-import { type InjectionKey, defineComponent, getCurrentInstance, h, nextTick } from 'vue-demi'
 import { injectLocal, provideLocal } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
+import { defineComponent, getCurrentInstance, h, type InjectionKey, nextTick } from 'vue-demi'
 import { mount, useSetup } from '../../.test'
 
 describe('provideLocal injectLocal deps', () => {

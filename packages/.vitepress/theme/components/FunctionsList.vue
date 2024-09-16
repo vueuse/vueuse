@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { computed, toRef } from 'vue'
-import Fuse from 'fuse.js'
 import { useEventListener, useUrlSearchParams } from '@vueuse/core'
+import Fuse from 'fuse.js'
+import { computed, toRef } from 'vue'
 import { categoryNames, functions } from '../../../../packages/metadata/metadata'
 
 const coreCategories = categoryNames.filter(i => !i.startsWith('@'))

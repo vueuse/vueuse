@@ -1,7 +1,7 @@
 import type { ObjectDirective } from 'vue-demi'
-import { directiveHooks } from '@vueuse/shared'
-
 import type { OnLongPressOptions } from '.'
+
+import { directiveHooks } from '@vueuse/shared'
 import { onLongPress } from '.'
 
 type BindingValueFunction = (evt: PointerEvent) => void

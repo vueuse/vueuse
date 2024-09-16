@@ -1,10 +1,10 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { computed, ref, shallowRef, watch } from 'vue-demi'
-import { useSupported } from '../useSupported'
 import type { ConfigurableWindow } from '../_configurable'
+import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, shallowRef, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export type UseSpeechSynthesisStatus = 'init' | 'play' | 'pause' | 'end'
 

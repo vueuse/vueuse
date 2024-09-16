@@ -1,10 +1,10 @@
-import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
-import { unrefElement } from '../unrefElement'
 import type { ConfigurableWindow } from '../_configurable'
+import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { computed, reactive, ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
+import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions extends ConfigurableWindow {
   /**

@@ -1,5 +1,5 @@
-import { computed, isVue3, reactive, ref, watchSyncEffect } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
+import { computed, isVue3, reactive, ref, watchSyncEffect } from 'vue-demi'
 import { toRefs } from '.'
 
 describe('toRefs', () => {

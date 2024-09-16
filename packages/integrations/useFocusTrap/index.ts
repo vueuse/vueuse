@@ -1,10 +1,10 @@
 import type { Arrayable, Fn, MaybeComputedElementRef } from '@vueuse/core'
+import type { ActivateOptions, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
+import type { Ref } from 'vue-demi'
 import { tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import { type MaybeRefOrGetter, notNullish, toValue } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
 import { createFocusTrap } from 'focus-trap'
-import type { ActivateOptions, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
+import { computed, ref, watch } from 'vue-demi'
 
 export interface UseFocusTrapOptions extends Options {
   /**

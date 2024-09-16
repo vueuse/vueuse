@@ -1,6 +1,6 @@
 import type { Pausable } from '@vueuse/shared'
-import { timestamp, useIntervalFn } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
+import { timestamp, useIntervalFn } from '@vueuse/shared'
 import { ref } from 'vue-demi'
 import { useRafFn } from '../useRafFn'
 

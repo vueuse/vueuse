@@ -1,7 +1,7 @@
-import { isDef } from '@vueuse/shared'
 import type { Ref, UnwrapRef, WritableComputedRef } from 'vue-demi'
-import { computed, getCurrentInstance, isVue2, nextTick, ref, watch } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
+import { isDef } from '@vueuse/shared'
+import { computed, getCurrentInstance, isVue2, nextTick, ref, watch } from 'vue-demi'
 import { cloneFnJSON } from '../useCloned'
 
 export interface UseVModelOptions<T, Passive extends boolean = false> {
