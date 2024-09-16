@@ -9,9 +9,9 @@ Create global state that can be injected into components.
 ## Usage
 
 ```ts
+import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
 import { computed, ref } from 'vue'
-import { createInjectionState } from '@vueuse/core'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state
@@ -109,9 +109,9 @@ const { increment } = useCounterStore()!
 ## Provide a custom InjectionKey
 
 ```ts
+import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
 import { computed, ref } from 'vue'
-import { createInjectionState } from '@vueuse/core'
 
 // custom injectionKey
 const CounterStoreKey = 'counter-store'
@@ -135,9 +135,9 @@ const [useProvideCounterStore, useCounterStore] = createInjectionState((initialV
 ## Provide a custom default value
 
 ```ts
+import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
 import { computed, ref } from 'vue'
-import { createInjectionState } from '@vueuse/core'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state

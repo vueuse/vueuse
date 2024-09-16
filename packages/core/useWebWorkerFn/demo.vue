@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
 import { useDateFormat, useTimestamp, useWebWorkerFn } from '@vueuse/core'
+import { computed, nextTick, ref } from 'vue'
 
 function heavyTask() {
   const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
-  const numbers: number[] = Array(5_000_000).fill(undefined).map(randomNumber)
+  const numbers: number[] = Array.from({ length: 5_000_000 }).fill(undefined).map(randomNumber)
   numbers.sort()
   return numbers.slice(0, 5)
 }

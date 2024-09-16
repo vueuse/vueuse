@@ -1,7 +1,7 @@
-import { timestamp } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { computed, markRaw, ref } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
+import { timestamp } from '@vueuse/shared'
+import { computed, markRaw, ref } from 'vue-demi'
 import { cloneFnJSON } from '../useCloned'
 
 export interface UseRefHistoryRecord<T> {

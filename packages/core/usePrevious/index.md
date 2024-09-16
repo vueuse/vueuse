@@ -9,8 +9,8 @@ Holds the previous value of a ref.
 ## Usage
 
 ```ts
-import { ref } from 'vue'
 import { usePrevious } from '@vueuse/core'
+import { ref } from 'vue'
 
 const counter = ref('Hello')
 const previous = usePrevious(counter)

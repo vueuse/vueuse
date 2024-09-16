@@ -1,7 +1,7 @@
-import { watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
 import type { UseAsyncStateOptions } from '../useAsyncState'
+import { toValue } from '@vueuse/shared'
+import { watch } from 'vue-demi'
 import { useAsyncState } from '../useAsyncState'
 
 export interface UseImageOptions {

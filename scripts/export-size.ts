@@ -1,10 +1,10 @@
 import { join, resolve } from 'node:path'
-import { markdownTable } from 'markdown-table'
 import { getExportsSize } from 'export-size'
 import { filesize } from 'filesize'
 import fs from 'fs-extra'
-import { version } from '../package.json'
+import { markdownTable } from 'markdown-table'
 import { packages } from '../meta/packages'
+import { version } from '../package.json'
 
 async function run() {
   // made shared library imported can resolve correctly

@@ -1,5 +1,5 @@
-import { isRef, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { isRef, ref } from 'vue-demi'
 import { useProjection } from '.'
 
 describe('useProjection', () => {

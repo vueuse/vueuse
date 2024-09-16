@@ -1,10 +1,10 @@
-import { customRef, nextTick, watch } from 'vue-demi'
-import { useRoute, useRouter } from 'vue-router'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
 import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { customRef, nextTick, watch } from 'vue-demi'
+import { useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 

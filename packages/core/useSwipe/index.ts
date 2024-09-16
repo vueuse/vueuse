@@ -1,11 +1,11 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { noop } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, reactive, ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
+import { noop } from '@vueuse/shared'
+import { computed, reactive, ref } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export type UseSwipeDirection = 'up' | 'down' | 'left' | 'right' | 'none'
 

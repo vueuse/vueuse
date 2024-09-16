@@ -1,9 +1,9 @@
-import { ref } from 'vue-demi'
 import type { ConfigurableEventFilter, MaybeRefOrGetter } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
+import { ref } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export type UseMouseCoordType = 'page' | 'client' | 'screen' | 'movement'
 export type UseMouseSourceType = 'mouse' | 'touch' | null

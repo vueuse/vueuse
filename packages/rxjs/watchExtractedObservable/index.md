@@ -13,8 +13,8 @@ Supports all overloads of [`watch`](https://vuejs.org/guide/essentials/watchers.
 ## Usage
 
 ```ts
-import { computed, ref } from 'vue'
 import { watchExtractedObservable } from '@vueuse/rxjs'
+import { computed, ref } from 'vue'
 import { AudioPlayer } from '../my/libs/AudioPlayer'
 
 // setup()
@@ -35,8 +35,8 @@ If you want to add custom error handling to an `Observable` that might error, yo
 You can also supply an optional `onComplete` configuration if you need to attach special behavior when the watched observable completes.
 
 ```ts
-import { computed, ref } from 'vue'
 import { watchExtractedObservable } from '@vueuse/rxjs'
+import { computed, ref } from 'vue'
 import { AudioPlayer } from '../my/libs/AudioPlayer'
 
 // setup()
@@ -62,8 +62,8 @@ watchExtractedObservable(player, p => p.progress$, (percentage) => {
 If you want, you can also pass `watch` options as the last argument:
 
 ```ts
-import { computed, ref } from 'vue'
 import { watchExtractedObservable } from '@vueuse/rxjs'
+import { computed, ref } from 'vue'
 import { AudioPlayer } from '../my/libs/AudioPlayer'
 
 // setup()

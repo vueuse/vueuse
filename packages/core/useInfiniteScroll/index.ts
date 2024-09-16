@@ -1,11 +1,11 @@
 import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, tryOnUnmounted } from '@vueuse/shared'
 import type { UnwrapNestedRefs } from 'vue-demi'
-import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
-import { useElementVisibility } from '../useElementVisibility'
 import type { UseScrollOptions } from '../useScroll'
-import { useScroll } from '../useScroll'
+import { toValue, tryOnUnmounted } from '@vueuse/shared'
+import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
 import { resolveElement } from '../_resolve-element'
+import { useElementVisibility } from '../useElementVisibility'
+import { useScroll } from '../useScroll'
 
 type InfiniteScrollElement = HTMLElement | SVGElement | Window | Document | null | undefined
 

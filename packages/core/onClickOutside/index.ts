@@ -1,10 +1,10 @@
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { isIOS, noop, toValue } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { isIOS, noop, toValue } from '@vueuse/shared'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**

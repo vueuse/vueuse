@@ -1,5 +1,5 @@
-import { computed } from 'vue-demi'
 import type { MaybeRefOrGetter } from '../utils'
+import { computed } from 'vue-demi'
 import { toValue } from '../toValue'
 
 export type DateLike = Date | number | string | undefined

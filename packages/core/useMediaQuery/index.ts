@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, watchEffect } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { ref, watchEffect } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 

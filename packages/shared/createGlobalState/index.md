@@ -12,9 +12,9 @@ Keep states in the global scope to be reusable across Vue instances.
 ### Without Persistence (Store in Memory)
 
 ```js
+import { createGlobalState } from '@vueuse/core'
 // store.js
 import { ref } from 'vue'
-import { createGlobalState } from '@vueuse/core'
 
 export const useGlobalState = createGlobalState(
   () => {
@@ -27,9 +27,9 @@ export const useGlobalState = createGlobalState(
 A bigger example:
 
 ```js
+import { createGlobalState } from '@vueuse/core'
 // store.js
 import { computed, ref } from 'vue'
-import { createGlobalState } from '@vueuse/core'
 
 export const useGlobalState = createGlobalState(
   () => {
