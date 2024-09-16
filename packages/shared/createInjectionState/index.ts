@@ -1,6 +1,6 @@
 import type { InjectionKey } from 'vue-demi'
-import { provideLocal } from '../provideLocal'
 import { injectLocal } from '../injectLocal'
+import { provideLocal } from '../provideLocal'
 
 export interface CreateInjectionStateOptions<Return> {
   /**

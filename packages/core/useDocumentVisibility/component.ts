@@ -1,5 +1,5 @@
-import { defineComponent, reactive } from 'vue-demi'
 import { useDocumentVisibility } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue-demi'
 
 export const UseDocumentVisibility = /* #__PURE__ */ defineComponent({
   name: 'UseDocumentVisibility',

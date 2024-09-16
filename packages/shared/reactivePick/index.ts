@@ -1,7 +1,7 @@
 import type { UnwrapRef } from 'vue-demi'
 import { toRefs } from 'vue-demi'
-import { toRef } from '../toRef'
 import { reactiveComputed } from '../reactiveComputed'
+import { toRef } from '../toRef'
 import { toValue } from '../toValue'
 
 export type ReactivePickPredicate<T> = (value: T[keyof T], key: keyof T) => boolean

@@ -1,10 +1,10 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { computed, ref } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
 export interface UseFocusWithinReturn {

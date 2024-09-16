@@ -1,7 +1,7 @@
 import type { Observable } from 'rxjs'
 import type { Ref, UnwrapRef } from 'vue-demi'
-import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 
 export interface UseObservableOptions<I> {
   onError?: (err: any) => void

@@ -1,6 +1,6 @@
 import type { Fn } from '@vueuse/shared'
-import { noop } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
+import { noop } from '@vueuse/shared'
 import { computed, isRef, ref, shallowRef, watchEffect } from 'vue-demi'
 
 /**

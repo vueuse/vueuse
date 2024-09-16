@@ -1,8 +1,8 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
-import { ref } from 'vue-demi'
-import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 

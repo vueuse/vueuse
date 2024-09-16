@@ -1,9 +1,9 @@
-import { computed, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { isClient, toRefs, toValue } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
+import { isClient, toRefs, toValue } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export interface UseDraggableOptions {
   /**

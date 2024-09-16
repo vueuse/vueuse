@@ -1,7 +1,7 @@
 import type { Ref } from 'vue-demi'
-import { computed, nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { computed, nextTick, ref } from 'vue-demi'
 import { asyncComputed, computedAsync } from '.'
 
 describe('computed', () => {

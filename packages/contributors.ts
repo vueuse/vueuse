@@ -183,4 +183,4 @@ const coreTeamMembers: CoreTeam[] = [
 ]
   .sort((pre, cur) => contributors.findIndex(name => name === pre.github) - contributors.findIndex(name => name === cur.github))
 
-export { coreTeamMembers, contributorList as contributors }
+export { contributorList as contributors, coreTeamMembers }

@@ -1,5 +1,5 @@
-import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
+import { computed, nextTick, reactive, ref, watch } from 'vue-demi'
 import { useRouteHash } from '.'
 
 describe('useRouteHash', () => {

@@ -1,6 +1,6 @@
 import type { JwtHeader, JwtPayload } from 'jwt-decode'
-import { ref } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue-demi'
 import { useJwt } from '.'
 
 interface CustomJwtHeader extends JwtHeader {

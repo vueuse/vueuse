@@ -1,7 +1,7 @@
-import type { Ref } from 'vue-demi'
-import { computed, shallowRef, watch } from 'vue-demi'
-import { toRef, toValue } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
+import { toRef, toValue } from '@vueuse/shared'
+import { computed, shallowRef, watch } from 'vue-demi'
 
 export interface UseCycleListOptions<T> {
   /**

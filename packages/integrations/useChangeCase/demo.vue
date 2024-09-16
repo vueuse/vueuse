@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
-import * as ChangeCase from 'change-case'
-import { useChangeCase } from '.'
 import type { ChangeCaseType } from '.'
+import * as ChangeCase from 'change-case'
+import { ref } from 'vue-demi'
+import { useChangeCase } from '.'
 
 const transforms: any = Object.keys(ChangeCase).filter(v => v.endsWith('Case'))
 const input = ref('helloWorld')

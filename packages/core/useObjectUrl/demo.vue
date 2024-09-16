@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue-demi'
 import { useObjectUrl } from '@vueuse/core'
+import { shallowRef } from 'vue-demi'
 
 const file = shallowRef()
 const url = useObjectUrl(file)

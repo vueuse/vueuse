@@ -1,5 +1,5 @@
-import { ref } from 'vue-demi'
 import { tryOnScopeDispose } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import { type ConfigurableWindow, defaultWindow } from '../_configurable'
 
 /**

@@ -1,8 +1,8 @@
-import { watch } from 'vue-demi'
-import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
-
 import type { UseElementVisibilityOptions } from '.'
+import { directiveHooks } from '@vueuse/shared'
+
+import { watch } from 'vue-demi'
 import { useElementVisibility } from '.'
 
 type BindingValueFunction = (state: boolean) => void

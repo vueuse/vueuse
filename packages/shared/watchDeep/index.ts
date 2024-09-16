@@ -1,7 +1,7 @@
 import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
-import { watch } from 'vue-demi'
-
 import type { MapOldSources, MapSources } from '../utils/types'
+
+import { watch } from 'vue-demi'
 
 // overloads
 export function watchDeep<

@@ -1,6 +1,6 @@
-import { defineComponent, reactive } from 'vue-demi'
-import { useOffsetPagination } from '@vueuse/core'
 import type { UseOffsetPaginationOptions } from '.'
+import { useOffsetPagination } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue-demi'
 
 export const UseOffsetPagination = /* #__PURE__ */ defineComponent<UseOffsetPaginationOptions>({
   name: 'UseOffsetPagination',
