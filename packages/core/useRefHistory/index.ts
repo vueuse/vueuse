@@ -2,10 +2,17 @@ import type { ConfigurableEventFilter, Fn } from '@vueuse/shared'
 import { pausableFilter, watchIgnorable } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
-import type { UseManualRefHistoryReturn } from '../useManualRefHistory'
+import type { PromiseOr, UseManualRefHistoryReturn } from '../useManualRefHistory'
 import { useManualRefHistory } from '../useManualRefHistory'
 
-export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends ConfigurableEventFilter {
+export interface UseRefHistoryOptions<Raw, Serialized = Raw, Async extends boolean = false> extends ConfigurableEventFilter {
+  /**
+   * Enable async mode, allowing you to parse/dump data asynchronously
+   *
+   * @default false
+   */
+  async?: Async
+
   /**
    * Watch for deep changes, default to false
    *
@@ -37,17 +44,19 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends Configurabl
    * @default false
    */
   clone?: boolean | CloneFn<Raw>
+
   /**
    * Serialize data into the history
    */
-  dump?: (v: Raw) => Serialized
+  dump?: (v: PromiseOr<Async, Raw>) => PromiseOr<Async, Serialized>
+
   /**
    * Deserialize data from the history
    */
-  parse?: (v: Serialized) => Raw
+  parse?: (v: Serialized) => PromiseOr<Async, Raw>
 }
 
-export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistoryReturn<Raw, Serialized> {
+export interface UseRefHistoryReturn<Raw, Serialized, Async extends boolean = false> extends UseManualRefHistoryReturn<Raw, Serialized, Async> {
   /**
    * A ref representing if the tracking is enabled
    */
@@ -85,10 +94,10 @@ export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistor
  * @param source
  * @param options
  */
-export function useRefHistory<Raw, Serialized = Raw>(
+export function useRefHistory<Raw, Serialized = Raw, Async extends boolean = false>(
   source: Ref<Raw>,
-  options: UseRefHistoryOptions<Raw, Serialized> = {},
-): UseRefHistoryReturn<Raw, Serialized> {
+  options: UseRefHistoryOptions<Raw, Serialized, Async> = {},
+): UseRefHistoryReturn<Raw, Serialized, Async> {
   const {
     deep = false,
     flush = 'pre',
@@ -138,7 +147,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // so we do not trigger an extra commit in the async watcher
     ignorePrevAsyncUpdates()
 
-    manualCommit()
+    return manualCommit()
   }
 
   function resume(commitNow?: boolean) {
