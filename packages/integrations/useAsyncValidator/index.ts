@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Thenable } from '@vueuse/shared'
 import { toRef, toValue, until } from '@vueuse/shared'
 import Schema from 'async-validator'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
@@ -57,7 +57,7 @@ export function useAsyncValidator(
   value: MaybeRefOrGetter<Record<string, any>>,
   rules: MaybeRefOrGetter<Rules>,
   options: UseAsyncValidatorOptions = {},
-): UseAsyncValidatorReturn & PromiseLike<UseAsyncValidatorReturn> {
+): Thenable<UseAsyncValidatorReturn> {
   const {
     validateOption = {},
     immediate = true,
