@@ -106,7 +106,7 @@ export function useStorageAsync<T extends (string | number | boolean | object | 
     }
   }
   watch(
-    [() => toValue(key), reloadTrigger],
+    [() => toValue(key), () => reloadTrigger],
     () => {
       read()
         .then(() => {
