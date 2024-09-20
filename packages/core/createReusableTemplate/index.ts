@@ -1,6 +1,6 @@
 import type { DefineComponent, Slot } from 'vue-demi'
 import { camelize, makeDestructurable } from '@vueuse/shared'
-import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
+import { defineComponent, getCurrentInstance, isVue3, shallowRef, version } from 'vue-demi'
 
 type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>
 
@@ -28,9 +28,11 @@ export type ReusableTemplatePair<
 > = [
   DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>,
   ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>,
+  (name: string) => void,
 ] & {
   define: DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>
   reuse: ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>
+  injectSlot: (name: string) => void
 }
 
 export interface CreateReusableTemplateOptions {
@@ -43,7 +45,7 @@ export interface CreateReusableTemplateOptions {
 }
 
 /**
- * This function creates `define` and `reuse` components in pair,
+ * This function creates `define` and `reuse` components in pair, and `injectSlot` function
  * It also allow to pass a generic to bind with type.
  *
  * @see https://vueuse.org/createReusableTemplate
@@ -89,9 +91,18 @@ export function createReusableTemplate<
     },
   }) as unknown as ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>
 
+  const instance = getCurrentInstance()
+
+  /** compatibility: Vue 3 */
+  const injectSlot = (name: string) => {
+    instance!.slots[name] = (props) => {
+      return render.value ? render.value(props) : []
+    }
+  }
+
   return makeDestructurable(
-    { define, reuse },
-    [define, reuse],
+    { define, reuse, injectSlot },
+    [define, reuse, injectSlot],
   ) as any
 }
 
