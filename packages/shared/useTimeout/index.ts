@@ -1,8 +1,8 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
 import type { UseTimeoutFnOptions } from '../useTimeoutFn'
-import { useTimeoutFn } from '../useTimeoutFn'
 import type { Fn, MaybeRefOrGetter, Stoppable } from '../utils'
+import { computed } from 'vue-demi'
+import { useTimeoutFn } from '../useTimeoutFn'
 import { noop } from '../utils'
 
 export interface UseTimeoutOptions<Controls extends boolean> extends UseTimeoutFnOptions {

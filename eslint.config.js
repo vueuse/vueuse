@@ -1,5 +1,5 @@
-import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import antfu from '@antfu/eslint-config'
 
 const dir = fileURLToPath(new URL('.', import.meta.url))

@@ -9,8 +9,8 @@ Reactive async state. Will not block your setup function and will trigger change
 ## Usage
 
 ```ts
-import axios from 'axios'
 import { useAsyncState } from '@vueuse/core'
+import axios from 'axios'
 
 const { state, isReady, isLoading } = useAsyncState(
   axios

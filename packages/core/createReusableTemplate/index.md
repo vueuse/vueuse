@@ -63,8 +63,8 @@ When using with [Options API](https://vuejs.org/guide/introduction.html#api-styl
 
 ```vue
 <script>
-import { defineComponent } from 'vue'
 import { createReusableTemplate } from '@vueuse/core'
+import { defineComponent } from 'vue'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 

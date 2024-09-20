@@ -1,5 +1,5 @@
-import { isVue3, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { isVue3, ref } from 'vue-demi'
 import { computedWithControl, controlledComputed } from '.'
 
 describe('computedWithControl', () => {
@@ -23,6 +23,23 @@ describe('computedWithControl', () => {
     trigger.value += 1
 
     expect(computed.value).toBe('BAR')
+  })
+
+  it.runIf(isVue3)('optional old value', () => {
+    const trigger = ref(0)
+
+    const computed = computedWithControl(trigger, (oldValue?: number) =>
+      oldValue ? oldValue * 2 : 1)
+
+    expect(computed.value).toBe(1)
+
+    trigger.value += 1
+
+    expect(computed.value).toBe(2)
+
+    trigger.value -= 1
+
+    expect(computed.value).toBe(4)
   })
 
   it.runIf(isVue3)('custom trigger', () => {

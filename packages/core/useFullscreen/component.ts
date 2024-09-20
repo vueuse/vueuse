@@ -1,6 +1,6 @@
-import { defineComponent, h, reactive, ref } from 'vue-demi'
-import { useFullscreen } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
+import { useFullscreen } from '@vueuse/core'
+import { defineComponent, h, reactive, ref } from 'vue-demi'
 
 export const UseFullscreen = /* #__PURE__ */ defineComponent<RenderableComponent>({
   name: 'UseFullscreen',

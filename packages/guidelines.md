@@ -210,9 +210,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & 
 - Only wrap the slot in an HTML element if the function needs a target to bind to
 
 ```ts
-import { defineComponent, reactive } from 'vue-demi'
 import type { MouseOptions } from '@vueuse/core'
 import { useMouse } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue-demi'
 
 export const UseMouse = defineComponent<MouseOptions>({
   name: 'UseMouse',

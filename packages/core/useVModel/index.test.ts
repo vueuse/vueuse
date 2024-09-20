@@ -1,5 +1,5 @@
-import { isVue2, nextTick } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
+import { isVue2, nextTick } from 'vue-demi'
 import { useVModel } from '.'
 
 describe('useVModel', () => {

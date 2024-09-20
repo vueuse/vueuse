@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue-demi'
-import Item from './Item.vue'
 import Controller from './Controller.vue'
+import Item from './Item.vue'
 
 const props = defineProps<{ gamepad: Gamepad }>()
 

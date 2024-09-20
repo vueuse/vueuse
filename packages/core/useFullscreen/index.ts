@@ -1,10 +1,10 @@
-import { computed, ref } from 'vue-demi'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
+import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableDocument } from '../_configurable'
-import { defaultDocument } from '../_configurable'
 import { useSupported } from '../useSupported'
 
 export interface UseFullscreenOptions extends ConfigurableDocument {

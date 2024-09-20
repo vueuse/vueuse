@@ -1,8 +1,8 @@
-import type { Ref, ShallowRef } from 'vue-demi'
-import { ref, shallowRef } from 'vue-demi'
-import { noop, until } from '@vueuse/shared'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { Ref, ShallowRef } from 'vue-demi'
+import { noop, until } from '@vueuse/shared'
 import axios, { AxiosError } from 'axios'
+import { ref, shallowRef } from 'vue-demi'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   /**
@@ -203,9 +203,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
 
   const waitUntilFinished = () =>
     new Promise<OverallUseAxiosReturn<T, R, D>>((resolve, reject) => {
-      until(isFinished).toBe(true)
+      until(isFinished).toBe(true).then(() => error.value
+        ? reject(error.value)
         // eslint-disable-next-line ts/no-use-before-define
-        .then(() => error.value ? reject(error.value) : resolve(result))
+        : resolve(result))
     })
 
   const promise = {

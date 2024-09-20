@@ -1,7 +1,7 @@
-import type { NProgressOptions } from 'nprogress'
-import nprogress from 'nprogress'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { NProgressOptions } from 'nprogress'
 import { isClient, tryOnScopeDispose } from '@vueuse/shared'
+import nprogress from 'nprogress'
 import { computed, ref, watchEffect } from 'vue-demi'
 
 export type UseNProgressOptions = Partial<NProgressOptions>

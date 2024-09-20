@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
-import { mount } from '@vue/test-utils'
 import type { Slot } from 'vue-demi'
-import { Fragment, defineComponent, h, isVue2, renderSlot } from 'vue-demi'
+import { mount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
+import { defineComponent, Fragment, h, isVue2, renderSlot } from 'vue-demi'
 import { createReusableTemplate } from '.'
 
 describe.skipIf(isVue2)('createReusableTemplate', () => {

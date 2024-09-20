@@ -1,6 +1,6 @@
-import { type PropType, defineComponent, h, reactive, ref } from 'vue-demi'
 import { useVModel } from '@vueuse/core'
-import { type UseSortableOptions, useSortable } from '.'
+import { defineComponent, h, type PropType, reactive, ref } from 'vue-demi'
+import { useSortable, type UseSortableOptions } from '.'
 
 export const UseSortable = /* #__PURE__ */ defineComponent({
   name: 'UseSortable',

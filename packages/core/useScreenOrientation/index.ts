@@ -1,8 +1,8 @@
+import type { ConfigurableWindow } from '../_configurable'
 import { ref } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 // TypeScript dropped the inline types for these types in 5.2
 // We vendor them here to avoid the dependency

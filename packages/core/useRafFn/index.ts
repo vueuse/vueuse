@@ -1,7 +1,7 @@
-import { readonly, ref } from 'vue-demi'
 import type { Pausable } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { readonly, ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 
 export interface UseRafFnCallbackArguments {

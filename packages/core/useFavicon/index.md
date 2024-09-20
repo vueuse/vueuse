@@ -21,8 +21,8 @@ icon.value = 'dark.png' // change current icon
 You can pass a `ref` to it, changes from of the source ref will be reflected to your favicon automatically.
 
 ```js {7}
-import { computed } from 'vue'
 import { useFavicon, usePreferredDark } from '@vueuse/core'
+import { computed } from 'vue'
 
 const isDark = usePreferredDark()
 const favicon = computed(() => isDark.value ? 'dark.png' : 'light.png')

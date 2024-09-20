@@ -1,7 +1,7 @@
+import type { Fn, MaybeRefOrGetter, Pausable } from '../utils'
 import { isRef, ref, watch } from 'vue-demi'
 import { toValue } from '../toValue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import type { Fn, MaybeRefOrGetter, Pausable } from '../utils'
 import { isClient } from '../utils'
 
 export interface UseIntervalFnOptions {

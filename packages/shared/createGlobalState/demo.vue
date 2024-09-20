@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
 import { createGlobalState, useStorage } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
 
 const useState = createGlobalState(() =>
   useStorage('vue-use-locale-storage', {

@@ -1,10 +1,10 @@
 import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/shared'
-import { tryOnScopeDispose } from '@vueuse/shared'
-import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
-import { readonly, shallowRef, watch } from 'vue-demi'
 import type { Subscription } from 'rxjs'
-import type { WatchExtractedObservableCallback } from '../watchExtractedObservable'
+import type { Ref, WatchOptions, WatchSource } from 'vue-demi'
 import type { UseObservableOptions } from '../useObservable'
+import type { WatchExtractedObservableCallback } from '../watchExtractedObservable'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { readonly, shallowRef, watch } from 'vue-demi'
 
 export interface UseExtractedObservableOptions<E> extends UseObservableOptions<E> {
   onComplete?: () => void

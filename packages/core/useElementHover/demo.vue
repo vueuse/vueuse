@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useElementHover } from '@vueuse/core'
+import { ref } from 'vue'
 import { vElementHover } from './directive'
 
 const el = ref<HTMLButtonElement>()
