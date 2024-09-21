@@ -169,7 +169,7 @@ export function useWebSocket<Data = any>(
   let heartbeatPause: Fn | undefined
   let heartbeatResume: Fn | undefined
 
-  let explicitlyClosed = false
+  let permanentlyClosed = false
   let retried = 0
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
@@ -190,14 +190,23 @@ export function useWebSocket<Data = any>(
   }
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
-  const close: WebSocket['close'] = (code = 1000, reason) => {
+  const permanentlyClose: WebSocket['close'] = (code = 1000, reason) => {
     if (!isClient || !wsRef.value)
       return
-    explicitlyClosed = true
+    permanentlyClosed = true
     resetHeartbeat()
     heartbeatPause?.()
     wsRef.value.close(code, reason)
     wsRef.value = undefined
+  }
+
+  const temporarilyClose: WebSocket['close'] = (code = 1000, reason) => {
+    if (!isClient || !wsRef.value)
+      return
+    resetHeartbeat()
+    heartbeatPause?.()
+    retried = 0
+    wsRef.value.close(code, reason)
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
@@ -212,7 +221,7 @@ export function useWebSocket<Data = any>(
   }
 
   const _init = () => {
-    if (explicitlyClosed || typeof urlRef.value === 'undefined')
+    if (permanentlyClosed || typeof urlRef.value === 'undefined')
       return
 
     const ws = new WebSocket(urlRef.value, protocols)
@@ -228,10 +237,12 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onclose = (ev) => {
+      if (ws !== wsRef.value)
+        return
       status.value = 'CLOSED'
       onDisconnected?.(ws, ev)
 
-      if (!explicitlyClosed && options.autoReconnect && ws === wsRef.value) {
+      if (!permanentlyClosed && options.autoReconnect) {
         const {
           retries = -1,
           delay = 1000,
@@ -246,6 +257,7 @@ export function useWebSocket<Data = any>(
           setTimeout(_init, delay)
         }
         else {
+          permanentlyClose()
           onFailed?.()
         }
       }
@@ -285,8 +297,7 @@ export function useWebSocket<Data = any>(
           return
         pongTimeoutWait = setTimeout(() => {
           // auto-reconnect will be trigger with ws.onclose()
-          close()
-          explicitlyClosed = false
+          temporarilyClose()
         }, pongTimeout)
       },
       interval,
@@ -299,16 +310,14 @@ export function useWebSocket<Data = any>(
 
   if (autoClose) {
     if (isClient)
-      useEventListener('beforeunload', () => close())
-    tryOnScopeDispose(close)
+      useEventListener('beforeunload', () => permanentlyClose())
+    tryOnScopeDispose(permanentlyClose)
   }
 
   const open = () => {
     if (!isClient && !isWorker)
       return
-    close()
-    explicitlyClosed = false
-    retried = 0
+    temporarilyClose()
     _init()
   }
 
@@ -320,7 +329,7 @@ export function useWebSocket<Data = any>(
   return {
     data,
     status,
-    close,
+    close: permanentlyClose,
     send,
     open,
     ws: wsRef,
