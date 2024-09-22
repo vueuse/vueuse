@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue-demi'
-import { computed, toValue } from 'vue-demi'
-
+import { computed } from 'vue-demi'
+import { toValue } from '../toValue'
 /**
  * Reactive `Object.groupBy`
  *
