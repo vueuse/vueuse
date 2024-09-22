@@ -57,7 +57,7 @@ export function useArrayReduce<T>(
     // Depending on the behavior of reduce, undefined is also a valid initialization value,
     // and this code will distinguish the behavior between them.
     return args.length
-      ? resolved.reduce(reduceCallback, toValue(args[0]))
+      ? resolved.reduce(reduceCallback, typeof args[0] === 'function' ? toValue(args[0]()) : toValue(args[0]))
       : resolved.reduce(reduceCallback)
   })
 }
