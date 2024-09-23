@@ -84,8 +84,9 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     if (state.value !== 'granted') {
       let granted = true
       try {
-        await navigator!.mediaDevices.getUserMedia(constraints)
+        stream = await navigator!.mediaDevices.getUserMedia(constraints)
       } catch {
+        stream = null
         granted = false
       }
       update()
