@@ -1,10 +1,10 @@
-import { tryOnMounted } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
-import { useResizeObserver } from '../useResizeObserver'
-import { unrefElement } from '../unrefElement'
+import { tryOnMounted } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface ElementSize {
   width: number

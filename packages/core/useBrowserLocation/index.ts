@@ -1,11 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { objectEntries } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { reactive, ref, watch } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
+import { objectEntries } from '@vueuse/shared'
+import { reactive, ref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 const WRITABLE_PROPERTIES = [
   'hash',

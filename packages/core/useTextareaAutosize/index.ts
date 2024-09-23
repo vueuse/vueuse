@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
 import type { WatchSource } from 'vue-demi'
+import { toValue } from '@vueuse/shared'
 import { nextTick, ref, watch } from 'vue-demi'
 import { useResizeObserver } from '../useResizeObserver'
 

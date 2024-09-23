@@ -1,5 +1,5 @@
-import { isVue2, reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { isVue2, reactive, ref } from 'vue-demi'
 import { useArrayReduce } from '.'
 
 describe('useArrayReduce', () => {

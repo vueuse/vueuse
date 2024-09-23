@@ -1,14 +1,14 @@
 import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { toValue, watchWithFilter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref, shallowRef } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
-import { getSSRHandler } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
-import { StorageSerializers } from '../useStorage'
-import { useEventListener } from '../useEventListener'
-import { guessSerializerType } from '../useStorage/guess'
+import { toValue, watchWithFilter } from '@vueuse/shared'
+import { ref, shallowRef } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { getSSRHandler } from '../ssr-handlers'
+import { useEventListener } from '../useEventListener'
+import { StorageSerializers } from '../useStorage'
+import { guessSerializerType } from '../useStorage/guess'
 
 export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
   /**

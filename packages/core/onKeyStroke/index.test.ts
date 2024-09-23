@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
 import type { KeyStrokeEventName } from '.'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue-demi'
 import { onKeyStroke } from '.'
 
 describe('onKeyStroke', () => {

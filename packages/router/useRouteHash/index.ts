@@ -1,8 +1,8 @@
-import { customRef, nextTick, watch } from 'vue-demi'
-import { useRoute, useRouter } from 'vue-router'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ReactiveRouteOptions, RouteHashValueRaw } from '../_types'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { customRef, nextTick, watch } from 'vue-demi'
+import { useRoute, useRouter } from 'vue-router'
 
 let _hash: RouteHashValueRaw
 

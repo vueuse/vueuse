@@ -1,8 +1,8 @@
 import { execSync } from 'node:child_process'
 import path from 'node:path'
 import { consola } from 'consola'
-import { version } from '../package.json'
 import { packages } from '../meta/packages'
+import { version } from '../package.json'
 
 execSync('npm run build', { stdio: 'inherit' })
 

@@ -1,5 +1,5 @@
-import { nextTick, reactive, ref } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick, reactive, ref } from 'vue-demi'
 import { watchArray } from '.'
 
 describe('watchArray', () => {

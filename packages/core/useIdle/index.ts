@@ -1,11 +1,11 @@
 import type { ConfigurableEventFilter } from '@vueuse/shared'
-import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import type { WindowEventName } from '../useEventListener'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableWindow } from '../_configurable'
+import type { WindowEventName } from '../useEventListener'
+import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
+import { ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60_000

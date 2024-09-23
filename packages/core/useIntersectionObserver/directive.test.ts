@@ -1,9 +1,9 @@
-import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
+import type { UseIntersectionObserverOptions } from '.'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent } from 'vue-demi'
 import { vIntersectionObserver } from './directive'
-import type { UseIntersectionObserverOptions } from '.'
 
 const App = defineComponent({
   props: {

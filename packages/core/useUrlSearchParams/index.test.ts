@@ -1,5 +1,5 @@
-import { isVue3, nextTick } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { isVue3, nextTick } from 'vue-demi'
 import { useUrlSearchParams } from '.'
 
 describe('useUrlSearchParams', () => {

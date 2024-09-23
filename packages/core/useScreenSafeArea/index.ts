@@ -1,7 +1,7 @@
-import { ref } from 'vue-demi'
 import { isClient, useDebounceFn } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
+import { ref } from 'vue-demi'
 import { useCssVar } from '../useCssVar'
+import { useEventListener } from '../useEventListener'
 
 const topVarName = '--vueuse-safe-area-top'
 const rightVarName = '--vueuse-safe-area-right'

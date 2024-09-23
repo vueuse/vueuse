@@ -1,7 +1,7 @@
-import { watch } from 'vue-demi'
-import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
 import type { UseElementHoverOptions } from '.'
+import { directiveHooks } from '@vueuse/shared'
+import { watch } from 'vue-demi'
 import { useElementHover } from '.'
 
 type BindingValueFunction = (state: boolean) => void

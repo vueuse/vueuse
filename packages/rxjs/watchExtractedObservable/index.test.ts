@@ -1,10 +1,10 @@
-import type { MockedFunction } from 'vitest'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ComputedRef, Ref } from 'vue-demi'
 import type { Observable, Subject } from 'rxjs'
+import type { MockedFunction } from 'vitest'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { BehaviorSubject, of } from 'rxjs'
-import { computed, nextTick, reactive, ref } from 'vue-demi'
 import { delay, map, tap } from 'rxjs/operators'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { computed, nextTick, reactive, ref } from 'vue-demi'
 import { watchExtractedObservable } from './index'
 
 class TestWrapper {

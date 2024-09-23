@@ -1,7 +1,7 @@
-import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
-import { useResizeObserver } from '.'
 import type { ResizeObserverCallback, UseResizeObserverOptions } from '.'
+import { directiveHooks } from '@vueuse/shared'
+import { useResizeObserver } from '.'
 
 type BindingValueFunction = ResizeObserverCallback
 

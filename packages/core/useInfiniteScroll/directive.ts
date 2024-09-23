@@ -1,7 +1,7 @@
-import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
-import { useInfiniteScroll } from '.'
 import type { UseInfiniteScrollOptions } from '.'
+import { directiveHooks } from '@vueuse/shared'
+import { useInfiniteScroll } from '.'
 
 type BindingValueFunction = Parameters<typeof useInfiniteScroll>[1]
 type BindingValueArray = [BindingValueFunction, UseInfiniteScrollOptions]

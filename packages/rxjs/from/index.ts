@@ -1,7 +1,7 @@
-import { Observable, fromEvent as fromEventRx, from as fromRxjs } from 'rxjs'
+import type { MaybeRef } from '@vueuse/shared'
 import type { ObservableInput, Subscription } from 'rxjs'
 import type { Ref, WatchOptions } from 'vue-demi'
-import type { MaybeRef } from '@vueuse/shared'
+import { fromEvent as fromEventRx, from as fromRxjs, Observable } from 'rxjs'
 import { isRef, watch } from 'vue-demi'
 
 export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: WatchOptions): Observable<T> {

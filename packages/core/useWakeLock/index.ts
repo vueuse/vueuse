@@ -1,10 +1,10 @@
-import { computed, ref, shallowRef } from 'vue-demi'
-import { whenever } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
-import { useSupported } from '../useSupported'
 import type { ConfigurableDocument, ConfigurableNavigator } from '../_configurable'
+import { whenever } from '@vueuse/shared'
+import { computed, ref, shallowRef } from 'vue-demi'
 import { defaultDocument, defaultNavigator } from '../_configurable'
 import { useDocumentVisibility } from '../useDocumentVisibility'
+import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 
 type WakeLockType = 'screen'
 

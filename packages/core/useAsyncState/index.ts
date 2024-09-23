@@ -1,5 +1,5 @@
-import { noop, promiseTimeout, until } from '@vueuse/shared'
 import type { Ref, UnwrapRef } from 'vue-demi'
+import { noop, promiseTimeout, until } from '@vueuse/shared'
 import { ref, shallowRef } from 'vue-demi'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
@@ -143,9 +143,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
 
   function waitUntilIsLoaded() {
     return new Promise<UseAsyncStateReturnBase<Data, Params, Shallow>>((resolve, reject) => {
-      until(isLoading).toBe(false)
-        .then(() => resolve(shell))
-        .catch(reject)
+      until(isLoading).toBe(false).then(() => resolve(shell)).catch(reject)
     })
   }
 

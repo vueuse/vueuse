@@ -1,6 +1,6 @@
+import type { ConfigurableWindow } from '../_configurable'
 import { computed } from 'vue-demi'
 import { useMediaQuery } from '../useMediaQuery'
-import type { ConfigurableWindow } from '../_configurable'
 
 export type ContrastType = 'more' | 'less' | 'custom' | 'no-preference'
 
