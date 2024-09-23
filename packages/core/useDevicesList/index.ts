@@ -82,9 +82,14 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     const { state, query } = usePermission('camera', { controls: true })
     await query()
     if (state.value !== 'granted') {
-      stream = await navigator!.mediaDevices.getUserMedia(constraints)
+      let granted = true
+      try {
+        await navigator!.mediaDevices.getUserMedia(constraints)
+      } catch {
+        granted = false
+      }
       update()
-      permissionGranted.value = true
+      permissionGranted.value = granted
     }
     else {
       permissionGranted.value = true
