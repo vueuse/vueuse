@@ -173,6 +173,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   // Events
   const sourceErrorEvent = createEventHook<Event>()
+  const playbackErrorEvent = createEventHook<Event>()
 
   /**
    * Disables the specified track. If no track is specified then
@@ -377,7 +378,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       return
 
     if (isPlaying)
-      el.play()
+      el.play().catch(playbackErrorEvent.trigger)
     else
       el.pause()
   })
@@ -463,6 +464,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
     // Events
     onSourceError: sourceErrorEvent.on,
+    onPlaybackError: playbackErrorEvent.on,
   }
 }
 
