@@ -5,6 +5,8 @@ import { ref, watch } from 'vue-demi'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
+export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
+
 
 const DEFAULT_PING_MESSAGE = 'ping'
 
@@ -25,12 +27,12 @@ export interface UseWebSocketOptions {
      *
      * @default 'ping'
      */
-    message?: string | ArrayBuffer | Blob
+    message?: WebSocketHeartbeatMessage | (() => WebSocketHeartbeatMessage)
 
     /**
      * Response message for the heartbeat, if undefined the message will be used
      */
-    responseMessage?: string | ArrayBuffer | Blob
+    responseMessage?: WebSocketHeartbeatMessage | (() => WebSocketHeartbeatMessage)
 
     /**
      * Interval, in milliseconds
@@ -262,7 +264,7 @@ export function useWebSocket<Data = any>(
           message = DEFAULT_PING_MESSAGE,
           responseMessage = message,
         } = resolveNestedOptions(options.heartbeat)
-        if (e.data === responseMessage)
+        if (e.data === (typeof responseMessage === "function" ? responseMessage() : responseMessage))
           return
       }
 
@@ -280,7 +282,7 @@ export function useWebSocket<Data = any>(
 
     const { pause, resume } = useIntervalFn(
       () => {
-        send(message, false)
+        typeof message === "function" ? send(message(), false) : send(message, false)
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
