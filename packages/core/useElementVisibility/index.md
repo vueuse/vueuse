@@ -5,6 +5,8 @@ category: Elements
 # useElementVisibility
 
 Tracks the visibility of an element within the viewport.
+If you wish to trigger your callback sooner, you can use
+the `margin` option (See [MDN IntersectionObserver/rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin)).
 
 ## Usage
 
