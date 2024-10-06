@@ -2,6 +2,7 @@ import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { computed, reactive, ref } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
+
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -272,6 +273,8 @@ export function useScroll(
     element,
     () => {
       const _element = toValue(element);
+      if (!_element)
+        return
       setArrivedState(_element);
     },
     {
