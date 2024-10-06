@@ -1,10 +1,11 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ConfigurableWindow } from '../_configurable'
 import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { computed, reactive, ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseScrollOptions extends ConfigurableWindow {
   /**
@@ -266,6 +267,19 @@ export function useScroll(
     throttle ? useThrottleFn(onScrollHandler, throttle, true, false) : onScrollHandler,
     eventListenerOptions,
   )
+
+  useMutationObserver(
+    element,
+    () => {
+      const _element = toValue(element);
+      setArrivedState(_element);
+    },
+    {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    }
+  );
 
   tryOnMounted(() => {
     try {
