@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
 import type { MaybeRefOrGetter } from '../utils'
+import { computed } from 'vue-demi'
 import { toValue } from '../toValue'
 
 function defaultComparator<T>(value: T, othVal: T) {

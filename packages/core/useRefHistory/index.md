@@ -12,8 +12,8 @@ Track the change history of a ref, also provides undo and redo functionality
 ## Usage
 
 ```ts {5}
-import { ref } from 'vue'
 import { useRefHistory } from '@vueuse/core'
+import { ref } from 'vue'
 
 const counter = ref(0)
 const { history, undo, redo } = useRefHistory(counter)
@@ -79,8 +79,8 @@ const refHistory = useRefHistory(target, { clone: structuredClone })
 Or by using [lodash's `cloneDeep`](https://lodash.com/docs/4.17.15#cloneDeep):
 
 ```ts
-import { cloneDeep } from 'lodash-es'
 import { useRefHistory } from '@vueuse/core'
+import { cloneDeep } from 'lodash-es'
 
 const refHistory = useRefHistory(target, { clone: cloneDeep })
 ```
@@ -88,8 +88,8 @@ const refHistory = useRefHistory(target, { clone: cloneDeep })
 Or a more lightweight [`klona`](https://github.com/lukeed/klona):
 
 ```ts
-import { klona } from 'klona'
 import { useRefHistory } from '@vueuse/core'
+import { klona } from 'klona'
 
 const refHistory = useRefHistory(target, { clone: klona })
 ```

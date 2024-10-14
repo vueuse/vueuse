@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { isClient } from '@vueuse/shared'
 import { useDraggable } from '@vueuse/core'
+import { isClient } from '@vueuse/shared'
+import { ref } from 'vue'
 import { UseDraggable as Draggable } from './component'
 
 const el = ref<HTMLElement | null>(null)

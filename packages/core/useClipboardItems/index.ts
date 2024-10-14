@@ -1,11 +1,11 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, useTimeoutFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue-demi'
+import type { ConfigurableNavigator } from '../_configurable'
+import { toValue, useTimeoutFn } from '@vueuse/shared'
 import { ref } from 'vue-demi'
+import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import type { ConfigurableNavigator } from '../_configurable'
-import { defaultNavigator } from '../_configurable'
 
 export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator {
   /**

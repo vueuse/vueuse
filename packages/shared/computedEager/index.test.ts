@@ -1,7 +1,7 @@
-import { computed, isVue3, ref, watch } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTwoTick } from '../../.test'
+import { computed, isVue3, ref, watch } from 'vue-demi'
 import { computedEager } from '.'
+import { nextTwoTick } from '../../.test'
 
 describe('computedEager', () => {
   it('should be defined', () => {

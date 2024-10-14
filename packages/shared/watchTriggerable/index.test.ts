@@ -1,5 +1,5 @@
-import { nextTick, reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { nextTick, reactive, ref } from 'vue-demi'
 import { watchTriggerable } from '.'
 
 describe('watchTriggerable', () => {

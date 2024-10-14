@@ -22,8 +22,8 @@ npm i universal-cookie@^7
 
 ```vue
 <script>
-import { defineComponent } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   setup() {

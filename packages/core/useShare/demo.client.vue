@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { isClient } from '@vueuse/shared'
 import { useShare } from '@vueuse/core'
+import { isClient } from '@vueuse/shared'
+import { ref } from 'vue'
 
 const options = ref({
   title: 'VueUse',

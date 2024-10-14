@@ -1,5 +1,5 @@
-import { ref, watch } from 'vue-demi'
 import type { FunctionDirective } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useScrollLock } from '.'
 
 function onScrollLock(): FunctionDirective<

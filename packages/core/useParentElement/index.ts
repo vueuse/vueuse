@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
+import { toValue, tryOnMounted } from '@vueuse/shared'
 import { shallowRef, watch } from 'vue-demi'
 import { unrefElement } from '../unrefElement'
 import { useCurrentElement } from '../useCurrentElement'

@@ -1,7 +1,7 @@
 import type { EffectScope } from 'vue-demi'
+import type { AnyFn } from '../utils'
 import { effectScope } from 'vue-demi'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import type { AnyFn } from '../utils'
 
 /**
  * Make a composable function usable with multiple Vue instances.

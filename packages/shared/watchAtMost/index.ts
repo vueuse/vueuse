@@ -1,8 +1,8 @@
 import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue-demi'
-import { nextTick, ref } from 'vue-demi'
-import { toValue } from '../toValue'
 import type { MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
+import { nextTick, ref } from 'vue-demi'
+import { toValue } from '../toValue'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Immediate> {

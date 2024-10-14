@@ -1,11 +1,11 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, watch } from 'vue-demi'
-import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface UseMutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
 

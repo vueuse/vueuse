@@ -1,5 +1,5 @@
-import { Vue2, install, isVue2 } from 'vue-demi'
 import { beforeAll, beforeEach } from 'vitest'
+import { install, isVue2, Vue2 } from 'vue-demi'
 import './polyfillFetch'
 import './polyfillPointerEvents'
 import './polyfillIndexedDb'

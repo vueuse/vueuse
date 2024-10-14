@@ -1,5 +1,5 @@
-import { reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { reactive, ref } from 'vue-demi'
 import { useArrayUnique } from '.'
 
 describe('useArrayUnique', () => {

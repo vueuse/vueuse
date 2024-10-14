@@ -1,5 +1,5 @@
-import jobRunner from './jobRunner'
 import depsParser from './depsParser'
+import jobRunner from './jobRunner'
 
 /**
  * Converts the "fn" function into the syntax needed to be executed within a web worker

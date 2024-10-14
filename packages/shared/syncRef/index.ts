@@ -48,7 +48,7 @@ interface EqualType<
 }
 
 type StrictIncludeMap<IncludeType extends 'LR' | 'RL', D extends Exclude<Direction, 'both'>, L, R> = (Equal<[IncludeType, D], ['LR', 'ltr']>
-& Equal<[IncludeType, D], ['RL', 'rtl']>) extends true
+  & Equal<[IncludeType, D], ['RL', 'rtl']>) extends true
   ? {
       transform?: SpecificFieldPartial<Pick<Transform<L, R>, D>, D>
     } : {

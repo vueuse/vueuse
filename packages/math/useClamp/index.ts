@@ -1,7 +1,7 @@
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, isReadonly, ref } from 'vue-demi'
 import type { MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
 import { clamp, toValue } from '@vueuse/shared'
+import { computed, isReadonly, ref } from 'vue-demi'
 
 export function useClamp(
   value: ReadonlyRefOrGetter<number>,

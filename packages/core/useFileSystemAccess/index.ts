@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
 import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
+import type { Ref } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
+import { toValue } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 

@@ -1,8 +1,8 @@
-import { computed } from 'vue-demi'
+import type { Position } from '../types'
 import type { MaybeElementRef } from '../unrefElement'
+import { computed } from 'vue-demi'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import type { Position } from '../types'
 
 const DEFAULT_DELAY = 500
 const DEFAULT_THRESHOLD = 10

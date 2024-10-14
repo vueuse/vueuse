@@ -1,5 +1,5 @@
-import { nextTick } from 'vue'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useWindowSize } from '.'
 
 describe('useWindowSize', () => {

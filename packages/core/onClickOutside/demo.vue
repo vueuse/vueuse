@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { OnClickOutsideHandler } from '@vueuse/core'
 import { onClickOutside } from '@vueuse/core'
+import { ref } from 'vue'
 import { vOnClickOutside } from './directive'
 
 const modal = ref(false)

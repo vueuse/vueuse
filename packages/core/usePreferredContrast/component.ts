@@ -1,5 +1,5 @@
-import { defineComponent, reactive } from 'vue-demi'
 import { usePreferredContrast } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue-demi'
 
 export const UsePreferredContrast = /* #__PURE__ */ defineComponent({
   name: 'UsePreferredContrast',

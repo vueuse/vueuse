@@ -1,5 +1,5 @@
-import { isVue3, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { isVue3, ref } from 'vue-demi'
 import { computedWithControl, controlledComputed } from '.'
 
 describe('computedWithControl', () => {

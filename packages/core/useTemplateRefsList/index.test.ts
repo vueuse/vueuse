@@ -1,7 +1,7 @@
-import { defineComponent, h, isVue2, nextTick, ref, toRefs } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { mount } from '../../.test'
+import { defineComponent, h, isVue2, nextTick, ref, toRefs } from 'vue-demi'
 import { useTemplateRefsList } from '.'
+import { mount } from '../../.test'
 
 if (isVue2) {
   // Vue 2 is not supported

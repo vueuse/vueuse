@@ -18,7 +18,7 @@ Create virtual lists with ease. Virtual lists (sometimes called [_virtual scroll
 import { useVirtualList } from '@vueuse/core'
 
 const { list, containerProps, wrapperProps } = useVirtualList(
-  Array.from(Array(99999).keys()),
+  Array.from(Array.from({ length: 99999 }).keys()),
   {
     // Keep `itemHeight` in sync with the item's row.
     itemHeight: 22,
@@ -43,7 +43,7 @@ import { useToggle, useVirtualList } from '@vueuse/core'
 import { computed } from 'vue'
 
 const [isEven, toggle] = useToggle()
-const allItems = Array.from(Array(99999).keys())
+const allItems = Array.from(Array.from({ length: 99999 }).keys())
 const filteredList = computed(() => allItems.filter(i => isEven.value ? i % 2 === 0 : i % 2 === 1))
 
 const { list, containerProps, wrapperProps } = useVirtualList(
@@ -75,7 +75,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 ```typescript
 import { useVirtualList } from '@vueuse/core'
 
-const allItems = Array.from(Array(99999).keys())
+const allItems = Array.from(Array.from({ length: 99999 }).keys())
 
 const { list, containerProps, wrapperProps } = useVirtualList(
   allItems,

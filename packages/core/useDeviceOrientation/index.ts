@@ -1,11 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { Ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
 import { ref } from 'vue-demi'
+import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 /**
  * Reactive DeviceOrientationEvent.

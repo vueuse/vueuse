@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { invoke } from '@vueuse/shared'
 import type { Equal, Expect } from '@type-challenges/utils'
+import type { Ref } from 'vue-demi'
+import { invoke } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue-demi'
 import { until } from '.'
 
 describe('until', () => {
