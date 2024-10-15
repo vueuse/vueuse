@@ -8,6 +8,7 @@ import { categoryNames, functions } from '../../../../packages/metadata/metadata
 const coreCategories = categoryNames.filter(i => !i.startsWith('@'))
 const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
+const listViews = ['list', 'card']
 
 useEventListener('click', (e) => {
   // @ts-expect-error cast
@@ -21,6 +22,7 @@ const category = toRef(query, 'category') as Ref<string | null>
 const hasComponent = toRef(query, 'component') as any as Ref<boolean>
 const hasDirective = toRef(query, 'directive') as any as Ref<boolean>
 const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated' | null>
+const viewMethod = toRef(query, 'view') as Ref<'list' | 'card' | null>
 
 const showCategory = computed(() => !search.value && (!sortMethod.value || sortMethod.value === 'category'))
 
@@ -68,6 +70,10 @@ function toggleCategory(cate: string) {
 
 function toggleSort(method: string) {
   sortMethod.value = method as any
+}
+
+function handleView(viewType: string) {
+  viewMethod.value = viewType as any
 }
 </script>
 
@@ -121,6 +127,24 @@ function toggleSort(method: string) {
         {{ method }}
       </button>
     </div>
+
+    <div opacity="80" text="sm">
+      View
+    </div>
+    <div flex="~ wrap" gap="2" m="b-2">
+      <button
+        v-for="method of listViews"
+        :key="method"
+        class="select-button capitalize"
+        :class="{
+          active: method === (viewMethod || 'list'),
+        }"
+        @click="handleView(method)"
+      >
+        {{ method }}
+      </button>
+    </div>
+
     <div opacity="80" text="sm">
       Filters
     </div>
@@ -148,17 +172,37 @@ function toggleSort(method: string) {
         Clear Filters
       </button>
     </div>
-    <template v-for="(fn, idx) of result" :key="fn.name">
-      <h3
-        v-if="showCategory && fn.category !== result[idx - 1]?.category"
-        opacity="60"
-        class="!text-16px !tracking-wide !m-0"
-        p="y-2"
-      >
-        {{ fn.category }}
-      </h3>
-      <FunctionBadge :fn="fn" />
+
+    <div v-if="viewMethod === 'card'" flex="~ row wrap ">
+      <template v-for="(fn, idx) of result" :key="fn.name">
+        <h3
+          v-if="showCategory && fn.category !== result[idx - 1]?.category"
+          opacity="60"
+          w-full
+          class="!text-16px !tracking-wide !m-0"
+          p="y-2"
+        >
+          {{ fn.category }}
+        </h3>
+
+        <FunctionCard class="w-50% aspect-ratio-square" :fn="fn" />
+      </template>
+    </div>
+
+    <template v-else>
+      <template v-for="(fn, idx) of result" :key="fn.name">
+        <h3
+          v-if="showCategory && fn.category !== result[idx - 1]?.category"
+          opacity="60"
+          class="!text-16px !tracking-wide !m-0"
+          p="y-2"
+        >
+          {{ fn.category }}
+        </h3>
+        <FunctionBadge :fn="fn" />
+      </template>
     </template>
+
     <div v-if="!result.length" text-center pt-6>
       <div m2 op50>
         No result matched

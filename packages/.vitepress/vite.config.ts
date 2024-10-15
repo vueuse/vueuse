@@ -13,6 +13,7 @@ import { Contributors } from './plugins/contributors'
 import { MarkdownTransform } from './plugins/markdownTransform'
 
 const require = createRequire(import.meta.url)
+
 const [changeLog, contributions] = await Promise.all([
   getChangeLog(process.env.CI ? 1000 : 100),
   getFunctionContributors(),
@@ -34,7 +35,7 @@ export default defineConfig({
 
     // plugins
     Components({
-      dirs: resolve(__dirname, 'theme/components'),
+      dirs: [resolve(__dirname, 'theme/components'), resolve('..', 'core')],
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         IconsResolver({
