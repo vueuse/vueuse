@@ -248,6 +248,27 @@ describe('useRouteQuery', () => {
     expect(onUpdate).toHaveBeenCalledTimes(1)
   })
 
+  it('should trigger effects only once with getter object as watch source', async () => {
+    const route = getRoute({ page: '1' })
+    const router = { replace: (r: any) => {
+      Object.keys(r.query).forEach(queryKey => r.query[queryKey] = String(r.query[queryKey]))
+      return Object.assign(route, r)
+    } } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteQuery('page', 1, { transform: Number, route, router })
+
+    watch(() => ({ page: page.value }), onUpdate)
+
+    page.value = 2
+    await nextTick()
+    await nextTick()
+
+    expect(page.value).toBe(2)
+    expect(route.query.page).toBe('2')
+    expect(onUpdate).toHaveBeenCalledTimes(1)
+  })
+
   it('should keep current query and hash', async () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any

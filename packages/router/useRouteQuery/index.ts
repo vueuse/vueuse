@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
 import type { Router } from 'vue-router'
-import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, watch } from 'vue-demi'
 import { useRoute, useRouter } from 'vue-router'
+import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
@@ -89,7 +89,7 @@ export function useRouteQuery<
   watch(
     () => route.query[name],
     (v) => {
-      if (query === v)
+      if (query === transform(v as T))
         return
 
       query = v
