@@ -32,7 +32,8 @@ Auto-connect (enabled by default).
 
 This will call `open()` automatically for you and you don't need to call it by yourself.
 
-If url is provided as a ref, this also controls whether a connection is re-established when its value is changed (or whether you need to call open() again for the change to take effect).
+If url is provided as a ref, the connection is established as soon as it's contents
+change.
 
 ### Auto-reconnection
 
