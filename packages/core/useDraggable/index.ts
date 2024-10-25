@@ -166,9 +166,6 @@ export function useDraggable(
       return
     if (toValue(exact) && e.target !== toValue(target))
       return
-    if ((e.target as HTMLElement).tagName === 'IMG' && toValue(preventDefault) !== true) {
-      return
-    }
 
     const container = toValue(containerElement)
     const containerRect = container?.getBoundingClientRect?.()
