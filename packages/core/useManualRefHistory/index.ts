@@ -1,4 +1,4 @@
-import type { Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue-demi'
 import type { CloneFn } from '../useCloned'
 import { timestamp } from '@vueuse/shared'
 import { computed, markRaw, ref } from 'vue-demi'
@@ -65,12 +65,12 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * A ref representing if undo is possible (non empty undoStack)
    */
-  canUndo: Ref<boolean>
+  canUndo: ComputedRef<boolean>
 
   /**
    * A ref representing if redo is possible (non empty redoStack)
    */
-  canRedo: Ref<boolean>
+  canRedo: ComputedRef<boolean>
 
   /**
    * Undo changes
