@@ -1,10 +1,10 @@
-import { createEventHook, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
-import { useRafFn } from '../useRafFn'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableNavigator, ConfigurableWindow } from '../_configurable'
+import { createEventHook, tryOnMounted } from '@vueuse/shared'
+import { computed, ref } from 'vue-demi'
 import { defaultNavigator } from '../_configurable'
+import { useEventListener } from '../useEventListener'
+import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
 export interface UseGamepadOptions extends ConfigurableWindow, ConfigurableNavigator {

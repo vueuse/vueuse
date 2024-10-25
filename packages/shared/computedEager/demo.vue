@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { count } from './demo/state'
-import LazyDemo from './demo/LazyDemo.vue'
 import EagerDemo from './demo/EagerDemo.vue'
+import LazyDemo from './demo/LazyDemo.vue'
+import { count } from './demo/state'
 
 const lazyRenders = ref(0)
 const eagerRenders = ref(0)

@@ -1,7 +1,7 @@
-import { effectScope, nextTick, ref } from 'vue-demi'
+import type { Pausable } from '../utils'
 import { promiseTimeout } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { Pausable } from '../utils'
+import { effectScope, nextTick, ref } from 'vue-demi'
 import { useIntervalFn } from '.'
 
 describe('useIntervalFn', () => {
@@ -89,6 +89,27 @@ describe('useIntervalFn', () => {
     await scope.stop()
     await promiseTimeout(60)
     expect(callback).toHaveBeenCalledTimes(0)
+  })
+
+  it('pause in callback', async () => {
+    const pausable = useIntervalFn(() => {
+      callback()
+      pausable.pause()
+    }, 50, { immediateCallback: true, immediate: false })
+
+    pausable.resume()
+    expect(pausable.isActive.value).toBeFalsy()
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await promiseTimeout(60)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    pausable.resume()
+    expect(pausable.isActive.value).toBeFalsy()
+    expect(callback).toHaveBeenCalledTimes(2)
+
+    await promiseTimeout(60)
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 
   it('cant work when interval is negative', async () => {

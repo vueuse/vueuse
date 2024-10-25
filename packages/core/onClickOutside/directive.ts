@@ -1,7 +1,7 @@
-import { directiveHooks } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue-demi'
-import { onClickOutside } from '.'
 import type { OnClickOutsideHandler, OnClickOutsideOptions } from '.'
+import { directiveHooks } from '@vueuse/shared'
+import { onClickOutside } from '.'
 
 export const vOnClickOutside: ObjectDirective<
   HTMLElement,

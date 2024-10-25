@@ -1,9 +1,9 @@
-import { promiseTimeout } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { promiseTimeout } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { useEventListener } from '../useEventListener'
+import { ref } from 'vue-demi'
 import { onLongPress } from '.'
+import { useEventListener } from '../useEventListener'
 
 describe('onLongPress', () => {
   let element: Ref<HTMLElement>

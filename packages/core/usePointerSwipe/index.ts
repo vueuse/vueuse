@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toRef, tryOnMounted } from '@vueuse/shared'
 import type { Ref } from 'vue-demi'
-import { computed, reactive, readonly, ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
 import type { PointerType, Position } from '../types'
 import type { UseSwipeDirection } from '../useSwipe'
+import { toRef, tryOnMounted } from '@vueuse/shared'
+import { computed, reactive, readonly, ref } from 'vue-demi'
+import { useEventListener } from '../useEventListener'
 
 export interface UsePointerSwipeOptions {
   /**

@@ -1,7 +1,7 @@
-import { reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { useSetup } from '../../.test'
+import { reactive, ref } from 'vue-demi'
 import { useArrayFind } from '.'
+import { useSetup } from '../../.test'
 
 describe('useArrayFind', () => {
   it('should be defined', () => {

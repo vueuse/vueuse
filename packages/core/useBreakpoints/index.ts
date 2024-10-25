@@ -1,10 +1,10 @@
-import type { ComputedRef, Ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
 import { increaseWithUnit, toValue } from '@vueuse/shared'
 import { computed } from 'vue-demi'
-import { useMediaQuery } from '../useMediaQuery'
-import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useMediaQuery } from '../useMediaQuery'
 
 export * from './breakpoints'
 

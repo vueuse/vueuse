@@ -1,17 +1,17 @@
-import type { Fn } from '@vueuse/shared'
-import { isIOS, noop } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { isIOS, noop, toValue } from '@vueuse/shared'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import type { WindowEventName } from '../useEventListener'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: (MaybeElementRef | string)[]
+  ignore?: MaybeRefOrGetter<(MaybeElementRef | string)[]>
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -63,7 +63,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   let shouldListen = true
 
   const shouldIgnore = (event: PointerEvent) => {
-    return ignore.some((target) => {
+    return toValue(ignore).some((target) => {
       if (typeof target === 'string') {
         return Array.from(window.document.querySelectorAll(target))
           .some(el => el === event.target || event.composedPath().includes(el))
@@ -92,8 +92,18 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     handler(event)
   }
 
+  let isProcessingClick = false
+
   const cleanup = [
-    useEventListener(window, eventName, listener, { passive: true, capture }),
+    useEventListener(window, eventName, (event: PointerEvent) => {
+      if (!isProcessingClick) {
+        isProcessingClick = true
+        setTimeout(() => {
+          isProcessingClick = false
+        }, 0)
+        listener(event)
+      }
+    }, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))

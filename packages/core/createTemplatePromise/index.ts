@@ -1,5 +1,5 @@
 import type { DefineComponent, Ref, TransitionGroupProps } from 'vue-demi'
-import { Fragment, TransitionGroup, defineComponent, h, isVue3, ref, shallowReactive } from 'vue-demi'
+import { defineComponent, Fragment, h, isVue3, ref, shallowReactive, TransitionGroup } from 'vue-demi'
 
 export interface TemplatePromiseProps<Return, Args extends any[] = []> {
   /**

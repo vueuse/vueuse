@@ -1,6 +1,6 @@
 import type { Reactified, ReactifyOptions } from '../reactify'
-import { reactify } from '../reactify'
 import type { AnyFn } from '../utils'
+import { reactify } from '../reactify'
 
 export type ReactifyNested<T, Keys extends keyof T = keyof T, S extends boolean = true> = { [K in Keys]: T[K] extends AnyFn ? Reactified<T[K], S> : T[K] }
 

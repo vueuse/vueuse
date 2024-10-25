@@ -1,7 +1,7 @@
 import type { EventHookOn } from '@vueuse/shared'
-import { createEventHook, hasOwn } from '@vueuse/shared'
-import { type Ref, readonly, ref } from 'vue-demi'
 import type { ConfigurableDocument } from '../_configurable'
+import { createEventHook, hasOwn } from '@vueuse/shared'
+import { readonly, type Ref, ref } from 'vue-demi'
 import { defaultDocument } from '../_configurable'
 
 export interface UseFileDialogOptions extends ConfigurableDocument {
@@ -43,6 +43,7 @@ export interface UseFileDialogReturn {
   open: (localOptions?: Partial<UseFileDialogOptions>) => void
   reset: () => void
   onChange: EventHookOn<FileList | null>
+  onCancel: EventHookOn
 }
 
 /**
@@ -57,7 +58,8 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   } = options
 
   const files = ref<FileList | null>(null)
-  const { on: onChange, trigger } = createEventHook()
+  const { on: onChange, trigger: changeTrigger } = createEventHook()
+  const { on: onCancel, trigger: cancelTrigger } = createEventHook()
   let input: HTMLInputElement | undefined
   if (document) {
     input = document.createElement('input')
@@ -66,7 +68,11 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     input.onchange = (event: Event) => {
       const result = event.target as HTMLInputElement
       files.value = result.files
-      trigger(files.value)
+      changeTrigger(files.value)
+    }
+
+    input.oncancel = () => {
+      cancelTrigger()
     }
   }
 
@@ -74,7 +80,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     files.value = null
     if (input && input.value) {
       input.value = ''
-      trigger(null)
+      changeTrigger(null)
     }
   }
 
@@ -101,6 +107,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     files: readonly(files),
     open,
     reset,
+    onCancel,
     onChange,
   }
 }

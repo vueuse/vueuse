@@ -1,9 +1,9 @@
+import type { Import, Preset } from 'unimport'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { isPackageExists } from 'local-pkg'
 import { defineNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
-import type { Import, Preset } from 'unimport'
+import { isPackageExists } from 'local-pkg'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 

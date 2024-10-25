@@ -1,5 +1,5 @@
-import { isVue2, nextTick, ref, watch, watchEffect } from 'vue-demi'
 import { describe, expect, expectTypeOf, it } from 'vitest'
+import { isVue2, nextTick, ref, watch, watchEffect } from 'vue-demi'
 import { reactiveComputed } from '.'
 
 describe('reactiveComputed', () => {

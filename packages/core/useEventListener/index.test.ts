@@ -1,10 +1,10 @@
 import type { Fn } from '@vueuse/shared'
 import type { MockInstance } from 'vitest'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { noop } from '@vueuse/shared'
-import { isVue2 } from 'vue-demi'
 import type { Ref } from 'vue'
+import { noop } from '@vueuse/shared'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
+import { isVue2 } from 'vue-demi'
 import { useEventListener } from '.'
 
 describe('useEventListener', () => {

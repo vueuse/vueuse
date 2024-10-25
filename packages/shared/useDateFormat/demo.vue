@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useDateFormat, useNow } from '@vueuse/core'
+import { ref } from 'vue'
 
 const formatter = ref('dddd YYYY-MM-DD HH:mm:ss')
 const lang = ref('en-US')

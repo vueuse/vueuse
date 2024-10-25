@@ -1,5 +1,5 @@
-import { isVue2, reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { isVue2, reactive, ref } from 'vue-demi'
 import { useArrayReduce } from '.'
 
 describe('useArrayReduce', () => {
@@ -36,5 +36,16 @@ describe('useArrayReduce', () => {
 
     list.push({ num: 3 })
     expect(sum.value).toBe(6)
+  })
+  it.skipIf(isVue2)('should work with initialValue being a function', () => {
+    const list = reactive([{ num: 1 }, { num: 2 }])
+    const sum = useArrayReduce(list, (prev, val) => {
+      prev.push(val.num)
+      return prev
+    }, (() => []) as unknown as number[])
+    expect(sum.value).toEqual([1, 2])
+
+    list.push({ num: 3 })
+    expect(sum.value).toEqual([1, 2, 3])
   })
 })

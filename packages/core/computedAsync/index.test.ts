@@ -1,6 +1,7 @@
-import { computed, nextTick, ref } from 'vue-demi'
+import type { Ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { computed, nextTick, ref } from 'vue-demi'
 import { asyncComputed, computedAsync } from '.'
 
 describe('computed', () => {
@@ -35,6 +36,16 @@ describe('computedAsync', () => {
     await promiseTimeout(10)
 
     expect(data.value).toBe('data')
+  })
+
+  it('types are correct', async () => {
+    const func = vi.fn(() => Promise.resolve('data'))
+
+    const data1 = computedAsync(func)
+    const data2 = computedAsync(func, 'initialState')
+
+    expectTypeOf(data1).toEqualTypeOf<Ref<string | undefined>>()
+    expectTypeOf(data2).toEqualTypeOf<Ref<string>>()
   })
 
   it('call onError when error is thrown', async () => {
@@ -180,7 +191,7 @@ describe('computedAsync', () => {
       return Promise.resolve(result)
     })
     const other = computed(() => {
-      return double.value + 1
+      return (double.value ?? 0) + 1
     })
 
     expect(double.value).toBeUndefined()

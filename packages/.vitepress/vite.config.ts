@@ -1,16 +1,16 @@
+import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import process from 'node:process'
-import { createRequire } from 'node:module'
-import { defineConfig } from 'vite'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import Components from 'unplugin-vue-components/vite'
 import UnoCSS from 'unocss/vite'
+import IconsResolver from 'unplugin-icons/resolver'
+import Icons from 'unplugin-icons/vite'
+import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
 import { getChangeLog, getFunctionContributors } from '../../scripts/changelog'
-import { MarkdownTransform } from './plugins/markdownTransform'
 import { ChangeLog } from './plugins/changelog'
 import { Contributors } from './plugins/contributors'
+import { MarkdownTransform } from './plugins/markdownTransform'
 
 const require = createRequire(import.meta.url)
 const [changeLog, contributions] = await Promise.all([

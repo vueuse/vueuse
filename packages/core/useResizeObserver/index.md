@@ -10,8 +10,8 @@ Reports changes to the dimensions of an Element's content or the border-box
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 const el = ref(null)
 const text = ref('')

@@ -10,8 +10,8 @@ Reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element
 
 ```vue
 <script>
-import { ref } from 'vue'
 import { useElementBounding } from '@vueuse/core'
+import { ref } from 'vue'
 
 export default {
   setup() {

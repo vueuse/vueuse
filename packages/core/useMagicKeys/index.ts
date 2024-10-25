@@ -1,9 +1,9 @@
-import type { ComputedRef } from 'vue-demi'
-import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
 import { noop, toValue } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
+import { computed, reactive, ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
 
 export interface UseMagicKeysOptions<Reactive extends boolean> {

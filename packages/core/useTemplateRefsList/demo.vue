@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
 import { useTemplateRefsList } from '@vueuse/core'
+import { nextTick, ref, watch } from 'vue'
 
 const count = ref(5)
 const refs = useTemplateRefsList<HTMLDivElement>()

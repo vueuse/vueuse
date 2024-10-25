@@ -1,8 +1,8 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
+import { customStorageEventName, StorageSerializers, useStorage } from '.'
 import { mount, nextTwoTick, useSetup } from '../../.test'
-import { StorageSerializers, customStorageEventName, useStorage } from '.'
 
 const KEY = 'custom-key'
 
@@ -526,5 +526,28 @@ describe('useStorage', () => {
     storage.removeItem(KEY)
     const objectRef = useStorage(KEY, value, storage)
     expect(objectRef.value).toEqual(value)
+  })
+
+  it('syncs properly within the same document', async () => {
+    const state1 = useStorage(KEY, 0, storage)
+    const state2 = useStorage(KEY, 0, storage)
+
+    state1.value = 1
+    await nextTick()
+    expect(state2.value).toBe(1)
+  })
+
+  it('syncs properly within the same document (custom storages)', async () => {
+    const customStorage = {
+      getItem: storage.getItem,
+      setItem: storage.setItem,
+      removeItem: storage.removeItem,
+    }
+    const state1 = useStorage(KEY, 0, customStorage)
+    const state2 = useStorage(KEY, 0, customStorage)
+
+    state1.value = 1
+    await nextTick()
+    expect(state2.value).toBe(1)
   })
 })

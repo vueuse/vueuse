@@ -1,7 +1,7 @@
-import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ComputedRef } from 'vue-demi'
 import { toValue } from '@vueuse/shared'
+import { computed } from 'vue-demi'
 
 export type ProjectorFunction<F, T> = (input: F, from: readonly [F, F], to: readonly [T, T]) => T
 

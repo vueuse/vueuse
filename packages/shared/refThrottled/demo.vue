@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import { refThrottled } from '@vueuse/core'
+import { ref, watch } from 'vue'
 
 const trailing = ref(true)
 const leading = ref(false)

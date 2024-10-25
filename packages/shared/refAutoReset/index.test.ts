@@ -1,8 +1,8 @@
 import type { Ref } from 'vue-demi'
-import { effectScope, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { promiseTimeout } from '../utils'
+import { effectScope, ref } from 'vue-demi'
 import { autoResetRef, refAutoReset } from '.'
+import { promiseTimeout } from '../utils'
 
 describe('refAutoReset', () => {
   it('should be defined', () => {

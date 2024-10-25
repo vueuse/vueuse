@@ -1,6 +1,6 @@
-import { nextTick, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
+import { nextTick, ref } from 'vue-demi'
 import { useDebouncedRefHistory } from '.'
 
 describe('useDebouncedRefHistory', () => {

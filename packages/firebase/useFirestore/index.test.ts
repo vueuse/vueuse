@@ -1,7 +1,7 @@
-import { collection, doc } from 'firebase/firestore'
 import type { Firestore } from 'firebase/firestore'
-import { computed, effectScope, nextTick, ref } from 'vue-demi'
+import { collection, doc } from 'firebase/firestore'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { computed, effectScope, nextTick, ref } from 'vue-demi'
 import { useFirestore } from '.'
 
 const dummyFirestore = {} as Firestore

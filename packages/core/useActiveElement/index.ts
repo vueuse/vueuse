@@ -1,7 +1,7 @@
-import { ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
+import { ref } from 'vue-demi'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
@@ -61,7 +61,9 @@ export function useActiveElement<T extends HTMLElement>(
   if (triggerOnRemoval) {
     useMutationObserver(document as any, (mutations) => {
       mutations.filter(m => m.removedNodes.length)
-        .map(n => Array.from(n.removedNodes)).flat().forEach((node) => {
+        .map(n => Array.from(n.removedNodes))
+        .flat()
+        .forEach((node) => {
           if (node === activeElement.value)
             trigger()
         })

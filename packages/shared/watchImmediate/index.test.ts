@@ -1,5 +1,5 @@
-import { nextTick, ref } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick, ref } from 'vue-demi'
 import { watchImmediate } from '.'
 
 describe('watchImmediate', () => {
