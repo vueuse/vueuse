@@ -54,7 +54,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   const isSupported = useSupported(() => (navigator && 'clipboard' in navigator))
   const content = ref<ClipboardItems>([])
   const copied = ref(false)
-  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
+  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateContent() {
     if (isSupported.value) {
