@@ -2,6 +2,7 @@ import type { MaybeRef } from '@vueuse/shared'
 import type { ObservableInput, Subscription } from 'rxjs'
 import type { Ref, WatchOptions } from 'vue-demi'
 import { fromEvent as fromEventRx, from as fromRxjs, Observable } from 'rxjs'
+import type { NodeStyleEventEmitter } from 'rxjs/internal/observable/fromEvent'
 import { isRef, watch } from 'vue-demi'
 
 export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: WatchOptions): Observable<T> {
@@ -11,7 +12,7 @@ export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: Watch
   return fromRxjs(value)
 }
 
-export function fromEvent<T extends HTMLElement>(value: MaybeRef<T>, event: string): Observable<Event> {
+export function fromEvent<T extends HTMLElement>(value: NodeStyleEventEmitter | ArrayLike<NodeStyleEventEmitter> | MaybeRef<T>, event: string): Observable<Event> {
   if (isRef<T>(value)) {
     return new Observable((subscriber) => {
       let innerSub: Subscription | undefined
