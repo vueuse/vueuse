@@ -2,7 +2,7 @@
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { pxValue, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, ref, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -14,9 +14,11 @@ import { useSupported } from '../useSupported'
  * @param query
  * @param options
  */
-export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow = {}) {
-  const { window = defaultWindow } = options
+export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow & { ssrSize?: number } = {}) {
+  const { window = defaultWindow, ssrSize } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
+
+  const ssrSupport = ref(ssrSize !== undefined)
 
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)
@@ -36,6 +38,26 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   }
 
   const stopWatch = watchEffect(() => {
+    if (ssrSupport.value) {
+      // Exit SSR support on mounted if window available
+      ssrSupport.value = !isSupported.value
+
+      const queryStrings = toValue(query).split(',')
+      matches.value = queryStrings.some((queryString) => {
+        const not = queryString.includes('not all')
+        const minWidth = queryString.match(/\(\s*min-width:\s*(-?\d+(?:\.\d*)?[a-z]+\s*)\)/)
+        const maxWidth = queryString.match(/\(\s*max-width:\s*(-?\d+(?:\.\d*)?[a-z]+\s*)\)/)
+        let res = Boolean(minWidth || maxWidth)
+        if (minWidth && res) {
+          res = ssrSize! >= pxValue(minWidth[1])
+        }
+        if (maxWidth && res) {
+          res = ssrSize! <= pxValue(maxWidth[1])
+        }
+        return not ? !res : res
+      })
+      return
+    }
     if (!isSupported.value)
       return
 

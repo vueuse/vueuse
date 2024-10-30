@@ -89,6 +89,10 @@ export function increaseWithUnit(target: string | number, delta: number): string
   return result + unit
 }
 
+export function pxValue(px: string) {
+  return px.endsWith('rem') ? Number.parseFloat(px) * 16 : Number.parseFloat(px)
+}
+
 /**
  * Create a new subset object by giving keys
  */
