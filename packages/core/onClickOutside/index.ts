@@ -79,7 +79,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     return vm && vm.$.subTree.shapeFlag === 16
   }
 
-  function checkMultipleRoots(target: MaybeElementRef, eventTarget: EventTarget): boolean {
+  function checkMultipleRoots(target: MaybeElementRef, event: PointerEvent): boolean {
     const vm = toValue(target) as ComponentPublicInstance
     const children = vm.$.subTree && vm.$.subTree.children
 
@@ -87,7 +87,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
       return false
 
     // @ts-expect-error should be VNode
-    return children.some((child: VNode) => child.el === eventTarget)
+    return children.some((child: VNode) => child.el === event.target || event.composedPath().includes(child.el))
   }
 
   const listener = (event: PointerEvent) => {
@@ -96,7 +96,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     if (event.target == null)
       return
 
-    if (!(el instanceof Element) && hasMultipleRoots(target) && checkMultipleRoots(target, event.target))
+    if (!(el instanceof Element) && hasMultipleRoots(target) && checkMultipleRoots(target, event))
       return
 
     if (!el || el === event.target || event.composedPath().includes(el))
