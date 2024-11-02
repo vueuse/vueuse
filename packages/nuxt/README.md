@@ -23,12 +23,15 @@ export default defineNuxtConfig({
 
 The following utils are **disabled** from auto-import for Nuxt to avoid conflicts with Nuxt's built-in utils:
 
+- `toRef`
 - `toRefs`
+- `toValue`
 - `useFetch`
 - `useCookie`
 - `useHead`
 - `useTitle`
 - `useStorage`
+- `useImage`
 
 You can always use them by explicitly import from `@vueuse/core`
 
