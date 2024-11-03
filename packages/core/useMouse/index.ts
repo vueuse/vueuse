@@ -52,7 +52,7 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
 }
 
 const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
-  page: event => [event.pageX, event.pageY],
+  page: event => [event.clientX, event.clientY],
   client: event => [event.clientX, event.clientY],
   screen: event => [event.screenX, event.screenY],
   movement: event => (event instanceof Touch
