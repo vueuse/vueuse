@@ -52,15 +52,17 @@ export function useDropZone(
     }
 
     const checkDataTypes = (types: string[]) => {
-      if (_options.dataTypes) {
-        const dataTypes = unref(_options.dataTypes)
-        return typeof dataTypes === 'function'
-          ? dataTypes(types)
-          : dataTypes
-            ? dataTypes.some(item => types.includes(item))
-            : true
-      }
-      return true
+      const dataTypes = unref(_options.dataTypes)
+
+      if (typeof dataTypes === 'function')
+        return dataTypes(types)
+
+      if (!dataTypes?.length)
+        return true
+
+      return types.every(type =>
+        dataTypes.some(allowedType => type.includes(allowedType)),
+      )
     }
 
     const checkValidity = (event: DragEvent) => {
