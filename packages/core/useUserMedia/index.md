@@ -41,9 +41,9 @@ const currentCamera = computed(() => cameras.value[0]?.deviceId)
 const currentMicrophone = computed(() => microphones.value[0]?.deviceId)
 
 const { stream } = useUserMedia({
-  constraints: {
+  constraints: ref({
     video: { deviceId: currentCamera },
     audio: { deviceId: currentMicrophone, }
-  }
+  })
 })
 ```
