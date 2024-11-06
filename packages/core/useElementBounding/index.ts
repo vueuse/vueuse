@@ -75,7 +75,7 @@ export function useElementBounding(
   function recalculate() {
     const el = unrefElement(target)
 
-    if (!el) {
+    if (!el || !(el instanceof Element)) {
       if (reset) {
         height.value = 0
         bottom.value = 0
