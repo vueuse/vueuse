@@ -7,7 +7,7 @@ const targetIsVisible = useElementVisibility(target)
 </script>
 
 <template>
-  <div ref="target" class="demo-card">
+  <div ref="target" class="demo-card scale-60 ">
     <template v-if="targetIsVisible">
       <slot />
     </template>
@@ -19,7 +19,6 @@ const targetIsVisible = useElementVisibility(target)
   width: 100%;
   font-size: var(--vt-doc-code-font-size);
   background: var(--vp-code-block-bg);
-  padding: 2em;
   position: relative;
   margin-bottom: 10px;
   border-radius: 8px;
