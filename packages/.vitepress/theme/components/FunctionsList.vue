@@ -8,7 +8,7 @@ import { categoryNames, functions } from '../../../../packages/metadata/metadata
 const coreCategories = categoryNames.filter(i => !i.startsWith('@'))
 const addonCategories = categoryNames.filter(i => i.startsWith('@'))
 const sortMethods = ['category', 'name', 'updated']
-const listViews = ['list', 'card']
+const listViews = ['list', 'demo card']
 
 useEventListener('click', (e) => {
   // @ts-expect-error cast
@@ -22,7 +22,7 @@ const category = toRef(query, 'category') as Ref<string | null>
 const hasComponent = toRef(query, 'component') as any as Ref<boolean>
 const hasDirective = toRef(query, 'directive') as any as Ref<boolean>
 const sortMethod = toRef(query, 'sort') as Ref<'category' | 'name' | 'updated' | null>
-const viewMethod = toRef(query, 'view') as Ref<'list' | 'card' | null>
+const viewMethod = toRef(query, 'view') as Ref<'list' | 'demo card' | null>
 
 const showCategory = computed(() => !search.value && (!sortMethod.value || sortMethod.value === 'category'))
 
@@ -173,7 +173,7 @@ function handleView(viewType: string) {
       </button>
     </div>
 
-    <div v-if="viewMethod === 'card'" flex="~ row wrap ">
+    <div v-if="viewMethod === 'demo card'" flex="~ row wrap ">
       <template v-for="(fn, idx) of result" :key="fn.name">
         <h3
           v-if="showCategory && fn.category !== result[idx - 1]?.category"
