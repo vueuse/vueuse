@@ -34,6 +34,7 @@ export interface VueUseFunction {
   external?: string
   alias?: string[]
   related?: string[]
+  hasDemo?: boolean
 }
 
 export interface VueUsePackage extends PackageManifest {
