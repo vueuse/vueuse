@@ -8,7 +8,7 @@ const props = defineProps<{ fn: VueUseFunction }>()
 
 async function safeImport(path: string) {
   try {
-    return await /* @vite-ignore */ import(path)
+    return await import(/* @vite-ignore */ path)
   }
   catch {
     return h('div', 'No Demo')
