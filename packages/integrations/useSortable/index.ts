@@ -91,6 +91,10 @@ export function moveArrayElement<T>(
 
   if (to >= 0 && to < array.length) {
     const element = array.splice(from, 1)[0]
+
+    if (_valueIsRef)
+      (list as MaybeRef).value.length = 0
+
     nextTick(() => {
       array.splice(to, 0, element)
       // When list is ref, assign array to list.value
