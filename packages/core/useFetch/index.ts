@@ -47,8 +47,10 @@ export interface UseFetchReturn<T> {
 
   /**
    * Abort the fetch request
+   * Use DOMException as a reason to follow the description from MDN.
+   * https://developer.mozilla.org/zh-CN/docs/Web/API/DOMException#aborterror
    */
-  abort: Fn
+  abort: (reason?: DOMException) => void
 
   /**
    * Manually call the fetch
@@ -378,9 +380,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   let controller: AbortController | undefined
   let timer: Stoppable | undefined
 
-  const abort = () => {
+  const abort = (reason?: DOMException) => {
     if (supportsAbort) {
-      controller?.abort()
+      controller?.abort(reason)
       controller = new AbortController()
       controller.signal.onabort = () => aborted.value = true
       fetchOptions = {
@@ -396,7 +398,11 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   if (timeout)
-    timer = useTimeoutFn(abort, timeout, { immediate: false })
+    /**
+     * Just follow the description from MDN.
+     * https://developer.mozilla.org/zh-CN/docs/Web/API/DOMException#timeouterror
+     */
+    timer = useTimeoutFn(() => abort(new DOMException('Timeout', 'TimeoutError'), timeout, { immediate: false })
 
   let executeCounter = 0
 
