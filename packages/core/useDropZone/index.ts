@@ -65,12 +65,10 @@ export function useDropZone(
 
     const checkValidity = (event: DragEvent) => {
       const items = Array.from(event.dataTransfer?.items ?? [])
-      const types = items
-        .filter(item => item.kind === 'file')
-        .map(item => item.type)
+      const types = items.map(item => item.type)
 
       const dataTypesValid = checkDataTypes(types)
-      const multipleFilesValid = multiple || items.filter(item => item.kind === 'file').length <= 1
+      const multipleFilesValid = multiple || items.length <= 1
 
       return dataTypesValid && multipleFilesValid
     }

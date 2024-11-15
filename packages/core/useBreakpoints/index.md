@@ -55,6 +55,7 @@ const laptop = breakpoints.between('laptop', 'desktop')
 - Sematic: `breakpointsSematic`
 - Master CSS: `breakpointsMasterCss`
 - Prime Flex: `breakpointsPrimeFlex`
+- ElementUI / ElementPlus: `breakpointsElement`
 
 _Breakpoint presets are deliberately not auto-imported, as they do not start with `use` to have the scope of VueUse. They have to be explicitly imported:_
 
