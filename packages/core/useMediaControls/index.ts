@@ -20,6 +20,11 @@ export interface UseMediaSource {
    * The media codec type
    */
   type?: string
+  
+  /**
+   * Specifies the media query for the resource's intended media.
+   */
+  media?: string
 }
 
 export interface UseMediaTextTrackSource {
@@ -265,11 +270,12 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     })
 
     // Add new sources
-    sources.forEach(({ src, type }) => {
+    sources.forEach(({ src, type, media }) => {
       const source = document.createElement('source')
 
       source.setAttribute('src', src)
       source.setAttribute('type', type || '')
+      source.setAttribute('media', media || '')
 
       source.addEventListener('error', sourceErrorEvent.trigger)
 
