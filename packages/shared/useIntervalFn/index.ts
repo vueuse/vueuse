@@ -56,7 +56,8 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
     if (immediateCallback)
       cb()
     clean()
-    timer = setInterval(cb, intervalValue)
+    if (isActive.value)
+      timer = setInterval(cb, intervalValue)
   }
 
   if (immediate && isClient)
