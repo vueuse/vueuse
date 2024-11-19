@@ -630,7 +630,7 @@ function joinPaths(start: string, end: string): string {
   }
 
   if (start.endsWith('/') && end.startsWith('/')) {
-    return `${start.slice(0, start.length - 1)}${end}`
+    return `${start.slice(0, -1)}${end}`
   }
 
   return `${start}${end}`
