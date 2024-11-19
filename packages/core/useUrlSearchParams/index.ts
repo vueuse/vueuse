@@ -78,8 +78,8 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     const hash = window.location.hash || '#'
     const index = hash.indexOf('?')
     if (index > 0)
-      return `${window.location.search}${hash.slice(0, index)}${stringified ? `?${stringified}` : ''}`
-    return `${window.location.search}${hash}${stringified ? `?${stringified}` : ''}`
+      return `${window.location.search || ''}${hash.slice(0, index)}${stringified ? `?${stringified}` : ''}`
+    return `${window.location.search || ''}${hash}${stringified ? `?${stringified}` : ''}`
   }
 
   function read() {
