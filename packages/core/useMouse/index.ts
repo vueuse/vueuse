@@ -102,7 +102,7 @@ export function useMouse(options: UseMouseOptions = {}) {
 
     if (window) {
       _prevScrollX = window.scrollX
-      _prevScrollY = window.screenY
+      _prevScrollY = window.scrollY
     }
   }
 
