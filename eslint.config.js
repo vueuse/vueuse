@@ -85,6 +85,14 @@ export default antfu(
   },
   {
     files: [
+      'packages/*/index.ts',
+    ],
+    rules: {
+      'perfectionist/sort-exports': 'off',
+    },
+  },
+  {
+    files: [
       '**/*.md',
       '**/*.md/*.[jt]s',
       '**/*.md/*.vue',

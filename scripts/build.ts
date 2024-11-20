@@ -76,9 +76,6 @@ async function build() {
   consola.info('Rollup')
   exec(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`, { stdio: 'inherit' })
 
-  consola.info('Fix types')
-  exec('pnpm run types:fix', { stdio: 'inherit' })
-
   await buildMetaFiles()
 }
 
