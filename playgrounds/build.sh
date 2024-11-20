@@ -3,7 +3,7 @@
 # exit when any command fails
 set -e
 
-cd ../vite
+cd ./vite
 rm -rf node_modules
 pnpm install
 pnpm run build
