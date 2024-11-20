@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { useMutationObserver } from '.'
 
 describe('useMutationObserver', () => {

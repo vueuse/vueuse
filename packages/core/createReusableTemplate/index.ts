@@ -1,6 +1,6 @@
-import type { DefineComponent, Slot } from 'vue-demi'
+import type { DefineComponent, Slot } from 'vue'
 import { camelize, makeDestructurable } from '@vueuse/shared'
-import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
+import { defineComponent, shallowRef } from 'vue'
 
 type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>
 
@@ -54,14 +54,6 @@ export function createReusableTemplate<
 >(
   options: CreateReusableTemplateOptions = {},
 ): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps> {
-  // compatibility: Vue 2.7 or above
-  if (!isVue3 && !version.startsWith('2.7.')) {
-    if (process.env.NODE_ENV !== 'production')
-      throw new Error('[VueUse] createReusableTemplate only works in Vue 2.7 or above.')
-    // @ts-expect-error incompatible
-    return
-  }
-
   const {
     inheritAttrs = true,
   } = options

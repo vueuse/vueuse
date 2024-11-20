@@ -1,6 +1,5 @@
-import { getCurrentInstance } from 'vue-demi'
+import { getCurrentInstance } from 'vue'
 
-export * from './compatibility'
 export * from './filters'
 export * from './is'
 export * from './port'

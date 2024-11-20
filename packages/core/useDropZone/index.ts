@@ -1,9 +1,9 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { isClient } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
-import { ref, shallowRef, unref } from 'vue-demi'
+import { ref, shallowRef, unref } from 'vue'
 
 import { useEventListener } from '../useEventListener'
 

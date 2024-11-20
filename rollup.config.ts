@@ -15,11 +15,11 @@ const metadata = JSON.parse(fs.readFileSync('./packages/metadata/index.json', 'u
 const functions = metadata.functions as PackageIndexes['functions']
 
 const require = createRequire(import.meta.url)
-const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
+const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
 
 const injectVueDemi: Plugin = {
-  name: 'inject-vue-demi',
+  name: 'inject-vue',
   renderChunk(code) {
     return `${VUE_DEMI_IIFE};\n;${code}`
   },
@@ -32,7 +32,7 @@ const pluginPure = pure({
 })
 
 const externals = [
-  'vue-demi',
+  'vue',
   '@vueuse/shared',
   '@vueuse/core',
   '@vueuse/metadata',
@@ -52,7 +52,7 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
     continue
 
   const iifeGlobals = {
-    'vue-demi': 'VueDemi',
+    'vue': 'VueDemi',
     '@vueuse/shared': 'VueUse',
     '@vueuse/core': 'VueUse',
     ...(globals || {}),

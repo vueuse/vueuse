@@ -1,7 +1,7 @@
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
 import { createEventHook, isObject, toRef, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
-import { ref, watch, watchEffect } from 'vue-demi'
+import { ref, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 

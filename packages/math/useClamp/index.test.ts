@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computed, isReadonly, ref } from 'vue-demi'
+import { computed, isReadonly, ref } from 'vue'
 import { useClamp } from '.'
 
 describe('useClamp', () => {

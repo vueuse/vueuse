@@ -35,6 +35,6 @@
   "types": "./index.d.cts",
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   }
 }

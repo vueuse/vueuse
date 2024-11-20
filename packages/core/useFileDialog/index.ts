@@ -1,7 +1,7 @@
 import type { EventHookOn } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { readonly, type Ref, ref } from 'vue-demi'
+import { readonly, type Ref, ref } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseFileDialogOptions extends ConfigurableDocument {

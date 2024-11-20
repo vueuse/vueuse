@@ -1,6 +1,6 @@
 import type { IpcRenderer } from 'electron'
-import type { Ref } from 'vue-demi'
-import { shallowRef } from 'vue-demi'
+import type { Ref } from 'vue'
+import { shallowRef } from 'vue'
 
 /**
  * Returns Promise<any> - Resolves with the response from the main process.

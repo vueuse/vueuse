@@ -41,7 +41,7 @@
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
     "local-pkg": "catalog:",
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@nuxt/schema": "catalog:",

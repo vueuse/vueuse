@@ -1,7 +1,7 @@
 import type { Rules } from 'async-validator'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { nextTick, ref } from 'vue'
 import { useAsyncValidator } from '.'
 
 describe('useAsyncValidator', () => {

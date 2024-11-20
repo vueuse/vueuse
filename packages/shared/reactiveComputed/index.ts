@@ -1,5 +1,5 @@
-import type { UnwrapNestedRefs } from 'vue-demi'
-import { computed } from 'vue-demi'
+import type { UnwrapNestedRefs } from 'vue'
+import { computed } from 'vue'
 import { toReactive } from '../toReactive'
 
 /**

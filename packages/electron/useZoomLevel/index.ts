@@ -1,7 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { WebFrame } from 'electron'
-import type { Ref } from 'vue-demi'
-import { isRef, ref, watch } from 'vue-demi'
+import type { Ref } from 'vue'
+import { isRef, ref, watch } from 'vue'
 
 export function useZoomLevel(level: MaybeRef<number>): Ref<number>
 export function useZoomLevel(webFrame: WebFrame, level: MaybeRef<number>): Ref<number>

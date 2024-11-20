@@ -178,10 +178,6 @@ const TemplateFoo = createReusableTemplate<{ msg: string }>()
 ```
 
 ::: warning
-Dot notation is not supported in Vue 2.
-:::
-
-::: warning
 Passing boolean props without `v-bind` is not supported. See the [Caveats](#boolean-props) section for more details.
 :::
 
@@ -212,10 +208,6 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
   </ReuseTemplate>
 </template>
 ```
-
-::: warning
-Passing slots does not work in Vue 2.
-:::
 
 ## Caveats
 

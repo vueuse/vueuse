@@ -1,6 +1,6 @@
 import { defaultWindow } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { nextTick } from 'vue-demi'
+import { nextTick } from 'vue'
 import { useCssVar } from '.'
 
 describe('useCssVar', () => {

@@ -1,6 +1,6 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
+import { defineComponent, nextTick, ref, toRaw } from 'vue'
 import { customStorageEventName, StorageSerializers, useStorage } from '.'
 import { mount, nextTwoTick, useSetup } from '../../.test'
 
@@ -203,22 +203,20 @@ describe('useStorage', () => {
 
     expect(store.value).toEqual(new Map<number, string | number>([[1, 'a'], [2, 2]]))
 
-    if (isVue3) {
-      store.value.set(1, 'c')
-      await nextTwoTick()
+    store.value.set(1, 'c')
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,2]]')
+    expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,2]]')
 
-      store.value.set(2, 3)
-      await nextTwoTick()
+    store.value.set(2, 3)
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,3]]')
+    expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,3]]')
 
-      store.value = null
-      await nextTwoTick()
+    store.value = null
+    await nextTwoTick()
 
-      expect(storage.removeItem).toBeCalledWith(KEY)
-    }
+    expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
   it('set', async () => {
@@ -230,22 +228,20 @@ describe('useStorage', () => {
 
     expect(store.value).toEqual(new Set<string | number>([1, '2']))
 
-    if (isVue3) {
-      store.value.add('1')
-      await nextTwoTick()
+    store.value.add('1')
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '[1,"2","1"]')
+    expect(storage.setItem).toBeCalledWith(KEY, '[1,"2","1"]')
 
-      store.value.delete(1)
-      await nextTwoTick()
+    store.value.delete(1)
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '["2","1"]')
+    expect(storage.setItem).toBeCalledWith(KEY, '["2","1"]')
 
-      store.value = null
-      await nextTwoTick()
+    store.value = null
+    await nextTwoTick()
 
-      expect(storage.removeItem).toBeCalledWith(KEY)
-    }
+    expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
   it('pass ref as initialValue', async () => {
@@ -505,6 +501,9 @@ describe('useStorage', () => {
         return {
           basicRef,
         }
+      },
+      render() {
+        return null
       },
     }))
 
