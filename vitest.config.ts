@@ -12,7 +12,6 @@ export default defineConfig({
     },
     dedupe: [
       'vue',
-      'vue',
       '@vue/runtime-core',
     ],
   },
