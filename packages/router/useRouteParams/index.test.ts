@@ -40,6 +40,31 @@ describe('useRouteParams', () => {
     expect(id.value).toBe(1)
   })
 
+  it('should handle transform get/set', async () => {
+    let route = getRoute({
+      serialized: '{"foo":"bar"}',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const object = useRouteParams('serialized', undefined, {
+      transform: {
+        get: (value: string) => JSON.parse(value),
+        set: (value: any) => JSON.stringify(value),
+      },
+      router,
+      route,
+    })
+
+    expect(object.value).toEqual({ foo: 'bar' })
+
+    object.value = { foo: 'baz' }
+
+    await nextTick()
+
+    expect(route.params.serialized).toBe('{"foo":"baz"}')
+    expect(object.value).toEqual({ foo: 'baz' })
+  })
+
   it('should re-evaluate the value immediately', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any

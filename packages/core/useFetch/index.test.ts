@@ -84,6 +84,22 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
+  it('should use \'json\' payloadType', async () => {
+    let options: any
+    const payload = [1, 2]
+    useFetch('https://example.com', {
+      beforeFetch: (ctx) => {
+        options = ctx.options
+      },
+    }).post(payload)
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(options.body).toEqual(JSON.stringify(payload))
+      expect(options.headers['Content-Type']).toBe('application/json')
+    })
+  })
+
   it('should have an error on 400', async () => {
     const { error, statusCode } = useFetch('https://example.com?status=400')
 

@@ -8,8 +8,8 @@ const isVisible = ref(false)
 
 const { isActive, pause, resume } = useIntersectionObserver(
   target,
-  ([{ isIntersecting }]) => {
-    isVisible.value = isIntersecting
+  ([entry]) => {
+    isVisible.value = entry?.isIntersecting || false
   },
   { root },
 )

@@ -74,8 +74,6 @@ npm i @vueuse/core
 
 [Add ons](https://vueuse.org/add-ons.html) | [Nuxt Module](https://vueuse.org/guide/index.html#nuxt)
 
-> From v6.0, VueUse requires `vue` >= v3.2 or `@vue/composition-api` >= v1.1
-
 ###### Demos
 
 - [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
