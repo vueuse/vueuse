@@ -1,7 +1,7 @@
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
 import { tryOnMounted } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'

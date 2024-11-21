@@ -1,4 +1,4 @@
-import { nextTick, onBeforeMount } from 'vue-demi'
+import { nextTick, onBeforeMount } from 'vue'
 import { type Fn, getLifeCycleTarget } from '../utils'
 
 /**

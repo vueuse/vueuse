@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { InjectionKey, Ref } from 'vue-demi'
-import { defineComponent, ref } from 'vue-demi'
+import type { InjectionKey, Ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { computedInject } from '.'
 
 type OptionsRef = Ref<{ key: number, value: string }[]>

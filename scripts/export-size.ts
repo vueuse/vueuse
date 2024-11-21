@@ -30,7 +30,7 @@ async function run() {
       pkg: `./packages/${pkg.name}/dist`,
       output: false,
       bundler: 'rollup',
-      external: ['vue-demi', ...(pkg.external || [])],
+      external: ['vue', ...(pkg.external || [])],
       includes: ['@vueuse/shared'],
     })
 

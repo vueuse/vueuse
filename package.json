@@ -11,10 +11,10 @@
     "build": "nr update && esno scripts/build-run.ts",
     "build:redirects": "esno scripts/redirects.ts",
     "build:rollup": "NODE_OPTIONS=\"--max-old-space-size=6144\" rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
-    "build:types": "tsc --emitDeclarationOnly && nr types:fix",
+    "build:types": "tsc --emitDeclarationOnly",
     "clean": "rimraf --glob dist types \"packages/*/dist\"",
     "dev": "nr update && nr docs",
-    "docs": "vue-demi-switch 3 && vitepress dev packages --open",
+    "docs": "vitepress dev packages --open",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects",
     "docs:serve": "vitepress serve packages",
     "lint": "eslint --cache .",
@@ -25,12 +25,8 @@
     "release:prepare": "npm run build:types && npm run update",
     "size": "esno scripts/export-size.ts",
     "test": "vitest",
-    "test:2": "vue-demi-switch 2.7 vue2 && vitest run --silent",
-    "test:3": "vue-demi-switch 3 && vitest run",
-    "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:cov": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "types:fix": "esno scripts/fix-types.ts",
     "update": "nr -C packages/metadata update && esno scripts/update.ts",
     "update:full": "nr update && nr build:types",
     "watch": "esno scripts/build-run.ts --watch",
@@ -108,8 +104,7 @@
     "vite-plugin-inspect": "catalog:",
     "vitepress": "catalog:",
     "vitest": "catalog:",
-    "vue": "catalog:",
-    "vue2": "catalog:"
+    "vue": "catalog:"
   },
   "pnpm": {
     "neverBuiltDependencies": [
@@ -125,7 +120,7 @@
     "rollup": "catalog:",
     "vite": "catalog:",
     "vite-plugin-pwa": "catalog:",
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

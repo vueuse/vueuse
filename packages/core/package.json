@@ -40,6 +40,6 @@
     "@types/web-bluetooth": "catalog:",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   }
 }

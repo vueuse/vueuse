@@ -1,6 +1,6 @@
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import { isIOS, toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue'
 
 import { resolveElement } from '../_resolve-element'
 import { useEventListener } from '../useEventListener'

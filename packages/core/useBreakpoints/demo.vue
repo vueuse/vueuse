@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 

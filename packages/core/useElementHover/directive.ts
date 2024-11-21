@@ -1,7 +1,6 @@
-import type { ObjectDirective } from 'vue-demi'
+import type { ObjectDirective } from 'vue'
 import type { UseElementHoverOptions } from '.'
-import { directiveHooks } from '@vueuse/shared'
-import { watch } from 'vue-demi'
+import { watch } from 'vue'
 import { useElementHover } from '.'
 
 type BindingValueFunction = (state: boolean) => void
@@ -10,7 +9,7 @@ export const vElementHover: ObjectDirective<
   HTMLElement,
   BindingValueFunction | [handler: BindingValueFunction, options: UseElementHoverOptions]
 > = {
-  [directiveHooks.mounted](el, binding) {
+  mounted(el, binding) {
     const value = binding.value
     if (typeof value === 'function') {
       const isHovered = useElementHover(el)

@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*",
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "vue-router": "catalog:"

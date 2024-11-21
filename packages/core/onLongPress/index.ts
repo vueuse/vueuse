@@ -1,6 +1,6 @@
 import type { Position } from '../types'
 import type { MaybeElementRef } from '../unrefElement'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 

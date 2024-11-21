@@ -3,7 +3,7 @@ import type { FocusTrap } from 'focus-trap'
 import type { UseFocusTrapOptions } from '.'
 import { unrefElement } from '@vueuse/core'
 import { createFocusTrap } from 'focus-trap'
-import { defineComponent, h, onScopeDispose, ref, watch } from 'vue-demi'
+import { defineComponent, h, onScopeDispose, ref, watch } from 'vue'
 
 export interface ComponentUseFocusTrapOptions extends RenderableComponent {
   options?: UseFocusTrapOptions

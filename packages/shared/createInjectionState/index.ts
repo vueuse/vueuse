@@ -1,4 +1,4 @@
-import type { InjectionKey } from 'vue-demi'
+import type { InjectionKey } from 'vue'
 import { injectLocal } from '../injectLocal'
 import { provideLocal } from '../provideLocal'
 

@@ -1,6 +1,6 @@
 import type { UseIntervalFnOptions } from '@vueuse/shared'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useSupported } from '../useSupported'
 
 /**

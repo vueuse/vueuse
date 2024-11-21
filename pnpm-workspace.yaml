@@ -92,6 +92,4 @@ catalog:
   vitepress: ^1.5.0
   vitest: ^2.1.5
   vue: ^3.5.13
-  vue-demi: '>=0.14.10'
   vue-router: ^4.4.5
-  vue2: npm:vue@^2.7.14

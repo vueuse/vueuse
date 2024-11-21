@@ -66,7 +66,7 @@ Refer to [functions list](https://vueuse.org/functions) or [documentations](http
 
 ## 📦 Install
 
-> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
+> From v12.0, VueUse no longer supports Vue 2. Please use v10.x for Vue 2 support.
 
 ```bash
 npm i @vueuse/core
@@ -74,15 +74,11 @@ npm i @vueuse/core
 
 [Add ons](https://vueuse.org/add-ons.html) | [Nuxt Module](https://vueuse.org/guide/index.html#nuxt)
 
-> From v6.0, VueUse requires `vue` >= v3.2 or `@vue/composition-api` >= v1.1
-
 ###### Demos
 
 - [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
 - [Nuxt 3 + Vue 3](https://github.com/antfu/vitesse-nuxt3)
 - [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
-- [Nuxt 2 + Vue 2](https://github.com/antfu/vitesse-nuxt-bridge)
-- [Vue CLI + Vue 2](https://github.com/vueuse/vueuse-vue2-example)
 
 ### CDN
 

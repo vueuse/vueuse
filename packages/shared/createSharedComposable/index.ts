@@ -1,6 +1,6 @@
-import type { EffectScope } from 'vue-demi'
+import type { EffectScope } from 'vue'
 import type { AnyFn } from '../utils'
-import { effectScope } from 'vue-demi'
+import { effectScope } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
 /**

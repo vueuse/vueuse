@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computedEager } from '@vueuse/core'
-import { onUpdated } from 'vue-demi'
+import { onUpdated } from 'vue'
 import { count } from './state'
 
 const emit = defineEmits(['update'])

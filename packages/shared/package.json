@@ -32,6 +32,6 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.cts",
   "dependencies": {
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   }
 }

@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
 import type { StorageLike } from '../ssr-handlers'
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseStorageOptions } from '../useStorage'
 import { toRef, tryOnMounted } from '@vueuse/shared'
-import { computed, watch } from 'vue-demi'
+import { computed, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
 import { unrefElement } from '../unrefElement'
@@ -228,11 +228,5 @@ export function useColorMode<T extends string = BasicColorMode>(
     },
   })
 
-  try {
-    return Object.assign(auto, { store, system, state }) as UseColorModeReturn<T>
-  }
-  catch {
-    // In Vue 2.6, ref might not be extensible
-    return auto as any as UseColorModeReturn<T>
-  }
+  return Object.assign(auto, { store, system, state }) as UseColorModeReturn<T>
 }

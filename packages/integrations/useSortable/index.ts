@@ -1,8 +1,8 @@
 import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
-import type { MaybeRef } from 'vue-demi'
+import type { MaybeRef } from 'vue'
 import { defaultDocument, toValue, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable, { type Options } from 'sortablejs'
-import { isRef, nextTick } from 'vue-demi'
+import { isRef, nextTick } from 'vue'
 
 export interface UseSortableReturn {
   /**

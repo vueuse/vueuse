@@ -1,7 +1,7 @@
-import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue-demi'
+import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
-import { nextTick, ref } from 'vue-demi'
+import { nextTick, ref } from 'vue'
 import { toValue } from '../toValue'
 import { watchWithFilter } from '../watchWithFilter'
 

@@ -147,7 +147,7 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@types/nprogress": "catalog:",

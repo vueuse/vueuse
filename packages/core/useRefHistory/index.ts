@@ -1,5 +1,5 @@
 import type { ConfigurableEventFilter, Fn } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { CloneFn } from '../useCloned'
 import type { UseManualRefHistoryReturn } from '../useManualRefHistory'
 import { pausableFilter, watchIgnorable } from '@vueuse/shared'
