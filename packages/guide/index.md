@@ -38,6 +38,14 @@ It will be exposed to global as `window.VueUse`
 
 From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
 
+Install the vueuse module into your application using [nuxi](https://nuxt.com/docs/api/commands/module):
+
+```bash
+npx nuxi@latest module add vueuse
+```
+
+Or use npm:
+
 ```bash
 npm i -D @vueuse/nuxt @vueuse/core
 ```

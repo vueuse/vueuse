@@ -102,7 +102,7 @@ import { moveArrayElement } from '@vueuse/integrations/useSortable'
 useSortable(el, list, {
   onUpdate: (e) => {
     // do something
-    moveArrayElement(list.value, e.oldIndex, e.newIndex)
+    moveArrayElement(list.value, e.oldIndex, e.newIndex, e)
     // nextTick required here as moveArrayElement is executed in a microtask
     // so we need to wait until the next tick until that is finished.
     nextTick(() => {
