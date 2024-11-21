@@ -33,8 +33,11 @@ export function useRouteQuery<
     mode = 'replace',
     route = useRoute(),
     router = useRouter(),
-    transform = value => value as any as K,
+    transform,
   } = options
+
+  const transformGet = transform && 'get' in transform ? transform.get : transform ?? ((value: T) => value as any as K)
+  const transformSet = transform && 'set' in transform ? transform.set : (value: K) => value as any as T
 
   if (!_queue.has(router))
     _queue.set(router, new Map())
@@ -56,9 +59,11 @@ export function useRouteQuery<
       get() {
         track()
 
-        return transform(query !== undefined ? query : toValue(defaultValue))
+        return transformGet(query !== undefined ? query : toValue(defaultValue))
       },
       set(v) {
+        v = transformSet(v)
+
         if (query === v)
           return
 
@@ -89,7 +94,7 @@ export function useRouteQuery<
   watch(
     () => route.query[name],
     (v) => {
-      if (query === transform(v as T))
+      if (query === transformGet(v as T))
         return
 
       query = v
