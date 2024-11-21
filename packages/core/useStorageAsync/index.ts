@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { Ref, WatchStopHandle } from 'vue'
 import type { StorageLikeAsync } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
 import { toValue, watchWithFilter } from '@vueuse/shared'
@@ -9,6 +9,7 @@ import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
 import { StorageSerializers } from '../useStorage'
 import { guessSerializerType } from '../useStorage/guess'
+import { TaskQueue } from './queue'
 
 export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
   /**
@@ -95,31 +96,47 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     }
   }
 
-  read()
+  read().then()
 
-  if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)))
+  async function cb() {
+    try {
+      if (data.value == null)
+        await storage!.removeItem(key)
+      else
+        await storage!.setItem(key, await serializer.write(data.value))
+    }
+    catch (e) {
+      onError(e)
+    }
+  }
+
+  let watchStop: WatchStopHandle = () => {}
 
   if (storage) {
-    watchWithFilter(
-      data,
-      async () => {
-        try {
-          if (data.value == null)
-            await storage!.removeItem(key)
-          else
-            await storage!.setItem(key, await serializer.write(data.value))
-        }
-        catch (e) {
-          onError(e)
-        }
-      },
-      {
-        flush,
-        deep,
-        eventFilter,
-      },
-    )
+    watchStop = watchWithFilter(data, cb, {
+      flush,
+      deep,
+      eventFilter,
+    })
+  }
+
+  // Block time-consuming reads
+  const queue: TaskQueue = new TaskQueue(() => {
+    watchStop()
+    watchStop = watchWithFilter(data, cb, {
+      flush,
+      deep,
+      eventFilter,
+    })
+  })
+
+  if (window && listenToStorageChanges) {
+    useEventListener(window, 'storage', (e) => {
+      watchStop()
+      queue.enqueue(async () => {
+        await read(e)
+      })
+    })
   }
 
   return data as RemovableRef<T>
