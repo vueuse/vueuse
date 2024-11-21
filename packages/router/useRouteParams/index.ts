@@ -97,7 +97,7 @@ export function useRouteParams<
   watch(
     () => route.params[name],
     (v) => {
-      if (param === transform(v as T))
+      if (param === transformGet(v as T))
         return
 
       param = v

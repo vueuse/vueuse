@@ -94,7 +94,7 @@ export function useRouteQuery<
   watch(
     () => route.query[name],
     (v) => {
-      if (query === transform(v as T))
+      if (query === transformGet(v as T))
         return
 
       query = v
