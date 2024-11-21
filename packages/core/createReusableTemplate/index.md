@@ -217,6 +217,32 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 Passing slots does not work in Vue 2.
 :::
 
+### Inject Slot for List
+
+When reused templates are used in list scenarios, use `injectSlot` for better performance.
+
+```vue
+<script setup>
+import { createReusableTemplate } from '@vueuse/core'
+
+const [DefineTemplate, _, injectSlot] = createReusableTemplate()
+
+injectSlot('list-slot')
+</script>
+
+<template>
+  <DefineTemplate v-slot="{ data }">
+    <div>{{ data }} passed from usage</div>
+  </DefineTemplate>
+
+  <slot v-for="i in 10" :key="i" name="list-slot" :data="`${i}# `" />
+</template>
+```
+
+::: warning
+Inject slot does not work in Vue 2.
+:::
+
 ## Caveats
 
 ### Boolean props
