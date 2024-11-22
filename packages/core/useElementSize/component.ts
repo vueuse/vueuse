@@ -6,14 +6,14 @@ import { defineComponent, h, reactive, ref } from 'vue'
 
 export const UseElementSize = /* #__PURE__ */ defineComponent<ElementSize & UseResizeObserverOptions & RenderableComponent>({
   name: 'UseElementSize',
-  props: ['width', 'height', 'box', 'as'] as unknown as undefined,
+  props: ['width', 'height', 'box', 'as', 'class'] as unknown as undefined,
   setup(props, { slots }) {
     const target = ref()
     const data = reactive(useElementSize(target, { width: props.width, height: props.height }, { box: props.box }))
 
     return () => {
       if (slots.default)
-        return h(props.as || 'div', { ref: target }, slots.default(data))
+        return h(props.as || 'div', { ref: target, class: props.class }, slots.default(data))
     }
   },
 })
