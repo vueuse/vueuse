@@ -80,6 +80,7 @@ export function useMouse(options: UseMouseOptions = {}) {
   } = options
 
   let _prevMouseEvent: MouseEvent | null = null
+  let _prevScroll: number[] = [0, 0]
 
   const x = ref(initialValue.x)
   const y = ref(initialValue.y)
@@ -93,6 +94,9 @@ export function useMouse(options: UseMouseOptions = {}) {
     const result = extractor(event)
     _prevMouseEvent = event
 
+    if (type === 'page')
+      _prevScroll = [window?.scrollX ?? 0, window?.scrollY ?? 0]
+
     if (result) {
       [x.value, y.value] = result
       sourceType.value = 'mouse'
@@ -102,6 +106,10 @@ export function useMouse(options: UseMouseOptions = {}) {
   const touchHandler = (event: TouchEvent) => {
     if (event.touches.length > 0) {
       const result = extractor(event.touches[0])
+
+      if (type === 'page')
+        _prevScroll = [window?.scrollX ?? 0, window?.scrollY ?? 0]
+
       if (result) {
         [x.value, y.value] = result
         sourceType.value = 'touch'
@@ -115,8 +123,10 @@ export function useMouse(options: UseMouseOptions = {}) {
     const pos = extractor(_prevMouseEvent)
 
     if (_prevMouseEvent instanceof MouseEvent && pos) {
-      x.value = pos[0] + window.scrollX
-      y.value = pos[1] + window.scrollY
+      const deltaX = type === 'page' ? window.scrollX - _prevScroll[0] : window.scrollX
+      const deltaY = type === 'page' ? window.scrollY - _prevScroll[1] : window.scrollY
+      x.value = pos[0] + deltaX
+      y.value = pos[1] + deltaY
     }
   }
 
