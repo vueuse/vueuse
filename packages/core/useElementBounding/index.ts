@@ -43,6 +43,17 @@ export interface UseElementBoundingOptions {
    * @default 'sync'
    */
   updateTiming?: 'sync' | 'next-frame'
+
+  /**
+   * Calculate bounding box values relative to the nearest bounding parent.
+   *
+   * If enabled, the computed values (e.g., `left`, `top`, etc.) are adjusted to be relative
+   * to the nearest bounding parent element (e.g., an element with `transform`, `perspective`,
+   * or `filter` applied) instead of the viewport.
+   *
+   * @default false
+   */
+  relativeToContainer?: boolean
 }
 
 /**
@@ -61,6 +72,7 @@ export function useElementBounding(
     windowScroll = true,
     immediate = true,
     updateTiming = 'sync',
+    relativeToContainer = false,
   } = options
 
   const height = ref(0)
@@ -99,6 +111,18 @@ export function useElementBounding(
     width.value = rect.width
     x.value = rect.x
     y.value = rect.y
+
+    if (relativeToContainer) {
+      const boundingParent = getBoundingParent(el)
+      const parentRect = boundingParent.getBoundingClientRect()
+
+      if (parentRect) {
+        top.value -= parentRect.top
+        left.value -= parentRect.left
+        bottom.value -= parentRect.top
+        right.value -= parentRect.left
+      }
+    }
   }
 
   function update() {
@@ -106,6 +130,29 @@ export function useElementBounding(
       recalculate()
     else if (updateTiming === 'next-frame')
       requestAnimationFrame(() => recalculate())
+  }
+
+  function getBoundingParent(el: HTMLElement | SVGElement | null | undefined) {
+    let parent = el?.parentElement
+
+    while (parent) {
+      const style = window.getComputedStyle(parent)
+
+      // Check for properties that create a containing block
+      if (
+        style.transform !== 'none' // Transform applies containment
+        || style.perspective !== 'none' // Perspective creates containment
+        || style.filter !== 'none' // Filter creates a new stacking context
+        || style.willChange.includes('transform') // Will-change can create containment
+        || style.position === 'fixed' // Fixed can create containment in rare cases
+      ) {
+        return parent
+      }
+
+      parent = parent.parentElement
+    }
+
+    return document.body
   }
 
   useResizeObserver(target, update)
