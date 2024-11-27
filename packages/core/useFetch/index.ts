@@ -421,7 +421,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       const payload = toValue(config.payload)
       // Set the payload to json type only if it's not provided and a literal object or array is provided and the object is not `formData`
       // The only case we can deduce the content type and `fetch` can't
-      const proto = Object.getPrototypeOf(payload)
+      const proto = Object.getPrototypeOf(payload || {})
       if (!config.payloadType && payload && (proto === Object.prototype || Array.isArray(proto)) && !(payload instanceof FormData))
         config.payloadType = 'json'
 
