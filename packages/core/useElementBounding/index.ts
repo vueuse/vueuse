@@ -117,10 +117,10 @@ export function useElementBounding(
       const parentRect = boundingParent.getBoundingClientRect()
 
       if (parentRect) {
-        top.value -= parentRect.top
-        left.value -= parentRect.left
-        bottom.value -= parentRect.top
-        right.value -= parentRect.left
+        top.value -= Math.max(0, parentRect.top)
+        left.value -= Math.max(0, parentRect.left)
+        bottom.value -= Math.max(0, parentRect.top)
+        right.value -= Math.max(0, parentRect.left)
       }
     }
   }
