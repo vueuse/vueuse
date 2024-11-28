@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { invoke } from '@vueuse/shared'
 import type { Equal, Expect } from '@type-challenges/utils'
+import type { Ref } from 'vue'
+import { invoke } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { until } from '.'
 
 describe('until', () => {
@@ -209,6 +209,7 @@ describe('until', () => {
   })
 
   it('should type check', () => {
+    // eslint-disable-next-line ts/no-unused-expressions
     async () => {
       const x = ref<'x'>()
       // type checks are done this way to prevent unused variable warnings

@@ -9,8 +9,8 @@ Call function on every `requestAnimationFrame`. With controls of pausing and res
 ## Usage
 
 ```js
-import { ref } from 'vue'
 import { useRafFn } from '@vueuse/core'
+import { ref } from 'vue'
 
 const count = ref(0)
 

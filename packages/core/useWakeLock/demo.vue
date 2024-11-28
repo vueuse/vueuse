@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
 import { useWakeLock } from '@vueuse/core'
+import { computed, reactive } from 'vue'
 
 const wakeLock = reactive(useWakeLock())
 const text = computed(() => wakeLock.isActive ? 'OFF' : 'ON')

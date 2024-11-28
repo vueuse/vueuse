@@ -1,13 +1,13 @@
+import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import YAML from 'js-yaml'
-import Git from 'simple-git'
-import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
 import { $fetch } from 'ofetch'
-import { getCategories } from '../packages/metadata/utils'
+import Git from 'simple-git'
 import { packages } from '../meta/packages'
+import { getCategories } from '../packages/metadata/utils'
 
 export const git = Git()
 
@@ -173,7 +173,7 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 
   readme = readme.replace(
     /img\.shields\.io\/badge\/-(.+?)%20functions/,
-`img.shields.io/badge/-${functionsCount}%20functions`,
+    `img.shields.io/badge/-${functionsCount}%20functions`,
   ).trim().replace(/\r\n/g, '\n')
 
   await fs.writeFile('README.md', `${readme}\n`, 'utf-8')

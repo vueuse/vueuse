@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { stringify } from '@vueuse/docs-utils'
-import { useMouse, useParentElement } from '@vueuse/core'
 import type { UseMouseEventExtractor } from '@vueuse/core'
+import { useMouse, useParentElement } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
+import { reactive } from 'vue'
 
 const parentEl = useParentElement()
 

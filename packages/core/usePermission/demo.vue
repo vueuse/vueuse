@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
-import YAML from 'js-yaml'
 import { usePermission } from '@vueuse/core'
+import YAML from 'js-yaml'
+import { computed, reactive } from 'vue'
 
 const accelerometer = usePermission('accelerometer')
 const accessibilityEvents = usePermission('accessibility-events')
@@ -18,6 +18,7 @@ const paymentHandler = usePermission('payment-handler')
 const persistentStorage = usePermission('persistent-storage')
 const push = usePermission('push')
 const speaker = usePermission('speaker')
+const localFonts = usePermission('local-fonts')
 
 const code = computed(() => YAML.dump(reactive({
   accelerometer,
@@ -35,6 +36,7 @@ const code = computed(() => YAML.dump(reactive({
   persistentStorage,
   push,
   speaker,
+  localFonts,
 })))
 </script>
 

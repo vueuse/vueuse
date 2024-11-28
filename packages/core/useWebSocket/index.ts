@@ -1,7 +1,7 @@
-import type { Ref } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { ref, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -26,6 +26,11 @@ export interface UseWebSocketOptions {
      * @default 'ping'
      */
     message?: string | ArrayBuffer | Blob
+
+    /**
+     * Response message for the heartbeat, if undefined the message will be used
+     */
+    responseMessage?: string | ArrayBuffer | Blob
 
     /**
      * Interval, in milliseconds
@@ -216,6 +221,7 @@ export function useWebSocket<Data = any>(
 
     ws.onopen = () => {
       status.value = 'OPEN'
+      retried = 0
       onConnected?.(ws!)
       heartbeatResume?.()
       _sendBuffer()
@@ -225,20 +231,23 @@ export function useWebSocket<Data = any>(
       status.value = 'CLOSED'
       onDisconnected?.(ws, ev)
 
-      if (!explicitlyClosed && options.autoReconnect) {
+      if (!explicitlyClosed && options.autoReconnect && (wsRef.value == null || ws === wsRef.value)) {
         const {
           retries = -1,
           delay = 1000,
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
-        retried += 1
 
-        if (typeof retries === 'number' && (retries < 0 || retried < retries))
+        if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
+          retried += 1
           setTimeout(_init, delay)
-        else if (typeof retries === 'function' && retries())
+        }
+        else if (typeof retries === 'function' && retries()) {
           setTimeout(_init, delay)
-        else
+        }
+        else {
           onFailed?.()
+        }
       }
     }
 
@@ -251,8 +260,9 @@ export function useWebSocket<Data = any>(
         resetHeartbeat()
         const {
           message = DEFAULT_PING_MESSAGE,
+          responseMessage = message,
         } = resolveNestedOptions(options.heartbeat)
-        if (e.data === message)
+        if (e.data === responseMessage)
           return
       }
 

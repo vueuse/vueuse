@@ -1,8 +1,8 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
-import { ref } from 'vue-demi'
-import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
@@ -107,7 +107,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
       resolve,
       reject,
     }
-    worker.value && worker.value.postMessage([[...fnArgs]])
+    worker.value?.postMessage([[...fnArgs]])
 
     workerStatus.value = 'RUNNING'
   })

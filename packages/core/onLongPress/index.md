@@ -18,8 +18,8 @@ Function provides modifiers in options
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { onLongPress } from '@vueuse/core'
+import { ref } from 'vue'
 
 const htmlRefHook = ref<HTMLElement>()
 const longPressedHook = ref(false)
@@ -59,8 +59,8 @@ onLongPress(
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { OnLongPress } from '@vueuse/components'
+import { ref } from 'vue'
 
 const longPressedComponent = ref(false)
 
@@ -93,8 +93,8 @@ function resetComponent() {
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { vOnLongPress } from '@vueuse/components'
+import { ref } from 'vue'
 
 const longPressedDirective = ref(false)
 

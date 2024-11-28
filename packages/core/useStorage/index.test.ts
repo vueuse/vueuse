@@ -1,8 +1,8 @@
 import { debounceFilter, promiseTimeout } from '@vueuse/shared'
-import { defineComponent, isVue3, nextTick, ref, toRaw } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, nextTick, ref, toRaw } from 'vue'
+import { customStorageEventName, StorageSerializers, useStorage } from '.'
 import { mount, nextTwoTick, useSetup } from '../../.test'
-import { StorageSerializers, customStorageEventName, useStorage } from '.'
 
 const KEY = 'custom-key'
 
@@ -203,22 +203,20 @@ describe('useStorage', () => {
 
     expect(store.value).toEqual(new Map<number, string | number>([[1, 'a'], [2, 2]]))
 
-    if (isVue3) {
-      store.value.set(1, 'c')
-      await nextTwoTick()
+    store.value.set(1, 'c')
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,2]]')
+    expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,2]]')
 
-      store.value.set(2, 3)
-      await nextTwoTick()
+    store.value.set(2, 3)
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,3]]')
+    expect(storage.setItem).toBeCalledWith(KEY, '[[1,"c"],[2,3]]')
 
-      store.value = null
-      await nextTwoTick()
+    store.value = null
+    await nextTwoTick()
 
-      expect(storage.removeItem).toBeCalledWith(KEY)
-    }
+    expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
   it('set', async () => {
@@ -230,22 +228,20 @@ describe('useStorage', () => {
 
     expect(store.value).toEqual(new Set<string | number>([1, '2']))
 
-    if (isVue3) {
-      store.value.add('1')
-      await nextTwoTick()
+    store.value.add('1')
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '[1,"2","1"]')
+    expect(storage.setItem).toBeCalledWith(KEY, '[1,"2","1"]')
 
-      store.value.delete(1)
-      await nextTwoTick()
+    store.value.delete(1)
+    await nextTwoTick()
 
-      expect(storage.setItem).toBeCalledWith(KEY, '["2","1"]')
+    expect(storage.setItem).toBeCalledWith(KEY, '["2","1"]')
 
-      store.value = null
-      await nextTwoTick()
+    store.value = null
+    await nextTwoTick()
 
-      expect(storage.removeItem).toBeCalledWith(KEY)
-    }
+    expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
   it('pass ref as initialValue', async () => {
@@ -506,6 +502,9 @@ describe('useStorage', () => {
           basicRef,
         }
       },
+      render() {
+        return null
+      },
     }))
 
     await nextTick()
@@ -526,5 +525,28 @@ describe('useStorage', () => {
     storage.removeItem(KEY)
     const objectRef = useStorage(KEY, value, storage)
     expect(objectRef.value).toEqual(value)
+  })
+
+  it('syncs properly within the same document', async () => {
+    const state1 = useStorage(KEY, 0, storage)
+    const state2 = useStorage(KEY, 0, storage)
+
+    state1.value = 1
+    await nextTick()
+    expect(state2.value).toBe(1)
+  })
+
+  it('syncs properly within the same document (custom storages)', async () => {
+    const customStorage = {
+      getItem: storage.getItem,
+      setItem: storage.setItem,
+      removeItem: storage.removeItem,
+    }
+    const state1 = useStorage(KEY, 0, customStorage)
+    const state2 = useStorage(KEY, 0, customStorage)
+
+    state1.value = 1
+    await nextTick()
+    expect(state2.value).toBe(1)
   })
 })

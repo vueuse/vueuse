@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useCycleList } from '@vueuse/core'
-import { watchEffect } from 'vue-demi'
+import { watchEffect } from 'vue'
 
 const mode = useColorMode({
   emitAuto: true,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useMouseInElement } from '@vueuse/core'
 import { stringify } from '@vueuse/docs-utils'
 import { reactive, ref } from 'vue'
-import { useMouseInElement } from '@vueuse/core'
 import Area from './Area.vue'
 
 const target = ref(null)

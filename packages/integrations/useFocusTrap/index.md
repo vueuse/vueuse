@@ -20,8 +20,8 @@ npm i focus-trap@^7
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { ref } from 'vue'
 
 const target = ref()
 const { hasFocus, activate, deactivate } = useFocusTrap(target)
@@ -43,12 +43,45 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 </template>
 ```
 
+**Multiple Refs**
+
+```vue
+<script setup>
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { ref } from 'vue'
+
+const targetOne = ref()
+const targetTwo = ref()
+const { hasFocus, activate, deactivate } = useFocusTrap([targetOne, targetTwo])
+</script>
+
+<template>
+  <div>
+    <button @click="activate()">
+      Activate
+    </button>
+    <div ref="targetOne">
+      <span>Has Focus: {{ hasFocus }}</span>
+      <input type="text">
+    </div>
+    ...
+    <div ref="targetTow">
+      <p>Another target here</p>
+      <input type="text">
+      <button @click="deactivate()">
+        Deactivate
+      </button>
+    </div>
+  </div>
+</template>
+```
+
 **Automatically Focus**
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { ref } from 'vue'
 
 const target = ref()
 const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: true })
@@ -103,8 +136,8 @@ With the `UseFocusTrap` component, Focus Trap will be activated automatically on
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
+import { ref } from 'vue'
 
 const show = ref(false)
 </script>

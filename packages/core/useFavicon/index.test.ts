@@ -32,16 +32,16 @@ describe('useFavicon', () => {
   })
 
   it('ref const', () => {
-    const tagetRef = ref('v1')
-    const favicon = useFavicon(tagetRef)
+    const targetRef = ref('v1')
+    const favicon = useFavicon(targetRef)
     expect(favicon.value).toEqual('v1')
-    tagetRef.value = 'v2'
+    targetRef.value = 'v2'
     expect(favicon.value).toEqual('v2')
   })
 
   it('ref null', () => {
-    const tagetRef = ref(null)
-    const favicon = useFavicon(tagetRef)
+    const targetRef = ref(null)
+    const favicon = useFavicon(targetRef)
     expect(favicon.value).toEqual(null)
   })
 

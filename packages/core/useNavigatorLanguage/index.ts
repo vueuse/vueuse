@@ -1,11 +1,11 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { Ref } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
+
+import { ref } from 'vue'
+import { defaultWindow } from '../_configurable'
 
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface NavigatorLanguageState {
   isSupported: Ref<boolean>
