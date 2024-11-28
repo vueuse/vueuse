@@ -1,7 +1,7 @@
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef } from 'vue'
 import type { UseTimeoutFnOptions } from '../useTimeoutFn'
 import type { Fn, MaybeRefOrGetter, Stoppable } from '../utils'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import { useTimeoutFn } from '../useTimeoutFn'
 import { noop } from '../utils'
 

@@ -1,8 +1,8 @@
 import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/shared'
 import type { Observable, Subscription } from 'rxjs'
-import type { WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
+import type { WatchOptions, WatchSource, WatchStopHandle } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { watch } from 'vue-demi'
+import { watch } from 'vue'
 
 export type OnCleanup = (cleanupFn: () => void) => void
 export type WatchExtractedObservableCallback<Value, OldValue, ObservableElement> = (value: NonNullable<Value>, oldValue: OldValue, onCleanup: OnCleanup) => Observable<ObservableElement>

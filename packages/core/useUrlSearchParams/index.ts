@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
 import { pausableWatch } from '@vueuse/shared'
-import { reactive } from 'vue-demi'
+import { reactive } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -78,8 +78,8 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     const hash = window.location.hash || '#'
     const index = hash.indexOf('?')
     if (index > 0)
-      return `${hash.slice(0, index)}${stringified ? `?${stringified}` : ''}`
-    return `${hash}${stringified ? `?${stringified}` : ''}`
+      return `${window.location.search || ''}${hash.slice(0, index)}${stringified ? `?${stringified}` : ''}`
+    return `${window.location.search || ''}${hash}${stringified ? `?${stringified}` : ''}`
   }
 
   function read() {

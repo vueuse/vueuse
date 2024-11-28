@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs, toValue } from '@vueuse/shared'
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 

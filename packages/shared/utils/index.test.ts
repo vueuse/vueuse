@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { isVue3, ref } from 'vue-demi'
-import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
+import { ref } from 'vue'
+import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -327,29 +327,6 @@ describe('is', () => {
 
     obj3.a = 2
     expect(hasOwn(obj3, 'a')).toBeTruthy()
-  })
-})
-
-describe('compatibility', () => {
-  it('should export module', () => {
-    expect(directiveHooks).toBeDefined()
-  })
-
-  it('directiveHooks', () => {
-    if (isVue3) {
-      expect(directiveHooks).toEqual({
-        mounted: 'mounted',
-        updated: 'updated',
-        unmounted: 'unmounted',
-      })
-    }
-    else {
-      expect(directiveHooks).toEqual({
-        mounted: 'inserted',
-        updated: 'componentUpdated',
-        unmounted: 'unbind',
-      })
-    }
   })
 })
 

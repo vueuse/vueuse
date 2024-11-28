@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { isVue2, nextTick } from 'vue-demi'
+import { nextTick } from 'vue'
 import { useVModel } from '.'
 
 describe('useVModel', () => {
-  const defaultKey = isVue2 ? 'value' : 'modelValue'
+  const defaultKey = 'modelValue'
   const defaultValue = 'default'
   const defaultProps = () => ({
     [defaultKey]: defaultValue,
@@ -40,7 +40,7 @@ describe('useVModel', () => {
     const data = useVModel(defaultProps(), undefined, emitMock)
     data.value = 'changed'
 
-    expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
+    expect(emitMock).toHaveBeenCalledWith('update:modelValue', 'changed')
   })
 
   it('should use eventName if set', async () => {
@@ -244,7 +244,7 @@ describe('useVModel', () => {
     const data = useVModel(defaultProps(), undefined, emitMock, { shouldEmit: beforeEmit })
     data.value = 'changed'
 
-    expect(emitMock).toHaveBeenCalledWith(isVue2 ? 'input' : 'update:modelValue', 'changed')
+    expect(emitMock).toHaveBeenCalledWith('update:modelValue', 'changed')
     expect(beforeEmitMock).toHaveBeenCalled()
     await nextTick()
     expect(res).toBe('changed')

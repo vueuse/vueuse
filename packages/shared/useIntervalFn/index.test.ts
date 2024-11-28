@@ -1,7 +1,7 @@
 import type { Pausable } from '../utils'
 import { promiseTimeout } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, ref } from 'vue-demi'
+import { effectScope, nextTick, ref } from 'vue'
 import { useIntervalFn } from '.'
 
 describe('useIntervalFn', () => {

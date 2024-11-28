@@ -1,6 +1,6 @@
-import type { Component, Ref } from 'vue-demi'
+import type { Component, Ref } from 'vue'
 import { tryOnMounted } from '@vueuse/shared'
-import { customRef, getCurrentInstance, onUpdated } from 'vue-demi'
+import { customRef, getCurrentInstance, onUpdated } from 'vue'
 
 /**
  * Shorthand for binding ref to template element.

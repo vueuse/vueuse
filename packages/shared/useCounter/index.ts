@@ -1,6 +1,6 @@
 import type { MaybeRef } from '../utils'
 // eslint-disable-next-line no-restricted-imports
-import { ref, unref } from 'vue-demi'
+import { ref, unref } from 'vue'
 
 export interface UseCounterOptions {
   min?: number

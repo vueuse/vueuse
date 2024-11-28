@@ -1,9 +1,9 @@
 import type { ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { watchPausable } from '@vueuse/core'
 import { toValue } from '@vueuse/shared'
 import { del, get, set, update } from 'idb-keyval'
-import { ref, shallowRef, toRaw } from 'vue-demi'
+import { ref, shallowRef, toRaw } from 'vue'
 
 export interface UseIDBOptions extends ConfigurableFlush {
   /**

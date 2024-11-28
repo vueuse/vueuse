@@ -1,6 +1,6 @@
 import type { UseTimestampOptions } from '@vueuse/core'
 import { useTimestamp } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseTimestamp = /* #__PURE__ */ defineComponent<Omit<UseTimestampOptions<true>, 'controls'>>({
   name: 'UseTimestamp',

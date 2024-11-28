@@ -1,7 +1,7 @@
 import { BehaviorSubject, of, Subject } from 'rxjs'
 import { delay, endWith, tap } from 'rxjs/operators'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, reactive, ref } from 'vue-demi'
+import { nextTick, reactive, ref } from 'vue'
 import { useExtractedObservable } from './index'
 
 const waitFor = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))

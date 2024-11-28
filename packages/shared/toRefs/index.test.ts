@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, isVue3, reactive, ref, watchSyncEffect } from 'vue-demi'
+import { computed, reactive, ref, watchSyncEffect } from 'vue'
 import { toRefs } from '.'
 
 describe('toRefs', () => {
@@ -19,8 +19,7 @@ describe('toRefs', () => {
     expect(refs.b.value).toBe(1)
   })
 
-  // FIXME: Vue 2 misalignment
-  it.runIf(isVue3)('should behave as vue\'s toRefs when a normal array was passed', () => {
+  it('should behave as vue\'s toRefs when a normal array was passed', () => {
     const arr = reactive(['a', 0])
     const refs = toRefs(arr)
     expect(refs[0].value).toBe('a')
