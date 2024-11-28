@@ -1,6 +1,7 @@
+import type { Ref } from 'vue'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, watch } from 'vue'
+import { isRef, ref, watch } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'
@@ -77,28 +78,17 @@ export function useElementBounding(
     relativeToContainer = false,
   } = options
 
-  const height = ref(0)
-  const bottom = ref(0)
-  const left = ref(0)
-  const right = ref(0)
-  const top = ref(0)
-  const width = ref(0)
-  const x = ref(0)
-  const y = ref(0)
+  const container = createDomRect()
+  const { height, bottom, left, right, top, width, x, y } = createDomRect()
 
   function recalculate() {
     const el = unrefElement(target)
 
     if (!el) {
       if (reset) {
-        height.value = 0
-        bottom.value = 0
-        left.value = 0
-        right.value = 0
-        top.value = 0
-        width.value = 0
-        x.value = 0
-        y.value = 0
+        const { el, ...containerDomRect } = container
+        resetDomRect({ height, bottom, left, right, top, width, x, y })
+        resetDomRect(containerDomRect)
       }
       return
     }
@@ -115,14 +105,25 @@ export function useElementBounding(
     y.value = rect.y
 
     if (relativeToContainer) {
-      const boundingParent = getBoundingParent(el)
-      const parentRect = boundingParent.getBoundingClientRect()
+      container.el = getBoundingParent(el)
+      const parentRect = container.el.getBoundingClientRect()
 
       if (parentRect) {
         top.value -= Math.max(0, parentRect.top)
         left.value -= Math.max(0, parentRect.left)
         bottom.value -= Math.max(0, parentRect.top)
         right.value -= Math.max(0, parentRect.left)
+
+        Object.assign(container, {
+          height: { value: parentRect.height },
+          bottom: { value: parentRect.bottom },
+          left: { value: parentRect.left },
+          right: { value: parentRect.right },
+          top: { value: parentRect.top },
+          width: { value: parentRect.width },
+          x: { value: parentRect.x },
+          y: { value: parentRect.y },
+        })
       }
     }
   }
@@ -132,6 +133,28 @@ export function useElementBounding(
       recalculate()
     else if (updateTiming === 'next-frame')
       requestAnimationFrame(() => recalculate())
+  }
+
+  function resetDomRect(target: Record<string, Ref<number>>) {
+    Object.keys(target).forEach((key) => {
+      if (isRef(target[key]))
+        target[key].value = 0
+    })
+  }
+
+  function createDomRect() {
+    const refValue = () => ref(0)
+    return {
+      el: null as HTMLElement | SVGElement | null | undefined,
+      height: refValue(),
+      bottom: refValue(),
+      left: refValue(),
+      right: refValue(),
+      top: refValue(),
+      width: refValue(),
+      x: refValue(),
+      y: refValue(),
+    }
   }
 
   function getBoundingParent(el: HTMLElement | SVGElement | null | undefined) {
@@ -186,6 +209,7 @@ export function useElementBounding(
     x,
     y,
     update,
+    container,
   }
 }
 
