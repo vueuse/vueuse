@@ -3,6 +3,7 @@ import type { OnClickOutsideHandler } from '@vueuse/core'
 import { onClickOutside } from '@vueuse/core'
 import { ref } from 'vue'
 import { vOnClickOutside } from './directive'
+import type { OnClickOutsideOptions } from '.'
 
 const modal = ref(false)
 const modalRef = ref(null)
@@ -20,6 +21,14 @@ const dropdownHandler: OnClickOutsideHandler = (event) => {
   console.log(event)
   dropdown.value = false
 }
+
+const dropdownMouseUp = ref(false)
+const dropdownMouseUpHandler: [OnClickOutsideHandler, OnClickOutsideOptions] = [(event) => {
+  console.log(event)
+  dropdownMouseUp.value = false
+}, {
+  eventName: 'mouseup',
+}]
 </script>
 
 <template>
@@ -47,6 +56,18 @@ const dropdownHandler: OnClickOutsideHandler = (event) => {
         Demo Modal
       </p>
       <p>Click outside of the modal to close it.</p>
+    </div>
+  </div>
+  <div class="ml-2 relative inline-block">
+    <button @click.stop="dropdownMouseUp = !dropdownMouseUp">
+      Use Mouse Up
+    </button>
+    <div
+      v-if="dropdownMouseUp"
+      v-on-click-outside="dropdownMouseUpHandler"
+      class="dropdown-inner"
+    >
+      Mouseup outside of the dropdown to close it.
     </div>
   </div>
 </template>
