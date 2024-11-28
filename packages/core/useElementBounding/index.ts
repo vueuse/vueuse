@@ -77,6 +77,8 @@ export function useElementBounding(
   } = options
 
   const container = createDomRect()
+  const { el, ...containerDomRect } = container
+
   const { height, bottom, left, right, top, width, x, y } = createDomRect()
 
   function recalculate() {
@@ -84,7 +86,6 @@ export function useElementBounding(
 
     if (!el) {
       if (reset) {
-        const { el, ...containerDomRect } = container
         resetDomRect({ height, bottom, left, right, top, width, x, y })
         resetDomRect(containerDomRect)
       }
@@ -93,14 +94,7 @@ export function useElementBounding(
 
     const rect = el.getBoundingClientRect()
 
-    height.value = rect.height
-    bottom.value = rect.bottom
-    left.value = rect.left
-    right.value = rect.right
-    top.value = rect.top
-    width.value = rect.width
-    x.value = rect.x
-    y.value = rect.y
+    setDomRect({ height, bottom, left, right, top, width, x, y }, rect)
 
     if (relativeToContainer) {
       container.el = getBoundingParent(el)
@@ -112,16 +106,7 @@ export function useElementBounding(
         bottom.value -= Math.max(0, parentRect.top)
         right.value -= Math.max(0, parentRect.left)
 
-        Object.assign(container, {
-          height: { value: parentRect.height },
-          bottom: { value: parentRect.bottom },
-          left: { value: parentRect.left },
-          right: { value: parentRect.right },
-          top: { value: parentRect.top },
-          width: { value: parentRect.width },
-          x: { value: parentRect.x },
-          y: { value: parentRect.y },
-        })
+        setDomRect(containerDomRect, parentRect)
       }
     }
   }
@@ -137,6 +122,13 @@ export function useElementBounding(
     Object.keys(target).forEach((key) => {
       if (isRef(target[key]))
         target[key].value = 0
+    })
+  }
+
+  function setDomRect(target: Record<string, Ref<number>>, domRect: DOMRect) {
+    Object.keys(target).forEach((key) => {
+      if (isRef(target[key]))
+        target[key].value = domRect[key as keyof DOMRect] as number
     })
   }
 
