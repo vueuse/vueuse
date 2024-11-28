@@ -135,7 +135,6 @@ export function useDraggable(
     initialValue,
     axis = 'both',
     draggingElement = defaultWindow,
-    containerElement,
     handle: draggingHandle = target,
     buttons = [0],
   } = options
@@ -143,8 +142,10 @@ export function useDraggable(
   const position = ref<Position>(
     toValue(initialValue) ?? { x: 0, y: 0 },
   )
+  const positionCopy = ref<Position>()
 
   const pressedDelta = ref<Position>()
+  const startOrigin = ref<Position>()
 
   const filterEvent = (e: PointerEvent) => {
     if (pointerTypes)
@@ -167,16 +168,19 @@ export function useDraggable(
     if (toValue(exact) && e.target !== toValue(target))
       return
 
-    const container = toValue(containerElement)
-    const containerRect = container?.getBoundingClientRect?.()
     const targetRect = toValue(target)!.getBoundingClientRect()
     const pos = {
-      x: e.clientX - (container ? targetRect.left - containerRect!.left + container.scrollLeft : targetRect.left),
-      y: e.clientY - (container ? targetRect.top - containerRect!.top + container.scrollTop : targetRect.top),
+      x: e.clientX - targetRect.left,
+      y: e.clientY - targetRect.top,
     }
     if (onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
+    positionCopy.value = { ...position.value }
+    startOrigin.value = {
+      x: targetRect.left,
+      y: targetRect.top,
+    }
     handleEvent(e)
   }
   const move = (e: PointerEvent) => {
@@ -185,22 +189,17 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
 
-    const container = toValue(containerElement)
-    const targetRect = toValue(target)!.getBoundingClientRect()
-    let { x, y } = position.value
+    const offset = {
+      x: e.clientX - pressedDelta.value.x - startOrigin.value!.x,
+      y: e.clientY - pressedDelta.value.y - startOrigin.value!.y,
+    }
+
+    const { x, y } = positionCopy.value!
     if (axis === 'x' || axis === 'both') {
-      x = e.clientX - pressedDelta.value.x
-      if (container)
-        x = Math.min(Math.max(0, x), container.scrollWidth - targetRect!.width)
+      position.value.x = x + offset.x
     }
     if (axis === 'y' || axis === 'both') {
-      y = e.clientY - pressedDelta.value.y
-      if (container)
-        y = Math.min(Math.max(0, y), container.scrollHeight - targetRect!.height)
-    }
-    position.value = {
-      x,
-      y,
+      position.value.y = y + offset.y
     }
     onMove?.(position.value, e)
     handleEvent(e)
@@ -211,6 +210,8 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
     pressedDelta.value = undefined
+    positionCopy.value = undefined
+    startOrigin.value = undefined
     onEnd?.(position.value, e)
     handleEvent(e)
   }
