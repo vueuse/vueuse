@@ -6,7 +6,7 @@ VueUse is a collection of utility functions based on [Composition API](https://v
 
 ## Installation
 
-> From v12.0, VueUse no longer supports Vue 2. Please use v10.x for Vue 2 support.
+> From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
 
 ```bash
 npm i @vueuse/core

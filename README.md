@@ -27,7 +27,6 @@ Collection of essential Vue Composition Utilities
 ## 🚀 Features
 
 - 🎪 [**Interactive docs & demos**](https://vueuse.org)
-- 🕶 **Seamless migration**: Works for **both** Vue 3 and 2
 - ⚡ **Fully tree shakeable**: Only take what you want, [bundle size](https://vueuse.org/export-size)
 - 🦾 **Type Strong**: Written in [TypeScript](https://www.typescriptlang.org/), with [TS Docs](https://github.com/microsoft/tsdoc)
 - 🔋 **SSR Friendly**
@@ -66,7 +65,7 @@ Refer to [functions list](https://vueuse.org/functions) or [documentations](http
 
 ## 📦 Install
 
-> From v12.0, VueUse no longer supports Vue 2. Please use v10.x for Vue 2 support.
+> From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
 
 ```bash
 npm i @vueuse/core
