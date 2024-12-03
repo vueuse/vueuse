@@ -14,15 +14,21 @@ type DescriptorNamePolyfill =
   'camera' |
   'clipboard-read' |
   'clipboard-write' |
+  'compute-pressure' |
+  'geolocation' |
   'gyroscope' |
+  'local-fonts' |
   'magnetometer' |
   'microphone' |
+  'midi' |
   'notifications' |
   'payment-handler' |
   'persistent-storage' |
   'push' |
-  'speaker' |
-  'local-fonts'
+  'screen-wake-lock' |
+  'storage-access' |
+  'top-level-storage-access' |
+  'window-management'
 
 export type GeneralPermissionDescriptor =
   | PermissionDescriptor
