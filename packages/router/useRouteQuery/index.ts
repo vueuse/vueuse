@@ -10,7 +10,7 @@ const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteQuery(
   name: string
-): Ref<null | string | string[]>
+): Ref<undefined | null | string | string[]>
 
 export function useRouteQuery<
   T extends RouteQueryValueRaw = RouteQueryValueRaw,
