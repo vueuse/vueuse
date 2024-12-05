@@ -174,6 +174,7 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
+  let retryTimeout: ReturnType<typeof setTimeout> | undefined
   let pongTimeoutWait: ReturnType<typeof setTimeout> | undefined
 
   const _sendBuffer = () => {
@@ -182,6 +183,11 @@ export function useWebSocket<Data = any>(
         wsRef.value.send(buffer)
       bufferedData = []
     }
+  }
+
+  const resetRetry = () => {
+    clearTimeout(retryTimeout)
+    retryTimeout = undefined
   }
 
   const resetHeartbeat = () => {
@@ -240,10 +246,10 @@ export function useWebSocket<Data = any>(
 
         if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
           retried += 1
-          setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, delay)
         }
         else if (typeof retries === 'function' && retries()) {
-          setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, delay)
         }
         else {
           onFailed?.()
@@ -306,6 +312,10 @@ export function useWebSocket<Data = any>(
   const open = () => {
     if (!isClient && !isWorker)
       return
+
+    if (retryTimeout != null)
+      resetRetry()
+
     close()
     explicitlyClosed = false
     retried = 0
