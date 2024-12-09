@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useTimeoutFn } from '.'
 import { promiseTimeout } from '../utils'
 

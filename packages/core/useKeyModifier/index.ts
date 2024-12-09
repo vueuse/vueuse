@@ -1,7 +1,7 @@
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 

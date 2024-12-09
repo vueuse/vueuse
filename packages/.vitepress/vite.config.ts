@@ -64,13 +64,12 @@ export default defineConfig({
     },
     dedupe: [
       'vue',
-      'vue-demi',
       '@vue/runtime-core',
     ],
   },
   optimizeDeps: {
     exclude: [
-      'vue-demi',
+      'vue',
       '@vueuse/shared',
       '@vueuse/core',
       'body-scroll-lock',

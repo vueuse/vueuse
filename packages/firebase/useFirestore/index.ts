@@ -1,9 +1,9 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { DocumentData, DocumentReference, DocumentSnapshot, Query, QueryDocumentSnapshot } from 'firebase/firestore'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { isDef, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { onSnapshot } from 'firebase/firestore'
-import { computed, isRef, ref, watch } from 'vue-demi'
+import { computed, isRef, ref, watch } from 'vue'
 
 export interface UseFirestoreOptions {
   errorHandler?: (err: Error) => void

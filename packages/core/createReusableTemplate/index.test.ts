@@ -1,10 +1,10 @@
-import type { Slot } from 'vue-demi'
+import type { Slot } from 'vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, Fragment, h, isVue2, renderSlot } from 'vue-demi'
+import { defineComponent, Fragment, h, renderSlot } from 'vue'
 import { createReusableTemplate } from '.'
 
-describe.skipIf(isVue2)('createReusableTemplate', () => {
+describe('createReusableTemplate', () => {
   it('should work', () => {
     const [DefineFoo, ReuseFoo] = createReusableTemplate()
     const [DefineBar, ReuseBar] = createReusableTemplate()

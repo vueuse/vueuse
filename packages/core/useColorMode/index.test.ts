@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { nextTick, ref } from 'vue'
 import { useColorMode } from '.'
 import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'

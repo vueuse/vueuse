@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isReactive, ref } from 'vue-demi'
+import { isReactive, ref } from 'vue'
 import { useManualRefHistory } from '.'
 
 describe('useManualRefHistory', () => {

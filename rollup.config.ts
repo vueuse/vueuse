@@ -1,8 +1,7 @@
 import type { PackageIndexes } from '@vueuse/metadata'
-import type { OutputOptions, Plugin, RollupOptions } from 'rollup'
+import type { OutputOptions, RollupOptions } from 'rollup'
 import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import fs from 'node:fs'
-import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import json from '@rollup/plugin-json'
 import fg from 'fast-glob'
@@ -14,16 +13,7 @@ import { packages } from './meta/packages'
 const metadata = JSON.parse(fs.readFileSync('./packages/metadata/index.json', 'utf-8'))
 const functions = metadata.functions as PackageIndexes['functions']
 
-const require = createRequire(import.meta.url)
-const VUE_DEMI_IIFE = fs.readFileSync(require.resolve('vue-demi/lib/index.iife.js'), 'utf-8')
 const configs: RollupOptions[] = []
-
-const injectVueDemi: Plugin = {
-  name: 'inject-vue-demi',
-  renderChunk(code) {
-    return `${VUE_DEMI_IIFE};\n;${code}`
-  },
-}
 
 const pluginEsbuild = esbuild()
 const pluginDts = dts()
@@ -32,7 +22,7 @@ const pluginPure = pure({
 })
 
 const externals = [
-  'vue-demi',
+  'vue',
   '@vueuse/shared',
   '@vueuse/core',
   '@vueuse/metadata',
@@ -52,7 +42,7 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
     continue
 
   const iifeGlobals = {
-    'vue-demi': 'VueDemi',
+    'vue': 'Vue',
     '@vueuse/shared': 'VueUse',
     '@vueuse/core': 'VueUse',
     ...(globals || {}),
@@ -96,7 +86,6 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
           extend: true,
           globals: iifeGlobals,
           plugins: [
-            injectVueDemi,
           ],
         },
         {
@@ -106,7 +95,6 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
           extend: true,
           globals: iifeGlobals,
           plugins: [
-            injectVueDemi,
             esbuildMinifer({
               minify: true,
             }),

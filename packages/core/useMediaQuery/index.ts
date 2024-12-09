@@ -3,7 +3,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, watchEffect } from 'vue-demi'
+import { ref, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 

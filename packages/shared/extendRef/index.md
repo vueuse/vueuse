@@ -6,10 +6,6 @@ category: Reactivity
 
 Add extra attributes to Ref.
 
-::: warning
-This function only works for Vue 2.7 or above.
-:::
-
 ## Usage
 
 > Please note the extra attribute will not be accessible in Vue's template.

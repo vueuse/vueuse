@@ -1,8 +1,8 @@
 import type { DatabaseReference, DataSnapshot } from 'firebase/database'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { onValue } from 'firebase/database'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 
 export interface UseRTDBOptions {
   errorHandler?: (err: Error) => void

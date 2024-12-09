@@ -1,6 +1,6 @@
-import type { Ref, UnwrapRef } from 'vue-demi'
+import type { Ref, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue-demi'
+import { ref, shallowRef } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>

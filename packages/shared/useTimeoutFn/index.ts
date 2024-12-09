@@ -1,5 +1,5 @@
 import type { AnyFn, MaybeRefOrGetter, Stoppable } from '../utils'
-import { readonly, ref } from 'vue-demi'
+import { readonly, ref } from 'vue'
 import { toValue } from '../toValue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'

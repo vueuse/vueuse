@@ -1,5 +1,5 @@
 import type { UseColorModeOptions } from '.'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 import { useColorMode } from '.'
 
 export const UseColorMode = /* #__PURE__ */ defineComponent<UseColorModeOptions>({

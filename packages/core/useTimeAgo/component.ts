@@ -1,7 +1,7 @@
 import type { UseTimeAgoOptions } from '@vueuse/core'
 import type { MaybeRef } from '@vueuse/shared'
 import { useTimeAgo } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 interface UseTimeAgoComponentOptions extends Omit<UseTimeAgoOptions<true>, 'controls'> {
   time: MaybeRef<Date | number | string>

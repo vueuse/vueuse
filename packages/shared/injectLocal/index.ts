@@ -1,4 +1,4 @@
-import { getCurrentInstance, inject } from 'vue-demi'
+import { getCurrentInstance, inject } from 'vue'
 import { localProvidedStateMap } from '../provideLocal/map'
 
 /**

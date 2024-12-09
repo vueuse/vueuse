@@ -1,6 +1,6 @@
 import type { UseOffsetPaginationOptions, UseOffsetPaginationReturn } from '.'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { isRef, nextTick, ref } from 'vue-demi'
+import { isRef, nextTick, ref } from 'vue'
 import { useOffsetPagination } from '.'
 
 describe('useOffsetPagination', () => {

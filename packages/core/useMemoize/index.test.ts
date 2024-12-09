@@ -1,7 +1,7 @@
 import type { Mock } from 'vitest'
 import type { UseMemoizeCache } from '.'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import { useMemoize } from '.'
 
 describe('useMemoize', () => {

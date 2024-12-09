@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
