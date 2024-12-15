@@ -16,6 +16,12 @@ export const UseImage = /* #__PURE__ */ defineComponent<UseImageOptions & Render
     'loading',
     'crossorigin',
     'referrerPolicy',
+    'width',
+    'height',
+    'decoding',
+    'fetchPriority',
+    'ismap',
+    'usemap',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const data = reactive(useImage(props))
