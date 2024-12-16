@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import './style.css'
 import { useNProgress } from '.'
+import './style.css'
 
 const { isLoading, progress } = useNProgress()
 </script>

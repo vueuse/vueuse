@@ -10,8 +10,8 @@ Computed for async functions
 ## Usage
 
 ```js
-import { ref } from 'vue'
 import { computedAsync } from '@vueuse/core'
+import { ref } from 'vue'
 
 const name = ref('jack')
 
@@ -28,8 +28,8 @@ const userInfo = computedAsync(
 You will need to pass a ref to track if the async function is evaluating.
 
 ```js
-import { ref } from 'vue'
 import { computedAsync } from '@vueuse/core'
+import { ref } from 'vue'
 
 const evaluating = ref(false)
 
@@ -66,8 +66,8 @@ const downloads = computedAsync(async (onCancel) => {
 By default, `computedAsync` will start resolving immediately on creation, specify `lazy: true` to make it start resolving on the first accessing.
 
 ```js
-import { ref } from 'vue'
 import { computedAsync } from '@vueuse/core'
+import { ref } from 'vue'
 
 const evaluating = ref(false)
 

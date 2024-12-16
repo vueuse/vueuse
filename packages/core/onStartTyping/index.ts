@@ -1,7 +1,7 @@
-/* this implementation is original ported from https://github.com/streamich/react-use by Vadim Dalecky */
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
 import { defaultDocument } from '../_configurable'
+/* this implementation is original ported from https://github.com/streamich/react-use by Vadim Dalecky */
+import { useEventListener } from '../useEventListener'
 
 function isFocusedElementEditable() {
   const { activeElement, body } = document

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useClamp } from '@vueuse/math'
+import { ref } from 'vue'
 
 const min = ref(0)
 const max = ref(10)

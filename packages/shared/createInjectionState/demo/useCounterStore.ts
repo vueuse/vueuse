@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { createInjectionState } from '../../createInjectionState'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
