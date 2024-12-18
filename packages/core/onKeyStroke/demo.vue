@@ -6,12 +6,16 @@ const translateX = ref(0)
 const translateY = ref(0)
 
 onKeyStroke(['w', 'W', 'ArrowUp'], (e) => {
-  e.key === 'ArrowUp' && e.preventDefault() // prevent default window scroll
-  translateY.value -= 10
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+  }
+  translateY.value -= 10;
 })
 
 onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
-  e.key === 'ArrowDown' && e.preventDefault() // prevent default window scroll
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+  }
   translateY.value += 10
 })
 
