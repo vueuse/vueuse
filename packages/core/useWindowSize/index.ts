@@ -28,7 +28,7 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
    * visualViewport documentation from MDN(https://developer.mozilla.org/zh-CN/docs/Web/API/VisualViewport)
    * @default 'inner'
    */
-  type?: 'inner' | 'outer' | 'visualViewport'
+  type?: 'inner' | 'outer' | 'visual'
 }
 
 /**
@@ -56,7 +56,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
         width.value = window.outerWidth
         height.value = window.outerHeight
       }
-      else if (type === 'visualViewport' && window.visualViewport) {
+      else if (type === 'visual' && window.visualViewport) {
         const { width: visualViewportWidth, height: visualViewportHeight, scale } = window.visualViewport
         width.value = Math.round(visualViewportWidth * scale)
         height.value = Math.round(visualViewportHeight * scale)
@@ -76,8 +76,8 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
 
-  if (type === 'visualViewport') {
-    useEventListener(window?.visualViewport, 'resize', update, { passive: true })
+  if (window && type === 'visual') {
+    useEventListener(window.visualViewport, 'resize', update, { passive: true })
   }
 
   if (listenOrientation) {
