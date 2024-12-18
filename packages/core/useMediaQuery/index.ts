@@ -14,11 +14,11 @@ import { useSupported } from '../useSupported'
  * @param query
  * @param options
  */
-export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow & { ssrSize?: number } = {}) {
-  const { window = defaultWindow, ssrSize } = options
+export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow & { ssrWidth?: number } = {}) {
+  const { window = defaultWindow, ssrWidth } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
-  const ssrSupport = ref(ssrSize !== undefined)
+  const ssrSupport = ref(ssrWidth !== undefined)
 
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)
@@ -49,10 +49,10 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
         const maxWidth = queryString.match(/\(\s*max-width:\s*(-?\d+(?:\.\d*)?[a-z]+\s*)\)/)
         let res = Boolean(minWidth || maxWidth)
         if (minWidth && res) {
-          res = ssrSize! >= pxValue(minWidth[1])
+          res = ssrWidth! >= pxValue(minWidth[1])
         }
         if (maxWidth && res) {
-          res = ssrSize! <= pxValue(maxWidth[1])
+          res = ssrWidth! <= pxValue(maxWidth[1])
         }
         return not ? !res : res
       })

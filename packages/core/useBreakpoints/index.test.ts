@@ -7,7 +7,7 @@ describe('useBreakpoints', () => {
   })
 
   it('should support ssr breakpoints', async () => {
-    const breakpoints = useBreakpoints(breakpointsBootstrapV5, { window: null as unknown as undefined, ssrSize: 768 })
+    const breakpoints = useBreakpoints(breakpointsBootstrapV5, { window: null as unknown as undefined, ssrWidth: 768 })
     expect(breakpoints.current().value).toStrictEqual(['xs', 'sm', 'md'])
     expect(breakpoints.active().value).toBe('md')
     expect(breakpoints.isGreater('md')).toBe(false)
@@ -28,7 +28,7 @@ describe('useBreakpoints', () => {
       md: 991,
       sm: 767,
       xs: 575,
-    }, { strategy: 'max-width', window: null as unknown as undefined, ssrSize: 768 })
+    }, { strategy: 'max-width', window: null as unknown as undefined, ssrWidth: 768 })
     expect(breakpoints.current().value).toStrictEqual(['md', 'lg', 'xl'])
     expect(breakpoints.active().value).toBe('md')
     expect(breakpoints.isGreater('md')).toBe(false)

@@ -53,7 +53,7 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(
   breakpointsTailwind,
-  { ssrSize: 768 } // Will enable SSR mode and render like if the screen was 768px wide
+  { ssrWidth: 768 } // Will enable SSR mode and render like if the screen was 768px wide
 )
 ```
 

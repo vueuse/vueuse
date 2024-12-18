@@ -20,7 +20,7 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
    * @default "min-width"
    */
   strategy?: 'min-width' | 'max-width'
-  ssrSize?: number
+  ssrWidth?: number
 }
 
 /**
@@ -28,7 +28,7 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
  *
  * @see https://vueuse.org/useBreakpoints
  */
-export function useBreakpoints<K extends string = string>(
+export function useBreakpoints<K extends string>(
   breakpoints: Breakpoints<K>,
   options: UseBreakpointsOptions = {},
 ) {
@@ -44,9 +44,9 @@ export function useBreakpoints<K extends string = string>(
     return v
   }
 
-  const { window = defaultWindow, strategy = 'min-width', ssrSize } = options
+  const { window = defaultWindow, strategy = 'min-width', ssrWidth } = options
 
-  const ssrSupport = ssrSize !== undefined
+  const ssrSupport = ssrWidth !== undefined
   const mounted = ssrSupport ? ref(false) : { value: true }
   if (ssrSupport) {
     tryOnMounted(() => mounted.value = !!window)
@@ -54,7 +54,7 @@ export function useBreakpoints<K extends string = string>(
 
   function match(query: 'min' | 'max', size: string): boolean {
     if (!mounted.value && ssrSupport) {
-      return query === 'min' ? ssrSize >= pxValue(size) : ssrSize <= pxValue(size)
+      return query === 'min' ? ssrWidth >= pxValue(size) : ssrWidth <= pxValue(size)
     }
     if (!window)
       return false
@@ -82,7 +82,9 @@ export function useBreakpoints<K extends string = string>(
     }, {} as Record<K, Ref<boolean>>)
 
   function current() {
-    const points = (Object.keys(breakpoints) as Array<K>).map((k: K) => [k, shortcutMethods[k], pxValue(getValue(k))] as const).sort((a, b) => a[2] - b[2])
+    const points = (Object.keys(breakpoints) as Array<K>)
+      .map(k => [k, shortcutMethods[k], pxValue(getValue(k))] as const)
+      .sort((a, b) => a[2] - b[2])
     return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
   }
 

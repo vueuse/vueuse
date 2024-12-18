@@ -89,6 +89,9 @@ export function increaseWithUnit(target: string | number, delta: number): string
   return result + unit
 }
 
+/**
+ * Get a px value for SSR use, do not rely on this method outside of SSR as REM unit is assumed at 16px, which might not be the case on the client
+ */
 export function pxValue(px: string) {
   return px.endsWith('rem') ? Number.parseFloat(px) * 16 : Number.parseFloat(px)
 }

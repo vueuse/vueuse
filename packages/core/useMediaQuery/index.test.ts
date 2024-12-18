@@ -13,7 +13,7 @@ describe('useMediaQuery', () => {
 
   it('should support ssr media queries', async () => {
     const query = ref('(min-width: 500px)')
-    const mediaQuery = useMediaQuery(query, { window: null as unknown as undefined, ssrSize: 500 })
+    const mediaQuery = useMediaQuery(query, { window: null as unknown as undefined, ssrWidth: 500 })
     expect(mediaQuery.value).toBe(true)
     query.value = '(min-width: 501px)'
     await nextTick()
