@@ -12,12 +12,14 @@ import { useParentElement } from '../useParentElement'
 export interface UseElementHoverOptions extends ConfigurableWindow {
   delayEnter?: number
   delayLeave?: number
+  triggerOnRemoval?: boolean
 }
 
 export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefined>, options: UseElementHoverOptions = {}): Ref<boolean> {
   const {
     delayEnter = 0,
     delayLeave = 0,
+    triggerOnRemoval = false,
     window = defaultWindow,
   } = options
 
@@ -44,16 +46,19 @@ export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefi
   useEventListener(el, 'mouseleave', () => toggle(false), { passive: true })
 
   const elRef = computed(() => unrefElement(el as MaybeComputedElementRef))
-  useMutationObserver(useParentElement(elRef), (mutationsList) => {
-    mutationsList.map(mutation => [...mutation.removedNodes]).flat().forEach((node) => {
-      if (node === elRef.value) {
-        toggle(false)
-      }
+
+  if (triggerOnRemoval) {
+    useMutationObserver(useParentElement(elRef), (mutationsList) => {
+      mutationsList.map(mutation => [...mutation.removedNodes]).flat().forEach((node) => {
+        if (node === elRef.value) {
+          toggle(false)
+        }
+      })
+    }, {
+      window,
+      childList: true,
     })
-  }, {
-    window,
-    childList: true,
-  })
+  }
 
   return isHovered
 }
