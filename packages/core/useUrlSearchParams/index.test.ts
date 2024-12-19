@@ -187,12 +187,15 @@ describe('useUrlSearchParams', () => {
         switch (mode) {
           case 'history':
             expect(window.history.pushState).toBeCalledWith(null, '', '/?foo=bar')
+            expect(window.history.replaceState).not.toBeCalled()
             break
           case 'hash':
             expect(window.history.pushState).toBeCalledWith(null, '', '/#?foo=bar')
+            expect(window.history.replaceState).not.toBeCalled()
             break
           case 'hash-params':
             expect(window.history.pushState).toBeCalledWith(null, '', '/#foo=bar')
+            expect(window.history.replaceState).not.toBeCalled()
             break
         }
       })
