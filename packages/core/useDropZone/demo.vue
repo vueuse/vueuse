@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDropZone, useEventListener } from '@vueuse/core'
+import { useDropZone } from '@vueuse/core'
 import { ref } from 'vue'
 
 const filesData = ref<{ name: string, size: number, type: string, lastModified: number }[]>([])
@@ -31,13 +31,8 @@ function onImageDrop(files: File[] | null) {
 
 const dropZoneRef = ref<HTMLElement>()
 const imageDropZoneRef = ref<HTMLElement>()
-const pngRef = ref()
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
-
-useEventListener(pngRef, 'dragstart', (event) => {
-  event.dataTransfer?.setData('image/png', '/vue.png')
-})
 
 const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, { dataTypes: ['image/png'], onDrop: onImageDrop })
 </script>
@@ -45,18 +40,7 @@ const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, { 
 <template>
   <div class="flex flex-col gap-2">
     <div class="w-full h-auto relative">
-      <p>Drop files on to drop zones</p>
-
-      <div class="flex gap-6">
-        <div class="flex flex-col items-center">
-          <img ref="pngRef" src="/vue.png" alt="Drag me" h-10>
-          <span>PNG</span>
-        </div>
-        <div class="flex flex-col items-center">
-          <img src="/favicon.svg" alt="Drag me" h-10>
-          <span>SVG</span>
-        </div>
-      </div>
+      <p>Drop files from your computer on to drop zones</p>
 
       <div grid="~ cols-2 gap-2">
         <div
