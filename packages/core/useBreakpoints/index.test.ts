@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { breakpointsBootstrapV5, useBreakpoints } from '.'
+import { setSSRWidth } from '../useSSRWidth'
 
 describe('useBreakpoints', () => {
   it('should be defined', () => {
@@ -40,5 +41,11 @@ describe('useBreakpoints', () => {
     expect(breakpoints.md.value).toBe(true)
     expect(breakpoints.lg.value).toBe(true)
     expect(breakpoints.sm.value).toBe(false)
+  })
+
+  it('should get the ssr width from the global store', async () => {
+    setSSRWidth(768)
+    const breakpoints = useBreakpoints(breakpointsBootstrapV5, { window: null as unknown as undefined })
+    expect(breakpoints.current().value).toStrictEqual(['xs', 'sm', 'md'])
   })
 })

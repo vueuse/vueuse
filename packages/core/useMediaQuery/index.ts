@@ -5,6 +5,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { pxValue, toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, ref, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useSSRWidth } from '../useSSRWidth'
 import { useSupported } from '../useSupported'
 
 /**
@@ -15,7 +16,7 @@ import { useSupported } from '../useSupported'
  * @param options
  */
 export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow & { ssrWidth?: number } = {}) {
-  const { window = defaultWindow, ssrWidth } = options
+  const { window = defaultWindow, ssrWidth = useSSRWidth() } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
   const ssrSupport = ref(ssrWidth !== undefined)

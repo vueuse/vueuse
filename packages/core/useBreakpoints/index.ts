@@ -5,6 +5,7 @@ import { increaseWithUnit, pxValue, toValue, tryOnMounted } from '@vueuse/shared
 import { computed, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
+import { useSSRWidth } from '../useSSRWidth'
 
 export * from './breakpoints'
 
@@ -44,7 +45,7 @@ export function useBreakpoints<K extends string>(
     return v
   }
 
-  const { window = defaultWindow, strategy = 'min-width', ssrWidth } = options
+  const { window = defaultWindow, strategy = 'min-width', ssrWidth = useSSRWidth() } = options
 
   const ssrSupport = ssrWidth !== undefined
   const mounted = ssrSupport ? ref(false) : { value: true }
