@@ -1,5 +1,4 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { increaseWithUnit, pxValue, toValue, tryOnMounted } from '@vueuse/shared'
 import { computed, ref } from 'vue'
@@ -70,20 +69,20 @@ export function useBreakpoints<K extends string>(
     return useMediaQuery(() => `(max-width: ${getValue(k)})`, options)
   }
 
-  const shortcutMethods = Object.keys(breakpoints)
+  const shortcutMethods = (Object.keys(breakpoints) as K[])
     .reduce((shortcuts, k) => {
       Object.defineProperty(shortcuts, k, {
         get: () => strategy === 'min-width'
-          ? greaterOrEqual(k as K)
-          : smallerOrEqual(k as K),
+          ? greaterOrEqual(k)
+          : smallerOrEqual(k),
         enumerable: true,
         configurable: true,
       })
       return shortcuts
-    }, {} as Record<K, Ref<boolean>>)
+    }, {} as Record<K, ReturnType<typeof greaterOrEqual>>)
 
   function current() {
-    const points = (Object.keys(breakpoints) as Array<K>)
+    const points = (Object.keys(breakpoints) as K[])
       .map(k => [k, shortcutMethods[k], pxValue(getValue(k))] as const)
       .sort((a, b) => a[2] - b[2])
     return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
