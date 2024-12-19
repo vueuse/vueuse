@@ -57,6 +57,8 @@ const breakpoints = useBreakpoints(
 )
 ```
 
+Alternatively you can set this up globally for your app using [`provideSSRWidth`](../useSSRWidth/index.md)
+
 ## Presets
 
 - Tailwind: `breakpointsTailwind`

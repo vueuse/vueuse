@@ -24,4 +24,15 @@ describe('useSSRWidth', () => {
     } })
     expect(wrapper.html()).toBe('700')
   })
+
+  it('should provide the set value through provide locally', () => {
+    const wrapper = mount({ setup: () => {
+      provideSSRWidth(800)
+      const ssrWidth = useSSRWidth()
+      return () => h({ render: () => {
+        return ssrWidth
+      } })
+    } })
+    expect(wrapper.html()).toBe('800')
+  })
 })

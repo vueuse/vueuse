@@ -32,3 +32,5 @@ onMounted(() => {
   console.log(isLarge.value) // false if screen is smaller than 1024px, true if larger than 1024px
 })
 ```
+
+Alternatively you can set this up globally for your app using [`provideSSRWidth`](../useSSRWidth/index.md)

@@ -1,11 +1,12 @@
 import type { App, InjectionKey } from 'vue'
-import { hasInjectionContext, inject, provide } from 'vue'
+import { injectLocal, provideLocal } from '@vueuse/shared'
+import { hasInjectionContext } from 'vue'
 
 const ssrWidthSymbol = Symbol('SSR Width') as InjectionKey<number | null>
 
 export function useSSRWidth() {
   // Avoid injection warning outside of components
-  const ssrWidth = hasInjectionContext() ? inject(ssrWidthSymbol, null) : null
+  const ssrWidth = hasInjectionContext() ? injectLocal(ssrWidthSymbol, null) : null
   return typeof ssrWidth === 'number' ? ssrWidth : undefined
 }
 
@@ -14,6 +15,6 @@ export function provideSSRWidth(width: number | null, app?: App<unknown>) {
     app.provide(ssrWidthSymbol, width)
   }
   else {
-    provide(ssrWidthSymbol, width)
+    provideLocal(ssrWidthSymbol, width)
   }
 }
