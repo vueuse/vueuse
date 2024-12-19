@@ -19,7 +19,7 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   const { window = defaultWindow, ssrWidth = useSSRWidth() } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
-  const ssrSupport = ref(ssrWidth !== undefined)
+  const ssrSupport = ref(typeof ssrWidth === 'number')
 
   let mediaQuery: MediaQueryList | undefined
   const matches = ref(false)

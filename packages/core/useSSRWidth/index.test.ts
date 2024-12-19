@@ -1,21 +1,27 @@
-import { afterEach, describe, expect, it } from 'vitest'
-import { setSSRWidth, useSSRWidth } from '.'
+import { mount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
+import { createSSRApp, h } from 'vue'
+import { provideSSRWidth, useSSRWidth } from '.'
 
 describe('useSSRWidth', () => {
-  afterEach(() => {
-    setSSRWidth(undefined)
-  })
-
   it('should be undefined by default', () => {
     expect(useSSRWidth()).toBeUndefined()
   })
 
-  it('should store the set value', () => {
-    setSSRWidth(500)
-    expect(useSSRWidth()).toBe(500)
+  it('should provide the set value through app', () => {
+    const app = createSSRApp({ render: () => '' })
+    provideSSRWidth(500, app)
+    const ssrWidth = app.runWithContext(() => useSSRWidth())
+    expect(ssrWidth).toBe(500)
   })
 
-  it('should still be undefined', () => {
-    expect(useSSRWidth()).toBeUndefined()
+  it('should provide the set value through provide', () => {
+    const wrapper = mount({ setup: () => {
+      provideSSRWidth(700)
+      return () => h({ render: () => {
+        return useSSRWidth()
+      } })
+    } })
+    expect(wrapper.html()).toBe('700')
   })
 })

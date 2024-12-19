@@ -1,6 +1,7 @@
+import { provideSSRWidth } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
+import { createSSRApp } from 'vue'
 import { breakpointsBootstrapV5, useBreakpoints } from '.'
-import { setSSRWidth } from '../useSSRWidth'
 
 describe('useBreakpoints', () => {
   it('should be defined', () => {
@@ -44,8 +45,11 @@ describe('useBreakpoints', () => {
   })
 
   it('should get the ssr width from the global store', async () => {
-    setSSRWidth(768)
-    const breakpoints = useBreakpoints(breakpointsBootstrapV5, { window: null as unknown as undefined })
-    expect(breakpoints.current().value).toStrictEqual(['xs', 'sm', 'md'])
+    const app = createSSRApp({ render: () => '' })
+    provideSSRWidth(768, app)
+    await app.runWithContext(async () => {
+      const breakpoints = useBreakpoints(breakpointsBootstrapV5, { window: null as unknown as undefined })
+      expect(breakpoints.current().value).toStrictEqual(['xs', 'sm', 'md'])
+    })
   })
 })

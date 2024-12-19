@@ -47,7 +47,7 @@ export function useBreakpoints<K extends string>(
 
   const { window = defaultWindow, strategy = 'min-width', ssrWidth = useSSRWidth() } = options
 
-  const ssrSupport = ssrWidth !== undefined
+  const ssrSupport = typeof ssrWidth === 'number'
   const mounted = ssrSupport ? ref(false) : { value: true }
   if (ssrSupport) {
     tryOnMounted(() => mounted.value = !!window)

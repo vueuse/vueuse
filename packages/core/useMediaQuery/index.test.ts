@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { createSSRApp, nextTick, ref } from 'vue'
 import { useMediaQuery } from '.'
-import { setSSRWidth } from '../useSSRWidth'
+import { provideSSRWidth } from '../useSSRWidth'
 
 describe('useMediaQuery', () => {
   it('should be defined', () => {
@@ -46,12 +46,15 @@ describe('useMediaQuery', () => {
   })
 
   it('should get the ssr width from the global store', async () => {
-    const query = ref('(min-width: 500px)')
-    setSSRWidth(500)
-    const mediaQuery = useMediaQuery(query, { window: null as unknown as undefined })
-    expect(mediaQuery.value).toBe(true)
-    query.value = '(min-width: 501px)'
-    await nextTick()
-    expect(mediaQuery.value).toBe(false)
+    const app = createSSRApp({ render: () => '' })
+    provideSSRWidth(500, app)
+    await app.runWithContext(async () => {
+      const query = ref('(min-width: 500px)')
+      const mediaQuery = useMediaQuery(query, { window: null as unknown as undefined })
+      expect(mediaQuery.value).toBe(true)
+      query.value = '(min-width: 501px)'
+      await nextTick()
+      expect(mediaQuery.value).toBe(false)
+    })
   })
 })
