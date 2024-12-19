@@ -9,7 +9,7 @@ body:
         Thanks for taking the time to fill out this bug report!
 
         Please follow the one of the following title formats:
-        - `BUG | \`functionName\` | Short Description`
+        - ``BUG | `functionName` | Short Description``
 
         For example:
         ```
