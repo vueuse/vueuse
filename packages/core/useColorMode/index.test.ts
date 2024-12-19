@@ -16,8 +16,10 @@ describe('useColorMode', () => {
     }
   })
 
+  const mockPreferredDark = usePreferredDark() as Ref<boolean>
+
   beforeEach(() => {
-    (usePreferredDark() as Ref<boolean>).value = false
+    mockPreferredDark.value = false
     localStorage.clear()
     htmlEl!.className = ''
   })
@@ -30,7 +32,7 @@ describe('useColorMode', () => {
   it('should translate auto mode when prefer dark', async () => {
     const mode = useColorMode()
     mode.value = 'auto'
-    ;(usePreferredDark() as Ref<boolean>).value = true
+    mockPreferredDark.value = true
     await nextTwoTick()
     expect(mode.value).toBe('dark')
     expect(localStorage.getItem(storageKey)).toBe('auto')
@@ -110,7 +112,7 @@ describe('useColorMode', () => {
 
   it('should only change html class when preferred dark changed', async () => {
     const mode = useColorMode({ emitAuto: true })
-    ;(usePreferredDark() as Ref<boolean>).value = true
+    mockPreferredDark.value = true
 
     await nextTwoTick()
     expect(mode.value).toBe('auto')
