@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { useRafFn } from '.'
 
 describe('useRafFn', () => {
@@ -62,6 +63,28 @@ describe('useRafFn', () => {
     const fn2 = vi.fn()
     useRafFn(fn1, { fpsLimit: 20 })
     useRafFn(fn2, { fpsLimit: 60 })
+    await vi.waitFor(() => {
+      expect(fn1).toHaveBeenCalled()
+      expect(fn2).toHaveBeenCalled()
+    })
+    expect(fn1.mock.calls.length).toBeLessThan(fn2.mock.calls.length)
+  })
+
+  it('should handle a framerate change', async () => {
+    const initialFramerate = 60
+    const fr = ref(initialFramerate)
+    const fn1 = vi.fn()
+    const fn2 = vi.fn()
+    useRafFn(fn1, { fpsLimit: fr })
+    useRafFn(fn2, { fpsLimit: initialFramerate })
+    await vi.waitFor(() => {
+      expect(fn1).toHaveBeenCalled()
+      expect(fn2).toHaveBeenCalled()
+    })
+    // potentially flaky ?
+    expect(fn1.mock.calls.length).toBe(fn2.mock.calls.length)
+    fr.value = 20
+    vi.clearAllMocks()
     await vi.waitFor(() => {
       expect(fn1).toHaveBeenCalled()
       expect(fn2).toHaveBeenCalled()
