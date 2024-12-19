@@ -44,6 +44,21 @@ const laptop = breakpoints.between('laptop', 'desktop')
 </template>
 ```
 
+#### Server Side Rendering and Nuxt
+
+If you are using `useBreakpoints` with SSR enabled, then you need to specify which screen size you would like to render on the server and before hydration to avoid an hydration mismatch
+
+```js
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+
+const breakpoints = useBreakpoints(
+  breakpointsTailwind,
+  { ssrWidth: 768 } // Will enable SSR mode and render like if the screen was 768px wide
+)
+```
+
+Alternatively you can set this up globally for your app using [`provideSSRWidth`](../useSSRWidth/index.md)
+
 ## Presets
 
 - Tailwind: `breakpointsTailwind`

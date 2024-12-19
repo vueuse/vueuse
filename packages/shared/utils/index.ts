@@ -90,6 +90,13 @@ export function increaseWithUnit(target: string | number, delta: number): string
 }
 
 /**
+ * Get a px value for SSR use, do not rely on this method outside of SSR as REM unit is assumed at 16px, which might not be the case on the client
+ */
+export function pxValue(px: string) {
+  return px.endsWith('rem') ? Number.parseFloat(px) * 16 : Number.parseFloat(px)
+}
+
+/**
  * Create a new subset object by giving keys
  */
 export function objectPick<O extends object, T extends keyof O>(obj: O, keys: T[], omitUndefined = false) {

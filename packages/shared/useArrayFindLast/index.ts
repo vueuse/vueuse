@@ -31,6 +31,6 @@ export function useArrayFindLast<T>(
       !Array.prototype.findLast
         ? findLast(toValue(list), (element, index, array) => fn(toValue(element), index, array))
         : toValue(list)
-          .findLast((element, index, array) => fn(toValue(element), index, array)),
+            .findLast((element, index, array) => fn(toValue(element), index, array)),
     ))
 }
