@@ -20,7 +20,7 @@ import { useClipboardItems } from '@vueuse/core'
 const mime = 'text/html'
 const source = ref([
   new ClipboardItem({
-    [mime]: new Blob(['\'<b>HTML content</b>\'', { type: mime }]),
+    [mime]: new Blob(['<b>HTML content</b>'], { type: mime }),
   })
 ])
 
