@@ -192,7 +192,7 @@ describe('filters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('should get trailing value', () => {
+  it('should get trailing value', async () => {
     const sumSpy = vi.fn((a: number, b: number) => a + b)
     const throttledSum = createFilterWrapper(
       throttleFilter(1000, true),
@@ -210,7 +210,7 @@ describe('filters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(6 + 7)
+    await expect(result).resolves.toBe(6 + 7)
 
     setTimeout(() => {
       result = throttledSum(8, 9)
@@ -222,10 +222,10 @@ describe('filters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(4)
-    expect(result).resolves.toBe(10 + 11)
+    await expect(result).resolves.toBe(10 + 11)
   })
 
-  it('should get leading value', () => {
+  it('should get leading value', async () => {
     const sumSpy = vi.fn((a: number, b: number) => a + b)
     const throttledSum = createFilterWrapper(
       throttleFilter(1000, false),
@@ -243,7 +243,7 @@ describe('filters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(1)
-    expect(result).resolves.toBe(2 + 3)
+    await expect(result).resolves.toBe(2 + 3)
 
     setTimeout(() => {
       result = throttledSum(8, 9)
@@ -255,7 +255,7 @@ describe('filters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(8 + 9)
+    await expect(result).resolves.toBe(8 + 9)
   })
 })
 
@@ -398,7 +398,7 @@ describe('optionsFilters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('optionsThrottleFilter should get trailing value', () => {
+  it('optionsThrottleFilter should get trailing value', async () => {
     const sumSpy = vi.fn((a: number, b: number) => a + b)
     const throttledSum = createFilterWrapper(
       throttleFilter({
@@ -419,7 +419,7 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(6 + 7)
+    await expect(result).resolves.toBe(6 + 7)
 
     setTimeout(() => {
       result = throttledSum(8, 9)
@@ -431,10 +431,10 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(4)
-    expect(result).resolves.toBe(10 + 11)
+    await expect(result).resolves.toBe(10 + 11)
   })
 
-  it('optionsThrottleFilter should get leading value', () => {
+  it('optionsThrottleFilter should get leading value', async () => {
     const sumSpy = vi.fn((a: number, b: number) => a + b)
     const throttledSum = createFilterWrapper(
       throttleFilter({
@@ -455,7 +455,7 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(1)
-    expect(result).resolves.toBe(2 + 3)
+    await expect(result).resolves.toBe(2 + 3)
 
     setTimeout(() => {
       result = throttledSum(8, 9)
@@ -467,6 +467,6 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(8 + 9)
+    await expect(result).resolves.toBe(8 + 9)
   })
 })
