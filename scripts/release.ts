@@ -1,8 +1,9 @@
 import { execSync } from 'node:child_process'
 import process from 'node:process'
-import { readJSONSync } from 'fs-extra'
+import jsonfile from 'jsonfile'
 import { updateContributors } from './utils'
 
+const { readFileSync: readJSONSync } = jsonfile
 const { version: oldVersion } = readJSONSync('package.json')
 
 execSync('bumpp --no-commit --no-tag --no-push', { stdio: 'inherit' })

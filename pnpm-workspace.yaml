@@ -11,8 +11,8 @@ catalog:
   '@rollup/plugin-replace': ^6.0.2
   '@shikijs/vitepress-twoslash': ^1.24.4
   '@type-challenges/utils': ^0.1.1
-  '@types/fs-extra': ^11.0.4
   '@types/js-yaml': ^4.0.9
+  '@types/jsonfile': ^6.1.4
   '@types/md5': ^2.3.5
   '@types/node': ^22.10.2
   '@types/nprogress': ^0.2.3
@@ -42,13 +42,13 @@ catalog:
   fake-indexeddb: ^6.0.0
   firebase: ^10.14.1
   focus-trap: ^7.6.2
-  fs-extra: ^11.2.0
   fuse.js: ^7.0.0
   google-font-installer: ^1.2.0
   gray-matter: ^4.0.3
   idb-keyval: ^6.2.1
   js-yaml: ^4.1.0
   jsdom: ^25.0.1
+  jsonfile: ^6.1.0
   jwt-decode: ^4.0.0
   lint-staged: ^15.2.11
   local-pkg: ^0.5.1

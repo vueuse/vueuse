@@ -1,14 +1,17 @@
 import type { PackageIndexes, VueUseFunction, VueUsePackage } from '@vueuse/metadata'
+import { existsSync } from 'node:fs'
+import * as fs from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import fs from 'fs-extra'
 import matter from 'gray-matter'
+import jsonfile from 'jsonfile'
 import Git from 'simple-git'
 import { glob } from 'tinyglobby'
 import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
 import { packages } from '../../../meta/packages'
 import { getCategories } from '../utils'
 
+const { writeFile: writeJSON } = jsonfile
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export const DOCS_URL = 'https://vueuse.org'
@@ -69,12 +72,12 @@ export async function readMetadata() {
         lastUpdated: +await git.raw(['log', '-1', '--format=%at', tsPath]) * 1000,
       }
 
-      if (fs.existsSync(join(dir, fnName, 'component.ts')))
+      if (existsSync(join(dir, fnName, 'component.ts')))
         fn.component = true
-      if (fs.existsSync(join(dir, fnName, 'directive.ts')))
+      if (existsSync(join(dir, fnName, 'directive.ts')))
         fn.directive = true
 
-      if (!fs.existsSync(mdPath)) {
+      if (!existsSync(mdPath)) {
         fn.internal = true
         indexes.functions.push(fn)
         return
@@ -153,7 +156,7 @@ export async function readMetadata() {
 
 async function run() {
   const indexes = await readMetadata()
-  await fs.writeJSON(join(DIR_PACKAGE, 'index.json'), indexes, { spaces: 2 })
+  await writeJSON(join(DIR_PACKAGE, 'index.json'), indexes, { spaces: 2 })
 }
 
 run()
