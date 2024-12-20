@@ -68,7 +68,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = ref('')
   const copied = ref(false)
-  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
+  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateText() {
     if (isClipboardApiSupported.value && isAllowed(permissionRead.value)) {
