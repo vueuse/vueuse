@@ -11,12 +11,14 @@ describe('useUrlSearchParams', () => {
   })
 
   const mockReplaceState = vi.fn()
+  const mockPushState = vi.fn()
 
   beforeEach(() => {
     vi.clearAllMocks()
     window.location.search = ''
     window.location.hash = ''
     window.history.replaceState = mockReplaceState
+    window.history.pushState = mockPushState
   })
 
   const mockPopstate = (search: string, hash: string) => {
@@ -173,6 +175,27 @@ describe('useUrlSearchParams', () => {
             break
           case 'hash-params':
             expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo=bar1&foo=bar2')
+            break
+        }
+      })
+
+      it('changes write mode', async () => {
+        const params = useUrlSearchParams(mode, { writeMode: 'push' })
+
+        params.foo = 'bar'
+        await nextTick()
+        switch (mode) {
+          case 'history':
+            expect(window.history.pushState).toBeCalledWith(null, '', '/?foo=bar')
+            expect(window.history.replaceState).not.toBeCalled()
+            break
+          case 'hash':
+            expect(window.history.pushState).toBeCalledWith(null, '', '/#?foo=bar')
+            expect(window.history.replaceState).not.toBeCalled()
+            break
+          case 'hash-params':
+            expect(window.history.pushState).toBeCalledWith(null, '', '/#foo=bar')
+            expect(window.history.replaceState).not.toBeCalled()
             break
         }
       })
