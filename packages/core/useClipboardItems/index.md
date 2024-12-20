@@ -36,7 +36,7 @@ const { content, copy, copied, isSupported } = useClipboardItems({ source })
       <span v-else>Copied!</span>
     </button>
     <p>
-      Current copied: <code>{{ text || 'none' }}</code>
+      Current copied: <code>{{ content || 'none' }}</code>
     </p>
   </div>
   <p v-else>
