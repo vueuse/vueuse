@@ -174,6 +174,7 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
+  let retryTimeout: ReturnType<typeof setTimeout> | undefined
   let pongTimeoutWait: ReturnType<typeof setTimeout> | undefined
 
   const _sendBuffer = () => {
@@ -184,6 +185,11 @@ export function useWebSocket<Data = any>(
     }
   }
 
+  const resetRetry = () => {
+    clearTimeout(retryTimeout)
+    retryTimeout = undefined
+  }
+
   const resetHeartbeat = () => {
     clearTimeout(pongTimeoutWait)
     pongTimeoutWait = undefined
@@ -191,6 +197,7 @@ export function useWebSocket<Data = any>(
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
+    resetRetry()
     if (!isClient || !wsRef.value)
       return
     explicitlyClosed = true
@@ -240,10 +247,10 @@ export function useWebSocket<Data = any>(
 
         if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
           retried += 1
-          setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, delay)
         }
         else if (typeof retries === 'function' && retries()) {
-          setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, delay)
         }
         else {
           onFailed?.()
@@ -306,6 +313,7 @@ export function useWebSocket<Data = any>(
   const open = () => {
     if (!isClient && !isWorker)
       return
+
     close()
     explicitlyClosed = false
     retried = 0
