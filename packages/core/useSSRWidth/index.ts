@@ -2,7 +2,7 @@ import type { App, InjectionKey } from 'vue'
 import { injectLocal, provideLocal } from '@vueuse/shared'
 import { hasInjectionContext } from 'vue'
 
-const ssrWidthSymbol = Symbol('SSR Width') as InjectionKey<number | null>
+const ssrWidthSymbol = Symbol('vueuse-ssr-width') as InjectionKey<number | null>
 
 export function useSSRWidth() {
   // Avoid injection warning outside of components
