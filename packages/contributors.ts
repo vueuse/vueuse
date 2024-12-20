@@ -10,6 +10,7 @@ export interface CoreTeam {
   name: string
   github: string
   twitter?: string
+  bluesky?: string
   sponsors?: boolean
   description: string
   packages?: string[]
@@ -34,6 +35,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'Anthony Fu',
     github: 'antfu',
     twitter: 'antfu7',
+    bluesky: 'antfu.me',
     sponsors: true,
     description: 'A fanatical open sourceror<br>Core team member of Vite & Vue<br>Working at NuxtLabs',
     packages: ['core'],
@@ -43,6 +45,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'Patak',
     github: 'patak-dev',
     twitter: 'patak_dev',
+    bluesky: 'patak.dev',
     sponsors: true,
     functions: [
       'useRefHistory',
@@ -55,6 +58,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'wheatjs',
     github: 'wheatjs',
     twitter: 'wheatjs',
+    bluesky: 'wheatjs.dev',
     sponsors: false,
     description: 'Software Developer<br>Open Source Contributor<br>Electrical Engineer.',
     functions: ['useFetch'],
@@ -65,6 +69,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'Tahul',
     github: 'Tahul',
     twitter: 'yaeeelglx',
+    bluesky: 'yael.dev',
     sponsors: true,
     description: '',
     packages: ['motion', 'gesture', 'sound'],
@@ -82,6 +87,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'Alex Kozack',
     github: 'cawa-93',
     twitter: 'alex_kozack',
+    bluesky: 'kozack.me',
     sponsors: false,
     functions: ['useMediaControls'],
     description: 'Open Source Contributor from Ukraine',
@@ -90,6 +96,7 @@ const coreTeamMembers: CoreTeam[] = [
     avatar: contributorsAvatars.scottbedard,
     name: 'Scott Bedard',
     github: 'scottbedard',
+    bluesky: 'scottbedard.net',
     sponsors: false,
     functions: [
       'useTransition',
@@ -151,6 +158,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'EGOIST',
     github: 'egoist',
     twitter: '_egoistlily',
+    bluesky: 'egoist.dev',
     sponsors: true,
     description: '',
     packages: ['head'],
@@ -160,6 +168,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'Harlan Wilton',
     github: 'harlan-zw',
     twitter: 'harlan_zw',
+    bluesky: 'harlanzw.com',
     sponsors: true,
     description: 'Building delightful open source<br>Nuxt freelance developer',
     packages: ['schema-org'],
@@ -178,6 +187,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'Doctorwu',
     github: 'Doctor-wu',
     twitter: 'Doctorwu666',
+    bluesky: 'doctorwu.me',
     description: 'Dangerous Coder<br>Open source enthusiast',
   },
   {
@@ -185,6 +195,7 @@ const coreTeamMembers: CoreTeam[] = [
     name: 'Bobbie Goede',
     github: 'BobbieGoede',
     twitter: 'BobbieGoede',
+    bluesky: 'goede.dev',
     sponsors: true,
     description: '',
     packages: ['motion'],
