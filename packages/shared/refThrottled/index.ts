@@ -28,6 +28,6 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
 
 // alias
 export {
-  refThrottled as useThrottle,
   refThrottled as throttledRef,
+  refThrottled as useThrottle,
 }
