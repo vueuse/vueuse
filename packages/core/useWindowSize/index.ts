@@ -24,11 +24,11 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
   includeScrollbar?: boolean
 
   /**
-   * Use `window.innerWidth` or `window.outerWidth`
-   *
+   * Use `window.innerWidth` or `window.outerWidth` or `window.visualViewport`
+   * visualViewport documentation from MDN(https://developer.mozilla.org/zh-CN/docs/Web/API/VisualViewport)
    * @default 'inner'
    */
-  type?: 'inner' | 'outer'
+  type?: 'inner' | 'outer' | 'visual'
 }
 
 /**
@@ -56,6 +56,11 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
         width.value = window.outerWidth
         height.value = window.outerHeight
       }
+      else if (type === 'visual' && window.visualViewport) {
+        const { width: visualViewportWidth, height: visualViewportHeight, scale } = window.visualViewport
+        width.value = Math.round(visualViewportWidth * scale)
+        height.value = Math.round(visualViewportHeight * scale)
+      }
       else if (includeScrollbar) {
         width.value = window.innerWidth
         height.value = window.innerHeight
@@ -70,6 +75,10 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   update()
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
+
+  if (window && type === 'visual' && window.visualViewport) {
+    useEventListener(window.visualViewport, 'resize', update, { passive: true })
+  }
 
   if (listenOrientation) {
     const matches = useMediaQuery('(orientation: portrait)')
