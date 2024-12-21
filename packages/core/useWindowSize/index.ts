@@ -76,7 +76,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
   tryOnMounted(update)
   useEventListener('resize', update, { passive: true })
 
-  if (window && type === 'visual') {
+  if (window && type === 'visual' && window.visualViewport) {
     useEventListener(window.visualViewport, 'resize', update, { passive: true })
   }
 
