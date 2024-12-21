@@ -114,9 +114,6 @@ catalogs:
     fake-indexeddb:
       specifier: ^6.0.0
       version: 6.0.0
-    fast-glob:
-      specifier: ^3.3.2
-      version: 3.3.2
     firebase:
       specifier: ^10.14.1
       version: 10.14.1
@@ -228,6 +225,9 @@ catalogs:
     taze:
       specifier: ^0.18.0
       version: 0.18.0
+    tinyglobby:
+      specifier: ^0.2.10
+      version: 0.2.10
     typescript:
       specifier: ^5.7.2
       version: 5.7.2
@@ -373,9 +373,6 @@ importers:
       fake-indexeddb:
         specifier: 'catalog:'
         version: 6.0.0
-      fast-glob:
-        specifier: 'catalog:'
-        version: 3.3.2
       firebase:
         specifier: 'catalog:'
         version: 10.14.1
@@ -463,6 +460,9 @@ importers:
       taze:
         specifier: 'catalog:'
         version: 0.18.0
+      tinyglobby:
+        specifier: 'catalog:'
+        version: 0.2.10
       typescript:
         specifier: 'catalog:'
         version: 5.7.2
