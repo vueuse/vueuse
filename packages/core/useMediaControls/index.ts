@@ -20,7 +20,7 @@ export interface UseMediaSource {
    * The media codec type
    */
   type?: string
-  
+
   /**
    * Specifies the media query for the resource's intended media.
    */

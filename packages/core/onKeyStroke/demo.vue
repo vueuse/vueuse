@@ -7,14 +7,14 @@ const translateY = ref(0)
 
 onKeyStroke(['w', 'W', 'ArrowUp'], (e) => {
   if (e.key === 'ArrowUp') {
-    e.preventDefault();
+    e.preventDefault()
   }
-  translateY.value -= 10;
+  translateY.value -= 10
 })
 
 onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
   if (e.key === 'ArrowDown') {
-    e.preventDefault();
+    e.preventDefault()
   }
   translateY.value += 10
 })
