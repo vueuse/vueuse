@@ -62,6 +62,27 @@ describe('useWebSocket', () => {
     expect(vm.ref.status.value).toBe('CONNECTING')
   })
 
+  it('should not reconnect on URL change if immediate and autoConnect are false', async () => {
+    const url = ref('ws://localhost')
+    vm = useSetup(() => {
+      const ref = useWebSocket(url, {
+        immediate: false,
+        autoConnect: false,
+      })
+
+      return {
+        ref,
+      }
+    })
+
+    url.value = 'ws://127.0.0.1'
+    await nextTick()
+
+    expect(mockWebSocket.prototype.close).not.toHaveBeenCalled()
+    expect(mockWebSocket).not.toHaveBeenCalledWith('ws://127.0.0.1', [])
+    expect(vm.ref.status.value).toBe('CLOSED')
+  })
+
   it('should remain closed if immediate is false', () => {
     vm = useSetup(() => {
       const ref = useWebSocket('ws://localhost', {

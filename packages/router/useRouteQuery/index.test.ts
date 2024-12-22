@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue'
+import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
@@ -332,7 +332,7 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBe('en-US')
   })
 
-  it.each([{ value: 'default' }, { value: null }, { value: undefined }])('should reset value when $value value', async ({ value }) => {
+  it.each([{ value: 'default' }, { value: null }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
     })
@@ -343,7 +343,7 @@ describe('useRouteQuery', () => {
     expect(search.value).toBe('vue3')
     expect(route.query.search).toBe('vue3')
 
-    search.value = value
+    search.value = toValue(value)
 
     await nextTick()
 

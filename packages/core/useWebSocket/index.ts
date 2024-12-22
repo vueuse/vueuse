@@ -1,10 +1,11 @@
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
-import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { isClient, isWorker, toRef, toValue, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
+export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
 
 const DEFAULT_PING_MESSAGE = 'ping'
 
@@ -25,12 +26,12 @@ export interface UseWebSocketOptions {
      *
      * @default 'ping'
      */
-    message?: string | ArrayBuffer | Blob
+    message?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
      * Response message for the heartbeat, if undefined the message will be used
      */
-    responseMessage?: string | ArrayBuffer | Blob
+    responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
      * Interval, in milliseconds
@@ -76,11 +77,16 @@ export interface UseWebSocketOptions {
   }
 
   /**
-   * Automatically open a connection
+   * Immediately open the connection when calling this composable
    *
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Automatically connect to the websocket when URL changes
+   */
+  autoConnect?: boolean
 
   /**
    * Automatically close a connection
@@ -157,6 +163,7 @@ export function useWebSocket<Data = any>(
     onError,
     onMessage,
     immediate = true,
+    autoConnect = true,
     autoClose = true,
     protocols = [],
   } = options
@@ -191,7 +198,7 @@ export function useWebSocket<Data = any>(
 
   // Status code 1000 -> Normal Closure https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent/code
   const close: WebSocket['close'] = (code = 1000, reason) => {
-    if (!isClient || !wsRef.value)
+    if ((!isClient && !isWorker) || !wsRef.value)
       return
     explicitlyClosed = true
     resetHeartbeat()
@@ -262,7 +269,7 @@ export function useWebSocket<Data = any>(
           message = DEFAULT_PING_MESSAGE,
           responseMessage = message,
         } = resolveNestedOptions(options.heartbeat)
-        if (e.data === responseMessage)
+        if (e.data === toValue(responseMessage))
           return
       }
 
@@ -280,7 +287,7 @@ export function useWebSocket<Data = any>(
 
     const { pause, resume } = useIntervalFn(
       () => {
-        send(message, false)
+        send(toValue(message), false)
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
@@ -315,7 +322,11 @@ export function useWebSocket<Data = any>(
   if (immediate)
     open()
 
-  watch(urlRef, open)
+  if (autoConnect) {
+    watch(urlRef, () => {
+      open()
+    })
+  }
 
   return {
     data,

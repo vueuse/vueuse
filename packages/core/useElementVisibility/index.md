@@ -24,6 +24,17 @@ const targetIsVisible = useElementVisibility(target)
 </template>
 ```
 
+### rootMargin
+
+If you wish to trigger your callback sooner before the element is fully visible, you can use
+the `rootMargin` option (See [MDN IntersectionObserver/rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin)).
+
+```ts
+const targetIsVisible = useElementVisibility(target, {
+  rootMargin: '0 0 100px 0',
+})
+```
+
 ## Component Usage
 
 ```vue
