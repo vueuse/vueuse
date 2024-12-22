@@ -1,9 +1,9 @@
-import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
 import { useTimeoutPoll } from '.'
 
 describe('useTimeoutPoll', () => {
+  vi.useFakeTimers()
   function createTests(immediate: boolean) {
     it(`supports reactive intervals when immediate is ${immediate}`, async () => {
       const callback = vi.fn()
@@ -20,19 +20,19 @@ describe('useTimeoutPoll', () => {
       resume()
       callback.mockReset()
       expect(callback).not.toBeCalled()
-      await promiseTimeout(11)
+      await vi.advanceTimersByTimeAsync(11)
       expect(callback).toBeCalled()
 
       callback.mockReset()
       pause()
-      await promiseTimeout(11)
+      await vi.advanceTimersByTimeAsync(11)
       expect(callback).not.toBeCalled()
 
       resume()
       expect(callback).toBeCalled()
 
       callback.mockReset()
-      await promiseTimeout(11)
+      await vi.advanceTimersByTimeAsync(11)
       expect(callback).toBeCalled()
     })
 
@@ -51,7 +51,7 @@ describe('useTimeoutPoll', () => {
       callback.mockReset()
       scope.stop()
       interval.value = 10
-      await promiseTimeout(11)
+      await vi.advanceTimersByTimeAsync(11)
       expect(callback).not.toBeCalled()
     })
   }

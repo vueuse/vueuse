@@ -161,6 +161,7 @@ describe('computedAsync', () => {
   })
 
   it('evaluating works', async () => {
+    vi.useFakeTimers()
     const evaluating = ref(false)
 
     const data = computedAsync(
@@ -173,7 +174,7 @@ describe('computedAsync', () => {
     expect(data.value).toBeUndefined()
     expect(evaluating.value).toBe(true)
 
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await vi.advanceTimersByTimeAsync(0)
 
     expect(evaluating.value).toBe(false)
     expect(data.value).toBe('data')
@@ -208,6 +209,7 @@ describe('computedAsync', () => {
   })
 
   it('cancel is called', async () => {
+    vi.useFakeTimers()
     const onCancel = vi.fn()
     const evaluating = ref(false)
 
@@ -224,9 +226,8 @@ describe('computedAsync', () => {
 
     expect(uppercase.value).toBe('')
 
-    await vi.waitFor(() => {
-      expect(uppercase.value).toBe('INITIAL')
-    }, { interval: 5 })
+    await vi.advanceTimersByTimeAsync(10)
+    expect(uppercase.value).toBe('INITIAL')
 
     data.value = 'to be cancelled'
     await nextTick()
@@ -238,9 +239,8 @@ describe('computedAsync', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await vi.waitFor(() => {
-      expect(uppercase.value).toBe('FINAL')
-    }, { interval: 5 })
+    await vi.advanceTimersByTimeAsync(10)
+    expect(uppercase.value).toBe('FINAL')
   })
 
   it('cancel is called for lazy', async () => {
@@ -259,9 +259,8 @@ describe('computedAsync', () => {
 
     expect(uppercase.value).toBe('')
 
-    await vi.waitFor(() => {
-      expect(uppercase.value).toBe('INITIAL')
-    }, { interval: 5 })
+    await vi.advanceTimersByTimeAsync(10)
+    expect(uppercase.value).toBe('INITIAL')
 
     data.value = 'to be cancelled'
     await nextTick()
@@ -273,8 +272,7 @@ describe('computedAsync', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await vi.waitFor(() => {
-      expect(uppercase.value).toBe('FINAL')
-    }, { interval: 5 })
+    await vi.advanceTimersByTimeAsync(10)
+    expect(uppercase.value).toBe('FINAL')
   })
 })
