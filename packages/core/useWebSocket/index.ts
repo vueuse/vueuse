@@ -31,7 +31,7 @@ export interface UseWebSocketOptions {
     /**
      * Response message for the heartbeat, if undefined the message will be used
      */
-    responseMessage?: WebSocketHeartbeatMessage | (() => WebSocketHeartbeatMessage)
+    responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
      * Interval, in milliseconds
@@ -263,7 +263,7 @@ export function useWebSocket<Data = any>(
           message = DEFAULT_PING_MESSAGE,
           responseMessage = message,
         } = resolveNestedOptions(options.heartbeat)
-        if (e.data === (typeof responseMessage === 'function' ? responseMessage() : responseMessage))
+        if (e.data === toValue(responseMessage))
           return
       }
 
