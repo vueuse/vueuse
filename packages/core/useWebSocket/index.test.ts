@@ -62,11 +62,12 @@ describe('useWebSocket', () => {
     expect(vm.ref.status.value).toBe('CONNECTING')
   })
 
-  it('should not reconnect on URL change if immediate is false', async () => {
+  it('should not reconnect on URL change if immediate and autoConnect are false', async () => {
     const url = ref('ws://localhost')
     vm = useSetup(() => {
       const ref = useWebSocket(url, {
         immediate: false,
+        autoConnect: false,
       })
 
       return {

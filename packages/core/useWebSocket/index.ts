@@ -76,11 +76,16 @@ export interface UseWebSocketOptions {
   }
 
   /**
-   * Automatically open a connection
+   * Immediately open the connection when calling this composable
    *
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Automatically connect to the websocket when URL changes
+   */
+  autoConnect?: boolean
 
   /**
    * Automatically close a connection
@@ -157,6 +162,7 @@ export function useWebSocket<Data = any>(
     onError,
     onMessage,
     immediate = true,
+    autoConnect = true,
     autoClose = true,
     protocols = [],
   } = options
@@ -315,10 +321,11 @@ export function useWebSocket<Data = any>(
   if (immediate)
     open()
 
-  watch(urlRef, () => {
-    if (immediate)
+  if (autoConnect) {
+    watch(urlRef, () => {
       open()
-  })
+    })
+  }
 
   return {
     data,
