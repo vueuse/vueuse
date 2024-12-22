@@ -19,7 +19,10 @@ const {
 } = useDevicesList()
 ```
 
-## Requesting permissions
+## Requesting Permissions
+
+To request permissions, use the `ensurePermissions` method.
+
 ```js
 const {
   ensurePermissions,
@@ -28,6 +31,8 @@ const {
 
 await ensurePermissions()
 console.log(permissionsGranted.value)
+```
+
 # Component
 
 ```vue
