@@ -1,7 +1,7 @@
 import type { WakeLockSentinel } from '.'
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
-import { nextTick } from 'vue-demi'
+import { nextTick } from 'vue'
 import { useWakeLock } from '.'
 
 class MockWakeLockSentinel extends EventTarget {

@@ -1,7 +1,7 @@
 import type { ConfigurableEventFilter, MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -80,6 +80,8 @@ export function useMouse(options: UseMouseOptions = {}) {
   } = options
 
   let _prevMouseEvent: MouseEvent | null = null
+  let _prevScrollX = 0
+  let _prevScrollY = 0
 
   const x = ref(initialValue.x)
   const y = ref(initialValue.y)
@@ -96,6 +98,11 @@ export function useMouse(options: UseMouseOptions = {}) {
     if (result) {
       [x.value, y.value] = result
       sourceType.value = 'mouse'
+    }
+
+    if (window) {
+      _prevScrollX = window.scrollX
+      _prevScrollY = window.scrollY
     }
   }
 
@@ -115,8 +122,8 @@ export function useMouse(options: UseMouseOptions = {}) {
     const pos = extractor(_prevMouseEvent)
 
     if (_prevMouseEvent instanceof MouseEvent && pos) {
-      x.value = pos[0] + window.scrollX
-      y.value = pos[1] + window.scrollY
+      x.value = pos[0] + window.scrollX - _prevScrollX
+      y.value = pos[1] + window.scrollY - _prevScrollY
     }
   }
 

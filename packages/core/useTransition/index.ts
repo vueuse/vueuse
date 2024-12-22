@@ -1,7 +1,7 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
 import { identity as linear, promiseTimeout, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue'
 
 /**
  * Cubic bezier points

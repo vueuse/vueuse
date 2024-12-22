@@ -1,6 +1,6 @@
 import type { RenderableComponent } from '../types'
 import type { UseImageOptions } from '../useImage'
-import { defineComponent, h, reactive } from 'vue-demi'
+import { defineComponent, h, reactive } from 'vue'
 
 import { useImage } from '../useImage'
 

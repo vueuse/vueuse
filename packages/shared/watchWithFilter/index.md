@@ -17,7 +17,7 @@ watchWithFilter(
   source,
   () => { console.log('changed!') }, // callback will be called in 500ms debounced manner
   {
-    eventFilter: debounceFilter(500), // throttledFilter, pausabledFilter or custom filters
+    eventFilter: debounceFilter(500), // throttledFilter, pausableFilter or custom filters
   },
 )
 ```

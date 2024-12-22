@@ -2,7 +2,7 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrG
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
 import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
-import { nextTick, ref, shallowRef } from 'vue-demi'
+import { nextTick, ref, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'

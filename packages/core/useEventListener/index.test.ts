@@ -4,7 +4,6 @@ import type { Ref } from 'vue'
 import { noop } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
-import { isVue2 } from 'vue-demi'
 import { useEventListener } from '.'
 
 describe('useEventListener', () => {
@@ -167,7 +166,7 @@ describe('useEventListener', () => {
       el?.dispatchEvent(new MouseEvent('click'))
       await nextTick()
 
-      expect(listener).toHaveBeenCalledTimes(isVue2 ? 1 : 0)
+      expect(listener).toHaveBeenCalledTimes(0)
       expect(useEventListener(null, 'click', listener)).toBe(noop)
     })
 
@@ -221,7 +220,7 @@ describe('useEventListener', () => {
 
         await nextTick()
 
-        expect(listener).toHaveBeenCalledTimes(isVue2 ? 1 : 0)
+        expect(listener).toHaveBeenCalledTimes(0)
       })
     }
 
@@ -229,7 +228,7 @@ describe('useEventListener', () => {
     testTarget(true)
   })
 
-  it.skipIf(isVue2)('should auto re-register', async () => {
+  it('should auto re-register', async () => {
     const target = ref()
     const listener = vi.fn()
     const options = ref<any>(false)

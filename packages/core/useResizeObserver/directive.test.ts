@@ -2,7 +2,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import type { UseResizeObserverOptions } from '.'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue-demi'
+import { defineComponent } from 'vue'
 import { vResizeObserver } from './directive'
 
 const App = defineComponent({

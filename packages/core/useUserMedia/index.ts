@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { type MaybeRef, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef, watch } from 'vue-demi'
+import { ref, shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 

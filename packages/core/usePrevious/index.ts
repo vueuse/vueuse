@@ -1,9 +1,9 @@
 /* This implementation is original ported from https://github.com/shorwood/pompaute by Stanley Horwood */
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { toRef } from '@vueuse/shared'
-import { readonly, shallowRef, watch } from 'vue-demi'
+import { readonly, shallowRef, watch } from 'vue'
 
 /**
  * Holds the previous value of a ref.

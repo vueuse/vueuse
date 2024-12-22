@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { createGlobalState } from '.'
 import { useSetup } from '../../.test'
 

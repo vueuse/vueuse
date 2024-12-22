@@ -1,10 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { ConfigurableEventFilter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { bypassFilter, createFilterWrapper } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 

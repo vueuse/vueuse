@@ -1,8 +1,8 @@
 import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { toRef } from '@vueuse/shared'
-import { watch } from 'vue-demi'
+import { watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseFaviconOptions extends ConfigurableDocument {

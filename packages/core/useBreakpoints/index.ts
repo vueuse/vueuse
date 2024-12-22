@@ -1,8 +1,8 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { increaseWithUnit, toValue } from '@vueuse/shared'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
 

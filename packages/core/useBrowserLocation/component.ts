@@ -1,5 +1,5 @@
 import { useBrowserLocation } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseBrowserLocation = /* #__PURE__ */ defineComponent({
   name: 'UseBrowserLocation',

@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
 import { toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { customRef, nextTick, watch } from 'vue-demi'
+import { customRef, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
@@ -33,8 +33,11 @@ export function useRouteParams<
     mode = 'replace',
     route = useRoute(),
     router = useRouter(),
-    transform = value => value as any as K,
+    transform,
   } = options
+
+  const transformGet = transform && 'get' in transform ? transform.get : transform ?? ((value: T) => value as any as K)
+  const transformSet = transform && 'set' in transform ? transform.set : (value: K) => value as any as T
 
   if (!_queue.has(router))
     _queue.set(router, new Map())
@@ -56,9 +59,11 @@ export function useRouteParams<
       get() {
         track()
 
-        return transform(param !== undefined && param !== '' ? param : toValue(defaultValue))
+        return transformGet(param !== undefined && param !== '' ? param : toValue(defaultValue))
       },
       set(v) {
+        v = transformSet(v)
+
         if (param === v)
           return
 
@@ -92,7 +97,7 @@ export function useRouteParams<
   watch(
     () => route.params[name],
     (v) => {
-      if (param === v)
+      if (param === transformGet(v as T))
         return
 
       param = v

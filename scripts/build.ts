@@ -4,8 +4,8 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
-import fg from 'fast-glob'
 import fs from 'fs-extra'
+import { glob } from 'tinyglobby'
 import YAML from 'yaml'
 import { packages } from '../meta/packages'
 import { version } from '../package.json'
@@ -45,7 +45,7 @@ async function buildMetaFiles() {
     for (const file of FILES_COPY_ROOT)
       await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
 
-    const files = await fg(FILES_COPY_LOCAL, { cwd: packageRoot })
+    const files = await glob(FILES_COPY_LOCAL, { cwd: packageRoot })
     for (const file of files)
       await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
 
@@ -75,9 +75,6 @@ async function build() {
 
   consola.info('Rollup')
   exec(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`, { stdio: 'inherit' })
-
-  consola.info('Fix types')
-  exec('pnpm run types:fix', { stdio: 'inherit' })
 
   await buildMetaFiles()
 }

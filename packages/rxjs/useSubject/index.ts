@@ -1,9 +1,9 @@
 import type { Subject } from 'rxjs'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { UseObservableOptions } from '../useObservable'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { BehaviorSubject } from 'rxjs'
-import { ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue'
 
 export interface UseSubjectOptions<I = undefined> extends Omit<UseObservableOptions<I>, 'initialValue'> {
 }

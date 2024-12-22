@@ -1,5 +1,5 @@
 import { useDevicePixelRatio } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseDevicePixelRatio = /* #__PURE__ */ defineComponent({
   name: 'UseDevicePixelRatio',

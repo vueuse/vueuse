@@ -1,9 +1,9 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { isClient } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
-import { ref, shallowRef, unref } from 'vue-demi'
+import { ref, shallowRef, unref } from 'vue'
 
 import { useEventListener } from '../useEventListener'
 
@@ -65,12 +65,10 @@ export function useDropZone(
 
     const checkValidity = (event: DragEvent) => {
       const items = Array.from(event.dataTransfer?.items ?? [])
-      const types = items
-        .filter(item => item.kind === 'file')
-        .map(item => item.type)
+      const types = items.map(item => item.type)
 
       const dataTypesValid = checkDataTypes(types)
-      const multipleFilesValid = multiple || items.filter(item => item.kind === 'file').length <= 1
+      const multipleFilesValid = multiple || items.length <= 1
 
       return dataTypesValid && multipleFilesValid
     }

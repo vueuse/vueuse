@@ -1,7 +1,7 @@
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { type MaybeRefOrGetter, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, watch } from 'vue-demi'
+import { computed, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'

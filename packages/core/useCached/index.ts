@@ -1,5 +1,5 @@
-import type { Ref, WatchOptions } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
+import type { Ref, WatchOptions } from 'vue'
+import { ref, watch } from 'vue'
 
 export function useCached<T>(
   refValue: Ref<T>,

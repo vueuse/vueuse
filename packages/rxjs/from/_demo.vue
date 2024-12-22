@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { interval } from 'rxjs'
 import {
   map,
@@ -7,7 +7,7 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { from, fromEvent } from '.'
 import { toObserver } from '../toObserver'
 import { useSubscription } from '../useSubscription'

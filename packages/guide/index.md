@@ -6,7 +6,7 @@ VueUse is a collection of utility functions based on [Composition API](https://v
 
 ## Installation
 
-> 🎩 From v4.0, it works for Vue 2 & 3 **within a single package** by the power of [vue-demi](https://github.com/vueuse/vue-demi)!
+> From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
 
 ```bash
 npm i @vueuse/core
@@ -14,15 +14,11 @@ npm i @vueuse/core
 
 [Add ons](/add-ons.html) | [Nuxt Module](/guide/index.html#nuxt)
 
-> From v6.0, VueUse requires `vue` >= v3.2 or `@vue/composition-api` >= v1.1
-
 ###### Demos
 
 - [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
 - [Nuxt 3 + Vue 3](https://github.com/antfu/vitesse-nuxt3)
 - [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
-- [Nuxt 2 + Vue 2](https://github.com/antfu/vitesse-nuxt-bridge)
-- [Vue CLI + Vue 2](https://github.com/vueuse/vueuse-vue2-example)
 
 ### CDN
 
@@ -37,6 +33,14 @@ It will be exposed to global as `window.VueUse`
 ### Nuxt
 
 From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
+
+Install the vueuse module into your application using [nuxi](https://nuxt.com/docs/api/commands/module):
+
+```bash
+npx nuxi@latest module add vueuse
+```
+
+Or use npm:
 
 ```bash
 npm i -D @vueuse/nuxt @vueuse/core
