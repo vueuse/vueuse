@@ -1,10 +1,10 @@
 import assert from 'node:assert'
 import { execSync as exec } from 'node:child_process'
+import * as fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
-import fs from 'fs-extra'
 import { glob } from 'tinyglobby'
 import YAML from 'yaml'
 import { packages } from '../meta/packages'
@@ -49,7 +49,7 @@ async function buildMetaFiles() {
     for (const file of files)
       await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
 
-    const packageJSON = await fs.readJSON(path.join(packageRoot, 'package.json'))
+    const packageJSON = JSON.parse(await fs.readFile(path.join(packageRoot, 'package.json'), { encoding: 'utf8' }))
     for (const [key, value] of Object.entries(packageJSON.dependencies || {})) {
       if (key.startsWith('@vueuse/')) {
         packageJSON.dependencies[key] = version
@@ -62,7 +62,7 @@ async function buildMetaFiles() {
       }
     }
     delete packageJSON.devDependencies
-    await fs.writeJSON(path.join(packageDist, 'package.json'), packageJSON, { spaces: 2 })
+    await fs.writeFile(path.join(packageDist, 'package.json'), JSON.stringify(packageJSON, null, 2))
   }
 }
 
