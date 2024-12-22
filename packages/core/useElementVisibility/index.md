@@ -5,8 +5,6 @@ category: Elements
 # useElementVisibility
 
 Tracks the visibility of an element within the viewport.
-If you wish to trigger your callback sooner, you can use
-the `margin` option (See [MDN IntersectionObserver/rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin)).
 
 ## Usage
 
@@ -24,6 +22,17 @@ const targetIsVisible = useElementVisibility(target)
     <h1>Hello world</h1>
   </div>
 </template>
+```
+
+### rootMargin
+
+If you wish to trigger your callback sooner before the element is fully visible, you can use
+the `rootMargin` option (See [MDN IntersectionObserver/rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin)).
+
+```ts
+const targetIsVisible = useElementVisibility(target, {
+  rootMargin: '0 0 100px 0',
+})
 ```
 
 ## Component Usage

@@ -53,7 +53,7 @@ describe('vElementVisibility', () => {
       onVisibility = vi.fn()
       const options: UseElementVisibilityOptions = {
         scrollTarget: document.body,
-        margin: '10px 0px 0px 0px',
+        rootMargin: '10px 0px 0px 0px',
       }
       wrapper = mount(App, {
         props: {

@@ -1,13 +1,19 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
+import { type MaybeRefOrGetter, toValue } from '@vueuse/shared'
 import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
 export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
-  margin?: string
+  /**
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin
+   */
+  rootMargin?: MaybeRefOrGetter<string>
+  /**
+   * The element that is used as the viewport for checking visibility of the target.
+   */
   scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
 }
 
@@ -24,7 +30,7 @@ export function useElementVisibility(
     window = defaultWindow,
     scrollTarget,
     threshold = 0,
-    margin = '0px',
+    rootMargin,
   } = options
   const elementIsVisible = ref(false)
 
@@ -47,7 +53,7 @@ export function useElementVisibility(
       root: scrollTarget,
       window,
       threshold,
-      rootMargin: margin,
+      rootMargin: toValue(rootMargin),
     },
   )
 
