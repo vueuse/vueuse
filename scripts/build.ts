@@ -62,7 +62,7 @@ async function buildMetaFiles() {
       }
     }
     delete packageJSON.devDependencies
-    await fs.writeFile(path.join(packageDist, 'package.json'), JSON.stringify(packageJSON, null, 2))
+    await fs.writeFile(path.join(packageDist, 'package.json'), `${JSON.stringify(packageJSON, null, 2)}\n`)
   }
 }
 

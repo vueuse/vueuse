@@ -281,7 +281,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         })
     }
 
-    await fs.writeFile(packageJSONPath, JSON.stringify(packageJSON, null, 2))
+    await fs.writeFile(packageJSONPath, `${JSON.stringify(packageJSON, null, 2)}\n`)
   }
 }
 

@@ -55,7 +55,7 @@ async function run() {
   await fs.rm(join(packagesRoot, 'shared/index.mjs'), { force: true })
   await fs.rm(join(packagesRoot, 'core/index.mjs'), { force: true })
   await fs.writeFile('packages/export-size.md', md, 'utf-8')
-  await fs.writeFile('packages/export-size.json', JSON.stringify(mdJSON, null, 2))
+  await fs.writeFile('packages/export-size.json', `${JSON.stringify(mdJSON, null, 2)}\n`)
 }
 
 run()
