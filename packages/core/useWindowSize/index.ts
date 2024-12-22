@@ -1,9 +1,9 @@
+import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface UseWindowSizeOptions extends ConfigurableWindow {
   initialWidth?: number
@@ -17,9 +17,18 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
 
   /**
    * Whether the scrollbar should be included in the width and height
+   * Only effective when `type` is `'inner'`
+   *
    * @default true
    */
   includeScrollbar?: boolean
+
+  /**
+   * Use `window.innerWidth` or `window.outerWidth`
+   *
+   * @default 'inner'
+   */
+  type?: 'inner' | 'outer'
 }
 
 /**
@@ -35,6 +44,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
     initialHeight = Number.POSITIVE_INFINITY,
     listenOrientation = true,
     includeScrollbar = true,
+    type = 'inner',
   } = options
 
   const width = ref(initialWidth)
@@ -42,7 +52,11 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   const update = () => {
     if (window) {
-      if (includeScrollbar) {
+      if (type === 'outer') {
+        width.value = window.outerWidth
+        height.value = window.outerHeight
+      }
+      else if (includeScrollbar) {
         width.value = window.innerWidth
         height.value = window.innerHeight
       }

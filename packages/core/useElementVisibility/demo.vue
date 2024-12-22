@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
+import { ref } from 'vue'
 
 const el = ref(null)
 const isVisible = useElementVisibility(el, { margin: '0px 0px 200px 0px' })

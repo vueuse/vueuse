@@ -1,9 +1,9 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { isObject, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
+import { isObject, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { watch } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
 
 interface InferEventTarget<Events> {
   addEventListener: (event: Events, fn?: any, options?: any) => any
@@ -99,7 +99,7 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
  * @param options
  */
 export function useEventListener<Names extends string, EventType = Event>(
-  target: InferEventTarget<Names>,
+  target: MaybeRefOrGetter<InferEventTarget<Names> | null | undefined>,
   event: Arrayable<Names>,
   listener: Arrayable<GeneralEventListener<EventType>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>

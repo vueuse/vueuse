@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { computed, ref, watch } from 'vue'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 
 export interface UseFocusOptions extends ConfigurableWindow {

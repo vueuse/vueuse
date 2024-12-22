@@ -10,8 +10,8 @@ Reactive mouse position related to an element
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
+import { ref } from 'vue'
 
 const target = ref(null)
 

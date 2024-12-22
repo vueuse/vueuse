@@ -1,4 +1,4 @@
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableFlushSync } from '../utils'
 import type { WatchPausableReturn } from '../watchPausable'
 import { pausableWatch } from '../watchPausable'

@@ -1,6 +1,6 @@
 import { defaultWindow } from '@vueuse/core'
-import { nextTick } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { nextTick } from 'vue'
 import { useCssVar } from '.'
 
 describe('useCssVar', () => {
@@ -14,6 +14,18 @@ describe('useCssVar', () => {
     const variable = useCssVar(color, el, { initialValue: 'red' })
 
     expect(variable.value).toBe('red')
+  })
+
+  it('should handle null and undefined', () => {
+    const el = document.createElement('div')
+    const property = '---color'
+    const variable = useCssVar(property, el)
+
+    expect(window?.getComputedStyle(el).getPropertyValue('--color')).toBe('')
+    variable.value = 'red'
+    setTimeout(() => {
+      expect(window?.getComputedStyle(el).getPropertyValue('--color')).toBe('red')
+    }, 100)
   })
 
   it('should work observe', async () => {

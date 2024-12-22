@@ -1,7 +1,7 @@
-import { collection, doc } from 'firebase/firestore'
 import type { Firestore } from 'firebase/firestore'
-import { computed, effectScope, nextTick, ref } from 'vue-demi'
+import { collection, doc } from 'firebase/firestore'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { computed, effectScope, nextTick, ref } from 'vue'
 import { useFirestore } from '.'
 
 const dummyFirestore = {} as Firestore
@@ -40,7 +40,7 @@ vi.mock('firebase/firestore', () => {
     return { path }
   })
 
-  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => {}, errorHandler: (err: Error) => void) => {
+  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => void, errorHandler: (err: Error) => void) => {
     if (docRef.path === 'users/error') {
       errorHandler(new Error('not found'))
       return

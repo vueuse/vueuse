@@ -1,10 +1,11 @@
-import type { Ref } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import type { Ref } from 'vue'
+import { isClient, isWorker, toRef, toValue, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { ref, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
+export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
 
 const DEFAULT_PING_MESSAGE = 'ping'
 
@@ -25,7 +26,12 @@ export interface UseWebSocketOptions {
      *
      * @default 'ping'
      */
-    message?: string | ArrayBuffer | Blob
+    message?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
+
+    /**
+     * Response message for the heartbeat, if undefined the message will be used
+     */
+    responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
      * Interval, in milliseconds
@@ -71,11 +77,16 @@ export interface UseWebSocketOptions {
   }
 
   /**
-   * Automatically open a connection
+   * Immediately open the connection when calling this composable
    *
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Automatically connect to the websocket when URL changes
+   */
+  autoConnect?: boolean
 
   /**
    * Automatically close a connection
@@ -152,6 +163,7 @@ export function useWebSocket<Data = any>(
     onError,
     onMessage,
     immediate = true,
+    autoConnect = true,
     autoClose = true,
     protocols = [],
   } = options
@@ -216,6 +228,7 @@ export function useWebSocket<Data = any>(
 
     ws.onopen = () => {
       status.value = 'OPEN'
+      retried = 0
       onConnected?.(ws!)
       heartbeatResume?.()
       _sendBuffer()
@@ -225,20 +238,23 @@ export function useWebSocket<Data = any>(
       status.value = 'CLOSED'
       onDisconnected?.(ws, ev)
 
-      if (!explicitlyClosed && options.autoReconnect) {
+      if (!explicitlyClosed && options.autoReconnect && (wsRef.value == null || ws === wsRef.value)) {
         const {
           retries = -1,
           delay = 1000,
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
-        retried += 1
 
-        if (typeof retries === 'number' && (retries < 0 || retried < retries))
+        if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
+          retried += 1
           setTimeout(_init, delay)
-        else if (typeof retries === 'function' && retries())
+        }
+        else if (typeof retries === 'function' && retries()) {
           setTimeout(_init, delay)
-        else
+        }
+        else {
           onFailed?.()
+        }
       }
     }
 
@@ -251,8 +267,9 @@ export function useWebSocket<Data = any>(
         resetHeartbeat()
         const {
           message = DEFAULT_PING_MESSAGE,
+          responseMessage = message,
         } = resolveNestedOptions(options.heartbeat)
-        if (e.data === message)
+        if (e.data === toValue(responseMessage))
           return
       }
 
@@ -270,7 +287,7 @@ export function useWebSocket<Data = any>(
 
     const { pause, resume } = useIntervalFn(
       () => {
-        send(message, false)
+        send(toValue(message), false)
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
@@ -305,7 +322,11 @@ export function useWebSocket<Data = any>(
   if (immediate)
     open()
 
-  watch(urlRef, open)
+  if (autoConnect) {
+    watch(urlRef, () => {
+      open()
+    })
+  }
 
   return {
     data,

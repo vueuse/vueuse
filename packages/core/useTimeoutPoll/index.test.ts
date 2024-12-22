@@ -1,6 +1,6 @@
-import { effectScope, ref } from 'vue-demi'
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
+import { effectScope, ref } from 'vue'
 import { useTimeoutPoll } from '.'
 
 describe('useTimeoutPoll', () => {
@@ -10,7 +10,8 @@ describe('useTimeoutPoll', () => {
       const interval = ref(0)
       const { pause, resume } = useTimeoutPoll(callback, interval, { immediate })
 
-      immediate || resume()
+      if (!immediate)
+        resume()
       await promiseTimeout(1)
       expect(callback).toBeCalled()
       pause()
@@ -46,7 +47,8 @@ describe('useTimeoutPoll', () => {
       await scope.run(async () => {
         const { resume } = useTimeoutPoll(callback, interval, { immediate })
 
-        immediate || resume()
+        if (!immediate)
+          resume()
         await promiseTimeout(1)
         expect(callback).toBeCalled()
       })

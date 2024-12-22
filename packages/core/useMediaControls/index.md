@@ -12,8 +12,8 @@ Reactive media controls for both `audio` and `video` elements
 
 ```vue
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import { useMediaControls } from '@vueuse/core'
+import { onMounted, ref } from 'vue'
 
 const video = ref()
 const { playing, currentTime, duration, volume } = useMediaControls(video, {

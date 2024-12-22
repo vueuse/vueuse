@@ -1,9 +1,9 @@
-import { until } from '@vueuse/shared'
-import { nextTick, ref } from 'vue-demi'
 import type { MockInstance } from 'vitest'
+import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { isBelowNode18, retry } from '../../.test'
+import { nextTick, ref } from 'vue'
 import { createFetch, useFetch } from '.'
+import { isBelowNode18, retry } from '../../.test'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
@@ -17,7 +17,7 @@ let onFetchResponseSpy = vi.fn()
 let onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
-  return fetchSpy.mock.calls[idx][1]!.headers
+  return (fetchSpy.mock.calls[idx][1]! as any).headers
 }
 
 // The tests does not run properly below node 18
@@ -81,6 +81,22 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(fetchSpy).toHaveBeenCalledOnce()
       expect(options.body).toEqual({ x: 1 })
       expect(options.headers['Content-Type']).toBe('unknown')
+    })
+  })
+
+  it('should use \'json\' payloadType', async () => {
+    let options: any
+    const payload = [1, 2]
+    useFetch('https://example.com', {
+      beforeFetch: (ctx) => {
+        options = ctx.options
+      },
+    }).post(payload)
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(options.body).toEqual(JSON.stringify(payload))
+      expect(options.headers['Content-Type']).toBe('application/json')
     })
   })
 

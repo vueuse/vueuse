@@ -14,8 +14,8 @@ This function only works for Vue 3
 
 ```vue
 <script setup lang="ts">
-import { onUpdated } from 'vue'
 import { useTemplateRefsList } from '@vueuse/core'
+import { onUpdated } from 'vue'
 
 const refs = useTemplateRefsList<HTMLDivElement>()
 

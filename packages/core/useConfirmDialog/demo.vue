@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useConfirmDialog } from '@vueuse/core'
+import { ref } from 'vue'
 
 const message = ref('')
 const revaled1 = ref(false)
