@@ -122,18 +122,18 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
         else
           params.set(key, mapEntry)
       })
-      write(params, false, writeMode === 'replace')
+      write(params, false)
     },
     { deep: true },
   )
 
-  function write(params: URLSearchParams, shouldUpdate: boolean, shouldReplace: boolean) {
+  function write(params: URLSearchParams, shouldUpdate: boolean) {
     pause()
 
     if (shouldUpdate)
       updateState(params)
 
-    if (shouldReplace) {
+    if (writeMode === 'replace') {
       window.history.replaceState(
         window.history.state,
         window.document.title,
@@ -155,7 +155,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     if (!enableWrite)
       return
 
-    write(read(), true, writeMode === 'replace')
+    write(read(), true)
   }
 
   useEventListener(window, 'popstate', onChanged, false)
