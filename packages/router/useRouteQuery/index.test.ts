@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, reactive, ref, watch, toValue } from 'vue'
+import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
