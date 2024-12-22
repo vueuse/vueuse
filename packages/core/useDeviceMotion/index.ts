@@ -7,8 +7,18 @@ import { bypassFilter, createFilterWrapper } from '@vueuse/shared'
 import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 
-export interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter { }
+export interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {
+  /**
+   * Request for permissions immediately if it's not granted,
+   * otherwise label and deviceIds could be empty
+   *
+   * @default false
+   */
+  requestPermissions?: boolean
+}
+
 interface DeviceMotionEventiOS extends DeviceMotionOptions {
   requestPermission: () => Promise<'granted' | 'denied'>
 }
@@ -22,10 +32,12 @@ interface DeviceMotionEventiOS extends DeviceMotionOptions {
 export function useDeviceMotion(options: DeviceMotionOptions = {}) {
   const {
     window = defaultWindow,
+    requestPermissions = false,
     eventFilter = bypassFilter,
   } = options
 
-  const ensurePermissions = 'requestPermission' in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function'
+  const isSupported = useSupported(() => typeof DeviceMotionEvent !== 'undefined')
+  const requirePermissions = useSupported(() => isSupported.value && 'requestPermission' in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function')
   const permissionGranted = ref(false)
   const acceleration: Ref<DeviceMotionEvent['acceleration']> = ref({ x: null, y: null, z: null })
   const rotationRate: Ref<DeviceMotionEvent['rotationRate']> = ref({ alpha: null, beta: null, gamma: null })
@@ -41,9 +53,21 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
       const onDeviceMotion = createFilterWrapper(
         eventFilter,
         (event: DeviceMotionEvent) => {
-          acceleration.value = { x: event.acceleration?.x || null, y: event.acceleration?.y || null, z: event.acceleration?.z || null }
-          accelerationIncludingGravity.value = { x: event.accelerationIncludingGravity?.x || null, y: event.accelerationIncludingGravity?.y || null, z: event.accelerationIncludingGravity?.z || null }
-          rotationRate.value = { alpha: event.rotationRate?.alpha || null, beta: event.rotationRate?.beta || null, gamma: event.rotationRate?.gamma || null }
+          acceleration.value = {
+            x: event.acceleration?.x || null,
+            y: event.acceleration?.y || null,
+            z: event.acceleration?.z || null,
+          }
+          accelerationIncludingGravity.value = {
+            x: event.accelerationIncludingGravity?.x || null,
+            y: event.accelerationIncludingGravity?.y || null,
+            z: event.accelerationIncludingGravity?.z || null,
+          }
+          rotationRate.value = {
+            alpha: event.rotationRate?.alpha || null,
+            beta: event.rotationRate?.beta || null,
+            gamma: event.rotationRate?.gamma || null,
+          }
           interval.value = event.interval
         },
       )
@@ -51,8 +75,14 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
       useEventListener(window, 'devicemotion', onDeviceMotion)
     }
   }
-  const trigger = async () => {
-    if (ensurePermissions) {
+
+  const ensurePermissions = async () => {
+    if (!requirePermissions.value)
+      permissionGranted.value = true
+
+    if (permissionGranted.value)
+      return
+    if (requirePermissions.value) {
       const requestPermission = (DeviceMotionEvent as unknown as DeviceMotionEventiOS).requestPermission
       try {
         const response = await requestPermission()
@@ -67,17 +97,25 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     }
   }
 
-  if (!ensurePermissions)
-    init()
+  if (isSupported.value) {
+    if (requestPermissions && requirePermissions.value) {
+      ensurePermissions()
+        .then(() => init())
+    }
+    else {
+      init()
+    }
+  }
 
   return {
     acceleration,
     accelerationIncludingGravity,
     rotationRate,
     interval,
+    isSupported,
+    requirePermissions,
     ensurePermissions,
     permissionGranted,
-    trigger,
   }
 }
 

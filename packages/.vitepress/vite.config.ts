@@ -69,7 +69,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: [
-      'vue',
       '@vueuse/shared',
       '@vueuse/core',
       'body-scroll-lock',
