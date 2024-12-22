@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef } from 'vue'
 import { toValue } from '@vueuse/shared'
 import { jwtDecode } from 'jwt-decode'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 
 export interface UseJwtOptions<Fallback> {
   /**

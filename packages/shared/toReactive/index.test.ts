@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isReactive, nextTick, reactive, ref, watchSyncEffect } from 'vue-demi'
+import { isReactive, nextTick, reactive, ref, watchSyncEffect } from 'vue'
 import { toReactive } from '.'
 import { toRefs } from '../toRefs'
 

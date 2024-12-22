@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useThrottledRefHistory } from '.'
 
 describe('useThrottledRefHistory - sync', () => {

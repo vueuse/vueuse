@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener, useMouseInElement, useVModel } from '@vueuse/core'
-import { ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   min: { type: Number, default: 0 },

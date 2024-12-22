@@ -1,7 +1,6 @@
-import type { ObjectDirective } from 'vue-demi'
+import type { ObjectDirective } from 'vue'
 import type { ElementSize } from '.'
-import { directiveHooks } from '@vueuse/shared'
-import { watch } from 'vue-demi'
+import { watch } from 'vue'
 import { useElementSize } from '.'
 
 type RemoveFirstFromTuple<T extends any[]> =
@@ -16,7 +15,7 @@ export const vElementSize: ObjectDirective<
   HTMLElement,
   BindingValueFunction | BindingValueArray
 > = {
-  [directiveHooks.mounted](el, binding) {
+  mounted(el, binding) {
     const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]
     const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
 

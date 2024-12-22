@@ -1,9 +1,9 @@
 {
   "name": "@vueuse/monorepo",
   "type": "module",
-  "version": "11.1.0",
+  "version": "12.0.0",
   "private": true,
-  "packageManager": "pnpm@9.11.0",
+  "packageManager": "pnpm@9.15.1",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
@@ -11,10 +11,10 @@
     "build": "nr update && esno scripts/build-run.ts",
     "build:redirects": "esno scripts/redirects.ts",
     "build:rollup": "NODE_OPTIONS=\"--max-old-space-size=6144\" rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
-    "build:types": "tsc --emitDeclarationOnly && nr types:fix",
-    "clean": "rimraf --glob dist types \"packages/*/dist\"",
+    "build:types": "tsc --emitDeclarationOnly",
+    "clean": "premove --glob dist types \"packages/*/dist\"",
     "dev": "nr update && nr docs",
-    "docs": "vue-demi-switch 3 && vitepress dev packages --open",
+    "docs": "vitepress dev packages --open",
     "docs:build": "nr update:full && vitepress build packages && nr build:redirects",
     "docs:serve": "vitepress serve packages",
     "lint": "eslint --cache .",
@@ -25,12 +25,8 @@
     "release:prepare": "npm run build:types && npm run update",
     "size": "esno scripts/export-size.ts",
     "test": "vitest",
-    "test:2": "vue-demi-switch 2.7 vue2 && vitest run --silent",
-    "test:3": "vue-demi-switch 3 && vitest run",
-    "test:all": "nr test:3 && nr test:2 && vue-demi-switch 3",
     "test:cov": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "types:fix": "esno scripts/fix-types.ts",
     "update": "nr -C packages/metadata update && esno scripts/update.ts",
     "update:full": "nr update && nr build:types",
     "watch": "esno scripts/build-run.ts --watch",
@@ -70,7 +66,6 @@
     "esno": "catalog:",
     "export-size": "catalog:",
     "fake-indexeddb": "catalog:",
-    "fast-glob": "catalog:",
     "firebase": "catalog:",
     "fs-extra": "catalog:",
     "fuse.js": "catalog:",
@@ -88,10 +83,10 @@
     "pnpm": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
+    "premove": "catalog:",
     "prettier": "catalog:",
     "prism-theme-vars": "catalog:",
     "remove-markdown": "catalog:",
-    "rimraf": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-dts": "catalog:",
     "rollup-plugin-esbuild": "catalog:",
@@ -100,6 +95,7 @@
     "simple-git": "catalog:",
     "simple-git-hooks": "catalog:",
     "taze": "catalog:",
+    "tinyglobby": "catalog:",
     "typescript": "catalog:",
     "unocss": "catalog:",
     "unplugin-icons": "catalog:",
@@ -108,8 +104,7 @@
     "vite-plugin-inspect": "catalog:",
     "vitepress": "catalog:",
     "vitest": "catalog:",
-    "vue": "catalog:",
-    "vue2": "catalog:"
+    "vue": "catalog:"
   },
   "pnpm": {
     "neverBuiltDependencies": [
@@ -125,7 +120,7 @@
     "rollup": "catalog:",
     "vite": "catalog:",
     "vite-plugin-pwa": "catalog:",
-    "vue-demi": "catalog:"
+    "vue": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

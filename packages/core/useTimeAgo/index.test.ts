@@ -1,7 +1,7 @@
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef } from 'vue'
 import { promiseTimeout, timestamp } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { useTimeAgo } from '.'
 
 type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'

@@ -18,8 +18,8 @@ const targetIsVisible = ref(false)
 
 const { stop } = useIntersectionObserver(
   target,
-  ([{ isIntersecting }], observerElement) => {
-    targetIsVisible.value = isIntersecting
+  ([entry], observerElement) => {
+    targetIsVisible.value = entry?.isIntersecting || false
   },
 )
 </script>
@@ -42,8 +42,8 @@ const root = ref(null)
 
 const isVisible = ref(false)
 
-function onIntersectionObserver([{ isIntersecting }]: IntersectionObserverEntry[]) {
-  isVisible.value = isIntersecting
+function onIntersectionObserver([entry]: IntersectionObserverEntry[]) {
+  isVisible.value = entry?.isIntersecting || false
 }
 </script>
 

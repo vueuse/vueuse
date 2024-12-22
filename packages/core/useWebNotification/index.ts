@@ -1,8 +1,8 @@
 import type { EventHook } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -111,14 +111,22 @@ export function useWebNotification(
   const isSupported = useSupported(() => {
     if (!window || !('Notification' in window))
       return false
+    if (Notification.permission === 'granted')
+      return true
+
     // https://stackoverflow.com/questions/29774836/failed-to-construct-notification-illegal-constructor/29895431
     // https://issues.chromium.org/issues/40415865
     try {
-      // eslint-disable-next-line no-new
-      new Notification('')
+      const notification = new Notification('')
+      notification.onshow = () => {
+        notification.close()
+      }
     }
-    catch {
-      return false
+    catch (e) {
+      // Android Chrome: Uncaught TypeError: Failed to construct 'Notification': Illegal constructor. Use ServiceWorkerRegistration.showNotification() instead.
+      // @ts-expect-error catch TypeError
+      if (e.name === 'TypeError')
+        return false
     }
     return true
   })

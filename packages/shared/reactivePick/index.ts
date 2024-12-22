@@ -1,5 +1,5 @@
-import type { UnwrapRef } from 'vue-demi'
-import { toRefs } from 'vue-demi'
+import type { UnwrapRef } from 'vue'
+import { toRefs } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 import { toRef } from '../toRef'
 import { toValue } from '../toValue'

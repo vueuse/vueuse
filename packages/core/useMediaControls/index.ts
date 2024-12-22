@@ -1,7 +1,7 @@
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
 import { createEventHook, isObject, toRef, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
-import { ref, watch, watchEffect } from 'vue-demi'
+import { ref, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -173,6 +173,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   // Events
   const sourceErrorEvent = createEventHook<Event>()
+  const playbackErrorEvent = createEventHook<Event>()
 
   /**
    * Disables the specified track. If no track is specified then
@@ -376,10 +377,15 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!el)
       return
 
-    if (isPlaying)
-      el.play()
-    else
+    if (isPlaying) {
+      el.play().catch((e) => {
+        playbackErrorEvent.trigger(e)
+        throw e
+      })
+    }
+    else {
       el.pause()
+    }
   })
 
   useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (toValue(target))!.currentTime))
@@ -463,6 +469,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
     // Events
     onSourceError: sourceErrorEvent.on,
+    onPlaybackError: playbackErrorEvent.on,
   }
 }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDevicesList, useUserMedia } from '@vueuse/core'
-import { ref, watchEffect } from 'vue'
+import { reactive, ref, watchEffect } from 'vue'
 
 const currentCamera = ref<string>()
 const { videoInputs: cameras } = useDevicesList({
@@ -13,7 +13,7 @@ const { videoInputs: cameras } = useDevicesList({
 
 const video = ref<HTMLVideoElement>()
 const { stream, enabled } = useUserMedia({
-  constraints: { video: { deviceId: currentCamera } },
+  constraints: reactive({ video: { deviceId: currentCamera } }),
 })
 
 watchEffect(() => {

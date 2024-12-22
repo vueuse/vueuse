@@ -1,6 +1,6 @@
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef } from 'vue'
 import type { MaybeRefOrGetter } from '../utils'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import { toValue } from '../toValue'
 
 /**

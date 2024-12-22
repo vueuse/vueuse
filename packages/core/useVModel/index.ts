@@ -1,7 +1,7 @@
-import type { Ref, UnwrapRef, WritableComputedRef } from 'vue-demi'
+import type { Ref, UnwrapRef, WritableComputedRef } from 'vue'
 import type { CloneFn } from '../useCloned'
 import { isDef } from '@vueuse/shared'
-import { computed, getCurrentInstance, isVue2, nextTick, ref, watch } from 'vue-demi'
+import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 import { cloneFnJSON } from '../useCloned'
 
 export interface UseVModelOptions<T, Passive extends boolean = false> {
@@ -67,7 +67,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
  *
  * @see https://vueuse.org/useVModel
  * @param props
- * @param key (default 'value' in Vue 2 and 'modelValue' in Vue 3)
+ * @param key (default 'modelValue')
  * @param emit
  */
 export function useVModel<P extends object, K extends keyof P, Name extends string, Passive extends boolean>(
@@ -91,15 +91,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   let event: string | undefined = eventName
 
   if (!key) {
-    if (isVue2) {
-      const modelOptions = vm?.proxy?.$options?.model
-      key = modelOptions?.value || 'value' as K
-      if (!eventName)
-        event = modelOptions?.event || 'input'
-    }
-    else {
-      key = 'modelValue' as K
-    }
+    key = 'modelValue' as K
   }
 
   event = event || `update:${key!.toString()}`

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useExtractedObservable } from '.'
 
 const start = ref(0)

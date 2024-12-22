@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
 import { noop } from '@vueuse/shared'
-import { computed, reactive, ref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -128,8 +128,6 @@ export function useSwipe(
     useEventListener(target, 'touchstart', (e: TouchEvent) => {
       if (e.touches.length !== 1)
         return
-      if (listenerOptions.capture && !listenerOptions.passive)
-        e.preventDefault()
       const [x, y] = getTouchEventCoords(e)
       updateCoordsStart(x, y)
       updateCoordsEnd(x, y)
@@ -141,6 +139,8 @@ export function useSwipe(
         return
       const [x, y] = getTouchEventCoords(e)
       updateCoordsEnd(x, y)
+      if (listenerOptions.capture && !listenerOptions.passive && Math.abs(diffX.value) > Math.abs(diffY.value))
+        e.preventDefault()
       if (!isSwiping.value && isThresholdExceeded.value)
         isSwiping.value = true
       if (isSwiping.value)

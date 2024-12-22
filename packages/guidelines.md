@@ -9,7 +9,7 @@ You can also find some reasons for those design decisions and also some tips for
 
 ## General
 
-- Import all Vue APIs from `"vue-demi"`
+- Import all Vue APIs from `"vue"`
 - Use `ref` instead of `reactive` whenever possible
 - Use options object as arguments whenever possible to be more flexible for future extensions.
 - Use `shallowRef` instead of `ref` when wrapping large amounts of data.
@@ -84,7 +84,7 @@ useActiveElement({ window: window.parent })
 When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible. For example `watchDebounced`:
 
 ```ts
-import type { WatchOptions } from 'vue-demi'
+import type { WatchOptions } from 'vue'
 
 // extend the watch options
 export interface WatchDebouncedOptions extends WatchOptions {
@@ -212,7 +212,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>): UseFetchReturn<T> & 
 ```ts
 import type { MouseOptions } from '@vueuse/core'
 import { useMouse } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseMouse = defineComponent<MouseOptions>({
   name: 'UseMouse',
