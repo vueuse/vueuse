@@ -36,9 +36,6 @@ catalogs:
     '@types/js-yaml':
       specifier: ^4.0.9
       version: 4.0.9
-    '@types/jsonfile':
-      specifier: ^6.1.4
-      version: 6.1.4
     '@types/md5':
       specifier: ^2.3.5
       version: 2.3.5
@@ -138,9 +135,6 @@ catalogs:
     jsdom:
       specifier: ^25.0.1
       version: 25.0.1
-    jsonfile:
-      specifier: ^6.1.0
-      version: 6.1.0
     jwt-decode:
       specifier: ^4.0.0
       version: 4.0.0
@@ -298,9 +292,6 @@ importers:
       '@types/js-yaml':
         specifier: 'catalog:'
         version: 4.0.9
-      '@types/jsonfile':
-        specifier: 'catalog:'
-        version: 6.1.4
       '@types/md5':
         specifier: 'catalog:'
         version: 2.3.5
@@ -391,9 +382,6 @@ importers:
       jsdom:
         specifier: 'catalog:'
         version: 25.0.1
-      jsonfile:
-        specifier: 'catalog:'
-        version: 6.1.0
       lint-staged:
         specifier: 'catalog:'
         version: 15.2.11
@@ -2877,9 +2865,6 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
-
-  '@types/jsonfile@6.1.4':
-    resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
@@ -10360,10 +10345,6 @@ snapshots:
   '@types/js-yaml@4.0.9': {}
 
   '@types/json-schema@7.0.15': {}
-
-  '@types/jsonfile@6.1.4':
-    dependencies:
-      '@types/node': 22.10.2
 
   '@types/keyv@3.1.4':
     dependencies:

@@ -4,14 +4,12 @@ import * as fs from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
-import jsonfile from 'jsonfile'
 import Git from 'simple-git'
 import { glob } from 'tinyglobby'
 import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
 import { packages } from '../../../meta/packages'
 import { getCategories } from '../utils'
 
-const { writeFile: writeJSON } = jsonfile
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export const DOCS_URL = 'https://vueuse.org'
@@ -156,7 +154,7 @@ export async function readMetadata() {
 
 async function run() {
   const indexes = await readMetadata()
-  await writeJSON(join(DIR_PACKAGE, 'index.json'), indexes, { spaces: 2 })
+  await fs.writeFile(join(DIR_PACKAGE, 'index.json'), JSON.stringify(indexes, null, 2))
 }
 
 run()

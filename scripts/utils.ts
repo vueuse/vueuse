@@ -5,13 +5,10 @@ import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
 import YAML from 'js-yaml'
-import jsonfile from 'jsonfile'
 import { $fetch } from 'ofetch'
 import Git from 'simple-git'
 import { packages } from '../meta/packages'
 import { getCategories } from '../packages/metadata/utils'
-
-const { readFile: readJSON, writeFile: writeJSON } = jsonfile
 
 export const git = Git()
 
@@ -230,12 +227,12 @@ export async function updateCountBadge(indexes: PackageIndexes) {
 }
 
 export async function updatePackageJSON(indexes: PackageIndexes) {
-  const { version } = await readJSON('package.json')
+  const { version } = JSON.parse(await fs.readFile('package.json', { encoding: 'utf8' }))
 
   for (const { name, description, author, submodules, iife } of packages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
-    const packageJSON = await readJSON(packageJSONPath)
+    const packageJSON = JSON.parse(await fs.readFile(packageJSONPath, { encoding: 'utf8' }))
 
     packageJSON.version = version
     packageJSON.description = description || packageJSON.description
@@ -284,7 +281,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
         })
     }
 
-    await writeJSON(packageJSONPath, packageJSON, { spaces: 2 })
+    await fs.writeFile(packageJSONPath, JSON.stringify(packageJSON, null, 2))
   }
 }
 

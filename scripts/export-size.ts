@@ -3,12 +3,10 @@ import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { getExportsSize } from 'export-size'
 import { filesize } from 'filesize'
-import jsonfile from 'jsonfile'
 import { markdownTable } from 'markdown-table'
 import { packages } from '../meta/packages'
 import { version } from '../package.json'
 
-const { writeFile: writeJSON } = jsonfile
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 async function run() {
@@ -57,7 +55,7 @@ async function run() {
   await fs.rm(join(packagesRoot, 'shared/index.mjs'), { force: true })
   await fs.rm(join(packagesRoot, 'core/index.mjs'), { force: true })
   await fs.writeFile('packages/export-size.md', md, 'utf-8')
-  await writeJSON('packages/export-size.json', mdJSON, { spaces: 2 })
+  await fs.writeFile('packages/export-size.json', JSON.stringify(mdJSON, null, 2))
 }
 
 run()

@@ -12,7 +12,6 @@ catalog:
   '@shikijs/vitepress-twoslash': ^1.24.4
   '@type-challenges/utils': ^0.1.1
   '@types/js-yaml': ^4.0.9
-  '@types/jsonfile': ^6.1.4
   '@types/md5': ^2.3.5
   '@types/node': ^22.10.2
   '@types/nprogress': ^0.2.3
@@ -48,7 +47,6 @@ catalog:
   idb-keyval: ^6.2.1
   js-yaml: ^4.1.0
   jsdom: ^25.0.1
-  jsonfile: ^6.1.0
   jwt-decode: ^4.0.0
   lint-staged: ^15.2.11
   local-pkg: ^0.5.1

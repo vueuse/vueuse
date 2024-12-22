@@ -5,7 +5,6 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
-import jsonfile from 'jsonfile'
 import { glob } from 'tinyglobby'
 import YAML from 'yaml'
 import { packages } from '../meta/packages'
@@ -13,7 +12,6 @@ import { version } from '../package.json'
 import { metadata } from '../packages/metadata/metadata'
 import { updateImport } from './utils'
 
-const { readFile: readJSON, writeFile: writeJSON } = jsonfile
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
 const watch = process.argv.includes('--watch')
@@ -51,7 +49,7 @@ async function buildMetaFiles() {
     for (const file of files)
       await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
 
-    const packageJSON = await readJSON(path.join(packageRoot, 'package.json'))
+    const packageJSON = JSON.parse(await fs.readFile(path.join(packageRoot, 'package.json'), { encoding: 'utf8' }))
     for (const [key, value] of Object.entries(packageJSON.dependencies || {})) {
       if (key.startsWith('@vueuse/')) {
         packageJSON.dependencies[key] = version
@@ -64,7 +62,7 @@ async function buildMetaFiles() {
       }
     }
     delete packageJSON.devDependencies
-    await writeJSON(path.join(packageDist, 'package.json'), packageJSON, { spaces: 2 })
+    await fs.writeFile(path.join(packageDist, 'package.json'), JSON.stringify(packageJSON, null, 2))
   }
 }
 
