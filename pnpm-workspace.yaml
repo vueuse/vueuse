@@ -3,13 +3,13 @@ packages:
   - '!playgrounds'
 catalog:
   '@antfu/eslint-config': ^3.12.0
-  '@antfu/ni': ^0.23.1
+  '@antfu/ni': ^0.23.2
   '@iconify/json': ^2.2.286
   '@nuxt/kit': ^3.14.1592
   '@nuxt/schema': ^3.14.1592
   '@rollup/plugin-json': ^6.1.0
   '@rollup/plugin-replace': ^6.0.2
-  '@shikijs/vitepress-twoslash': ^1.24.3
+  '@shikijs/vitepress-twoslash': ^1.24.4
   '@type-challenges/utils': ^0.1.1
   '@types/fs-extra': ^11.0.4
   '@types/js-yaml': ^4.0.9
@@ -29,7 +29,7 @@ catalog:
   '@vue/test-utils': ^2.4.6
   async-validator: ^4.2.5
   axios: ^1.7.9
-  bumpp: ^9.9.1
+  bumpp: ^9.9.2
   change-case: ^5.4.4
   consola: ^3.3.0
   drauu: ^0.4.2
@@ -69,7 +69,8 @@ catalog:
   prism-theme-vars: ^0.2.5
   qrcode: ^1.5.4
   remove-markdown: ^0.6.0
-  rollup: ^4.28.1
+  rimraf: ^6.0.1
+  rollup: ^4.29.1
   rollup-plugin-dts: ^6.1.1
   rollup-plugin-esbuild: ^6.1.1
   rollup-plugin-pure: ^0.2.1
@@ -86,8 +87,8 @@ catalog:
   unocss: ^0.65.2
   unplugin-icons: ^0.22.0
   unplugin-vue-components: ^0.28.0
-  vite: ^6.0.4
-  vite-plugin-inspect: ^0.10.3
+  vite: ^6.0.5
+  vite-plugin-inspect: ^0.10.6
   vite-plugin-pwa: ^0.21.1
   vitepress: ^1.5.0
   vitest: ^2.1.8
