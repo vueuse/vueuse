@@ -1,12 +1,12 @@
-import type { ComputedRef, Ref, ToRef } from 'vue-demi'
+import type { ComputedRef, Ref, ToRef } from 'vue'
+import type { MaybeRefOrGetter } from '../utils'
 import {
   customRef,
   readonly,
   ref,
   // eslint-disable-next-line no-restricted-imports
   toRef as vueToRef,
-} from 'vue-demi'
-import type { MaybeRefOrGetter } from '../utils'
+} from 'vue'
 import { noop } from '../utils'
 
 /**

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { VueUseFunction } from '@vueuse/metadata'
+import { computed } from 'vue'
 import { renderMarkdown } from '../utils'
 
 const props = defineProps<{ fn: VueUseFunction }>()

@@ -10,12 +10,14 @@ describe('useDateFormat', () => {
   it('should normalize date', () => {
     const date = new Date(2022, 0, 1, 0, 0, 0)
     const currentDate = new Date().toDateString()
+
     expect(normalizeDate(undefined).toDateString()).toBe(currentDate)
     // @ts-expect-error test null
     expect(normalizeDate(null).toString()).toBe('Invalid Date')
     expect(normalizeDate(new Date()).toDateString()).toBe(currentDate)
     expect(normalizeDate(new Date().toString()).toDateString()).toBe(currentDate)
-    expect(normalizeDate(new Date().toISOString().replace('Z', '')).toDateString()).toBe(currentDate)
+    expect.soft(normalizeDate(new Date().toISOString().replace('Z', '')).toDateString()).toBe(currentDate)
+
     expect(normalizeDate('2022-01')).toEqual(date)
     expect(normalizeDate('2022-01-01')).toEqual(date)
     expect(normalizeDate('2022-01-01T00:00:00.000')).toEqual(date)

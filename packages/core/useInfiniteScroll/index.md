@@ -10,8 +10,8 @@ Infinite scrolling of the element.
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useInfiniteScroll } from '@vueuse/core'
+import { ref } from 'vue'
 
 const el = ref<HTMLElement | null>(null)
 const data = ref([1, 2, 3, 4, 5, 6])
@@ -47,8 +47,8 @@ function resetList() {
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { vInfiniteScroll } from '@vueuse/components'
+import { ref } from 'vue'
 
 const data = ref([1, 2, 3, 4, 5, 6])
 

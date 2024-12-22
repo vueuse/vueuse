@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { watchTriggerable } from '@vueuse/core'
+import { ref } from 'vue'
 
 const log = ref('')
 const source = ref(0)

@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, watchEffect } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -58,5 +58,5 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
     mediaQuery = undefined
   })
 
-  return matches
+  return computed(() => matches.value)
 }

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { onUnmounted } from 'vue-demi'
+import { onUnmounted } from 'vue'
 import { type Fn, getLifeCycleTarget } from '../utils'
 
 /**
