@@ -1,5 +1,5 @@
-import { useNetwork } from '../useNetwork'
 import type { ConfigurableWindow } from '../_configurable'
+import { useNetwork } from '../useNetwork'
 
 /**
  * Reactive online state.

@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-restricted-imports
-import { unref } from 'vue-demi'
 import type { MaybeRef } from '../utils'
+// eslint-disable-next-line no-restricted-imports
+import { unref } from 'vue'
 
 /**
  * Shorthand for accessing `ref.value`

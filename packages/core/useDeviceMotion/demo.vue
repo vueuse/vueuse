@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDeviceMotion } from './index'
+import { useDeviceMotion } from '@vueuse/core'
 
 const { acceleration, accelerationIncludingGravity, rotationRate, interval, ensurePermissions, permissionGranted, trigger } = useDeviceMotion()
 </script>

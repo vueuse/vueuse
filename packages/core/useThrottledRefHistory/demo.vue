@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useCounter } from '@vueuse/shared'
-import { formatDate, useThrottledRefHistory } from '@vueuse/core'
 import type { Ref } from 'vue'
+import { formatDate, useThrottledRefHistory } from '@vueuse/core'
+import { useCounter } from '@vueuse/shared'
+import { ref } from 'vue'
 
 function format(ts: number) {
   return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
