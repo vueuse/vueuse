@@ -4,10 +4,10 @@ import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import fs from 'node:fs'
 import { resolve } from 'node:path'
 import json from '@rollup/plugin-json'
-import fg from 'fast-glob'
 import dts from 'rollup-plugin-dts'
 import esbuild from 'rollup-plugin-esbuild'
 import { PluginPure as pure } from 'rollup-plugin-pure'
+import { globSync } from 'tinyglobby'
 import { packages } from './meta/packages'
 
 const metadata = JSON.parse(fs.readFileSync('./packages/metadata/index.json', 'utf-8'))
@@ -52,7 +52,7 @@ for (const { globals, name, external, submodules, iife, build, cjs, mjs, dts, ta
   const functionNames = ['index']
 
   if (submodules)
-    functionNames.push(...fg.sync('*/index.ts', { cwd: resolve(`packages/${name}`) }).map(i => i.split('/')[0]))
+    functionNames.push(...globSync('*/index.ts', { cwd: resolve(`packages/${name}`) }).map(i => i.split('/')[0]))
 
   for (const fn of functionNames) {
     const input = fn === 'index'
