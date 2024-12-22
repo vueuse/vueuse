@@ -1,11 +1,11 @@
-import { computed, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
-import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { toValue } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseCssVarOptions extends ConfigurableWindow {
   initialValue?: string
@@ -52,8 +52,8 @@ export function useCssVar(
   watch(
     [elRef, () => toValue(prop)],
     (_, old) => {
-      if (old[0] && old[1] && window)
-        window.getComputedStyle(old[0]).removeProperty(old[1])
+      if (old[0] && old[1])
+        old[0].style.removeProperty(old[1])
       updateCssVar()
     },
     { immediate: true },

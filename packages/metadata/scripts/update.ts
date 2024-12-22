@@ -1,12 +1,12 @@
+import type { PackageIndexes, VueUseFunction, VueUsePackage } from '@vueuse/metadata'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
-import type { PackageIndexes, VueUseFunction, VueUsePackage } from '@vueuse/metadata'
-import fg from 'fast-glob'
 import Git from 'simple-git'
-import { packages } from '../../../meta/packages'
+import { glob } from 'tinyglobby'
 import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
+import { packages } from '../../../meta/packages'
 import { getCategories } from '../utils'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -20,7 +20,7 @@ export const DIR_TYPES = resolve(DIR_ROOT, 'types/packages')
 export const git = Git(DIR_ROOT)
 
 export async function listFunctions(dir: string, ignore: string[] = []) {
-  const files = await fg('*', {
+  const files = await glob('*', {
     onlyDirectories: true,
     cwd: dir,
     ignore: [
@@ -31,7 +31,7 @@ export async function listFunctions(dir: string, ignore: string[] = []) {
     ],
   })
   files.sort()
-  return files
+  return files.map(path => path.endsWith('/') ? path.slice(0, -1) : path)
 }
 
 export async function readMetadata() {

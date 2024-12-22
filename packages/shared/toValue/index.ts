@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-restricted-imports
-import { unref } from 'vue-demi'
 import type { AnyFn, MaybeRefOrGetter } from '../utils'
+// eslint-disable-next-line no-restricted-imports
+import { unref } from 'vue'
 
 /**
  * Get the value of value/ref/getter.

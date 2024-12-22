@@ -1,10 +1,10 @@
 import { join, resolve } from 'node:path'
-import { markdownTable } from 'markdown-table'
 import { getExportsSize } from 'export-size'
 import { filesize } from 'filesize'
 import fs from 'fs-extra'
-import { version } from '../package.json'
+import { markdownTable } from 'markdown-table'
 import { packages } from '../meta/packages'
+import { version } from '../package.json'
 
 async function run() {
   // made shared library imported can resolve correctly
@@ -30,7 +30,7 @@ async function run() {
       pkg: `./packages/${pkg.name}/dist`,
       output: false,
       bundler: 'rollup',
-      external: ['vue-demi', ...(pkg.external || [])],
+      external: ['vue', ...(pkg.external || [])],
       includes: ['@vueuse/shared'],
     })
 

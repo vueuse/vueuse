@@ -1,5 +1,5 @@
-import type { Ref } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
+import type { Ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useThrottleFn } from '../useThrottleFn'
 
 /**
@@ -28,6 +28,6 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
 
 // alias
 export {
-  refThrottled as useThrottle,
   refThrottled as throttledRef,
+  refThrottled as useThrottle,
 }

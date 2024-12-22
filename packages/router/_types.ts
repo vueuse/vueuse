@@ -28,5 +28,8 @@ export interface ReactiveRouteOptionsWithTransform<V, R> extends ReactiveRouteOp
   /**
    * Function to transform data before return
    */
-  transform?: (val: V) => R
+  transform?: ((val: V) => R) | {
+    get: (value: V) => R
+    set: (value: R) => V
+  }
 }

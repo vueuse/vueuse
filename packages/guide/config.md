@@ -41,8 +41,8 @@ For `watch`-like composables (e.g. `pausableWatch`, `whenever`, `useStorage`, `u
 In the same way as with `watch`, VueUse allows you to configure the timing by passing the `flush` option:
 
 ```ts twoslash
-import { ref } from 'vue'
 import { pausableWatch } from '@vueuse/core'
+import { ref } from 'vue'
 
 const counter = ref(0)
 const { pause, resume } = pausableWatch(

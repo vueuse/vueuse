@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { retry } from '../../.test'
+import { ref } from 'vue'
 import { useFocus } from '.'
+import { retry } from '../../.test'
 
 describe('useFocus', () => {
   let target: Ref<HTMLButtonElement>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, toRefs } from 'vue'
 import { useScroll } from '@vueuse/core'
+import { computed, ref, toRefs } from 'vue'
 
 const el = ref<HTMLElement | null>(null)
 const smooth = ref(false)
