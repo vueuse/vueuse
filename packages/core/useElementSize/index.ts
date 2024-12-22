@@ -1,10 +1,10 @@
-import { tryOnMounted } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue-demi'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
-import { useResizeObserver } from '../useResizeObserver'
-import { unrefElement } from '../unrefElement'
+import { tryOnMounted } from '@vueuse/shared'
+import { computed, ref, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface ElementSize {
   width: number
@@ -38,9 +38,9 @@ export function useElementSize(
       if (window && isSVG.value) {
         const $elem = unrefElement(target)
         if ($elem) {
-          const styles = window.getComputedStyle($elem)
-          width.value = Number.parseFloat(styles.width)
-          height.value = Number.parseFloat(styles.height)
+          const rect = $elem.getBoundingClientRect()
+          width.value = rect.width
+          height.value = rect.height
         }
       }
       else {

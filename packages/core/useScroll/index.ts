@@ -1,10 +1,10 @@
-import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
-import { unrefElement } from '../unrefElement'
 import type { ConfigurableWindow } from '../_configurable'
+import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { computed, reactive, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
+import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions extends ConfigurableWindow {
   /**
@@ -144,6 +144,14 @@ export function useScroll(
       left: toValue(_x) ?? x.value,
       behavior: toValue(behavior),
     })
+    const scrollContainer
+      = (_element as Window)?.document?.documentElement
+      || (_element as Document)?.documentElement
+      || (_element as Element)
+    if (x != null)
+      internalX.value = scrollContainer.scrollLeft
+    if (y != null)
+      internalY.value = scrollContainer.scrollTop
   }
 
   const isScrolling = ref(false)

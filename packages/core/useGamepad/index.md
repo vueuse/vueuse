@@ -12,11 +12,11 @@ Provides reactive bindings for the [Gamepad API](https://developer.mozilla.org/e
 
 ```vue
 <script setup>
-import { computed } from 'vue'
 import { useGamepad } from '@vueuse/core'
+import { computed } from 'vue'
 
 const { isSupported, gamepads } = useGamepad()
-const gamepad = computed(() => gamepads.find(g => g.mapping === 'standard'))
+const gamepad = computed(() => gamepads.value.find(g => g.mapping === 'standard'))
 </script>
 
 <template>

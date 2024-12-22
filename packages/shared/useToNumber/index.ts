@@ -1,7 +1,7 @@
-import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
-import { toValue } from '../toValue'
+import type { ComputedRef } from 'vue'
 import type { MaybeRefOrGetter } from '../utils'
+import { computed } from 'vue'
+import { toValue } from '../toValue'
 
 export interface UseToNumberOptions {
   /**
@@ -26,7 +26,7 @@ export interface UseToNumberOptions {
 }
 
 /**
- * Computed reactive object.
+ * Reactively convert a string ref to number.
  */
 export function useToNumber(
   value: MaybeRefOrGetter<number | string>,

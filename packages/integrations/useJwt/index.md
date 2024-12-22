@@ -9,14 +9,14 @@ Wrapper for [`jwt-decode`](https://github.com/auth0/jwt-decode).
 ## Install
 
 ```bash
-npm install jwt-decode@^3
+npm install jwt-decode@^4
 ```
 
 ## Usage
 
 ```typescript
-import { defineComponent } from 'vue'
 import { useJwt } from '@vueuse/integrations/useJwt'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   setup() {

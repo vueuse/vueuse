@@ -1,13 +1,13 @@
+import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 import YAML from 'js-yaml'
-import Git from 'simple-git'
-import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
 import { $fetch } from 'ofetch'
-import { getCategories } from '../packages/metadata/utils'
+import Git from 'simple-git'
 import { packages } from '../meta/packages'
+import { getCategories } from '../packages/metadata/utils'
 
 export const git = Git()
 
@@ -34,7 +34,7 @@ export async function getTypeDefinition(pkg: string, name: string): Promise<stri
   types = types
     .replace(/import\(.*?\)\./g, '')
     .replace(/import[\s\S]+?from ?["'][\s\S]+?["']/g, '')
-    .replace(/export {}/g, '')
+    .replace(/export \{\}/g, '')
 
   const prettier = await import('prettier')
   return (await prettier
@@ -173,7 +173,7 @@ export async function updateIndexREADME({ packages, functions }: PackageIndexes)
 
   readme = readme.replace(
     /img\.shields\.io\/badge\/-(.+?)%20functions/,
-`img.shields.io/badge/-${functionsCount}%20functions`,
+    `img.shields.io/badge/-${functionsCount}%20functions`,
   ).trim().replace(/\r\n/g, '\n')
 
   await fs.writeFile('README.md', `${readme}\n`, 'utf-8')
@@ -285,7 +285,8 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
 }
 
 async function fetchContributors(page = 1) {
-  const additional = ['egoist']
+  // contributors that contribute to repos other than `vueuse/vueuse`, required for contributor avatar to work
+  const additional = ['egoist', 'Tahul', 'BobbieGoede']
 
   const collaborators: string[] = []
   const data = await $fetch<{ login: string }[]>(`https://api.github.com/repos/vueuse/vueuse/contributors?per_page=100&page=${page}`, {

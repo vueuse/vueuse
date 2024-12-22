@@ -9,10 +9,10 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 ## Usage
 
 ```js {9,12,17,22}
-import { computed, ref } from 'vue'
+import { useFirestore } from '@vueuse/firebase/useFirestore'
 import { initializeApp } from 'firebase/app'
 import { collection, doc, getFirestore, limit, orderBy, query } from 'firebase/firestore'
-import { useFirestore } from '@vueuse/firebase/useFirestore'
+import { computed, ref } from 'vue'
 
 const app = initializeApp({ projectId: 'MY PROJECT ID' })
 const db = getFirestore(app)

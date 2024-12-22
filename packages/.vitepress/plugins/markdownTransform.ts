@@ -1,8 +1,8 @@
-import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
+import { join, resolve } from 'node:path'
 import fs from 'fs-extra'
-import ts from 'typescript'
 import { format } from 'prettier'
+import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
@@ -80,7 +80,7 @@ ${formattedJS}
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
         code = code
-          .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
+          .replace(/(# \w+)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
           .replace(/## (Components?(?:\sUsage)?)/i, '## $1\n<LearnMoreComponents />\n\n')
           .replace(/## (Directives?(?:\sUsage)?)/i, '## $1\n<LearnMoreDirectives />\n\n')
       }
@@ -127,7 +127,8 @@ ${code}
     ['Docs', `${URL}/index.md`],
   ])
     .filter(i => i)
-    .map(i => `[${i![0]}](${i![1]})`).join(' • ')
+    .map(i => `[${i![0]}](${i![1]})`)
+    .join(' • ')
 
   const sourceSection = `## Source\n\n${links}\n`
   const ContributorsSection = `

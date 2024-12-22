@@ -1,6 +1,6 @@
+import type { Ref } from 'vue'
 import { noop } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { reactive, ref } from 'vue-demi'
+import { reactive, ref } from 'vue'
 
 export type UseAsyncQueueTask<T> = (...args: any[]) => T | Promise<T>
 
@@ -109,7 +109,8 @@ export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
 
         const done = curr(prevRes).then((currentRes: any) => {
           updateResult(promiseState.fulfilled, currentRes)
-          activeIndex.value === tasks.length - 1 && onFinished()
+          if (activeIndex.value === tasks.length - 1)
+            onFinished()
           return currentRes
         })
 

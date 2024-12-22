@@ -1,12 +1,12 @@
+import type { PackageIndexes, VueUseFunction, VueUsePackage } from '@vueuse/metadata'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import fg from 'fast-glob'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
-import type { PackageIndexes, VueUseFunction, VueUsePackage } from '@vueuse/metadata'
-import fg from 'fast-glob'
 import Git from 'simple-git'
-import { packages } from '../../../meta/packages'
 import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
+import { packages } from '../../../meta/packages'
 import { getCategories } from '../utils'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -101,9 +101,9 @@ export async function readMetadata() {
           // normalize newlines
           .replace(/\r\n/g, '\n')
           // remove ::: tip blocks
-          .replace(/(:{3,}(?=[^:\n]*\n))[^\n]*\n[\s\S]*?(?:\1 *(?=\n))/g, '')
+          .replace(/(:{3,}(?=[^:\n]*\n))[^\n]*\n[\s\S]*?\1 *(?=\n)/g, '')
           // remove headers
-          .match(/#(?=\s).*(?:\n+)(.+?)(?:, |\. |\n|\.\n)/m) || []
+          .match(/#(?=\s).*\n+(.+?)(?:, |\. |\n|\.\n)/) || []
       )[1] || ''
 
       description = description.trim()

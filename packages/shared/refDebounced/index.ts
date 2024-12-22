@@ -1,7 +1,7 @@
-import type { Ref } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
-import { useDebounceFn } from '../useDebounceFn'
+import type { Ref } from 'vue'
 import type { DebounceFilterOptions, MaybeRefOrGetter } from '../utils'
+import { ref, watch } from 'vue'
+import { useDebounceFn } from '../useDebounceFn'
 
 /**
  * Debounce updates of a ref.
@@ -22,6 +22,6 @@ export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 20
 
 // alias
 export {
-  refDebounced as useDebounce,
   refDebounced as debouncedRef,
+  refDebounced as useDebounce,
 }

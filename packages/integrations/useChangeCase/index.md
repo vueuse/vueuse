@@ -11,7 +11,7 @@ Subsitutes `useCamelCase`, `usePascalCase`, `useSnakeCase`, `useSentenceCase`, `
 ## Install
 
 ```bash
-npm i change-case@^4
+npm i change-case@^5
 ```
 
 ## Usage
@@ -45,8 +45,8 @@ or passing a `ref` to it, the returned `computed` will change along with the sou
 Can be passed into `options` for customization
 
 ```ts
-import { ref } from 'vue'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
+import { ref } from 'vue'
 
 const input = ref('helloWorld')
 const changeCase = useChangeCase(input, 'camelCase', {

@@ -17,7 +17,7 @@ From the Fuse.js website:
 ### NPM
 
 ```bash
-npm install fuse.js@^6
+npm install fuse.js@^7
 ```
 
 ### Yarn
@@ -29,8 +29,8 @@ yarn add fuse.js
 ## Usage
 
 ```ts
-import { ref } from 'vue'
 import { useFuse } from '@vueuse/integrations/useFuse'
+import { ref } from 'vue'
 
 const data = [
   'John Smith',

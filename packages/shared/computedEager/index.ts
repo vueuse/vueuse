@@ -1,8 +1,8 @@
 // ported from https://dev.to/linusborg/vue-when-a-computed-property-can-be-the-wrong-tool-195j
 // by @linusborg https://github.com/LinusBorg
 
-import type { Ref, WatchOptionsBase } from 'vue-demi'
-import { readonly, shallowRef, watchEffect } from 'vue-demi'
+import type { Ref, WatchOptionsBase } from 'vue'
+import { readonly, shallowRef, watchEffect } from 'vue'
 
 /**
  * Note: If you are using Vue 3.4+, you can straight use computed instead.

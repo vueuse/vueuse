@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { computed, ref, watch } from 'vue'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 
 export interface UseFocusOptions extends ConfigurableWindow {
@@ -19,6 +19,13 @@ export interface UseFocusOptions extends ConfigurableWindow {
    * @default false
    */
   focusVisible?: boolean
+
+  /**
+   * Prevent scrolling to the element when it is focused.
+   *
+   * @default false
+   */
+  preventScroll?: boolean
 }
 
 export interface UseFocusReturn {
@@ -37,7 +44,7 @@ export interface UseFocusReturn {
  * @param options
  */
 export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
-  const { initialValue = false, focusVisible = false } = options
+  const { initialValue = false, focusVisible = false, preventScroll = false } = options
 
   const innerFocused = ref(false)
   const targetElement = computed(() => unrefElement(target))
@@ -54,7 +61,7 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
       if (!value && innerFocused.value)
         targetElement.value?.blur()
       else if (value && !innerFocused.value)
-        targetElement.value?.focus()
+        targetElement.value?.focus({ preventScroll })
     },
   })
 

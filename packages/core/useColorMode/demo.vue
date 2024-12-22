@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useCycleList } from '@vueuse/core'
-import { watchEffect } from 'vue-demi'
+import { watchEffect } from 'vue'
 
 const mode = useColorMode({
   emitAuto: true,
@@ -10,9 +10,9 @@ const mode = useColorMode({
   },
 })
 
-const { state, next } = useCycleList(['dark', 'light', 'cafe', 'contrast', 'auto'], { initialValue: mode })
+const { state, next } = useCycleList(['dark', 'light', 'cafe', 'contrast', 'auto'] as const, { initialValue: mode })
 
-watchEffect(() => mode.value = state.value as any)
+watchEffect(() => mode.value = state.value)
 </script>
 
 <template>
