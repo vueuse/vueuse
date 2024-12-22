@@ -22,8 +22,6 @@ describe('createEventHook', () => {
     onResult(result => message = result)
     exec()
 
-    setTimeout(() => {}, 0)
-
     expect(message).toBe('Hello World')
   })
 

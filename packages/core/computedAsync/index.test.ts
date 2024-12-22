@@ -1,5 +1,4 @@
 import type { Ref } from 'vue'
-import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
 import { asyncComputed, computedAsync } from '.'
@@ -32,9 +31,7 @@ describe('computedAsync', () => {
     expect(func).toBeCalledTimes(1)
 
     expect(data.value).toBeUndefined()
-
-    await promiseTimeout(10)
-
+    await nextTick()
     expect(data.value).toBe('data')
   })
 
@@ -49,7 +46,7 @@ describe('computedAsync', () => {
   })
 
   it('call onError when error is thrown', async () => {
-    let errorMessage
+    const errorMessage = ref()
     const func = vi.fn(async () => {
       throw new Error('An Error Message')
     })
@@ -57,7 +54,7 @@ describe('computedAsync', () => {
     const data = computedAsync(func, undefined, {
       onError(e) {
         if (e instanceof Error)
-          errorMessage = e.message
+          errorMessage.value = e.message
       },
     })
 
@@ -65,10 +62,9 @@ describe('computedAsync', () => {
 
     expect(data.value).toBeUndefined()
 
-    await promiseTimeout(10)
-
+    await nextTick()
     expect(data.value).toBeUndefined()
-    expect(errorMessage).toBe('An Error Message')
+    expect(errorMessage.value).toBe('An Error Message')
   })
 
   it('is lazy if configured', async () => {
@@ -81,8 +77,7 @@ describe('computedAsync', () => {
     // Act
     expect(data.value).toBeUndefined()
 
-    await promiseTimeout(10)
-
+    await nextTick()
     // Assert
     expect(func).toBeCalledTimes(1)
     expect(data.value).toBe('data')
@@ -229,9 +224,9 @@ describe('computedAsync', () => {
 
     expect(uppercase.value).toBe('')
 
-    await promiseTimeout(10)
-
-    expect(uppercase.value).toBe('INITIAL')
+    await vi.waitFor(() => {
+      expect(uppercase.value).toBe('INITIAL')
+    }, { interval: 5 })
 
     data.value = 'to be cancelled'
     await nextTick()
@@ -243,9 +238,9 @@ describe('computedAsync', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await promiseTimeout(10)
-
-    expect(uppercase.value).toBe('FINAL')
+    await vi.waitFor(() => {
+      expect(uppercase.value).toBe('FINAL')
+    }, { interval: 5 })
   })
 
   it('cancel is called for lazy', async () => {
@@ -264,9 +259,9 @@ describe('computedAsync', () => {
 
     expect(uppercase.value).toBe('')
 
-    await promiseTimeout(10)
-
-    expect(uppercase.value).toBe('INITIAL')
+    await vi.waitFor(() => {
+      expect(uppercase.value).toBe('INITIAL')
+    }, { interval: 5 })
 
     data.value = 'to be cancelled'
     await nextTick()
@@ -278,8 +273,8 @@ describe('computedAsync', () => {
     await nextTick()
     expect(onCancel).toBeCalledTimes(1)
 
-    await promiseTimeout(10)
-
-    expect(uppercase.value).toBe('FINAL')
+    await vi.waitFor(() => {
+      expect(uppercase.value).toBe('FINAL')
+    }, { interval: 5 })
   })
 })
