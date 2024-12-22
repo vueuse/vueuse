@@ -1,10 +1,11 @@
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
-import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { isClient, isWorker, toRef, toValue, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
+export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
 
 const DEFAULT_PING_MESSAGE = 'ping'
 
@@ -25,12 +26,12 @@ export interface UseWebSocketOptions {
      *
      * @default 'ping'
      */
-    message?: string | ArrayBuffer | Blob
+    message?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
      * Response message for the heartbeat, if undefined the message will be used
      */
-    responseMessage?: string | ArrayBuffer | Blob
+    responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
      * Interval, in milliseconds
@@ -262,7 +263,7 @@ export function useWebSocket<Data = any>(
           message = DEFAULT_PING_MESSAGE,
           responseMessage = message,
         } = resolveNestedOptions(options.heartbeat)
-        if (e.data === responseMessage)
+        if (e.data === toValue(responseMessage))
           return
       }
 
@@ -280,7 +281,7 @@ export function useWebSocket<Data = any>(
 
     const { pause, resume } = useIntervalFn(
       () => {
-        send(message, false)
+        send(toValue(message), false)
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
