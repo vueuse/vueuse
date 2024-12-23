@@ -31,6 +31,15 @@
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.cts",
+  "files": [
+    "*.cjs",
+    "*.d.cts",
+    "*.d.mts",
+    "*.d.ts",
+    "*.js",
+    "*.mjs",
+    "index.json"
+  ],
   "dependencies": {
     "vue": "catalog:"
   }

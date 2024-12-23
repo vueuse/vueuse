@@ -31,7 +31,13 @@
   "module": "./index.mjs",
   "types": "./index.d.ts",
   "files": [
-    "index.*"
+    "*.cjs",
+    "*.d.cts",
+    "*.d.mts",
+    "*.d.ts",
+    "*.js",
+    "*.mjs",
+    "index.json"
   ],
   "scripts": {
     "update": "esno scripts/update.ts"

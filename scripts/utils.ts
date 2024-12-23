@@ -255,6 +255,15 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
     }
+    packageJSON.files = [
+      '*.cjs',
+      '*.d.cts',
+      '*.d.mts',
+      '*.d.ts',
+      '*.js',
+      '*.mjs',
+      'index.json',
+    ]
     packageJSON.exports = {
       '.': {
         import: './index.mjs',

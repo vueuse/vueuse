@@ -14,7 +14,6 @@ async function run() {
   const packagesRoot = resolve(__dirname, '..', 'packages')
   await fs.writeFile(join(packagesRoot, 'shared/index.mjs'), 'export * from "./dist/index.mjs"', 'utf-8')
   await fs.writeFile(join(packagesRoot, 'core/index.mjs'), 'export * from "./dist/index.mjs"', 'utf-8')
-  await fs.cp(join(packagesRoot, 'shared/dist'), join(packagesRoot, 'core/dist/node_modules/@vueuse/shared'), { force: true, recursive: true })
 
   let md = '# Export size\n\n'
   const mdJSON = <{ [name: string]: string }>{}
