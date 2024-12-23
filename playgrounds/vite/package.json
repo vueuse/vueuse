@@ -10,14 +10,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
-    "@vueuse/core": "file:../../packages/core/dist",
-    "@vueuse/metadata": "file:../../packages/metadata/dist",
-    "@vueuse/shared": "file:../../packages/shared/dist",
     "vite": "^6.0.5"
-  },
-  "resolutions": {
-    "@vueuse/core": "file:../../packages/core/dist",
-    "@vueuse/metadata": "file:../../packages/metadata/dist",
-    "@vueuse/shared": "file:../../packages/shared/dist"
   }
 }

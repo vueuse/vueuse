@@ -240,6 +240,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     packageJSON.bugs = {
       url: 'https://github.com/vueuse/vueuse/issues',
     }
+    packageJSON.type = 'module'
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
@@ -255,6 +256,23 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
     }
+    packageJSON.files = [
+      '*.cjs',
+      '*.d.cts',
+      '*.d.mts',
+      '*.d.ts',
+      '*.js',
+      '*.mjs',
+    ]
+
+    if (submodules) {
+      packageJSON.files = packageJSON.files.map((i: string) => `**/${i}`)
+    }
+
+    if (name === 'metadata') {
+      packageJSON.files.push('index.json')
+    }
+
     packageJSON.exports = {
       '.': {
         import: './index.mjs',
