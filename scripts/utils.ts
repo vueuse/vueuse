@@ -263,8 +263,16 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       '*.d.ts',
       '*.js',
       '*.mjs',
-      'index.json',
     ]
+
+    if (submodules) {
+      packageJSON.files = packageJSON.files.map((i: string) => `**/${i}`)
+    }
+
+    if (name === 'metadata') {
+      packageJSON.files.push('index.json')
+    }
+
     packageJSON.exports = {
       '.': {
         import: './index.mjs',

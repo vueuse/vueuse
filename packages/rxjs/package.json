@@ -41,8 +41,7 @@
     "*.d.mts",
     "*.d.ts",
     "*.js",
-    "*.mjs",
-    "index.json"
+    "*.mjs"
   ],
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
