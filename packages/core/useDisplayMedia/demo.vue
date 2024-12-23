@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
 import { useDisplayMedia } from '@vueuse/core'
+import { ref, watchEffect } from 'vue'
 
 const video = ref<HTMLVideoElement>()
 const { stream, enabled } = useDisplayMedia()

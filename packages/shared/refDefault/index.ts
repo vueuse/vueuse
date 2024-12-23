@@ -1,5 +1,5 @@
-import type { Ref } from 'vue-demi'
-import { computed } from 'vue-demi'
+import type { Ref } from 'vue'
+import { computed } from 'vue'
 
 /**
  * Apply default value to a ref.

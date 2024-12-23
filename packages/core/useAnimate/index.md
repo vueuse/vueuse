@@ -14,8 +14,8 @@ The `useAnimate` function will return the animate and its control function.
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useAnimate } from '@vueuse/core'
+import { ref } from 'vue'
 
 const el = ref()
 const {

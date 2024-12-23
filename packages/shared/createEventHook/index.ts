@@ -23,6 +23,7 @@ export interface EventHook<T = any> {
   on: EventHookOn<T>
   off: EventHookOff<T>
   trigger: EventHookTrigger<T>
+  clear: () => void
 }
 
 /**
@@ -35,6 +36,10 @@ export function createEventHook<T = any>(): EventHook<T> {
 
   const off = (fn: Callback<T>) => {
     fns.delete(fn)
+  }
+
+  const clear = () => {
+    fns.clear()
   }
 
   const on = (fn: Callback<T>) => {
@@ -56,5 +61,6 @@ export function createEventHook<T = any>(): EventHook<T> {
     on,
     off,
     trigger,
+    clear,
   }
 }

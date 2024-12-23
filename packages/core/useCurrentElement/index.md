@@ -18,8 +18,8 @@ Or pass a specific vue component
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useCurrentElement } from '@vueuse/core'
+import { ref } from 'vue'
 
 const componentRef = ref()
 

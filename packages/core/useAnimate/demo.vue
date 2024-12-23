@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { reactive, shallowRef } from 'vue'
+import type { MaybeElement } from '@vueuse/core'
 import { useAnimate } from '@vueuse/core'
 import { stringify } from '@vueuse/docs-utils'
-import type { MaybeElement } from '@vueuse/core'
+import { reactive, shallowRef } from 'vue'
 
 const el = shallowRef<MaybeElement>()
 

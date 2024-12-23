@@ -1,9 +1,9 @@
-import { until } from '@vueuse/shared'
-import { nextTick, ref } from 'vue-demi'
 import type { MockInstance } from 'vitest'
+import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { isBelowNode18, retry } from '../../.test'
+import { nextTick, ref } from 'vue'
 import { createFetch, useFetch } from '.'
+import { isBelowNode18, retry } from '../../.test'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
@@ -81,6 +81,22 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(fetchSpy).toHaveBeenCalledOnce()
       expect(options.body).toEqual({ x: 1 })
       expect(options.headers['Content-Type']).toBe('unknown')
+    })
+  })
+
+  it('should use \'json\' payloadType', async () => {
+    let options: any
+    const payload = [1, 2]
+    useFetch('https://example.com', {
+      beforeFetch: (ctx) => {
+        options = ctx.options
+      },
+    }).post(payload)
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(options.body).toEqual(JSON.stringify(payload))
+      expect(options.headers['Content-Type']).toBe('application/json')
     })
   })
 
@@ -503,18 +519,16 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('async chained beforeFetch and afterFetch should be executed in order', async () => {
-    const sleep = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
-
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
         async beforeFetch({ options }) {
-          await sleep(50)
+          await nextTick()
           options.headers = { ...options.headers, title: 'Hunter X Hunter' }
           return { options }
         },
         async afterFetch(ctx) {
-          await sleep(50)
+          await nextTick()
           ctx.data.message = 'Hunter X Hunter'
           return ctx
         },

@@ -1,3 +1,3 @@
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 
 export const count = ref(0)

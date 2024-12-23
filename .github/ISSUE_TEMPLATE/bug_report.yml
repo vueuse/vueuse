@@ -1,11 +1,20 @@
 name: 🐞 Bug report
 description: Report an issue with VueUse
 labels: [pending triage]
+title: 'BUG | `functionName` | '
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
+
+        Please follow the one of the following title formats:
+        - ``BUG | `functionName` | Short Description``
+
+        For example:
+        ```
+        BUG | `useMouse` | Position is off when scrolling
+        ```
   - type: textarea
     id: bug-description
     attributes:

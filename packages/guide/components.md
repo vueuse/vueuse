@@ -14,8 +14,8 @@ For example of `onClickOutside`, instead of binding the component ref for functi
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import { ref } from 'vue'
 
 const el = ref()
 
