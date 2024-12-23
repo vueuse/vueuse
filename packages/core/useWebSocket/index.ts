@@ -85,6 +85,8 @@ export interface UseWebSocketOptions {
 
   /**
    * Automatically connect to the websocket when URL changes
+   *
+   * @default true
    */
   autoConnect?: boolean
 
@@ -332,11 +334,8 @@ export function useWebSocket<Data = any>(
   if (immediate)
     open()
 
-  if (autoConnect) {
-    watch(urlRef, () => {
-      open()
-    })
-  }
+  if (autoConnect)
+    watch(urlRef, open)
 
   return {
     data,
