@@ -5,10 +5,12 @@ import { toValue } from '../toValue'
 
 export interface UseArrayDifferenceOptions {
   /**
-   * Whether to merge differences
+   * Returns asymmetric difference
+   *
+   * @see https://en.wikipedia.org/wiki/Symmetric_difference
    * @default false
    */
-  mergeDiff?: boolean
+  symmetric?: boolean
 }
 
 function defaultComparator<T>(value: T, othVal: T) {
@@ -40,7 +42,7 @@ export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
 
   let compareFn = args[2] ?? defaultComparator
   const {
-    mergeDiff = false,
+    symmetric = false,
   } = args[3] ?? {}
 
   if (typeof compareFn === 'string') {
@@ -49,9 +51,12 @@ export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
   }
 
   const diff1 = computed(() => toValue(list).filter(x => toValue(values).findIndex(y => compareFn(x, y)) === -1))
-  const diff2 = computed(() => toValue(values).filter(x => toValue(list).findIndex(y => compareFn(x, y)) === -1))
 
-  const result = computed(() => mergeDiff ? [...toValue(diff1), ...toValue(diff2)] : toValue(diff1))
-
-  return result
+  if (symmetric) {
+    const diff2 = computed(() => toValue(values).filter(x => toValue(list).findIndex(y => compareFn(x, y)) === -1))
+    return computed(() => symmetric ? [...toValue(diff1), ...toValue(diff2)] : toValue(diff1))
+  }
+  else {
+    return diff1
+  }
 }
