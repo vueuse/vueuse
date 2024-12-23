@@ -12,7 +12,6 @@ node_modules
 cache
 packages/*/LICENSE
 packages/contributing.md
-packages/core/README.md
 packages/public/badge-*
 packages/**/*.js
 packages/**/*.[cm]js
