@@ -10,7 +10,6 @@
   "scripts": {
     "build": "nr update && pnpm -r run build",
     "build:redirects": "tsx scripts/redirects.ts",
-    "build:rollup": "NODE_OPTIONS=\"--max-old-space-size=6144\" rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
     "build:types": "tsc --emitDeclarationOnly",
     "clean": "tsx scripts/clean.ts",
     "dev": "nr update && nr docs",
