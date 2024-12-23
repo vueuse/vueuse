@@ -1,5 +1,5 @@
-import { defineComponent, reactive } from 'vue-demi'
 import { usePreferredReducedTransparency } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue'
 
 export const UsePreferredReducedTransparency = /* #__PURE__ */ defineComponent({
   name: 'UsePreferredReducedTransparency',
