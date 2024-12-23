@@ -33,7 +33,6 @@ export interface UseImageOptions {
   ismap?: HTMLImageElement['isMap']
   /** The partial URL (starting with #) of an image map associated with the element */
   usemap?: HTMLImageElement['useMap']
-
 }
 
 async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
@@ -43,43 +42,29 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
 
     img.src = src
 
-    if (srcset)
+    if (srcset != null)
       img.srcset = srcset
-
-    if (sizes)
+    if (sizes != null)
       img.sizes = sizes
-
-    if (clazz)
+    if (clazz != null)
       img.className = clazz
-
-    if (loading)
+    if (loading != null)
       img.loading = loading
-
-    if (crossorigin)
+    if (crossorigin != null)
       img.crossOrigin = crossorigin
-
-    if (referrerPolicy)
+    if (referrerPolicy != null)
       img.referrerPolicy = referrerPolicy
-
-    if (typeof width !== 'undefined') {
+    if (width != null)
       img.width = width
-    }
-
-    if (typeof height !== 'undefined') {
+    if (height != null)
       img.height = height
-    }
-
-    if (decoding)
+    if (decoding != null)
       img.decoding = decoding
-
-    if (fetchPriority)
+    if (fetchPriority != null)
       img.fetchPriority = fetchPriority
-
-    if (typeof ismap !== 'undefined') {
+    if (ismap != null)
       img.isMap = ismap
-    }
-
-    if (usemap)
+    if (usemap != null)
       img.useMap = usemap
 
     img.onload = () => resolve(img)
