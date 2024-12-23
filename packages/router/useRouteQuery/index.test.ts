@@ -63,6 +63,44 @@ describe('useRouteQuery', () => {
     expect(object.value).toEqual({ foo: 'baz' })
   })
 
+  it('should handle transform with only get', async () => {
+    let route = getRoute({
+      search: 'VUE3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteQuery('search', undefined, {
+      transform: {
+        get: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('VUE3')
+  })
+
+  it('should handle transform with only set', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteQuery('search', undefined, {
+      transform: {
+        set: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    search.value = 'VUE3'
+    expect(search.value).toBe('vue3')
+
+    await nextTick()
+
+    expect(route.query.search).toBe('vue3')
+  })
+
   it('should re-evaluate the value immediately', () => {
     let route = getRoute({
       search: 'vue3',

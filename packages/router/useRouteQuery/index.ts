@@ -36,8 +36,18 @@ export function useRouteQuery<
     transform,
   } = options
 
-  const transformGet = transform && 'get' in transform ? transform.get : transform ?? ((value: T) => value as any as K)
-  const transformSet = transform && 'set' in transform ? transform.set : (value: K) => value as any as T
+  const defaultGet = <T, K>(value: T) => value as any as K
+  const defaultSet = <T, K>(value: K) => value as any as T
+
+  const transformGet = transform && typeof transform === 'object' && 'get' in transform
+    ? transform.get || defaultGet
+    : typeof transform === 'function'
+      ? transform
+      : defaultGet
+
+  const transformSet = transform && typeof transform === 'object' && 'set' in transform
+    ? transform.set || defaultSet
+    : defaultSet
 
   if (!_queue.has(router))
     _queue.set(router, new Map())
