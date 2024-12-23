@@ -193,8 +193,10 @@ export function useWebSocket<Data = any>(
   }
 
   const resetRetry = () => {
-    clearTimeout(retryTimeout)
-    retryTimeout = undefined
+    if (retryTimeout != null) {
+      clearTimeout(retryTimeout)
+      retryTimeout = undefined
+    }
   }
 
   const resetHeartbeat = () => {
