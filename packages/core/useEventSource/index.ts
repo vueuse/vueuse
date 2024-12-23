@@ -36,11 +36,18 @@ export interface UseEventSourceOptions extends EventSourceInit {
   }
 
   /**
-   * Automatically open a connection
+   * Immediately open the connection when calling this composable
    *
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Automatically connect to the websocket when URL changes
+   *
+   * @default true
+   */
+  autoConnect?: boolean
 }
 
 export interface UseEventSourceReturn<Events extends string[]> {
@@ -122,6 +129,8 @@ export function useEventSource<Events extends string[]>(
   const {
     withCredentials = false,
     immediate = true,
+    autoConnect = true,
+    autoReconnect,
   } = options
 
   const close = () => {
@@ -154,13 +163,13 @@ export function useEventSource<Events extends string[]>(
 
       // only reconnect if EventSource isn't reconnecting by itself
       // this is the case when the connection is closed (readyState is 2)
-      if (es.readyState === 2 && !explicitlyClosed && options.autoReconnect) {
+      if (es.readyState === 2 && !explicitlyClosed && autoReconnect) {
         es.close()
         const {
           retries = -1,
           delay = 1000,
           onFailed,
-        } = resolveNestedOptions(options.autoReconnect)
+        } = resolveNestedOptions(autoReconnect)
         retried += 1
 
         if (typeof retries === 'number' && (retries < 0 || retried < retries))
@@ -195,7 +204,11 @@ export function useEventSource<Events extends string[]>(
     _init()
   }
 
-  watch(urlRef, open, { immediate })
+  if (immediate)
+    open()
+
+  if (autoConnect)
+    watch(urlRef, open)
 
   tryOnScopeDispose(close)
 

@@ -26,16 +26,19 @@ import { useEventSource } from '@vueuse/core'
 const { event, data } = useEventSource('https://event-source-url', ['notice', 'update'] as const)
 ```
 
-### Immediate
+### immediate
 
-Auto-connect (enabled by default).
+Enable by default.
 
-This will call `open()` automatically for you and you don't need to call it by yourself.
+Establish the connection immediately when the composable is called.
 
-If url is provided as a ref, the connection is established as soon as it's contents
-change.
+### autoConnect
 
-### Auto-reconnection
+Enable by default.
+
+If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
+
+### Auto Reconnection on Errors
 
 Reconnect on errors automatically (disabled by default).
 
