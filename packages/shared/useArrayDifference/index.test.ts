@@ -63,6 +63,7 @@ describe('useArrayDifference', () => {
     list1.value = [{ id: 1 }, { id: 2 }]
     expect(result.value).toEqual([])
   })
+
   // merge2
   it('case2: should return the merge difference of two array', () => {
     const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])

@@ -15,10 +15,18 @@ function defaultComparator<T>(value: T, othVal: T) {
   return value === othVal
 }
 
-export function useArrayDifference<T>(list: MaybeRefOrGetter<T[]>, values: MaybeRefOrGetter<T[]>, key?: keyof T): ComputedRef<T[]>
-export function useArrayDifference<T>(list: MaybeRefOrGetter<T[]>, values: MaybeRefOrGetter<T[]>, key?: keyof T, options?: UseArrayDifferenceOptions): ComputedRef<T[]>
-export function useArrayDifference<T>(list: MaybeRefOrGetter<T[]>, values: MaybeRefOrGetter<T[]>, compareFn?: (value: T, othVal: T) => boolean): ComputedRef<T[]>
-export function useArrayDifference<T>(list: MaybeRefOrGetter<T[]>, values: MaybeRefOrGetter<T[]>, compareFn?: (value: T, othVal: T) => boolean, options?: UseArrayDifferenceOptions): ComputedRef<T[]>
+export function useArrayDifference<T>(
+  list: MaybeRefOrGetter<T[]>,
+  values: MaybeRefOrGetter<T[]>,
+  key?: keyof T,
+  options?: UseArrayDifferenceOptions
+): ComputedRef<T[]>
+export function useArrayDifference<T>(
+  list: MaybeRefOrGetter<T[]>,
+  values: MaybeRefOrGetter<T[]>,
+  compareFn?: (value: T, othVal: T) => boolean,
+  options?: UseArrayDifferenceOptions
+): ComputedRef<T[]>
 
 /**
  * Reactive get array difference of two array
@@ -31,7 +39,9 @@ export function useArrayDifference<T>(...args: any[]): ComputedRef<T[]> {
   const values: MaybeRefOrGetter<T[]> = args[1]
 
   let compareFn = args[2] ?? defaultComparator
-  const { mergeDiff = false } = args[3] ?? {}
+  const {
+    mergeDiff = false,
+  } = args[3] ?? {}
 
   if (typeof compareFn === 'string') {
     const key = compareFn as keyof T
