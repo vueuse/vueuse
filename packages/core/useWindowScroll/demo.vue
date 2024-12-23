@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core'
+import { useWindowScroll } from './index'
 
 const { x, y } = useWindowScroll({ behavior: 'smooth' })
 </script>
