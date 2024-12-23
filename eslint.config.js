@@ -27,8 +27,6 @@ export default antfu(
       'playgrounds',
       '**/types',
       '**/cache',
-      '**/dist',
-      '**/.temp',
       '**/*.svg',
     ],
   },
