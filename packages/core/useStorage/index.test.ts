@@ -1,4 +1,4 @@
-import { debounceFilter, promiseTimeout } from '@vueuse/shared'
+import { debounceFilter } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, nextTick, ref, toRaw } from 'vue'
 import { customStorageEventName, StorageSerializers, useStorage } from '.'
@@ -292,17 +292,15 @@ describe('useStorage', () => {
       }
     })
 
-    await nextTwoTick()
-    await promiseTimeout(300)
     // @ts-expect-error mock
     storage.setItem.mockClear()
 
     vm.ref.name = 'b'
-    await nextTwoTick()
     expect(storage.setItem).not.toBeCalled()
-    await promiseTimeout(300)
 
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    await vi.waitFor(() => {
+      expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    }, { interval: 10 })
 
     // @ts-expect-error mock
     storage.setItem.mockClear()
@@ -310,9 +308,9 @@ describe('useStorage', () => {
     vm.ref.data = 321
     await nextTwoTick()
     expect(storage.setItem).not.toBeCalled()
-    await promiseTimeout(300)
-
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+    await vi.waitFor(() => {
+      expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":321}')
+    }, { interval: 10 })
   })
 
   it('custom serializer', async () => {

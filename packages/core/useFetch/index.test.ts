@@ -519,18 +519,16 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('async chained beforeFetch and afterFetch should be executed in order', async () => {
-    const sleep = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
-
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
       options: {
         async beforeFetch({ options }) {
-          await sleep(50)
+          await nextTick()
           options.headers = { ...options.headers, title: 'Hunter X Hunter' }
           return { options }
         },
         async afterFetch(ctx) {
-          await sleep(50)
+          await nextTick()
           ctx.data.message = 'Hunter X Hunter'
           return ctx
         },

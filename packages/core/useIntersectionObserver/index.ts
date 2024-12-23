@@ -70,33 +70,33 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
-      ([targets, root]) => {
-        cleanup()
-        if (!isActive.value)
-          return
+        () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
+        ([targets, root]) => {
+          cleanup()
+          if (!isActive.value)
+            return
 
-        if (!targets.length)
-          return
+          if (!targets.length)
+            return
 
-        const observer = new IntersectionObserver(
-          callback,
-          {
-            root: unrefElement(root),
-            rootMargin,
-            threshold,
-          },
-        )
+          const observer = new IntersectionObserver(
+            callback,
+            {
+              root: unrefElement(root),
+              rootMargin,
+              threshold,
+            },
+          )
 
-        targets.forEach(el => el && observer.observe(el))
+          targets.forEach(el => el && observer.observe(el))
 
-        cleanup = () => {
-          observer.disconnect()
-          cleanup = noop
-        }
-      },
-      { immediate, flush: 'post' },
-    )
+          cleanup = () => {
+            observer.disconnect()
+            cleanup = noop
+          }
+        },
+        { immediate, flush: 'post' },
+      )
     : noop
 
   const stop = () => {
