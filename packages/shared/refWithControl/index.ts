@@ -1,5 +1,5 @@
 import type { Fn } from '../utils'
-import { customRef } from 'vue-demi'
+import { customRef } from 'vue'
 import { extendRef } from '../extendRef'
 
 export interface ControlledRefOptions<T> {

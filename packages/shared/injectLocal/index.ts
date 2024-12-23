@@ -1,4 +1,4 @@
-import { getCurrentInstance, inject } from 'vue-demi'
+import { getCurrentInstance, hasInjectionContext, inject } from 'vue'
 import { localProvidedStateMap } from '../provideLocal/map'
 
 /**
@@ -14,10 +14,10 @@ import { localProvidedStateMap } from '../provideLocal/map'
 export const injectLocal: typeof inject = (...args) => {
   const key = args[0] as string | symbol
   const instance = getCurrentInstance()?.proxy
-  if (instance == null)
+  if (instance == null && !hasInjectionContext())
     throw new Error('injectLocal must be called in setup')
 
-  if (localProvidedStateMap.has(instance) && key in localProvidedStateMap.get(instance)!)
+  if (instance && localProvidedStateMap.has(instance) && key in localProvidedStateMap.get(instance)!)
     return localProvidedStateMap.get(instance)![key]
 
   // @ts-expect-error overloads are not compatible

@@ -1,6 +1,6 @@
 import type { UseDevicesListOptions } from '@vueuse/core'
 import { useDevicesList } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseDevicesList = /* #__PURE__ */ defineComponent<UseDevicesListOptions>({
   name: 'UseDevicesList',

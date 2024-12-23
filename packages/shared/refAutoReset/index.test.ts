@@ -1,10 +1,10 @@
-import type { Ref } from 'vue-demi'
-import { describe, expect, it } from 'vitest'
-import { effectScope, ref } from 'vue-demi'
+import type { Ref } from 'vue'
+import { describe, expect, it, vi } from 'vitest'
+import { effectScope, ref } from 'vue'
 import { autoResetRef, refAutoReset } from '.'
-import { promiseTimeout } from '../utils'
 
 describe('refAutoReset', () => {
+  vi.useFakeTimers()
   it('should be defined', () => {
     expect(refAutoReset).toBeDefined()
     expect(autoResetRef).toBeDefined()
@@ -26,7 +26,7 @@ describe('refAutoReset', () => {
     const val = refAutoReset('default', 100)
     val.value = 'update'
 
-    await new Promise(resolve => setTimeout(resolve, 100 + 1))
+    vi.advanceTimersByTime(101)
     expect(val.value).toBe('default')
   })
 
@@ -34,7 +34,7 @@ describe('refAutoReset', () => {
     const val = refAutoReset(() => [123], () => 10)
     val.value = [999]
     expect(val.value).toEqual([999])
-    await new Promise(resolve => setTimeout(resolve, 11))
+    vi.advanceTimersByTime(11)
     expect(val.value).toEqual([123])
   })
 
@@ -44,15 +44,15 @@ describe('refAutoReset', () => {
     val.value = 'update'
     afterMs.value = 100
 
-    await new Promise(resolve => setTimeout(resolve, 100 + 1))
+    vi.advanceTimersByTime(101)
     expect(val.value).toBe('update')
 
-    await new Promise(resolve => setTimeout(resolve, 50))
+    vi.advanceTimersByTime(50)
     expect(val.value).toBe('default')
 
     val.value = 'update'
 
-    await new Promise(resolve => setTimeout(resolve, 100 + 1))
+    vi.advanceTimersByTime(101)
     expect(val.value).toBe('default')
   })
 
@@ -66,7 +66,7 @@ describe('refAutoReset', () => {
     })
 
     scope.stop()
-    await promiseTimeout(100)
+    vi.advanceTimersByTime(101)
     expect(val.value).toBe('update')
   })
 })

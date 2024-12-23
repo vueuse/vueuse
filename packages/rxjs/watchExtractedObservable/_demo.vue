@@ -2,7 +2,7 @@
 import type { Observable } from 'rxjs'
 import { fromEvent } from 'rxjs'
 import { map, skip, tap } from 'rxjs/operators'
-import { computed, reactive, ref } from 'vue-demi'
+import { computed, reactive, ref } from 'vue'
 import { watchExtractedObservable } from './index'
 
 class AudioPlayer {

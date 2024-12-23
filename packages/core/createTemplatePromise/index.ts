@@ -1,5 +1,5 @@
-import type { DefineComponent, Ref, TransitionGroupProps } from 'vue-demi'
-import { defineComponent, Fragment, h, isVue3, ref, shallowReactive, TransitionGroup } from 'vue-demi'
+import type { DefineComponent, Ref, TransitionGroupProps } from 'vue'
+import { defineComponent, Fragment, h, ref, shallowReactive, TransitionGroup } from 'vue'
 
 export interface TemplatePromiseProps<Return, Args extends any[] = []> {
   /**
@@ -65,14 +65,6 @@ export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<o
 export function createTemplatePromise<Return, Args extends any[] = []>(
   options: TemplatePromiseOptions = {},
 ): TemplatePromise<Return, Args> {
-  // compatibility: Vue 3 or above
-  if (!isVue3) {
-    if (process.env.NODE_ENV !== 'production')
-      throw new Error('[VueUse] createTemplatePromise only works in Vue 3 or above.')
-    // @ts-expect-error incompatible
-    return
-  }
-
   let index = 0
   const instances = ref([]) as Ref<TemplatePromiseProps<Return, Args>[]>
 

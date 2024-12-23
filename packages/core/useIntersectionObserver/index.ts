@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { noop, notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
@@ -70,33 +70,33 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
-      ([targets, root]) => {
-        cleanup()
-        if (!isActive.value)
-          return
+        () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
+        ([targets, root]) => {
+          cleanup()
+          if (!isActive.value)
+            return
 
-        if (!targets.length)
-          return
+          if (!targets.length)
+            return
 
-        const observer = new IntersectionObserver(
-          callback,
-          {
-            root: unrefElement(root),
-            rootMargin,
-            threshold,
-          },
-        )
+          const observer = new IntersectionObserver(
+            callback,
+            {
+              root: unrefElement(root),
+              rootMargin,
+              threshold,
+            },
+          )
 
-        targets.forEach(el => el && observer.observe(el))
+          targets.forEach(el => el && observer.observe(el))
 
-        cleanup = () => {
-          observer.disconnect()
-          cleanup = noop
-        }
-      },
-      { immediate, flush: 'post' },
-    )
+          cleanup = () => {
+            observer.disconnect()
+            cleanup = noop
+          }
+        },
+        { immediate, flush: 'post' },
+      )
     : noop
 
   const stop = () => {

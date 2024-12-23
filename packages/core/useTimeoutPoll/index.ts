@@ -1,6 +1,6 @@
 import type { Awaitable, MaybeRefOrGetter, Pausable, UseTimeoutFnOptions } from '@vueuse/shared'
 import { tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 
 export function useTimeoutPoll(fn: () => Awaitable<void>, interval: MaybeRefOrGetter<number>, timeoutPollOptions?: UseTimeoutFnOptions): Pausable {
   const { start } = useTimeoutFn(loop, interval, { immediate: false })

@@ -1,5 +1,5 @@
 import type { Fn } from '@vueuse/shared'
-import { getCurrentScope } from 'vue-demi'
+import { getCurrentScope } from 'vue'
 import { events } from './internal'
 
 export type EventBusListener<T = unknown, P = any> = (event: T, payload?: P) => void

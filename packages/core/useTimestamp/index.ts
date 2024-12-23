@@ -1,7 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { timestamp, useIntervalFn } from '@vueuse/shared'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useRafFn } from '../useRafFn'
 
 export interface UseTimestampOptions<Controls extends boolean> {

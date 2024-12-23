@@ -1,5 +1,5 @@
 import { useEyeDropper } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseEyeDropper = /* #__PURE__ */ defineComponent({
   name: 'UseEyeDropper',

@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
 import { pausableWatch } from '@vueuse/shared'
-import { reactive } from 'vue-demi'
+import { reactive } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -28,6 +28,14 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default true
    */
   write?: boolean
+
+  /**
+   * Write mode for `window.history` when `write` is enabled
+   * - `replace`: replace the current history entry
+   * - `push`: push a new history entry
+   * @default 'replace'
+   */
+  writeMode?: 'replace' | 'push'
 }
 
 /**
@@ -46,6 +54,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     removeNullishValues = true,
     removeFalsyValues = false,
     write: enableWrite = true,
+    writeMode = 'replace',
     window = defaultWindow!,
   } = options
 
@@ -78,8 +87,8 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     const hash = window.location.hash || '#'
     const index = hash.indexOf('?')
     if (index > 0)
-      return `${hash.slice(0, index)}${stringified ? `?${stringified}` : ''}`
-    return `${hash}${stringified ? `?${stringified}` : ''}`
+      return `${window.location.search || ''}${hash.slice(0, index)}${stringified ? `?${stringified}` : ''}`
+    return `${window.location.search || ''}${hash}${stringified ? `?${stringified}` : ''}`
   }
 
   function read() {
@@ -113,22 +122,31 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
         else
           params.set(key, mapEntry)
       })
-      write(params)
+      write(params, false)
     },
     { deep: true },
   )
 
-  function write(params: URLSearchParams, shouldUpdate?: boolean) {
+  function write(params: URLSearchParams, shouldUpdate: boolean) {
     pause()
 
     if (shouldUpdate)
       updateState(params)
 
-    window.history.replaceState(
-      window.history.state,
-      window.document.title,
-      window.location.pathname + constructQuery(params),
-    )
+    if (writeMode === 'replace') {
+      window.history.replaceState(
+        window.history.state,
+        window.document.title,
+        window.location.pathname + constructQuery(params),
+      )
+    }
+    else {
+      window.history.pushState(
+        window.history.state,
+        window.document.title,
+        window.location.pathname + constructQuery(params),
+      )
+    }
 
     resume()
   }

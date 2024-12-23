@@ -1,4 +1,4 @@
-import { toRefs } from 'vue-demi'
+import { toRefs } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 import { toValue } from '../toValue'
 

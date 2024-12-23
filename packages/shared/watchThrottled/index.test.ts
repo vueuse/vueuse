@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { nextTick, ref } from 'vue'
 import { throttledWatch, watchThrottled } from '.'
-import { promiseTimeout } from '../utils'
 
 describe('watchThrottled', () => {
   it('should export module', () => {
@@ -10,6 +9,7 @@ describe('watchThrottled', () => {
   })
 
   it('should work', async () => {
+    vi.useFakeTimers()
     const num = ref(0)
     const cb = vi.fn()
     watchThrottled(num, cb, { throttle: 100 })
@@ -19,16 +19,16 @@ describe('watchThrottled', () => {
     expect(cb).toHaveBeenCalledWith(1, 0, expect.anything())
 
     num.value = 2
-    await promiseTimeout(50)
+    await vi.advanceTimersByTimeAsync(50)
     expect(cb).toHaveBeenCalledTimes(1)
 
     num.value = 3
-    await promiseTimeout(50)
+    await vi.advanceTimersByTimeAsync(50)
     expect(cb).toHaveBeenCalledTimes(2)
     expect(cb).toHaveBeenCalledWith(3, 2, expect.anything())
 
     num.value = 4
-    await promiseTimeout(110)
+    await vi.advanceTimersByTimeAsync(110)
     expect(cb).toHaveBeenCalledTimes(3)
     expect(cb).toHaveBeenCalledWith(4, 3, expect.anything())
   })

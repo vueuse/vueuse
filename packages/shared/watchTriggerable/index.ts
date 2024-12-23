@@ -1,8 +1,8 @@
-import type { WatchSource } from 'vue-demi'
+import type { WatchSource } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchIgnorableReturn } from '../watchIgnorable'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
-import { isReactive } from 'vue-demi'
+import { isReactive } from 'vue'
 import { toValue } from '../toValue'
 import { watchIgnorable } from '../watchIgnorable'
 

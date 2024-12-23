@@ -1,5 +1,5 @@
 import type { Fn, MaybeRefOrGetter, Pausable } from '../utils'
-import { isRef, ref, watch } from 'vue-demi'
+import { isRef, ref, watch } from 'vue'
 import { toValue } from '../toValue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
@@ -56,7 +56,8 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
     if (immediateCallback)
       cb()
     clean()
-    timer = setInterval(cb, intervalValue)
+    if (isActive.value)
+      timer = setInterval(cb, intervalValue)
   }
 
   if (immediate && isClient)

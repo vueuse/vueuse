@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { UseRefHistoryOptions, UseRefHistoryReturn } from '../useRefHistory'
 import { debounceFilter } from '@vueuse/shared'
 import { useRefHistory } from '../useRefHistory'

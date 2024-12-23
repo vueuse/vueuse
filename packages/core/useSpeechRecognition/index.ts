@@ -2,11 +2,11 @@
 // by https://github.com/wobsoriano
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef, watch } from 'vue-demi'
+import { ref, shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 

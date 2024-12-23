@@ -1,6 +1,6 @@
 import type { Auth, User } from 'firebase/auth'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export interface UseFirebaseAuthOptions {
   isAuthenticated: ComputedRef<boolean>

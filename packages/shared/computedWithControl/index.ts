@@ -1,6 +1,6 @@
-import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue-demi'
+import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
 import type { Fn } from '../utils'
-import { customRef, ref, watch } from 'vue-demi'
+import { customRef, ref, watch } from 'vue'
 
 export interface ComputedWithControlRefExtra {
   /**

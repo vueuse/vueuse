@@ -1,8 +1,8 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import type { Ref, ShallowRef } from 'vue-demi'
+import type { Ref, ShallowRef } from 'vue'
 import { noop, until } from '@vueuse/shared'
 import axios, { AxiosError } from 'axios'
-import { ref, shallowRef } from 'vue-demi'
+import { ref, shallowRef } from 'vue'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any> {
   /**

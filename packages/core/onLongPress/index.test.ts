@@ -1,7 +1,6 @@
-import type { Ref } from 'vue-demi'
-import { promiseTimeout } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { onLongPress } from '.'
 import { useEventListener } from '../useEventListener'
 
@@ -12,12 +11,16 @@ describe('onLongPress', () => {
   let pointerdownEvent: PointerEvent
   let pointerUpEvent: PointerEvent
 
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
   async function triggerCallback(isRef: boolean) {
     const onLongPressCallback = vi.fn()
     onLongPress(isRef ? element : element.value, onLongPressCallback)
     element.value.dispatchEvent(pointerdownEvent)
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
@@ -28,21 +31,21 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerdownEvent)
 
     // wait for 500ms after pointer down
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
 
     // pointer up to cancel callback
     element.value.dispatchEvent(pointerUpEvent)
 
     // wait for 500ms after pointer up
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
 
     // another pointer down
     element.value.dispatchEvent(pointerdownEvent)
 
     // wait for 1000ms after pointer down
-    await promiseTimeout(1000)
+    await vi.advanceTimersByTimeAsync(1000)
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
@@ -52,7 +55,7 @@ describe('onLongPress', () => {
 
     childElement.value.dispatchEvent(pointerdownEvent)
 
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
 
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
   }
@@ -63,12 +66,12 @@ describe('onLongPress', () => {
 
     element.value.dispatchEvent(pointerdownEvent)
 
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
 
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
     expect(pointerdownEvent.defaultPrevented).toBe(true)
 
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
 
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
@@ -81,7 +84,7 @@ describe('onLongPress', () => {
 
     element.value.dispatchEvent(pointerdownEvent)
 
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
 
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
     expect(onParentLongPressCallback).toHaveBeenCalledTimes(0)
@@ -94,7 +97,7 @@ describe('onLongPress', () => {
     // before calling stop, the callback should be called
     element.value.dispatchEvent(pointerdownEvent)
 
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
 
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
 
@@ -105,7 +108,7 @@ describe('onLongPress', () => {
 
     element.value.dispatchEvent(pointerdownEvent)
 
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
 
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
   }
@@ -120,25 +123,25 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerdownEvent)
 
     // pointer move outside threshold
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     element.value.dispatchEvent(moveOutsideThresholdEvent)
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
 
     // pointer up to cancel callback
     element.value.dispatchEvent(pointerUpEvent)
 
     // wait for 500ms after pointer up
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
 
     // another pointer down
     element.value.dispatchEvent(pointerdownEvent)
 
     // pointer move within threshold
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     element.value.dispatchEvent(moveWithinThresholdEvent)
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
@@ -152,7 +155,7 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerdownEvent)
 
     // wait for 250 after pointer down
-    await promiseTimeout(250)
+    await vi.advanceTimersByTimeAsync(250)
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(0)
 
@@ -164,7 +167,7 @@ describe('onLongPress', () => {
     expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250 - 2)
 
     // wait for 500ms after pointer up
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
 
     // another pointer down
@@ -172,7 +175,7 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerdownEvent)
 
     // wait for 500 after pointer down
-    await promiseTimeout(500)
+    await vi.advanceTimersByTimeAsync(500)
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
 
