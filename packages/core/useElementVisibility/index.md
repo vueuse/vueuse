@@ -10,8 +10,8 @@ Tracks the visibility of an element within the viewport.
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
+import { ref } from 'vue'
 
 const target = ref(null)
 const targetIsVisible = useElementVisibility(target)
@@ -22,6 +22,17 @@ const targetIsVisible = useElementVisibility(target)
     <h1>Hello world</h1>
   </div>
 </template>
+```
+
+### rootMargin
+
+If you wish to trigger your callback sooner before the element is fully visible, you can use
+the `rootMargin` option (See [MDN IntersectionObserver/rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin)).
+
+```ts
+const targetIsVisible = useElementVisibility(target, {
+  rootMargin: '0 0 100px 0',
+})
 ```
 
 ## Component Usage
@@ -38,8 +49,8 @@ const targetIsVisible = useElementVisibility(target)
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { vElementVisibility } from '@vueuse/components'
+import { ref } from 'vue'
 
 const target = ref(null)
 const isVisible = ref(false)

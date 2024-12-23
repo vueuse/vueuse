@@ -29,11 +29,19 @@ defineProps<{
       />
       <a
         v-if="data.twitter"
-        class="i-carbon-logo-twitter inline-block text-1.3em mya text-current op30 hover:op100 transition duration-200"
-        :href="`https://twitter.com/${data.twitter}`"
+        class="i-carbon-logo-x inline-block mya text-current op30 hover:op100 transition duration-200"
+        :href="`https://x.com/${data.twitter}`"
         target="_blank"
         rel="noopener noreferrer"
-        :aria-label="`${data.name} on Twitter`"
+        :aria-label="`${data.name} on X`"
+      />
+      <a
+        v-if="data.bluesky"
+        class="i-ri-bluesky-fill inline-block mya text-current op30 hover:op100 transition duration-200"
+        :href="`https://bsky.app/profile/${data.bluesky}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        :aria-label="`${data.name} on Bluesky`"
       />
       <a
         v-if="data.sponsors"

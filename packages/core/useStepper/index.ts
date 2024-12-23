@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export interface UseStepperReturn<StepName, Steps, Step> {
   /** List of steps. */

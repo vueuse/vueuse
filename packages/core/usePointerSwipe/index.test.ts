@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { UsePointerSwipeOptions } from '.'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { usePointerSwipe } from '.'
 
 function mockPointerEventInit(x: number, y: number): PointerEventInit {

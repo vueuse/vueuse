@@ -9,8 +9,8 @@ Watch for changes being made to the DOM tree. [MutationObserver MDN](https://dev
 ## Usage
 
 ```ts
-import { ref } from 'vue'
 import { useMutationObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 export default {
   setup() {

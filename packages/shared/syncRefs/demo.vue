@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { syncRefs } from '@vueuse/core'
+import { ref } from 'vue'
 
 const source = ref('')
 const target1 = ref('')

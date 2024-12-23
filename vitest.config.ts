@@ -12,7 +12,6 @@ export default defineConfig({
     },
     dedupe: [
       'vue',
-      'vue-demi',
       '@vue/runtime-core',
     ],
   },
@@ -27,9 +26,8 @@ export default defineConfig({
     server: {
       deps: {
         inline: [
-          'vue2',
           '@vue/composition-api',
-          'vue-demi',
+          'vue',
           'msw',
         ],
       },
