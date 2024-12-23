@@ -1,4 +1,9 @@
-import type { ComputedRef, Ref, ShallowRef, WatchOptions, WatchSource, WritableComputedRef } from 'vue-demi'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, WatchOptions, WatchSource } from 'vue'
+
+export type {
+  MaybeRef,
+  MaybeRefOrGetter,
+}
 
 /**
  * Void function
@@ -17,24 +22,6 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
   get value(): T
   set value(value: T | null | undefined)
 }
-
-// Vue 2 does not expose `MaybeRef` and `MaybeRefOrGetter` types,
-// so we need to maintain these types within vueuse.
-// Ensure they are kept in sync with Vue 3 updates.
-
-/**
- * Maybe it's a ref, or a plain value.
- */
-export type MaybeRef<T = any> =
-  | T
-  | Ref<T>
-  | ShallowRef<T>
-  | WritableComputedRef<T>
-
-/**
- * Maybe it's a ref, or a plain value, or a getter function.
- */
-export type MaybeRefOrGetter<T = any> = MaybeRef<T> | ComputedRef<T> | (() => T)
 
 /**
  * Maybe it's a computed ref, or a readonly value, or a getter function

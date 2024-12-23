@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 const el = ref(null)
 const text = ref('')

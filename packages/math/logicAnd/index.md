@@ -11,8 +11,8 @@ related: logicNot, logicOr
 ## Usage
 
 ```ts
-import { logicAnd } from '@vueuse/math'
 import { whenever } from '@vueuse/core'
+import { logicAnd } from '@vueuse/math'
 
 const a = ref(true)
 const b = ref(false)

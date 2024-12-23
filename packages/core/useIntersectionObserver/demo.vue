@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 const root = ref(null)
 const target = ref(null)
@@ -8,8 +8,8 @@ const isVisible = ref(false)
 
 const { isActive, pause, resume } = useIntersectionObserver(
   target,
-  ([{ isIntersecting }]) => {
-    isVisible.value = isIntersecting
+  ([entry]) => {
+    isVisible.value = entry?.isIntersecting || false
   },
   { root },
 )

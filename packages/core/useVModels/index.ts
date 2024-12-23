@@ -1,4 +1,4 @@
-import type { ToRefs } from 'vue-demi'
+import type { ToRefs } from 'vue'
 import type { UseVModelOptions } from '../useVModel'
 import { useVModel } from '../useVModel'
 

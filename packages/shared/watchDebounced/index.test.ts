@@ -1,6 +1,5 @@
-import { nextTick, ref } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
-import { promiseTimeout } from '../utils'
+import { nextTick, ref } from 'vue'
 import { debouncedWatch, watchDebounced } from '.'
 
 describe('watchDebounced', () => {
@@ -20,6 +19,7 @@ describe('watchDebounced', () => {
   })
 
   it('should work when set debounce and maxWait', async () => {
+    vi.useFakeTimers()
     const num = ref(0)
     const cb = vi.fn()
     watchDebounced(num, cb, { debounce: 100, maxWait: 150 })
@@ -29,19 +29,19 @@ describe('watchDebounced', () => {
     expect(cb).toHaveBeenCalledTimes(0)
 
     num.value = 2
-    await promiseTimeout(50)
+    await vi.advanceTimersByTimeAsync(50)
     expect(cb).toHaveBeenCalledTimes(0)
 
-    await promiseTimeout(50)
+    await vi.advanceTimersByTimeAsync(50)
     expect(cb).toHaveBeenCalledWith(2, 1, expect.anything())
 
     num.value = 4
-    await promiseTimeout(80)
+    await vi.advanceTimersByTimeAsync(80)
     expect(cb).toHaveBeenCalledTimes(1)
 
     num.value = 5
-    await promiseTimeout(75)
+    await vi.advanceTimersByTimeAsync(75)
     expect(cb).toHaveBeenCalledTimes(2)
     expect(cb).toHaveBeenCalledWith(4, 2, expect.anything())
-  }, { retry: 5 })
+  })
 })

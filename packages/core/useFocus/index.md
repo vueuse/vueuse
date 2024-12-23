@@ -38,8 +38,8 @@ Changes of the `focused` reactive ref will automatically trigger `focus` and `bl
 
 ```vue
 <script>
-import { ref } from 'vue'
 import { useFocus } from '@vueuse/core'
+import { ref } from 'vue'
 
 export default {
   setup() {

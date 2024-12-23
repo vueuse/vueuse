@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import type { UseSwipeDirection } from '@vueuse/core'
 import { useSwipe } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
 const target = ref<HTMLElement | null>(null)
 const container = ref<HTMLElement | null>(null)

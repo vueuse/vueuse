@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { ref } from 'vue'
 import { useBase64 } from '@vueuse/core'
+import { ref } from 'vue'
 
 const text = ref('')
 const file = ref() as Ref<File>
