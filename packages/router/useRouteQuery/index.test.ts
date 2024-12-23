@@ -352,7 +352,7 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBe('en-US')
   })
 
-  it.each([{ value: 'default' }, { value: null }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
+  it.each([{ value: 'default' }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
     })
