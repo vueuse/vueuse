@@ -1,5 +1,6 @@
 {
   "name": "@vueuse/components",
+  "type": "module",
   "version": "12.1.0",
   "description": "Renderless components for VueUse",
   "author": "Jacob Clevenger<https://github.com/wheatjs>",
@@ -30,7 +31,7 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
   "files": [
     "*.cjs",
     "*.d.cts",
@@ -40,6 +41,10 @@
     "*.mjs",
     "index.json"
   ],
+  "scripts": {
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
+  },
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",

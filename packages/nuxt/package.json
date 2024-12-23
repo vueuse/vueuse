@@ -42,6 +42,10 @@
     "*.mjs",
     "index.json"
   ],
+  "scripts": {
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
+  },
   "peerDependencies": {
     "nuxt": "^3.0.0"
   },

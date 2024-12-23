@@ -40,6 +40,8 @@
     "index.json"
   ],
   "scripts": {
-    "update": "esno scripts/update.ts"
+    "update": "tsx scripts/update.ts",
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
   }
 }

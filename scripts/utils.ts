@@ -240,6 +240,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     packageJSON.bugs = {
       url: 'https://github.com/vueuse/vueuse/issues',
     }
+    packageJSON.type = 'module'
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
