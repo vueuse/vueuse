@@ -1,9 +1,8 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { FuseResult, IFuseOptions } from 'fuse.js'
 import type { ComputedRef } from 'vue'
-import { toValue } from '@vueuse/shared'
 import Fuse from 'fuse.js'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, toValue, watch } from 'vue'
 
 export type FuseOptions<T> = IFuseOptions<T>
 export interface UseFuseOptions<T> {

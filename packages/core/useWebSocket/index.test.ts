@@ -1,6 +1,7 @@
+import type { UseWebSocketReturn } from '.'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useWebSocket, type UseWebSocketReturn } from '.'
+import { useWebSocket } from '.'
 import { useSetup } from '../../.test'
 
 describe('useWebSocket', () => {

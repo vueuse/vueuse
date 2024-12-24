@@ -1,7 +1,7 @@
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
-import { isClient, isWorker, toRef, toValue, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
-import { ref, watch } from 'vue'
+import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { ref, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'

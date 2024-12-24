@@ -2,8 +2,8 @@
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
-import { pxValue, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, watchEffect } from 'vue'
+import { pxValue, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSSRWidth } from '../useSSRWidth'
 import { useSupported } from '../useSupported'

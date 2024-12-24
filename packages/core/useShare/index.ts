@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableNavigator } from '../_configurable'
-import { toValue } from '@vueuse/shared'
+import { toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
