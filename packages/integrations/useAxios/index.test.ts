@@ -1,6 +1,7 @@
 import type { RawAxiosRequestConfig } from 'axios'
+import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from '.'
 import axios from 'axios'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useAxios } from '.'
 import { isBelowNode18 } from '../../.test'
@@ -402,5 +403,20 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     expect(onFinish).toHaveBeenCalled()
     expect(isFinished.value).toBeTruthy()
     expect(isLoading.value).toBeFalsy()
+  })
+
+  it('expect data type to not be undefined with initialData', async () => {
+    const o: UseAxiosOptions<number> = { ...options, initialData: 1 }
+    expectTypeOf(o.initialData).toBeNumber()
+    expectTypeOf(o).toEqualTypeOf<UseAxiosOptionsWithInitialData<number>>()
+    expectTypeOf(o).not.toEqualTypeOf<UseAxiosOptionsBase<number>>()
+    const d = useAxios<number>(url, config, o)
+    expectTypeOf(d.data.value).toBeNumber()
+  })
+
+  it('expect data type to maybe be undefined without initialData', async () => {
+    const d = useAxios<number>(url, config, { ...options })
+
+    expectTypeOf(d.data.value).toEqualTypeOf<number | undefined>()
   })
 })
