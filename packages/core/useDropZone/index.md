@@ -6,6 +6,12 @@ category: Elements
 
 Create a zone where files can be dropped.
 
+::: warning
+
+Due to Safari browser limitations, file type validation is only possible during the drop event, not during drag events. As a result, the `isOverDropZone` value will always be `true` during drag operations in Safari, regardless of file type.
+
+:::
+
 ## Usage
 
 ```vue
