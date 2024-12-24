@@ -2,6 +2,7 @@ import type { RawAxiosRequestConfig } from 'axios'
 import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from '.'
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useAxios } from '.'
 import { isBelowNode18 } from '../../.test'
 
@@ -298,11 +299,11 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const { isLoading, execute } = useAxios(url, config, { ...options, onError })
 
     execute().catch(() => {})
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await nextTick()
     expect(isLoading.value).toBeTruthy()
 
     execute().catch(() => {})
-    await new Promise(resolve => setTimeout(resolve, 0))
+    await nextTick()
     expect(isLoading.value).toBeTruthy()
 
     await execute().catch(() => {})

@@ -1,8 +1,11 @@
-import { promiseTimeout } from '@vueuse/shared'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useThrottleFn } from '.'
 
 describe('useThrottleFn', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
   it('should be defined', () => {
     expect(useThrottleFn).toBeDefined()
   })
@@ -14,7 +17,7 @@ describe('useThrottleFn', () => {
     run()
     run()
     expect(callback).toHaveBeenCalledTimes(1)
-    await promiseTimeout(ms + 10)
+    vi.advanceTimersByTime(ms + 10)
     run()
     expect(callback).toHaveBeenCalledTimes(2)
   })
@@ -26,7 +29,7 @@ describe('useThrottleFn', () => {
     run()
     run()
     expect(callback).toHaveBeenCalledTimes(1)
-    await promiseTimeout(ms + 10)
+    vi.advanceTimersByTime(ms + 10)
     expect(callback).toHaveBeenCalledTimes(2)
   })
 
@@ -37,12 +40,12 @@ describe('useThrottleFn', () => {
     run()
     run()
     expect(callback).toHaveBeenCalledTimes(1)
-    await promiseTimeout(ms + 10)
+    vi.advanceTimersByTime(ms + 10)
     run()
     run()
     run()
     expect(callback).toHaveBeenCalledTimes(2)
-    await promiseTimeout(ms + 20)
+    vi.advanceTimersByTime(ms + 20)
     run()
     expect(callback).toHaveBeenCalledTimes(2)
   })

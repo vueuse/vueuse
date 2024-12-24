@@ -210,7 +210,7 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe('2')
   })
 
-  it('should differentiate null and undefined', () => {
+  it('should differentiate null and undefined when reading value', () => {
     let route = getRoute({
       page: 1,
     })
@@ -231,6 +231,26 @@ describe('useRouteQuery', () => {
     const page: Ref<any> = useRouteQuery('page', null, { route, router })
 
     expect(page.value).toBe(1)
+  })
+
+  it('should differentiate null and undefined when writing value', async () => {
+    let route = getRoute({
+      search: 'vue3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search: Ref<any> = useRouteQuery('search', 'default', { route, router })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('vue3')
+
+    search.value = null
+    await nextTick()
+    expect(route.query.search).toBeNull()
+
+    search.value = undefined
+    await nextTick()
+    expect(route.query.search).toBeUndefined()
   })
 
   it('should avoid trigger effects when the value doesn\'t change', async () => {
@@ -332,7 +352,7 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBe('en-US')
   })
 
-  it.each([{ value: 'default' }, { value: null }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
+  it.each([{ value: 'default' }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
     })

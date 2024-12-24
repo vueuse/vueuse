@@ -83,7 +83,6 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  * @param element
  * @param options
  */
-
 export function useScroll(
   element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},

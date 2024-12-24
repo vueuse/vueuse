@@ -26,11 +26,13 @@ export default defineConfig({
     server: {
       deps: {
         inline: [
-          '@vue/composition-api',
           'vue',
           'msw',
         ],
       },
+    },
+    coverage: {
+      exclude: ['./packages/**/demo.vue'],
     },
   },
   ssr: {

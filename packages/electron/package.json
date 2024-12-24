@@ -1,6 +1,7 @@
 {
   "name": "@vueuse/electron",
-  "version": "12.0.0",
+  "type": "module",
+  "version": "12.2.0",
   "description": "Electron renderer process modules for VueUse",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "license": "MIT",
@@ -31,7 +32,19 @@
   },
   "main": "./index.cjs",
   "module": "./index.mjs",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
+  "files": [
+    "*.cjs",
+    "*.d.cts",
+    "*.d.mts",
+    "*.d.ts",
+    "*.js",
+    "*.mjs"
+  ],
+  "scripts": {
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
+  },
   "peerDependencies": {
     "electron": ">=9.0.0"
   },
