@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
-import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue'
+import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
+import { computed, isRef, readonly, ref, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {

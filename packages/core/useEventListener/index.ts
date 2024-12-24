@@ -1,7 +1,7 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
-import { isObject, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { watch } from 'vue'
+import { isObject, noop, tryOnScopeDispose } from '@vueuse/shared'
+import { toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 

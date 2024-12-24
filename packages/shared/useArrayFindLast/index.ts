@@ -1,7 +1,6 @@
 import type { ComputedRef } from 'vue'
 import type { MaybeRefOrGetter } from '../utils'
-import { computed } from 'vue'
-import { toValue } from '../toValue'
+import { computed, toValue } from 'vue'
 
 // Polyfill for node version < 18
 function findLast<T>(arr: T[], cb: (element: T, index: number, array: T[]) => boolean): T | undefined {

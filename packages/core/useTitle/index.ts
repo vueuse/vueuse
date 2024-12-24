@@ -1,8 +1,8 @@
 import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { toRef, toValue, tryOnBeforeUnmount } from '@vueuse/shared'
-import { watch } from 'vue'
+import { toRef, tryOnBeforeUnmount } from '@vueuse/shared'
+import { toValue, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
 
