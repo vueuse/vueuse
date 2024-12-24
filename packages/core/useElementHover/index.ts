@@ -1,9 +1,13 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { ref } from 'vue'
+import type { MaybeComputedElementRef } from '../unrefElement'
+import { computed, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { useMutationObserver } from '../useMutationObserver'
+import { useParentElement } from '../useParentElement'
 
 export interface UseElementHoverOptions extends ConfigurableWindow {
   delayEnter?: number
@@ -38,6 +42,18 @@ export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefi
 
   useEventListener(el, 'mouseenter', () => toggle(true), { passive: true })
   useEventListener(el, 'mouseleave', () => toggle(false), { passive: true })
+
+  const elRef = computed(() => unrefElement(el as MaybeComputedElementRef))
+  useMutationObserver(useParentElement(elRef), (mutationsList) => {
+    mutationsList.map(mutation => [...mutation.removedNodes]).flat().forEach((node) => {
+      if (node === elRef.value) {
+        toggle(false)
+      }
+    })
+  }, {
+    window,
+    childList: true,
+  })
 
   return isHovered
 }
