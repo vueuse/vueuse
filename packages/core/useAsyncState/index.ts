@@ -96,6 +96,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
   const isReady = ref(false)
   const isLoading = ref(false)
   const error = shallowRef<unknown | undefined>(undefined)
+  const callback: (...args: Params) => Promise<Data> = typeof promise === 'function' ? promise : () => promise
 
   async function execute(delay = 0, ...args: any[]) {
     if (resetOnExecute)
@@ -107,12 +108,8 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
     if (delay > 0)
       await promiseTimeout(delay)
 
-    const _promise = typeof promise === 'function'
-      ? promise(...args as Params)
-      : promise
-
     try {
-      const data = await _promise
+      const data = await callback(...args as Params)
       state.value = data
       isReady.value = true
       onSuccess(data)
