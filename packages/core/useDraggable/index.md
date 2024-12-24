@@ -28,6 +28,17 @@ const { x, y, style } = useDraggable(el, {
 </template>
 ```
 
+Set `preventDefault: true` to override the default drag-and-drop behavior of certain elements in the browser.
+
+```ts
+const { x, y, style } = useDraggable(el, {
+  preventDefault: true,
+  // with `preventDefault: true`
+  // you can disable the native behavior (e.g., for img)
+  // and control the drag-and-drop, preventing the browser interference.
+})
+```
+
 ## Component Usage
 
 ```vue
