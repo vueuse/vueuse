@@ -6,6 +6,9 @@ import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+const defaultGet = <T, K>(value: T) => value as any as K
+const defaultSet = <T, K>(value: K) => value as any as T
+
 const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteParams(
@@ -35,9 +38,6 @@ export function useRouteParams<
     router = useRouter(),
     transform,
   } = options
-
-  const defaultGet = <T, K>(value: T) => value as any as K
-  const defaultSet = <T, K>(value: K) => value as any as T
 
   const transformGet = transform && typeof transform === 'object' && 'get' in transform
     ? transform.get || defaultGet
