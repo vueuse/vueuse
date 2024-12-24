@@ -1,16 +1,16 @@
-import { customRef, nextTick, watch } from 'vue-demi'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { useRoute, useRouter } from 'vue-router'
-import type { Router } from 'vue-router'
-import type { Ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue'
+import type { Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
+import { toValue, tryOnScopeDispose } from '@vueuse/shared'
+import { customRef, nextTick, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteQuery(
   name: string
-): Ref<null | string | string[]>
+): Ref<undefined | null | string | string[]>
 
 export function useRouteQuery<
   T extends RouteQueryValueRaw = RouteQueryValueRaw,
@@ -33,8 +33,11 @@ export function useRouteQuery<
     mode = 'replace',
     route = useRoute(),
     router = useRouter(),
-    transform = value => value as any as K,
+    transform,
   } = options
+
+  const transformGet = transform && 'get' in transform ? transform.get : transform ?? ((value: T) => value as any as K)
+  const transformSet = transform && 'set' in transform ? transform.set : (value: K) => value as any as T
 
   if (!_queue.has(router))
     _queue.set(router, new Map())
@@ -56,14 +59,16 @@ export function useRouteQuery<
       get() {
         track()
 
-        return transform(query !== undefined ? query : toValue(defaultValue))
+        return transformGet(query !== undefined ? query : toValue(defaultValue))
       },
       set(v) {
+        v = transformSet(v)
+
         if (query === v)
           return
 
-        query = (v === defaultValue || v === null) ? undefined : v
-        _queriesQueue.set(name, (v === defaultValue || v === null) ? undefined : v)
+        query = (v === toValue(defaultValue)) ? undefined : v
+        _queriesQueue.set(name, (v === toValue(defaultValue)) ? undefined : v)
 
         trigger()
 
@@ -89,6 +94,9 @@ export function useRouteQuery<
   watch(
     () => route.query[name],
     (v) => {
+      if (query === transformGet(v as T))
+        return
+
       query = v
 
       _trigger()

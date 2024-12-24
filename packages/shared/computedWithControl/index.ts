@@ -1,6 +1,6 @@
-import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue-demi'
-import { customRef, ref, watch } from 'vue-demi'
+import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
 import type { Fn } from '../utils'
+import { customRef, ref, watch } from 'vue'
 
 export interface ComputedWithControlRefExtra {
   /**
@@ -54,7 +54,7 @@ export function computedWithControl<T, S>(
     return {
       get() {
         if (dirty.value) {
-          v = get()
+          v = get(v)
           dirty.value = false
         }
         track()

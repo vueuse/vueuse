@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
+import { ref } from 'vue'
 
 const defaultText = 'Please wait for 3 seconds'
 const text = ref(defaultText)

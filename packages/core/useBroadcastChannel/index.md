@@ -19,8 +19,8 @@ Messages are broadcasted via a message event fired at all BroadcastChannel
 objects listening to the channel.
 
 ```js
-import { ref } from 'vue'
 import { useBroadcastChannel } from '@vueuse/core'
+import { ref } from 'vue'
 
 const {
   isSupported,

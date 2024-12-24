@@ -1,7 +1,7 @@
-import type { WatchOptions, WatchSource } from 'vue-demi'
-import { isRef, nextTick, watch } from 'vue-demi'
-import { toValue } from '../toValue'
+import type { WatchOptions, WatchSource } from 'vue'
 import type { ElementOf, MaybeRefOrGetter, ShallowUnwrapRef } from '../utils'
+import { isRef, nextTick, watch } from 'vue'
+import { toValue } from '../toValue'
 import { promiseTimeout } from '../utils'
 
 export interface UntilToMatchOptions {

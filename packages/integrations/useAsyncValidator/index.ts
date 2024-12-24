@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { Rules, ValidateError, ValidateOption } from 'async-validator'
+import type { Ref } from 'vue'
 import { toRef, toValue, until } from '@vueuse/shared'
 import Schema from 'async-validator'
-import type { Rules, ValidateError, ValidateOption } from 'async-validator'
-import type { Ref } from 'vue-demi'
-import { computed, ref, shallowRef, watch } from 'vue-demi'
+import { computed, ref, shallowRef, watch } from 'vue'
 
 // @ts-expect-error Schema.default is exist in ssr mode
 const AsyncValidatorSchema = Schema.default || Schema
@@ -117,9 +117,7 @@ export function useAsyncValidator(
 
   function waitUntilFinished() {
     return new Promise<UseAsyncValidatorReturn>((resolve, reject) => {
-      until(isFinished).toBe(true)
-        .then(() => resolve(shell))
-        .catch(error => reject(error))
+      until(isFinished).toBe(true).then(() => resolve(shell)).catch(error => reject(error))
     })
   }
 

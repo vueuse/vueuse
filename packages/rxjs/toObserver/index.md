@@ -9,10 +9,10 @@ Sugar function to convert a `ref` into an RxJS [Observer](https://rxjs.dev/guide
 ## Usage
 
 ```ts
-import { ref } from 'vue'
 import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map, mapTo, startWith, takeUntil, withLatestFrom } from 'rxjs/operators'
+import { ref } from 'vue'
 
 const count = ref(0)
 const button = ref<HTMLButtonElement>(null)

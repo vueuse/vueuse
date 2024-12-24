@@ -1,6 +1,6 @@
-import { effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
+import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import type { Ref } from 'vue-demi'
+import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
@@ -36,6 +36,31 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(1)
     expect(perPage.value).toBe(15)
     expect(tags.value).toEqual(['vite'])
+  })
+
+  it('should handle transform get/set', async () => {
+    let route = getRoute({
+      serialized: '{"foo":"bar"}',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const object = useRouteQuery('serialized', undefined, {
+      transform: {
+        get: (value: string) => JSON.parse(value),
+        set: (value: any) => JSON.stringify(value),
+      },
+      router,
+      route,
+    })
+
+    expect(object.value).toEqual({ foo: 'bar' })
+
+    object.value = { foo: 'baz' }
+
+    await nextTick()
+
+    expect(route.query.serialized).toBe('{"foo":"baz"}')
+    expect(object.value).toEqual({ foo: 'baz' })
   })
 
   it('should re-evaluate the value immediately', () => {
@@ -185,7 +210,7 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe('2')
   })
 
-  it('should differentiate null and undefined', () => {
+  it('should differentiate null and undefined when reading value', () => {
     let route = getRoute({
       page: 1,
     })
@@ -208,6 +233,26 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(1)
   })
 
+  it('should differentiate null and undefined when writing value', async () => {
+    let route = getRoute({
+      search: 'vue3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search: Ref<any> = useRouteQuery('search', 'default', { route, router })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('vue3')
+
+    search.value = null
+    await nextTick()
+    expect(route.query.search).toBeNull()
+
+    search.value = undefined
+    await nextTick()
+    expect(route.query.search).toBeUndefined()
+  })
+
   it('should avoid trigger effects when the value doesn\'t change', async () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
@@ -224,6 +269,49 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(1)
     expect(route.query.page).toBeUndefined()
     expect(onUpdate).not.toHaveBeenCalled()
+  })
+
+  it('should trigger effects only once', async () => {
+    const route = getRoute()
+    const router = { replace: (r: any) => Object.assign(route, r) } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteQuery('page', 1, { transform: Number, route, router })
+    const pageObj = computed(() => ({
+      page: page.value,
+    }))
+
+    watch(pageObj, onUpdate)
+
+    page.value = 2
+
+    await nextTick()
+    await nextTick()
+
+    expect(page.value).toBe(2)
+    expect(route.query.page).toBe(2)
+    expect(onUpdate).toHaveBeenCalledTimes(1)
+  })
+
+  it('should trigger effects only once with getter object as watch source', async () => {
+    const route = getRoute({ page: '1' })
+    const router = { replace: (r: any) => {
+      Object.keys(r.query).forEach(queryKey => r.query[queryKey] = String(r.query[queryKey]))
+      return Object.assign(route, r)
+    } } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteQuery('page', 1, { transform: Number, route, router })
+
+    watch(() => ({ page: page.value }), onUpdate)
+
+    page.value = 2
+    await nextTick()
+    await nextTick()
+
+    expect(page.value).toBe(2)
+    expect(route.query.page).toBe('2')
+    expect(onUpdate).toHaveBeenCalledTimes(1)
   })
 
   it('should keep current query and hash', async () => {
@@ -264,7 +352,7 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBe('en-US')
   })
 
-  it.each([{ value: 'default' }, { value: null }, { value: undefined }])('should reset value when $value value', async ({ value }) => {
+  it.each([{ value: 'default' }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
     })
@@ -275,7 +363,7 @@ describe('useRouteQuery', () => {
     expect(search.value).toBe('vue3')
     expect(route.query.search).toBe('vue3')
 
-    search.value = value
+    search.value = toValue(value)
 
     await nextTick()
 

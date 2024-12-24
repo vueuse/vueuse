@@ -1,11 +1,11 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue'
+import type { ConfigurableNavigator } from '../_configurable'
 import { toValue, useTimeoutFn } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
+import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import type { ConfigurableNavigator } from '../_configurable'
-import { defaultNavigator } from '../_configurable'
 
 export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator {
   /**
@@ -54,7 +54,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   const isSupported = useSupported(() => (navigator && 'clipboard' in navigator))
   const content = ref<ClipboardItems>([])
   const copied = ref(false)
-  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
+  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateContent() {
     if (isSupported.value) {

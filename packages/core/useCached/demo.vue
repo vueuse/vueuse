@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useCached } from '@vueuse/core'
+import { ref } from 'vue'
 
 interface Value {
   value: number

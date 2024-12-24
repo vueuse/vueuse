@@ -1,4 +1,4 @@
-import { onBeforeUnmount } from 'vue-demi'
+import { onBeforeUnmount } from 'vue'
 import { type Fn, getLifeCycleTarget } from '../utils'
 
 /**
