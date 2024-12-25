@@ -25,44 +25,24 @@ const query = useUrlSearchParams<{
 }>('hash-params', { removeFalsyValues: true })
 
 const search = computed<string | null>({
-  get() {
-    return isMounted.value ? query.search : null
-  },
-  set(val) {
-    query.search = val
-  },
+  get: () => isMounted.value ? query.search : null,
+  set: val => query.search = val,
 })
 const category = computed<string | null>({
-  get() {
-    return isMounted.value ? query.category : null
-  },
-  set(val) {
-    query.category = val
-  },
+  get: () => isMounted.value ? query.category : null,
+  set: val => query.category = val,
 })
 const hasComponent = computed<boolean>({
-  get() {
-    return isMounted.value ? query.component : false
-  },
-  set(val) {
-    query.component = val
-  },
+  get: () => isMounted.value ? query.component : false,
+  set: val => query.component = val,
 })
 const hasDirective = computed<boolean>({
-  get() {
-    return isMounted.value ? query.directive : false
-  },
-  set(val) {
-    query.directive = val
-  },
+  get: () => isMounted.value ? query.directive : false,
+  set: val => query.directive = val,
 })
 const sortMethod = computed<'category' | 'name' | 'updated' | null>({
-  get() {
-    return isMounted.value ? query.sort : null
-  },
-  set(val) {
-    query.sort = val
-  },
+  get: () => isMounted.value ? query.sort : null,
+  set: val => query.sort = val,
 })
 
 const showCategory = computed(() => !search.value && (!sortMethod.value || sortMethod.value === 'category'))
