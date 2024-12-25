@@ -106,18 +106,6 @@ const coreTeamMembers: CoreTeam[] = [
     description: '',
   },
   {
-    avatar: contributorsAvatars.sibbng,
-    name: 'Nurettin Kaya',
-    github: 'sibbng',
-    twitter: 'sibbng',
-    sponsors: false,
-    description: '',
-    functions: [
-      'onClickOutside',
-      'useStyleTag',
-    ],
-  },
-  {
     avatar: contributorsAvatars.okxiaoliang4,
     name: 'Jelf',
     github: 'okxiaoliang4',
