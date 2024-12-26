@@ -3,7 +3,6 @@ import type { RolldownOutputPlugin } from 'node_modules/rolldown/dist/types/plug
 import type { OutputOptions, RolldownOptions, RolldownPlugin } from 'rolldown'
 import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import fs from 'node:fs'
-import dts from 'rollup-plugin-dts'
 import esbuild from 'rollup-plugin-esbuild'
 import { PluginPure as pure } from 'rollup-plugin-pure'
 import { globSync } from 'tinyglobby'
@@ -14,7 +13,6 @@ const functions = metadata.functions as PackageIndexes['functions']
 const configs: RolldownOptions[] = []
 
 const pluginEsbuild = esbuild()
-const pluginDts = dts()
 const pluginPure = pure({
   functions: ['defineComponent'],
 })
@@ -133,9 +131,6 @@ export function createRolldownConfig(
           { file: `${fn}.d.mts` },
           { file: `${fn}.d.ts` }, // for node10 compatibility
         ],
-        plugins: [
-          pluginDts as RolldownPlugin,
-        ],
         external: [
           ...externals,
           ...(external || []),
@@ -172,9 +167,6 @@ export function createRolldownConfig(
           { file: `${fn}/component.d.cts` },
           { file: `${fn}/component.d.mts` },
           { file: `${fn}/component.d.ts` }, // for node10 compatibility
-        ],
-        plugins: [
-          pluginDts as RolldownPlugin,
         ],
         external: [
           ...externals,
