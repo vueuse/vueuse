@@ -1,6 +1,6 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import type { MaybeElementRef } from '../unrefElement'
-import { isObject, noop, tryOnScopeDispose } from '@vueuse/shared'
+import { isObject, noop, toArray, tryOnScopeDispose } from '@vueuse/shared'
 import { toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
@@ -140,10 +140,8 @@ export function useEventListener(...args: any[]) {
   if (!target)
     return noop
 
-  if (!Array.isArray(events))
-    events = [events]
-  if (!Array.isArray(listeners))
-    listeners = [listeners]
+  events = toArray(events)
+  listeners = toArray(listeners)
 
   const cleanups: Function[] = []
   const cleanup = () => {
