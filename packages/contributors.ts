@@ -171,9 +171,7 @@ export const emeriti: TeamMember[] = [
   },
   {
     avatar: contributorsAvatars.sibbng,
-    name: 'Nurettin Kaya',
     github: 'sibbng',
-    twitter: 'sibbng',
     sponsors: false,
     description: '',
     functions: [
