@@ -46,7 +46,7 @@
     "*.mjs"
   ],
   "scripts": {
-    "build": "rolldown --config=rollup.config.ts",
+    "build": "rolldown --config=rolldown.config.ts",
     "prepack": "pnpm run build"
   },
   "dependencies": {
