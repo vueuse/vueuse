@@ -1,6 +1,6 @@
 import { packages } from '../../meta/packages'
-import { createRollupConfig } from '../../rollup.config'
+import { createRolldownConfig } from '../../rolldown.config'
 
-export default createRollupConfig(
+export default createRolldownConfig (
   packages.find(pkg => pkg.name === 'math')!,
 )

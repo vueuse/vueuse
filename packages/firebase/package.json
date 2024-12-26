@@ -56,7 +56,7 @@
     "**/*.mjs"
   ],
   "scripts": {
-    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "build": "rolldown --config=rollup.config.ts",
     "prepack": "pnpm run build"
   },
   "peerDependencies": {
