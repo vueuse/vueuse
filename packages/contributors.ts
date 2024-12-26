@@ -171,6 +171,7 @@ export const emeriti: TeamMember[] = [
   },
   {
     avatar: contributorsAvatars.sibbng,
+    name: 'sibbng',
     github: 'sibbng',
     sponsors: false,
     description: '',
