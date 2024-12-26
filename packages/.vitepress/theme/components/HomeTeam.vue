@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import { coreTeamMembers } from '../../../contributors'
+import { emeriti, team } from '../../../contributors'
+import HomeSection from './HomeSection.vue'
+import TeamMembersGrid from './TeamMembersGrid.vue'
 </script>
 
 <template>
   <div class="vp-doc">
-    <h2 op50 font-normal pt-5 pb-2>
-      Meet The Team
-    </h2>
-  </div>
-  <div grid="~ sm:cols-2 md:cols-3 lg:cols-4 gap-x-3 gap-y-20 items-start" p-10>
-    <TeamMember
-      v-for="c of coreTeamMembers"
-      :key="c.github"
-      :data="c"
+    <HomeSection
+      title="Team Members"
+      description="The development of VueUse is guided by an international team, some of whom have chosen to be featured below."
+    />
+    <TeamMembersGrid
+      :members="team"
+    />
+    <HomeSection
+      title="Team Emeriti"
+      description="Here we honor some no-longer-active team members who have made valuable contributions in the past."
+    />
+    <TeamMembersGrid
+      :members="emeriti"
     />
   </div>
 </template>
