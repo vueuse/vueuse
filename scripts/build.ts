@@ -1,11 +1,10 @@
 import assert from 'node:assert'
 import { execSync as exec } from 'node:child_process'
+import * as fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { consola } from 'consola'
-import fg from 'fast-glob'
-import fs from 'fs-extra'
 import YAML from 'yaml'
 import { packages } from '../meta/packages'
 import { version } from '../package.json'
@@ -16,20 +15,6 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
 const watch = process.argv.includes('--watch')
 
-const FILES_COPY_ROOT = [
-  'LICENSE',
-]
-
-const FILES_COPY_LOCAL = [
-  'README.md',
-  'index.json',
-  '*.cjs',
-  '*.mjs',
-  '*.d.ts',
-  '*.d.cts',
-  '*.d.mts',
-]
-
 assert(process.cwd() !== __dirname)
 
 async function buildMetaFiles() {
@@ -37,19 +22,8 @@ async function buildMetaFiles() {
 
   for (const { name } of packages) {
     const packageRoot = path.resolve(rootDir, 'packages', name)
-    const packageDist = path.resolve(packageRoot, 'dist')
 
-    if (name === 'core')
-      await fs.copyFile(path.join(rootDir, 'README.md'), path.join(packageDist, 'README.md'))
-
-    for (const file of FILES_COPY_ROOT)
-      await fs.copyFile(path.join(rootDir, file), path.join(packageDist, file))
-
-    const files = await fg(FILES_COPY_LOCAL, { cwd: packageRoot })
-    for (const file of files)
-      await fs.copyFile(path.join(packageRoot, file), path.join(packageDist, file))
-
-    const packageJSON = await fs.readJSON(path.join(packageRoot, 'package.json'))
+    const packageJSON = JSON.parse(await fs.readFile(path.join(packageRoot, 'package.json'), { encoding: 'utf8' }))
     for (const [key, value] of Object.entries(packageJSON.dependencies || {})) {
       if (key.startsWith('@vueuse/')) {
         packageJSON.dependencies[key] = version
@@ -62,7 +36,6 @@ async function buildMetaFiles() {
       }
     }
     delete packageJSON.devDependencies
-    await fs.writeJSON(path.join(packageDist, 'package.json'), packageJSON, { spaces: 2 })
   }
 }
 
@@ -75,9 +48,6 @@ async function build() {
 
   consola.info('Rollup')
   exec(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`, { stdio: 'inherit' })
-
-  consola.info('Fix types')
-  exec('pnpm run types:fix', { stdio: 'inherit' })
 
   await buildMetaFiles()
 }

@@ -1,10 +1,10 @@
-import { promiseTimeout } from '@vueuse/shared'
-import { describe, expect, it } from 'vitest'
-import { ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { useThrottledRefHistory } from '.'
 
 describe('useThrottledRefHistory - sync', () => {
   it('take first snapshot right after data was changed and second after given time', async () => {
+    vi.useFakeTimers()
     const ms = 10
     const v = ref(0)
 
@@ -15,7 +15,7 @@ describe('useThrottledRefHistory - sync', () => {
 
     v.value = 100
 
-    await promiseTimeout(ms * 3)
+    await vi.advanceTimersByTimeAsync(ms * 3)
 
     expect(history.value.length).toBe(2)
     expect(history.value[0].snapshot).toBe(100)
@@ -24,7 +24,7 @@ describe('useThrottledRefHistory - sync', () => {
     v.value = 300
     v.value = 400
 
-    await promiseTimeout(ms * 3)
+    await vi.advanceTimersByTimeAsync(ms * 3)
 
     expect(history.value.length).toBe(3)
     expect(history.value[0].snapshot).toBe(400)

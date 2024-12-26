@@ -1,6 +1,6 @@
 import type { RenderableComponent } from '../types'
 import { usePointerLock } from '@vueuse/core'
-import { defineComponent, h, reactive, ref } from 'vue-demi'
+import { defineComponent, h, reactive, ref } from 'vue'
 
 export const UsePointerLock = defineComponent<RenderableComponent>({
   name: 'UsePointerLock',

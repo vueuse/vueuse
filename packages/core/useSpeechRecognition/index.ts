@@ -2,11 +2,11 @@
 // by https://github.com/wobsoriano
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
-import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef, watch } from 'vue-demi'
+import { toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { ref, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -59,22 +59,29 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   const result = ref('')
   const error = shallowRef(undefined) as Ref<SpeechRecognitionErrorEvent | undefined>
 
-  const toggle = (value = !isListening.value) => {
-    isListening.value = value
-  }
+  let recognition: SpeechRecognition | undefined
 
   const start = () => {
-    isListening.value = true
+    if (!isListening.value)
+      recognition?.start()
   }
 
   const stop = () => {
-    isListening.value = false
+    if (isListening.value)
+      recognition?.stop()
+  }
+
+  const toggle = (value = !isListening.value) => {
+    if (value) {
+      start()
+    }
+    else {
+      stop()
+    }
   }
 
   const SpeechRecognition = window && ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
   const isSupported = useSupported(() => SpeechRecognition)
-
-  let recognition: SpeechRecognition | undefined
 
   if (isSupported.value) {
     recognition = new SpeechRecognition() as SpeechRecognition
@@ -85,6 +92,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     recognition.maxAlternatives = maxAlternatives
 
     recognition.onstart = () => {
+      isListening.value = true
       isFinal.value = false
     }
 
@@ -120,7 +128,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   }
 
   tryOnScopeDispose(() => {
-    isListening.value = false
+    stop()
   })
 
   return {

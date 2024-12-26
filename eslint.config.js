@@ -4,7 +4,7 @@ import antfu from '@antfu/eslint-config'
 
 const dir = fileURLToPath(new URL('.', import.meta.url))
 const restricted = [
-  'vue',
+  'vue-demi',
   '@vue/reactivity',
   '@vue/runtime-core',
   '@vue/runtime-dom',
@@ -14,7 +14,7 @@ const restricted = [
   resolve(dir, 'packages/core/index.ts'),
   resolve(dir, 'packages/shared/index.ts'),
   {
-    name: 'vue-demi',
+    name: 'vue',
     importNames: ['onMounted', 'onUnmounted', 'unref', 'toRef'],
   },
 ]
@@ -27,8 +27,6 @@ export default antfu(
       'playgrounds',
       '**/types',
       '**/cache',
-      '**/dist',
-      '**/.temp',
       '**/*.svg',
     ],
   },
@@ -81,6 +79,14 @@ export default antfu(
           '@vueuse/core',
         ],
       }],
+    },
+  },
+  {
+    files: [
+      'packages/*/index.ts',
+    ],
+    rules: {
+      'perfectionist/sort-exports': 'off',
     },
   },
   {

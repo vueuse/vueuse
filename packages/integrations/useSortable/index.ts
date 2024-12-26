@@ -1,8 +1,9 @@
 import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
-import type { MaybeRef } from 'vue-demi'
-import { defaultDocument, toValue, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
-import Sortable, { type Options } from 'sortablejs'
-import { isRef, nextTick } from 'vue-demi'
+import type { Options } from 'sortablejs'
+import type { MaybeRef } from 'vue'
+import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
+import Sortable from 'sortablejs'
+import { isRef, nextTick, toValue } from 'vue'
 
 export interface UseSortableReturn {
   /**
@@ -46,7 +47,7 @@ export function useSortable<T>(
 
   const defaultOptions: Options = {
     onUpdate: (e) => {
-      moveArrayElement(list, e.oldIndex!, e.newIndex!)
+      moveArrayElement(list, e.oldIndex!, e.newIndex!, e)
     },
   }
 
@@ -80,11 +81,43 @@ export function useSortable<T>(
   }
 }
 
+/**
+ * Inserts a element into the DOM at a given index.
+ * @param parentElement
+ * @param element
+ * @param {number} index
+ * @see https://github.com/Alfred-Skyblue/vue-draggable-plus/blob/a3829222095e1949bf2c9a20979d7b5930e66f14/src/utils/index.ts#L81C1-L94C2
+ */
+export function insertNodeAt(
+  parentElement: Element,
+  element: Element,
+  index: number,
+) {
+  const refElement = parentElement.children[index]
+  parentElement.insertBefore(element, refElement)
+}
+
+/**
+ * Removes a node from the DOM.
+ * @param {Node} node
+ * @see https://github.com/Alfred-Skyblue/vue-draggable-plus/blob/a3829222095e1949bf2c9a20979d7b5930e66f14/src/utils/index.ts#L96C1-L102C2
+ */
+export function removeNode(node: Node) {
+  if (node.parentNode)
+    node.parentNode.removeChild(node)
+}
+
 export function moveArrayElement<T>(
   list: MaybeRefOrGetter<T[]>,
   from: number,
   to: number,
+  e: Sortable.SortableEvent | null = null,
 ): void {
+  if (e != null) {
+    removeNode(e.item)
+    insertNodeAt(e.from, e.item, from)
+  }
+
   const _valueIsRef = isRef(list)
   // When the list is a ref, make a shallow copy of it to avoid repeatedly triggering side effects when moving elements
   const array = _valueIsRef ? [...toValue(list)] : toValue(list)

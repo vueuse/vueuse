@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
-import { increaseWithUnit, toValue } from '@vueuse/shared'
-import { computed } from 'vue-demi'
+import { increaseWithUnit, pxValue, tryOnMounted } from '@vueuse/shared'
+import { computed, ref, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
+import { useSSRWidth } from '../useSSRWidth'
 
 export * from './breakpoints'
 
@@ -20,6 +20,7 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
    * @default "min-width"
    */
   strategy?: 'min-width' | 'max-width'
+  ssrWidth?: number
 }
 
 /**
@@ -43,12 +44,21 @@ export function useBreakpoints<K extends string>(
     return v
   }
 
-  const { window = defaultWindow, strategy = 'min-width' } = options
+  const { window = defaultWindow, strategy = 'min-width', ssrWidth = useSSRWidth() } = options
 
-  function match(query: string): boolean {
+  const ssrSupport = typeof ssrWidth === 'number'
+  const mounted = ssrSupport ? ref(false) : { value: true }
+  if (ssrSupport) {
+    tryOnMounted(() => mounted.value = !!window)
+  }
+
+  function match(query: 'min' | 'max', size: string): boolean {
+    if (!mounted.value && ssrSupport) {
+      return query === 'min' ? ssrWidth >= pxValue(size) : ssrWidth <= pxValue(size)
+    }
     if (!window)
       return false
-    return window.matchMedia(query).matches
+    return window.matchMedia(`(${query}-width: ${size})`).matches
   }
 
   const greaterOrEqual = (k: MaybeRefOrGetter<K>) => {
@@ -59,20 +69,22 @@ export function useBreakpoints<K extends string>(
     return useMediaQuery(() => `(max-width: ${getValue(k)})`, options)
   }
 
-  const shortcutMethods = Object.keys(breakpoints)
+  const shortcutMethods = (Object.keys(breakpoints) as K[])
     .reduce((shortcuts, k) => {
       Object.defineProperty(shortcuts, k, {
         get: () => strategy === 'min-width'
-          ? greaterOrEqual(k as K)
-          : smallerOrEqual(k as K),
+          ? greaterOrEqual(k)
+          : smallerOrEqual(k),
         enumerable: true,
         configurable: true,
       })
       return shortcuts
-    }, {} as Record<K, Ref<boolean>>)
+    }, {} as Record<K, ReturnType<typeof greaterOrEqual>>)
 
   function current() {
-    const points = Object.keys(breakpoints).map(i => [i, greaterOrEqual(i as K)] as const)
+    const points = (Object.keys(breakpoints) as K[])
+      .map(k => [k, shortcutMethods[k], pxValue(getValue(k))] as const)
+      .sort((a, b) => a[2] - b[2])
     return computed(() => points.filter(([, v]) => v.value).map(([k]) => k))
   }
 
@@ -89,39 +101,26 @@ export function useBreakpoints<K extends string>(
       return useMediaQuery(() => `(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`, options)
     },
     isGreater(k: MaybeRefOrGetter<K>) {
-      return match(`(min-width: ${getValue(k, 0.1)})`)
+      return match('min', getValue(k, 0.1))
     },
     isGreaterOrEqual(k: MaybeRefOrGetter<K>) {
-      return match(`(min-width: ${getValue(k)})`)
+      return match('min', getValue(k))
     },
     isSmaller(k: MaybeRefOrGetter<K>) {
-      return match(`(max-width: ${getValue(k, -0.1)})`)
+      return match('max', getValue(k, -0.1))
     },
     isSmallerOrEqual(k: MaybeRefOrGetter<K>) {
-      return match(`(max-width: ${getValue(k)})`)
+      return match('max', getValue(k))
     },
     isInBetween(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) {
-      return match(`(min-width: ${getValue(a)}) and (max-width: ${getValue(b, -0.1)})`)
+      return match('min', getValue(a)) && match('max', getValue(b, -0.1))
     },
     current,
     active() {
       const bps = current()
-      return computed(() => bps.value.length === 0 ? '' : bps.value.at(-1))
+      return computed(() => bps.value.length === 0 ? '' : bps.value.at(strategy === 'min-width' ? -1 : 0)!)
     },
   })
 }
 
-export type UseBreakpointsReturn<K extends string = string> = {
-  greater: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  greaterOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  smaller: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  smallerOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  between: (a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  isGreater: (k: MaybeRefOrGetter<K>) => boolean
-  isGreaterOrEqual: (k: MaybeRefOrGetter<K>) => boolean
-  isSmaller: (k: MaybeRefOrGetter<K>) => boolean
-  isSmallerOrEqual: (k: MaybeRefOrGetter<K>) => boolean
-  isInBetween: (a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) => boolean
-  current: () => ComputedRef<string[]>
-  active: ComputedRef<string>
-} & Record<K, ComputedRef<boolean>>
+export type UseBreakpointsReturn<K extends string = string> = ReturnType<typeof useBreakpoints<K>>

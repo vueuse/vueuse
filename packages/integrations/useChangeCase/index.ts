@@ -1,9 +1,8 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Options } from 'change-case'
-import type { ComputedRef, WritableComputedRef } from 'vue-demi'
-import { toValue } from '@vueuse/shared'
+import type { ComputedRef, WritableComputedRef } from 'vue'
 import * as changeCase from 'change-case'
-import { computed, ref } from 'vue-demi'
+import { computed, ref, toValue } from 'vue'
 
 type EndsWithCase<T> = T extends `${infer _}Case` ? T : never
 type FilterKeys<T> = { [K in keyof T as K extends string ? K : never]: EndsWithCase<K> }

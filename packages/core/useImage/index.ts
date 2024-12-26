@@ -1,7 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { UseAsyncStateOptions } from '../useAsyncState'
-import { toValue } from '@vueuse/shared'
-import { watch } from 'vue-demi'
+import { toValue, watch } from 'vue'
 import { useAsyncState } from '../useAsyncState'
 
 export interface UseImageOptions {
@@ -21,32 +20,51 @@ export interface UseImageOptions {
   crossorigin?: string
   /** Referrer policy for fetch https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy */
   referrerPolicy?: HTMLImageElement['referrerPolicy']
+  /** Image width */
+  width?: HTMLImageElement['width']
+  /** Image height */
+  height?: HTMLImageElement['height']
+  /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#decoding */
+  decoding?: HTMLImageElement['decoding']
+  /** Provides a hint of the relative priority to use when fetching the image */
+  fetchPriority?: HTMLImageElement['fetchPriority']
+  /** Provides a hint of the importance of the image */
+  ismap?: HTMLImageElement['isMap']
+  /** The partial URL (starting with #) of an image map associated with the element */
+  usemap?: HTMLImageElement['useMap']
 }
 
 async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image()
-    const { src, srcset, sizes, class: clazz, loading, crossorigin, referrerPolicy } = options
+    const { src, srcset, sizes, class: clazz, loading, crossorigin, referrerPolicy, width, height, decoding, fetchPriority, ismap, usemap } = options
 
     img.src = src
 
-    if (srcset)
+    if (srcset != null)
       img.srcset = srcset
-
-    if (sizes)
+    if (sizes != null)
       img.sizes = sizes
-
-    if (clazz)
+    if (clazz != null)
       img.className = clazz
-
-    if (loading)
+    if (loading != null)
       img.loading = loading
-
-    if (crossorigin)
+    if (crossorigin != null)
       img.crossOrigin = crossorigin
-
-    if (referrerPolicy)
+    if (referrerPolicy != null)
       img.referrerPolicy = referrerPolicy
+    if (width != null)
+      img.width = width
+    if (height != null)
+      img.height = height
+    if (decoding != null)
+      img.decoding = decoding
+    if (fetchPriority != null)
+      img.fetchPriority = fetchPriority
+    if (ismap != null)
+      img.isMap = ismap
+    if (usemap != null)
+      img.useMap = usemap
 
     img.onload = () => resolve(img)
     img.onerror = reject

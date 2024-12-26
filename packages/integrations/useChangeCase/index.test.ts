@@ -1,7 +1,7 @@
 import type { Options } from 'change-case'
 import type { ChangeCaseType } from '.'
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useChangeCase } from '.'
 
 describe('useChangeCase', () => {

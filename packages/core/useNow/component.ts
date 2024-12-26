@@ -1,6 +1,6 @@
 import type { UseNowOptions } from '@vueuse/core'
 import { useNow } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseNow = /* #__PURE__ */ defineComponent<Omit<UseNowOptions<true>, 'controls'>>({
   name: 'UseNow',

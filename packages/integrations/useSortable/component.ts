@@ -1,13 +1,11 @@
+import type { PropType } from 'vue'
+import type { UseSortableOptions } from '.'
 import { useVModel } from '@vueuse/core'
-import { defineComponent, h, type PropType, reactive, ref } from 'vue-demi'
-import { useSortable, type UseSortableOptions } from '.'
+import { defineComponent, h, reactive, ref } from 'vue'
+import { useSortable } from '.'
 
 export const UseSortable = /* #__PURE__ */ defineComponent({
   name: 'UseSortable',
-  model: { // Compatible with vue2
-    prop: 'modelValue',
-    event: 'update:modelValue',
-  },
   props: {
     modelValue: {
       type: Array as PropType<any[]>,

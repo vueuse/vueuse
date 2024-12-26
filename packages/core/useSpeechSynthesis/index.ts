@@ -1,8 +1,8 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { toRef, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, shallowRef, watch } from 'vue-demi'
+import { toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 

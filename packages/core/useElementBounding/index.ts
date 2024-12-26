@@ -1,6 +1,6 @@
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'

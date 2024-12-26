@@ -1,6 +1,6 @@
-import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue-demi'
+import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
 import type { ConfigurableEventFilter, MapOldSources, MapSources } from '../utils'
-import { watch } from 'vue-demi'
+import { watch } from 'vue'
 import { bypassFilter, createFilterWrapper } from '../utils'
 
 export interface WatchWithFilterOptions<Immediate> extends WatchOptions<Immediate>, ConfigurableEventFilter {}

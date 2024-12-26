@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { useArrayDifference } from '.'
 
 describe('useArrayDifference', () => {
@@ -46,6 +46,34 @@ describe('useArrayDifference', () => {
     expect(result.value).toEqual([{ id: 3 }, { id: 4 }, { id: 5 }])
 
     list1.value = [{ id: 1 }, { id: 2 }]
+    expect(result.value).toEqual([])
+  })
+
+  it('symmetric diff case 1', () => {
+    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
+
+    const result = useArrayDifference(list1, list2, 'id', { symmetric: true })
+    expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 6 }])
+
+    list2.value = [{ id: 1 }, { id: 2 }]
+    expect(result.value).toEqual([{ id: 3 }, { id: 4 }, { id: 5 }])
+
+    list1.value = [{ id: 1 }, { id: 2 }]
+    expect(result.value).toEqual([])
+  })
+
+  it('symmetric diff case 2', () => {
+    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
+
+    const result = useArrayDifference(list1, list2, (x, y) => x.id === y.id, { symmetric: true })
+    expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 6 }])
+
+    list2.value = [{ id: 6 }, { id: 7 }]
+    expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }, { id: 7 }])
+
+    list1.value = [{ id: 6 }, { id: 7 }]
     expect(result.value).toEqual([])
   })
 })

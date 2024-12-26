@@ -23,18 +23,11 @@ export const packages: PackageManifest[] = [
     display: 'Components',
     description: 'Renderless components for VueUse',
     author: 'Jacob Clevenger<https://github.com/wheatjs>',
-    external: [
-      '@vueuse/core',
-      '@vueuse/shared',
-    ],
   },
   {
     name: 'math',
     display: 'Math',
     description: 'Math functions for VueUse',
-    external: [
-      '@vueuse/shared',
-    ],
   },
   {
     name: 'nuxt',
@@ -47,8 +40,6 @@ export const packages: PackageManifest[] = [
     utils: true,
     target: 'node14',
     external: [
-      '@vueuse/core',
-      '@vueuse/shared',
       '@nuxt/kit',
       'local-pkg',
       'fs',
@@ -87,8 +78,6 @@ export const packages: PackageManifest[] = [
       'focus-trap',
       'change-case',
       'drauu',
-      '@vueuse/core',
-      '@vueuse/shared',
       'fuse.js',
       'async-validator',
       'idb-keyval',

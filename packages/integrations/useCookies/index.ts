@@ -1,7 +1,7 @@
 import type { IncomingMessage } from 'node:http'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import Cookie from 'universal-cookie'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 
 type RawCookies = Record<string, string>
 

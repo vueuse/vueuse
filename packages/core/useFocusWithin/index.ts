@@ -1,7 +1,7 @@
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
@@ -16,6 +16,7 @@ export interface UseFocusWithinReturn {
 
 const EVENT_FOCUS_IN = 'focusin'
 const EVENT_FOCUS_OUT = 'focusout'
+const PSEUDO_CLASS_FOCUS_WITHIN = ':focus-within'
 
 /**
  * Track if focus is contained within the target element
@@ -36,7 +37,8 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
   }
 
   useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true)
-  useEventListener(targetElement, EVENT_FOCUS_OUT, () => _focused.value = false)
+  useEventListener(targetElement, EVENT_FOCUS_OUT, () =>
+    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false)
 
   return { focused }
 }

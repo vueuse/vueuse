@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { isVue2, nextTick, ref, watch, watchEffect } from 'vue-demi'
+import { nextTick, ref, watch, watchEffect } from 'vue'
 import { reactiveComputed } from '.'
 
 describe('reactiveComputed', () => {
@@ -48,11 +48,9 @@ describe('reactiveComputed', () => {
     expect(state.foo).toBe(true)
     expect(state.bar).toBe(undefined)
 
-    if (!isVue2) {
-      await nextTick()
+    await nextTick()
 
-      expect(dummy).toBe(1)
-      expect(type).toBe('foo')
-    }
+    expect(dummy).toBe(1)
+    expect(type).toBe('foo')
   })
 })

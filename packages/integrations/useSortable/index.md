@@ -8,6 +8,10 @@ Wrapper for [`sortable`](https://github.com/SortableJS/Sortable).
 
 For more information on what options can be passed, see [`Sortable.options`](https://github.com/SortableJS/Sortable#options) in the `Sortable` documentation.
 
+::: warning
+Currently, `useSortable` only implements drag-and-drop sorting for a single list.
+:::
+
 ## Install
 
 ```bash
@@ -102,7 +106,7 @@ import { moveArrayElement } from '@vueuse/integrations/useSortable'
 useSortable(el, list, {
   onUpdate: (e) => {
     // do something
-    moveArrayElement(list.value, e.oldIndex, e.newIndex)
+    moveArrayElement(list.value, e.oldIndex, e.newIndex, e)
     // nextTick required here as moveArrayElement is executed in a microtask
     // so we need to wait until the next tick until that is finished.
     nextTick(() => {
