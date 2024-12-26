@@ -3,7 +3,6 @@ import type { RolldownOutputPlugin } from 'node_modules/rolldown/dist/types/plug
 import type { OutputOptions, RolldownOptions, RolldownPlugin } from 'rolldown'
 import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import fs from 'node:fs'
-import json from '@rollup/plugin-json'
 import dts from 'rollup-plugin-dts'
 import esbuild from 'rollup-plugin-esbuild'
 import { PluginPure as pure } from 'rollup-plugin-pure'
@@ -111,12 +110,13 @@ export function createRolldownConfig(
     configs.push({
       input,
       output,
-      moduleTypes: {
-        '.json': 'ts',
-      },
+      // moduleTypes: {
+      //   '.json': 'ts',
+      // },
       plugins: [
         // esbuild({ target: 'es2018' }) as RolldownPlugin,
-        json() as RolldownPlugin,
+        // try to remove json()
+        // json() as RolldownPlugin,
         pluginPure as RolldownPlugin,
       ],
       external: [
