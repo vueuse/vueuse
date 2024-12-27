@@ -24,6 +24,6 @@ export const vElementBounding: ObjectDirective<
       x,
       y,
     } = useElementBounding(el, options)
-    watch([height, bottom, left, right, top, width, x, y], ([height, bottom, left, right, top, width, x, y]) => handler({ height, bottom, left, right, top, width, x, y }))
+    watch([height, bottom, left, right, top, width, x, y], () => handler({ height, bottom, left, right, top, width, x, y }))
   },
 }
