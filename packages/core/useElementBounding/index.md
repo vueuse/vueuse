@@ -41,3 +41,40 @@ export default {
   </UseElementBounding>
 </template>
 ```
+
+## Directive Usage
+
+```vue
+<script setup lang="ts">
+import { vElementBounding } from '@vueuse/components'
+
+interface BoundingType {
+  height: number
+  bottom: number
+  left: number
+  right: number
+  top: number
+  width: number
+  x: number
+  y: number
+}
+
+function onBounding({ height, bottom, left, right, top, width, x, y }: BoundingType) {
+  console.log(height, bottom, left, right, top, width, x, y)
+}
+
+const options = {
+  reset: true,
+  windowResize: true,
+  windowScroll: true,
+  immediate: true,
+  updateTiming: 'sync',
+}
+</script>
+
+<template>
+  <textarea v-element-bounding="onBounding" />
+  <!-- with options -->
+  <textarea v-element-bounding="[onBounding, options]" />
+</template>
+```
