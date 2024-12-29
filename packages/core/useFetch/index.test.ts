@@ -1,7 +1,7 @@
 import type { MockInstance } from 'vitest'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { createFetch, useFetch } from '.'
 import { isBelowNode18, retry } from '../../.test'
 import '../../.test/mockServer'
@@ -37,6 +37,52 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(data.value).toBe('hello')
       expect(statusCode.value).toBe(200)
     })
+  })
+
+  it('should append query to the URL', async () => {
+    const { statusCode, data } = useFetch('https://example.com?existing=foo', {
+      query: { text: 'hello' },
+    })
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(fetchSpy).toHaveBeenCalledWith('https://example.com/?existing=foo&text=hello', expect.anything())
+      expect(data.value).toBe('hello')
+      expect(statusCode.value).toBe(200)
+    })
+  })
+
+  it('should accept refs for query', async () => {
+    const text = ref('hello')
+
+    const { statusCode, data } = useFetch('https://example.com', {
+      query: { text },
+    })
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(data.value).toBe('hello')
+      expect(statusCode.value).toBe(200)
+    })
+  })
+
+  it('should accept reactive object for query', async () => {
+    const query = reactive({ text: 'hello' })
+
+    const { statusCode, data } = useFetch('https://example.com', { query })
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledOnce()
+      expect(data.value).toBe('hello')
+      expect(statusCode.value).toBe(200)
+    })
+  })
+
+  it('should refetch when query changes', async () => {
+    const text = ref('hello')
+    useFetch('https://example.com', { refetch: true, query: { text } })
+    text.value = 'goodbye'
+    await retry(() => expect(fetchSpy).toBeCalledTimes(2))
   })
 
   it('should be able to use the Headers object', async () => {
