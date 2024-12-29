@@ -70,6 +70,10 @@ const server = setupServer(
   http.get(`${baseUrl}/test`, ({ request }) => {
     return commonTransformers(request)
   }),
+
+  http.get(`${baseUrl}/api/test`, ({ request }) => {
+    return commonTransformers(request)
+  }),
 )
 
 beforeAll(() => server.listen())
