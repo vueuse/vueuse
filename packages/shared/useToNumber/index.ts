@@ -41,6 +41,14 @@ export function useToNumber(
     let resolved = toValue(value)
     if (typeof resolved === 'string')
       resolved = Number[method](resolved, radix)
+    if (!Number.isNaN(resolved)) {
+      if (String(toValue(value)) > String(Number.MAX_SAFE_INTEGER)) {
+        console.warn('useToNumber: value is reaching the limit of Number.MAX_SAFE_INTEGER, resolved value may not be accurate')
+      }
+      else if (String(toValue(value)) < String(Number.MIN_SAFE_INTEGER)) {
+        console.warn('useToNumber: value is reaching the limit of Number.MIN_SAFE_INTEGER, resolved value may not be accurate')
+      }
+    }
     if (nanToZero && Number.isNaN(resolved))
       resolved = 0
     return resolved
