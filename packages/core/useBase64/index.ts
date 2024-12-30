@@ -25,7 +25,7 @@ export interface ToDataURLOptions extends UseBase64Options {
 }
 
 export interface UseBase64ObjectOptions<T> extends UseBase64Options {
-  serializer: (v: T) => string
+  serializer?: (v: T) => string
 }
 
 export interface UseBase64Return {
