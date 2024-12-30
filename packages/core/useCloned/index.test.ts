@@ -1,6 +1,6 @@
 import { useCloned } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { nextTick, ref } from 'vue'
 
 describe('useCloned', () => {
   it('works with simple objects', () => {

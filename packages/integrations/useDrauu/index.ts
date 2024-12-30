@@ -1,11 +1,11 @@
 import type { EventHookOn, MaybeComputedElementRef } from '@vueuse/core'
 import type { Fn } from '@vueuse/shared'
 import type { Brush, Drauu, DrawingMode, Options } from 'drauu'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { createEventHook, unrefElement } from '@vueuse/core'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { createDrauu } from 'drauu'
-import { ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue'
 
 export type UseDrauuOptions = Omit<Options, 'el'>
 

@@ -1,7 +1,6 @@
-import type { ComputedRef } from 'vue-demi'
+import type { ComputedRef } from 'vue'
 import type { MaybeRefOrGetter } from '../utils'
-import { computed } from 'vue-demi'
-import { toValue } from '../toValue'
+import { computed, toValue } from 'vue'
 
 function uniq<T>(array: T[]) {
   return Array.from(new Set(array))

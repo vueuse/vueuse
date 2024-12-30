@@ -1,5 +1,5 @@
 import { useOnline } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 export const UseOnline = /* #__PURE__ */ defineComponent({
   name: 'UseOnline',

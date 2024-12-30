@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, isVue2, nextTick, ref } from 'vue-demi'
+import { defineComponent, h, nextTick, ref } from 'vue'
 import { useParentElement } from '.'
 import { mount } from '../../.test'
 
-describe.skipIf(isVue2)('useParentElement', () => {
+describe('useParentElement', () => {
   it('should be defined', () => {
     expect(useParentElement).toBeDefined()
   })

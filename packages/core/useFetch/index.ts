@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
+import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
+import { computed, isRef, readonly, ref, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -416,12 +416,13 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       headers: {},
     }
 
-    if (config.payload) {
+    const payload = toValue(config.payload)
+    if (payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
-      const payload = toValue(config.payload)
-      // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
+      // Set the payload to json type only if it's not provided and a literal object or array is provided and the object is not `formData`
       // The only case we can deduce the content type and `fetch` can't
-      if (!config.payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype && !(payload instanceof FormData))
+      const proto = Object.getPrototypeOf(payload)
+      if (!config.payloadType && payload && (proto === Object.prototype || Array.isArray(proto)) && !(payload instanceof FormData))
         config.payloadType = 'json'
 
       if (config.payloadType)
@@ -592,7 +593,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
   function waitUntilFinished() {
     return new Promise<UseFetchReturn<T>>((resolve, reject) => {
-      until(isFinished).toBe(true).then(() => resolve(shell)).catch(error => reject(error))
+      until(isFinished).toBe(true).then(() => resolve(shell)).catch(reject)
     })
   }
 
@@ -625,8 +626,13 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 }
 
 function joinPaths(start: string, end: string): string {
-  if (!start.endsWith('/') && !end.startsWith('/'))
+  if (!start.endsWith('/') && !end.startsWith('/')) {
     return `${start}/${end}`
+  }
+
+  if (start.endsWith('/') && end.startsWith('/')) {
+    return `${start.slice(0, -1)}${end}`
+  }
 
   return `${start}${end}`
 }

@@ -1,6 +1,5 @@
-import { getCurrentInstance } from 'vue-demi'
+import { getCurrentInstance } from 'vue'
 
-export * from './compatibility'
 export * from './filters'
 export * from './is'
 export * from './port'
@@ -88,6 +87,13 @@ export function increaseWithUnit(target: string | number, delta: number): string
   if (Number.isNaN(result))
     return target
   return result + unit
+}
+
+/**
+ * Get a px value for SSR use, do not rely on this method outside of SSR as REM unit is assumed at 16px, which might not be the case on the client
+ */
+export function pxValue(px: string) {
+  return px.endsWith('rem') ? Number.parseFloat(px) * 16 : Number.parseFloat(px)
 }
 
 /**

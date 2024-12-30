@@ -1,6 +1,6 @@
 import type { UseClipboardOptions } from '@vueuse/core'
 import { useClipboard } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue-demi'
+import { defineComponent, reactive } from 'vue'
 
 interface UseClipboardProps<Source = string> extends UseClipboardOptions<Source> {}
 

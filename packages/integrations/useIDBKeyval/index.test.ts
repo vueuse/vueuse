@@ -1,6 +1,6 @@
-import { promiseTimeout } from '@vueuse/shared'
 import { get, set } from 'idb-keyval'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useIDBKeyval } from '.'
 
 const cache = {} as any
@@ -54,8 +54,6 @@ describe('useIDBKeyval', () => {
     expect(data2.value).toEqual(['foo', 'bar'])
     expect(data3.value).toEqual('hello')
 
-    await promiseTimeout(50)
-
     expect(await get(KEY1)).toEqual(data1.value)
     expect(await get(KEY2)).toEqual(data2.value)
     expect(await get(KEY3)).toEqual(data3.value)
@@ -65,8 +63,6 @@ describe('useIDBKeyval', () => {
     data1.value.count++
     data2.value.push('woo')
     data3.value = 'world'
-
-    await promiseTimeout(50)
 
     expect(await get(KEY1)).toEqual(data1.value)
     expect(await get(KEY2)).toEqual(data2.value)
@@ -78,7 +74,7 @@ describe('useIDBKeyval', () => {
     data2.value = null
     data3.value = null
 
-    await promiseTimeout(50)
+    await nextTick()
 
     expect(await get(KEY1)).toBeUndefined()
     expect(await get(KEY2)).toBeUndefined()
@@ -88,7 +84,7 @@ describe('useIDBKeyval', () => {
   it('catch error on update error', async () => {
     data3.value = 'error'
 
-    await promiseTimeout(50)
+    await nextTick()
 
     expect(console.error).toHaveBeenCalledTimes(1)
   })
@@ -96,7 +92,8 @@ describe('useIDBKeyval', () => {
   it('catch error on init error', async () => {
     useIDBKeyval('ERROR_KEY', 'error')
 
-    await promiseTimeout(50)
+    await nextTick()
+    await nextTick()
 
     expect(console.error).toHaveBeenCalledTimes(1)
   })
@@ -104,14 +101,13 @@ describe('useIDBKeyval', () => {
     const { isFinished } = useIDBKeyval(KEY4, 'test')
     expect(isFinished.value).toBe(false)
 
-    await promiseTimeout(50)
+    await nextTick()
+    await nextTick()
 
     expect(isFinished.value).toBe(true)
   })
   it('writeDefaults false', async () => {
     useIDBKeyval(KEY4, 'test', { writeDefaults: false })
-
-    await promiseTimeout(50)
 
     expect(set).toHaveBeenCalledTimes(0)
   })

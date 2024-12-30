@@ -1,7 +1,8 @@
+import type { IsAny } from '@vueuse/shared'
 import type { MaybeElement, MaybeElementRef, VueInstance } from '../unrefElement'
-import { computedWithControl, type IsAny } from '@vueuse/shared'
+import { computedWithControl } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
-import { getCurrentInstance, onMounted, onUpdated } from 'vue-demi'
+import { getCurrentInstance, onMounted, onUpdated } from 'vue'
 import { unrefElement } from '../unrefElement'
 
 export function useCurrentElement<

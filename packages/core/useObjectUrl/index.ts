@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { readonly, ref, watch } from 'vue-demi'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { readonly, ref, toValue, watch } from 'vue'
 
 /**
  * Reactive URL representing an object.

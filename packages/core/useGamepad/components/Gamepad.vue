@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import Controller from './Controller.vue'
 import Item from './Item.vue'
 

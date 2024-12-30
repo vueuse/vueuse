@@ -1,25 +1,27 @@
-import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue-demi'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { useTimeoutFn } from '.'
-import { promiseTimeout } from '../utils'
 
 describe('useTimeoutFn', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
   it('supports reactive intervals', async () => {
     const callback = vi.fn()
     const interval = ref(0)
     const { start } = useTimeoutFn(callback, interval)
 
     start()
-    await promiseTimeout(1)
+    vi.advanceTimersByTime(1)
     expect(callback).toBeCalled()
 
     callback.mockReset()
     interval.value = 50
 
     start()
-    await promiseTimeout(1)
+    vi.advanceTimersByTime(1)
     expect(callback).not.toBeCalled()
-    await promiseTimeout(100)
+    vi.advanceTimersByTime(100)
     expect(callback).toBeCalled()
   })
 
@@ -35,7 +37,7 @@ describe('useTimeoutFn', () => {
     expect(isPending.value).toBe(true)
     expect(callback).not.toBeCalled()
 
-    await promiseTimeout(1)
+    vi.advanceTimersByTime(1)
 
     expect(isPending.value).toBe(false)
     expect(callback).toBeCalled()

@@ -1,9 +1,8 @@
-import type { WatchSource } from 'vue-demi'
+import type { WatchSource } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchIgnorableReturn } from '../watchIgnorable'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
-import { isReactive } from 'vue-demi'
-import { toValue } from '../toValue'
+import { isReactive, toValue } from 'vue'
 import { watchIgnorable } from '../watchIgnorable'
 
 // Watch that can be triggered manually

@@ -1,5 +1,5 @@
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
-import { ref } from 'vue-demi'
+import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'

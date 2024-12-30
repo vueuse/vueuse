@@ -1,8 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, Ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
-import { computed, ref } from 'vue-demi'
+import { computed, ref } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
@@ -82,9 +82,16 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     const { state, query } = usePermission('camera', { controls: true })
     await query()
     if (state.value !== 'granted') {
-      stream = await navigator!.mediaDevices.getUserMedia(constraints)
+      let granted = true
+      try {
+        stream = await navigator!.mediaDevices.getUserMedia(constraints)
+      }
+      catch {
+        stream = null
+        granted = false
+      }
       update()
-      permissionGranted.value = true
+      permissionGranted.value = granted
     }
     else {
       permissionGranted.value = true

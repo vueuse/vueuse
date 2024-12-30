@@ -1,6 +1,5 @@
-import { promiseTimeout } from '@vueuse/shared'
-import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { describe, expect, it, vi } from 'vitest'
+import { nextTick, ref } from 'vue'
 import { useDebouncedRefHistory } from '.'
 
 describe('useDebouncedRefHistory', () => {
@@ -12,10 +11,10 @@ describe('useDebouncedRefHistory', () => {
     expect(history.value.length).toBe(1)
     expect(history.value[0].snapshot).toBe(0)
 
-    await promiseTimeout(20)
-
-    expect(history.value.length).toBe(2)
-    expect(history.value[0].snapshot).toBe(100)
+    await vi.waitFor(() => {
+      expect(history.value.length).toBe(2)
+      expect(history.value[0].snapshot).toBe(100)
+    }, { interval: 5 })
   })
 
   it('when debounce is undefined', async () => {

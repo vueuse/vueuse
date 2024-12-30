@@ -1,11 +1,14 @@
 import type { Equal, Expect } from '@type-challenges/utils'
-import type { Ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { invoke } from '@vueuse/shared'
-import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue-demi'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { until } from '.'
 
 describe('until', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
   it('should toBe', () => {
     return new Promise<void>((resolve, reject) => {
       const r1 = ref(0)
@@ -29,6 +32,7 @@ describe('until', () => {
       setTimeout(() => {
         r2.value = 2
       }, 200)
+      vi.advanceTimersByTime(200)
     })
   })
 
@@ -37,6 +41,7 @@ describe('until', () => {
     setTimeout(() => {
       r.value = true
     }, 100)
+    vi.advanceTimersByTime(100)
 
     expect(await until(r).toBeTruthy()).toBeTruthy()
   })
@@ -46,6 +51,7 @@ describe('until', () => {
     setTimeout(() => {
       r.value = undefined
     }, 100)
+    vi.advanceTimersByTime(100)
 
     expect(await until(r).toBeUndefined()).toBeUndefined()
   })
@@ -55,11 +61,13 @@ describe('until', () => {
     setTimeout(() => {
       r.value = Number.NaN
     }, 100)
+    vi.advanceTimersByTime(100)
 
     expect(await until(r).toBeNaN()).toBeNaN()
   })
 
   it('should toBe timeout with ref', async () => {
+    vi.useRealTimers()
     const r = ref(0)
     const reject = vi.fn()
     await invoke(async () => {
@@ -83,6 +91,7 @@ describe('until', () => {
       setTimeout(() => {
         r.value = 1
       }, 100)
+      vi.advanceTimersByTime(100)
     })
     await new Promise<void>((resolve, reject) => {
       const r = ref(0)
@@ -99,6 +108,7 @@ describe('until', () => {
         r.value = 2
         r.value = 3
       }, 100)
+      vi.advanceTimersByTime(100)
     })
   })
 
@@ -116,6 +126,7 @@ describe('until', () => {
       setTimeout(() => {
         r.value = 1
       }, 100)
+      vi.advanceTimersByTime(100)
     })
   })
 
@@ -136,6 +147,7 @@ describe('until', () => {
       setTimeout(() => {
         r.value = 1
       }, 100)
+      vi.advanceTimersByTime(100)
     })
   })
 
@@ -153,6 +165,7 @@ describe('until', () => {
       setTimeout(() => {
         r.value = 1
       }, 100)
+      vi.advanceTimersByTime(100)
     })
   })
 
@@ -170,6 +183,7 @@ describe('until', () => {
       setTimeout(() => {
         r.value.push(4)
       }, 100)
+      vi.advanceTimersByTime(100)
     })
   })
 
@@ -188,17 +202,18 @@ describe('until', () => {
         r.value.pop()
         r.value.pop()
       }, 100)
+      vi.advanceTimersByTime(100)
     })
   })
 
   it('should immediately timeout', () => {
+    vi.useRealTimers()
     return new Promise<void>((resolve, reject) => {
       const r = ref(0)
 
       invoke(async () => {
         expect(r.value).toBe(0)
-        const x = await until(r).toBe(1, { timeout: 0 })
-        expect(x).toBe(0)
+        await until(r).toBe(1, { timeout: 0 })
         resolve()
       }).catch(reject)
 

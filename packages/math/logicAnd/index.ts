@@ -1,7 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue-demi'
-import { toValue } from '@vueuse/shared'
-import { computed } from 'vue-demi'
+import type { ComputedRef } from 'vue'
+import { computed, toValue } from 'vue'
 
 /**
  * `AND` conditions for refs.

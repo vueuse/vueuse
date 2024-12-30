@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { reactive } from 'vue-demi'
+import { reactive } from 'vue'
 import { reactivePick } from '../reactivePick'
 
 describe('reactivePick', () => {

@@ -1,14 +1,14 @@
 import type { MaybeRef } from '@vueuse/shared'
-import type { WatchSource } from 'vue-demi'
-import { toValue } from '@vueuse/shared'
-import { nextTick, ref, watch } from 'vue-demi'
+import type { WatchSource } from 'vue'
+import { toRef } from '@vueuse/shared'
+import { nextTick, ref, toValue, watch } from 'vue'
 import { useResizeObserver } from '../useResizeObserver'
 
 export interface UseTextareaAutosizeOptions {
   /** Textarea element to autosize. */
   element?: MaybeRef<HTMLTextAreaElement | undefined>
   /** Textarea content. */
-  input?: MaybeRef<string | undefined>
+  input?: MaybeRef<string>
   /** Watch sources that should trigger a textarea resize. */
   watch?: WatchSource | Array<WatchSource>
   /** Function called when the textarea size changes. */
@@ -20,8 +20,8 @@ export interface UseTextareaAutosizeOptions {
 }
 
 export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
-  const textarea = ref<HTMLTextAreaElement>(options?.element as any)
-  const input = ref<string>(options?.input as any)
+  const textarea = toRef(options?.element)
+  const input = toRef(options?.input ?? '')
   const styleProp = options?.styleProp ?? 'height'
   const textareaScrollHeight = ref(1)
   const textareaOldWidth = ref(0)

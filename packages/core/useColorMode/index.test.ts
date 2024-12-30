@@ -1,5 +1,6 @@
+import type { Ref } from 'vue'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { nextTick, ref } from 'vue'
 import { useColorMode } from '.'
 import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
@@ -15,8 +16,10 @@ describe('useColorMode', () => {
     }
   })
 
+  const mockPreferredDark = usePreferredDark() as Ref<boolean>
+
   beforeEach(() => {
-    usePreferredDark().value = false
+    mockPreferredDark.value = false
     localStorage.clear()
     htmlEl!.className = ''
   })
@@ -29,7 +32,7 @@ describe('useColorMode', () => {
   it('should translate auto mode when prefer dark', async () => {
     const mode = useColorMode()
     mode.value = 'auto'
-    usePreferredDark().value = true
+    mockPreferredDark.value = true
     await nextTwoTick()
     expect(mode.value).toBe('dark')
     expect(localStorage.getItem(storageKey)).toBe('auto')
@@ -109,7 +112,7 @@ describe('useColorMode', () => {
 
   it('should only change html class when preferred dark changed', async () => {
     const mode = useColorMode({ emitAuto: true })
-    usePreferredDark().value = true
+    mockPreferredDark.value = true
 
     await nextTwoTick()
     expect(mode.value).toBe('auto')

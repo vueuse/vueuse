@@ -6,8 +6,6 @@ category: Reactivity
 
 Converts ref to reactive. Also made possible to create a "swapable" reactive object.
 
-<RequiresProxy />
-
 ## Usage
 
 ```ts

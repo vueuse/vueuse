@@ -1,10 +1,8 @@
 import { BehaviorSubject, of, Subject } from 'rxjs'
 import { delay, endWith, tap } from 'rxjs/operators'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, reactive, ref } from 'vue-demi'
+import { nextTick, reactive, ref } from 'vue'
 import { useExtractedObservable } from './index'
-
-const waitFor = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
 
 describe('useExtractedObservable', () => {
   describe('when no options are provided', () => {
@@ -150,6 +148,7 @@ describe('useExtractedObservable', () => {
     })
 
     it('doesn\'t call onComplete if the watched observable has changed before it could complete', async () => {
+      vi.useFakeTimers()
       expect.hasAssertions()
 
       const re = ref([13, 23, 420])
@@ -162,11 +161,10 @@ describe('useExtractedObservable', () => {
         onComplete,
       })
 
-      setTimeout(() => {
-        re.value = [42]
-      }, 500)
+      await vi.advanceTimersByTimeAsync(500)
+      re.value = [42]
 
-      await waitFor(6000)
+      await vi.advanceTimersByTimeAsync(6000)
 
       expect(onComplete).toHaveBeenCalledOnce()
       expect(obsRef.value).toStrictEqual(42)

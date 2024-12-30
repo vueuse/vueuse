@@ -1,7 +1,8 @@
 import type { Pausable } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { readonly, ref } from 'vue-demi'
+import { computed, readonly, ref, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseRafFnCallbackArguments {
@@ -29,7 +30,7 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    *
    * @default undefined
    */
-  fpsLimit?: number
+  fpsLimit?: MaybeRefOrGetter<number>
 }
 
 /**
@@ -47,7 +48,9 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   } = options
 
   const isActive = ref(false)
-  const intervalLimit = fpsLimit ? 1000 / fpsLimit : null
+  const intervalLimit = computed(() => {
+    return fpsLimit ? 1000 / toValue(fpsLimit) : null
+  })
   let previousFrameTimestamp = 0
   let rafId: null | number = null
 
@@ -60,7 +63,7 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
 
     const delta = timestamp - previousFrameTimestamp
 
-    if (intervalLimit && delta < intervalLimit) {
+    if (intervalLimit.value && delta < intervalLimit.value) {
       rafId = window.requestAnimationFrame(loop)
       return
     }
