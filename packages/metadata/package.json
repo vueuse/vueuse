@@ -41,7 +41,7 @@
   ],
   "scripts": {
     "update": "tsx scripts/update.ts",
-    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "build": "rolldown --config=rolldown.config.ts",
     "prepack": "pnpm run build"
   }
 }
