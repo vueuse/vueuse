@@ -20,7 +20,7 @@ type NavigatorWithBattery = Navigator & {
 /**
  * Reactive Battery Status API.
  *
- * @see https://vueuse.org/useBattery
+ * @see https://vueuse.org/core/useBattery
  */
 export function useBattery(options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options

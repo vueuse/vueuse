@@ -62,7 +62,7 @@ export function useFirestore<T extends DocumentData>(
  * Reactive Firestore binding. Making it straightforward to always keep your
  * local data in sync with remotes databases.
  *
- * @see https://vueuse.org/useFirestore
+ * @see https://vueuse.org/firebase/useFirestore
  */
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<FirebaseDocRef<T> | Falsy>,

@@ -39,7 +39,7 @@ export interface UseFocusReturn {
 /**
  * Track or set the focus state of a DOM element.
  *
- * @see https://vueuse.org/useFocus
+ * @see https://vueuse.org/core/useFocus
  * @param target The target element for the focus and blur events.
  * @param options
  */

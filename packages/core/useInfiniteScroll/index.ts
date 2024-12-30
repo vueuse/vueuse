@@ -42,7 +42,7 @@ export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement = Infi
 /**
  * Reactive infinite scroll.
  *
- * @see https://vueuse.org/useInfiniteScroll
+ * @see https://vueuse.org/core/useInfiniteScroll
  */
 export function useInfiniteScroll<T extends InfiniteScrollElement>(
   element: MaybeRefOrGetter<T>,

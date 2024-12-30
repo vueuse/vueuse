@@ -5,7 +5,7 @@ import { readonly, ref, toValue, watch } from 'vue'
 /**
  * Reactive URL representing an object.
  *
- * @see https://vueuse.org/useObjectUrl
+ * @see https://vueuse.org/core/useObjectUrl
  * @param object
  */
 export function useObjectUrl(object: MaybeRefOrGetter<Blob | MediaSource | null | undefined>) {

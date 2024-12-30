@@ -130,7 +130,7 @@ export function useStorage<T = unknown>(key: string, defaults: MaybeRefOrGetter<
 /**
  * Reactive LocalStorage/SessionStorage.
  *
- * @see https://vueuse.org/useStorage
+ * @see https://vueuse.org/core/useStorage
  */
 export function useStorage<T extends (string | number | boolean | object | null)>(
   key: string,

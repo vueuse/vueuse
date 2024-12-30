@@ -4,7 +4,7 @@ import { effectScope } from 'vue'
 /**
  * Keep states in the global scope to be reusable across Vue instances.
  *
- * @see https://vueuse.org/createGlobalState
+ * @see https://vueuse.org/shared/createGlobalState
  * @param stateFactory A factory function to create the state
  */
 export function createGlobalState<Fn extends AnyFn>(

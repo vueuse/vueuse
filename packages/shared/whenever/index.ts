@@ -15,7 +15,7 @@ export interface WheneverOptions extends WatchOptions {
 /**
  * Shorthand for watching value to be truthy
  *
- * @see https://vueuse.org/whenever
+ * @see https://vueuse.org/shared/whenever
  */
 export function whenever<T>(source: WatchSource<T | false | null | undefined>, cb: WatchCallback<T>, options?: WheneverOptions) {
   const stop = watch(

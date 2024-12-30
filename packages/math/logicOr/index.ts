@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * `OR` conditions for refs.
  *
- * @see https://vueuse.org/logicOr
+ * @see https://vueuse.org/math/logicOr
  */
 export function logicOr(...args: MaybeRefOrGetter<any>[]): ComputedRef<boolean> {
   return computed(() => args.some(i => toValue(i)))

@@ -17,7 +17,7 @@ export interface UseArrayIncludesOptions<T, V> {
 /**
  * Reactive `Array.includes`
  *
- * @see https://vueuse.org/useArrayIncludes
+ * @see https://vueuse.org/shared/useArrayIncludes
  *
  * @returns true if the `value` is found in the array. Otherwise, false.
  */

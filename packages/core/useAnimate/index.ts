@@ -67,7 +67,7 @@ type AnimateStore = Mutable<Pick<Animation, AnimateStoreKeys>>
 /**
  * Reactive Web Animations API
  *
- * @see https://vueuse.org/useAnimate
+ * @see https://vueuse.org/core/useAnimate
  * @param target
  * @param keyframes
  * @param options

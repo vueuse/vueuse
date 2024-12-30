@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * Reactive `Array.join`
  *
- * @see https://vueuse.org/useArrayJoin
+ * @see https://vueuse.org/shared/useArrayJoin
  * @param list - the array was called upon.
  * @param separator - a string to separate each pair of adjacent elements of the array. If omitted, the array elements are separated with a comma (",").
  *

@@ -49,7 +49,7 @@ const elInitialOverflow = new WeakMap<HTMLElement, CSSStyleDeclaration['overflow
 /**
  * Lock scrolling of the element.
  *
- * @see https://vueuse.org/useScrollLock
+ * @see https://vueuse.org/core/useScrollLock
  * @param element
  */
 export function useScrollLock(

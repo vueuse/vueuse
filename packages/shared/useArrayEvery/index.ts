@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * Reactive `Array.every`
  *
- * @see https://vueuse.org/useArrayEvery
+ * @see https://vueuse.org/shared/useArrayEvery
  * @param list - the array was called upon.
  * @param fn - a function to test each element.
  *

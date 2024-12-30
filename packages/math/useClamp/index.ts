@@ -18,7 +18,7 @@ export function useClamp(
 /**
  * Reactively clamp a value between two other values.
  *
- * @see https://vueuse.org/useClamp
+ * @see https://vueuse.org/math/useClamp
  * @param value number
  * @param min
  * @param max

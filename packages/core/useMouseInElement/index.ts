@@ -13,7 +13,7 @@ export interface MouseInElementOptions extends UseMouseOptions {
 /**
  * Reactive mouse position related to an element.
  *
- * @see https://vueuse.org/useMouseInElement
+ * @see https://vueuse.org/core/useMouseInElement
  * @param target
  * @param options
  */

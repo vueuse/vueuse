@@ -4,7 +4,7 @@ import { getCurrentInstance, onMounted, ref } from 'vue'
 /**
  * Mounted state in ref.
  *
- * @see https://vueuse.org/useMounted
+ * @see https://vueuse.org/core/useMounted
  */
 export function useMounted() {
   const isMounted = ref(false)

@@ -24,7 +24,7 @@ export interface UseCycleListOptions<T> {
 /**
  * Cycle through a list of items
  *
- * @see https://vueuse.org/useCycleList
+ * @see https://vueuse.org/core/useCycleList
  */
 export function useCycleList<T>(list: MaybeRefOrGetter<T[]>, options?: UseCycleListOptions<T>): UseCycleListReturn<T> {
   const state = shallowRef(getInitialValue()) as Ref<T>

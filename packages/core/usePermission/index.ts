@@ -47,7 +47,7 @@ export interface UsePermissionReturnWithControls {
 /**
  * Reactive Permissions API.
  *
- * @see https://vueuse.org/usePermission
+ * @see https://vueuse.org/core/usePermission
  */
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],

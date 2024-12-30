@@ -12,7 +12,7 @@ export function useSessionStorage<T = unknown>(key: string, initialValue: MaybeR
 /**
  * Reactive SessionStorage.
  *
- * @see https://vueuse.org/useSessionStorage
+ * @see https://vueuse.org/core/useSessionStorage
  * @param key
  * @param initialValue
  * @param options

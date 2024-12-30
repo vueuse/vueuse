@@ -9,7 +9,7 @@ export type UseNProgressOptions = Partial<NProgressOptions>
 /**
  * Reactive progress bar.
  *
- * @see https://vueuse.org/useNProgress
+ * @see https://vueuse.org/integrations/useNProgress
  */
 export function useNProgress(
   currentProgress: MaybeRefOrGetter<number | null | undefined> = null,

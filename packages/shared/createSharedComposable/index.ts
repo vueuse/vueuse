@@ -6,7 +6,7 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
 /**
  * Make a composable function usable with multiple Vue instances.
  *
- * @see https://vueuse.org/createSharedComposable
+ * @see https://vueuse.org/shared/createSharedComposable
  */
 export function createSharedComposable<Fn extends AnyFn>(composable: Fn): Fn {
   let subscribers = 0

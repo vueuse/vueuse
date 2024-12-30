@@ -23,7 +23,7 @@ export type UseWakeLockOptions = ConfigurableNavigator & ConfigurableDocument
 /**
  * Reactive Screen Wake Lock API.
  *
- * @see https://vueuse.org/useWakeLock
+ * @see https://vueuse.org/core/useWakeLock
  * @param options
  */
 export function useWakeLock(options: UseWakeLockOptions = {}) {

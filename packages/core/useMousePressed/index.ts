@@ -59,7 +59,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
 /**
  * Reactive mouse pressing state.
  *
- * @see https://vueuse.org/useMousePressed
+ * @see https://vueuse.org/core/useMousePressed
  * @param options
  */
 export function useMousePressed(options: MousePressedOptions = {}) {

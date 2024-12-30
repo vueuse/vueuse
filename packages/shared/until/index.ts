@@ -215,7 +215,7 @@ function createUntil<T>(r: any, isNot = false) {
 /**
  * Promised one-time watch for changes
  *
- * @see https://vueuse.org/until
+ * @see https://vueuse.org/shared/until
  * @example
  * ```
  * const { count } = useCounter()

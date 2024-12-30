@@ -28,7 +28,7 @@ const defaultCompare: UseSortedCompareFn<number> = (a, b) => a - b
 /**
  * reactive sort array
  *
- * @see https://vueuse.org/useSorted
+ * @see https://vueuse.org/core/useSorted
  */
 export function useSorted<T = any>(source: MaybeRefOrGetter<T[]>, compareFn?: UseSortedCompareFn<T>): Ref<T[]>
 export function useSorted<T = any>(source: MaybeRefOrGetter<T[]>, options?: UseSortedOptions<T>): Ref<T[]>

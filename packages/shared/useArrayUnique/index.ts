@@ -19,7 +19,7 @@ function uniqueElementsBy<T>(
 
 /**
  * reactive unique array
- * @see https://vueuse.org/useArrayUnique
+ * @see https://vueuse.org/shared/useArrayUnique
  * @param list - the array was called upon.
  * @param compareFn
  * @returns A computed ref that returns a unique array of items.

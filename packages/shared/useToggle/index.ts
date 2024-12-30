@@ -13,7 +13,7 @@ export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(init
 /**
  * A boolean ref with a toggler
  *
- * @see https://vueuse.org/useToggle
+ * @see https://vueuse.org/shared/useToggle
  * @param [initialValue]
  */
 export function useToggle(

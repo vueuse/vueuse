@@ -7,7 +7,7 @@ import { useRefHistory } from '../useRefHistory'
 /**
  * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with debounce filter.
  *
- * @see https://vueuse.org/useDebouncedRefHistory
+ * @see https://vueuse.org/core/useDebouncedRefHistory
  * @param source
  * @param options
  */

@@ -10,7 +10,7 @@ export function useMin(...args: MaybeRefOrGetter<number>[]): ComputedRef<number>
 /**
  * Reactive `Math.min`.
  *
- * @see https://vueuse.org/useMin
+ * @see https://vueuse.org/math/useMin
  */
 export function useMin(...args: MaybeComputedRefArgs<number>) {
   return computed<number>(() => {

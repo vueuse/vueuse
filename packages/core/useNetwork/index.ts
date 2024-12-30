@@ -54,7 +54,7 @@ export interface NetworkState {
 /**
  * Reactive Network status.
  *
- * @see https://vueuse.org/useNetwork
+ * @see https://vueuse.org/core/useNetwork
  * @param options
  */
 export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkState> {

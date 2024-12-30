@@ -59,7 +59,7 @@ export interface UseFocusTrapReturn {
 /**
  * Reactive focus-trap
  *
- * @see https://vueuse.org/useFocusTrap
+ * @see https://vueuse.org/integrations/useFocusTrap
  */
 export function useFocusTrap(
   target: Arrayable<MaybeRefOrGetter<string> | MaybeComputedElementRef>,

@@ -67,7 +67,7 @@ export type UseMagicKeysReturn<Reactive extends boolean> =
 /**
  * Reactive keys pressed state, with magical keys combination support.
  *
- * @see https://vueuse.org/useMagicKeys
+ * @see https://vueuse.org/core/useMagicKeys
  */
 export function useMagicKeys(options?: UseMagicKeysOptions<false>): UseMagicKeysReturn<false>
 export function useMagicKeys(options: UseMagicKeysOptions<true>): UseMagicKeysReturn<true>

@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * Reactive `Array.find`
  *
- * @see https://vueuse.org/useArrayFind
+ * @see https://vueuse.org/shared/useArrayFind
  * @param list - the array was called upon.
  * @param fn - a function to test each element.
  *

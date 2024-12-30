@@ -6,7 +6,7 @@ import { ref, watch } from 'vue'
 /**
  * Wrapper for qrcode.
  *
- * @see https://vueuse.org/useQRCode
+ * @see https://vueuse.org/integrations/useQRCode
  * @param text
  * @param options
  */

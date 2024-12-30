@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * Reactive `Math.abs`.
  *
- * @see https://vueuse.org/useAbs
+ * @see https://vueuse.org/math/useAbs
  */
 export function useAbs(value: MaybeRefOrGetter<number>): ComputedRef<number> {
   return computed(() => Math.abs(toValue(value)))

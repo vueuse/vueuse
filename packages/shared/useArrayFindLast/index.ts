@@ -15,7 +15,7 @@ function findLast<T>(arr: T[], cb: (element: T, index: number, array: T[]) => bo
 /**
  * Reactive `Array.findLast`
  *
- * @see https://vueuse.org/useArrayFindLast
+ * @see https://vueuse.org/shared/useArrayFindLast
  * @param list - the array was called upon.
  * @param fn - a function to test each element.
  *

@@ -60,7 +60,7 @@ export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<o
 /**
  * Creates a template promise component.
  *
- * @see https://vueuse.org/createTemplatePromise
+ * @see https://vueuse.org/core/createTemplatePromise
  */
 export function createTemplatePromise<Return, Args extends any[] = []>(
   options: TemplatePromiseOptions = {},

@@ -31,7 +31,7 @@ export function useArrayDifference<T>(
 
 /**
  * Reactive get array difference of two array
- * @see https://vueuse.org/useArrayDifference
+ * @see https://vueuse.org/shared/useArrayDifference
  * @returns - the difference of two array
  * @param args
  */

@@ -6,7 +6,7 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
 /**
  * Create a ref which will be reset to the default value after some time.
  *
- * @see https://vueuse.org/refAutoReset
+ * @see https://vueuse.org/shared/refAutoReset
  * @param defaultValue The value which will be set.
  * @param afterMs      A zero-or-greater delay in milliseconds.
  */

@@ -41,7 +41,7 @@ export interface UseIntersectionObserverReturn extends Pausable {
 /**
  * Detects that a target element's visibility.
  *
- * @see https://vueuse.org/useIntersectionObserver
+ * @see https://vueuse.org/core/useIntersectionObserver
  * @param target
  * @param callback
  * @param options

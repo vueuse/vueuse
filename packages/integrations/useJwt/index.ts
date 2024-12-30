@@ -26,7 +26,7 @@ export interface UseJwtReturn<Payload, Header, Fallback> {
 /**
  * Reactive decoded jwt token.
  *
- * @see https://vueuse.org/useJwt
+ * @see https://vueuse.org/integrations/useJwt
  */
 export function useJwt<
   Payload extends object = JwtPayload,

@@ -22,7 +22,7 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
 /**
  * Reactive `document.activeElement`
  *
- * @see https://vueuse.org/useActiveElement
+ * @see https://vueuse.org/core/useActiveElement
  * @param options
  */
 export function useActiveElement<T extends HTMLElement>(

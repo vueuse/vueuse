@@ -10,7 +10,7 @@ import { useSupported } from '../useSupported'
 /**
  * Reactive DeviceOrientationEvent.
  *
- * @see https://vueuse.org/useDeviceOrientation
+ * @see https://vueuse.org/core/useDeviceOrientation
  * @param options
  */
 export function useDeviceOrientation(options: ConfigurableWindow = {}) {

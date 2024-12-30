@@ -31,7 +31,7 @@ export interface UseDrauuReturn {
 /**
  * Reactive drauu
  *
- * @see https://vueuse.org/useDrauu
+ * @see https://vueuse.org/integrations/useDrauu
  * @param target The target svg element
  * @param options Drauu Options
  */

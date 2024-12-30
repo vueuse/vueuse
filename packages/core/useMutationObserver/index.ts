@@ -12,7 +12,7 @@ export interface UseMutationObserverOptions extends MutationObserverInit, Config
 /**
  * Watch for changes being made to the DOM tree.
  *
- * @see https://vueuse.org/useMutationObserver
+ * @see https://vueuse.org/core/useMutationObserver
  * @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver MutationObserver MDN
  * @param target
  * @param callback

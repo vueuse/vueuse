@@ -41,7 +41,7 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
 /**
  * Reactive URLSearchParams
  *
- * @see https://vueuse.org/useUrlSearchParams
+ * @see https://vueuse.org/core/useUrlSearchParams
  * @param mode
  * @param options
  */

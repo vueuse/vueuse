@@ -40,7 +40,7 @@ export interface UseIdleReturn {
 /**
  * Tracks whether the user is being inactive.
  *
- * @see https://vueuse.org/useIdle
+ * @see https://vueuse.org/core/useIdle
  * @param timeout default to 1 minute
  * @param options IdleOptions
  */

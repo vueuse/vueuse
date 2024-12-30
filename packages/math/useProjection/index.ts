@@ -5,7 +5,7 @@ import { createProjection } from '../createProjection'
 /**
  * Reactive numeric projection from one domain to another.
  *
- * @see https://vueuse.org/useProjection
+ * @see https://vueuse.org/math/useProjection
  */
 export function useProjection(
   input: MaybeRefOrGetter<number>,

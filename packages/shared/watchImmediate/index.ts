@@ -25,7 +25,7 @@ export function watchImmediate<T extends object>(
 /**
  * Shorthand for watching value with {immediate: true}
  *
- * @see https://vueuse.org/watchImmediate
+ * @see https://vueuse.org/shared/watchImmediate
  */
 export function watchImmediate<T = any>(source: T, cb: any, options?: Omit<WatchOptions, 'immediate'>) {
   return watch(

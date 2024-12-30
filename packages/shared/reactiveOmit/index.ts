@@ -14,7 +14,7 @@ export function reactiveOmit<T extends object>(
 /**
  * Reactively omit fields from a reactive object
  *
- * @see https://vueuse.org/reactiveOmit
+ * @see https://vueuse.org/shared/reactiveOmit
  */
 export function reactiveOmit<T extends object, K extends keyof T>(
   obj: T,

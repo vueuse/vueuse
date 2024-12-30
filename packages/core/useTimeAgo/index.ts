@@ -127,7 +127,7 @@ export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extend
 /**
  * Reactive time ago formatter.
  *
- * @see https://vueuse.org/useTimeAgo
+ * @see https://vueuse.org/core/useTimeAgo
  */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>

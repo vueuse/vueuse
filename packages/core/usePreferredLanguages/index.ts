@@ -7,7 +7,7 @@ import { useEventListener } from '../useEventListener'
 /**
  * Reactive Navigator Languages.
  *
- * @see https://vueuse.org/usePreferredLanguages
+ * @see https://vueuse.org/core/usePreferredLanguages
  * @param options
  */
 export function usePreferredLanguages(options: ConfigurableWindow = {}): Ref<readonly string[]> {

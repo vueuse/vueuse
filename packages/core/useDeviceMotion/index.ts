@@ -26,7 +26,7 @@ interface DeviceMotionEventiOS extends DeviceMotionOptions {
 /**
  * Reactive DeviceMotionEvent.
  *
- * @see https://vueuse.org/useDeviceMotion
+ * @see https://vueuse.org/core/useDeviceMotion
  * @param options
  */
 export function useDeviceMotion(options: DeviceMotionOptions = {}) {

@@ -152,7 +152,7 @@ function resolveNestedOptions<T>(options: T | true): T {
 /**
  * Reactive WebSocket client.
  *
- * @see https://vueuse.org/useWebSocket
+ * @see https://vueuse.org/core/useWebSocket
  * @param url
  */
 export function useWebSocket<Data = any>(

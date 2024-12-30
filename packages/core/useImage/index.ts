@@ -74,7 +74,7 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
 /**
  * Reactive load an image in the browser, you can wait the result to display it or show a fallback.
  *
- * @see https://vueuse.org/useImage
+ * @see https://vueuse.org/core/useImage
  * @param options Image attributes, as used in the <img> tag
  * @param asyncStateOptions
  */

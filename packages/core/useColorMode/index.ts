@@ -105,7 +105,7 @@ const CSS_DISABLE_TRANS = '*,*::before,*::after{-webkit-transition:none!importan
 /**
  * Reactive color mode with auto data persistence.
  *
- * @see https://vueuse.org/useColorMode
+ * @see https://vueuse.org/core/useColorMode
  * @param options
  */
 export function useColorMode<T extends string = BasicColorMode>(

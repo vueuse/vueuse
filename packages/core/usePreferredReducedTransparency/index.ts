@@ -7,7 +7,7 @@ export type ReducedTransparencyType = 'reduce' | 'no-preference'
 /**
  * Reactive prefers-reduced-transparency media query.
  *
- * @see https://vueuse.org/usePreferredReducedTransparency
+ * @see https://vueuse.org/core/usePreferredReducedTransparency
  * @param [options]
  */
 export function usePreferredReducedTransparency(options?: ConfigurableWindow) {

@@ -10,7 +10,7 @@ export interface UseCounterOptions {
 /**
  * Basic counter with utility functions.
  *
- * @see https://vueuse.org/useCounter
+ * @see https://vueuse.org/shared/useCounter
  * @param [initialValue]
  * @param options
  */

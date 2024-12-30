@@ -11,7 +11,7 @@ const leftVarName = '--vueuse-safe-area-left'
 /**
  * Reactive `env(safe-area-inset-*)`
  *
- * @see https://vueuse.org/useScreenSafeArea
+ * @see https://vueuse.org/core/useScreenSafeArea
  */
 export function useScreenSafeArea() {
   const top = ref('')

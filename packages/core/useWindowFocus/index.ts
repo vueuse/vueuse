@@ -7,7 +7,7 @@ import { useEventListener } from '../useEventListener'
 /**
  * Reactively track window focus with `window.onfocus` and `window.onblur`.
  *
- * @see https://vueuse.org/useWindowFocus
+ * @see https://vueuse.org/core/useWindowFocus
  */
 export function useWindowFocus(options: ConfigurableWindow = {}): Ref<boolean> {
   const { window = defaultWindow } = options

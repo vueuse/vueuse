@@ -29,7 +29,7 @@ export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchem
 /**
  * Reactive dark mode with auto data persistence.
  *
- * @see https://vueuse.org/useDark
+ * @see https://vueuse.org/core/useDark
  * @param options
  */
 export function useDark(options: UseDarkOptions = {}) {

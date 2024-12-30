@@ -104,7 +104,7 @@ function resolveNestedOptions<T>(options: T | true): T {
 /**
  * Reactive wrapper for EventSource.
  *
- * @see https://vueuse.org/useEventSource
+ * @see https://vueuse.org/core/useEventSource
  * @see https://developer.mozilla.org/en-US/docs/Web/API/EventSource/EventSource EventSource
  * @param url
  * @param events

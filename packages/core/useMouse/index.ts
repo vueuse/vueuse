@@ -64,7 +64,7 @@ const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtracto
 /**
  * Reactive mouse position.
  *
- * @see https://vueuse.org/useMouse
+ * @see https://vueuse.org/core/useMouse
  * @param options
  */
 export function useMouse(options: UseMouseOptions = {}) {

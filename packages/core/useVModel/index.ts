@@ -65,7 +65,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 /**
  * Shorthand for v-model binding, props + emit -> ref
  *
- * @see https://vueuse.org/useVModel
+ * @see https://vueuse.org/core/useVModel
  * @param props
  * @param key (default 'modelValue')
  * @param emit

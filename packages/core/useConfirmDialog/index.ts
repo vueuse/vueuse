@@ -59,7 +59,7 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
 /**
  * Hooks for creating confirm dialogs. Useful for modal windows, popups and logins.
  *
- * @see https://vueuse.org/useConfirmDialog/
+ * @see https://vueuse.org/core/useConfirmDialog/
  * @param revealed `boolean` `ref` that handles a modal window
  */
 export function useConfirmDialog<

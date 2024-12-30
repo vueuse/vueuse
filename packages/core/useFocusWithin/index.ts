@@ -21,7 +21,7 @@ const PSEUDO_CLASS_FOCUS_WITHIN = ':focus-within'
 /**
  * Track if focus is contained within the target element
  *
- * @see https://vueuse.org/useFocusWithin
+ * @see https://vueuse.org/core/useFocusWithin
  * @param target The target element to track
  * @param options Focus within options
  */

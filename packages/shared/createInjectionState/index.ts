@@ -16,7 +16,7 @@ export interface CreateInjectionStateOptions<Return> {
 /**
  * Create global state that can be injected into components.
  *
- * @see https://vueuse.org/createInjectionState
+ * @see https://vueuse.org/shared/createInjectionState
  *
  */
 export function createInjectionState<Arguments extends Array<any>, Return>(

@@ -49,7 +49,7 @@ export function useTitle(
 /**
  * Reactive document title.
  *
- * @see https://vueuse.org/useTitle
+ * @see https://vueuse.org/core/useTitle
  * @param newTitle
  * @param options
  */

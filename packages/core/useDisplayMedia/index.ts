@@ -25,7 +25,7 @@ export interface UseDisplayMediaOptions extends ConfigurableNavigator {
 /**
  * Reactive `mediaDevices.getDisplayMedia` streaming
  *
- * @see https://vueuse.org/useDisplayMedia
+ * @see https://vueuse.org/core/useDisplayMedia
  * @param options
  */
 export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {

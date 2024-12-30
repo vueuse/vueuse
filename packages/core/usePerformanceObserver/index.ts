@@ -15,7 +15,7 @@ export type UsePerformanceObserverOptions = PerformanceObserverInit & Configurab
 /**
  * Observe performance metrics.
  *
- * @see https://vueuse.org/usePerformanceObserver
+ * @see https://vueuse.org/core/usePerformanceObserver
  * @param options
  */
 export function usePerformanceObserver(options: UsePerformanceObserverOptions, callback: PerformanceObserverCallback) {

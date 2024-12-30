@@ -14,7 +14,7 @@ export interface ToRefsOptions {
 /**
  * Extended `toRefs` that also accepts refs of an object.
  *
- * @see https://vueuse.org/toRefs
+ * @see https://vueuse.org/shared/toRefs
  * @param objectRef A ref or normal object or array.
  */
 export function toRefs<T extends object>(

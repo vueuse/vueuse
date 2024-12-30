@@ -26,7 +26,7 @@ export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRef
 /**
  * Reactive Storage in with async support.
  *
- * @see https://vueuse.org/useStorageAsync
+ * @see https://vueuse.org/core/useStorageAsync
  * @param key
  * @param initialValue
  * @param storage

@@ -116,7 +116,7 @@ export interface UseDraggableOptions {
 /**
  * Make elements draggable.
  *
- * @see https://vueuse.org/useDraggable
+ * @see https://vueuse.org/core/useDraggable
  * @param target
  * @param options
  */

@@ -46,7 +46,7 @@ export interface CreateReusableTemplateOptions {
  * This function creates `define` and `reuse` components in pair,
  * It also allow to pass a generic to bind with type.
  *
- * @see https://vueuse.org/createReusableTemplate
+ * @see https://vueuse.org/core/createReusableTemplate
  */
 export function createReusableTemplate<
   Bindings extends Record<string, any>,

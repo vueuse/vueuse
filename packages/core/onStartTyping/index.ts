@@ -52,7 +52,7 @@ function isTypedCharValid({
 /**
  * Fires when users start typing on non-editable elements.
  *
- * @see https://vueuse.org/onStartTyping
+ * @see https://vueuse.org/core/onStartTyping
  * @param callback
  * @param options
  */

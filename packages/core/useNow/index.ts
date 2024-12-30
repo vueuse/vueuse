@@ -23,7 +23,7 @@ export interface UseNowOptions<Controls extends boolean> {
 /**
  * Reactive current Date instance.
  *
- * @see https://vueuse.org/useNow
+ * @see https://vueuse.org/core/useNow
  * @param options
  */
 export function useNow(options?: UseNowOptions<false>): Ref<Date>

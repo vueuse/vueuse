@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * Reactive `Array.findIndex`
  *
- * @see https://vueuse.org/useArrayFindIndex
+ * @see https://vueuse.org/shared/useArrayFindIndex
  * @param list - the array was called upon.
  * @param fn - a function to test each element.
  *

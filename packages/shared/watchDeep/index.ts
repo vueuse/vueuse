@@ -31,7 +31,7 @@ export function watchDeep<
 /**
  * Shorthand for watching value with {deep: true}
  *
- * @see https://vueuse.org/watchDeep
+ * @see https://vueuse.org/shared/watchDeep
  */
 export function watchDeep<T = any, Immediate extends Readonly<boolean> = false>(source: T | WatchSource<T>, cb: any, options?: Omit<WatchOptions<Immediate>, 'deep'>) {
   return watch(

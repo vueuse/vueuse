@@ -33,7 +33,7 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
 /**
  * Run expensive function without blocking the UI, using a simple syntax that makes use of Promise.
  *
- * @see https://vueuse.org/useWebWorkerFn
+ * @see https://vueuse.org/core/useWebWorkerFn
  * @param fn
  * @param options
  */

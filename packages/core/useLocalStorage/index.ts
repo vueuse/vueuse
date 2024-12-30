@@ -12,7 +12,7 @@ export function useLocalStorage<T = unknown>(key: string, initialValue: MaybeRef
 /**
  * Reactive LocalStorage.
  *
- * @see https://vueuse.org/useLocalStorage
+ * @see https://vueuse.org/core/useLocalStorage
  * @param key
  * @param initialValue
  * @param options

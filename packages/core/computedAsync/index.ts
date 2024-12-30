@@ -39,7 +39,7 @@ export interface AsyncComputedOptions {
 /**
  * Create an asynchronous computed dependency.
  *
- * @see https://vueuse.org/computedAsync
+ * @see https://vueuse.org/core/computedAsync
  * @param evaluationCallback     The promise-returning callback which generates the computed value
  * @param initialState           The initial state, used until the first evaluation finishes
  * @param optionsOrRef           Additional options or a ref passed to receive the updates of the async evaluation

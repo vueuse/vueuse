@@ -6,7 +6,7 @@ import { isRef, reactive, unref } from 'vue'
 /**
  * Converts ref to reactive.
  *
- * @see https://vueuse.org/toReactive
+ * @see https://vueuse.org/shared/toReactive
  * @param objectRef A ref of object
  */
 export function toReactive<T extends object>(

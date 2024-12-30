@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * `NOT` conditions for refs.
  *
- * @see https://vueuse.org/logicNot
+ * @see https://vueuse.org/math/logicNot
  */
 export function logicNot(v: MaybeRefOrGetter<any>): ComputedRef<boolean> {
   return computed(() => !toValue(v))

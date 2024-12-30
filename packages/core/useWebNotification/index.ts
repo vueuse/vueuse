@@ -95,7 +95,7 @@ export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotifi
 /**
  * Reactive useWebNotification
  *
- * @see https://vueuse.org/useWebNotification
+ * @see https://vueuse.org/core/useWebNotification
  * @see https://developer.mozilla.org/en-US/docs/Web/API/notification
  */
 export function useWebNotification(

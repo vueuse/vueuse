@@ -48,7 +48,7 @@ let _id = 0
  *
  * Overload: Omitted id
  *
- * @see https://vueuse.org/useStyleTag
+ * @see https://vueuse.org/core/useStyleTag
  * @param css
  * @param options
  */

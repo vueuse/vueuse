@@ -27,7 +27,7 @@ const eventHandlers = [
 /**
  * Reactive Fullscreen API.
  *
- * @see https://vueuse.org/useFullscreen
+ * @see https://vueuse.org/core/useFullscreen
  * @param target
  * @param options
  */

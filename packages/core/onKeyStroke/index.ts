@@ -34,7 +34,7 @@ function createKeyPredicate(keyFilter: KeyFilter): KeyPredicate {
 /**
  * Listen for keyboard keystrokes.
  *
- * @see https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/core/onKeyStroke
  */
 export function onKeyStroke(key: KeyFilter, handler: (event: KeyboardEvent) => void, options?: OnKeyStrokeOptions): () => void
 export function onKeyStroke(handler: (event: KeyboardEvent) => void, options?: OnKeyStrokeOptions): () => void
@@ -85,7 +85,7 @@ export function onKeyStroke(...args: any[]) {
 /**
  * Listen to the keydown event of the given key.
  *
- * @see https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/core/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -97,7 +97,7 @@ export function onKeyDown(key: KeyFilter, handler: (event: KeyboardEvent) => voi
 /**
  * Listen to the keypress event of the given key.
  *
- * @see https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/core/onKeyStroke
  * @param key
  * @param handler
  * @param options
@@ -109,7 +109,7 @@ export function onKeyPressed(key: KeyFilter, handler: (event: KeyboardEvent) => 
 /**
  * Listen to the keyup event of the given key.
  *
- * @see https://vueuse.org/onKeyStroke
+ * @see https://vueuse.org/core/onKeyStroke
  * @param key
  * @param handler
  * @param options

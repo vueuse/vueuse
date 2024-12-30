@@ -11,7 +11,7 @@ export type UseThrottledRefHistoryReturn<Raw, Serialized = Raw> = UseRefHistoryR
 /**
  * Shorthand for [useRefHistory](https://vueuse.org/useRefHistory) with throttled filter.
  *
- * @see https://vueuse.org/useThrottledRefHistory
+ * @see https://vueuse.org/core/useThrottledRefHistory
  * @param source
  * @param options
  */

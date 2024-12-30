@@ -17,7 +17,7 @@ export function reactivePick<T extends object>(
 /**
  * Reactively pick fields from a reactive object
  *
- * @see https://vueuse.org/reactivePick
+ * @see https://vueuse.org/shared/reactivePick
  */
 export function reactivePick<T extends object, K extends keyof T>(
   obj: T,

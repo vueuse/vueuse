@@ -101,7 +101,7 @@ function setSendSync(ipcRenderer: IpcRenderer) {
  * Get the `ipcRenderer` module with all APIs.
  *
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrenderersendtohostchannel-args
- * @see https://vueuse.org/useIpcRenderer
+ * @see https://vueuse.org/electron/useIpcRenderer
  */
 export function useIpcRenderer(ipcRenderer?: IpcRenderer): UseIpcRendererReturn {
   if (!ipcRenderer)

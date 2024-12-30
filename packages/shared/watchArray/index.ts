@@ -6,7 +6,7 @@ export declare type WatchArrayCallback<V = any, OV = any> = (value: V, oldValue:
 /**
  * Watch for an array with additions and removals.
  *
- * @see https://vueuse.org/watchArray
+ * @see https://vueuse.org/shared/watchArray
  */
 export function watchArray<T, Immediate extends Readonly<boolean> = false>(
   source: WatchSource<T[]> | T[],

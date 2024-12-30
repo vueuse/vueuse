@@ -4,7 +4,7 @@ import { useMediaQuery } from '../useMediaQuery'
 /**
  * Reactive dark theme preference.
  *
- * @see https://vueuse.org/usePreferredDark
+ * @see https://vueuse.org/core/usePreferredDark
  * @param [options]
  */
 export function usePreferredDark(options?: ConfigurableWindow) {

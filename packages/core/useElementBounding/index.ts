@@ -48,7 +48,7 @@ export interface UseElementBoundingOptions {
 /**
  * Reactive bounding box of an HTML element.
  *
- * @see https://vueuse.org/useElementBounding
+ * @see https://vueuse.org/core/useElementBounding
  * @param target
  */
 export function useElementBounding(

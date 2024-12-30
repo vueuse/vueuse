@@ -20,7 +20,7 @@ type WorkerFn = (...args: unknown[]) => Worker
 /**
  * Simple Web Workers registration and communication.
  *
- * @see https://vueuse.org/useWebWorker
+ * @see https://vueuse.org/core/useWebWorker
  * @param url
  * @param workerOptions
  * @param options
@@ -34,7 +34,7 @@ export function useWebWorker<T = any>(
 /**
  * Simple Web Workers registration and communication.
  *
- * @see https://vueuse.org/useWebWorker
+ * @see https://vueuse.org/core/useWebWorker
  * @param worker
  */
 export function useWebWorker<T = any>(

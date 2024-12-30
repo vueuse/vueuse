@@ -7,7 +7,7 @@ export type ReducedMotionType = 'reduce' | 'no-preference'
 /**
  * Reactive prefers-reduced-motion media query.
  *
- * @see https://vueuse.org/usePreferredReducedMotion
+ * @see https://vueuse.org/core/usePreferredReducedMotion
  * @param [options]
  */
 export function usePreferredReducedMotion(options?: ConfigurableWindow) {

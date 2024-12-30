@@ -36,7 +36,7 @@ type PerformanceMemory = Performance & {
 /**
  * Reactive Memory Info.
  *
- * @see https://vueuse.org/useMemory
+ * @see https://vueuse.org/core/useMemory
  * @param options
  */
 export function useMemory(options: UseMemoryOptions = {}) {

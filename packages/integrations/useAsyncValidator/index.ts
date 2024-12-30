@@ -50,7 +50,7 @@ export interface UseAsyncValidatorOptions {
 /**
  * Wrapper for async-validator.
  *
- * @see https://vueuse.org/useAsyncValidator
+ * @see https://vueuse.org/integrations/useAsyncValidator
  * @see https://github.com/yiminghe/async-validator
  */
 export function useAsyncValidator(

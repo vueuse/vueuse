@@ -54,7 +54,7 @@ const keys = /* #__PURE__ */ Object.keys(defaultState) as (keyof UsePointerState
 /**
  * Reactive pointer state.
  *
- * @see https://vueuse.org/usePointer
+ * @see https://vueuse.org/core/usePointer
  * @param options
  */
 export function usePointer(options: UsePointerOptions = {}) {

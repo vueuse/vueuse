@@ -55,7 +55,7 @@ export interface UsePointerSwipeReturn {
 /**
  * Reactive swipe detection based on PointerEvents.
  *
- * @see https://vueuse.org/usePointerSwipe
+ * @see https://vueuse.org/core/usePointerSwipe
  * @param target
  * @param options
  */

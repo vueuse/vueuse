@@ -23,7 +23,7 @@ export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrG
 /**
  * Reactive wrapper for `change-case`
  *
- * @see https://vueuse.org/useChangeCase
+ * @see https://vueuse.org/integrations/useChangeCase
  */
 export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrGetter<ChangeCaseType>, options?: MaybeRefOrGetter<Options> | undefined) {
   const typeRef = computed(() => {

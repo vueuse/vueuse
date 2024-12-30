@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * Reactive `Array.filter`
  *
- * @see https://vueuse.org/useArrayFilter
+ * @see https://vueuse.org/shared/useArrayFilter
  * @param list - the array was called upon.
  * @param fn - a function that is called for every element of the given `list`. Each time `fn` executes, the returned value is added to the new array.
  *

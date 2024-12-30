@@ -81,7 +81,7 @@ export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistor
 /**
  * Track the change history of a ref, also provides undo and redo functionality.
  *
- * @see https://vueuse.org/useRefHistory
+ * @see https://vueuse.org/core/useRefHistory
  * @param source
  * @param options
  */

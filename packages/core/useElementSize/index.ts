@@ -14,7 +14,7 @@ export interface ElementSize {
 /**
  * Reactive size of an HTML element.
  *
- * @see https://vueuse.org/useElementSize
+ * @see https://vueuse.org/core/useElementSize
  */
 export function useElementSize(
   target: MaybeComputedElementRef,

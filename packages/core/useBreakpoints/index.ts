@@ -26,7 +26,7 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
 /**
  * Reactively viewport breakpoints
  *
- * @see https://vueuse.org/useBreakpoints
+ * @see https://vueuse.org/core/useBreakpoints
  */
 export function useBreakpoints<K extends string>(
   breakpoints: Breakpoints<K>,

@@ -23,7 +23,7 @@ export interface UseElementByPointReturn<Multiple extends boolean = false> exten
 /**
  * Reactive element by point.
  *
- * @see https://vueuse.org/useElementByPoint
+ * @see https://vueuse.org/core/useElementByPoint
  * @param options - UseElementByPointOptions
  */
 export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M>): UseElementByPointReturn<M> {

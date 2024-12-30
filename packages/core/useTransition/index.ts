@@ -201,7 +201,7 @@ export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, o
 /**
  * Follow value with a transition.
  *
- * @see https://vueuse.org/useTransition
+ * @see https://vueuse.org/core/useTransition
  * @param source
  * @param options
  */

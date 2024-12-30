@@ -50,7 +50,7 @@ export interface UseFileDialogReturn {
 /**
  * Open file dialog with ease.
  *
- * @see https://vueuse.org/useFileDialog
+ * @see https://vueuse.org/core/useFileDialog
  * @param options
  */
 export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialogReturn {

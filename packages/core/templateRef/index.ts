@@ -5,7 +5,7 @@ import { customRef, getCurrentInstance, onUpdated } from 'vue'
 /**
  * Shorthand for binding ref to template element.
  *
- * @see https://vueuse.org/templateRef
+ * @see https://vueuse.org/core/templateRef
  * @param key
  * @param initialValue
  */

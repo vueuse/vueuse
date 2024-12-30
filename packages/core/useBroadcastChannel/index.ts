@@ -15,7 +15,7 @@ export interface UseBroadcastChannelOptions extends ConfigurableWindow {
 /**
  * Reactive BroadcastChannel
  *
- * @see https://vueuse.org/useBroadcastChannel
+ * @see https://vueuse.org/core/useBroadcastChannel
  * @see https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel
  * @param options
  *

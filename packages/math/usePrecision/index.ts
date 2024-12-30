@@ -35,7 +35,7 @@ export interface UsePrecisionOptions {
 /**
  * Reactively set the precision of a number.
  *
- * @see https://vueuse.org/usePrecision
+ * @see https://vueuse.org/math/usePrecision
  */
 export function usePrecision(
   value: MaybeRefOrGetter<number>,

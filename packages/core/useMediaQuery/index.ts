@@ -11,7 +11,7 @@ import { useSupported } from '../useSupported'
 /**
  * Reactive Media Query.
  *
- * @see https://vueuse.org/useMediaQuery
+ * @see https://vueuse.org/core/useMediaQuery
  * @param query
  * @param options
  */

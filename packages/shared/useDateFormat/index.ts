@@ -105,7 +105,7 @@ export function normalizeDate(date: DateLike) {
 /**
  * Get the formatted date according to the string of tokens passed in.
  *
- * @see https://vueuse.org/useDateFormat
+ * @see https://vueuse.org/shared/useDateFormat
  * @param date - The date to format, can either be a `Date` object, a timestamp, or a string
  * @param formatStr - The combination of tokens to format the date
  * @param options - UseDateFormatOptions

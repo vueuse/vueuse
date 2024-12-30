@@ -5,7 +5,7 @@ import { computed, toValue } from 'vue'
 /**
  * Reactively convert a ref to string.
  *
- * @see https://vueuse.org/useToString
+ * @see https://vueuse.org/shared/useToString
  */
 export function useToString(
   value: MaybeRefOrGetter<unknown>,

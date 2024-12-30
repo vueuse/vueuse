@@ -42,7 +42,7 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
 /**
  * Reactive SpeechSynthesis.
  *
- * @see https://vueuse.org/useSpeechSynthesis
+ * @see https://vueuse.org/core/useSpeechSynthesis
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis SpeechSynthesis
  */
 export function useSpeechSynthesis(

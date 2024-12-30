@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 /**
  * Reactive state to show whether mouse leaves the page.
  *
- * @see https://vueuse.org/usePageLeave
+ * @see https://vueuse.org/core/usePageLeave
  * @param options
  */
 export function usePageLeave(options: ConfigurableWindow = {}) {

@@ -9,7 +9,7 @@ export interface UseWindowScrollOptions extends ConfigurableWindow, UseScrollOpt
 /**
  * Reactive window scroll.
  *
- * @see https://vueuse.org/useWindowScroll
+ * @see https://vueuse.org/core/useWindowScroll
  * @param options
  */
 export function useWindowScroll(options: UseWindowScrollOptions = {}) {

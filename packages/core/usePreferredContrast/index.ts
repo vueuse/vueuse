@@ -7,7 +7,7 @@ export type ContrastType = 'more' | 'less' | 'custom' | 'no-preference'
 /**
  * Reactive prefers-contrast media query.
  *
- * @see https://vueuse.org/usePreferredContrast
+ * @see https://vueuse.org/core/usePreferredContrast
  * @param [options]
  */
 export function usePreferredContrast(options?: ConfigurableWindow) {

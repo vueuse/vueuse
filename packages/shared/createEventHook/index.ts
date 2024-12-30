@@ -29,7 +29,7 @@ export interface EventHook<T = any> {
 /**
  * Utility for creating event hooks
  *
- * @see https://vueuse.org/createEventHook
+ * @see https://vueuse.org/shared/createEventHook
  */
 export function createEventHook<T = any>(): EventHook<T> {
   const fns: Set<Callback<T>> = new Set()

@@ -18,7 +18,7 @@ export interface UseCssVarOptions extends ConfigurableWindow {
 /**
  * Manipulate CSS variables.
  *
- * @see https://vueuse.org/useCssVar
+ * @see https://vueuse.org/core/useCssVar
  * @param prop
  * @param target
  * @param options
