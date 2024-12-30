@@ -1,5 +1,6 @@
 import type { ObjectDirective } from 'vue'
 import type { MouseInElementOptions, UseMouseInElementReturn } from '.'
+import { reactiveOmit } from '@vueuse/shared'
 import { watch } from 'vue'
 import { useMouseInElement } from '.'
 
@@ -14,18 +15,7 @@ export const vMouseInElement: ObjectDirective<
   mounted(el, binding) {
     const [handler, options] = (typeof binding.value === 'function' ? [binding.value, {}] : binding.value) as BindingValueArray
 
-    const {
-      x,
-      y,
-      sourceType,
-      elementX,
-      elementY,
-      elementPositionX,
-      elementPositionY,
-      elementHeight,
-      elementWidth,
-      isOutside,
-    } = useMouseInElement(el, options)
-    watch([x, y, sourceType, elementX, elementY, elementPositionX, elementPositionY, elementHeight, elementWidth, isOutside], () => handler({ x, y, sourceType, elementX, elementY, elementPositionX, elementPositionY, elementHeight, elementWidth, isOutside }))
+    const state = reactiveOmit(useMouseInElement(el, options), 'stop') as MouseInElement
+    watch(state, val => handler(val))
   },
 }
