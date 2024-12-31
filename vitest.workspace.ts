@@ -11,6 +11,7 @@ export default defineWorkspace([
         'packages/**/*.browser.{test,spec}.ts',
       ],
       name: 'browser',
+      setupFiles: ['vitest-browser-vue'],
       browser: {
         enabled: true,
         name: 'chromium',
