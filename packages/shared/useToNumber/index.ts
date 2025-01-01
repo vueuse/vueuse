@@ -2,13 +2,14 @@ import type { ComputedRef } from 'vue'
 import type { MaybeRefOrGetter } from '../utils'
 import { computed, toValue } from 'vue'
 
+type Method = (value: string | number) => number
 export interface UseToNumberOptions {
   /**
    * Method to use to convert the value to a number.
    *
    * @default 'parseFloat'
    */
-  method?: 'parseFloat' | 'parseInt'
+  method?: 'parseFloat' | 'parseInt' | Method
 
   /**
    * The base in mathematical numeral systems passed to `parseInt`.
@@ -39,11 +40,11 @@ export function useToNumber(
 
   return computed(() => {
     let resolved = toValue(value)
+    if (typeof method === 'function')
+      return method(resolved)
+
     if (typeof resolved === 'string')
       resolved = Number[method](resolved, radix)
-
-    if (!Number.isNaN(resolved) && !Number.isSafeInteger(resolved))
-      console.warn(`useToNumber: ${value} not a safe integer, resolved value may not be accurate`)
 
     if (nanToZero && Number.isNaN(resolved))
       resolved = 0
