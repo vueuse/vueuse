@@ -1,15 +1,5 @@
-import { Buffer } from 'node:buffer'
 import { describe, expect, it } from 'vitest'
 import { useBase64 } from '.'
-
-function decode(encoded: string) {
-  const decodedStr = Buffer.from(encoded.split(',')[1], 'base64').toString('utf-8')
-
-  if (!decodedStr)
-    return ''
-
-  return JSON.parse(decodedStr)
-}
 
 describe('useBase64', () => {
   it('should work with record', async () => {
@@ -19,7 +9,7 @@ describe('useBase64', () => {
 
     await promise.value
 
-    expect(decode(base64.value)).toEqual(template)
+    expect(base64.value).toMatchInlineSnapshot(`"data:application/json;base64,eyJ0ZXN0Ijo1fQ=="`)
   })
 
   it('should work with map and default serialize function', async () => {
@@ -29,7 +19,7 @@ describe('useBase64', () => {
 
     await promise.value
 
-    expect(decode(base64.value)).toEqual(Object.fromEntries(map))
+    expect(base64.value).toMatchInlineSnapshot(`"data:application/json;base64,eyJ0ZXN0IjoxfQ=="`)
   })
 
   it('should work with set', async () => {
@@ -39,7 +29,7 @@ describe('useBase64', () => {
 
     await promise.value
 
-    expect(decode(base64.value)).toEqual(Array.from(set))
+    expect(base64.value).toMatchInlineSnapshot(`"data:application/json;base64,WzFd"`)
   })
 
   it('should work with array', async () => {
@@ -49,7 +39,7 @@ describe('useBase64', () => {
 
     await promise.value
 
-    expect(decode(base64.value)).toEqual(arr)
+    expect(base64.value).toMatchInlineSnapshot(`"data:application/json;base64,WzEsMiwzXQ=="`)
   })
 
   it('should work with custom serialize function', async () => {
@@ -63,6 +53,16 @@ describe('useBase64', () => {
 
     await promise.value
 
-    expect(decode(base64.value)).toEqual(JSON.parse(serializer(arr)))
+    expect(base64.value).toMatchInlineSnapshot(`"data:application/json;base64,WzIsNCw2XQ=="`)
+  })
+
+  it('should work with dataUrl false', async () => {
+    const arr = [1, 2, 3]
+
+    const { promise, base64 } = useBase64(arr, { dataUrl: false })
+
+    await promise.value
+
+    expect(base64.value).toMatchInlineSnapshot(`"WzEsMiwzXQ=="`)
   })
 })
