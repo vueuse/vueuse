@@ -21,6 +21,7 @@
     "types": [
       "vitest",
       "@types/web-bluetooth",
+      "vitest-browser-vue",
       "@vitest/browser/providers/playwright"
     ],
     "strict": true,
