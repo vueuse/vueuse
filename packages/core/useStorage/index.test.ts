@@ -244,22 +244,6 @@ describe('useStorage', () => {
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
-  it('getter', async () => {
-    expect(storage.getItem(KEY)).toEqual(undefined)
-
-    const defaults = vi.fn().mockReturnValue('1')
-    const store = useStorage(KEY, defaults, storage)
-
-    expect(defaults).toBeCalledTimes(1)
-    expect(storage.setItem).toBeCalledWith(KEY, '1')
-    expect(store.value).toBe('1')
-
-    store.value = '2'
-    await nextTwoTick()
-
-    expect(storage.setItem).toBeCalledWith(KEY, '2')
-  })
-
   it('pass ref as initialValue', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
@@ -534,9 +518,14 @@ describe('useStorage', () => {
     new Map([[1, 2]]),
     new Set([1, 2]),
   ])('should work in conjunction with defaults', (value) => {
-    const basicRef = useStorage(KEY, () => value, storage)
+    const defaults = vi.fn().mockReturnValue(value)
+    const basicRef = useStorage(KEY, defaults, storage)
+
+    expect(defaults).toBeCalledTimes(1)
     expect(basicRef.value).toEqual(value)
+
     storage.removeItem(KEY)
+
     const objectRef = useStorage(KEY, value, storage)
     expect(objectRef.value).toEqual(value)
   })
