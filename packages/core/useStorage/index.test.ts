@@ -244,6 +244,22 @@ describe('useStorage', () => {
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
+  it('getter', async () => {
+    expect(storage.getItem(KEY)).toEqual(undefined)
+
+    const defaults = vi.fn().mockReturnValue('1')
+    const store = useStorage(KEY, defaults, storage)
+
+    expect(defaults).toBeCalledTimes(1)
+    expect(storage.setItem).toBeCalledWith(KEY, '1')
+    expect(store.value).toBe('1')
+
+    store.value = '2'
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '2')
+  })
+
   it('pass ref as initialValue', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 

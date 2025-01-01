@@ -153,7 +153,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
     initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : ref)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
+  const _defaults = typeof defaults === 'function' ? defaults() : defaults
+  const data = (shallow ? shallowRef : ref)(_defaults) as RemovableRef<T>
 
   if (!storage) {
     try {
@@ -167,7 +168,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
   if (!storage)
     return data
 
-  const rawInit: T = toValue(defaults)
+  const rawInit: T = toValue(_defaults)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
