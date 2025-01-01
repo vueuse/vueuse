@@ -41,9 +41,8 @@ export function useToNumber(
   return computed(() => {
     let resolved = toValue(value)
     if (typeof method === 'function')
-      return method(resolved)
-
-    if (typeof resolved === 'string')
+      resolved = method(resolved)
+    else if (typeof resolved === 'string')
       resolved = Number[method](resolved, radix)
 
     if (nanToZero && Number.isNaN(resolved))
