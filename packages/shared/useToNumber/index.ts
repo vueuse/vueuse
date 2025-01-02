@@ -2,14 +2,15 @@ import type { ComputedRef } from 'vue'
 import type { MaybeRefOrGetter } from '../utils'
 import { computed, toValue } from 'vue'
 
-type Method = (value: string | number) => number
 export interface UseToNumberOptions {
   /**
    * Method to use to convert the value to a number.
    *
+   * Or a custom function for the conversion.
+   *
    * @default 'parseFloat'
    */
-  method?: 'parseFloat' | 'parseInt' | Method
+  method?: 'parseFloat' | 'parseInt' | ((value: string | number) => number)
 
   /**
    * The base in mathematical numeral systems passed to `parseInt`.
