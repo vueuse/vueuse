@@ -2,7 +2,7 @@ import type { Fn } from '@vueuse/shared'
 import type { WatchOptionsBase } from 'vue'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { noop, tryOnScopeDispose } from '@vueuse/shared'
 import { watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
@@ -29,6 +29,10 @@ export function onElementRemoval(
     flush = 'sync',
   } = options
 
+  // SSR
+  if (!window || !document)
+    return noop
+
   let stopFn: Fn | undefined
   const cleanupAndUpdate = (fn?: Fn) => {
     stopFn?.()
@@ -36,8 +40,6 @@ export function onElementRemoval(
   }
 
   const stopWatch = watchEffect(() => {
-    if (!window || !document)
-      return
     const el = unrefElement(target)
     if (el) {
       const { stop } = useMutationObserver(
