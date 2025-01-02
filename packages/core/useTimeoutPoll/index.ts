@@ -1,5 +1,5 @@
 import type { Awaitable, MaybeRefOrGetter, Pausable, UseTimeoutFnOptions } from '@vueuse/shared'
-import { tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
+import { isClient, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { ref } from 'vue'
 
 export function useTimeoutPoll(
@@ -34,7 +34,7 @@ export function useTimeoutPoll(
     isActive.value = false
   }
 
-  if (immediate)
+  if (immediate && isClient)
     resume()
 
   tryOnScopeDispose(pause)
