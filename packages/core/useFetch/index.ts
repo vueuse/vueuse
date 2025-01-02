@@ -237,7 +237,13 @@ function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ct
   if (combination === 'overwrite') {
     // use last callback
     return async (ctx: T) => {
-      const callback = callbacks[callbacks.length - 1]
+      let callback
+      for (let i = callbacks.length - 1; i >= 0; i--) {
+        if (callbacks[i] != null) {
+          callback = callbacks[i]
+          break
+        }
+      }
       if (callback)
         return { ...ctx, ...(await callback(ctx)) }
 
