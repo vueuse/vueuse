@@ -1,11 +1,11 @@
-import contributors from './contributors.json'
+import contributorsGenerated from './contributors.json'
 
 export interface Contributor {
   name: string
   avatar: string
 }
 
-export interface CoreTeam {
+export interface TeamMember {
   avatar: string
   name: string
   github: string
@@ -23,13 +23,13 @@ function getAvatarUrl(name: string) {
   return `https://avatars.githubusercontent.com/${name}?v=4`
 }
 
-const contributorList = (contributors as string[]).reduce((acc, name) => {
+export const contributors = (contributorsGenerated as string[]).reduce((acc, name) => {
   contributorsAvatars[name] = getAvatarUrl(name)
   acc.push({ name, avatar: contributorsAvatars[name] })
   return acc
 }, [] as Contributor[])
 
-const coreTeamMembers: CoreTeam[] = [
+export const team: TeamMember[] = [
   {
     avatar: contributorsAvatars.antfu,
     name: 'Anthony Fu',
@@ -65,6 +65,34 @@ const coreTeamMembers: CoreTeam[] = [
     packages: ['components'],
   },
   {
+    avatar: contributorsAvatars['harlan-zw'],
+    name: 'Harlan Wilton',
+    github: 'harlan-zw',
+    twitter: 'harlan_zw',
+    bluesky: 'harlanzw.com',
+    sponsors: true,
+    description: 'Building delightful open source<br>Nuxt freelance developer',
+    packages: ['schema-org'],
+  },
+  {
+    avatar: contributorsAvatars['Alfred-Skyblue'],
+    name: 'Alfred-Skyblue',
+    github: 'Alfred-Skyblue',
+    description: 'open source enthusiast',
+    functions: [
+      'useSortable',
+    ],
+  },
+  {
+    avatar: contributorsAvatars['Doctor-wu'],
+    name: 'Doctorwu',
+    github: 'Doctor-wu',
+    twitter: 'Doctorwu666',
+    bluesky: 'doctorwu.me',
+    description: 'Dangerous Coder<br>Open source enthusiast',
+  },
+
+  {
     avatar: contributorsAvatars.Tahul,
     name: 'Tahul',
     github: 'Tahul',
@@ -73,6 +101,42 @@ const coreTeamMembers: CoreTeam[] = [
     sponsors: true,
     description: '',
     packages: ['motion', 'gesture', 'sound'],
+  },
+  {
+    avatar: contributorsAvatars.BobbieGoede,
+    name: 'Bobbie Goede',
+    github: 'BobbieGoede',
+    twitter: 'BobbieGoede',
+    bluesky: 'goede.dev',
+    sponsors: true,
+    description: '',
+    packages: ['motion'],
+  },
+]
+  .sort((pre, cur) => contributorsGenerated.findIndex(name => name === pre.github) - contributorsGenerated.findIndex(name => name === cur.github))
+
+export const emeriti: TeamMember[] = [
+  {
+    avatar: contributorsAvatars.egoist,
+    name: 'EGOIST',
+    github: 'egoist',
+    twitter: '_egoistlily',
+    bluesky: 'egoist.dev',
+    sponsors: true,
+    description: '',
+    packages: ['head'],
+  },
+  {
+    avatar: contributorsAvatars.webfansplz,
+    name: 'webfansplz',
+    github: 'webfansplz',
+    twitter: 'webfansplz',
+    sponsors: false,
+    functions: [
+      'useDateFormat',
+      'useAsyncQueue',
+    ],
+    description: 'FE Developer<br>Love open source',
   },
   {
     avatar: contributorsAvatars.anteriovieira,
@@ -107,9 +171,8 @@ const coreTeamMembers: CoreTeam[] = [
   },
   {
     avatar: contributorsAvatars.sibbng,
-    name: 'Nurettin Kaya',
+    name: 'sibbng',
     github: 'sibbng',
-    twitter: 'sibbng',
     sponsors: false,
     description: '',
     functions: [
@@ -141,66 +204,4 @@ const coreTeamMembers: CoreTeam[] = [
     ],
     description: '',
   },
-  {
-    avatar: contributorsAvatars.webfansplz,
-    name: 'webfansplz',
-    github: 'webfansplz',
-    twitter: 'webfansplz',
-    sponsors: false,
-    functions: [
-      'useDateFormat',
-      'useAsyncQueue',
-    ],
-    description: 'FE Developer<br>Love open source',
-  },
-  {
-    avatar: contributorsAvatars.egoist,
-    name: 'EGOIST',
-    github: 'egoist',
-    twitter: '_egoistlily',
-    bluesky: 'egoist.dev',
-    sponsors: true,
-    description: '',
-    packages: ['head'],
-  },
-  {
-    avatar: contributorsAvatars['harlan-zw'],
-    name: 'Harlan Wilton',
-    github: 'harlan-zw',
-    twitter: 'harlan_zw',
-    bluesky: 'harlanzw.com',
-    sponsors: true,
-    description: 'Building delightful open source<br>Nuxt freelance developer',
-    packages: ['schema-org'],
-  },
-  {
-    avatar: contributorsAvatars['Alfred-Skyblue'],
-    name: 'Alfred-Skyblue',
-    github: 'Alfred-Skyblue',
-    description: 'open source enthusiast',
-    functions: [
-      'useSortable',
-    ],
-  },
-  {
-    avatar: contributorsAvatars['Doctor-wu'],
-    name: 'Doctorwu',
-    github: 'Doctor-wu',
-    twitter: 'Doctorwu666',
-    bluesky: 'doctorwu.me',
-    description: 'Dangerous Coder<br>Open source enthusiast',
-  },
-  {
-    avatar: contributorsAvatars.BobbieGoede,
-    name: 'Bobbie Goede',
-    github: 'BobbieGoede',
-    twitter: 'BobbieGoede',
-    bluesky: 'goede.dev',
-    sponsors: true,
-    description: '',
-    packages: ['motion'],
-  },
 ]
-  .sort((pre, cur) => contributors.findIndex(name => name === pre.github) - contributors.findIndex(name => name === cur.github))
-
-export { contributorList as contributors, coreTeamMembers }
