@@ -245,25 +245,30 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     const currentExecuteCounter = executeCounter
     isAborted.value = false
 
-    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
-      .then((r: any) => {
-        if (isAborted.value)
-          return
-        response.value = r
-        const result = r.data
-        data.value = result
-        onSuccess(result)
-      })
-      .catch((e: any) => {
-        error.value = e
-        onError(e)
-      })
-      .finally(() => {
-        options.onFinish?.()
-        if (currentExecuteCounter === executeCounter)
-          loading(false)
-      })
-    return promise
+    // eslint-disable-next-line ts/no-use-before-define
+    const outerResult = result
+    return new Promise<OverallUseAxiosReturn<T, R, D>>((resolve, reject) => {
+      instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
+        .then((r: any) => {
+          if (isAborted.value)
+            return
+          response.value = r
+          const result = r.data
+          data.value = result
+          resolve(outerResult)
+          onSuccess(result)
+        })
+        .catch((e: any) => {
+          error.value = e
+          reject(e)
+          onError(e)
+        })
+        .finally(() => {
+          options.onFinish?.()
+          if (currentExecuteCounter === executeCounter)
+            loading(false)
+        })
+    })
   }
 
   if (immediate && url)
