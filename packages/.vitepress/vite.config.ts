@@ -15,6 +15,7 @@ import { MarkdownTransform } from './plugins/markdownTransform'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const require = createRequire(import.meta.url)
+
 const [changeLog, contributions] = await Promise.all([
   getChangeLog(process.env.CI ? 1000 : 100),
   getFunctionContributors(),
@@ -36,7 +37,7 @@ export default defineConfig({
 
     // plugins
     Components({
-      dirs: resolve(__dirname, 'theme/components'),
+      dirs: [resolve(__dirname, 'theme/components'), resolve('..', 'core')],
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         IconsResolver({

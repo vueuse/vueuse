@@ -125,6 +125,9 @@ export async function readMetadata() {
       if (pkg.submodules)
         fn.importPath = `${pkg.name}/${fn.name}`
 
+      if (fs.existsSync(join(dir, fnName, 'demo.vue')))
+        fn.hasDemo = true
+
       indexes.functions.push(fn)
     }))
   }
