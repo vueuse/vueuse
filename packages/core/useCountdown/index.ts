@@ -44,7 +44,7 @@ export interface UseCountdownReturn extends Pausable {
 }
 
 /**
- * Wrapper for `useIntervalFn` that provides a countdown timer.
+ * Wrapper for `useIntervalFn` that provides a countdown timer in seconds.
  *
  * @param initialCountdown
  * @param options
