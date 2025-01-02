@@ -58,7 +58,7 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     const value = remaining.value - 1
     remaining.value = value < 0 ? 0 : value
     options?.onTick?.()
-    if (remaining.value === 0) {
+    if (remaining.value <= 0) {
       intervalController.pause()
       options?.onComplete?.()
     }
