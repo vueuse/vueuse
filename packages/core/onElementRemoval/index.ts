@@ -38,20 +38,24 @@ export function onElementRemoval(
   const stopWatch = watchEffect(() => {
     const el = unrefElement(target)
     if (el) {
-      const { stop } = useMutationObserver(document as any, (mutationsList) => {
-        const targetRemoved = mutationsList
-          .map(mutation => [...mutation.removedNodes])
-          .flat()
-          .some(node => node === el || node.contains(el))
+      const { stop } = useMutationObserver(
+        document as any,
+        (mutationsList) => {
+          const targetRemoved = mutationsList
+            .map(mutation => [...mutation.removedNodes])
+            .flat()
+            .some(node => node === el || node.contains(el))
 
-        if (targetRemoved) {
-          callback(mutationsList)
-        }
-      }, {
-        window,
-        childList: true,
-        subtree: true,
-      })
+          if (targetRemoved) {
+            callback(mutationsList)
+          }
+        },
+        {
+          window,
+          childList: true,
+          subtree: true,
+        },
+      )
 
       cleanupAndUpdate(stop)
     }
