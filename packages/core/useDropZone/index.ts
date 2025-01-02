@@ -64,7 +64,7 @@ export function useDropZone(
         return false
 
       return types.every(type =>
-        dataTypes.some(allowedType => type.includes(allowedType)),
+        dataTypes.some(allowedType => type.startsWith(allowedType.replace(/\*$/, ''))),
       )
     }
 
