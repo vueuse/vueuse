@@ -54,7 +54,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   const rawInit: T = toValue(initialValue)
   const type = guessSerializerType<T>(rawInit)
 
-  const data = (shallow ? shallowRef : ref)(typeof initialValue === 'function' ? initialValue() : initialValue) as RemovableRef<T>
+  const data = (shallow ? shallowRef : ref)(toValue(initialValue)) as RemovableRef<T>
   const serializer = options.serializer ?? StorageSerializers[type]
 
   if (!storage) {
