@@ -1,11 +1,11 @@
 import { resolve } from 'node:path'
-import { defineConfig } from 'vitepress'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { withPwa } from '@vite-pwa/vitepress'
-import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
+import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
-import viteConfig from './vite.config'
+import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { transformHead } from './transformHead'
+import viteConfig from './vite.config'
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },
@@ -42,6 +42,11 @@ const Links = [
 const Learn = [
   { text: 'Premium Video Course', link: 'https://vueschool.io/courses/vueuse-for-everyone?friend=vueuse' },
   { text: 'Official Vue Certification', link: 'https://certification.vuejs.org/?utm_source=vueuse&utm_medium=website&utm_campaign=affiliate&utm_content=guide&banner_type=text&friend=VUEUSE' },
+]
+
+const Resources = [
+  { text: 'Team & Contributors', link: '/team' },
+  { text: 'Learn', items: Learn },
 ]
 
 const DefaultSideBar = [
@@ -91,7 +96,7 @@ export default withPwa(defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vueuse/vueuse' },
       { icon: 'discord', link: 'https://chat.antfu.me' },
-      { icon: 'twitter', link: 'https://twitter.com/vueuse' },
+      { icon: 'bluesky', link: 'https://bsky.app/profile/vueuse.org' },
     ],
 
     nav: [
@@ -99,7 +104,6 @@ export default withPwa(defineConfig({
         text: 'Guide',
         items: [
           { text: 'Guide', items: Guide },
-          { text: 'Learn', items: Learn },
           { text: 'Links', items: Links },
         ],
       },
@@ -118,8 +122,8 @@ export default withPwa(defineConfig({
         ],
       },
       {
-        text: 'Add-ons',
-        link: '/add-ons',
+        text: 'Resources',
+        items: Resources,
       },
       {
         text: 'Playground',

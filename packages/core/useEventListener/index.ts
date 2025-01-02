@@ -1,9 +1,9 @@
 import type { Arrayable, Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import { isObject, noop, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
+import { isObject, noop, toArray, tryOnScopeDispose } from '@vueuse/shared'
+import { toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
 
 interface InferEventTarget<Events> {
   addEventListener: (event: Events, fn?: any, options?: any) => any
@@ -140,10 +140,8 @@ export function useEventListener(...args: any[]) {
   if (!target)
     return noop
 
-  if (!Array.isArray(events))
-    events = [events]
-  if (!Array.isArray(listeners))
-    listeners = [listeners]
+  events = toArray(events)
+  listeners = toArray(listeners)
 
   const cleanups: Function[] = []
   const cleanup = () => {

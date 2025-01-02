@@ -1,5 +1,4 @@
-import { toRefs } from 'vue-demi'
-import { toValue } from '../toValue'
+import { toRefs, toValue } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 
 export type ReactiveOmitPredicate<T> = (value: T[keyof T], key: keyof T) => boolean

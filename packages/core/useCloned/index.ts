@@ -1,7 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
-import type { Ref, WatchOptions } from 'vue-demi'
-import { isRef, ref, watch } from 'vue-demi'
+import type { Ref, WatchOptions } from 'vue'
+import { isRef, ref, toValue, watch } from 'vue'
 
 export interface UseClonedOptions<T = any> extends WatchOptions {
   /**

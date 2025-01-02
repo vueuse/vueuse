@@ -1,7 +1,6 @@
-import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
-import { toValue } from '../toValue'
+import type { ComputedRef } from 'vue'
 import type { MaybeRefOrGetter } from '../utils'
+import { computed, toValue } from 'vue'
 
 /**
  * Reactively convert a ref to string.

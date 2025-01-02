@@ -20,7 +20,9 @@
     "resolveJsonModule": true,
     "types": [
       "vitest",
-      "@types/web-bluetooth"
+      "@types/web-bluetooth",
+      "vitest-browser-vue",
+      "@vitest/browser/providers/playwright"
     ],
     "strict": true,
     "strictFunctionTypes": true,

@@ -1,6 +1,7 @@
-import { type InjectionKey, type Ref, defineComponent, h, inject, nextTick, ref } from 'vue-demi'
+import type { InjectionKey, Ref } from 'vue'
 import { createInjectionState, injectLocal } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
+import { defineComponent, h, inject, nextTick, ref } from 'vue'
 import { mount, useSetup } from '../../.test'
 
 describe('createInjectionState', () => {

@@ -1,14 +1,14 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, useTimeoutFn } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
-import { useSupported } from '../useSupported'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import { useTimeoutFn } from '@vueuse/shared'
+import { computed, ref, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
+import { useSupported } from '../useSupported'
 
 export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   /**
@@ -68,7 +68,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = ref('')
   const copied = ref(false)
-  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
+  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateText() {
     if (isClipboardApiSupported.value && isAllowed(permissionRead.value)) {

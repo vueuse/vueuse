@@ -1,5 +1,5 @@
-import { toValue } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
+import { toValue } from 'vue'
 import { useSorted } from '.'
 
 interface User {

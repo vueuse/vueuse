@@ -1,10 +1,10 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import { toValue, useIntervalFn } from '@vueuse/shared'
-import { useRafFn } from '../useRafFn'
+import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
+import { useIntervalFn } from '@vueuse/shared'
+import { ref, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
 export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument {

@@ -1,10 +1,11 @@
-import { type MaybeRefOrGetter, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, watch } from 'vue-demi'
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { computed, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface ResizeObserverSize {
   readonly inlineSize: number
@@ -14,9 +15,9 @@ export interface ResizeObserverSize {
 export interface ResizeObserverEntry {
   readonly target: Element
   readonly contentRect: DOMRectReadOnly
-  readonly borderBoxSize?: ReadonlyArray<ResizeObserverSize>
-  readonly contentBoxSize?: ReadonlyArray<ResizeObserverSize>
-  readonly devicePixelContentBoxSize?: ReadonlyArray<ResizeObserverSize>
+  readonly borderBoxSize: ReadonlyArray<ResizeObserverSize>
+  readonly contentBoxSize: ReadonlyArray<ResizeObserverSize>
+  readonly devicePixelContentBoxSize: ReadonlyArray<ResizeObserverSize>
 }
 
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void

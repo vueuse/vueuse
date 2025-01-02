@@ -1,10 +1,10 @@
-import type { Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import { noop, notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
+import { noop, notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
@@ -19,7 +19,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
    */
-  root?: MaybeComputedElementRef
+  root?: MaybeComputedElementRef | Document
 
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
@@ -62,7 +62,7 @@ export function useIntersectionObserver(
   const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
   const targets = computed(() => {
     const _target = toValue(target)
-    return (Array.isArray(_target) ? _target : [_target]).map(unrefElement).filter(notNullish)
+    return toArray(_target).map(unrefElement).filter(notNullish)
   })
 
   let cleanup = noop
@@ -70,33 +70,33 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-      () => [targets.value, unrefElement(root), isActive.value] as const,
-      ([targets, root]) => {
-        cleanup()
-        if (!isActive.value)
-          return
+        () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
+        ([targets, root]) => {
+          cleanup()
+          if (!isActive.value)
+            return
 
-        if (!targets.length)
-          return
+          if (!targets.length)
+            return
 
-        const observer = new IntersectionObserver(
-          callback,
-          {
-            root: unrefElement(root),
-            rootMargin,
-            threshold,
-          },
-        )
+          const observer = new IntersectionObserver(
+            callback,
+            {
+              root: unrefElement(root),
+              rootMargin,
+              threshold,
+            },
+          )
 
-        targets.forEach(el => el && observer.observe(el))
+          targets.forEach(el => el && observer.observe(el))
 
-        cleanup = () => {
-          observer.disconnect()
-          cleanup = noop
-        }
-      },
-      { immediate, flush: 'post' },
-    )
+          cleanup = () => {
+            observer.disconnect()
+            cleanup = noop
+          }
+        },
+        { immediate, flush: 'post' },
+      )
     : noop
 
   const stop = () => {

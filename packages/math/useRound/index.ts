@@ -1,7 +1,6 @@
-import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
+import type { ComputedRef } from 'vue'
+import { computed, toValue } from 'vue'
 
 /**
  * Reactive `Math.round`.

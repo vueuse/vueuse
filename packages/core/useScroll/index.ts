@@ -1,10 +1,10 @@
-import { computed, reactive, ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
-import { unrefElement } from '../unrefElement'
 import type { ConfigurableWindow } from '../_configurable'
+import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { computed, reactive, ref, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
+import { useEventListener } from '../useEventListener'
 
 export interface UseScrollOptions extends ConfigurableWindow {
   /**
@@ -83,7 +83,6 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  * @param element
  * @param options
  */
-
 export function useScroll(
   element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
@@ -192,14 +191,15 @@ export function useScroll(
       || unrefElement(target as HTMLElement | SVGElement)
     ) as Element
 
-    const { display, flexDirection } = getComputedStyle(el)
+    const { display, flexDirection, direction } = getComputedStyle(el)
+    const directionMultipler = direction === 'rtl' ? -1 : 1
 
     const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
 
-    const left = Math.abs(scrollLeft) <= (offset.left || 0)
-    const right = Math.abs(scrollLeft)
+    const left = (scrollLeft * directionMultipler) <= (offset.left || 0)
+    const right = (scrollLeft * directionMultipler)
       + el.clientWidth >= el.scrollWidth
       - (offset.right || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS
@@ -223,8 +223,8 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    const top = Math.abs(scrollTop) <= (offset.top || 0)
-    const bottom = Math.abs(scrollTop)
+    const top = scrollTop <= (offset.top || 0)
+    const bottom = scrollTop
       + el.clientHeight >= el.scrollHeight
       - (offset.bottom || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS

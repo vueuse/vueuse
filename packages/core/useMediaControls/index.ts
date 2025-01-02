@@ -1,9 +1,9 @@
-import { ref, watch, watchEffect } from 'vue-demi'
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { createEventHook, isObject, toRef, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocument } from '../_configurable'
+import { createEventHook, isObject, toRef, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { ref, toValue, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 /**
  * Many of the jsdoc definitions here are modified version of the
@@ -20,6 +20,11 @@ export interface UseMediaSource {
    * The media codec type
    */
   type?: string
+
+  /**
+   * Specifies the media query for the resource's intended media.
+   */
+  media?: string
 }
 
 export interface UseMediaTextTrackSource {
@@ -173,6 +178,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   // Events
   const sourceErrorEvent = createEventHook<Event>()
+  const playbackErrorEvent = createEventHook<Event>()
 
   /**
    * Disables the specified track. If no track is specified then
@@ -221,14 +227,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       usingElRef<HTMLVideoElement>(target, async (el) => {
         if (supportsPictureInPicture) {
           if (!isPictureInPicture.value) {
-            (el as any).requestPictureInPicture()
-              .then(resolve)
-              .catch(reject)
+            (el as any).requestPictureInPicture().then(resolve).catch(reject)
           }
           else {
-            (document as any).exitPictureInPicture()
-              .then(resolve)
-              .catch(reject)
+            (document as any).exitPictureInPicture().then(resolve).catch(reject)
           }
         }
       })
@@ -268,11 +270,12 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     })
 
     // Add new sources
-    sources.forEach(({ src, type }) => {
+    sources.forEach(({ src, type, media }) => {
       const source = document.createElement('source')
 
       source.setAttribute('src', src)
       source.setAttribute('type', type || '')
+      source.setAttribute('media', media || '')
 
       source.addEventListener('error', sourceErrorEvent.trigger)
 
@@ -380,10 +383,15 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     if (!el)
       return
 
-    if (isPlaying)
-      el.play()
-    else
+    if (isPlaying) {
+      el.play().catch((e) => {
+        playbackErrorEvent.trigger(e)
+        throw e
+      })
+    }
+    else {
       el.pause()
+    }
   })
 
   useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (toValue(target))!.currentTime))
@@ -467,6 +475,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
     // Events
     onSourceError: sourceErrorEvent.on,
+    onPlaybackError: playbackErrorEvent.on,
   }
 }
 

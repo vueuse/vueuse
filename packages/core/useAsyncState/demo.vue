@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useAsyncState } from '@vueuse/core'
 import axios from 'axios'
 import YAML from 'js-yaml'
-import { useAsyncState } from '@vueuse/core'
 
 const { isLoading, state, isReady, execute } = useAsyncState(
   (args) => {
