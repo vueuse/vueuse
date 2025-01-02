@@ -1,17 +1,15 @@
+import type { Fn } from '@vueuse/shared'
 import type { WatchOptionsBase } from 'vue'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref, watchEffect } from 'vue'
+import { watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
 
-interface OnElementRemovalOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot, WatchOptionsBase { }
-
-interface StopHandle {
-  (): void
-}
+export interface OnElementRemovalOptions
+  extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot, WatchOptionsBase { }
 
 /**
  * Fires when the element or any element containing it is removed.
@@ -24,16 +22,17 @@ export function onElementRemoval(
   target: MaybeElementRef,
   callback: (mutationRecords: MutationRecord[]) => void,
   options: OnElementRemovalOptions = {},
-) {
+): Fn {
   const {
     window = defaultWindow,
     document = window?.document,
     flush = 'sync',
   } = options
-  const stopFn = ref(() => { })
-  const cleanupAndUpdate = (fn = () => { }) => {
-    stopFn.value?.()
-    stopFn.value = fn
+
+  let stopFn: Fn | undefined
+  const cleanupAndUpdate = (fn?: Fn) => {
+    stopFn?.()
+    stopFn = fn
   }
 
   const stopWatch = watchEffect(() => {
@@ -58,7 +57,7 @@ export function onElementRemoval(
     }
   }, { flush })
 
-  const stopHandle: StopHandle = () => {
+  const stopHandle = () => {
     stopWatch()
     cleanupAndUpdate()
   }
