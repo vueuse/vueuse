@@ -90,7 +90,7 @@ export function useFocusTrap(
 
   const targets = computed(() => {
     const _targets = toValue(target)
-    return (toArray<any[]>(_targets))
+    return toArray(_targets)
       .map((el) => {
         const _el = toValue(el)
         return typeof _el === 'string' ? _el : unrefElement(_el)
