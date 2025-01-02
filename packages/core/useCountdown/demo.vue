@@ -57,22 +57,22 @@ input {
 }
 
 :root {
-  --rocket-roate: rotate(-45deg);
+  --rocket-rotate: rotate(-45deg);
 }
 @keyframes rocket {
   0% {
-    transform: translateY(0) var(--rocket-roate);
+    transform: translateY(0) var(--rocket-rotate);
   }
   50% {
-    transform: translateY(-200px) var(--rocket-roate);
+    transform: translateY(-200px) var(--rocket-rotate);
   }
   100% {
-    transform: translateY(0) var(--rocket-roate);
+    transform: translateY(0) var(--rocket-rotate);
   }
 }
 
 .rocket {
-  transform: var(--rocket-roate);
+  transform: var(--rocket-rotate);
 }
 
 .rocket.launching {

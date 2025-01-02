@@ -1,7 +1,7 @@
-import { toValue, useIntervalFn } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { Ref } from 'vue'
+import { useIntervalFn } from '@vueuse/shared'
+import { ref, toValue } from 'vue'
 
 export interface UseCountdownOptions {
   /**

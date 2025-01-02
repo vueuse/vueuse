@@ -1,8 +1,8 @@
-import { effectScope } from 'vue-demi'
 import type { Pausable } from '@vueuse/shared'
+import type { UseCountdownOptions } from '.'
 import { promiseTimeout } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { UseCountdownOptions } from '.'
+import { effectScope } from 'vue'
 import { useCountdown } from '.'
 
 describe('useCountdown', () => {
