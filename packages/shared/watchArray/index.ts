@@ -1,6 +1,5 @@
 import type { WatchOptions, WatchSource } from 'vue'
-import { watch } from 'vue'
-import { toValue } from '../toValue'
+import { toValue, watch } from 'vue'
 
 export declare type WatchArrayCallback<V = any, OV = any> = (value: V, oldValue: OV, added: V, removed: OV, onCleanup: (cleanupFn: () => void) => void) => any
 

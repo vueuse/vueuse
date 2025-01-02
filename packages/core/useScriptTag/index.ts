@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
-import { noop, toValue, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
-import { ref } from 'vue'
+import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
+import { ref, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {

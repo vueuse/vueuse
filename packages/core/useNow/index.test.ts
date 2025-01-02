@@ -1,8 +1,8 @@
-import { promiseTimeout } from '@vueuse/shared'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { useNow } from '.'
 
 describe('useNow', () => {
+  vi.useFakeTimers()
   it('should get now timestamp by default', async () => {
     const now = useNow()
 
@@ -16,19 +16,19 @@ describe('useNow', () => {
 
       expect(+now.value).toBeGreaterThanOrEqual(initial)
 
-      await promiseTimeout(50)
+      vi.advanceTimersByTime(50)
 
       expect(+now.value).toBeGreaterThan(initial)
 
       initial = +now.value
 
       pause()
-      await promiseTimeout(50)
+      vi.advanceTimersByTime(50)
 
       expect(+now.value).toBe(initial)
 
       resume()
-      await promiseTimeout(50)
+      vi.advanceTimersByTime(50)
 
       expect(+now.value).toBeGreaterThan(initial)
     })

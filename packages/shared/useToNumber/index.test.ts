@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { useToNumber } from '.'
 
@@ -38,5 +38,20 @@ describe('useToNumber', () => {
     const value = ref<string | number>('Hi')
     const float = useToNumber(value, { nanToZero: true })
     expect(float.value).toBe(0)
+  })
+
+  it('custom method function', () => {
+    const value = ref<string | number>(`${Number.MAX_SAFE_INTEGER}1`)
+    let warn = ''
+    const warnFn = vi.fn(str => warn = str)
+    const result = useToNumber(value, { method: (v) => {
+      if (!Number.isSafeInteger(Number(v))) {
+        warnFn('Value is not a safe integer')
+      }
+      return 0
+    } })
+    expect(result.value).toBe(0)
+    expect(warn).toBe('Value is not a safe integer')
+    expect(warnFn).toHaveBeenCalledTimes(1)
   })
 })

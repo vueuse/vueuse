@@ -22,8 +22,6 @@ describe('createEventHook', () => {
     onResult(result => message = result)
     exec()
 
-    setTimeout(() => {}, 0)
-
     expect(message).toBe('Hello World')
   })
 
@@ -85,6 +83,32 @@ describe('createEventHook', () => {
     trigger('xxx')
 
     expect(listener).toHaveBeenCalledTimes(2)
+  })
+
+  it('should add and remove all event listener', () => {
+    const listener1 = vi.fn()
+    const listener2 = vi.fn()
+    const listener3 = vi.fn()
+
+    const { on, clear, trigger } = createEventHook<string>()
+
+    on(listener1)
+    on(listener2)
+    on(listener3)
+
+    trigger('xxx')
+
+    expect(listener1).toHaveBeenCalledTimes(1)
+    expect(listener2).toHaveBeenCalledTimes(1)
+    expect(listener3).toHaveBeenCalledTimes(1)
+
+    clear()
+
+    trigger('xxx')
+
+    expect(listener1).toHaveBeenCalledTimes(1)
+    expect(listener2).toHaveBeenCalledTimes(1)
+    expect(listener3).toHaveBeenCalledTimes(1)
   })
 
   it('should await trigger', async () => {
