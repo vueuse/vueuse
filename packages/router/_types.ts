@@ -34,8 +34,5 @@ export interface ReactiveRouteOptionsWithTransform<V, R> extends ReactiveRouteOp
     | ({
       get?: (value: V) => R
       set?: (value: R) => V
-    } & (
-        { get: (value: V) => R }
-        | { set: (value: R) => V }
-      ))
+    })
 }

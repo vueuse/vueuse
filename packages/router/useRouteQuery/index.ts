@@ -6,9 +6,6 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-const defaultGet = <V, R>(value: V): R => value as any as R
-const defaultSet = <R, V>(value: R): V => value as any as V
-
 const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteQuery(
@@ -39,17 +36,16 @@ export function useRouteQuery<
     transform,
   } = options
 
-  let transformGet = defaultGet<T, K>
-  let transformSet = defaultSet<K, T>
+  let transformGet = (value: T) => value as unknown as K
+  let transformSet = (value: K) => value as unknown as T
 
   if (typeof transform === 'function') {
     transformGet = transform
   }
-  else if (transform && typeof transform === 'object') {
-    if ('get' in transform && transform.get)
+  else if (transform) {
+    if (transform.get)
       transformGet = transform.get
-
-    if ('set' in transform && transform.set)
+    if (transform.set)
       transformSet = transform.set
   }
 
