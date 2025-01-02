@@ -36,6 +36,8 @@ export function onElementRemoval(
   }
 
   const stopWatch = watchEffect(() => {
+    if (!window || !document)
+      return
     const el = unrefElement(target)
     if (el) {
       const { stop } = useMutationObserver(
