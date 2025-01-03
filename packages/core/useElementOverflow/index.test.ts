@@ -1,13 +1,7 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { useElementOverflow } from './index'
 
 describe('useElementOverflow', () => {
-  let el: HTMLDivElement
-
-  beforeEach(() => {
-    el = document.createElement('div')
-  })
-
   it('should be defined', () => {
     expect(useElementOverflow).toBeDefined()
   })
