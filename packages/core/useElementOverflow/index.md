@@ -10,8 +10,8 @@ Reactive element's overflow state.
 
 ```vue
 <script>
-import { ref } from 'vue'
 import { useElementOverflow } from '@vueuse/core'
+import { ref } from 'vue'
 
 export default {
   setup() {
