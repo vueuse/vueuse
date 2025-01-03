@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
+import UnoCSS from 'unocss/vite'
 import { defineWorkspace } from 'vitest/config'
 
 export default defineWorkspace([
@@ -8,6 +9,7 @@ export default defineWorkspace([
   {
     extends: 'vitest.config.ts',
     plugins: [
+      UnoCSS(),
       vue(),
     ],
     test: {
