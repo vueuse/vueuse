@@ -11,9 +11,6 @@ const formatted = useDateFormat(useNow(), formatter, { locales: lang })
   <p class="text-20px font-bold text-emerald-500">
     {{ formatted }}
   </p>
-  <p class="text-20px font-bold text-emerald-500">
-    {{ locale }}
-  </p>
   <div class="flex flex-col">
     <span class="mr-5px text-18px">
       Formatter Editor :

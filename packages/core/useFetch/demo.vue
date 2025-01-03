@@ -62,10 +62,10 @@ const text = stringify(reactive({
     </div>
 
     <input v-model="url" type="text">
-    <button @click="execute">
+    <button @click="() => execute()">
       Execute
     </button>
-    <button @click="toggleRefetch">
+    <button @click="() => toggleRefetch()">
       <i v-if="refetch" inline-block align-middle i-carbon-checkmark />
       <i v-else inline-block align-middle i-carbon-error />
 

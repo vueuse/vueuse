@@ -11,7 +11,7 @@ const info = computed(() => functions.find(i => i.name === props.fn))
 
 const allCommits = changelog as CommitInfo[]
 
-const names = computed(() => [props.fn, ...info.value.alias || []])
+const names = computed(() => [props.fn, ...info.value?.alias || []])
 const commits = computed(() => {
   const related = allCommits
     .filter(c => c.version || c.functions?.some(i => names.value.includes(i)))
