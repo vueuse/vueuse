@@ -27,7 +27,7 @@
     "test:cov": "vitest run --coverage",
     "test:browser": "vitest --project browser --workspace=vitest.workspace.ts",
     "test:unit": "vitest --project unit --workspace=vitest.workspace.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "vue-tsc --noEmit",
     "update": "nr -C packages/metadata update && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
     "watch": "pnpm -r --parallel run build --watch",
@@ -107,7 +107,8 @@
     "vitepress": "catalog:",
     "vitest": "catalog:",
     "vitest-browser-vue": "^0.0.1",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "vue-tsc": "^2.2.0"
   },
   "pnpm": {
     "neverBuiltDependencies": [
