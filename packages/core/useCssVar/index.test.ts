@@ -16,16 +16,19 @@ describe('useCssVar', () => {
     expect(variable.value).toBe('red')
   })
 
-  it('should handle null and undefined', () => {
+  it('should handle null and undefined', async () => {
     const el = document.createElement('div')
-    const property = '---color'
+    const property = '--color'
     const variable = useCssVar(property, el)
 
-    expect(window?.getComputedStyle(el).getPropertyValue('--color')).toBe('')
+    expect(el).toMatchInlineSnapshot(`<div />`)
     variable.value = 'red'
-    setTimeout(() => {
-      expect(window?.getComputedStyle(el).getPropertyValue('--color')).toBe('red')
-    }, 100)
+    await nextTick()
+    expect(el).toMatchInlineSnapshot(`
+      <div
+        style="--color: red;"
+      />
+    `)
   })
 
   it('should work observe', async () => {

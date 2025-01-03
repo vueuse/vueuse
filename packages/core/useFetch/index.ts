@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
-import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue'
+import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
+import { computed, isRef, readonly, ref, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -416,9 +416,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       headers: {},
     }
 
-    if (config.payload) {
+    const payload = toValue(config.payload)
+    if (payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
-      const payload = toValue(config.payload)
       // Set the payload to json type only if it's not provided and a literal object or array is provided and the object is not `formData`
       // The only case we can deduce the content type and `fetch` can't
       const proto = Object.getPrototypeOf(payload)

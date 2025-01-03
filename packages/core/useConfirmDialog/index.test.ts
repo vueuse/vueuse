@@ -151,7 +151,7 @@ describe('useConfirmDialog', () => {
 
     setTimeout(() => {
       confirm(true)
-    }, 10)
+    }, 1)
 
     const { data, isCanceled } = await reveal()
 
@@ -171,7 +171,7 @@ describe('useConfirmDialog', () => {
 
     setTimeout(() => {
       cancel(true)
-    }, 10)
+    }, 1)
 
     const { data, isCanceled } = await reveal()
 

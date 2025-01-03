@@ -1,7 +1,7 @@
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
-import { createEventHook, isObject, toRef, toValue, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
-import { ref, watch, watchEffect } from 'vue'
+import { createEventHook, isObject, toRef, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { ref, toValue, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -20,6 +20,11 @@ export interface UseMediaSource {
    * The media codec type
    */
   type?: string
+
+  /**
+   * Specifies the media query for the resource's intended media.
+   */
+  media?: string
 }
 
 export interface UseMediaTextTrackSource {
@@ -265,11 +270,12 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     })
 
     // Add new sources
-    sources.forEach(({ src, type }) => {
+    sources.forEach(({ src, type, media }) => {
       const source = document.createElement('source')
 
       source.setAttribute('src', src)
       source.setAttribute('type', type || '')
+      source.setAttribute('media', media || '')
 
       source.addEventListener('error', sourceErrorEvent.trigger)
 

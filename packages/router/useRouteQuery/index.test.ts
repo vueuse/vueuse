@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue'
+import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
 import { useRouteQuery } from '.'
 
 describe('useRouteQuery', () => {
@@ -61,6 +61,44 @@ describe('useRouteQuery', () => {
 
     expect(route.query.serialized).toBe('{"foo":"baz"}')
     expect(object.value).toEqual({ foo: 'baz' })
+  })
+
+  it('should handle transform with only get', async () => {
+    let route = getRoute({
+      search: 'VUE3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteQuery('search', undefined, {
+      transform: {
+        get: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('VUE3')
+  })
+
+  it('should handle transform with only set', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteQuery('search', undefined, {
+      transform: {
+        set: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    search.value = 'VUE3'
+    expect(search.value).toBe('vue3')
+
+    await nextTick()
+
+    expect(route.query.search).toBe('vue3')
   })
 
   it('should re-evaluate the value immediately', () => {
@@ -210,7 +248,7 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe('2')
   })
 
-  it('should differentiate null and undefined', () => {
+  it('should differentiate null and undefined when reading value', () => {
     let route = getRoute({
       page: 1,
     })
@@ -231,6 +269,26 @@ describe('useRouteQuery', () => {
     const page: Ref<any> = useRouteQuery('page', null, { route, router })
 
     expect(page.value).toBe(1)
+  })
+
+  it('should differentiate null and undefined when writing value', async () => {
+    let route = getRoute({
+      search: 'vue3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search: Ref<any> = useRouteQuery('search', 'default', { route, router })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('vue3')
+
+    search.value = null
+    await nextTick()
+    expect(route.query.search).toBeNull()
+
+    search.value = undefined
+    await nextTick()
+    expect(route.query.search).toBeUndefined()
   })
 
   it('should avoid trigger effects when the value doesn\'t change', async () => {
@@ -332,7 +390,7 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBe('en-US')
   })
 
-  it.each([{ value: 'default' }, { value: null }, { value: undefined }])('should reset value when $value value', async ({ value }) => {
+  it.each([{ value: 'default' }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
     })
@@ -343,7 +401,7 @@ describe('useRouteQuery', () => {
     expect(search.value).toBe('vue3')
     expect(route.query.search).toBe('vue3')
 
-    search.value = value
+    search.value = toValue(value)
 
     await nextTick()
 

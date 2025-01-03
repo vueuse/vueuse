@@ -3,6 +3,7 @@
 .nuxt
 .temp
 *.log
+*.tgz
 components.d.ts
 dist
 index.json
@@ -11,11 +12,15 @@ node_modules
 cache
 packages/*/LICENSE
 packages/contributing.md
-packages/core/README.md
 packages/public/badge-*
-packages/*/index.mjs
+packages/**/*.js
+packages/**/*.[cm]js
+packages/**/*.d.ts
+packages/**/*.d.[cm]ts
 playgrounds/*/pnpm-lock.yaml
 types
 coverage
 .eslintcache
 .vitepress/cache
+
+packages/**/__screenshots__

@@ -22,6 +22,6 @@ export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 20
 
 // alias
 export {
-  refDebounced as useDebounce,
   refDebounced as debouncedRef,
+  refDebounced as useDebounce,
 }

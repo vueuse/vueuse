@@ -1,4 +1,4 @@
-import type { Ref, UnwrapRef } from 'vue'
+import type { Ref, ShallowRef, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
 import { ref, shallowRef } from 'vue'
 
@@ -134,7 +134,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
     execute(delay)
 
   const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
-    state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
+    state: state as Shallow extends true ? ShallowRef<Data> : Ref<UnwrapRef<Data>>,
     isReady,
     isLoading,
     error,
