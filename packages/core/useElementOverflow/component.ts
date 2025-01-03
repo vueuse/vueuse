@@ -1,5 +1,5 @@
-import { defineComponent, h, reactive, ref } from 'vue-demi'
-import { type RenderableComponent, type UseElementOverflowOptions, useElementOverflow } from '@vueuse/core'
+import { type RenderableComponent, useElementOverflow, type UseElementOverflowOptions } from '@vueuse/core'
+import { defineComponent, h, reactive, ref } from 'vue'
 
 export const UseElementOverflow = /* #__PURE__ */ defineComponent<UseElementOverflowOptions & RenderableComponent>({
   name: 'UseElementOverflow',

@@ -1,14 +1,14 @@
-import { effectScope, ref } from 'vue-demi'
+import type { ConfigurableWindow } from '@vueuse/core/_configurable'
+import type { ResizeObserverCallback } from '../useResizeObserver'
 import {
   tryOnMounted,
   tryOnUnmounted,
 } from '@vueuse/shared'
-import type { ConfigurableWindow } from '@vueuse/core/_configurable'
+import { effectScope, ref } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { type MaybeComputedElementRef, unrefElement } from '../unrefElement'
-import type { ResizeObserverCallback } from '../useResizeObserver'
 import { useMutationObserver } from '../useMutationObserver'
 import { useResizeObserver } from '../useResizeObserver'
-import { defaultWindow } from '../_configurable'
 
 export interface UseElementOverflowOptions extends ConfigurableWindow {
   /**
@@ -81,7 +81,9 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
   return {
     isXOverflowed,
     isYOverflowed,
+    // stop effectScope
     stop,
+    // update overflow state immediately
     update: () => {
       const el = unrefElement(target)
       if (el instanceof HTMLElement && window) {
