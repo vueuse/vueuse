@@ -1,7 +1,7 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, shallowRef, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -87,7 +87,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
     }
   }
 
-  const server = ref<undefined | BluetoothRemoteGATTServer>()
+  const server = shallowRef<undefined | BluetoothRemoteGATTServer>()
 
   const isConnected = computed((): boolean => {
     return server.value?.connected || false
@@ -139,6 +139,6 @@ export interface UseBluetoothReturn {
   isConnected: ComputedRef<boolean>
   device: Ref<BluetoothDevice | undefined>
   requestDevice: () => Promise<void>
-  server: Ref<BluetoothRemoteGATTServer | undefined>
+  server: ShallowRef<BluetoothRemoteGATTServer | undefined>
   error: Ref<unknown | null>
 }
