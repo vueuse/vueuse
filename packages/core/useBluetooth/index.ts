@@ -1,7 +1,7 @@
-import type { ComputedRef, Ref, ShallowRef } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, shallowRef, watch } from 'vue'
+import { ref, shallowRef, watch } from 'vue'
 
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -55,7 +55,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
   const isSupported = useSupported(() => navigator && 'bluetooth' in navigator)
 
-  const device = shallowRef<undefined | BluetoothDevice>(undefined)
+  const device = shallowRef<undefined | BluetoothDevice>()
 
   const error = shallowRef<unknown | null>(null)
 
@@ -88,22 +88,26 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
   }
 
   const server = shallowRef<undefined | BluetoothRemoteGATTServer>()
+  const isConnected = ref(false)
 
-  const isConnected = computed((): boolean => {
-    return server.value?.connected || false
-  })
+  function reset() {
+    isConnected.value = false
+    device.value = undefined
+    server.value = undefined
+  }
 
   async function connectToBluetoothGATTServer() {
     // Reset any errors we currently have:
     error.value = null
 
     if (device.value && device.value.gatt) {
-      // Add callback to gattserverdisconnected event:
-      device.value.addEventListener('gattserverdisconnected', () => {})
+      // Add reset fn to gattserverdisconnected event:
+      device.value.addEventListener('gattserverdisconnected', reset)
 
       try {
         // Connect to the device:
         server.value = await device.value.gatt.connect()
+        isConnected.value = server.value.connected
       }
       catch (err) {
         error.value = err
@@ -136,7 +140,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
 export interface UseBluetoothReturn {
   isSupported: Ref<boolean>
-  isConnected: ComputedRef<boolean>
+  isConnected: Ref<boolean>
   device: Ref<BluetoothDevice | undefined>
   requestDevice: () => Promise<void>
   server: ShallowRef<BluetoothRemoteGATTServer | undefined>
