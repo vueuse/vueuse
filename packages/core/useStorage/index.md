@@ -17,6 +17,9 @@ When using with Nuxt 3, this function will **NOT** be auto imported in favor of 
 
 ```js
 import { useStorage } from '@vueuse/core'
+import { ref } from 'vue'
+
+const key = ref('key')
 
 // bind object
 const state = useStorage('my-store', { hello: 'hi', greeting: 'Hello' })
@@ -29,6 +32,12 @@ const count = useStorage('my-count', 0) // returns Ref<number>
 
 // bind string with SessionStorage
 const id = useStorage('my-id', 'some-string-id', sessionStorage) // returns Ref<string>
+
+// set a reactive value as key
+const value = useStorage(key, 'your-value')
+
+// change the reactive key - the returned value will be taken from storage, otherwise from the default value
+key.value = 'new-key'
 
 // delete data from storage
 state.value = null
