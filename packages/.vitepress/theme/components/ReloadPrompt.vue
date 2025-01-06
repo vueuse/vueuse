@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// @ts-expect-error missing types
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 const {
