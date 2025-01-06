@@ -97,7 +97,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   const isLoading = ref(false)
   const error = shallowRef<unknown | undefined>(undefined)
 
-  async function execute(delay = 0, ...args: Params) {
+  async function execute(delay = 0, ...args: any[]) {
     if (resetOnExecute)
       state.value = initialState
     error.value = undefined
@@ -131,7 +131,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   }
 
   if (immediate) {
-    execute(delay, ...([] as unknown as Params))
+    execute(delay)
   }
 
   const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
