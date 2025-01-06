@@ -63,6 +63,12 @@ catalogs:
     '@vite-pwa/vitepress':
       specifier: ^0.5.3
       version: 0.5.3
+    '@vitejs/plugin-vue':
+      specifier: ^5.2.1
+      version: 5.2.1
+    '@vitest/browser':
+      specifier: ^2.1.8
+      version: 2.1.8
     '@vitest/coverage-v8':
       specifier: ^2.1.8
       version: 2.1.8
@@ -165,6 +171,9 @@ catalogs:
     ofetch:
       specifier: ^1.4.1
       version: 1.4.1
+    playwright:
+      specifier: ^1.49.1
+      version: 1.49.1
     pnpm:
       specifier: ^9.15.2
       version: 9.15.2
@@ -246,9 +255,15 @@ catalogs:
     vitest:
       specifier: ^2.1.8
       version: 2.1.8
+    vitest-browser-vue:
+      specifier: ^0.0.1
+      version: 0.0.1
     vue-router:
       specifier: ^4.5.0
       version: 4.5.0
+    vue-tsc:
+      specifier: ^2.2.0
+      version: 2.2.0
 
 overrides:
   '@typescript-eslint/utils': ^8.19.0
@@ -310,10 +325,10 @@ importers:
         specifier: 'catalog:'
         version: 0.5.3(vite-plugin-pwa@0.19.0(vite@6.0.6(@types/node@22.10.3)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.2)(yaml@2.6.1))(workbox-build@7.0.0)(workbox-window@7.0.0))
       '@vitejs/plugin-vue':
-        specifier: ^5.2.1
+        specifier: 'catalog:'
         version: 5.2.1(vite@6.0.6(@types/node@22.10.3)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.2)(yaml@2.6.1))(vue@3.5.13(typescript@5.7.2))
       '@vitest/browser':
-        specifier: ^2.1.8
+        specifier: 'catalog:'
         version: 2.1.8(@types/node@22.10.3)(playwright@1.49.1)(typescript@5.7.2)(vite@6.0.6(@types/node@22.10.3)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.2)(yaml@2.6.1))(vitest@2.1.8)
       '@vitest/coverage-v8':
         specifier: 'catalog:'
@@ -412,7 +427,7 @@ importers:
         specifier: 'catalog:'
         version: 1.4.1
       playwright:
-        specifier: ^1.49.1
+        specifier: 'catalog:'
         version: 1.49.1
       pnpm:
         specifier: 'catalog:'
@@ -487,13 +502,13 @@ importers:
         specifier: 'catalog:'
         version: 2.1.8(@types/node@22.10.3)(@vitest/browser@2.1.8)(@vitest/ui@2.1.8)(jiti@2.4.2)(jsdom@25.0.1)(msw@2.3.0(typescript@5.7.2))(terser@5.24.0)(tsx@4.19.2)(yaml@2.6.1)
       vitest-browser-vue:
-        specifier: ^0.0.1
+        specifier: 'catalog:'
         version: 0.0.1(@vitest/browser@2.1.8)(vitest@2.1.8)(vue@3.5.13(typescript@5.7.2))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.7.2)
       vue-tsc:
-        specifier: ^2.2.0
+        specifier: 'catalog:'
         version: 2.2.0(typescript@5.7.2)
 
   packages/components:
@@ -3272,14 +3287,8 @@ packages:
   '@volar/language-core@2.4.11':
     resolution: {integrity: sha512-lN2C1+ByfW9/JRPpqScuZt/4OrUUse57GLI6TbLgTIqBVemdl1wNcZ1qYGEo2+Gw8coYLgCy7SuKqn6IrQcQgg==}
 
-  '@volar/language-core@2.4.4':
-    resolution: {integrity: sha512-kO9k4kTLfxpg+6lq7/KAIv3m2d62IHuCL6GbVgYZTpfKvIGoAIlDxK7pFcB/eczN2+ydg/vnyaeZ6SGyZrJw2w==}
-
   '@volar/source-map@2.4.11':
     resolution: {integrity: sha512-ZQpmafIGvaZMn/8iuvCFGrW3smeqkq/IIh9F1SdSx9aUl0J4Iurzd6/FhmjNO5g2ejF3rT45dKskgXWiofqlZQ==}
-
-  '@volar/source-map@2.4.4':
-    resolution: {integrity: sha512-xG3PZqOP2haG8XG4Pg3PD1UGDAdqZg24Ru8c/qYjYAnmcj6GBR64mstx+bZux5QOyRaJK+/lNM/RnpvBD3489g==}
 
   '@volar/typescript@2.4.11':
     resolution: {integrity: sha512-2DT+Tdh88Spp5PyPbqhyoYavYCPDsqbHLFwcUI9K1NlY1YgUJvujGdrqUp0zWxnW7KWNTr3xSpMuv2WnaTKDAw==}
@@ -11055,13 +11064,7 @@ snapshots:
     dependencies:
       '@volar/source-map': 2.4.11
 
-  '@volar/language-core@2.4.4':
-    dependencies:
-      '@volar/source-map': 2.4.4
-
   '@volar/source-map@2.4.11': {}
-
-  '@volar/source-map@2.4.4': {}
 
   '@volar/typescript@2.4.11':
     dependencies:
@@ -11181,7 +11184,7 @@ snapshots:
 
   '@vue/language-core@2.1.6(typescript@5.7.2)':
     dependencies:
-      '@volar/language-core': 2.4.4
+      '@volar/language-core': 2.4.11
       '@vue/compiler-dom': 3.5.13
       '@vue/compiler-vue2': 2.7.16
       '@vue/shared': 3.5.13

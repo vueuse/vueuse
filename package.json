@@ -47,8 +47,8 @@
     "@types/remove-markdown": "catalog:",
     "@types/semver": "catalog:",
     "@vite-pwa/vitepress": "catalog:",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vitest/browser": "^2.1.8",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitest/browser": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "@vue/compiler-sfc": "catalog:",
@@ -81,7 +81,7 @@
     "node-fetch": "catalog:",
     "node-fetch-native": "catalog:",
     "ofetch": "catalog:",
-    "playwright": "^1.49.1",
+    "playwright": "catalog:",
     "pnpm": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
@@ -106,9 +106,9 @@
     "vite-plugin-inspect": "catalog:",
     "vitepress": "catalog:",
     "vitest": "catalog:",
-    "vitest-browser-vue": "^0.0.1",
+    "vitest-browser-vue": "catalog:",
     "vue": "catalog:",
-    "vue-tsc": "^2.2.0"
+    "vue-tsc": "catalog:"
   },
   "pnpm": {
     "neverBuiltDependencies": [
@@ -135,7 +135,7 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,vue,md}": [
+    "*.{js,ts,tsx,vue,md,json}": [
       "eslint --cache --fix"
     ]
   }
