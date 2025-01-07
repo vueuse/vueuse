@@ -10,6 +10,7 @@ import { useEventListener } from '../useEventListener'
 export interface UseDropZoneReturn {
   files: Ref<File[] | null>
   isOverDropZone: Ref<boolean>
+  isOverDropZoneWithInvalidFile: Ref<boolean>
 }
 
 export interface UseDropZoneOptions {
@@ -37,6 +38,7 @@ export function useDropZone(
   options: UseDropZoneOptions | UseDropZoneOptions['onDrop'] = {},
 ): UseDropZoneReturn {
   const isOverDropZone = ref(false)
+  const isOverDropZoneWithInvalidFile = ref(false)
   const files = shallowRef<File[] | null>(null)
   let counter = 0
   let isValid = true
@@ -94,6 +96,15 @@ export function useDropZone(
         if (event.dataTransfer) {
           event.dataTransfer.dropEffect = 'none'
         }
+        switch (eventType) {
+          case 'enter':
+            isOverDropZoneWithInvalidFile.value = true
+            break
+          case 'leave':
+          case 'drop':
+            isOverDropZoneWithInvalidFile.value = false
+            break
+        }
         return
       }
 
@@ -139,5 +150,6 @@ export function useDropZone(
   return {
     files,
     isOverDropZone,
+    isOverDropZoneWithInvalidFile,
   }
 }
