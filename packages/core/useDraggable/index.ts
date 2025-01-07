@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs } from '@vueuse/shared'
-import { computed, ref, toValue } from 'vue'
+import { computed, ref, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -111,6 +111,72 @@ export interface UseDraggableOptions {
    * @default [0]
    */
   buttons?: MaybeRefOrGetter<number[]>
+
+  /**
+   * Whether to restrict dragging within the container.
+   *
+   * @default false
+   */
+  restrictInContainer?: MaybeRefOrGetter<boolean>
+
+  /**
+   * Whether to enable auto-scroll when dragging near the edges.
+   *
+   * @default false
+   */
+  autoScroll?: MaybeRefOrGetter<boolean>
+
+  /**
+   * Speed of auto-scroll.
+   *
+   * @default 1
+   */
+  scrollSpeed?: MaybeRefOrGetter<number>
+
+  /**
+   * Margin from the edge to trigger auto-scroll.
+   *
+   * @default 30
+   */
+  scrollMargin?: MaybeRefOrGetter<number>
+
+  /**
+   * Direction of auto-scroll.
+   *
+   * @default 'both'
+   */
+  scrollDirection?: 'x' | 'y' | 'both'
+}
+
+function handleAutoScroll(
+  container: HTMLElement | SVGElement,
+  targetRect: DOMRect,
+  position: Position,
+  scrollSpeed: number,
+  scrollMargin: number,
+  direction: 'x' | 'y' | 'both',
+) {
+  const { clientWidth, clientHeight } = container
+  let deltaX = 0
+  let deltaY = 0
+
+  if ((direction === 'x' || direction === 'both')) {
+    if (position.x <= scrollMargin)
+      deltaX = -scrollSpeed
+    else if ((position.x + targetRect.width >= clientWidth - scrollMargin))
+      deltaX = scrollSpeed
+  }
+
+  if ((direction === 'y' || direction === 'both')) {
+    if (position.y <= scrollMargin)
+      deltaY = -scrollSpeed
+    else if ((position.y + targetRect.height >= clientHeight - scrollMargin))
+      deltaY = scrollSpeed
+  }
+
+  if (deltaX || deltaY) {
+    container.scrollBy({ left: deltaX, top: deltaY, behavior: 'auto' })
+  }
 }
 
 /**
@@ -138,6 +204,11 @@ export function useDraggable(
     containerElement,
     handle: draggingHandle = target,
     buttons = [0],
+    restrictInContainer,
+    autoScroll = false,
+    scrollSpeed = 2,
+    scrollMargin = 30,
+    scrollDirection = 'both',
   } = options
 
   const position = ref<Position>(
@@ -159,6 +230,64 @@ export function useDraggable(
       e.stopPropagation()
   }
 
+  const intervalId = ref<NodeJS.Timeout | null>(null)
+  const startAutoScroll = () => {
+    const container = toValue(containerElement)
+    if (container && !intervalId.value) {
+      intervalId.value = setInterval(() => {
+        const targetRect = toValue(target)!.getBoundingClientRect()
+        const { x, y } = position.value
+        let adjustedX = x - container.scrollLeft
+        let adjustedY = y - container.scrollTop
+        if (adjustedX >= 0 && adjustedY >= 0) {
+          handleAutoScroll(
+            container,
+            targetRect,
+            { x: adjustedX, y: adjustedY },
+            toValue(scrollSpeed),
+            toValue(scrollMargin),
+            toValue(scrollDirection),
+          )
+          adjustedX += container.scrollLeft
+          adjustedY += container.scrollTop
+          position.value = {
+            x: adjustedX,
+            y: adjustedY,
+          }
+        }
+      }, 1000 / 60)
+    }
+  }
+  const stopAutoScroll = () => {
+    if (intervalId.value) {
+      clearInterval(intervalId.value)
+      intervalId.value = null
+    }
+  }
+  const checkAutoScroll = () => {
+    if (toValue(options.disabled) || !pressedDelta.value)
+      return
+    const container = toValue(containerElement)
+    if (!container)
+      return
+
+    const isInScrollableArea
+      = (container.scrollLeft > 0
+        && container.scrollLeft + 1
+        < container.scrollWidth - container.clientWidth)
+      || (container.scrollTop > 0
+        && container.scrollTop + 1
+        < container.scrollHeight - container.clientHeight)
+
+    if (isInScrollableArea)
+      startAutoScroll()
+    else stopAutoScroll()
+  }
+
+  if (toValue(autoScroll)) {
+    watch(position, checkAutoScroll)
+  }
+
   const start = (e: PointerEvent) => {
     if (!toValue(buttons).includes(e.button))
       return
@@ -171,8 +300,8 @@ export function useDraggable(
     const containerRect = container?.getBoundingClientRect?.()
     const targetRect = toValue(target)!.getBoundingClientRect()
     const pos = {
-      x: e.clientX - (container ? targetRect.left - containerRect!.left + container.scrollLeft : targetRect.left),
-      y: e.clientY - (container ? targetRect.top - containerRect!.top + container.scrollTop : targetRect.top),
+      x: e.clientX - (container ? targetRect.left - containerRect!.left + (autoScroll ? 0 : container.scrollLeft) : targetRect.left),
+      y: e.clientY - (container ? targetRect.top - containerRect!.top + (autoScroll ? 0 : container.scrollTop) : targetRect.top),
     }
     if (onStart?.(pos, e) === false)
       return
@@ -198,6 +327,30 @@ export function useDraggable(
       if (container)
         y = Math.min(Math.max(0, y), container.scrollHeight - targetRect!.height)
     }
+
+    if (toValue(autoScroll) && container) {
+      handleAutoScroll(container, targetRect, { x, y }, toValue(scrollSpeed), toValue(scrollMargin), toValue(scrollDirection))
+      x += container.scrollLeft
+      y += container.scrollTop
+    }
+
+    if (container && (restrictInContainer || autoScroll)) {
+      if (axis !== 'y') {
+        const offsetX = x - container.scrollLeft
+        if (offsetX < 0)
+          x = container.scrollLeft
+        else if (offsetX > container.clientWidth - targetRect.width)
+          x = container.clientWidth - targetRect.width + container.scrollLeft
+      }
+      if (axis !== 'x') {
+        const offsetY = y - container.scrollTop
+        if (offsetY < 0)
+          y = container.scrollTop
+        else if (offsetY > container.clientHeight - targetRect.height)
+          y = container.clientHeight - targetRect.height + container.scrollTop
+      }
+    }
+
     position.value = {
       x,
       y,
@@ -211,6 +364,8 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
     pressedDelta.value = undefined
+    if (autoScroll)
+      stopAutoScroll()
     onEnd?.(position.value, e)
     handleEvent(e)
   }
@@ -226,9 +381,11 @@ export function useDraggable(
     ...toRefs(position),
     position,
     isDragging: computed(() => !!pressedDelta.value),
-    style: computed(
-      () => `left:${position.value.x}px;top:${position.value.y}px;`,
-    ),
+    style: computed(() => `
+      left: ${position.value.x}px;
+      top: ${position.value.y}px;
+      ${autoScroll ? 'text-wrap: nowrap;' : ''}
+    `),
   }
 }
 
