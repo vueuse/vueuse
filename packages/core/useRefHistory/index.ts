@@ -51,7 +51,7 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends Configurabl
    * @param newValue New value
    * @returns boolean indicating if commit should proceed
    */
-  beforeCommit?: (oldValue: Raw, newValue: Raw) => boolean
+  beforeCommit?: (oldValue: Serialized | undefined, newValue: Raw) => boolean
 }
 
 export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistoryReturn<Raw, Serialized> {
@@ -148,7 +148,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
     if (beforeCommit) {
       const history = manualHistory.history.value
-      const lastValue = history.length > 0 ? history[history.length - 1] : undefined
+      const lastValue = history.length > 0 ? history[history.length - 1].snapshot : undefined
       if (!beforeCommit(lastValue, source.value))
         return
     }
