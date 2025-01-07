@@ -99,6 +99,10 @@ export function useDropZone(
         switch (eventType) {
           case 'enter':
             isOverDropZoneWithInvalidFile.value = true
+            _options.onEnter?.(null, event)
+            break
+          case 'over':
+            _options.onOver?.(null, event)
             break
           case 'leave':
           case 'drop':
