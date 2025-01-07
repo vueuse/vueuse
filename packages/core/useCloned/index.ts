@@ -24,6 +24,10 @@ export interface UseClonedReturn<T> {
    */
   cloned: Ref<T>
   /**
+   * IsCloneModified ref
+   */
+  isCloneModified: Ref<boolean>
+  /**
    * Sync cloned data with source manually
    */
   sync: () => void
@@ -40,6 +44,7 @@ export function useCloned<T>(
   options: UseClonedOptions = {},
 ): UseClonedReturn<T> {
   const cloned = ref({} as T) as Ref<T>
+  const isCloneModified = ref<boolean>(false)
   const {
     manual,
     clone = cloneFnJSON,
@@ -63,5 +68,13 @@ export function useCloned<T>(
     sync()
   }
 
-  return { cloned, sync }
+  const { stop } = watch(cloned, () => {
+    isCloneModified.value = true
+    stop()
+  }, {
+    deep: true,
+    flush: 'sync',
+  })
+
+  return { cloned, isCloneModified, sync }
 }
