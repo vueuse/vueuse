@@ -148,37 +148,6 @@ export interface UseDraggableOptions {
   scrollDirection?: 'x' | 'y' | 'both'
 }
 
-function handleAutoScroll(
-  container: HTMLElement | SVGElement,
-  targetRect: DOMRect,
-  position: Position,
-  scrollSpeed: number,
-  scrollMargin: number,
-  direction: 'x' | 'y' | 'both',
-) {
-  const { clientWidth, clientHeight } = container
-  let deltaX = 0
-  let deltaY = 0
-
-  if ((direction === 'x' || direction === 'both')) {
-    if (position.x <= scrollMargin)
-      deltaX = -scrollSpeed
-    else if ((position.x + targetRect.width >= clientWidth - scrollMargin))
-      deltaX = scrollSpeed
-  }
-
-  if ((direction === 'y' || direction === 'both')) {
-    if (position.y <= scrollMargin)
-      deltaY = -scrollSpeed
-    else if ((position.y + targetRect.height >= clientHeight - scrollMargin))
-      deltaY = scrollSpeed
-  }
-
-  if (deltaX || deltaY) {
-    container.scrollBy({ left: deltaX, top: deltaY, behavior: 'auto' })
-  }
-}
-
 /**
  * Make elements draggable.
  *
@@ -228,6 +197,37 @@ export function useDraggable(
       e.preventDefault()
     if (toValue(stopPropagation))
       e.stopPropagation()
+  }
+
+  const handleAutoScroll = (
+    container: HTMLElement | SVGElement,
+    targetRect: DOMRect,
+    position: Position,
+    scrollSpeed: number,
+    scrollMargin: number,
+    direction: 'x' | 'y' | 'both',
+  ) => {
+    const { clientWidth, clientHeight } = container
+    let deltaX = 0
+    let deltaY = 0
+
+    if ((direction === 'x' || direction === 'both')) {
+      if (position.x <= scrollMargin)
+        deltaX = -scrollSpeed
+      else if ((position.x + targetRect.width >= clientWidth - scrollMargin))
+        deltaX = scrollSpeed
+    }
+
+    if ((direction === 'y' || direction === 'both')) {
+      if (position.y <= scrollMargin)
+        deltaY = -scrollSpeed
+      else if ((position.y + targetRect.height >= clientHeight - scrollMargin))
+        deltaY = scrollSpeed
+    }
+
+    if (deltaX || deltaY) {
+      container.scrollBy({ left: deltaX, top: deltaY, behavior: 'auto' })
+    }
   }
 
   const intervalId = ref<NodeJS.Timeout | null>(null)
