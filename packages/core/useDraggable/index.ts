@@ -131,14 +131,14 @@ export interface UseDraggableOptions {
    *
    * @default 1
    */
-  scrollSpeed?: MaybeRefOrGetter<number>
+  scrollSpeed?: MaybeRefOrGetter<number | Position>
 
   /**
    * Margin from the edge to trigger auto-scroll.
    *
    * @default 30
    */
-  scrollMargin?: MaybeRefOrGetter<number>
+  scrollMargin?: MaybeRefOrGetter<number | Position>
 
   /**
    * Direction of auto-scroll.
@@ -203,26 +203,33 @@ export function useDraggable(
     container: HTMLElement | SVGElement,
     targetRect: DOMRect,
     position: Position,
-    scrollSpeed: number,
-    scrollMargin: number,
+    scrollSpeed: number | Position,
+    scrollMargin: number | Position,
     direction: 'x' | 'y' | 'both',
   ) => {
     const { clientWidth, clientHeight } = container
+
+    const getAxisValues = (value: number | Position): [number, number] =>
+      typeof value === 'number' ? [value, value] : [value.x, value.y]
+
+    const [marginX, marginY] = getAxisValues(scrollMargin)
+    const [speedX, speedY] = getAxisValues(scrollSpeed)
+
     let deltaX = 0
     let deltaY = 0
 
-    if ((direction === 'x' || direction === 'both')) {
-      if (position.x <= scrollMargin)
-        deltaX = -scrollSpeed
-      else if ((position.x + targetRect.width >= clientWidth - scrollMargin))
-        deltaX = scrollSpeed
+    if (direction === 'x' || direction === 'both') {
+      if (position.x <= marginX)
+        deltaX = -speedX
+      else if (position.x + targetRect.width >= clientWidth - marginX)
+        deltaX = speedX
     }
 
-    if ((direction === 'y' || direction === 'both')) {
-      if (position.y <= scrollMargin)
-        deltaY = -scrollSpeed
-      else if ((position.y + targetRect.height >= clientHeight - scrollMargin))
-        deltaY = scrollSpeed
+    if (direction === 'y' || direction === 'both') {
+      if (position.y <= marginY)
+        deltaY = -speedY
+      else if (position.y + targetRect.height >= clientHeight - marginY)
+        deltaY = speedY
     }
 
     if (deltaX || deltaY) {
