@@ -44,4 +44,31 @@ describe('watchDebounced', () => {
     expect(cb).toHaveBeenCalledTimes(2)
     expect(cb).toHaveBeenCalledWith(4, 2, expect.anything())
   })
+
+  it.todo('should work with constant changes over multiple maxWaits', async () => {
+    vi.useFakeTimers()
+    const num = ref(0)
+    const cb = vi.fn()
+
+    const constantUpdateOverTime = async (ms: number) => {
+      for (let i = 0; i < ms; i++) {
+        num.value += 1
+        await vi.advanceTimersByTimeAsync(1)
+      }
+    }
+    watchDebounced(num, cb, { debounce: 10, maxWait: 50 })
+    expect(cb).toHaveBeenCalledTimes(0)
+    await constantUpdateOverTime(49)
+    expect(cb).toHaveBeenCalledTimes(0)
+    await constantUpdateOverTime(1)
+    expect(cb).toHaveBeenCalledTimes(1)
+    await constantUpdateOverTime(50)
+    expect(cb).toHaveBeenCalledTimes(2)
+    await constantUpdateOverTime(50)
+
+    expect(cb).toHaveBeenCalledTimes(3)
+    expect(cb.mock.calls[0][0]).toBe(50) // or 51
+    expect(cb.mock.calls[1][0]).toBe(100) // or 101
+    expect(cb.mock.calls[2][0]).toBe(150) // or 151
+  })
 })
