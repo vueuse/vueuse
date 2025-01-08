@@ -113,11 +113,14 @@ export interface UseDraggableOptions {
   buttons?: MaybeRefOrGetter<number[]>
 
   /**
-   * Whether to restrict dragging within the container.
+   * Whether to restrict dragging within the visible area of the container.
+   *
+   * If enabled, the draggable element will not leave the visible area of its container,
+   * ensuring it remains within the viewport of the container during the drag.
    *
    * @default false
    */
-  restrictInContainer?: MaybeRefOrGetter<boolean>
+  restrictInView?: MaybeRefOrGetter<boolean>
 
   /**
    * Whether to enable auto-scroll when dragging near the edges.
@@ -173,7 +176,7 @@ export function useDraggable(
     containerElement,
     handle: draggingHandle = target,
     buttons = [0],
-    restrictInContainer,
+    restrictInView,
     autoScroll = false,
     scrollSpeed = 2,
     scrollMargin = 30,
@@ -341,7 +344,7 @@ export function useDraggable(
       y += container.scrollTop
     }
 
-    if (container && (restrictInContainer || autoScroll)) {
+    if (container && (restrictInView || autoScroll)) {
       if (axis !== 'y') {
         const offsetX = x - container.scrollLeft
         if (offsetX < 0)
