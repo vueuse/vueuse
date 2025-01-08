@@ -45,7 +45,7 @@ export function useCloned<T>(
 ): UseClonedReturn<T> {
   const cloned = ref({} as T) as Ref<T>
   const isModified = ref<boolean>(false)
-  const _isSync = ref<boolean>(false)
+  let _isSync = false
   const {
     manual,
     clone = cloneFnJSON,
@@ -54,22 +54,20 @@ export function useCloned<T>(
     immediate = true,
   } = options
 
-  const { resume, pause } = watch(cloned, () => {
-    if (_isSync.value)
-      return _isSync.value = false
+  watch(cloned, () => {
+    if (_isSync)
+      return _isSync = false
     isModified.value = true
-    pause()
   }, {
     deep: true,
     flush: 'sync',
   })
 
   function sync() {
-    _isSync.value = true
+    _isSync = true
     isModified.value = false
 
     cloned.value = clone(toValue(source))
-    resume()
   }
 
   if (!manual && (isRef(source) || typeof source === 'function')) {
