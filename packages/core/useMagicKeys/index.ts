@@ -147,8 +147,8 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }, { passive })
 
   // #1350
-  useEventListener('blur', reset, { passive: true })
-  useEventListener('focus', reset, { passive: true })
+  useEventListener('blur', reset, { passive })
+  useEventListener('focus', reset, { passive })
 
   const proxy = new Proxy(
     refs,

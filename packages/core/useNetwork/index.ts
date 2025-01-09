@@ -92,20 +92,22 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
     }
   }
 
+  const listenerOptions = { passive: true }
+
   if (window) {
     useEventListener(window, 'offline', () => {
       isOnline.value = false
       offlineAt.value = Date.now()
-    })
+    }, listenerOptions)
 
     useEventListener(window, 'online', () => {
       isOnline.value = true
       onlineAt.value = Date.now()
-    })
+    }, listenerOptions)
   }
 
   if (connection)
-    useEventListener(connection, 'change', updateNetworkInformation, false)
+    useEventListener(connection, 'change', updateNetworkInformation, listenerOptions)
 
   updateNetworkInformation()
 

@@ -32,7 +32,7 @@ export function useScreenSafeArea() {
 
     update()
 
-    useEventListener('resize', useDebounceFn(update))
+    useEventListener('resize', useDebounceFn(update), { passive: true })
   }
 
   function update() {

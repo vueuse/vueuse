@@ -78,7 +78,7 @@ export function usePermission(
     state.value = permissionStatus.value?.state ?? 'prompt'
   }
 
-  useEventListener(permissionStatus, 'change', update)
+  useEventListener(permissionStatus, 'change', update, { passive: true })
 
   const query = createSingletonPromise(async () => {
     if (!isSupported.value)

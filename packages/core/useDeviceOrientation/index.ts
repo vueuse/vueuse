@@ -28,7 +28,7 @@ export function useDeviceOrientation(options: ConfigurableWindow = {}) {
       alpha.value = event.alpha
       beta.value = event.beta
       gamma.value = event.gamma
-    })
+    }, { passive: true })
   }
 
   return {

@@ -97,7 +97,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   read()
 
   if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)))
+    useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)), { passive: true })
 
   if (storage) {
     watchWithFilter(

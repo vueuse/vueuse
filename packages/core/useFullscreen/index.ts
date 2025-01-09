@@ -156,8 +156,9 @@ export function useFullscreen(
       isFullscreen.value = isElementFullScreenValue
   }
 
-  useEventListener(document, eventHandlers, handlerCallback, false)
-  useEventListener(() => unrefElement(targetRef), eventHandlers, handlerCallback, false)
+  const listenerOptions = { capture: false, passive: true }
+  useEventListener(document, eventHandlers, handlerCallback, listenerOptions)
+  useEventListener(() => unrefElement(targetRef), eventHandlers, handlerCallback, listenerOptions)
 
   if (autoExit)
     tryOnScopeDispose(exit)

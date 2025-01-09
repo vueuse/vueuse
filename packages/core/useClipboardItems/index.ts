@@ -65,7 +65,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   }
 
   if (isSupported.value && read)
-    useEventListener(['copy', 'cut'], updateContent)
+    useEventListener(['copy', 'cut'], updateContent, { passive: true })
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {

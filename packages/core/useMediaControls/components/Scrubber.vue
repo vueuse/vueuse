@@ -15,7 +15,7 @@ const scrubber = ref()
 const scrubbing = ref(false)
 const pendingValue = ref(0)
 
-useEventListener('mouseup', () => scrubbing.value = false)
+useEventListener('mouseup', () => scrubbing.value = false, { passive: true })
 
 const value = useVModel(props, 'modelValue', emit)
 const { elementX, elementWidth } = useMouseInElement(scrubber)

@@ -140,7 +140,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
           handler(event as any)
         }
       }, 0)
-    }),
+    }, { passive: true }),
   ].filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())
