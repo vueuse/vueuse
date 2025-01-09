@@ -240,11 +240,11 @@ export function useDraggable(
     }
   }
 
-  const intervalId = ref<NodeJS.Timeout | null>(null)
+  let autoScrollInterval: ReturnType<typeof setInterval> | null = null
   const startAutoScroll = () => {
     const container = toValue(containerElement)
-    if (container && !intervalId.value) {
-      intervalId.value = setInterval(() => {
+    if (container && !autoScrollInterval) {
+      autoScrollInterval = setInterval(() => {
         const targetRect = toValue(target)!.getBoundingClientRect()
         const { x, y } = position.value
         let adjustedX = x - container.scrollLeft
@@ -269,9 +269,9 @@ export function useDraggable(
     }
   }
   const stopAutoScroll = () => {
-    if (intervalId.value) {
-      clearInterval(intervalId.value)
-      intervalId.value = null
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval)
+      autoScrollInterval = null
     }
   }
   const checkAutoScroll = () => {
