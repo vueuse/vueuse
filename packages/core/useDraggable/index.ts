@@ -339,7 +339,9 @@ export function useDraggable(
     }
 
     if (toValue(autoScroll) && container) {
-      handleAutoScroll(container, targetRect, { x, y }, toValue(scrollSpeed), toValue(scrollMargin), toValue(scrollDirection))
+      if (autoScrollInterval === null)
+        handleAutoScroll(container, targetRect, { x, y }, toValue(scrollSpeed), toValue(scrollMargin), toValue(scrollDirection))
+
       x += container.scrollLeft
       y += container.scrollTop
     }
