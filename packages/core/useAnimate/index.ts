@@ -1,5 +1,5 @@
 import type { MaybeRef, Mutable } from '@vueuse/shared'
-import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue'
+import type { ComputedRef, ShallowRef, WritableComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
@@ -43,7 +43,7 @@ export interface UseAnimateOptions extends KeyframeAnimationOptions, Configurabl
 export type UseAnimateKeyframes = MaybeRef<Keyframe[] | PropertyIndexedKeyframes | null>
 
 export interface UseAnimateReturn {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   animate: ShallowRef<Animation | undefined>
   play: () => void
   pause: () => void
