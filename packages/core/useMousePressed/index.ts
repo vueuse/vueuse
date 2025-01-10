@@ -93,6 +93,7 @@ export function useMousePressed(options: MousePressedOptions = {}) {
   }
 
   const target = computed(() => unrefElement(options.target) || window)
+
   const listenerOptions = { passive: true, capture }
   useEventListener<MouseEvent>(target, 'mousedown', onPressed('mouse'), listenerOptions)
 

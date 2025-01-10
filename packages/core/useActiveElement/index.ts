@@ -55,12 +55,22 @@ export function useActiveElement<T extends HTMLElement>(
       passive: true,
     }
 
-    useEventListener(window, 'blur', (event) => {
-      if (event.relatedTarget !== null)
-        return
-      trigger()
-    }, listenerOptions)
-    useEventListener(window, 'focus', trigger, listenerOptions)
+    useEventListener(
+      window,
+      'blur',
+      (event) => {
+        if (event.relatedTarget !== null)
+          return
+        trigger()
+      },
+      listenerOptions,
+    )
+    useEventListener(
+      window,
+      'focus',
+      trigger,
+      listenerOptions,
+    )
   }
 
   if (triggerOnRemoval) {

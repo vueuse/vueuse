@@ -396,36 +396,116 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   const listenerOptions = { passive: true }
 
-  useEventListener(target, 'timeupdate', () => ignoreCurrentTimeUpdates(() => currentTime.value = (toValue(target))!.currentTime), listenerOptions)
-  useEventListener(target, 'durationchange', () => duration.value = (toValue(target))!.duration, listenerOptions)
-  useEventListener(target, 'progress', () => buffered.value = timeRangeToArray((toValue(target))!.buffered), listenerOptions)
-  useEventListener(target, 'seeking', () => seeking.value = true, listenerOptions)
-  useEventListener(target, 'seeked', () => seeking.value = false, listenerOptions)
-  useEventListener(target, ['waiting', 'loadstart'], () => {
-    waiting.value = true
-    ignorePlayingUpdates(() => playing.value = false)
-  }, listenerOptions)
-  useEventListener(target, 'loadeddata', () => waiting.value = false, listenerOptions)
-  useEventListener(target, 'playing', () => {
-    waiting.value = false
-    ended.value = false
-    ignorePlayingUpdates(() => playing.value = true)
-  }, listenerOptions)
-  useEventListener(target, 'ratechange', () => rate.value = (toValue(target))!.playbackRate, listenerOptions)
-  useEventListener(target, 'stalled', () => stalled.value = true, listenerOptions)
-  useEventListener(target, 'ended', () => ended.value = true, listenerOptions)
-  useEventListener(target, 'pause', () => ignorePlayingUpdates(() => playing.value = false), listenerOptions)
-  useEventListener(target, 'play', () => ignorePlayingUpdates(() => playing.value = true), listenerOptions)
-  useEventListener(target, 'enterpictureinpicture', () => isPictureInPicture.value = true, listenerOptions)
-  useEventListener(target, 'leavepictureinpicture', () => isPictureInPicture.value = false, listenerOptions)
-  useEventListener(target, 'volumechange', () => {
-    const el = toValue(target)
-    if (!el)
-      return
+  useEventListener(
+    target,
+    'timeupdate',
+    () => ignoreCurrentTimeUpdates(() => currentTime.value = (toValue(target))!.currentTime),
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'durationchange',
+    () => duration.value = (toValue(target))!.duration,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'progress',
+    () => buffered.value = timeRangeToArray((toValue(target))!.buffered),
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'seeking',
+    () => seeking.value = true,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'seeked',
+    () => seeking.value = false,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    ['waiting', 'loadstart'],
+    () => {
+      waiting.value = true
+      ignorePlayingUpdates(() => playing.value = false)
+    },
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'loadeddata',
+    () => waiting.value = false,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'playing',
+    () => {
+      waiting.value = false
+      ended.value = false
+      ignorePlayingUpdates(() => playing.value = true)
+    },
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'ratechange',
+    () => rate.value = (toValue(target))!.playbackRate,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'stalled',
+    () => stalled.value = true,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'ended',
+    () => ended.value = true,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'pause',
+    () => ignorePlayingUpdates(() => playing.value = false),
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'play',
+    () => ignorePlayingUpdates(() => playing.value = true),
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'enterpictureinpicture',
+    () => isPictureInPicture.value = true,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'leavepictureinpicture',
+    () => isPictureInPicture.value = false,
+    listenerOptions,
+  )
+  useEventListener(
+    target,
+    'volumechange',
+    () => {
+      const el = toValue(target)
+      if (!el)
+        return
 
-    volume.value = el.volume
-    muted.value = el.muted
-  }, listenerOptions)
+      volume.value = el.volume
+      muted.value = el.muted
+    },
+    listenerOptions,
+  )
 
   /**
    * The following listeners need to listen to a nested
