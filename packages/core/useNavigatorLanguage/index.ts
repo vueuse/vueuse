@@ -49,7 +49,7 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
   useEventListener(window, 'languagechange', () => {
     if (navigator)
       language.value = navigator.language
-  })
+  }, { passive: true })
 
   return {
     isSupported,

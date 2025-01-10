@@ -20,7 +20,7 @@ export function usePreferredLanguages(options: ConfigurableWindow = {}): Ref<rea
 
   useEventListener(window, 'languagechange', () => {
     value.value = navigator.languages
-  })
+  }, { passive: true })
 
   return value
 }

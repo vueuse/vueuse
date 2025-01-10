@@ -16,13 +16,15 @@ export function useWindowFocus(options: ConfigurableWindow = {}): Ref<boolean> {
 
   const focused = ref(window.document.hasFocus())
 
+  const listenerOptions = { passive: true }
+
   useEventListener(window, 'blur', () => {
     focused.value = false
-  })
+  }, listenerOptions)
 
   useEventListener(window, 'focus', () => {
     focused.value = true
-  })
+  }, listenerOptions)
 
   return focused
 }

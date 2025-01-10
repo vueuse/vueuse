@@ -74,9 +74,12 @@ export function useMouseInElement(
       { immediate: true },
     )
 
-    useEventListener(document, 'mouseleave', () => {
-      isOutside.value = true
-    })
+    useEventListener(
+      document,
+      'mouseleave',
+      () => isOutside.value = true,
+      { passive: true },
+    )
   }
 
   return {

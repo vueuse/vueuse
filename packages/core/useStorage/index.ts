@@ -188,7 +188,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
        * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
        */
       if (storage instanceof Storage)
-        useEventListener(window, 'storage', update)
+        useEventListener(window, 'storage', update, { passive: true })
       else
         useEventListener(window, customStorageEventName, updateFromCustomEvent)
 

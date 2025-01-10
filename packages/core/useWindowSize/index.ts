@@ -74,10 +74,12 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   update()
   tryOnMounted(update)
-  useEventListener('resize', update, { passive: true })
+
+  const listenerOptions = { passive: true }
+  useEventListener('resize', update, listenerOptions)
 
   if (window && type === 'visual' && window.visualViewport) {
-    useEventListener(window.visualViewport, 'resize', update, { passive: true })
+    useEventListener(window.visualViewport, 'resize', update, listenerOptions)
   }
 
   if (listenOrientation) {
