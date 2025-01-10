@@ -35,7 +35,7 @@ export interface UseDevicesListReturn {
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
   permissionGranted: Ref<boolean>
   ensurePermissions: () => Promise<boolean>
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
 }
 
 /**
