@@ -29,7 +29,6 @@ const count = useStorage('my-count', 0) // returns Ref<number>
 
 // bind string with SessionStorage
 const id = useStorage('my-id', 'some-string-id', sessionStorage) // returns Ref<string>
-
 // delete data from storage
 state.value = null
 ```
