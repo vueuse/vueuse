@@ -29,7 +29,7 @@ export function useCssVar(
   options: UseCssVarOptions = {},
 ) {
   const { window = defaultWindow, initialValue, observe = false } = options
-  const variable = ref<string | null | undefined>(initialValue)
+  const variable = ref(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
   function updateCssVar() {
