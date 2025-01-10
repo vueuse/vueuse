@@ -56,7 +56,7 @@ export function useCloned<T>(
 
   watch(cloned, () => {
     if (_isSync) {
-    	_isSync = false
+      _isSync = false
       return
     }
     isModified.value = true
