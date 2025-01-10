@@ -55,8 +55,10 @@ export function useCloned<T>(
   } = options
 
   watch(cloned, () => {
-    if (_isSync)
-      return _isSync = false
+    if (_isSync) {
+    	_isSync = false
+      return
+    }
     isModified.value = true
   }, {
     deep: true,
