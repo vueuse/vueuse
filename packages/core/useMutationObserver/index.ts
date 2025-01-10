@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'
@@ -19,7 +20,7 @@ export interface UseMutationObserverOptions extends MutationObserverInit, Config
  * @param options
  */
 export function useMutationObserver(
-  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
+  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]> | Readonly<ShallowRef<MaybeElement>>,
   callback: MutationCallback,
   options: UseMutationObserverOptions = {},
 ) {
