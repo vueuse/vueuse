@@ -88,7 +88,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
   }
 
   const server = shallowRef<undefined | BluetoothRemoteGATTServer>()
-  const isConnected = ref(false)
+  const isConnected = shallowRef(false)
 
   function reset() {
     isConnected.value = false
