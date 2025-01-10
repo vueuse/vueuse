@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useMutationObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref(null)
+const el = useTemplateRef('el')
 const messages = ref<string[]>([])
 const className = ref({})
 const style = ref({})
