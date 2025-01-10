@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useElementHover } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { vElementHover } from './directive'
 
-const el = ref<HTMLButtonElement>()
+const el = useTemplateRef<HTMLButtonElement>('el')
 const isDirectiveHovered = ref(false)
 const isHovered = useElementHover(el, { delayEnter: 200, delayLeave: 600 })
 function onHover(hovered: boolean) {
