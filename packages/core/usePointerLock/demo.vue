@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useMouse, usePointerLock } from '@vueuse/core'
 import { ref, watch } from 'vue'
 

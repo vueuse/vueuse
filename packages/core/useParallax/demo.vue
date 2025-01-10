@@ -42,7 +42,7 @@ const infoStyle = computed(() => ({
   top: '20px',
   left: '40px',
   position: isMobile.value ? 'inherit' : 'absolute',
-}))
+} satisfies CSSProperties))
 
 const layer0 = computed(() => ({
   ...layerBase,

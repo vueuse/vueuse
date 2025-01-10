@@ -1,5 +1,5 @@
 import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { computed, ref, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -196,7 +196,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
 }
 
 export interface UseFileSystemAccessReturn<T = string> {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   data: Ref<T | undefined>
   file: Ref<File | undefined>
   fileName: Ref<string>

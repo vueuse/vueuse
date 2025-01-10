@@ -93,4 +93,20 @@ describe('useCloned', () => {
 
     expect(cloned.value).toEqual(data.value)
   })
+
+  it('works with use isModified', async () => {
+    const data = ref({ test: 'test' })
+
+    const { cloned, isModified, sync } = useCloned(data)
+
+    expect(isModified.value).toEqual(false)
+
+    cloned.value.test = 'vitest'
+
+    expect(isModified.value).toEqual(true)
+
+    sync()
+
+    expect(isModified.value).toEqual(false)
+  })
 })
