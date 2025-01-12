@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, watchImmediate } from '@vueuse/shared'
-import { ref } from 'vue'
+import { readonly, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
 
@@ -22,7 +22,10 @@ export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
     stop = watchImmediate(query, () => pixelRatio.value = window!.devicePixelRatio)
   }
 
-  return { pixelRatio, stop }
+  return {
+    pixelRatio: readonly(pixelRatio),
+    stop,
+  }
 }
 
 export type UseDevicePixelRatioReturn = ReturnType<typeof useDevicePixelRatio>
