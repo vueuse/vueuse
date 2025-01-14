@@ -1,11 +1,18 @@
-import { describe, expect, it } from 'vitest'
+import type { ComputedRef, Ref } from 'vue'
+import { beforeEach, describe, expect, expectTypeOf, it } from 'vitest'
 import { computed, isReadonly, ref } from 'vue'
 import { useTitle } from '.'
 
+const defaultTitle = 'VueUse testing'
+
 describe('useTitle', () => {
+  beforeEach(() => {
+    document.title = defaultTitle
+  })
+
   it('without param', () => {
     const title = useTitle()
-    expect(title.value).toEqual('')
+    expect(title.value).toEqual(defaultTitle)
     title.value = 'new title'
     expect(title.value).toEqual('new title')
   })
@@ -20,14 +27,14 @@ describe('useTitle', () => {
 
     it('null', () => {
       const title = useTitle(null)
-      expect(title.value).toEqual('')
+      expect(title.value).toEqual(defaultTitle)
       title.value = 'new title'
       expect(title.value).toEqual('new title')
     })
 
     it('undefined', () => {
       const title = useTitle(undefined)
-      expect(title.value).toEqual('')
+      expect(title.value).toEqual(defaultTitle)
       title.value = 'new title'
       expect(title.value).toEqual('new title')
     })
@@ -81,6 +88,44 @@ describe('useTitle', () => {
       const title = useTitle(target)
       expect(title.value).toEqual('new title')
       expect(isReadonly(title)).toBeTruthy()
+    })
+  })
+
+  describe('types', () => {
+    it('should return a ref if no default value', () => {
+      const title = useTitle()
+      expect(isReadonly(title)).toBeFalsy()
+      expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
+    })
+
+    it('should return a computed if initial value is computed', () => {
+      const title = useTitle(computed(() => ''))
+      expect(isReadonly(title)).toBeTruthy()
+      expectTypeOf(title).toEqualTypeOf<ComputedRef<string | null | undefined>>()
+    })
+
+    it('should return a ref if initial value is ref', () => {
+      const title = useTitle(ref(''))
+      expect(isReadonly(title)).toBeFalsy()
+      expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
+    })
+
+    it('should return a ref if initial value is string', () => {
+      const title = useTitle('')
+      expect(isReadonly(title)).toBeFalsy()
+      expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
+    })
+
+    it('should return a ref if initial value is null', () => {
+      const title = useTitle(null)
+      expect(isReadonly(title)).toBeFalsy()
+      expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
+    })
+
+    it('should return a ref if initial value is undefined', () => {
+      const title = useTitle(undefined)
+      expect(isReadonly(title)).toBeFalsy()
+      expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
     })
   })
 })
