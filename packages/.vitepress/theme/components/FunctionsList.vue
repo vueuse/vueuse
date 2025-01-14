@@ -12,7 +12,7 @@ useEventListener('click', (e) => {
   // @ts-expect-error cast
   if (e.target.tagName === 'A')
     window.dispatchEvent(new Event('hashchange'))
-})
+}, { passive: true })
 
 const isMounted = useMounted()
 

@@ -6,7 +6,7 @@ const { x, y } = useMouse({ type: 'client' })
 const { element } = useElementByPoint({ x, y })
 const bounding = reactive(useElementBounding(element))
 
-useEventListener('scroll', bounding.update, true)
+useEventListener('scroll', bounding.update, { passive: true, capture: true })
 
 const boxStyles = computed(() => {
   if (element.value) {
