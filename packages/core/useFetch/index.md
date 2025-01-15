@@ -25,6 +25,17 @@ import { useFetch } from '@vueuse/core'
 const { isFetching, error, data } = useFetch(url)
 ```
 
+### Query parameters
+
+`useFetch` accepts `query` option to generate URL query params automatically from an object. `query` object can also work with existing query parameters in the URL.
+
+```ts
+useFetch('https://my-api.com/users', { query: { sortBy: 'username' } })
+
+// Object query will be merged with existing query in the URL
+useFetch('https://my-api.com/users?q=john', { query: { sortBy: 'username' } })
+```
+
 ### Asynchronous Usage
 
 `useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
@@ -36,16 +47,18 @@ import { useFetch } from '@vueuse/core'
 const { isFetching, error, data } = await useFetch(url)
 ```
 
-### Refetching on URL change
+### Refetching on URL and query change
 
-Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed.
+Using a `ref` for the url parameter or a reactive value for the `query` option will allow the `useFetch` function to automatically trigger another request when the url is changed.
 
 ```ts
 const url = ref('https://my-api.com/user/1')
+const query = reactive({ include: 'favorites' })
 
-const { data } = useFetch(url, { refetch: true })
+const { data } = useFetch(url, { query, refetch: true })
 
 url.value = 'https://my-api.com/user/2' // Will trigger another request
+query.include = 'friends' // Will trigger another request
 ```
 
 ### Prevent request from firing immediately
