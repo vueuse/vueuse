@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import { defineWorkspace } from 'vitest/config'
+import { resetZoom, zoomIn } from './packages/.test/commands'
 
 export default defineWorkspace([
   // If you want to keep running your existing tests in Node.js, uncomment the next line.
@@ -16,6 +17,10 @@ export default defineWorkspace([
         enabled: true,
         name: 'chromium',
         provider: 'playwright',
+        commands: {
+          zoomIn,
+          resetZoom,
+        },
         headless: true,
         // https://playwright.dev
         providerOptions: {
