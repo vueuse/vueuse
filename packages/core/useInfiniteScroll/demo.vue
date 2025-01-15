@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const data = ref<number[]>([])
 
 const { reset } = useInfiniteScroll(

@@ -2,9 +2,9 @@
 import { useMousePressed } from '@vueuse/core'
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>()
+const el = useTemplateRef<HTMLElement>('el')
 const [withTarget, toggle] = useToggle()
 const target = computed<HTMLElement | null>(() =>
   (withTarget.value ? el.value : window) as HTMLElement)

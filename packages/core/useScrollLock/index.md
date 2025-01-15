@@ -11,8 +11,9 @@ Lock scrolling of the element.
 ```vue
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const isLocked = useScrollLock(el)
 
 isLocked.value = true // lock
