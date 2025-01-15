@@ -43,10 +43,11 @@ Set `autoScroll: true` to enable auto-scroll when dragging near the edges.
 
 ```ts
 const { x, y, style } = useDraggable(el, {
-  autoScroll: true,
-  scrollSpeed: 2, // Control the speed of auto-scroll.
-  scrollMargin: 30, // Set the margin from the edge that triggers auto-scroll.
-  scrollDirection: 'both' // Determine the direction of auto-scroll.
+  autoScroll: {
+    speed: 2, // Control the speed of auto-scroll.
+    margin: 30, // Set the margin from the edge that triggers auto-scroll.
+    direction: 'both' // Determine the direction of auto-scroll.
+  },
 })
 ```
 
