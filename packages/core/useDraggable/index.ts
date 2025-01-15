@@ -127,28 +127,28 @@ export interface UseDraggableOptions {
    *
    * @default false
    */
-  autoScroll?: MaybeRefOrGetter<boolean>
+  autoScroll?: MaybeRefOrGetter<boolean | {
+    /**
+     * Speed of auto-scroll.
+     *
+     * @default 2
+     */
+    speed?: MaybeRefOrGetter<number | Position>
 
-  /**
-   * Speed of auto-scroll.
-   *
-   * @default 1
-   */
-  scrollSpeed?: MaybeRefOrGetter<number | Position>
+    /**
+     * Margin from the edge to trigger auto-scroll.
+     *
+     * @default 30
+     */
+    margin?: MaybeRefOrGetter<number | Position>
 
-  /**
-   * Margin from the edge to trigger auto-scroll.
-   *
-   * @default 30
-   */
-  scrollMargin?: MaybeRefOrGetter<number | Position>
-
-  /**
-   * Direction of auto-scroll.
-   *
-   * @default 'both'
-   */
-  scrollDirection?: 'x' | 'y' | 'both'
+    /**
+     * Direction of auto-scroll.
+     *
+     * @default 'both'
+     */
+    direction?: 'x' | 'y' | 'both'
+  }>
 }
 
 /**
@@ -178,9 +178,6 @@ export function useDraggable(
     buttons = [0],
     restrictInView,
     autoScroll = false,
-    scrollSpeed = 2,
-    scrollMargin = 30,
-    scrollDirection = 'both',
   } = options
 
   const position = ref<Position>(
@@ -202,33 +199,40 @@ export function useDraggable(
       e.stopPropagation()
   }
 
+  const scrollConfig = toValue(autoScroll)
+  const defaultScrollConfig = { speed: 2, margin: 30, direction: 'both' }
+  const scrollSettings = typeof scrollConfig === 'object'
+    ? {
+        speed: toValue(scrollConfig.speed) ?? defaultScrollConfig.speed,
+        margin: toValue(scrollConfig.margin) ?? defaultScrollConfig.margin,
+        direction: scrollConfig.direction ?? defaultScrollConfig.direction,
+      }
+    : defaultScrollConfig
+
+  const getScrollAxisValues = (value: number | Position): [number, number] =>
+    typeof value === 'number' ? [value, value] : [value.x, value.y]
+
   const handleAutoScroll = (
     container: HTMLElement | SVGElement,
     targetRect: DOMRect,
     position: Position,
-    scrollSpeed: number | Position,
-    scrollMargin: number | Position,
-    direction: 'x' | 'y' | 'both',
   ) => {
     const { clientWidth, clientHeight } = container
 
-    const getAxisValues = (value: number | Position): [number, number] =>
-      typeof value === 'number' ? [value, value] : [value.x, value.y]
-
-    const [marginX, marginY] = getAxisValues(scrollMargin)
-    const [speedX, speedY] = getAxisValues(scrollSpeed)
+    const [marginX, marginY] = getScrollAxisValues(scrollSettings.margin)
+    const [speedX, speedY] = getScrollAxisValues(scrollSettings.speed)
 
     let deltaX = 0
     let deltaY = 0
 
-    if (direction === 'x' || direction === 'both') {
+    if (scrollSettings.direction === 'x' || scrollSettings.direction === 'both') {
       if (position.x <= marginX)
         deltaX = -speedX
       else if (position.x + targetRect.width >= clientWidth - marginX)
         deltaX = speedX
     }
 
-    if (direction === 'y' || direction === 'both') {
+    if (scrollSettings.direction === 'y' || scrollSettings.direction === 'both') {
       if (position.y <= marginY)
         deltaY = -speedY
       else if (position.y + targetRect.height >= clientHeight - marginY)
@@ -254,9 +258,6 @@ export function useDraggable(
             container,
             targetRect,
             { x: adjustedX, y: adjustedY },
-            toValue(scrollSpeed),
-            toValue(scrollMargin),
-            toValue(scrollDirection),
           )
           adjustedX += container.scrollLeft
           adjustedY += container.scrollTop
@@ -340,7 +341,7 @@ export function useDraggable(
 
     if (toValue(autoScroll) && container) {
       if (autoScrollInterval === null)
-        handleAutoScroll(container, targetRect, { x, y }, toValue(scrollSpeed), toValue(scrollMargin), toValue(scrollDirection))
+        handleAutoScroll(container, targetRect, { x, y })
 
       x += container.scrollLeft
       y += container.scrollTop
