@@ -42,10 +42,10 @@ describe('watchDebounced', () => {
     num.value = 5
     await vi.advanceTimersByTimeAsync(75)
     expect(cb).toHaveBeenCalledTimes(2)
-    expect(cb).toHaveBeenCalledWith(4, 2, expect.anything())
+    expect(cb).toHaveBeenCalledWith(5, 4, expect.anything())
   })
 
-  it.fails('should work with constant changes over multiple maxWaits', async () => {
+  it('should work with constant changes over multiple maxWaits', async () => {
     vi.useFakeTimers()
     const num = ref(0)
     const cb = vi.fn()
