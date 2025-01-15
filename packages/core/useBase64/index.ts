@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
-import { isClient, toValue } from '@vueuse/shared'
-import { isRef, ref, watch } from 'vue'
+import { isClient } from '@vueuse/shared'
+import { isRef, ref, toValue, watch } from 'vue'
 import { getDefaultSerialization } from './serialization'
 
 export interface UseBase64Options {
@@ -25,7 +25,7 @@ export interface ToDataURLOptions extends UseBase64Options {
 }
 
 export interface UseBase64ObjectOptions<T> extends UseBase64Options {
-  serializer: (v: T) => string
+  serializer?: (v: T) => string
 }
 
 export interface UseBase64Return {

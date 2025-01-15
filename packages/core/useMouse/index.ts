@@ -153,7 +153,7 @@ export function useMouse(options: UseMouseOptions = {}) {
         useEventListener(target, 'touchend', reset, listenerOptions)
     }
     if (scroll && type === 'page')
-      useEventListener(window, 'scroll', scrollHandlerWrapper, { passive: true })
+      useEventListener(window, 'scroll', scrollHandlerWrapper, listenerOptions)
   }
 
   return {

@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { readonly, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -12,7 +12,7 @@ export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
 export interface NetworkState {
-  isSupported: Readonly<Ref<boolean>>
+  isSupported: ComputedRef<boolean>
   /**
    * If the user is currently connected.
    */
@@ -92,25 +92,27 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
     }
   }
 
+  const listenerOptions = { passive: true }
+
   if (window) {
     useEventListener(window, 'offline', () => {
       isOnline.value = false
       offlineAt.value = Date.now()
-    })
+    }, listenerOptions)
 
     useEventListener(window, 'online', () => {
       isOnline.value = true
       onlineAt.value = Date.now()
-    })
+    }, listenerOptions)
   }
 
   if (connection)
-    useEventListener(connection, 'change', updateNetworkInformation, false)
+    useEventListener(connection, 'change', updateNetworkInformation, listenerOptions)
 
   updateNetworkInformation()
 
   return {
-    isSupported: readonly(isSupported),
+    isSupported,
     isOnline: readonly(isOnline),
     saveData: readonly(saveData),
     offlineAt: readonly(offlineAt),

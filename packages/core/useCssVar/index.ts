@@ -1,8 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { toValue } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
@@ -30,7 +29,7 @@ export function useCssVar(
   options: UseCssVarOptions = {},
 ) {
   const { window = defaultWindow, initialValue, observe = false } = options
-  const variable = ref<string | null | undefined>(initialValue)
+  const variable = ref(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
   function updateCssVar() {

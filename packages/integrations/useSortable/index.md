@@ -8,6 +8,10 @@ Wrapper for [`sortable`](https://github.com/SortableJS/Sortable).
 
 For more information on what options can be passed, see [`Sortable.options`](https://github.com/SortableJS/Sortable#options) in the `Sortable` documentation.
 
+::: warning
+Currently, `useSortable` only implements drag-and-drop sorting for a single list.
+:::
+
 ## Install
 
 ```bash

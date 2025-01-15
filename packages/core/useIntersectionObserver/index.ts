@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
-import { noop, notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue'
+import { noop, notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
@@ -34,7 +34,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
 }
 
 export interface UseIntersectionObserverReturn extends Pausable {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   stop: () => void
 }
 
@@ -62,7 +62,7 @@ export function useIntersectionObserver(
   const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
   const targets = computed(() => {
     const _target = toValue(target)
-    return (Array.isArray(_target) ? _target : [_target]).map(unrefElement).filter(notNullish)
+    return toArray(_target).map(unrefElement).filter(notNullish)
   })
 
   let cleanup = noop

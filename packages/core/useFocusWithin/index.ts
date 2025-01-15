@@ -16,6 +16,7 @@ export interface UseFocusWithinReturn {
 
 const EVENT_FOCUS_IN = 'focusin'
 const EVENT_FOCUS_OUT = 'focusout'
+const PSEUDO_CLASS_FOCUS_WITHIN = ':focus-within'
 
 /**
  * Track if focus is contained within the target element
@@ -35,8 +36,10 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
     return { focused }
   }
 
-  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true)
-  useEventListener(targetElement, EVENT_FOCUS_OUT, () => _focused.value = false)
+  const listenerOptions = { passive: true }
+  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
+  useEventListener(targetElement, EVENT_FOCUS_OUT, () =>
+    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false, listenerOptions)
 
   return { focused }
 }

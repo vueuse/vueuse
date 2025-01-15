@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ComputedRef } from 'vue'
-import { noop, toValue } from '@vueuse/shared'
-import { computed, reactive, ref } from 'vue'
+import { noop } from '@vueuse/shared'
+import { computed, reactive, ref, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -147,8 +147,8 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }, { passive })
 
   // #1350
-  useEventListener('blur', reset, { passive: true })
-  useEventListener('focus', reset, { passive: true })
+  useEventListener('blur', reset, { passive })
+  useEventListener('focus', reset, { passive })
 
   const proxy = new Proxy(
     refs,

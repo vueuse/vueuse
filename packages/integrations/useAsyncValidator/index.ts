@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue'
-import { toRef, toValue, until } from '@vueuse/shared'
+import { toRef, until } from '@vueuse/shared'
 import Schema from 'async-validator'
-import { computed, ref, shallowRef, watch } from 'vue'
+import { computed, ref, shallowRef, toValue, watch } from 'vue'
 
 // @ts-expect-error Schema.default is exist in ssr mode
 const AsyncValidatorSchema = Schema.default || Schema

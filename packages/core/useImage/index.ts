@@ -1,7 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { UseAsyncStateOptions } from '../useAsyncState'
-import { toValue } from '@vueuse/shared'
-import { watch } from 'vue'
+import { toValue, watch } from 'vue'
 import { useAsyncState } from '../useAsyncState'
 
 export interface UseImageOptions {
