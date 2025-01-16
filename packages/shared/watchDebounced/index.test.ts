@@ -67,8 +67,8 @@ describe('watchDebounced', () => {
     await constantUpdateOverTime(50)
 
     expect(cb).toHaveBeenCalledTimes(3)
-    expect(cb.mock.calls[0][0]).toBe(50) // or 51
-    expect(cb.mock.calls[1][0]).toBe(100) // or 101
-    expect(cb.mock.calls[2][0]).toBe(150) // or 151
+    expect(cb.mock.calls[0][0]).toBe(50)
+    expect(cb.mock.calls[1][0]).toBe(100)
+    expect(cb.mock.calls[2][0]).toBe(150)
   })
 })
