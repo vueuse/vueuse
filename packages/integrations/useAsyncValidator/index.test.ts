@@ -291,7 +291,10 @@ describe('set manual true', () => {
       },
     }) as Ref<Rules>
 
-    const { execute, pass, errors } = useAsyncValidator(form, rules, { manual: true })
+    const { execute, pass, errors } = useAsyncValidator(form, rules, {
+      manual: true,
+      validateOption: { suppressWarning: true },
+    })
 
     expect(pass.value).toBe(true)
     expect(errors.value).toMatchObject([])
