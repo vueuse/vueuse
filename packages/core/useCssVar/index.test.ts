@@ -1,7 +1,8 @@
 import { defaultWindow } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { nextTick } from 'vue'
+import { defineComponent, h, nextTick, onMounted, ref } from 'vue'
 import { useCssVar } from '.'
+import { mount } from '../../.test'
 
 describe('useCssVar', () => {
   it('should be defined', () => {
@@ -10,6 +11,7 @@ describe('useCssVar', () => {
 
   it('should work', () => {
     const el = document.createElement('div')
+
     const color = '--color'
     const variable = useCssVar(color, el, { initialValue: 'red' })
 
@@ -44,5 +46,30 @@ describe('useCssVar', () => {
     el.style.setProperty(color, 'blue')
     await nextTick()
     expect(variable.value).toBe('blue')
+  })
+
+  it('should work when changing color in onMounted', async () => {
+    const vm = mount(defineComponent({
+      setup() {
+        const el = ref()
+
+        const color = '--color'
+        const variable = useCssVar(color, el)
+
+        onMounted(() => {
+          variable.value = 'blue'
+        })
+
+        return {
+          variable,
+        }
+      },
+      render() {
+        return h('div', { ref: 'el' })
+      },
+    }))
+
+    await nextTick()
+    expect(vm.variable).toBe('blue')
   })
 })
