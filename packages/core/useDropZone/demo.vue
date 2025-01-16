@@ -34,7 +34,7 @@ const imageDropZoneRef = ref<HTMLElement>()
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
-const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, { dataTypes: ['image/png'], onDrop: onImageDrop })
+const { isOverDropZone: isOverImageDropZone, isOverDropZoneWithInvalidFile } = useDropZone(imageDropZoneRef, { dataTypes: ['image/png'], onDrop: onImageDrop })
 </script>
 
 <template>
@@ -73,6 +73,10 @@ const { isOverDropZone: isOverImageDropZone } = useDropZone(imageDropZoneRef, { 
           <div>
             isOverDropZone:
             <BooleanDisplay :value="isOverImageDropZone" />
+          </div>
+          <div>
+            isOverDropZoneWithInvalidFile:
+            <BooleanDisplay :value="isOverDropZoneWithInvalidFile" />
           </div>
           <div class="flex flex-wrap justify-center items-center">
             <div v-for="(file, index) in imageFilesData" :key="index" class="w-200px bg-black-200/10 ma-2 pa-6">
