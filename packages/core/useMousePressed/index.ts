@@ -94,23 +94,24 @@ export function useMousePressed(options: MousePressedOptions = {}) {
 
   const target = computed(() => unrefElement(options.target) || window)
 
-  useEventListener<MouseEvent>(target, 'mousedown', onPressed('mouse'), { passive: true, capture })
+  const listenerOptions = { passive: true, capture }
+  useEventListener<MouseEvent>(target, 'mousedown', onPressed('mouse'), listenerOptions)
 
-  useEventListener<MouseEvent>(window, 'mouseleave', onReleased, { passive: true, capture })
-  useEventListener<MouseEvent>(window, 'mouseup', onReleased, { passive: true, capture })
+  useEventListener<MouseEvent>(window, 'mouseleave', onReleased, listenerOptions)
+  useEventListener<MouseEvent>(window, 'mouseup', onReleased, listenerOptions)
 
   if (drag) {
-    useEventListener<DragEvent>(target, 'dragstart', onPressed('mouse'), { passive: true, capture })
+    useEventListener<DragEvent>(target, 'dragstart', onPressed('mouse'), listenerOptions)
 
-    useEventListener<DragEvent>(window, 'drop', onReleased, { passive: true, capture })
-    useEventListener<DragEvent>(window, 'dragend', onReleased, { passive: true, capture })
+    useEventListener<DragEvent>(window, 'drop', onReleased, listenerOptions)
+    useEventListener<DragEvent>(window, 'dragend', onReleased, listenerOptions)
   }
 
   if (touch) {
-    useEventListener<TouchEvent>(target, 'touchstart', onPressed('touch'), { passive: true, capture })
+    useEventListener<TouchEvent>(target, 'touchstart', onPressed('touch'), listenerOptions)
 
-    useEventListener<TouchEvent>(window, 'touchend', onReleased, { passive: true, capture })
-    useEventListener<TouchEvent>(window, 'touchcancel', onReleased, { passive: true, capture })
+    useEventListener<TouchEvent>(window, 'touchend', onReleased, listenerOptions)
+    useEventListener<TouchEvent>(window, 'touchcancel', onReleased, listenerOptions)
   }
 
   return {

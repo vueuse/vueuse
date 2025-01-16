@@ -266,12 +266,12 @@ export function useAnimate(
     onReady?.(animate.value)
   }
 
-  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause)
-
+  const listenerOptions = { passive: true }
+  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause, listenerOptions)
   useEventListener(animate, 'finish', () => {
     if (commitStyles)
       animate.value?.commitStyles()
-  })
+  }, listenerOptions)
 
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)

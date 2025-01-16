@@ -50,6 +50,7 @@ Learn more about the implementation: [`_configurable.ts`](https://github.com/vue
 ```ts
 import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export function useActiveElement<T extends HTMLElement>(
   options: ConfigurableWindow = {},
@@ -63,7 +64,7 @@ export function useActiveElement<T extends HTMLElement>(
 
   // skip when in Node.js environment (SSR)
   if (window) {
-    window.addEventListener('blur', () => {
+    useEventListener(window, 'blur', () => {
       el = window?.document.activeElement
     }, true)
   }

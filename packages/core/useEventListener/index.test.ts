@@ -1,9 +1,8 @@
 import type { Fn } from '@vueuse/shared'
 import type { MockInstance } from 'vitest'
 import type { Ref } from 'vue'
-import { noop } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, ref } from 'vue'
+import { computed, effectScope, nextTick, ref } from 'vue'
 import { useEventListener } from '.'
 
 describe('useEventListener', () => {
@@ -167,7 +166,6 @@ describe('useEventListener', () => {
       await nextTick()
 
       expect(listener).toHaveBeenCalledTimes(0)
-      expect(useEventListener(null, 'click', listener)).toBe(noop)
     })
 
     function getTargetName(useTarget: boolean) {
@@ -209,12 +207,12 @@ describe('useEventListener', () => {
 
       it(`should ${getTargetName(useTarget)} auto stop listening event`, async () => {
         const scope = effectScope()
-        await scope.run(async () => {
+        scope.run(async () => {
         // @ts-expect-error mock different args
           useEventListener(...getArgs(useTarget))
         })
 
-        await scope.stop()
+        scope.stop()
 
         trigger(useTarget)
 
@@ -226,6 +224,119 @@ describe('useEventListener', () => {
 
     testTarget(false)
     testTarget(true)
+  })
+
+  describe('useEventListener - multiple targets', () => {
+    it('should accept an array ref of DOM elements', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('button')
+      const el2 = document.createElement('button')
+      const arrayRef = computed(() => [el1, el2])
+
+      useEventListener(arrayRef, 'click', listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      expect(listener).toHaveBeenCalledTimes(2)
+    })
+
+    it('should accept a getter returning multiple targets', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('div')
+      const el2 = document.createElement('div')
+      const active = ref(true)
+
+      useEventListener(() => active.value ? [el1, el2] : [], 'mousedown', listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      expect(listener).toHaveBeenCalledTimes(2)
+
+      // disable
+      active.value = false
+      await nextTick()
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      // events should no longer trigger
+      expect(listener).toHaveBeenCalledTimes(2)
+    })
+
+    it('should accept an array of DOM elements + multiple events', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('button')
+      const el2 = document.createElement('button')
+      const arrayRef = computed(() => [el1, el2])
+
+      useEventListener(arrayRef, ['click', 'hover'], listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      el1.dispatchEvent(new Event('hover'))
+      el2.dispatchEvent(new Event('hover'))
+      expect(listener).toHaveBeenCalledTimes(4)
+    })
+
+    it('should accept a getter returning multiple targets + multiple events', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('div')
+      const el2 = document.createElement('div')
+      const active = ref(true)
+
+      useEventListener(() => active.value ? [el1, el2] : [], ['mousedown', 'click'], listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      expect(listener).toHaveBeenCalledTimes(4)
+
+      // disable
+      active.value = false
+      await nextTick()
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      // events should no longer trigger
+      expect(listener).toHaveBeenCalledTimes(4)
+    })
+
+    it('should react to target + event + function changes properly', async () => {
+      const listener1 = vi.fn()
+      const listener2 = vi.fn()
+      const el1 = document.createElement('div')
+      const el2 = document.createElement('div')
+      const els = ref([el1])
+      const events = ref(['click'])
+      const listeners = ref([listener1])
+
+      useEventListener(els, events, listeners)
+      el1.dispatchEvent(new Event('click'))
+      els.value = [el2]
+      await nextTick()
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      events.value = ['mousedown']
+      await nextTick()
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('mousedown'))
+      els.value = [el1, el2]
+      events.value = ['click', 'mousedown']
+      listeners.value = [listener1, listener2]
+      await nextTick()
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+
+      expect(listener1).toHaveBeenCalledTimes(7)
+      expect(listener2).toHaveBeenCalledTimes(4)
+    })
   })
 
   it('should auto re-register', async () => {
