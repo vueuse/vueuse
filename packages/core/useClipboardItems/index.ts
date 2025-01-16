@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
 import { ref, toValue } from 'vue'
@@ -29,7 +29,7 @@ export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator 
 }
 
 export interface UseClipboardItemsReturn<Optional> {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   content: ComputedRef<ClipboardItems>
   copied: ComputedRef<boolean>
   copy: Optional extends true ? (content?: ClipboardItems) => Promise<void> : (text: ClipboardItems) => Promise<void>
@@ -65,7 +65,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   }
 
   if (isSupported.value && read)
-    useEventListener(['copy', 'cut'], updateContent)
+    useEventListener(['copy', 'cut'], updateContent, { passive: true })
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {

@@ -1,9 +1,9 @@
 {
   "name": "@vueuse/monorepo",
   "type": "module",
-  "version": "12.3.0",
+  "version": "12.4.0",
   "private": true,
-  "packageManager": "pnpm@9.15.2",
+  "packageManager": "pnpm@9.15.3",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "test:cov": "vitest run --coverage",
     "test:browser": "vitest --project browser --workspace=vitest.workspace.ts",
     "test:unit": "vitest --project unit --workspace=vitest.workspace.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "vue-tsc --noEmit",
     "update": "nr -C packages/metadata update && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
     "watch": "pnpm -r --parallel run build --watch",
@@ -47,8 +47,8 @@
     "@types/remove-markdown": "catalog:",
     "@types/semver": "catalog:",
     "@vite-pwa/vitepress": "catalog:",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vitest/browser": "^2.1.8",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitest/browser": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "@vue/compiler-sfc": "catalog:",
@@ -81,7 +81,7 @@
     "node-fetch": "catalog:",
     "node-fetch-native": "catalog:",
     "ofetch": "catalog:",
-    "playwright": "^1.49.1",
+    "playwright": "catalog:",
     "pnpm": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
@@ -106,8 +106,9 @@
     "vite-plugin-inspect": "catalog:",
     "vitepress": "catalog:",
     "vitest": "catalog:",
-    "vitest-browser-vue": "^0.0.1",
-    "vue": "catalog:"
+    "vitest-browser-vue": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
   },
   "pnpm": {
     "neverBuiltDependencies": [
@@ -134,7 +135,7 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,vue,md}": [
+    "*.{js,ts,tsx,vue,md,json}": [
       "eslint --cache --fix"
     ]
   }

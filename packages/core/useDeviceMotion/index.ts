@@ -72,7 +72,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
         },
       )
 
-      useEventListener(window, 'devicemotion', onDeviceMotion)
+      useEventListener(window, 'devicemotion', onDeviceMotion, { passive: true })
     }
   }
 

@@ -216,7 +216,10 @@ export function useDraggable(
   }
 
   if (isClient) {
-    const config = { capture: options.capture ?? true }
+    const config = () => ({
+      capture: options.capture ?? true,
+      passive: !toValue(preventDefault),
+    })
     useEventListener(draggingHandle, 'pointerdown', start, config)
     useEventListener(draggingElement, 'pointermove', move, config)
     useEventListener(draggingElement, 'pointerup', end, config)

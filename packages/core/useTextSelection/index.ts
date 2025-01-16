@@ -30,7 +30,7 @@ export function useTextSelection(options: ConfigurableWindow = {}) {
   }
 
   if (window)
-    useEventListener(window.document, 'selectionchange', onSelectionChange)
+    useEventListener(window.document, 'selectionchange', onSelectionChange, { passive: true })
 
   return {
     text,

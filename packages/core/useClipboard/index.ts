@@ -1,7 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
 import { computed, ref, toValue } from 'vue'
@@ -39,7 +39,7 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
 }
 
 export interface UseClipboardReturn<Optional> {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   text: ComputedRef<string>
   copied: ComputedRef<boolean>
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
@@ -82,7 +82,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   }
 
   if (isSupported.value && read)
-    useEventListener(['copy', 'cut'], updateText)
+    useEventListener(['copy', 'cut'], updateText, { passive: true })
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {

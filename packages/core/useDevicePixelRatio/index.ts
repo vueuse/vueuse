@@ -1,7 +1,8 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref } from 'vue'
+import { noop, watchImmediate } from '@vueuse/shared'
+import { readonly, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useMediaQuery } from '../useMediaQuery'
 
 /**
  * Reactively track `window.devicePixelRatio`.
@@ -14,24 +15,17 @@ export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
   } = options
 
   const pixelRatio = ref(1)
+  const query = useMediaQuery(() => `(resolution: ${pixelRatio.value}dppx)`, options)
+  let stop = noop
 
   if (window) {
-    let media: MediaQueryList
-    function observe() {
-      pixelRatio.value = window!.devicePixelRatio
-      cleanup()
-      media = window!.matchMedia(`(resolution: ${pixelRatio.value}dppx)`)
-      media.addEventListener('change', observe, { once: true })
-    }
-    function cleanup() {
-      media?.removeEventListener('change', observe)
-    }
-
-    observe()
-    tryOnScopeDispose(cleanup)
+    stop = watchImmediate(query, () => pixelRatio.value = window!.devicePixelRatio)
   }
 
-  return { pixelRatio }
+  return {
+    pixelRatio: readonly(pixelRatio),
+    stop,
+  }
 }
 
 export type UseDevicePixelRatioReturn = ReturnType<typeof useDevicePixelRatio>

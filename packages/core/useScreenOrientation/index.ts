@@ -39,7 +39,7 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
     useEventListener(window, 'orientationchange', () => {
       orientation.value = screenOrientation.type
       angle.value = screenOrientation.angle
-    })
+    }, { passive: true })
   }
 
   const lockOrientation = (type: OrientationLockType) => {
