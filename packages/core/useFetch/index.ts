@@ -118,12 +118,22 @@ export interface AfterFetchContext<T = any> {
   response: Response
 
   data: T | null
+
+  context: BeforeFetchContext
+
+  execute: (throwOnFailed?: boolean) => Promise<any>
 }
 
 export interface OnFetchErrorContext<T = any, E = any> {
   error: E
 
   data: T | null
+
+  response: Response | null
+
+  context: BeforeFetchContext
+
+  execute: (throwOnFailed?: boolean) => Promise<any>
 }
 
 export interface UseFetchOptions {
@@ -185,7 +195,7 @@ export interface UseFetchOptions {
    * Will run immediately after the fetch request is returned.
    * Runs after any 4xx and 5xx response
    */
-  onFetchError?: (ctx: { data: any, response: Response | null, error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
+  onFetchError?: (ctx: OnFetchErrorContext) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -483,6 +493,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           ({ data: responseData } = await options.afterFetch({
             data: responseData,
             response: fetchResponse,
+            context,
+            execute,
           }))
         }
         data.value = responseData
@@ -498,6 +510,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             data: responseData,
             error: fetchError,
             response: response.value,
+            context,
+            execute,
           }))
         }
 

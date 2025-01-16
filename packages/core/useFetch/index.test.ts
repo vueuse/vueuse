@@ -1,4 +1,5 @@
 import type { MockInstance } from 'vitest'
+import type { AfterFetchContext, OnFetchErrorContext } from '.'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
@@ -773,5 +774,43 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await execute()
     expect(isFetching.value).toBe(false)
     expect(isFinished.value).toBe(true)
+  })
+
+  it('should be possible to re-trigger the request via the afterFetch parameters', async () => {
+    let count = 0
+    let options: Partial<AfterFetchContext> = {}
+    useFetch('https://example.com', {
+      afterFetch: (ctx) => {
+        !count && ctx.execute()
+        count++
+        options = ctx
+        return ctx
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(2)
+      expect(options?.context).toBeDefined()
+      expect(options?.execute).toBeDefined()
+    })
+  })
+
+  it('should be possible to re-trigger the request via the onFetchError parameters', async () => {
+    let count = 0
+    let options: Partial<OnFetchErrorContext> = {}
+    useFetch('https://example.com?status=400&json', {
+      onFetchError: (ctx) => {
+        !count && ctx.execute()
+        count++
+        options = ctx
+        return ctx
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(2)
+      expect(options?.context).toBeDefined()
+      expect(options?.execute).toBeDefined()
+    })
   })
 })
