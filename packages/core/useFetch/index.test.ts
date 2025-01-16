@@ -1,4 +1,3 @@
-import type { MockInstance } from 'vitest'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
@@ -9,26 +8,25 @@ import '../../.test/mockServer'
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
 
-// Listen to make sure fetch is actually called.
-// Use msw to stub out the req/res
-let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
 let onFetchErrorSpy = vi.fn()
 let onFetchResponseSpy = vi.fn()
 let onFetchFinallySpy = vi.fn()
 
-function fetchSpyHeaders(idx = 0) {
-  return (fetchSpy.mock.calls[idx][1]! as any).headers
-}
-
 // The tests does not run properly below node 18
 describe.skipIf(isBelowNode18)('useFetch', () => {
+  let fetchSpy = vi.spyOn(window, 'fetch')
+
+  function fetchSpyHeaders(idx = 0) {
+    return (fetchSpy.mock.calls[idx][1]! as any).headers
+  }
+
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
+    fetchSpy.mockClear()
     onFetchErrorSpy = vi.fn()
     onFetchResponseSpy = vi.fn()
     onFetchFinallySpy = vi.fn()
   })
-
   it('should have status code of 200 and message of Hello World', async () => {
     const { statusCode, data } = useFetch('https://example.com?text=hello')
     await vi.waitFor(() => {
