@@ -3,6 +3,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { ref, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface UseBroadcastChannelOptions extends ConfigurableWindow {
@@ -49,17 +50,21 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
       error.value = null
       channel.value = new BroadcastChannel(name)
 
-      channel.value.addEventListener('message', (e: MessageEvent) => {
+      const listenerOptions = {
+        passive: true,
+      }
+
+      useEventListener(channel, 'message', (e: MessageEvent) => {
         data.value = e.data
-      }, { passive: true })
+      }, listenerOptions)
 
-      channel.value.addEventListener('messageerror', (e: MessageEvent) => {
+      useEventListener(channel, 'messageerror', (e: MessageEvent) => {
         error.value = e
-      }, { passive: true })
+      }, listenerOptions)
 
-      channel.value.addEventListener('close', () => {
+      useEventListener(channel, 'close', () => {
         isClosed.value = true
-      })
+      }, listenerOptions)
     })
   }
 

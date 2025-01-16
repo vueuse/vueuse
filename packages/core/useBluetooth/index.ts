@@ -4,6 +4,7 @@ import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { readonly, shallowRef, watch } from 'vue'
 
 import { defaultNavigator } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface UseBluetoothRequestDeviceOptions {
@@ -102,7 +103,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
     if (device.value && device.value.gatt) {
       // Add reset fn to gattserverdisconnected event:
-      device.value.addEventListener('gattserverdisconnected', reset)
+      useEventListener(device, 'gattserverdisconnected', reset, { passive: true })
 
       try {
         // Connect to the device:

@@ -3,7 +3,7 @@ import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 import { createFetch, useFetch } from '.'
-import { isBelowNode18, retry } from '../../.test'
+import { isBelowNode18 } from '../../.test'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
@@ -31,8 +31,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should have status code of 200 and message of Hello World', async () => {
     const { statusCode, data } = useFetch('https://example.com?text=hello')
-
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledOnce()
       expect(data.value).toBe('hello')
       expect(statusCode.value).toBe(200)
@@ -45,14 +44,14 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
     useFetch('https://example.com/', { headers: myHeaders })
 
-    await retry(() => {
+    await nextTick(() => {
       expect(fetchSpyHeaders()).toEqual({ authorization: 'test' })
     })
   })
 
   it('should parse response as json', async () => {
     const { data } = useFetch(jsonUrl).json()
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(data.value).toEqual(jsonMessage)
     })
   })
@@ -77,7 +76,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).post({ x: 1 }, 'unknown')
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledOnce()
       expect(options.body).toEqual({ x: 1 })
       expect(options.headers['Content-Type']).toBe('unknown')
@@ -93,7 +92,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).post(payload)
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledOnce()
       expect(options.body).toEqual(JSON.stringify(payload))
       expect(options.headers['Content-Type']).toBe('application/json')
@@ -103,7 +102,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   it('should have an error on 400', async () => {
     const { error, statusCode } = useFetch('https://example.com?status=400')
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(statusCode.value).toBe(400)
       expect(error.value).toBe('Bad Request')
     })
@@ -122,29 +121,40 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   it('should abort request and set aborted to true', async () => {
     const { aborted, abort, execute } = useFetch('https://example.com')
     setTimeout(() => abort(), 0)
-    await retry(() => expect(aborted.value).toBe(true))
-    execute()
-    setTimeout(() => abort(), 0)
-    await retry(() => expect(aborted.value).toBe(true))
+    await vi.waitFor(() => {
+      expect(aborted.value).toBe(true)
+    })
+    await execute()
+    await nextTick()
+    abort()
+    await vi.waitFor(() => {
+      expect(aborted.value).toBe(true)
+    })
   })
 
   it('should not call if immediate is false', async () => {
     useFetch('https://example.com', { immediate: false })
-    await retry(() => expect(fetchSpy).toBeCalledTimes(0))
+    await vi.waitFor(() => {
+      expect(fetchSpy).toBeCalledTimes(0)
+    })
   })
 
   it('should refetch if refetch is set to true', async () => {
     const url = ref('https://example.com')
     useFetch(url, { refetch: true })
     url.value = 'https://example.com?text'
-    await retry(() => expect(fetchSpy).toBeCalledTimes(2))
+    await vi.waitFor(() => {
+      expect(fetchSpy).toBeCalledTimes(2)
+    })
   })
 
   it('should auto refetch when the refetch is set to true and the payload is a ref', async () => {
     const param = ref({ num: 1 })
     useFetch('https://example.com', { refetch: true }).post(param)
     param.value.num = 2
-    await retry(() => expect(fetchSpy).toBeCalledTimes(2))
+    await vi.waitFor(() => {
+      expect(fetchSpy).toBeCalledTimes(2)
+    })
   })
 
   it('should create an instance of useFetch with baseUrls', async () => {
@@ -162,7 +172,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     useMyFetchWithBaseUrl(targetUrl, requestOptions)
     useMyFetchWithoutBaseUrl(targetUrl, requestOptions)
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledTimes(4)
       Array.from({ length: 4 }).fill(0).forEach((x, i) => {
         expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, 'https://example.com/test', expect.anything())
@@ -188,7 +198,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     })
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Global: 'foo', Local: 'foo' })
     })
   })
@@ -210,7 +220,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
     })
   })
@@ -232,7 +242,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(error.value).toEqual('Global Local')
     })
   })
@@ -258,7 +268,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     )
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Global: 'foo', Local: 'foo' })
     })
   })
@@ -284,7 +294,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     ).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(data.value).toEqual(expect.objectContaining({ title: 'Global Local' }))
     })
   })
@@ -310,7 +320,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     ).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(error.value).toEqual('Global Local')
     })
   })
@@ -333,7 +343,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     })
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Local: 'foo' })
     })
   })
@@ -356,7 +366,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
       expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
     })
@@ -380,7 +390,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(error.value).toEqual('Local')
     })
   })
@@ -407,7 +417,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     )
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()).toMatchObject({ Local: 'foo' })
     })
   })
@@ -434,7 +444,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     ).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(data.value).toEqual(expect.objectContaining({ local: 'Local' }))
       expect(data.value).toEqual(expect.not.objectContaining({ global: 'Global' }))
     })
@@ -462,7 +472,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     ).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(error.value).toEqual('Local')
     })
   })
@@ -479,7 +489,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     })
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()).toMatchObject({ 'Authorization': 'my-auth-token', 'Accept-Language': 'en-US' })
     })
   })
@@ -513,7 +523,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(data.value).toEqual(expect.objectContaining({ title: 'Hunter x Hunter' }))
     })
   })
@@ -552,7 +562,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     ).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()).toMatchObject({ title: 'Hello, VueUse' })
       expect(data.value).toEqual(expect.objectContaining({ message: 'Hello, VueUse' }))
     })
@@ -567,7 +577,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(statusCode.value).toEqual(400)
       expect(error.value).toEqual('Internal Server Error')
       expect(data.value).toBeNull()
@@ -584,7 +594,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(statusCode.value).toEqual(400)
       expect(error.value).toEqual('Internal Server Error')
       expect(data.value).toEqual('Internal Server Error')
@@ -600,7 +610,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       },
     }).json()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(statusCode.value).toStrictEqual(500)
       expect(error.value).toEqual('Internal Server Error')
       expect(data.value).toBeNull()
@@ -613,7 +623,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     onFetchResponse(onFetchResponseSpy)
     onFetchError(onFetchErrorSpy)
     onFetchFinally(onFetchFinallySpy)
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(onFetchErrorSpy).not.toHaveBeenCalled()
       expect(onFetchResponseSpy).toHaveBeenCalled()
       expect(onFetchFinallySpy).toHaveBeenCalled()
@@ -627,7 +637,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     onFetchResponse(onFetchResponseSpy)
     onFetchFinally(onFetchFinallySpy)
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(onFetchErrorSpy).toHaveBeenCalled()
       expect(onFetchResponseSpy).not.toHaveBeenCalled()
       expect(onFetchFinallySpy).toHaveBeenCalled()
@@ -636,12 +646,14 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('setting the request method w/ get and return type w/ json', async () => {
     const { data } = useFetch(jsonUrl).get().json()
-    await retry(() => expect(data.value).toEqual(jsonMessage))
+    await vi.waitFor(() => {
+      expect(data.value).toEqual(jsonMessage)
+    })
   })
 
   it('setting the request method w/ post and return type w/ text', async () => {
     const { data } = useFetch(jsonUrl).post().text()
-    await retry(() => expect(data.value).toEqual(JSON.stringify(jsonMessage)))
+    await vi.waitFor(() => expect(data.value).toEqual(JSON.stringify(jsonMessage)))
   })
 
   it('allow setting response type before doing request', async () => {
@@ -649,8 +661,10 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       immediate: false,
     }).get().text()
     shell.json()
-    shell.execute()
-    await retry(() => expect(shell.data.value).toEqual(jsonMessage))
+    await shell.execute()
+    await vi.waitFor(() => {
+      expect(shell.data.value).toEqual(jsonMessage)
+    })
   })
 
   it('not allowed setting request method and response type while doing request', async () => {
@@ -659,7 +673,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await until(isFetching).toBe(true)
     shell.post()
     shell.json()
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledOnce()
       expect(data.value).toEqual(JSON.stringify(jsonMessage))
     })
@@ -668,14 +682,18 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   it('should abort request when timeout reached', async () => {
     const { aborted, execute } = useFetch('https://example.com?delay=100', { timeout: 10 })
 
-    await retry(() => expect(aborted.value).toBeTruthy())
+    await vi.waitFor(() => {
+      expect(aborted.value).toBeTruthy()
+    })
     await execute()
-    await retry(() => expect(aborted.value).toBeTruthy())
+    await vi.waitFor(() => {
+      expect(aborted.value).toBeTruthy()
+    })
   })
 
   it('should not abort request when timeout is not reached', async () => {
     const { data } = useFetch(jsonUrl, { timeout: 100 }).json()
-    await retry(() => expect(data.value).toEqual(jsonMessage))
+    await vi.waitFor(() => expect(data.value).toEqual(jsonMessage))
   })
 
   it('should await request', async () => {
@@ -703,7 +721,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       execute(),
     ])
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
     })
   })
@@ -720,7 +738,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await nextTick()
     url.value = 'https://example.com?t=3'
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
     })
   })
@@ -732,7 +750,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     form.value = { x: 1 }
     await execute()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()['Content-Type']).toBe('application/json')
     })
   })
@@ -744,7 +762,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     form.value = new FormData()
     await execute()
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(fetchSpyHeaders()['Content-Type']).toBe(undefined)
     })
   })

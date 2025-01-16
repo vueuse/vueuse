@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { ref, shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface UseDisplayMediaOptions extends ConfigurableNavigator {
@@ -43,7 +44,7 @@ export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
     if (!isSupported.value || stream.value)
       return
     stream.value = await navigator!.mediaDevices.getDisplayMedia(constraint)
-    stream.value?.getTracks().forEach(t => t.addEventListener('ended', stop))
+    stream.value?.getTracks().forEach(t => useEventListener(t, 'ended', stop, { passive: true }))
     return stream.value
   }
 

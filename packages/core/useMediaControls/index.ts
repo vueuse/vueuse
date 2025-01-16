@@ -159,6 +159,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     document = defaultDocument,
   } = options
 
+  const listenerOptions = { passive: true }
+
   const currentTime = ref(0)
   const duration = ref(0)
   const seeking = ref(false)
@@ -265,7 +267,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
     // Clear the sources
     el.querySelectorAll('source').forEach((e) => {
-      e.removeEventListener('error', sourceErrorEvent.trigger)
       e.remove()
     })
 
@@ -277,22 +278,13 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       source.setAttribute('type', type || '')
       source.setAttribute('media', media || '')
 
-      source.addEventListener('error', sourceErrorEvent.trigger)
+      useEventListener(source, 'error', sourceErrorEvent.trigger, listenerOptions)
 
       el.appendChild(source)
     })
 
     // Finally, load the new sources.
     el.load()
-  })
-
-  // Remove source error listeners
-  tryOnScopeDispose(() => {
-    const el = toValue(target)
-    if (!el)
-      return
-
-    el.querySelectorAll('source').forEach(e => e.removeEventListener('error', sourceErrorEvent.trigger))
   })
 
   /**
@@ -393,8 +385,6 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       el.pause()
     }
   })
-
-  const listenerOptions = { passive: true }
 
   useEventListener(
     target,
