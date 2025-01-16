@@ -9,6 +9,7 @@ describe('useScriptTag', () => {
     document.head.querySelector(`script[src="${src}"]`)
 
   beforeEach(() => {
+    vi.clearAllMocks()
     document.head.innerHTML = ''
   })
 
