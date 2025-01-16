@@ -55,7 +55,7 @@ export function useCssVar(
         old[0].style.removeProperty(old[1])
       updateCssVar()
     },
-    { flush: 'post', immediate: false },
+    { flush: 'post' },
   )
 
   watch(
