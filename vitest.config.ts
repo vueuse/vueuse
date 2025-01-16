@@ -30,12 +30,7 @@ export default defineConfig({
         extends: true,
         test: {
           alias: {
-            'vue': 'vue/dist/vue.esm-bundler.js',
-            '@vueuse/shared': resolve(__dirname, 'packages/shared/index.ts'),
-            '@vueuse/core': resolve(__dirname, 'packages/core/index.ts'),
-            '@vueuse/math': resolve(__dirname, 'packages/math/index.ts'),
-            '@vueuse/components': resolve(__dirname, 'packages/components/index.ts'),
-            '@vueuse/docs-utils': resolve(__dirname, 'packages/.vitepress/plugins/utils.ts'),
+            vue: 'vue/dist/vue.esm-bundler.js',
           },
           include: ['packages/**/*.browser.{test,spec}.ts'],
           name: 'browser',
@@ -61,14 +56,6 @@ export default defineConfig({
             '!packages/**/*.browser.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
           ],
-          alias: {
-            'vue': 'vue/dist/vue.esm-bundler.js',
-            '@vueuse/shared': resolve(__dirname, 'packages/shared/index.ts'),
-            '@vueuse/core': resolve(__dirname, 'packages/core/index.ts'),
-            '@vueuse/math': resolve(__dirname, 'packages/math/index.ts'),
-            '@vueuse/components': resolve(__dirname, 'packages/components/index.ts'),
-            '@vueuse/docs-utils': resolve(__dirname, 'packages/.vitepress/plugins/utils.ts'),
-          },
           server: {
             deps: {
               inline: [
