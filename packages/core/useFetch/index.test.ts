@@ -9,9 +9,9 @@ const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
 
 let fetchSpy = vi.spyOn(window, 'fetch')
-let onFetchErrorSpy = vi.fn()
-let onFetchResponseSpy = vi.fn()
-let onFetchFinallySpy = vi.fn()
+const onFetchErrorSpy = vi.fn()
+const onFetchResponseSpy = vi.fn()
+const onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
   return (fetchSpy.mock.calls[idx][1]! as any).headers
@@ -21,10 +21,6 @@ function fetchSpyHeaders(idx = 0) {
 describe.skipIf(isBelowNode18)('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
-    fetchSpy.mockClear()
-    onFetchErrorSpy = vi.fn()
-    onFetchResponseSpy = vi.fn()
-    onFetchFinallySpy = vi.fn()
   })
 
   it('should have status code of 200 and message of Hello World', async () => {

@@ -25,6 +25,7 @@ export default defineConfig({
     coverage: {
       exclude: ['./packages/**/demo.vue'],
     },
+    clearMocks: true,
     workspace: [
       'packages/*/vitest.config.ts',
       {
