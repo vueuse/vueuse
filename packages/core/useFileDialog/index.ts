@@ -30,6 +30,12 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * @default false
    */
   directory?: boolean
+
+  /**
+   * Initial files to set.
+   * @default null
+   */
+  initialFiles?: Array<File> | FileList
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -47,6 +53,21 @@ export interface UseFileDialogReturn {
   onCancel: EventHookOn
 }
 
+function prepareInitialFiles(files: UseFileDialogOptions['initialFiles']): FileList | null {
+  if (!files)
+    return null
+
+  if (files instanceof FileList)
+    return files
+
+  const dl = new DataTransfer()
+  for (const file of files) {
+    dl.items.add(file)
+  }
+
+  return dl.files
+}
+
 /**
  * Open file dialog with ease.
  *
@@ -58,7 +79,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     document = defaultDocument,
   } = options
 
-  const files = ref<FileList | null>(null)
+  const files = ref<FileList | null>(prepareInitialFiles(options.initialFiles))
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
   let input: HTMLInputElement | undefined
