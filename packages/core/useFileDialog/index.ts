@@ -60,12 +60,12 @@ function prepareInitialFiles(files: UseFileDialogOptions['initialFiles']): FileL
   if (files instanceof FileList)
     return files
 
-  const dl = new DataTransfer()
+  const dt = new DataTransfer()
   for (const file of files) {
-    dl.items.add(file)
+    dt.items.add(file)
   }
 
-  return dl.files
+  return dt.files
 }
 
 /**
