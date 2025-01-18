@@ -74,4 +74,9 @@ export default defineConfig({
       },
     ],
   },
+  ssr: {
+    noExternal: [
+      /@vueuse\/.*/,
+    ],
+  },
 })
