@@ -6,13 +6,12 @@ const input = ref('')
 
 const { content, isSupported, copy } = useClipboardItems()
 const computedText = ref('')
+const computedMimeType = ref('')
 effect(() => {
   Promise.all(content.value.map(item => item.getType('text/plain')))
-    .then((blobs) => {
-      return Promise.all(blobs.map(blob => blob.text()))
-    })
-    .then((texts) => {
-      computedText.value = texts.join('')
+    .then(async (blobs) => {
+      computedMimeType.value = blobs.map(blob => blob.type).join(', ')
+      computedText.value = (await Promise.all(blobs.map(blob => blob.text()))).join(', ')
     })
 })
 const permissionRead = usePermission('clipboard-read')
@@ -34,7 +33,7 @@ function createClipboardItems(text: string) {
       <b>{{ permissionWrite }}</b>
     </note>
     <p>
-      Current copied: <code>{{ (computedText && `${computedText} (mime: text/html)`) || "none" }}</code>
+      Current copied: <code>{{ (computedText && `${computedText} (mime: ${computedMimeType})`) || "none" }}</code>
     </p>
     <input v-model="input" type="text">
     <button
