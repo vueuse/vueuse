@@ -59,8 +59,8 @@ export function useCssVar(
   )
 
   watch(
-    variable,
-    (val) => {
+    [variable, elRef],
+    ([val]) => {
       const raw_prop = toValue(prop)
       if (elRef.value?.style && raw_prop) {
         if (val == null)
