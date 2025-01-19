@@ -67,7 +67,7 @@ export interface UseVirtualListReturn<T> {
 /**
  * Please consider using [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) if you are looking for more features.
  */
-export function useVirtualList<T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
+export function useVirtualList<Ts extends readonly unknown[] = any[]>(list: MaybeRef<Ts>, options: UseVirtualListOptions): UseVirtualListReturn<Ts[number]> {
   const { containerStyle, wrapperProps, scrollTo, calculateRange, currentList, containerRef } = 'itemHeight' in options
     ? useVerticalVirtualList(options, list)
     : useHorizontalVirtualList(options, list)
@@ -96,33 +96,33 @@ interface UseVirtualElementSizes {
 type UseVirtualListArray<T> = UseVirtualListItem<T>[]
 type UseVirtualListRefArray<T> = Ref<UseVirtualListArray<T>>
 
-type UseVirtualListSource<T> = Ref<T[]> | ShallowRef<T[]>
+type UseVirtualListSource<Ts extends readonly unknown[]> = Ref<Ts> | ShallowRef<Ts>
 
 interface UseVirtualListState { start: number, end: number }
 
 type RefState = Ref<UseVirtualListState>
 
-interface UseVirtualListResources<T> {
+interface UseVirtualListResources<Ts extends readonly unknown[]> {
   state: RefState
-  source: UseVirtualListSource<T>
-  currentList: UseVirtualListRefArray<T>
+  source: UseVirtualListSource<Ts>
+  currentList: UseVirtualListRefArray<Ts[number]>
   size: UseVirtualElementSizes
   containerRef: UseVirtualListContainerRef
 }
 
-function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResources<T> {
+function useVirtualListResources<Ts extends readonly unknown[]>(list: MaybeRef<Ts>): UseVirtualListResources<Ts> {
   const containerRef = ref<HTMLElement | null>(null)
   const size = useElementSize(containerRef)
 
-  const currentList: Ref<UseVirtualListItem<T>[]> = ref([])
-  const source = shallowRef(list)
+  const currentList: Ref<UseVirtualListItem<Ts[number]>[]> = ref([])
+  const source = shallowRef(list) as ShallowRef<Ts>
 
   const state: Ref<{ start: number, end: number }> = ref({ start: 0, end: 10 })
 
   return { state, source, currentList, size, containerRef }
 }
 
-function createGetViewCapacity<T>(state: UseVirtualListResources<T>['state'], source: UseVirtualListResources<T>['source'], itemSize: UseVirtualListItemSize) {
+function createGetViewCapacity<Ts extends readonly unknown[]>(state: UseVirtualListResources<Ts>['state'], source: UseVirtualListResources<Ts>['source'], itemSize: UseVirtualListItemSize) {
   return (containerSize: number) => {
     if (typeof itemSize === 'number')
       return Math.ceil(containerSize / itemSize)
@@ -141,7 +141,7 @@ function createGetViewCapacity<T>(state: UseVirtualListResources<T>['state'], so
   }
 }
 
-function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSize: UseVirtualListItemSize) {
+function createGetOffset<Ts extends readonly unknown[]>(source: UseVirtualListResources<Ts>['source'], itemSize: UseVirtualListItemSize) {
   return (scrollDirection: number) => {
     if (typeof itemSize === 'number')
       return Math.floor(scrollDirection / itemSize) + 1
@@ -161,7 +161,7 @@ function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSi
   }
 }
 
-function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>, getViewCapacity: ReturnType<typeof createGetViewCapacity>, { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
+function createCalculateRange<Ts extends readonly unknown[]>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>, getViewCapacity: ReturnType<typeof createGetViewCapacity>, { containerRef, state, currentList, source }: UseVirtualListResources<Ts>) {
   return () => {
     const element = containerRef.value
     if (element) {
@@ -186,7 +186,7 @@ function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: numb
   }
 }
 
-function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtualListResources<T>['source']) {
+function createGetDistance<Ts extends readonly unknown[]>(itemSize: UseVirtualListItemSize, source: UseVirtualListResources<Ts>['source']) {
   return (index: number) => {
     if (typeof itemSize === 'number') {
       const size = index * itemSize
@@ -195,24 +195,24 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
 
     const size = source.value
       .slice(0, index)
-      .reduce((sum, _, i) => sum + itemSize(i), 0)
+      .reduce<number>((sum, _, i) => sum + itemSize(i), 0)
 
     return size
   }
 }
 
-function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
+function useWatchForSizes<Ts extends readonly unknown[]>(size: UseVirtualElementSizes, list: MaybeRef<Ts>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
   watch([size.width, size.height, list, containerRef], () => {
     calculateRange()
   })
 }
 
-function createComputedTotalSize<T>(itemSize: UseVirtualListItemSize, source: UseVirtualListResources<T>['source']) {
+function createComputedTotalSize<Ts extends readonly unknown[]>(itemSize: UseVirtualListItemSize, source: UseVirtualListResources<Ts>['source']) {
   return computed(() => {
     if (typeof itemSize === 'number')
       return source.value.length * itemSize
 
-    return source.value.reduce((sum, _, index) => sum + itemSize(index), 0)
+    return source.value.reduce<number>((sum, _, index) => sum + itemSize(index), 0)
   })
 }
 
@@ -221,7 +221,7 @@ const scrollToDictionaryForElementScrollKey = {
   vertical: 'scrollTop',
 } as const
 
-function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () => void, getDistance: ReturnType<typeof createGetDistance>, containerRef: UseVirtualListResources<T>['containerRef']) {
+function createScrollTo<Ts extends readonly unknown[]>(type: 'horizontal' | 'vertical', calculateRange: () => void, getDistance: ReturnType<typeof createGetDistance>, containerRef: UseVirtualListResources<Ts>['containerRef']) {
   return (index: number) => {
     if (containerRef.value) {
       containerRef.value[scrollToDictionaryForElementScrollKey[type]] = getDistance(index)
@@ -230,7 +230,7 @@ function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () =
   }
 }
 
-function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, list: MaybeRef<T[]>) {
+function useHorizontalVirtualList<Ts extends readonly unknown[]>(options: UseHorizontalVirtualListOptions, list: MaybeRef<Ts>) {
   const resources = useVirtualListResources(list)
   const { state, source, currentList, size, containerRef } = resources
   const containerStyle: StyleValue = { overflowX: 'auto' }
@@ -274,7 +274,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
   }
 }
 
-function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list: MaybeRef<T[]>) {
+function useVerticalVirtualList<Ts extends readonly unknown[]>(options: UseVerticalVirtualListOptions, list: MaybeRef<Ts>) {
   const resources = useVirtualListResources(list)
 
   const { state, source, currentList, size, containerRef } = resources
