@@ -7,7 +7,7 @@ const input = ref('')
 const { content, isSupported, copy } = useClipboardItems()
 const computedText = ref('')
 effect(() => {
-  Promise.all(content.value.map(item => item.getType('text/html')))
+  Promise.all(content.value.map(item => item.getType('text/plain')))
     .then((blobs) => {
       return Promise.all(blobs.map(blob => blob.text()))
     })
@@ -19,7 +19,7 @@ const permissionRead = usePermission('clipboard-read')
 const permissionWrite = usePermission('clipboard-write')
 
 function createClipboardItems(text: string) {
-  const mime = 'text/html'
+  const mime = 'text/plain'
   const blob = new Blob([text], { type: mime })
   return new ClipboardItem({
     [mime]: blob,
