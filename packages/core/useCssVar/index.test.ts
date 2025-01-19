@@ -16,6 +16,7 @@ describe('useCssVar', () => {
     const variable = useCssVar(color, el, { initialValue: 'red' })
 
     expect(variable.value).toBe('red')
+    expect(el.style.getPropertyValue(color)).toBe('red')
   })
 
   it('should handle null and undefined', async () => {
@@ -42,10 +43,12 @@ describe('useCssVar', () => {
     const variable = useCssVar(color, el, { initialValue: 'red', observe: true })
 
     expect(variable.value).toBe('red')
+    expect(el.style.getPropertyValue(color)).toBe('red')
 
     el.style.setProperty(color, 'blue')
     await nextTick()
     expect(variable.value).toBe('blue')
+    expect(el.style.getPropertyValue(color)).toBe('blue')
   })
 
   it('should work when changing color in onMounted', async () => {
@@ -61,6 +64,7 @@ describe('useCssVar', () => {
         })
 
         return {
+          el,
           variable,
         }
       },
@@ -71,5 +75,6 @@ describe('useCssVar', () => {
 
     await nextTick()
     expect(vm.variable).toBe('blue')
+    expect(vm.el.style.getPropertyValue('--color')).toBe('blue')
   })
 })
