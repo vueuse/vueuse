@@ -7,7 +7,7 @@ category: Browser
 Reactive document title.
 
 ::: tip
-When using with Nuxt 3, this function will **NOT** be auto imported in favor of Nuxt's built-in `useTitle()`.
+This composable isn't compatible with SSR. When using with Nuxt 3, this function will **NOT** be auto imported in favor of Nuxt's built-in composables such as `useHead()` and `useSeoMeta()`.
 Use explicit import if you want to use the function from VueUse.
 :::
 
