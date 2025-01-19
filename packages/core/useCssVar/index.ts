@@ -69,6 +69,7 @@ export function useCssVar(
           elRef.value.style.setProperty(raw_prop, val)
       }
     },
+    { immediate: true },
   )
 
   return variable
