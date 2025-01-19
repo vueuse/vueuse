@@ -1,4 +1,5 @@
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -20,6 +21,7 @@ export default defineConfig({
     __VUE_PROD_DEVTOOLS__: 'false',
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
   },
+  cacheDir: resolve(dirname(fileURLToPath(import.meta.url)), 'node_modules/.vite'),
   test: {
     reporters: 'dot',
     coverage: {
