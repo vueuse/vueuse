@@ -42,6 +42,7 @@ export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
  * @see https://vueuse.org/useTitle
  * @param newTitle
  * @param options
+ * @description It's not SSR compatible. Your value will be applied only on client-side.
  */
 export function useTitle(
   newTitle: ReadonlyRefOrGetter<string | null | undefined>,
