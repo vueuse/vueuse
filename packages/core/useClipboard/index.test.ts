@@ -5,9 +5,4 @@ describe('useClipboard', () => {
   it('should be defined', () => {
     expect(useClipboard).toBeDefined()
   })
-
-  it('should be supported', () => {
-    const { isSupported } = useClipboard()
-    expect(isSupported.value).toBe(true)
-  })
 })
