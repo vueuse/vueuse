@@ -125,7 +125,7 @@ export function useEventListener<EventType = Event>(
 ): Fn
 
 export function useEventListener(...args: Parameters<typeof useEventListener>) {
-  const controller = new AbortController()
+  let controller = new AbortController()
 
   const register = (
     el: EventTarget,
@@ -151,9 +151,11 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
       toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
     ] as const,
     ([raw_targets, raw_events, raw_listeners, raw_options]) => {
+      controller.abort()
       if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
         return
 
+      controller = new AbortController()
       // create a clone of options, to avoid it being changed reactively on removal
       const optionsClone = isObject(raw_options) ? { ...raw_options } : raw_options
       for (const el of raw_targets) {
