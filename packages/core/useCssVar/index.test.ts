@@ -77,4 +77,28 @@ describe('useCssVar', () => {
     expect(vm.variable).toBe('blue')
     expect(vm.el.style.getPropertyValue('--color')).toBe('blue')
   })
+
+  it('should have existing value', async () => {
+    const vm = mount(defineComponent({
+      setup() {
+        const el = ref()
+
+        const color = '--color'
+        const variable = useCssVar(color, el)
+
+        return {
+          el,
+          variable,
+        }
+      },
+      template: `
+        <div ref="el" style="--color: red"></div>
+      `,
+    }))
+
+    await nextTick()
+    expect(vm.variable).toBe('red')
+    expect(window.getComputedStyle(vm.el).getPropertyValue('--color')).toBe('red')
+    expect(vm.el.style.getPropertyValue('--color')).toBe('red')
+  })
 })
