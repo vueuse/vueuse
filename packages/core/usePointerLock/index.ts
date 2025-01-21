@@ -1,11 +1,11 @@
-import { ref } from 'vue-demi'
+import type { ConfigurableDocument } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
 import { until } from '@vueuse/shared'
+import { ref } from 'vue'
+import { defaultDocument } from '../_configurable'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import { unrefElement } from '../unrefElement'
-import type { MaybeElementRef } from '../unrefElement'
-import type { ConfigurableDocument } from '../_configurable'
-import { defaultDocument } from '../_configurable'
 
 // declare global {
 //   interface PointerLockOptions {
@@ -38,6 +38,8 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
   let targetElement: MaybeHTMLElement
 
   if (isSupported.value) {
+    const listenerOptions = { passive: true }
+
     useEventListener(document, 'pointerlockchange', () => {
       const currentElement = document!.pointerLockElement ?? element.value
       if (targetElement && currentElement === targetElement) {
@@ -45,7 +47,7 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
         if (!element.value)
           targetElement = triggerElement.value = null
       }
-    })
+    }, listenerOptions)
 
     useEventListener(document, 'pointerlockerror', () => {
       const currentElement = document!.pointerLockElement ?? element.value
@@ -53,7 +55,7 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
         const action = document!.pointerLockElement ? 'release' : 'acquire'
         throw new Error(`Failed to ${action} pointer lock.`)
       }
-    })
+    }, listenerOptions)
   }
 
   async function lock(

@@ -1,6 +1,6 @@
-<script setup>
-import { ref, watch } from 'vue-demi'
+<script setup lang="ts">
 import { useMouse, usePointerLock } from '@vueuse/core'
+import { ref, watch } from 'vue'
 
 const { lock, unlock, element } = usePointerLock()
 const { x, y } = useMouse({ type: 'movement' })

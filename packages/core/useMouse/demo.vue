@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { stringify } from '@vueuse/docs-utils'
-import { useMouse, useParentElement } from '@vueuse/core'
 import type { UseMouseEventExtractor } from '@vueuse/core'
+import { useMouse, useParentElement } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
+import { reactive } from 'vue'
 
 const parentEl = useParentElement()
 
 const mouseDefault = reactive(useMouse())
 const textDefault = stringify(mouseDefault)
 
-const extractor: UseMouseEventExtractor = (event) => {
-  if (typeof Touch !== 'undefined' && event instanceof Touch)
+const extractor: UseMouseEventExtractor = (e) => {
+  if (typeof Touch !== 'undefined' && e instanceof Touch)
     return null
-  else
-    return [event.offsetX, event.offsetY]
+  const event = e as MouseEvent
+  return [event.offsetX, event.offsetY]
 }
 
 const mouseWithExtractor = reactive(useMouse({ target: parentEl, type: extractor }))

@@ -1,6 +1,5 @@
-import { ref } from 'vue-demi'
-import { toValue } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
+import { ref, toValue } from 'vue'
 import { logicAnd } from '.'
 
 describe('logicAnd', () => {

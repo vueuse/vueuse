@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import YAML from 'js-yaml'
-import { computed, reactive, ref } from 'vue'
 import type { CSSProperties } from 'vue'
 import { useMediaQuery, useParallax } from '@vueuse/core'
+import YAML from 'js-yaml'
+import { computed, reactive, ref } from 'vue'
 
 const target = ref(null)
 const isMobile = useMediaQuery('(max-width: 700px)')
@@ -42,7 +42,7 @@ const infoStyle = computed(() => ({
   top: '20px',
   left: '40px',
   position: isMobile.value ? 'inherit' : 'absolute',
-}))
+} satisfies CSSProperties))
 
 const layer0 = computed(() => ({
   ...layerBase,

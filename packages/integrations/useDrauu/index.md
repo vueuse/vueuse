@@ -16,9 +16,9 @@ npm i drauu@^0
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { toRefs } from '@vueuse/core'
 import { useDrauu } from '@vueuse/integrations/useDrauu'
+import { ref } from 'vue'
 
 const target = ref()
 const { undo, redo, canUndo, canRedo, brush } = useDrauu(target)

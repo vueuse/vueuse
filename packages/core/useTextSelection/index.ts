@@ -1,5 +1,5 @@
-import { computed, ref } from 'vue-demi'
 import type { ConfigurableWindow } from '../_configurable'
+import { computed, ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -30,7 +30,7 @@ export function useTextSelection(options: ConfigurableWindow = {}) {
   }
 
   if (window)
-    useEventListener(window.document, 'selectionchange', onSelectionChange)
+    useEventListener(window.document, 'selectionchange', onSelectionChange, { passive: true })
 
   return {
     text,

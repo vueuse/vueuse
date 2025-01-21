@@ -1,10 +1,10 @@
-import { ref, watch } from 'vue-demi'
 import type { MaybeElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
-import { useMouse } from '../useMouse'
+import { ref, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { useMouse } from '../useMouse'
 
 export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean
@@ -45,7 +45,7 @@ export function useMouseInElement(
       [targetRef, x, y],
       () => {
         const el = unrefElement(targetRef)
-        if (!el || !(el instanceof HTMLElement))
+        if (!el || !(el instanceof Element))
           return
 
         const {
@@ -74,9 +74,12 @@ export function useMouseInElement(
       { immediate: true },
     )
 
-    useEventListener(document, 'mouseleave', () => {
-      isOutside.value = true
-    })
+    useEventListener(
+      document,
+      'mouseleave',
+      () => isOutside.value = true,
+      { passive: true },
+    )
   }
 
   return {

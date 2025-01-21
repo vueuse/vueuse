@@ -1,9 +1,9 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import type { WindowEventName } from '../useEventListener'
-import { useEventListener } from '../useEventListener'
+import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
+import type { WindowEventName } from '../useEventListener'
+import { ref } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export type KeyModifier = 'Alt' | 'AltGraph' | 'CapsLock' | 'Control' | 'Fn' | 'FnLock' | 'Meta' | 'NumLock' | 'ScrollLock' | 'Shift' | 'Symbol' | 'SymbolLock'
 
@@ -41,7 +41,7 @@ export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModi
       useEventListener(document, listenerEvent, (evt: KeyboardEvent | MouseEvent) => {
         if (typeof evt.getModifierState === 'function')
           state.value = evt.getModifierState(modifier)
-      })
+      }, { passive: true })
     })
   }
 

@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 /**
  * Reactive Navigator Languages.
@@ -20,7 +20,7 @@ export function usePreferredLanguages(options: ConfigurableWindow = {}): Ref<rea
 
   useEventListener(window, 'languagechange', () => {
     value.value = navigator.languages
-  })
+  }, { passive: true })
 
   return value
 }

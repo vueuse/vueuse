@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { computed, ref, watch } from 'vue-demi'
-import type { MaybeElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
+import { computed, ref, watch } from 'vue'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 
 export interface UseFocusOptions extends ConfigurableWindow {
@@ -49,11 +49,12 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
   const innerFocused = ref(false)
   const targetElement = computed(() => unrefElement(target))
 
+  const listenerOptions = { passive: true }
   useEventListener(targetElement, 'focus', (event) => {
     if (!focusVisible || (event.target as HTMLElement).matches?.(':focus-visible'))
       innerFocused.value = true
-  })
-  useEventListener(targetElement, 'blur', () => innerFocused.value = false)
+  }, listenerOptions)
+  useEventListener(targetElement, 'blur', () => innerFocused.value = false, listenerOptions)
 
   const focused = computed({
     get: () => innerFocused.value,

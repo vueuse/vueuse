@@ -43,7 +43,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [18.x, 20.x]
+        node: [18.x, 20.x, 22.x]
       fail-fast: false
 
     steps:
@@ -64,17 +64,20 @@ jobs:
       - name: Install
         run: nci
 
+      - name: Install Playwright Browsers
+        run: nlx playwright install --with-deps
+
       - name: Build
         run: nr build
 
       - name: Typecheck
         run: nr typecheck
 
-      - name: Test Vue 3
-        run: pnpm run test:3
+      - name: unit tests
+        run: pnpm run test:unit
 
-      - name: Test Vue 2
-        run: pnpm run test:2
+      - name: browser tests
+        run: pnpm run test:browser
 
       - if: matrix.node == '18.x'
         name: Playground Smoke Test

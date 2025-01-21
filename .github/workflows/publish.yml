@@ -21,10 +21,9 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
 
-      - name: Use Node.js v18
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: lts/*
           registry-url: https://registry.npmjs.org/
           cache: pnpm
 
@@ -34,6 +33,8 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - run: pnpm run update:full
 
       - run: pnpm run publish:ci
         env:

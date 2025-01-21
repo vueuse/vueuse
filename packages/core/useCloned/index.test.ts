@@ -1,6 +1,6 @@
 import { useCloned } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { nextTick, ref } from 'vue'
 
 describe('useCloned', () => {
   it('works with simple objects', () => {
@@ -92,5 +92,21 @@ describe('useCloned', () => {
     await nextTick()
 
     expect(cloned.value).toEqual(data.value)
+  })
+
+  it('works with use isModified', async () => {
+    const data = ref({ test: 'test' })
+
+    const { cloned, isModified, sync } = useCloned(data)
+
+    expect(isModified.value).toEqual(false)
+
+    cloned.value.test = 'vitest'
+
+    expect(isModified.value).toEqual(true)
+
+    sync()
+
+    expect(isModified.value).toEqual(false)
   })
 })

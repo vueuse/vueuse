@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { computed, reactive } from 'vue'
 import { useElementBounding, useElementByPoint, useEventListener, useMouse } from '@vueuse/core'
+import { computed, reactive } from 'vue'
 
 const { x, y } = useMouse({ type: 'client' })
 const { element } = useElementByPoint({ x, y })
 const bounding = reactive(useElementBounding(element))
 
-useEventListener('scroll', bounding.update, true)
+useEventListener('scroll', bounding.update, { passive: true, capture: true })
 
 const boxStyles = computed(() => {
   if (element.value) {

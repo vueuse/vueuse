@@ -1,11 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { objectEntries } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { reactive, ref, watch } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { objectEntries } from '@vueuse/shared'
+import { reactive, ref, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 const WRITABLE_PROPERTIES = [
   'hash',
@@ -71,8 +71,9 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
   const state = ref(buildState('load'))
 
   if (window) {
-    useEventListener(window, 'popstate', () => state.value = buildState('popstate'), { passive: true })
-    useEventListener(window, 'hashchange', () => state.value = buildState('hashchange'), { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(window, 'popstate', () => state.value = buildState('popstate'), listenerOptions)
+    useEventListener(window, 'hashchange', () => state.value = buildState('hashchange'), listenerOptions)
   }
 
   return state

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { useFetch } from '@vueuse/core'
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
-import { useFetch } from '@vueuse/core'
+import { computed, reactive, ref } from 'vue'
 
 const url = ref('https://httpbin.org/get')
 const refetch = ref(false)
@@ -62,10 +62,10 @@ const text = stringify(reactive({
     </div>
 
     <input v-model="url" type="text">
-    <button @click="execute">
+    <button @click="() => execute()">
       Execute
     </button>
-    <button @click="toggleRefetch">
+    <button @click="() => toggleRefetch()">
       <i v-if="refetch" inline-block align-middle i-carbon-checkmark />
       <i v-else inline-block align-middle i-carbon-error />
 

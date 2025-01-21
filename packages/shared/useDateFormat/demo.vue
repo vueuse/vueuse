@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useDateFormat, useNow } from '@vueuse/core'
+import { ref } from 'vue'
 
 const formatter = ref('dddd YYYY-MM-DD HH:mm:ss')
 const lang = ref('en-US')
@@ -10,9 +10,6 @@ const formatted = useDateFormat(useNow(), formatter, { locales: lang })
 <template>
   <p class="text-20px font-bold text-emerald-500">
     {{ formatted }}
-  </p>
-  <p class="text-20px font-bold text-emerald-500">
-    {{ locale }}
   </p>
   <div class="flex flex-col">
     <span class="mr-5px text-18px">

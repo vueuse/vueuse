@@ -1,5 +1,6 @@
-import { nextTick, onBeforeMount } from 'vue-demi'
-import { type Fn, getLifeCycleTarget } from '../utils'
+import type { Fn } from '../utils'
+import { nextTick, onBeforeMount } from 'vue'
+import { getLifeCycleTarget } from '../utils'
 
 /**
  * Call onBeforeMount() if it's inside a component lifecycle, if not, just call the function

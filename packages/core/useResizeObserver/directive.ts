@@ -1,7 +1,6 @@
-import { directiveHooks } from '@vueuse/shared'
-import type { ObjectDirective } from 'vue-demi'
-import { useResizeObserver } from '.'
+import type { ObjectDirective } from 'vue'
 import type { ResizeObserverCallback, UseResizeObserverOptions } from '.'
+import { useResizeObserver } from '.'
 
 type BindingValueFunction = ResizeObserverCallback
 
@@ -11,7 +10,7 @@ export const vResizeObserver: ObjectDirective<
   HTMLElement,
   BindingValueFunction | BindingValueArray
 > = {
-  [directiveHooks.mounted](el, binding) {
+  mounted(el, binding) {
     if (typeof binding.value === 'function')
       useResizeObserver(el, binding.value)
     else

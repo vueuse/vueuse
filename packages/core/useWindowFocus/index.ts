@@ -1,8 +1,8 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 /**
  * Reactively track window focus with `window.onfocus` and `window.onblur`.
@@ -16,13 +16,15 @@ export function useWindowFocus(options: ConfigurableWindow = {}): Ref<boolean> {
 
   const focused = ref(window.document.hasFocus())
 
+  const listenerOptions = { passive: true }
+
   useEventListener(window, 'blur', () => {
     focused.value = false
-  })
+  }, listenerOptions)
 
   useEventListener(window, 'focus', () => {
     focused.value = true
-  })
+  }, listenerOptions)
 
   return focused
 }

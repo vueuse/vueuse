@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { useFavicon } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
 const type = ref('vueuse')
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { effect, ref } from 'vue'
 import { useClipboardItems, usePermission } from '@vueuse/core'
+import { effect, ref } from 'vue'
 
 const input = ref('')
 

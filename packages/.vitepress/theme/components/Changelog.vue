@@ -1,17 +1,17 @@
 <script setup lang="ts">
+import type { CommitInfo } from '@vueuse/metadata'
+import { functions } from '@vueuse/metadata'
+import { computed } from 'vue'
+import { renderCommitMessage } from '../utils'
 // @ts-expect-error virtual
 import changelog from '/virtual-changelog'
-import { computed } from 'vue'
-import type { CommitInfo } from '@vueuse/metadata'
-import { renderCommitMessage } from '../utils'
-import { functions } from '@vueuse/metadata'
 
 const props = defineProps<{ fn: string }>()
 const info = computed(() => functions.find(i => i.name === props.fn))
 
 const allCommits = changelog as CommitInfo[]
 
-const names = computed(() => [props.fn, ...info.value.alias || []])
+const names = computed(() => [props.fn, ...info.value?.alias || []])
 const commits = computed(() => {
   const related = allCommits
     .filter(c => c.version || c.functions?.some(i => names.value.includes(i)))

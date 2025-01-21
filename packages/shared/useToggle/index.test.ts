@@ -1,6 +1,5 @@
-import { isRef, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { toValue } from '../toValue'
+import { isRef, ref, toValue } from 'vue'
 import { useToggle } from '.'
 
 describe('useToggle', () => {

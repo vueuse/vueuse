@@ -6,17 +6,13 @@ category: Reactivity
 
 Add extra attributes to Ref.
 
-::: warning
-This function only works for Vue 2.7 or above.
-:::
-
 ## Usage
 
 > Please note the extra attribute will not be accessible in Vue's template.
 
 ```ts
-import { ref } from 'vue'
 import { extendRef } from '@vueuse/core'
+import { ref } from 'vue'
 
 const myRef = ref('content')
 

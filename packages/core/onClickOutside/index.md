@@ -10,8 +10,8 @@ Listen for clicks outside of an element. Useful for modal or dropdown.
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import { ref } from 'vue'
 
 const target = ref(null)
 
@@ -25,8 +25,6 @@ onClickOutside(target, event => console.log(event))
   <div>Outside element</div>
 </template>
 ```
-
-> This function uses [Event.composedPath()](https://developer.mozilla.org/en-US/docs/Web/API/Event/composedPath) which is NOT supported by IE 11, Edge 18 and below. If you are targeting these browsers, we recommend you to include [this code snippet](https://gist.github.com/sibbng/13e83b1dd1b733317ce0130ef07d4efd) on your project.
 
 ## Component Usage
 
@@ -44,8 +42,8 @@ onClickOutside(target, event => console.log(event))
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
+import { ref } from 'vue'
 
 const modal = ref(false)
 function closeModal() {
@@ -67,8 +65,8 @@ You can also set the handler as an array to set the configuration items of the i
 
 ```vue
 <script setup>
-import { ref } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
+import { ref } from 'vue'
 
 const modal = ref(false)
 

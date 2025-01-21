@@ -19,8 +19,8 @@ console.log(idle.value) // true or false
 Programatically resetting:
 
 ```js
-import { watch } from 'vue'
 import { useCounter, useIdle } from '@vueuse/core'
+import { watch } from 'vue'
 
 const { inc, count } = useCounter()
 

@@ -1,11 +1,9 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { noop } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, reactive, ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import type { Position } from '../types'
+import { computed, reactive, ref } from 'vue'
+import { useEventListener } from '../useEventListener'
 
 export type UseSwipeDirection = 'up' | 'down' | 'left' | 'right' | 'none'
 
@@ -39,6 +37,11 @@ export interface UseSwipeOptions extends ConfigurableWindow {
 }
 
 export interface UseSwipeReturn {
+  /**
+   * @deprecated No longer need this Vue 3's browser targets all supporting passive event listeners.
+   *
+   * This flag will always return `true` and be removed in the next major version.
+   */
   isPassiveEventSupported: boolean
   isSwiping: Ref<boolean>
   direction: ComputedRef<UseSwipeDirection>
@@ -66,7 +69,6 @@ export function useSwipe(
     onSwipeEnd,
     onSwipeStart,
     passive = true,
-    window = defaultWindow,
   } = options
 
   const coordsStart = reactive<Position>({ x: 0, y: 0 })
@@ -108,14 +110,7 @@ export function useSwipe(
     coordsEnd.y = y
   }
 
-  let listenerOptions: { passive?: boolean, capture?: boolean }
-
-  const isPassiveEventSupported = checkPassiveEventSupport(window?.document)
-
-  if (!passive)
-    listenerOptions = isPassiveEventSupported ? { passive: false, capture: true } : { capture: true }
-  else
-    listenerOptions = isPassiveEventSupported ? { passive: true } : { capture: false }
+  const listenerOptions = { passive, capture: !passive }
 
   const onTouchEnd = (e: TouchEvent) => {
     if (isSwiping.value)
@@ -128,8 +123,6 @@ export function useSwipe(
     useEventListener(target, 'touchstart', (e: TouchEvent) => {
       if (e.touches.length !== 1)
         return
-      if (listenerOptions.capture && !listenerOptions.passive)
-        e.preventDefault()
       const [x, y] = getTouchEventCoords(e)
       updateCoordsStart(x, y)
       updateCoordsEnd(x, y)
@@ -141,6 +134,8 @@ export function useSwipe(
         return
       const [x, y] = getTouchEventCoords(e)
       updateCoordsEnd(x, y)
+      if (listenerOptions.capture && !listenerOptions.passive && Math.abs(diffX.value) > Math.abs(diffY.value))
+        e.preventDefault()
       if (!isSwiping.value && isThresholdExceeded.value)
         isSwiping.value = true
       if (isSwiping.value)
@@ -153,7 +148,6 @@ export function useSwipe(
   const stop = () => stops.forEach(s => s())
 
   return {
-    isPassiveEventSupported,
     isSwiping,
     direction,
     coordsStart,
@@ -161,24 +155,8 @@ export function useSwipe(
     lengthX: diffX,
     lengthY: diffY,
     stop,
-  }
-}
 
-/**
- * This is a polyfill for passive event support detection
- * @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
- */
-function checkPassiveEventSupport(document?: Document) {
-  if (!document)
-    return false
-  let supportsPassive = false
-  const optionsBlock: AddEventListenerOptions = {
-    get passive() {
-      supportsPassive = true
-      return false
-    },
+    // TODO: Remove in the next major version
+    isPassiveEventSupported: true,
   }
-  document.addEventListener('x', noop, optionsBlock)
-  document.removeEventListener('x', noop)
-  return supportsPassive
 }

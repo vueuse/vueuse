@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
 import { interval } from 'rxjs'
+import { ref } from 'vue'
 import { useSubscription } from '.'
 
 const count = ref(0)

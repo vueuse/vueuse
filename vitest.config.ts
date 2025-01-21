@@ -12,32 +12,18 @@ export default defineConfig({
     },
     dedupe: [
       'vue',
-      'vue-demi',
       '@vue/runtime-core',
     ],
   },
   define: {
     __VUE_OPTIONS_API__: 'true',
     __VUE_PROD_DEVTOOLS__: 'false',
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
   },
   test: {
-    environment: 'jsdom',
-    setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
     reporters: 'dot',
-    server: {
-      deps: {
-        inline: [
-          'vue2',
-          '@vue/composition-api',
-          'vue-demi',
-          'msw',
-        ],
-      },
+    coverage: {
+      exclude: ['./packages/**/demo.vue'],
     },
-  },
-  ssr: {
-    noExternal: [
-      /@vueuse\/.*/,
-    ],
   },
 })

@@ -1,22 +1,21 @@
-import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { useTimestamp } from '.'
 
 describe('useTimestamp', () => {
+  vi.useFakeTimers()
   it('starts immediately by default', async () => {
     const timestamp = useTimestamp()
-
     const initial = timestamp.value
 
-    await promiseTimeout(50)
-
+    vi.advanceTimersByTime(20)
     expect(timestamp.value).greaterThan(initial)
   })
 
   it('allows for a delayed start using requestAnimationFrame', async () => {
-    let now
+    const now = ref()
     const callback = vi.fn((time) => {
-      now = time
+      now.value = time
     })
     const { resume, timestamp } = useTimestamp({
       controls: true,
@@ -26,17 +25,13 @@ describe('useTimestamp', () => {
 
     const initial = timestamp.value
 
-    await promiseTimeout(50)
-
+    vi.advanceTimersByTime(20)
     expect(timestamp.value).toBe(initial)
-    expect(now).toBeUndefined()
-
+    expect(now.value).toBeUndefined()
     resume()
-
-    await promiseTimeout(50)
-
+    vi.advanceTimersByTime(20)
     expect(timestamp.value).greaterThan(initial)
-    expect(now).greaterThan(initial)
+    expect(now.value).greaterThan(initial)
   })
 
   it('allows for a delayed start using common interval', async () => {
@@ -53,14 +48,13 @@ describe('useTimestamp', () => {
 
     const initial = timestamp.value
 
-    await promiseTimeout(50)
+    vi.advanceTimersByTime(50)
 
     expect(timestamp.value).toBe(initial)
     expect(now).toBeUndefined()
 
     resume()
-
-    await promiseTimeout(50)
+    vi.advanceTimersByTime(50)
 
     expect(timestamp.value).greaterThan(initial)
     expect(now).greaterThan(initial)
