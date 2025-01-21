@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
+import { computed, ref } from 'vue'
 import { useAxios } from '.'
 
-const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios(
-  'https://jsonplaceholder.typicode.com/todos/1',
-)
+const counter = ref(1)
+const refetch = ref(false)
+
+const url = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios<string>(url, undefined)
+
 const text = stringify(data)
 </script>
 

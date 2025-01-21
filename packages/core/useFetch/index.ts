@@ -185,7 +185,7 @@ export interface UseFetchOptions {
    * Will run immediately after the fetch request is returned.
    * Runs after any 4xx and 5xx response
    */
-  onFetchError?: (ctx: { data: any, response: Response | null, error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
+  onFetchError?: (ctx: { data: any; response: Response | null; error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -626,13 +626,11 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 }
 
 function joinPaths(start: string, end: string): string {
-  if (!start.endsWith('/') && !end.startsWith('/')) {
+  if (!start.endsWith('/') && !end.startsWith('/'))
     return `${start}/${end}`
-  }
 
-  if (start.endsWith('/') && end.startsWith('/')) {
+  if (start.endsWith('/') && end.startsWith('/'))
     return `${start.slice(0, -1)}${end}`
-  }
 
   return `${start}${end}`
 }
