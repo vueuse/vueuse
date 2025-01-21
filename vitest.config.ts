@@ -5,11 +5,11 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   resolve: {
     alias: {
-      '@vueuse/shared': resolve(__dirname, 'packages/shared/index.ts'),
-      '@vueuse/core': resolve(__dirname, 'packages/core/index.ts'),
-      '@vueuse/math': resolve(__dirname, 'packages/math/index.ts'),
-      '@vueuse/components': resolve(__dirname, 'packages/components/index.ts'),
-      '@vueuse/docs-utils': resolve(__dirname, 'packages/.vitepress/plugins/utils.ts'),
+      '@vueuse/shared': resolve(import.meta.dirname, 'packages/shared/index.ts'),
+      '@vueuse/core': resolve(import.meta.dirname, 'packages/core/index.ts'),
+      '@vueuse/math': resolve(import.meta.dirname, 'packages/math/index.ts'),
+      '@vueuse/components': resolve(import.meta.dirname, 'packages/components/index.ts'),
+      '@vueuse/docs-utils': resolve(import.meta.dirname, 'packages/.vitepress/plugins/utils.ts'),
     },
     dedupe: [
       'vue',
@@ -59,7 +59,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           environment: 'jsdom',
-          setupFiles: [resolve(__dirname, 'packages/.test/setup.ts')],
+          setupFiles: [resolve(import.meta.dirname, 'packages/.test/setup.ts')],
           include: [
             '!packages/**/*.browser.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
