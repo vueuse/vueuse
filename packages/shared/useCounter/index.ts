@@ -6,6 +6,7 @@ export interface UseCounterOptions {
   min?: number
   max?: number
 }
+
 /**
  * Basic counter with utility functions.
  *
