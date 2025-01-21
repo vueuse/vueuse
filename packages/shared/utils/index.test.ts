@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import { ref } from 'vue'
 import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
 
@@ -260,8 +260,14 @@ describe('filters', () => {
 })
 
 describe('is', () => {
+  let warnSpy: MockInstance
+
   beforeEach(() => {
-    console.warn = vi.fn()
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should be client', () => {
@@ -274,9 +280,9 @@ describe('is', () => {
 
   it('should assert', () => {
     assert(true)
-    expect(console.warn).not.toBeCalled()
+    expect(warnSpy).not.toBeCalled()
     assert(false, 'error')
-    expect(console.warn).toHaveBeenCalledWith('error')
+    expect(warnSpy).toHaveBeenCalledWith('error')
   })
 
   it('should be defined', () => {
@@ -306,9 +312,9 @@ describe('is', () => {
     expect(noop()).toBeUndefined()
   })
 
-  it('should be rand', () => {
+  it('should be rand', { retry: 20 }, () => {
     expect(rand(1, 2)).not.toBe(rand(1, 2))
-  }, { retry: 20 })
+  })
 
   it('hasOwn', () => {
     class Parent {a = 1}
