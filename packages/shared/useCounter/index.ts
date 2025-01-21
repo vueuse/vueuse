@@ -1,10 +1,11 @@
-import { type MaybeRefOrGetter, ref, toValue } from 'vue'
+import type { MaybeRef } from '../utils'
+// eslint-disable-next-line no-restricted-imports
+import { ref, unref } from 'vue'
 
 export interface UseCounterOptions {
   min?: number
   max?: number
 }
-
 /**
  * Basic counter with utility functions.
  *
@@ -12,9 +13,9 @@ export interface UseCounterOptions {
  * @param [initialValue]
  * @param options
  */
-export function useCounter(initialValue: MaybeRefOrGetter<number> = 0, options: UseCounterOptions = {}) {
-  let _initialValue = toValue(initialValue)
-  const count = ref(_initialValue)
+export function useCounter(initialValue: MaybeRef<number> = 0, options: UseCounterOptions = {}) {
+  let _initialValue = unref(initialValue)
+  const count = ref(initialValue)
 
   const {
     max = Number.POSITIVE_INFINITY,
