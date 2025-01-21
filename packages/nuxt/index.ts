@@ -17,7 +17,6 @@ const disabledFunctions = [
   'useFetch',
   'useCookie',
   'useHead',
-  'useTitle',
   'useStorage',
   'useImage',
 ]
