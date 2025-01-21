@@ -1,8 +1,10 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { containsProp, toRef, until } from '@vueuse/shared'
 import axios, { AxiosError } from 'axios'
-import { computed, ref, shallowRef, toValue, watch } from 'vue'
+// AxiosInstance can be a function, MaybeRefOrGetter can't be used for the URL input because it will call if overloaded
+// eslint-disable-next-line no-restricted-imports
+import { computed, ref, shallowRef, unref, watch } from 'vue'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, O extends UseAxiosOptions = UseAxiosOptions<T>> {
   /**
@@ -124,12 +126,12 @@ export type UseAxiosOptions<T = any> = UseAxiosOptionsBase<T> | UseAxiosOptionsW
 
 type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
 
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRefOrGetter<string>, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRefOrGetter<string>, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRefOrGetter<string>, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRefOrGetter<string>, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRefOrGetter<string>, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRefOrGetter<string>, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRef<string>, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRef<string>, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRef<string>, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRef<string>, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRef<string>, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRef<string>, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
@@ -141,21 +143,17 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosR
  */
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[]): OverallUseAxiosReturn<T, R, D> & Promise<OverallUseAxiosReturn<T, R, D>> {
   const isAxiosInstance = (val: unknown): val is AxiosInstance =>
-    typeof val === 'object'
-    && val !== null
+    typeof val === 'function'
     && containsProp(val, 'request', 'get', 'post')
 
   const resolvedArgs = computed(() => {
     const [_firstArg, secondArg, thirdArg, fourthArg] = args as unknown[]
-
-    const firstArg = toValue(_firstArg)
+    const firstArg = unref(_firstArg)
 
     let _url: string | undefined
     let _axiosInstance: AxiosInstance = axios
     let _config: AxiosRequestConfig<D> | undefined
     let _options: UseAxiosOptions<unknown> | undefined
-
-    console.debug('firstarg', isAxiosInstance(firstArg))
 
     if (typeof firstArg === 'string')
       _url = firstArg
@@ -189,8 +187,6 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       abortPrevious: true,
       refetch: false,
     }
-
-    console.debug('input', _url, _axiosInstance, _config, _options)
 
     return {
       url: _url,

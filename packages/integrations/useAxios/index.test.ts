@@ -1,7 +1,5 @@
 import type { RawAxiosRequestConfig } from 'axios'
-import type { Ref } from 'vue'
 import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from '.'
-import { until } from '@vueuse/shared'
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
@@ -165,17 +163,14 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     }, onRejected)
   })
 
-  it.only('params no url: config instance', async () => {
-    const { isLoading, execute, data } = useAxios(config, instance)
+  it('params no url: config instance', async () => {
+    const { isLoading, execute } = useAxios(config, instance)
     expect(isLoading.value).toBeFalsy()
     const res = execute(path)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vi.fn()
 
     const result = await res.then(undefined, onRejected)
-
-    expect(data.value).toBe(13)
-    console.debug(data.value)
     expect(result.data.value.id).toBe(1)
     expect(isLoading.value).toBeFalsy()
     expect(onRejected).toBeCalledTimes(0)
