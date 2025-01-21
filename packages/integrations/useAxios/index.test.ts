@@ -1,10 +1,12 @@
 import type { RawAxiosRequestConfig } from 'axios'
+import type { Ref } from 'vue'
+import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from '.'
+import { until } from '@vueuse/shared'
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { nextTick } from 'vue'
-import { isBelowNode18 } from '../../.test'
+import { computed, nextTick, ref } from 'vue'
 import { useAxios } from '.'
-import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from '.'
+import { isBelowNode18 } from '../../.test'
 
 // The tests does not run properly below node 18
 describe.skipIf(isBelowNode18)('useAxios', () => {
@@ -163,14 +165,17 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     }, onRejected)
   })
 
-  it('params no url: config instance', async () => {
-    const { isLoading, execute } = useAxios(config, instance)
+  it.only('params no url: config instance', async () => {
+    const { isLoading, execute, data } = useAxios(config, instance)
     expect(isLoading.value).toBeFalsy()
     const res = execute(path)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vi.fn()
 
     const result = await res.then(undefined, onRejected)
+
+    expect(data.value).toBe(13)
+    console.debug(data.value)
     expect(result.data.value.id).toBe(1)
     expect(isLoading.value).toBeFalsy()
     expect(onRejected).toBeCalledTimes(0)
@@ -418,5 +423,78 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const d = useAxios<number>(url, config, { ...options })
 
     expectTypeOf(d.data.value).toEqualTypeOf<number | undefined>()
+  })
+
+  describe('reactivity', () => {
+    it('url should be reactive', async () => {
+      const counter = ref(1)
+      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const { data, execute } = await useAxios(myUrl)
+      expect(data.value.id).toBe(1)
+      counter.value = 2
+      await execute()
+      expect(data.value.id).toBe(2)
+    })
+
+    it('refetch should be reactive when combined with url', async () => {
+      const counter = ref(1)
+      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const { data, then } = useAxios(myUrl, undefined, {
+        refetch: true,
+        immediate: true,
+      })
+      await then()
+      expect(data.value.id).toBe(1)
+      counter.value = 2
+      await nextTick()
+      await then()
+      expect(data.value.id).toBe(2)
+    })
+
+    it('automatically refreshes when refetch is enabled', async () => {
+      const counter = ref(1)
+      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const refetch = ref(false)
+      const { data, then } = useAxios(myUrl, undefined, {
+        refetch,
+        immediate: true,
+      })
+      await then()
+      expect(data.value.id).toBe(1)
+      counter.value = 2
+      // Should do nothing
+      await nextTick()
+      await then()
+      expect(data.value.id).toBe(1)
+      refetch.value = true
+      await nextTick()
+      await then()
+      expect(data.value.id).toBe(2)
+    })
+
+    it('refetch is a ref and should be reactive', async () => {
+      const counter = ref(1)
+      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const refetch = ref(false)
+      const { data, then } = useAxios(myUrl, undefined, {
+        refetch,
+        immediate: true,
+      })
+      await then()
+      expect(data.value.id).toBe(1)
+      counter.value = 2
+      await nextTick()
+      await then()
+      expect(data.value.id).toBe(1)
+      refetch.value = true
+      await nextTick()
+      await then()
+      expect(data.value.id).toBe(2)
+      refetch.value = false
+      counter.value = 3
+      await nextTick()
+      await then()
+      expect(data.value.id).toBe(2)
+    })
   })
 })

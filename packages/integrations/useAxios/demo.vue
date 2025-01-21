@@ -4,15 +4,24 @@ import { computed, ref } from 'vue'
 import { useAxios } from '.'
 
 const counter = ref(1)
-const refetch = ref(false)
+const refetch = ref(true)
 
 const url = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
-const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios<string>(url, undefined)
+const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios<string>(url, undefined, {
+  refetch,
+  immediate: true,
+})
 
 const text = stringify(data)
 </script>
 
 <template>
+  <button @click="counter = counter + 1">
+    Increment
+  </button>
+  <button @click="refetch = !refetch">
+    Toggle Refetch {{ String(refetch) }}
+  </button>
   <button @click="execute()">
     Execute
   </button>

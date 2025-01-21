@@ -155,6 +155,8 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     let _config: AxiosRequestConfig<D> | undefined
     let _options: UseAxiosOptions<unknown> | undefined
 
+    console.debug('firstarg', isAxiosInstance(firstArg))
+
     if (typeof firstArg === 'string')
       _url = firstArg
     else if (isAxiosInstance(firstArg))
@@ -181,8 +183,6 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     if (fourthArg)
       _options = fourthArg
 
-    console.log('is url?', !!_url)
-
     const defaultOptions: UseAxiosOptions<T> = {
       immediate: !!_url,
       shallow: true,
@@ -190,14 +190,13 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       refetch: false,
     }
 
-    console.debug('options', _options, defaultOptions, _options || defaultOptions)
+    console.debug('input', _url, _axiosInstance, _config, _options)
 
     return {
       url: _url,
       axiosInstance: _axiosInstance,
       config: _config,
       options: _options || defaultOptions,
-
     }
   })
 
@@ -257,8 +256,6 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
       ? executeUrl
       : resolvedArgs.value.url ?? config.url
 
-    console.debug('url, in execute', executeUrl, resolvedArgs.value.url, config.url)
-
     if (_url === undefined) {
       error.value = new AxiosError(AxiosError.ERR_INVALID_URL)
       isFinished.value = true
@@ -301,16 +298,13 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     refetch,
     () => resolvedArgs.value.url,
   ], ([newRefreshValue, newUrl]) => {
-    if (newRefreshValue && newUrl)
+    if (newRefreshValue && newUrl) {
       execute(newUrl)
+    }
   })
 
-  console.debug('before', resolvedArgs.value.options.immediate, resolvedArgs.value.url)
   if (resolvedArgs.value.options.immediate && resolvedArgs.value.url) {
-    console.debug('executing')
-    ;(execute as StrictUseAxiosReturn<T, R, D>['execute'])().then(() => {
-      console.debug('executed')
-    })
+    ;(execute as StrictUseAxiosReturn<T, R, D>['execute'])()
   }
 
   const result = {
