@@ -1,6 +1,5 @@
 name: 🚀 New feature proposal
 description: Propose a new feature to be added to VueUse
-labels: [enhancement]
 type: Feature
 title: '`functionName` | '
 body:
