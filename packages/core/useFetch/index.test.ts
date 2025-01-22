@@ -10,12 +10,10 @@ import '../../.test/mockServer'
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
 
-// Listen to make sure fetch is actually called.
-// Use msw to stub out the req/res
-let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
-let onFetchErrorSpy = vi.fn()
-let onFetchResponseSpy = vi.fn()
-let onFetchFinallySpy = vi.fn()
+let fetchSpy = vi.spyOn(window, 'fetch')
+const onFetchErrorSpy = vi.fn()
+const onFetchResponseSpy = vi.fn()
+const onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
   return (fetchSpy.mock.calls[idx][1]! as any).headers
@@ -25,9 +23,6 @@ function fetchSpyHeaders(idx = 0) {
 describe.skipIf(isBelowNode18)('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
-    onFetchErrorSpy = vi.fn()
-    onFetchResponseSpy = vi.fn()
-    onFetchFinallySpy = vi.fn()
   })
 
   it('should have status code of 200 and message of Hello World', async () => {
