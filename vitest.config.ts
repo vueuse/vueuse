@@ -1,7 +1,11 @@
 import { resolve } from 'node:path'
+import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  plugins: [
+    vue(),
+  ],
   resolve: {
     alias: {
       '@vueuse/shared': resolve(import.meta.dirname, 'packages/shared/index.ts'),
@@ -44,7 +48,7 @@ export default defineConfig({
           browser: {
             enabled: true,
             provider: 'playwright',
-            headless: true,
+            headless: false,
             instances: [
               { browser: 'chromium' },
               { browser: 'firefox' },
