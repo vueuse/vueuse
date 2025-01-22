@@ -37,7 +37,7 @@ export function useCssVar(
     const el = toValue(elRef)
     if (el && window && key) {
       const value = window.getComputedStyle(el).getPropertyValue(key)?.trim()
-      variable.value = value || initialValue
+      variable.value = value || variable.value || initialValue
     }
   }
 
@@ -55,7 +55,6 @@ export function useCssVar(
         old[0].style.removeProperty(old[1])
       updateCssVar()
     },
-    { flush: 'post' },
   )
 
   watch(
