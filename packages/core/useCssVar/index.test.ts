@@ -1,6 +1,6 @@
 import { defaultWindow } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, onMounted, ref } from 'vue'
+import { defineComponent, h, nextTick, onMounted, useTemplateRef } from 'vue'
 import { useCssVar } from '.'
 import { mount } from '../../.test'
 
@@ -54,7 +54,7 @@ describe('useCssVar', () => {
   it('should work when changing color in onMounted', async () => {
     const vm = mount(defineComponent({
       setup() {
-        const el = ref()
+        const el = useTemplateRef<HTMLDivElement>('el')
 
         const color = '--color'
         const variable = useCssVar(color, el)
@@ -75,13 +75,13 @@ describe('useCssVar', () => {
 
     await nextTick()
     expect(vm.variable).toBe('blue')
-    expect(vm.el.style.getPropertyValue('--color')).toBe('blue')
+    expect(vm.el?.style.getPropertyValue('--color')).toBe('blue')
   })
 
   it('should have existing value', async () => {
     const vm = mount(defineComponent({
       setup() {
-        const el = ref()
+        const el = useTemplateRef<HTMLDivElement>('el')
 
         const color = '--color'
         const variable = useCssVar(color, el)
@@ -91,14 +91,14 @@ describe('useCssVar', () => {
           variable,
         }
       },
-      template: `
-        <div ref="el" style="--color: red"></div>
-      `,
+      render() {
+        return h('div', { ref: 'el', style: { '--color': 'red' } })
+      },
     }))
 
     await nextTick()
     expect(vm.variable).toBe('red')
-    expect(window.getComputedStyle(vm.el).getPropertyValue('--color')).toBe('red')
-    expect(vm.el.style.getPropertyValue('--color')).toBe('red')
+    expect(window.getComputedStyle(vm.el!).getPropertyValue('--color')).toBe('red')
+    expect(vm.el?.style.getPropertyValue('--color')).toBe('red')
   })
 })
