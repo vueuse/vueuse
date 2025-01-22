@@ -10,6 +10,7 @@ Reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fulls
 
 ```js
 import { useFullscreen } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
 const { isFullscreen, enter, exit, toggle } = useFullscreen()
 ```
@@ -17,7 +18,7 @@ const { isFullscreen, enter, exit, toggle } = useFullscreen()
 Fullscreen specified element. Some platforms (like iOS's Safari) only allow fullscreen on video elements.
 
 ```ts
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 
 const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
 ```

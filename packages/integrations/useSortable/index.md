@@ -25,9 +25,9 @@ npm i sortablejs@^1
 ```vue
 <script setup lang="ts">
 import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 useSortable(el, list)
@@ -47,9 +47,9 @@ useSortable(el, list)
 ```vue
 <script setup lang="ts">
 import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 const animation = 200

@@ -11,8 +11,9 @@ Reactive scroll position and state.
 ```vue
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 </script>
 
@@ -36,8 +37,9 @@ Set the `x` and `y` values to make the element scroll to that position.
 ```vue
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const { x, y } = useScroll(el)
 </script>
 
@@ -58,8 +60,9 @@ Set `behavior: smooth` to enable smooth scrolling. The `behavior` option default
 
 ```ts
 import { useScroll } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const { x, y } = useScroll(el, { behavior: 'smooth' })
 
 // Or as a `ref`:

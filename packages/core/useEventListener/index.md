@@ -20,8 +20,9 @@ You can also pass a ref as the event target, `useEventListener` will unregister 
 
 ```ts
 import { useEventListener } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const element = ref<HTMLDivElement>()
+const element = useTemplateRef<HTMLDivElement>('element')
 useEventListener(element, 'keydown', (e) => {
   console.log(e.key)
 })
