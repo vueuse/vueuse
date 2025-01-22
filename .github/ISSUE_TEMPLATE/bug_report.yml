@@ -1,7 +1,7 @@
 name: 🐞 Bug report
 description: Report an issue with VueUse
 labels: [pending triage]
-type: "Bug"
+type: Bug
 title: '`functionName` | '
 body:
   - type: markdown
