@@ -74,6 +74,7 @@
     "gray-matter": "catalog:",
     "js-yaml": "catalog:",
     "jsdom": "catalog:",
+    "ky": "catalog:",
     "lint-staged": "catalog:",
     "markdown-table": "catalog:",
     "md5": "catalog:",
