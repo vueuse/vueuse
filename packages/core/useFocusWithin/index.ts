@@ -36,9 +36,10 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
     return { focused }
   }
 
-  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true)
+  const listenerOptions = { passive: true }
+  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
   useEventListener(targetElement, EVENT_FOCUS_OUT, () =>
-    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false)
+    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false, listenerOptions)
 
   return { focused }
 }

@@ -18,7 +18,7 @@ export function useDocumentVisibility(options: ConfigurableDocument = {}): Ref<D
 
   useEventListener(document, 'visibilitychange', () => {
     visibility.value = document.visibilityState
-  })
+  }, { passive: true })
 
   return visibility
 }

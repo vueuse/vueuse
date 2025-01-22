@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 
 import { ref } from 'vue'
@@ -8,7 +8,7 @@ import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface NavigatorLanguageState {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   /**
    *
    * ISO 639-1 standard Language Code
@@ -49,7 +49,7 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
   useEventListener(window, 'languagechange', () => {
     if (navigator)
       language.value = navigator.language
-  })
+  }, { passive: true })
 
   return {
     isSupported,

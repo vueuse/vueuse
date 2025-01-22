@@ -44,6 +44,11 @@ const Learn = [
   { text: 'Official Vue Certification', link: 'https://certification.vuejs.org/?utm_source=vueuse&utm_medium=website&utm_campaign=affiliate&utm_content=guide&banner_type=text&friend=VUEUSE' },
 ]
 
+const Resources = [
+  { text: 'Team & Contributors', link: '/team' },
+  { text: 'Learn', items: Learn },
+]
+
 const DefaultSideBar = [
   { text: 'Guide', items: Guide },
   { text: 'Core Functions', items: CoreCategories },
@@ -99,7 +104,6 @@ export default withPwa(defineConfig({
         text: 'Guide',
         items: [
           { text: 'Guide', items: Guide },
-          { text: 'Learn', items: Learn },
           { text: 'Links', items: Links },
         ],
       },
@@ -118,8 +122,8 @@ export default withPwa(defineConfig({
         ],
       },
       {
-        text: 'Add-ons',
-        link: '/add-ons',
+        text: 'Resources',
+        items: Resources,
       },
       {
         text: 'Playground',

@@ -71,8 +71,9 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
   const state = ref(buildState('load'))
 
   if (window) {
-    useEventListener(window, 'popstate', () => state.value = buildState('popstate'), { passive: true })
-    useEventListener(window, 'hashchange', () => state.value = buildState('hashchange'), { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(window, 'popstate', () => state.value = buildState('popstate'), listenerOptions)
+    useEventListener(window, 'hashchange', () => state.value = buildState('hashchange'), listenerOptions)
   }
 
   return state

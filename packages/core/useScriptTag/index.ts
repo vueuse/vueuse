@@ -3,6 +3,7 @@ import type { ConfigurableDocument } from '../_configurable'
 import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { ref, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export interface UseScriptTagOptions extends ConfigurableDocument {
   /**
@@ -128,14 +129,17 @@ export function useScriptTag(
     }
 
     // Event listeners
-    el.addEventListener('error', event => reject(event))
-    el.addEventListener('abort', event => reject(event))
-    el.addEventListener('load', () => {
+    const listenerOptions = {
+      passive: true,
+    }
+    useEventListener(el, 'error', event => reject(event), listenerOptions)
+    useEventListener(el, 'abort', event => reject(event), listenerOptions)
+    useEventListener(el, 'load', () => {
       el!.setAttribute('data-loaded', 'true')
 
       onLoaded(el!)
       resolveWithElement(el!)
-    })
+    }, listenerOptions)
 
     // Append the <script> tag to head.
     if (shouldAppend)

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const data = ref<number[]>([])
 
 const { reset } = useInfiniteScroll(
@@ -11,7 +11,14 @@ const { reset } = useInfiniteScroll(
     const length = data.value.length + 1
     data.value.push(...Array.from({ length: 5 }, (_, i) => length + i))
   },
-  { distance: 10 },
+  {
+    distance: 10,
+    canLoadMore: () => {
+      // inidicate when there is no more content to load so onLoadMore stops triggering
+      // if (noMoreContent) return false
+      return true // for demo purposes
+    },
+  },
 )
 
 function resetList() {

@@ -40,7 +40,7 @@ export function useWakeLock(options: UseWakeLockOptions = {}) {
   if (isSupported.value) {
     useEventListener(sentinel, 'release', () => {
       requestedType.value = sentinel.value?.type ?? false
-    })
+    }, { passive: true })
 
     whenever(
       () => documentVisibility.value === 'visible' && document?.visibilityState === 'visible' && requestedType.value,

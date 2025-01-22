@@ -22,3 +22,5 @@ types
 coverage
 .eslintcache
 .vitepress/cache
+
+packages/**/__screenshots__

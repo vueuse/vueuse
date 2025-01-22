@@ -1,9 +1,9 @@
 {
   "name": "@vueuse/monorepo",
   "type": "module",
-  "version": "12.2.0",
+  "version": "12.5.0",
   "private": true,
-  "packageManager": "pnpm@9.15.1",
+  "packageManager": "pnpm@9.15.3",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
@@ -23,9 +23,13 @@
     "release": "bumpp --execute=\"npm run release:prepare\" --all",
     "release:prepare": "npm run build:types && npm run update",
     "size": "tsx scripts/export-size.ts",
-    "test": "vitest",
-    "test:cov": "vitest run --coverage",
-    "typecheck": "tsc --noEmit",
+    "test": "nr test:unit",
+    "test:cov": "vitest run --coverage --project=\"browser (chromium)\"",
+    "test:browser": "vitest --project=\"browser*\"",
+    "test:firefox": "vitest --project=\"browser (firefox)\"",
+    "test:chromium": "vitest --project=\"browser (chromium)\"",
+    "test:unit": "vitest --project unit",
+    "typecheck": "vue-tsc --noEmit",
     "update": "nr -C packages/metadata update && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
     "watch": "pnpm -r --parallel run build --watch",
@@ -45,6 +49,8 @@
     "@types/remove-markdown": "catalog:",
     "@types/semver": "catalog:",
     "@vite-pwa/vitepress": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitest/browser": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "@vue/compiler-sfc": "catalog:",
@@ -77,6 +83,7 @@
     "node-fetch": "catalog:",
     "node-fetch-native": "catalog:",
     "ofetch": "catalog:",
+    "playwright": "catalog:",
     "pnpm": "catalog:",
     "postcss": "catalog:",
     "postcss-nested": "catalog:",
@@ -101,7 +108,9 @@
     "vite-plugin-inspect": "catalog:",
     "vitepress": "catalog:",
     "vitest": "catalog:",
-    "vue": "catalog:"
+    "vitest-browser-vue": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
   },
   "pnpm": {
     "neverBuiltDependencies": [
@@ -128,7 +137,7 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,vue,md}": [
+    "*.{js,ts,tsx,vue,md,json}": [
       "eslint --cache --fix"
     ]
   }

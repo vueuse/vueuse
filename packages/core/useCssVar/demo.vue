@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useCssVar } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref(null)
+const el = useTemplateRef('el')
 const color = useCssVar('--color', el)
 
 function switchColor() {
@@ -12,7 +12,7 @@ function switchColor() {
     color.value = '#df8543'
 }
 
-const elv = ref(null)
+const elv = useTemplateRef('elv')
 const key = ref('--color')
 const colorVal = useCssVar(key, elv)
 function changeVar() {

@@ -1,8 +1,8 @@
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { onElementRemoval } from '../onElementRemoval'
 import { useEventListener } from '../useEventListener'
-import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
   /**
@@ -50,27 +50,31 @@ export function useActiveElement<T extends HTMLElement>(
   }
 
   if (window) {
-    useEventListener(window, 'blur', (event) => {
-      if (event.relatedTarget !== null)
-        return
-      trigger()
-    }, true)
-    useEventListener(window, 'focus', trigger, true)
+    const listenerOptions = {
+      capture: true,
+      passive: true,
+    }
+
+    useEventListener(
+      window,
+      'blur',
+      (event) => {
+        if (event.relatedTarget !== null)
+          return
+        trigger()
+      },
+      listenerOptions,
+    )
+    useEventListener(
+      window,
+      'focus',
+      trigger,
+      listenerOptions,
+    )
   }
 
   if (triggerOnRemoval) {
-    useMutationObserver(document as any, (mutations) => {
-      mutations.filter(m => m.removedNodes.length)
-        .map(n => Array.from(n.removedNodes))
-        .flat()
-        .forEach((node) => {
-          if (node === activeElement.value)
-            trigger()
-        })
-    }, {
-      childList: true,
-      subtree: true,
-    })
+    onElementRemoval(activeElement, trigger, { document })
   }
 
   trigger()

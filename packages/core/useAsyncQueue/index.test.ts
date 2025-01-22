@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
 import { useAsyncQueue } from '.'
-import { retry } from '../../.test'
 
 describe('useAsyncQueue', () => {
   const p1 = () => {
@@ -40,7 +39,7 @@ describe('useAsyncQueue', () => {
       activeIndex,
       result,
     } = useAsyncQueue([p1, p2, p3])
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(activeIndex.value).toBe(2)
       expect(JSON.stringify(result)).toBe('[{"state":"fulfilled","data":1000},{"state":"fulfilled","data":2000},{"state":"fulfilled","data":3000}]')
     })
@@ -51,7 +50,7 @@ describe('useAsyncQueue', () => {
       activeIndex,
       result,
     } = useAsyncQueue([p1, p2])
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(activeIndex.value).toBe(1)
       expect(result[activeIndex.value].data).toBe(2000)
     })
@@ -62,7 +61,7 @@ describe('useAsyncQueue', () => {
     const { activeIndex } = useAsyncQueue([p1, p2], {
       onFinished: onFinishedSpy,
     })
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(activeIndex.value).toBe(1)
       expect(onFinishedSpy).toHaveBeenCalled()
     })
@@ -73,7 +72,7 @@ describe('useAsyncQueue', () => {
     const { activeIndex } = useAsyncQueue([p3, pError], {
       onError: onErrorSpy,
     })
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(activeIndex.value).toBe(1)
       expect(onErrorSpy).toHaveBeenCalledOnce()
     })
@@ -86,7 +85,7 @@ describe('useAsyncQueue', () => {
       onFinished: onFinishedSpy,
     })
 
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(onFinishedSpy).toHaveBeenCalled()
       expect(finalTaskSpy).not.toHaveBeenCalled()
     })
@@ -99,7 +98,7 @@ describe('useAsyncQueue', () => {
       interrupt: false,
       onFinished: onFinishedSpy,
     })
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(onFinishedSpy).toHaveBeenCalled()
       expect(finalTaskSpy).toHaveBeenCalledOnce()
     })
@@ -111,7 +110,7 @@ describe('useAsyncQueue', () => {
       signal: controller.signal,
     })
     controller.abort()
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(activeIndex.value).toBe(0)
       expect(result).toHaveLength(1)
       expect(result[activeIndex.value]).toMatchInlineSnapshot(`
@@ -130,7 +129,7 @@ describe('useAsyncQueue', () => {
     const { activeIndex, result } = useAsyncQueue([p1, abort, finalTaskSpy], {
       signal: controller.signal,
     })
-    await retry(() => {
+    await vi.waitFor(() => {
       expect(activeIndex.value).toBe(2)
       expect(result).toHaveLength(3)
       expect(finalTaskSpy).not.toHaveBeenCalled()

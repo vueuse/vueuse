@@ -125,3 +125,7 @@ export function objectEntries<T extends object>(obj: T) {
 export function getLifeCycleTarget(target?: any) {
   return target || getCurrentInstance()
 }
+
+export function toArray<T>(value: T): T extends readonly any[] ? T : [T] {
+  return Array.isArray(value) ? value as any : [value] as [T]
+}

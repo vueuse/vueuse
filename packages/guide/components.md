@@ -15,9 +15,9 @@ For example of `onClickOutside`, instead of binding the component ref for functi
 ```vue
 <script setup>
 import { onClickOutside } from '@vueuse/core'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const el = ref()
+const el = useTemplateRef('el')
 
 function close() {
   /* ... */
