@@ -59,13 +59,13 @@ export function useCssVar(
 
   watch(
     [variable, elRef],
-    ([val]) => {
+    ([val, el]) => {
       const raw_prop = toValue(prop)
-      if (elRef.value?.style && raw_prop) {
+      if (el?.style && raw_prop) {
         if (val == null)
-          elRef.value.style.removeProperty(raw_prop)
+          el.style.removeProperty(raw_prop)
         else
-          elRef.value.style.setProperty(raw_prop, val)
+          el.style.setProperty(raw_prop, val)
       }
     },
     { immediate: true },
