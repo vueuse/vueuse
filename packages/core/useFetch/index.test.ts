@@ -1,4 +1,3 @@
-import type { MockInstance } from 'vitest'
 import type { AfterFetchContext, OnFetchErrorContext } from '.'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
