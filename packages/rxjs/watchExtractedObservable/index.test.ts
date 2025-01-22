@@ -30,7 +30,7 @@ describe('watchExtractedObservable', () => {
       numRef = ref<number>()
       obj = computed(() => typeof numRef.value == 'number' ? new TestWrapper(numRef.value) : null)
       extractor = vi.fn().mockImplementation((wrapper: TestWrapper) => wrapper.obs$)
-      callback = vi.fn().mockImplementation((num: number) => console.log(num))
+      callback = vi.fn()
     })
 
     it('calls neither the extractor nor the callback if the provided ref is nullish', () => {
