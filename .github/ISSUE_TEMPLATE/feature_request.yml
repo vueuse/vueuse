@@ -1,7 +1,8 @@
 name: 🚀 New feature proposal
 description: Propose a new feature to be added to VueUse
 labels: [enhancement]
-title: 'REQUEST | `functionName` | '
+type: "Feature"
+title: '`functionName` | '
 body:
   - type: markdown
     attributes:
@@ -9,12 +10,12 @@ body:
         Thanks for your interest in the project and taking the time to fill out this feature report!
 
         Please follow the one of the following title formats:
-        - ``REQUEST | `functionName` | Short Description`` - if related to a specific function
-        - `REQUEST | Short Description` - if it's a general feature request
+        - ```functionName` | Short Description`` - if related to a specific function
+        - `Short Description` - if it's a general feature request
 
         For example:
         ```
-        REQUEST | \`useFetch\` | Support for custom headers
+        \`useFetch\` | Support for custom headers
         ```
 
         > **Warning**: **⚠️ Slowing down new functions**
