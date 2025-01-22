@@ -46,12 +46,15 @@ describe('onClickOutside', () => {
     const screen = page.render(complexComponent)
     const target = screen.getByText('Inside')
     const outside = screen.getByText('Outside')
+    const label = screen.getByText('Label')
     const other = screen.getByText('Other')
 
     await expect.element(target).toBeInTheDocument()
     await expect.element(outside).toBeInTheDocument()
-
+    expect(consoleSpy).not.toHaveBeenCalled()
     await userEvent.click(outside)
+    expect(consoleSpy).not.toHaveBeenCalled()
+    await userEvent.click(label)
     expect(consoleSpy).not.toHaveBeenCalled()
     await userEvent.click(other)
     expect(consoleSpy).toHaveBeenCalled()
