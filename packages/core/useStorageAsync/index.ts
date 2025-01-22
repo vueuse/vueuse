@@ -18,7 +18,7 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
   /**
    * On first value loaded hook.
    */
-  onLoad?: (value: T) => void
+  onReady?: (value: T) => void
 }
 
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
@@ -54,7 +54,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     onError = (e) => {
       console.error(e)
     },
-    onLoad,
+    onReady,
   } = options
 
   const rawInit: T = toValue(initialValue)
@@ -101,7 +101,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   }
 
   read().then(() => {
-      onLoad?.(data.value)
+      onReady?.(data.value)
   })
 
   if (window && listenToStorageChanges)

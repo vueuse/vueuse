@@ -16,7 +16,7 @@ When user entering your app, `useStorageAsync()` will start loading value from a
 sometimes you may get the default initial value, not the real value stored in storage at the very
 beginning.
 
-In this case, you must make your app wait the storage prepared, the options contains an `onLoad`
+In this case, you must make your app wait the storage prepared, the options contains an `onReady`
 callback, you can use promise to block app initialising.
 
 ```ts
@@ -26,7 +26,7 @@ import { useStorageAsync } from '@vueuse/core'
 const { promise, resolve } = Promise.withResolvers()
 
 const accessToken = useStorageAsync('access.token', '', SomeAsyncStorage, {
-  onLoad(value) {
+  onReady(value) {
     resolve(value)
   }
 })
@@ -49,7 +49,7 @@ You can simply use `resolve` as callback:
 
 ```ts
 const accessToken = useStorageAsync('access.token', '', SomeAsyncStorage, {
-  onLoad: resolve
+  onReady: resolve
 })
 ```
 
@@ -61,7 +61,7 @@ import { until } from '@vueuse/core'
 const isLoaded = ref(false)
 
 const accessToken = useStorageAsync('access.token', '', SomeAsyncStorage, {
-  onLoad(value) {
+  onReady(value) {
     isLoaded.value = true
   }
 })
