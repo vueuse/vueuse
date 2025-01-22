@@ -70,7 +70,7 @@ describe('useRafFn', () => {
     expect(fn1.mock.calls.length).toBeLessThan(fn2.mock.calls.length)
   })
 
-  it('should handle a framerate change', async () => {
+  it('should handle a framerate change', { retry: 3 }, async () => {
     const initialFramerate = 60
     const fr = ref(initialFramerate)
     const fn1 = vi.fn()

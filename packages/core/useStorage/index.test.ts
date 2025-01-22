@@ -27,9 +27,6 @@ describe('useStorage', () => {
   beforeEach(() => {
     localStorage.clear()
     storageState.clear()
-    storageMock.setItem.mockClear()
-    storageMock.getItem.mockClear()
-    storageMock.removeItem.mockClear()
   })
 
   it('export module', () => {

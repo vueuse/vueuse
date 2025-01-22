@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useWindowSize } from '.'
 
@@ -14,11 +14,6 @@ describe('useWindowSize', () => {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   }))
-
-  beforeEach(() => {
-    addEventListenerSpy.mockClear()
-    matchMediaSpy.mockClear()
-  })
 
   afterAll(() => {
     addEventListenerSpy.mockRestore()

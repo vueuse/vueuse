@@ -18,9 +18,6 @@ describe('useWebSocket', () => {
   afterEach(() => {
     vm?.unmount()
     vi.unstubAllGlobals()
-    mockWebSocket.mockClear()
-    mockWebSocket.prototype.send.mockClear()
-    mockWebSocket.prototype.close.mockClear()
   })
 
   it('should be defined', () => {

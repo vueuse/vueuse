@@ -9,15 +9,16 @@ Manipulate CSS variables
 ## Usage
 
 ```js
+import { useTemplateRef } from 'vue'
 import { useCssVar } from '@vueuse/core'
 
-const el = ref(null)
+const el = useTemplateRef('el')
 const color1 = useCssVar('--color', el)
 
-const elv = ref(null)
+const elv = useTemplateRef('elv')
 const key = ref('--color')
 const colorVal = useCssVar(key, elv)
 
-const someEl = ref(null)
+const someEl = useTemplateRef('someEl')
 const color2 = useCssVar('--color', someEl, { initialValue: '#eee' })
 ```

@@ -112,4 +112,19 @@ describe('useVirtualList, horizontal', () => {
     scrollTo(6)
     expect(list.value.map(i => i.data)).toEqual(['f', 'g'])
   })
+
+  it('allows both readonly and mutable arrays as input', () => {
+    const mutableInput: string[] = ['a', 'b', 'c', 'd', 'e', 'f']
+    const readonlyInput: readonly string[] = ['a', 'b', 'c', 'd', 'e', 'f']
+
+    const {
+      list: readonlyList,
+    } = useVirtualList(ref(readonlyInput), { itemHeight: () => 50, overscan: 1 })
+    const {
+      list: mutableList,
+    } = useVirtualList(ref(mutableInput), { itemHeight: () => 50, overscan: 1 })
+
+    expect(readonlyList.value).toBeDefined()
+    expect(mutableList.value).toBeDefined()
+  })
 })
