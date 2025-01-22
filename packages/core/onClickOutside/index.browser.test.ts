@@ -12,6 +12,10 @@ const complexComponent = defineComponent({
 
       <div ref="outside">
         Outside
+        <label>
+          <input type="radio"/>
+          <span>Label</span>
+        </label>
       </div>
 
       <div>
