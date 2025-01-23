@@ -101,7 +101,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   }
 
   read().then(() => {
-      onReady?.(data.value)
+    onReady?.(data.value)
   })
 
   if (window && listenToStorageChanges)
