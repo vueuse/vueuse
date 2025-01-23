@@ -51,7 +51,7 @@ describe('useStorageAsync', () => {
       '',
       new AsyncStubStorage(),
       {
-        onLoad(value) {
+        onReady(value) {
           loaded.trigger(value)
         },
       },
