@@ -24,7 +24,7 @@
     "release:prepare": "npm run build:types && npm run update",
     "size": "tsx scripts/export-size.ts",
     "test": "nr test:unit",
-    "test:cov": "vitest run --coverage --project=\"browser (chromium)\"",
+    "test:cov": "vitest run --coverage --project=\"browser (chrome)\" --project=unit",
     "test:browser": "vitest --project=\"browser*\"",
     "test:firefox": "vitest --project=\"browser (firefox)\"",
     "test:chromium": "vitest --project=\"browser (chromium)\"",
