@@ -38,7 +38,7 @@ describe('useStorageAsync', () => {
     localStorage.clear()
   })
 
-  it('onLoad', () => {
+  it('onReady', () => {
     localStorage.setItem(KEY, 'CurrentValue')
 
     const loaded = createEventHook()
