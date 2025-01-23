@@ -51,9 +51,10 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   // How it works: https://stackoverflow.com/a/39712411
   if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
+    const listenerOptions = { passive: true }
     Array.from(window.document.body.children)
-      .forEach(el => el.addEventListener('click', noop))
-    window.document.documentElement.addEventListener('click', noop)
+      .forEach(el => useEventListener(el, 'click', noop, listenerOptions))
+    useEventListener(window.document.documentElement, 'click', noop, listenerOptions)
   }
 
   let shouldListen = true
@@ -140,7 +141,7 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
           handler(event as any)
         }
       }, 0)
-    }),
+    }, { passive: true }),
   ].filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())

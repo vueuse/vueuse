@@ -35,7 +35,7 @@ export interface UseDevicesListReturn {
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
   permissionGranted: Ref<boolean>
   ensurePermissions: () => Promise<boolean>
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
 }
 
 /**
@@ -104,7 +104,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     if (requestPermissions)
       ensurePermissions()
 
-    useEventListener(navigator!.mediaDevices, 'devicechange', update)
+    useEventListener(navigator!.mediaDevices, 'devicechange', update, { passive: true })
     update()
   }
 

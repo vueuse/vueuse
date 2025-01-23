@@ -9,7 +9,7 @@ onClickOutside(menu, () => isOpen.value = false)
 useEventListener('keydown', (e) => {
   if (e.key === 'Escape' && isOpen)
     isOpen.value = false
-})
+}, { passive: true })
 
 function open() {
   return isOpen.value = true

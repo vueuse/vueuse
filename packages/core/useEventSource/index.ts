@@ -191,7 +191,7 @@ export function useEventSource<Events extends string[]>(
       useEventListener(es, event_name, (e: Event & { data?: string }) => {
         event.value = event_name
         data.value = e.data || null
-      })
+      }, { passive: true })
     }
   }
 

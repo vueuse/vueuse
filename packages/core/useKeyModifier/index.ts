@@ -41,7 +41,7 @@ export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModi
       useEventListener(document, listenerEvent, (evt: KeyboardEvent | MouseEvent) => {
         if (typeof evt.getModifierState === 'function')
           state.value = evt.getModifierState(modifier)
-      })
+      }, { passive: true })
     })
   }
 

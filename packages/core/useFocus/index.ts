@@ -49,11 +49,12 @@ export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {})
   const innerFocused = ref(false)
   const targetElement = computed(() => unrefElement(target))
 
+  const listenerOptions = { passive: true }
   useEventListener(targetElement, 'focus', (event) => {
     if (!focusVisible || (event.target as HTMLElement).matches?.(':focus-visible'))
       innerFocused.value = true
-  })
-  useEventListener(targetElement, 'blur', () => innerFocused.value = false)
+  }, listenerOptions)
+  useEventListener(targetElement, 'blur', () => innerFocused.value = false, listenerOptions)
 
   const focused = computed({
     get: () => innerFocused.value,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { useSortable } from '.'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 const { option } = useSortable(el, list, {
