@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 export interface UseTimeoutPollOptions {
   /**
-   * When set to true, the first poll will be triggered immediately and start the timer
+   * Triggers the first poll immediate and start the timer
    *
    * @default true
    */
