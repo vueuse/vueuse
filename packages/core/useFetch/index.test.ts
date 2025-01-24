@@ -756,4 +756,32 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     expect(isFetching.value).toBe(false)
     expect(isFinished.value).toBe(true)
   })
+
+  it('should partial overwrite when combination is overwrite', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        beforeFetch({ options }) {
+          options.headers = { ...options.headers, before: 'Global' }
+          return { options }
+        },
+        afterFetch(ctx) {
+          ctx.data.after = 'Global'
+          return ctx
+        },
+      },
+    })
+
+    const { data } = useMyFetch('test', {
+      beforeFetch({ options }) {
+        options.headers = { ...options.headers, before: 'Local' }
+      },
+    }).json()
+
+    await retry(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ before: 'Local' })
+      expect(data.value).toEqual(expect.objectContaining({ after: 'Global' }))
+    })
+  })
 })
