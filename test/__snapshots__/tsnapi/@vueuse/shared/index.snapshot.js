@@ -71,6 +71,7 @@ export function useArrayUnique(_, _) {}
 export function useCounter(_, _) {}
 export function useDateFormat(_, _, _) {}
 export function useDebounceFn(_, _, _) {}
+export function useHasHydrated() {}
 export function useInterval(_, _) {}
 export function useIntervalFn(_, _, _) {}
 export function useLastChanged(_, _) {}

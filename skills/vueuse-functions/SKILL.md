@@ -297,6 +297,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useCycleList`](references/useCycleList.md) | Cycle through a list of items | AUTO |
 | [`useDebounceFn`](references/useDebounceFn.md) | Debounce execution of a function | AUTO |
 | [`useEventBus`](references/useEventBus.md) | A basic event bus | AUTO |
+| [`useHasHydrated`](references/useHasHydrated.md) | Helper to use client-only values safe from hydration mismatch | AUTO |
 | [`useMemoize`](references/useMemoize.md) | Cache results of functions depending on arguments and keep it reactive | AUTO |
 | [`useOffsetPagination`](references/useOffsetPagination.md) | Reactive offset pagination | AUTO |
 | [`usePrevious`](references/usePrevious.md) | Holds the previous value of a ref | AUTO |

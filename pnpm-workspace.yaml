@@ -87,6 +87,7 @@ catalogs:
     '@vitest/browser-playwright': ^4.1.8
     '@vitest/coverage-v8': ^4.1.8
     '@vitest/ui': ^4.1.8
+    '@vue/server-renderer': ^3.5.35
     '@vue/test-utils': ^2.4.10
     fake-indexeddb: ^6.2.5
     jsdom: ^29.1.1
@@ -105,7 +106,6 @@ catalogs:
     '@types/semver': ^7.7.1
     '@types/sortablejs': ^1.15.9
     '@types/web-bluetooth': ^0.0.21
-
 neverBuiltDependencies:
   - electron
 

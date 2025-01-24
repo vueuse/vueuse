@@ -59,6 +59,7 @@
     "@vitest/ui": "catalog:test",
     "@vue/compiler-sfc": "catalog:dev",
     "@vue/repl": "catalog:docs",
+    "@vue/server-renderer": "catalog:test",
     "@vue/test-utils": "catalog:test",
     "@vueuse/core": "workspace:*",
     "@vueuse/integrations": "workspace:*",
