@@ -1,11 +1,20 @@
-import type { Awaitable, MaybeRefOrGetter, Pausable, UseTimeoutFnOptions } from '@vueuse/shared'
+import type { Awaitable, MaybeRefOrGetter, Pausable } from '@vueuse/shared'
 import { isClient, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { ref } from 'vue'
+
+export interface UseTimeoutPollOptions {
+  /**
+   * When set to true, the first poll will be triggered immediately and start the timer
+   *
+   * @default true
+   */
+  immediate?: boolean
+}
 
 export function useTimeoutPoll(
   fn: () => Awaitable<void>,
   interval: MaybeRefOrGetter<number>,
-  options: UseTimeoutFnOptions = {},
+  options: UseTimeoutPollOptions = {},
 ): Pausable {
   const {
     immediate = true,
