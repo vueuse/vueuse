@@ -32,7 +32,6 @@ If you need more control over triggering the handler, you can use the `controlle
 const controller = onClickOutside(
   modalRef,
   (event) => {
-    console.log(event)
     modal.value = false
   },
   { controller: true },
@@ -45,7 +44,6 @@ useEventListener('pointermove', (e) => {
 })
 ```
 
-````vue
 ## Component Usage
 
 ```vue
@@ -56,7 +54,7 @@ useEventListener('pointermove', (e) => {
     </div>
   </OnClickOutside>
 </template>
-````
+```
 
 ## Directive Usage
 
