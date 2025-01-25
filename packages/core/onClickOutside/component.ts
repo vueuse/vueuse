@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core'
 import { defineComponent, h, ref } from 'vue'
 
 export interface OnClickOutsideProps extends RenderableComponent {
-  options?: OnClickOutsideOptions
+  options?: Omit<OnClickOutsideOptions, 'controller'>
 }
 
 export const OnClickOutside = /* #__PURE__ */ defineComponent<OnClickOutsideProps>({
