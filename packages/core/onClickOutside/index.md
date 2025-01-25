@@ -26,6 +26,26 @@ onClickOutside(target, event => console.log(event))
 </template>
 ```
 
+If you need more control over triggering the handler, you can use the `controller` option.
+
+```ts
+const controller = onClickOutside(
+  modalRef,
+  (event) => {
+    console.log(event)
+    modal.value = false
+  },
+  { controller: true },
+)
+
+useEventListener('pointermove', (e) => {
+  controller.cancel()
+  // or
+  controller.fire(e)
+})
+```
+
+````vue
 ## Component Usage
 
 ```vue
@@ -36,7 +56,7 @@ onClickOutside(target, event => console.log(event))
     </div>
   </OnClickOutside>
 </template>
-```
+````
 
 ## Directive Usage
 
