@@ -10,11 +10,11 @@ body:
         Thanks for taking the time to fill out this bug report!
 
         Please follow the one of the following title formats:
-        - `` `functionName` | Short Description ``
+        - ``BUG | `functionName` | Short Description``
 
         For example:
         ```
-        `useMouse` | Position is off when scrolling
+        BUG | `useMouse` | Position is off when scrolling
         ```
   - type: textarea
     id: bug-description
