@@ -5,7 +5,7 @@ import { isClient } from '../utils'
 
 export interface UseTimeoutFnOptions {
   /**
-   * Start the timer immediate
+   * Start the timer immediately
    *
    * @default true
    */
