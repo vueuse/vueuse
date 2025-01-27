@@ -40,7 +40,7 @@ export function useFullscreen(
     autoExit = false,
   } = options
 
-  const targetRef = computed(() => unrefElement(target) ?? document?.querySelector('html'))
+  const targetRef = computed(() => unrefElement(target) ?? document?.documentElement)
   const isFullscreen = ref(false)
 
   const requestMethod = computed<'requestFullscreen' | undefined>(() => {

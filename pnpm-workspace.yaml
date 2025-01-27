@@ -60,7 +60,7 @@ catalog:
   nprogress: ^0.2.0
   nuxt: ^3.15.1
   ofetch: ^1.4.1
-  playwright: ^1.49.1
+  playwright: ^1.50.0
   pnpm: ^9.15.3
   postcss: ^8.4.49
   postcss-nested: ^7.0.2
@@ -90,7 +90,7 @@ catalog:
   vite: ^6.0.7
   vite-plugin-inspect: ^10.0.6
   vite-plugin-pwa: ^0.21.1
-  vitepress: ^1.6.1
+  vitepress: ^1.6.3
   vitest: ^3.0.1
   vitest-browser-vue: ^0.0.1
   vue: ^3.5.13
