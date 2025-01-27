@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 export interface UseTimeoutPollOptions {
   /**
-   * Start the timer immediate
+   * Start the timer immediately
    *
    * @default true
    */
