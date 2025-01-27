@@ -2,6 +2,22 @@ import type { Awaitable, MaybeRefOrGetter, Pausable, UseTimeoutFnOptions } from 
 import { isClient, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { ref } from 'vue'
 
+export interface UseTimeoutPollOptions {
+  /**
+   * Start the timer immediate
+   *
+   * @default true
+   */
+  immediate?: boolean
+
+  /**
+   * Execute the callback immediately after calling `resume`
+   *
+   * @default false
+   */
+  immediateCallback?: boolean
+}
+
 export function useTimeoutPoll(
   fn: () => Awaitable<void>,
   interval: MaybeRefOrGetter<number>,
@@ -9,9 +25,10 @@ export function useTimeoutPoll(
 ): Pausable {
   const {
     immediate = true,
+    immediateCallback = false,
   } = options
 
-  const { start } = useTimeoutFn(loop, interval, { immediate: false })
+  const { start } = useTimeoutFn(loop, interval, { immediate })
 
   const isActive = ref(false)
 
@@ -26,7 +43,9 @@ export function useTimeoutPoll(
   function resume() {
     if (!isActive.value) {
       isActive.value = true
-      loop()
+      if (immediateCallback)
+        fn()
+      start()
     }
   }
 
