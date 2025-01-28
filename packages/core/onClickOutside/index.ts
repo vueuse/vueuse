@@ -183,6 +183,7 @@ export function onClickOutside(
       fire: (event: Event) => {
         shouldListen = true
         listener(event)
+        shouldListen = false
       },
     }
   }
