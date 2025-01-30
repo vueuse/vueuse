@@ -123,7 +123,7 @@ describe('useCountdown', () => {
   })
 
   it('start can provide a custom interval', async () => {
-    const { start } = useCountdown(countdown, options)
+    const { start, reset } = useCountdown(countdown, options)
     vi.advanceTimersByTime(countdown * interval + 10)
     expect(completeCallback).toHaveBeenCalledTimes(1)
 
@@ -135,6 +135,11 @@ describe('useCountdown', () => {
     vi.advanceTimersByTime(110)
     expect(completeCallback).toHaveBeenCalledTimes(2)
     vi.advanceTimersByTime(countdown * interval + 10)
+    expect(completeCallback).toHaveBeenCalledTimes(3)
+
+    start(1)
+    reset()
+    vi.advanceTimersByTime(110)
     expect(completeCallback).toHaveBeenCalledTimes(3)
   })
 })

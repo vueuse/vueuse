@@ -67,6 +67,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
 
   const reset = () => {
     remaining.value = customInitialCountdown ?? toValue(initialCountdown)
+    if (customInitialCountdown)
+      customInitialCountdown = undefined
   }
 
   const stop = () => {
