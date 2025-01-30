@@ -53,6 +53,7 @@ export interface UseCountdownReturn extends Pausable {
  */
 export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options?: UseCountdownOptions): UseCountdownReturn {
   const remaining = ref(toValue(initialCountdown))
+  let customInitialCountdown: number | undefined
 
   const intervalController = useIntervalFn(() => {
     const value = remaining.value - 1
@@ -65,7 +66,7 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
   }, options?.interval ?? 1000, { immediate: options?.immediate ?? false })
 
   const reset = () => {
-    remaining.value = toValue(initialCountdown)
+    remaining.value = customInitialCountdown ?? toValue(initialCountdown)
   }
 
   const stop = () => {
@@ -81,7 +82,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     }
   }
 
-  const start = () => {
+  const start = (initialCountdown?: MaybeRefOrGetter<number>) => {
+    customInitialCountdown = toValue(initialCountdown)
     reset()
     intervalController.resume()
   }

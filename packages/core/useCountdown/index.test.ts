@@ -1,7 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
 import type { UseCountdownOptions } from '.'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope } from 'vue'
+import { effectScope, ref } from 'vue'
 import { useCountdown } from '.'
 
 describe('useCountdown', () => {
@@ -109,5 +109,30 @@ describe('useCountdown', () => {
     expect(isActive.value).toBeFalsy()
     vi.advanceTimersByTime(60)
     expect(tickCallback).toHaveBeenCalledTimes(0)
+  })
+
+  it('initial interval can be changed', async () => {
+    const countdown = ref(3)
+
+    const { start } = useCountdown(countdown, { ...options, immediate: false })
+
+    countdown.value = 2
+    start()
+    vi.advanceTimersByTime(210)
+    expect(completeCallback).toHaveBeenCalledTimes(1)
+  })
+
+  it('start can provide a custom interval', async () => {
+    const { start } = useCountdown(countdown, options)
+    vi.advanceTimersByTime(countdown * interval + 10)
+    expect(completeCallback).toHaveBeenCalledTimes(1)
+
+    start(1)
+    vi.advanceTimersByTime(110)
+    expect(completeCallback).toHaveBeenCalledTimes(2)
+
+    start()
+    vi.advanceTimersByTime(countdown * interval + 10)
+    expect(completeCallback).toHaveBeenCalledTimes(3)
   })
 })
