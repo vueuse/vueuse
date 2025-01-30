@@ -132,6 +132,8 @@ describe('useCountdown', () => {
     expect(completeCallback).toHaveBeenCalledTimes(2)
 
     start()
+    vi.advanceTimersByTime(110)
+    expect(completeCallback).toHaveBeenCalledTimes(2)
     vi.advanceTimersByTime(countdown * interval + 10)
     expect(completeCallback).toHaveBeenCalledTimes(3)
   })
