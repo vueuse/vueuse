@@ -82,7 +82,7 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
   }
 
   const start = (countdown?: MaybeRefOrGetter<number>) => {
-    reset(toValue(countdown))
+    reset(countdown)
     intervalController.resume()
   }
 
