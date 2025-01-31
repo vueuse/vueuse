@@ -1,4 +1,4 @@
-import type { MockInstance } from 'vitest'
+import type { AfterFetchContext, OnFetchErrorContext } from '.'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
@@ -9,12 +9,10 @@ import '../../.test/mockServer'
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
 
-// Listen to make sure fetch is actually called.
-// Use msw to stub out the req/res
-let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
-let onFetchErrorSpy = vi.fn()
-let onFetchResponseSpy = vi.fn()
-let onFetchFinallySpy = vi.fn()
+let fetchSpy = vi.spyOn(window, 'fetch')
+const onFetchErrorSpy = vi.fn()
+const onFetchResponseSpy = vi.fn()
+const onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
   return (fetchSpy.mock.calls[idx][1]! as any).headers
@@ -24,9 +22,6 @@ function fetchSpyHeaders(idx = 0) {
 describe.skipIf(isBelowNode18)('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
-    onFetchErrorSpy = vi.fn()
-    onFetchResponseSpy = vi.fn()
-    onFetchFinallySpy = vi.fn()
   })
 
   it('should have status code of 200 and message of Hello World', async () => {
@@ -773,5 +768,43 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await execute()
     expect(isFetching.value).toBe(false)
     expect(isFinished.value).toBe(true)
+  })
+
+  it('should be possible to re-trigger the request via the afterFetch parameters', async () => {
+    let count = 0
+    let options: Partial<AfterFetchContext> = {}
+    useFetch('https://example.com', {
+      afterFetch: (ctx) => {
+        !count && ctx.execute()
+        count++
+        options = ctx
+        return ctx
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(2)
+      expect(options?.context).toBeDefined()
+      expect(options?.execute).toBeDefined()
+    })
+  })
+
+  it('should be possible to re-trigger the request via the onFetchError parameters', async () => {
+    let count = 0
+    let options: Partial<OnFetchErrorContext> = {}
+    useFetch('https://example.com?status=400&json', {
+      onFetchError: (ctx) => {
+        !count && ctx.execute()
+        count++
+        options = ctx
+        return ctx
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(2)
+      expect(options?.context).toBeDefined()
+      expect(options?.execute).toBeDefined()
+    })
   })
 })

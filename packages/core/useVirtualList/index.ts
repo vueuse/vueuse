@@ -67,7 +67,7 @@ export interface UseVirtualListReturn<T> {
 /**
  * Please consider using [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) if you are looking for more features.
  */
-export function useVirtualList<T = any>(list: MaybeRef<T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
+export function useVirtualList<T = any>(list: MaybeRef<readonly T[]>, options: UseVirtualListOptions): UseVirtualListReturn<T> {
   const { containerStyle, wrapperProps, scrollTo, calculateRange, currentList, containerRef } = 'itemHeight' in options
     ? useVerticalVirtualList(options, list)
     : useHorizontalVirtualList(options, list)
@@ -96,7 +96,7 @@ interface UseVirtualElementSizes {
 type UseVirtualListArray<T> = UseVirtualListItem<T>[]
 type UseVirtualListRefArray<T> = Ref<UseVirtualListArray<T>>
 
-type UseVirtualListSource<T> = Ref<T[]> | ShallowRef<T[]>
+type UseVirtualListSource<T> = Ref<readonly T[]> | ShallowRef<readonly T[]>
 
 interface UseVirtualListState { start: number, end: number }
 
@@ -110,7 +110,7 @@ interface UseVirtualListResources<T> {
   containerRef: UseVirtualListContainerRef
 }
 
-function useVirtualListResources<T>(list: MaybeRef<T[]>): UseVirtualListResources<T> {
+function useVirtualListResources<T>(list: MaybeRef<readonly T[]>): UseVirtualListResources<T> {
   const containerRef = ref<HTMLElement | null>(null)
   const size = useElementSize(containerRef)
 
@@ -201,7 +201,7 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
   }
 }
 
-function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
+function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<readonly T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
   watch([size.width, size.height, list, containerRef], () => {
     calculateRange()
   })
@@ -230,7 +230,7 @@ function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () =
   }
 }
 
-function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, list: MaybeRef<T[]>) {
+function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, list: MaybeRef<readonly T[]>) {
   const resources = useVirtualListResources(list)
   const { state, source, currentList, size, containerRef } = resources
   const containerStyle: StyleValue = { overflowX: 'auto' }
@@ -274,7 +274,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
   }
 }
 
-function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list: MaybeRef<T[]>) {
+function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list: MaybeRef<readonly T[]>) {
   const resources = useVirtualListResources(list)
 
   const { state, source, currentList, size, containerRef } = resources

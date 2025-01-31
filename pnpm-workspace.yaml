@@ -9,7 +9,7 @@ catalog:
   '@nuxt/schema': ^3.15.1
   '@rollup/plugin-json': ^6.1.0
   '@rollup/plugin-replace': ^6.0.2
-  '@shikijs/vitepress-twoslash': ^1.26.1
+  '@shikijs/vitepress-twoslash': ^2.0.3
   '@type-challenges/utils': ^0.1.1
   '@types/js-yaml': ^4.0.9
   '@types/md5': ^2.3.5
@@ -23,9 +23,9 @@ catalog:
   '@typescript-eslint/utils': ^8.19.1
   '@vite-pwa/vitepress': ^0.5.3
   '@vitejs/plugin-vue': ^5.2.1
-  '@vitest/browser': ^2.1.8
-  '@vitest/coverage-v8': ^2.1.8
-  '@vitest/ui': ^2.1.8
+  '@vitest/browser': ^3.0.1
+  '@vitest/coverage-v8': ^3.0.1
+  '@vitest/ui': ^3.0.1
   '@vue/compiler-sfc': ^3.5.13
   '@vue/test-utils': ^2.4.6
   async-validator: ^4.2.5
@@ -60,7 +60,7 @@ catalog:
   nprogress: ^0.2.0
   nuxt: ^3.15.1
   ofetch: ^1.4.1
-  playwright: ^1.49.1
+  playwright: ^1.49.0 # flaky firefox tests with ^1.50.0
   pnpm: ^9.15.3
   postcss: ^8.4.49
   postcss-nested: ^7.0.2
@@ -90,8 +90,8 @@ catalog:
   vite: ^6.0.7
   vite-plugin-inspect: ^10.0.6
   vite-plugin-pwa: ^0.21.1
-  vitepress: ^1.5.0
-  vitest: ^2.1.8
+  vitepress: ^1.6.3
+  vitest: ^3.0.1
   vitest-browser-vue: ^0.0.1
   vue: ^3.5.13
   vue-router: ^4.5.0

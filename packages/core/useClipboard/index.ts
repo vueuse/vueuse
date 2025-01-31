@@ -71,12 +71,18 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateText() {
-    if (isClipboardApiSupported.value && isAllowed(permissionRead.value)) {
-      navigator!.clipboard.readText().then((value) => {
-        text.value = value
-      })
+    let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
+    if (!useLegacy) {
+      try {
+        navigator!.clipboard.readText().then((value) => {
+          text.value = value
+        })
+      }
+      catch {
+        useLegacy = true
+      }
     }
-    else {
+    if (useLegacy) {
       text.value = legacyRead()
     }
   }
@@ -86,9 +92,16 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
-      if (isClipboardApiSupported.value && isAllowed(permissionWrite.value))
-        await navigator!.clipboard.writeText(value)
-      else
+      let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
+      if (!useLegacy) {
+        try {
+          await navigator!.clipboard.writeText(value)
+        }
+        catch {
+          useLegacy = true
+        }
+      }
+      if (useLegacy)
         legacyCopy(value)
 
       text.value = value
