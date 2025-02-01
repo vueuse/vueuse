@@ -4,8 +4,8 @@ import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared
 import { computed, reactive, ref, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
-import { useMutationObserver } from '../useMutationObserver'
 import { useEventListener } from '../useEventListener'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseScrollOptions extends ConfigurableWindow {
   /**
@@ -154,8 +154,8 @@ export function useScroll(
     })
     const scrollContainer
       = (_element as Window)?.document?.documentElement
-      || (_element as Document)?.documentElement
-      || (_element as Element)
+        || (_element as Document)?.documentElement
+        || (_element as Element)
     if (x != null)
       internalX.value = scrollContainer.scrollLeft
     if (y != null)
@@ -292,17 +292,17 @@ export function useScroll(
     useMutationObserver(
       element,
       () => {
-        const _element = toValue(element);
+        const _element = toValue(element)
         if (!_element)
-          return;
-        setArrivedState(_element);
+          return
+        setArrivedState(_element)
       },
       {
         attributes: true,
         childList: true,
         subtree: true,
-      }
-    );
+      },
+    )
   }
 
   useEventListener(
