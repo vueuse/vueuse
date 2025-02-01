@@ -24,19 +24,21 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    */
   detectIframe?: boolean
   /**
-   * Use a controller to cancel/fire listener.
+   * Use controls to cancel/fire listener.
    * @default false
    */
-  controller?: boolean
+  controls?: boolean
 }
 
 export type OnClickOutsideHandler<
   T extends {
     detectIframe: OnClickOutsideOptions['detectIframe']
-    controller: OnClickOutsideOptions['controller']
-  } = { detectIframe: false, controller: false },
+    controls: OnClickOutsideOptions['controls']
+  } = { detectIframe: false, controls: false },
 > = (
-  event: T['controller'] extends true ? Event : T['detectIframe'] extends true
+  event: T['controls'] extends true ? Event | (T['detectIframe'] extends true
+    ? PointerEvent | FocusEvent
+    : PointerEvent) : T['detectIframe'] extends true
     ? PointerEvent | FocusEvent
     : PointerEvent,
 ) => void
@@ -51,17 +53,17 @@ let _iOSWorkaround = false
  * @param handler
  * @param options
  */
-export function onClickOutside<T extends OnClickOutsideOptions & { controller?: false }>(
+export function onClickOutside<T extends OnClickOutsideOptions & { controls?: false }>(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'], controller: false }>,
+  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'], controls: false }>,
   options?: T,
 ): Fn
 
-export function onClickOutside<T extends OnClickOutsideOptions & { controller: true }>(
+export function onClickOutside<T extends OnClickOutsideOptions & { controls: true }>(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'], controller: true }>,
+  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'], controls: true }>,
   options: T,
-): { stop: Fn, cancel: Fn, fire: (event?: Event) => void }
+): { stop: Fn, cancel: Fn, fire: (event: Event) => void }
 
 // Implementation
 export function onClickOutside(
@@ -69,10 +71,10 @@ export function onClickOutside(
   handler: OnClickOutsideHandler,
   options: OnClickOutsideOptions = {},
 ) {
-  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, controller = false } = options
+  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, controls = false } = options
 
   if (!window) {
-    return controller
+    return controls
       ? { stop: noop, cancel: noop, fire: noop }
       : noop
   }
@@ -176,7 +178,7 @@ export function onClickOutside(
 
   const stop = () => cleanup.forEach(fn => fn())
 
-  if (controller) {
+  if (controls) {
     return {
       stop,
       cancel: () => { shouldListen = false },
