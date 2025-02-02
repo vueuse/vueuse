@@ -52,8 +52,11 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
   useResizeObserver(textarea, ([{ contentRect }]) => {
     if (textareaOldWidth.value === contentRect.width)
       return
-    textareaOldWidth.value = contentRect.width
-    triggerResize()
+
+    requestAnimationFrame(() => {
+      textareaOldWidth.value = contentRect.width
+      triggerResize()
+    })
   })
 
   if (options?.watch)
