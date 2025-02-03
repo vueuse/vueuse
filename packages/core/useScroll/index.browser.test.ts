@@ -12,13 +12,14 @@ const Component = defineComponent({
       <button data-testId="bottom" @click="goToBottom">goToBottom</button>
       <button data-testId="toggleWidth" @click="toggleWidth">toggleWidth</button>
       <button data-testId="toggleHeight" @click="toggleHeight">toggleHeight</button>
+      <button data-testId="toggleBox" @click="toggleBox">toggleBox</button>
     </div>
     <pre data-testId="arrivedState">{{ arrivedState }}</pre>
     <div
       ref="el"
       style="width: 300px; height: 300px; margin: auto; overflow: auto;"
     >
-      <div :style></div>
+      <div v-if="showBox" :style></div>
     </div>
   `,
   props: ['observe'],
@@ -59,16 +60,22 @@ const Component = defineComponent({
         width.value = 300
     }
     const style = computed(() => `width: ${width.value}px; height: ${height.value}px; position: relative;`)
+    const showBox = shallowRef(true)
+    function toggleBox() {
+      showBox.value = !showBox.value
+    }
     return {
       el,
       style,
       arrivedState,
+      showBox,
       goToLeft,
       goToRight,
       goToTop,
       goToBottom,
       toggleHeight,
       toggleWidth,
+      toggleBox,
     }
   },
 })
@@ -130,34 +137,62 @@ describe('useScroll', () => {
       }"
     `)
   })
-  it('should observe DOM mutations when observe is enabled', async () => {
-    const screen = page.render(Component, { props: { observe: true } })
-    expect(screen).toBeDefined()
-    const arrivedState = screen.getByTestId('arrivedState')
-    await expect.element(arrivedState).toBeVisible()
-    const toggleHeightButton = screen.getByTestId('toggleHeight')
-    const toggleWidthButton = screen.getByTestId('toggleWidth')
-    await expect.element(toggleHeightButton).toBeVisible()
-    await expect.element(toggleWidthButton).toBeVisible()
-    await toggleHeightButton.click()
-    await toggleWidthButton.click()
-    expect(arrivedState.query()?.textContent).toMatchInlineSnapshot(`
-      "{
-        "left": true,
-        "right": true,
-        "top": true,
-        "bottom": true
-      }"
-    `)
-    await toggleHeightButton.click()
-    await toggleWidthButton.click()
-    expect(arrivedState.query()?.textContent).toMatchInlineSnapshot(`
-      "{
-        "left": true,
-        "right": false,
-        "top": true,
-        "bottom": false
-      }"
-    `)
+  describe('observe DOM mutations when observe is enabled', () => {
+    it('should detect boundary changes when child element size is modified', async () => {
+      const screen = page.render(Component, { props: { observe: true } })
+      expect(screen).toBeDefined()
+      const arrivedState = screen.getByTestId('arrivedState')
+      await expect.element(arrivedState).toBeVisible()
+      const toggleHeightButton = screen.getByTestId('toggleHeight')
+      const toggleWidthButton = screen.getByTestId('toggleWidth')
+      await expect.element(toggleHeightButton).toBeVisible()
+      await expect.element(toggleWidthButton).toBeVisible()
+      await toggleHeightButton.click()
+      await toggleWidthButton.click()
+      expect(arrivedState.query()?.textContent).toMatchInlineSnapshot(`
+        "{
+          "left": true,
+          "right": true,
+          "top": true,
+          "bottom": true
+        }"
+      `)
+      await toggleHeightButton.click()
+      await toggleWidthButton.click()
+      expect(arrivedState.query()?.textContent).toMatchInlineSnapshot(`
+        "{
+          "left": true,
+          "right": false,
+          "top": true,
+          "bottom": false
+        }"
+      `)
+    })
+    it('should detect boundary changes child element is added or removed', async () => {
+      const screen = page.render(Component, { props: { observe: true } })
+      expect(screen).toBeDefined()
+      const arrivedState = screen.getByTestId('arrivedState')
+      await expect.element(arrivedState).toBeVisible()
+      const toggleBoxButton = screen.getByTestId('toggleBox')
+      await expect.element(toggleBoxButton).toBeVisible()
+      await toggleBoxButton.click()
+      expect(arrivedState.query()?.textContent).toMatchInlineSnapshot(`
+        "{
+          "left": true,
+          "right": true,
+          "top": true,
+          "bottom": true
+        }"
+      `)
+      await toggleBoxButton.click()
+      expect(arrivedState.query()?.textContent).toMatchInlineSnapshot(`
+        "{
+          "left": true,
+          "right": false,
+          "top": true,
+          "bottom": false
+        }"
+      `)
+    })
   })
 })
