@@ -168,7 +168,7 @@ describe('useScroll', () => {
         }"
       `)
     })
-    it('should detect boundary changes child element is added or removed', async () => {
+    it('should detect boundary changes when child element is added or removed', async () => {
       const screen = page.render(Component, { props: { observe: true } })
       expect(screen).toBeDefined()
       const arrivedState = screen.getByTestId('arrivedState')
