@@ -139,7 +139,7 @@ describe('createEventHook', () => {
   it('should pass union type', () => {
     let count = 0
 
-    const { on: onResult, trigger } = createEventHook<number | string>()
+    const { on: onResult, trigger } = createEventHook<[number | string]>()
 
     // union type should be inferred
     onResult(value => count = 2)
