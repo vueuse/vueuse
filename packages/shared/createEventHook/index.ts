@@ -8,13 +8,13 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
 // any extends void = true
 // so we need to check if T is any first
 type Callback<T> = IsAny<T> extends true
-  ? (...param: any) => void 
+  ? (...param: any) => void
   : (
       [T] extends [void]
         ? (...param: unknown[]) => void
-        : T extends any[] 
-        ? (...param: T) => void 
-        : (...param: [T, ...unknown[]]) => void
+        : T extends any[]
+          ? (...param: T) => void
+          : (...param: [T, ...unknown[]]) => void
     )
 
 export type EventHookOn<T = any> = (fn: Callback<T>) => { off: () => void }
