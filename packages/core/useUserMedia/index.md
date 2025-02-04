@@ -17,7 +17,7 @@ const { stream, start } = useUserMedia()
 start()
 ```
 
-```ts twoslash
+```ts
 // @include: main
 // ---cut---
 import { watchEffect } from 'vue'
@@ -32,7 +32,7 @@ watchEffect(() => {
 
 ### Devices
 
-```ts twoslash
+```ts
 import { useDevicesList, useUserMedia } from '@vueuse/core'
 import { computed, reactive } from 'vue'
 

@@ -49,20 +49,49 @@ export function MarkdownTransform(): Plugin {
         const firstHeader = code.search(/\n#{2,6}\s.+/)
         const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
 
+        // Add vue code blocks to twoslash by default
+        code = await replaceAsync(code, /\n```vue( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
+          if (!meta.trim()) {
+            meta = 'twoslash'
+          }
+          else if (meta.trim().toLowerCase() === 'no-twoslash') {
+            meta = ''
+          }
+
+          return `
+\`\`\`vue ${meta.trim()}
+${snippet}
+\`\`\`
+`
+        })
+
         // Insert JS/TS code blocks
         code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
-          if (meta.trim().toLowerCase() === 'twoslash') {
-            // remove twoslash notations
-            snippet = twoslasher(snippet, 'ts').code
+          if (!meta.trim()) {
+            meta = 'twoslash'
           }
-          const formattedTS = (await format(snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
+          else if (meta.trim().toLowerCase() === 'no-twoslash') {
+            meta = ''
+          }
+
+          let _snippet = snippet
+          if (meta.trim().startsWith('twoslash')) {
+            // remove twoslash notations
+            _snippet = twoslasher(snippet, 'ts').code
+          }
+          const formattedTS = (await format(_snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
           const js = ts.transpileModule(formattedTS, {
             compilerOptions: { target: 99 },
           })
           const formattedJS = (await format(js.outputText, { semi: false, singleQuote: true, parser: 'typescript' }))
             .trim()
-          if (formattedJS === formattedTS)
-            return _
+          if (formattedJS === formattedTS) {
+            return `
+\`\`\`ts ${meta.trim()}
+${snippet}
+\`\`\`
+`
+          }
           return `
 <CodeToggle>
 <div class="code-block-ts">
