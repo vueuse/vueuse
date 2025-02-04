@@ -2,6 +2,7 @@ import type { Plugin } from 'vite'
 import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { format } from 'prettier'
+import { createTwoslasher } from 'twoslash'
 import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { functionNames, getFunction } from '../../../packages/metadata/metadata'
@@ -13,6 +14,10 @@ export function MarkdownTransform(): Plugin {
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
+
+  const twoslasher = createTwoslasher({
+    handbookOptions: { noErrors: true },
+  })
 
   return {
     name: 'vueuse-md-transform',
@@ -45,6 +50,10 @@ export function MarkdownTransform(): Plugin {
 
         // Insert JS/TS code blocks
         code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
+          if (meta.trim().toLowerCase() === 'twoslash') {
+            // remove twoslash notations
+            snippet = twoslasher(snippet, 'ts').code
+          }
           const formattedTS = (await format(snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
           const js = ts.transpileModule(formattedTS, {
             compilerOptions: { target: 99 },
@@ -106,7 +115,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
   let typingSection = ''
 
   if (types) {
-    const code = `\`\`\`typescript\n${types.trim()}\n\`\`\``
+    const code = `\`\`\`typescript twoslash\n${types.trim()}\n\`\`\``
     typingSection = types.length > 1000
       ? `
 ## Type Declarations

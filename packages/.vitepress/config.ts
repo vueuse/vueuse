@@ -5,6 +5,7 @@ import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { transformHead } from './transformHead'
+import { EXTRA_FILES } from './twoslash'
 import viteConfig from './vite.config'
 
 const Guide = [
@@ -71,7 +72,14 @@ export default withPwa(defineConfig({
       dark: 'vitesse-dark',
     },
     codeTransformers: [
-      transformerTwoslash(),
+      transformerTwoslash({
+        twoslashOptions: {
+          handbookOptions: {
+            noErrors: true,
+          },
+          extraFiles: EXTRA_FILES,
+        },
+      }),
     ],
   },
 
