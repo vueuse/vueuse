@@ -45,7 +45,7 @@ export function useDrauu(
 
   const onChangedHook = createEventHook<void>()
   const onCanceledHook = createEventHook<void>()
-  const onCommittedHook = createEventHook<[SVGElement | undefined]>()
+  const onCommittedHook = createEventHook<SVGElement | undefined>()
   const onStartHook = createEventHook<void>()
   const onEndHook = createEventHook<void>()
   const canUndo = ref(false)

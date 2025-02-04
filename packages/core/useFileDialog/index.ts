@@ -49,7 +49,7 @@ export interface UseFileDialogReturn {
   files: Ref<FileList | null>
   open: (localOptions?: Partial<UseFileDialogOptions>) => void
   reset: () => void
-  onChange: EventHookOn<[FileList | null]>
+  onChange: EventHookOn<FileList | null>
   onCancel: EventHookOn
 }
 
