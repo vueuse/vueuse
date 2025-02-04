@@ -51,12 +51,7 @@ export function MarkdownTransform(): Plugin {
 
         // Add vue code blocks to twoslash by default
         code = await replaceAsync(code, /\n```vue( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
-          if (!meta.trim()) {
-            meta = 'twoslash'
-          }
-          else if (meta.trim().toLowerCase() === 'no-twoslash') {
-            meta = ''
-          }
+          meta = replaceToDefaultTwoslashMeta(meta)
 
           return `
 \`\`\`vue ${meta.trim()}
@@ -67,12 +62,7 @@ ${snippet}
 
         // Insert JS/TS code blocks
         code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
-          if (!meta.trim()) {
-            meta = 'twoslash'
-          }
-          else if (meta.trim().toLowerCase() === 'no-twoslash') {
-            meta = ''
-          }
+          meta = replaceToDefaultTwoslashMeta(meta)
 
           let _snippet = snippet
           if (meta.trim().startsWith('twoslash')) {
@@ -240,4 +230,37 @@ function replaceAsync(str: string, match: RegExp, replacer: (substring: string, 
     return ''
   })
   return Promise.all(promises).then(replacements => str.replace(match, () => replacements.shift()!))
+}
+
+const reLineHighlightMeta = /^\{[\d\-,]*\}$/
+
+/**
+ * Replaces the given meta string with a default "twoslash" if it is empty or modifies it based on certain conditions.
+ *
+ * @param meta - The meta string to be processed.
+ * @returns The processed meta string.
+ *
+ * If the meta string is empty or only contains whitespace, it returns "twoslash".
+ * If the meta string contains "no-twoslash" (case insensitive), it removes "no-twoslash" and returns the remaining string.
+ * If the remaining string is empty after removing "no-twoslash", it returns an empty string.
+ * If the meta string matches the `reLineHighlightMeta` regex, it appends "twoslash" to the meta string.
+ * Otherwise, it returns the trimmed meta string.
+ */
+function replaceToDefaultTwoslashMeta(meta: string) {
+  const trimmed = meta.trim()
+  if (!trimmed) {
+    return 'twoslash'
+  }
+  const hasNoTwoslash = /no-twoslash/i.test(trimmed)
+  if (hasNoTwoslash) {
+    const leftover = trimmed.replace(/no-twoslash/i, '').trim()
+    if (!leftover) {
+      return ''
+    }
+    return leftover
+  }
+  if (reLineHighlightMeta.test(trimmed)) {
+    return `${trimmed} twoslash`
+  }
+  return trimmed
 }
