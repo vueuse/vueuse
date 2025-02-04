@@ -13,8 +13,8 @@ type Callback<T> = IsAny<T> extends true
       [T] extends [void]
         ? (...param: unknown[]) => void
         : [T] extends [any[]]
-          ? (...param: T) => void
-          : (...param: [T, ...unknown[]]) => void
+            ? (...param: T) => void
+            : (...param: [T, ...unknown[]]) => void
     )
 
 export type EventHookOn<T = any> = (fn: Callback<T>) => { off: () => void }
