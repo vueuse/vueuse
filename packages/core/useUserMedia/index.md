@@ -9,7 +9,7 @@ Reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/
 
 ## Usage
 
-```ts twoslash
+```ts twoslash include main
 import { useUserMedia } from '@vueuse/core'
 
 const { stream, start } = useUserMedia()
@@ -18,10 +18,10 @@ start()
 ```
 
 ```ts twoslash
-import { useUserMedia } from '@vueuse/core'
-
-const { stream, start } = useUserMedia()
+// @include: main
 // ---cut---
+import { watchEffect } from 'vue'
+
 const video = document.getElementById('video')
 
 watchEffect(() => {
@@ -34,6 +34,7 @@ watchEffect(() => {
 
 ```ts twoslash
 import { useDevicesList, useUserMedia } from '@vueuse/core'
+import { computed, reactive } from 'vue'
 
 const {
   videoInputs: cameras,
