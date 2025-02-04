@@ -33,7 +33,7 @@ export function generateFileImports(moduleName: string, exports: string[] = [], 
   const output: string[] = []
 
   if (exports.length > 0) {
-    output.push(`import { ${exportTypes.join(', ')} } from '${moduleName}';`)
+    output.push(`import { ${exports.join(', ')} } from '${moduleName}';`)
   }
 
   if (exportTypes.length > 0) {
