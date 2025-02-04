@@ -53,6 +53,10 @@ export function MarkdownTransform(): Plugin {
         code = await replaceAsync(code, /\n```vue( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
           meta = replaceToDefaultTwoslashMeta(meta)
 
+          if (isMetaTwoslash(meta)) {
+            snippet = injectCodeToTsVue(snippet, '// @include: imports')
+          }
+
           return `
 \`\`\`vue ${meta.trim()}
 ${snippet}
@@ -270,4 +274,23 @@ function replaceToDefaultTwoslashMeta(meta: string) {
 
 function isMetaTwoslash(meta: string) {
   return meta.includes('twoslash') && !meta.includes('no-twoslash')
+}
+
+const scriptTagRegex = /<script[^>]+\blang=["']ts["'][^>]*>/i
+
+function injectCodeToTsVue(vueContent: string, code: string): string {
+  const match = vueContent.match(scriptTagRegex)
+  if (!match) {
+    return vueContent
+  }
+
+  const scriptTagStart = match.index!
+  const scriptTagLength = match[0].length
+  const insertPosition = scriptTagStart + scriptTagLength
+  const updatedContent
+    = `${vueContent.slice(0, insertPosition)
+    }\n${code}${
+      vueContent.slice(insertPosition)}`
+
+  return updatedContent
 }
