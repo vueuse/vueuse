@@ -8,7 +8,7 @@ Reactively track [`document.visibilityState`](https://developer.mozilla.org/en-U
 
 ## Usage
 
-```js
+```ts
 import { useDocumentVisibility } from '@vueuse/core'
 
 const visibility = useDocumentVisibility()

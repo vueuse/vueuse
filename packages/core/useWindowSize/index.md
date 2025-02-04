@@ -8,7 +8,7 @@ Reactive window size
 
 ## Usage
 
-```js
+```ts
 import { useWindowSize } from '@vueuse/core'
 
 const { width, height } = useWindowSize()

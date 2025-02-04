@@ -10,7 +10,7 @@ Get parent element of the given element
 
 When no argument is passed, it will return the parent element of the current component.
 
-```js
+```ts
 import { useParentElement } from '@vueuse/core'
 
 const parentEl = useParentElement()
