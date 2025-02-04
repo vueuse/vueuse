@@ -5,7 +5,7 @@ import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { transformHead } from './transformHead'
-import { EXTRA_FILES } from './twoslash'
+import { FILE_IMPORTS } from './twoslash'
 import viteConfig from './vite.config'
 
 const Guide = [
@@ -77,8 +77,8 @@ export default withPwa(defineConfig({
           handbookOptions: {
             noErrors: true,
           },
-          extraFiles: EXTRA_FILES,
         },
+        includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
       }),
     ],
   },

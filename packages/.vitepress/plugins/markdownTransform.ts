@@ -17,6 +17,7 @@ export function MarkdownTransform(): Plugin {
 
   const twoslasher = createTwoslasher({
     handbookOptions: { noErrors: true },
+    customTags: ['include'],
   })
 
   return {
@@ -115,7 +116,10 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
   let typingSection = ''
 
   if (types) {
-    const code = `\`\`\`typescript twoslash\n${types.trim()}\n\`\`\``
+    const code = `\`\`\`typescript twoslash
+// @include: imports
+${types.trim()}
+\`\`\``
     typingSection = types.length > 1000
       ? `
 ## Type Declarations
