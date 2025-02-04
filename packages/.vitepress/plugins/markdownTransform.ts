@@ -64,12 +64,15 @@ ${snippet}
         code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
           meta = replaceToDefaultTwoslashMeta(meta)
 
-          let _snippet = snippet
-          if (meta.trim().startsWith('twoslash')) {
+          let snippetForCompare = snippet
+          if (isMetaTwoslash(meta)) {
             // remove twoslash notations
-            _snippet = twoslasher(snippet, 'ts').code
+            snippetForCompare = twoslasher(snippet, 'ts').code
+
+            // add vue auto imports
+            snippet = `// @include: imports\n${snippet}`
           }
-          const formattedTS = (await format(_snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
+          const formattedTS = (await format(snippetForCompare.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
           const js = ts.transpileModule(formattedTS, {
             compilerOptions: { target: 99 },
           })
@@ -77,7 +80,7 @@ ${snippet}
             .trim()
           if (formattedJS === formattedTS) {
             return `
-\`\`\`ts ${meta.trim()}
+\`\`\`ts ${meta}
 ${snippet}
 \`\`\`
 `
@@ -263,4 +266,8 @@ function replaceToDefaultTwoslashMeta(meta: string) {
     return `${trimmed} twoslash`
   }
   return trimmed
+}
+
+function isMetaTwoslash(meta: string) {
+  return meta.includes('twoslash') && !meta.includes('no-twoslash')
 }
