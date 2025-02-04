@@ -75,7 +75,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
 
   let lastInvoker: () => void
 
-  const filter: EventFilter = (invoke) => {
+  const filter: EventFilter & { cancel?: () => void } = (invoke) => {
     const duration = toValue(ms)
     const maxDuration = toValue(options.maxWait)
 
@@ -111,6 +111,14 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
         resolve(invoke())
       }, duration)
     })
+  }
+
+  filter.cancel = () => {
+    if (timer)
+      _clearTimeout(timer)
+    if (maxTimer)
+      _clearTimeout(maxTimer)
+    maxTimer = null
   }
 
   return filter
