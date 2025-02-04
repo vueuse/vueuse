@@ -12,7 +12,7 @@ type Callback<T> = IsAny<T> extends true
   : (
       [T] extends [void]
         ? (...param: unknown[]) => void
-        : T extends any[]
+        : [T] extends [any[]]
           ? (...param: T) => void
           : (...param: [T, ...unknown[]]) => void
     )
