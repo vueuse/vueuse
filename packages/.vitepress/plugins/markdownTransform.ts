@@ -116,7 +116,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
   let typingSection = ''
 
   if (types) {
-    const code = `\`\`\`typescript twoslash
+    const code = `\`\`\`ts twoslash
 // @include: imports
 ${types.trim()}
 \`\`\``
