@@ -8,7 +8,7 @@ Reactive [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/C
 
 ## Usage
 
-```js
+```ts
 import { usePreferredReducedMotion } from '@vueuse/core'
 
 const preferredMotion = usePreferredReducedMotion()

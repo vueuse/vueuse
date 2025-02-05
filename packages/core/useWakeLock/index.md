@@ -8,7 +8,7 @@ Reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API
 
 ## Usage
 
-```js
+```ts
 import { useWakeLock } from '@vueuse/core'
 
 const { isSupported, isActive, forceRequest, request, release } = useWakeLock()

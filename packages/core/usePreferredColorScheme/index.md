@@ -8,7 +8,7 @@ Reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS
 
 ## Usage
 
-```js
+```ts
 import { usePreferredColorScheme } from '@vueuse/core'
 
 const preferredColor = usePreferredColorScheme()

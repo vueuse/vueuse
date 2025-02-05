@@ -8,7 +8,7 @@ Reactive [prefers-reduced-transparency](https://developer.mozilla.org/en-US/docs
 
 ## Usage
 
-```js
+```ts
 import { usePreferredReducedTransparency } from '@vueuse/core'
 
 const preferredTransparency = usePreferredReducedTransparency()

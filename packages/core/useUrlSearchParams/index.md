@@ -8,7 +8,7 @@ Reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLS
 
 ## Usage
 
-```js
+```ts
 import { useUrlSearchParams } from '@vueuse/core'
 
 const params = useUrlSearchParams('history')
@@ -24,7 +24,7 @@ params.vueuse = 'awesome'
 
 When using with hash mode route, specify the `mode` to `hash`
 
-```js
+```ts
 import { useUrlSearchParams } from '@vueuse/core'
 
 const params = useUrlSearchParams('hash')
@@ -38,7 +38,7 @@ params.vueuse = 'awesome'
 
 When using with history mode route, but want to use hash as params, specify the `mode` to `hash-params`
 
-```js
+```ts
 import { useUrlSearchParams } from '@vueuse/core'
 
 const params = useUrlSearchParams('hash-params')

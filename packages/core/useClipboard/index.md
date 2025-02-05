@@ -46,7 +46,3 @@ Set `legacy: true` to keep the ability to copy if [Clipboard API](https://develo
   </UseClipboard>
 </template>
 ```
-
-```
-
-```
