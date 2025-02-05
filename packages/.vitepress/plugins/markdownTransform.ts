@@ -65,7 +65,7 @@ ${snippet}
         })
 
         // Insert JS/TS code blocks
-        code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
+        code = await replaceAsync(code, /\n```(?:ts|typescript)( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
           meta = replaceToDefaultTwoslashMeta(meta)
 
           let snippetForCompare = snippet
