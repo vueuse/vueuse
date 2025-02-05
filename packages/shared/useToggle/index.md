@@ -8,7 +8,7 @@ A boolean switcher with utility functions.
 
 ## Usage
 
-```js
+```ts
 import { useToggle } from '@vueuse/core'
 
 const [value, toggle] = useToggle()
@@ -16,7 +16,7 @@ const [value, toggle] = useToggle()
 
 When you pass a ref, `useToggle` will return a simple toggle function instead:
 
-```js
+```ts
 import { useDark, useToggle } from '@vueuse/core'
 
 const isDark = useDark()

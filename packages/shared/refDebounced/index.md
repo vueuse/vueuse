@@ -9,7 +9,7 @@ Debounce execution of a ref value.
 
 ## Usage
 
-```js {4}
+```ts {4}
 import { refDebounced } from '@vueuse/core'
 
 const input = ref('foo')
@@ -21,6 +21,10 @@ console.log(debounced.value) // 'foo'
 await sleep(1100)
 
 console.log(debounced.value) // 'bar'
+// ---cut-after---
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 ```
 
 You can also pass an optional 3rd parameter including maxWait option. See `useDebounceFn` for details.

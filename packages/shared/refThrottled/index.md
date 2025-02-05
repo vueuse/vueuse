@@ -9,7 +9,7 @@ Throttle changing of a ref value.
 
 ## Usage
 
-```js
+```ts
 import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
@@ -20,7 +20,7 @@ const throttled = refThrottled(input, 1000)
 
 If you don't want to watch trailing changes, set 3rd param `false` (it's `true` by default):
 
-```js
+```ts
 import { refThrottled } from '@vueuse/core'
 
 const input = ref('')
@@ -31,7 +31,7 @@ const throttled = refThrottled(input, 1000, false)
 
 Allows the callback to be invoked immediately (on the leading edge of the `ms` timeout). If you don't want this behavior, set the 4th param `false` (it's `true` by default):
 
-```js
+```ts
 import { refThrottled } from '@vueuse/core'
 
 const input = ref('')

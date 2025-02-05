@@ -25,6 +25,8 @@ extended.foo === 'extra data'
 Refs will be unwrapped and be reactive
 
 ```ts
+import { extendRef } from '@vueuse/core'
+// ---cut---
 const myRef = ref('content')
 const extraRef = ref('extra')
 

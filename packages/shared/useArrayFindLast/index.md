@@ -8,7 +8,7 @@ Reactive `Array.findLast`.
 
 ## Usage
 
-```js
+```ts
 import { useArrayFindLast } from '@vueuse/core'
 
 const list = [ref(1), ref(-1), ref(2)]
@@ -18,7 +18,7 @@ const positive = useArrayFindLast(list, val => val > 0)
 
 ### Use with reactive array
 
-```js
+```ts
 import { useArrayFindLast } from '@vueuse/core'
 
 const list = reactive([-1, -2])

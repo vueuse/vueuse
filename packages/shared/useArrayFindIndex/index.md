@@ -10,7 +10,7 @@ Reactive `Array.findIndex`
 
 ### Use with array of multiple refs
 
-```js
+```ts
 import { useArrayFindIndex } from '@vueuse/core'
 
 const item1 = ref(0)
@@ -27,7 +27,7 @@ item1.value = 1
 
 ### Use with reactive array
 
-```js
+```ts
 import { useArrayFindIndex } from '@vueuse/core'
 
 const list = ref([0, 2, 4, 6, 8])

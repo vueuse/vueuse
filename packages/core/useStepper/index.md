@@ -10,7 +10,7 @@ Provides helpers for building a multi-step wizard interface.
 
 ### Steps as array
 
-```js
+```ts
 import { useStepper } from '@vueuse/core'
 
 const {
@@ -43,7 +43,7 @@ console.log(current.value) // 'billing-address'
 
 ### Steps as object
 
-```js
+```ts
 import { useStepper } from '@vueuse/core'
 
 const {
