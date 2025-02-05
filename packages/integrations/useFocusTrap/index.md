@@ -102,6 +102,7 @@ This function can't properly activate focus on elements with conditional renderi
 
 ```vue
 <script setup>
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { nextTick, ref } from 'vue'
 
 const target = ref()

@@ -21,18 +21,10 @@ npm i universal-cookie@^7
 ### Common usage
 
 ```vue
-<script>
+<script setup lang="ts">
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  setup() {
-    const cookies = useCookies(['locale'])
-    return {
-      cookies,
-    }
-  },
-})
+const cookies = useCookies(['locale'])
 </script>
 
 <template>
@@ -57,7 +49,19 @@ Access and modify cookies using vue composition-api.
 > By default, you should use it inside `setup()`, but this function also works anywhere else.
 
 ```ts
-const { get, getAll, set, remove, addChangeListener, removeChangeListener } = useCookies(['cookie-name'], { doNotParse: false, autoUpdateDependencies: false })
+import { useCookies } from '@vueuse/integrations/useCookies'
+// ---cut---
+const {
+  get,
+  getAll,
+  set,
+  remove,
+  addChangeListener,
+  removeChangeListener
+} = useCookies(['cookie-name'], {
+  doNotParse: false,
+  autoUpdateDependencies: false
+})
 ```
 
 ### `dependencies` (optional)
