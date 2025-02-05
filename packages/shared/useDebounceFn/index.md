@@ -21,6 +21,40 @@ const debouncedFn = useDebounceFn(() => {
 useEventListener(window, 'resize', debouncedFn)
 ```
 
+The debounced function includes a `cancel()` method to stop pending executions.
+
+```js
+import { useDebounceFn } from '@vueuse/core'
+
+// Basic cancellation
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+// Later, cancel any pending execution
+debouncedFn.cancel()
+```
+
+When working with promises, cancellation behavior can be customized.
+
+```js
+const debouncedRequest = useDebounceFn(() => 'response', 1000, { rejectOnCancel: true })
+
+debouncedRequest()
+  .then(value => console.log('Success:', value))
+  .catch(() => console.log('Cancelled!'))
+
+debouncedRequest.cancel() // Promise will reject
+
+// Default behavior (rejectOnCancel: false)
+const debouncedFn = useDebounceFn(() => 'response', 1000)
+
+debouncedFn()
+  .then(value => console.log(value)) // resolves with undefined when cancelled
+
+debouncedFn.cancel() // Promise resolves with undefined
+```
+
 You can also pass a 3rd parameter to this, with a maximum wait time, similar to [lodash debounce](https://lodash.com/docs/4.17.15#debounce)
 
 ```js
