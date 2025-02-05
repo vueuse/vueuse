@@ -17,7 +17,7 @@ const el = useCurrentElement() // ComputedRef<Element>
 Or pass a specific vue component
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useCurrentElement } from '@vueuse/core'
 import { ref } from 'vue'
 

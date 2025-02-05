@@ -8,7 +8,7 @@ An [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) o
 
 ## Usage
 
-```js
+```ts
 import { useEventSource } from '@vueuse/core'
 
 const { status, data, error, close } = useEventSource('https://event-source-url')
@@ -22,8 +22,11 @@ You can define named events with the second parameter
 
 ```ts
 import { useEventSource } from '@vueuse/core'
-
-const { event, data } = useEventSource('https://event-source-url', ['notice', 'update'] as const)
+// ---cut---
+const { event, data } = useEventSource(
+  'https://event-source-url',
+  ['notice', 'update']
+)
 ```
 
 ### immediate
@@ -42,22 +45,34 @@ If url is provided as a ref, when the url changes, it will automatically reconne
 
 Reconnect on errors automatically (disabled by default).
 
-```js
-const { status, data, close } = useEventSource('https://event-source-url', [], {
-  autoReconnect: true,
-})
+```ts
+import { useEventSource } from '@vueuse/core'
+// ---cut---
+const { status, data, close } = useEventSource(
+  'https://event-source-url',
+  [],
+  {
+    autoReconnect: true,
+  }
+)
 ```
 
 Or with more controls over its behavior:
 
-```js
-const { status, data, close } = useEventSource('https://event-source-url', [], {
-  autoReconnect: {
-    retries: 3,
-    delay: 1000,
-    onFailed() {
-      alert('Failed to connect EventSource after 3 retries')
+```ts
+import { useEventSource } from '@vueuse/core'
+// ---cut---
+const { status, data, close } = useEventSource(
+  'https://event-source-url',
+  [],
+  {
+    autoReconnect: {
+      retries: 3,
+      delay: 1000,
+      onFailed() {
+        alert('Failed to connect EventSource after 3 retries')
+      },
     },
-  },
-})
+  }
+)
 ```

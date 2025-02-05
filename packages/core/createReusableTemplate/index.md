@@ -31,7 +31,7 @@ So this function is made to provide a way for defining and reusing templates ins
 In the previous example, we could refactor it to:
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
@@ -96,7 +96,7 @@ You can also pass data to the template using slots:
 - Directly bind the data on `<ReuseTemplate>` to pass them to the template
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
@@ -211,7 +211,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate({
 It's also possible to pass slots back from `<ReuseTemplate>`. You can access the slots on `<DefineTemplate>` from `$slots`:
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
