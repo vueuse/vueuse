@@ -8,7 +8,7 @@ Listen for keyboard keystrokes.
 
 ## Usage
 
-```js
+```ts
 import { onKeyStroke } from '@vueuse/core'
 
 onKeyStroke('ArrowDown', (e) => {
@@ -20,7 +20,7 @@ See [this table](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/
 
 ### Listen To Multiple Keys
 
-```js
+```ts
 import { onKeyStroke } from '@vueuse/core'
 
 onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
@@ -38,7 +38,9 @@ onKeyStroke((e) => {
 
 ### Custom Event Target
 
-```js
+```ts
+import { onKeyStroke } from '@vueuse/core'
+// ---cut---
 onKeyStroke('A', (e) => {
   console.log('Key A pressed on document')
 }, { target: document })
@@ -48,9 +50,9 @@ onKeyStroke('A', (e) => {
 
 The callback will trigger only once when pressing `A` and **hold down**.
 
-```js
+```ts
 import { onKeyStroke } from '@vueuse/core'
-
+// ---cut---
 // use `autoRepeat` option
 onKeyStroke('A', (e) => {
   console.log('Key A pressed')
@@ -79,7 +81,9 @@ function onUpdate(e: KeyboardEvent) {
 
 ### Custom Keyboard Event
 
-```js
+```ts
+import { onKeyStroke } from '@vueuse/core'
+// ---cut---
 onKeyStroke('Shift', (e) => {
   console.log('Shift key up')
 }, { eventName: 'keyup' })
@@ -87,7 +91,9 @@ onKeyStroke('Shift', (e) => {
 
 Or
 
-```js
+```ts
+import { onKeyUp } from '@vueuse/core'
+// ---cut---
 onKeyUp('Shift', () => console.log('Shift key up'))
 ```
 

@@ -8,7 +8,7 @@ Reactive [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/A
 
 ## Usage
 
-```js
+```ts
 import { useDeviceOrientation } from '@vueuse/core'
 
 const {

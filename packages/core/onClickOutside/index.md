@@ -9,7 +9,7 @@ Listen for clicks outside of an element. Useful for modal or dropdown.
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
 import { ref } from 'vue'
 
@@ -64,7 +64,7 @@ function closeModal() {
 You can also set the handler as an array to set the configuration items of the instruction.
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { vOnClickOutside } from '@vueuse/components'
 import { ref } from 'vue'
 

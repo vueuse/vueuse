@@ -41,6 +41,8 @@ console.log(capsLockState) // true
 By default, the returned ref will be `Ref<null>` until the first event is received. You can explicitly pass the initial state to it via:
 
 ```ts
+import { useKeyModifier } from '@vueuse/core'
+// ---cut---
 const capsLockState1 = useKeyModifier('CapsLock') // Ref<boolean | null>
 const capsLockState2 = useKeyModifier('CapsLock', { initial: false }) // Ref<boolean>
 ```

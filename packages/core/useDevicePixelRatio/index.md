@@ -10,16 +10,10 @@ Reactively track [`window.devicePixelRatio`](https://developer.mozilla.org/docs/
 
 ## Usage
 
-```js
+```ts
 import { useDevicePixelRatio } from '@vueuse/core'
 
-export default {
-  setup() {
-    const { pixelRatio } = useDevicePixelRatio()
-
-    return { pixelRatio }
-  },
-}
+const { pixelRatio } = useDevicePixelRatio()
 ```
 
 ## Component Usage

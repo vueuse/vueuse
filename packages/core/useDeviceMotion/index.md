@@ -8,7 +8,7 @@ Reactive [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/De
 
 ## Usage
 
-```js
+```ts
 import { useDeviceMotion } from '@vueuse/core'
 
 const {

@@ -9,7 +9,7 @@ Reactive element's hover state.
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useElementHover } from '@vueuse/core'
 
 const myHoverableElement = ref()
