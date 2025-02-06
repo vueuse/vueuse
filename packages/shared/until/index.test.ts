@@ -66,6 +66,16 @@ describe('until', () => {
     expect(await until(r).toBeNaN()).toBeNaN()
   })
 
+  it('should toBeIn', async () => {
+    const r = ref(2)
+    setTimeout(() => {
+      r.value = 1
+    }, 100)
+    vi.advanceTimersByTime(100)
+
+    expect(await until(r).toBeIn([0, 1])).toBe(1)
+  })
+
   it('should toBe timeout with ref', async () => {
     vi.useRealTimers()
     const r = ref(0)
@@ -245,6 +255,12 @@ describe('until', () => {
 
       const xNotUndef = await until(x).not.toBeUndefined()
       'test' as any as Expect<Equal<typeof xNotUndef, 'x'>>
+
+      const xIn = await until(x).toBeIn(['x'] as const)
+      'test' as any as Expect<Equal<typeof xIn, 'x'>>
+
+      const xNotIn = await until(x).not.toBeIn(['x'])
+      'test' as any as Expect<Equal<typeof xNotIn, typeof x.value>>
 
       const y = ref<'y' | null>(null)
       'test' as any as Expect<Equal<typeof y, Ref<'y' | null>>>
