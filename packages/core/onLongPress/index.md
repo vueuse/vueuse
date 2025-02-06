@@ -16,7 +16,7 @@ Function provides modifiers in options
 
 ## Usage
 
-```vue
+```vue no-twoslash
 <script setup lang="ts">
 import { onLongPress } from '@vueuse/core'
 import { ref } from 'vue'
@@ -57,7 +57,7 @@ onLongPress(
 
 ## Component Usage
 
-```vue
+```vue no-twoslash
 <script setup lang="ts">
 import { OnLongPress } from '@vueuse/components'
 import { ref } from 'vue'
