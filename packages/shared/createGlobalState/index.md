@@ -66,7 +66,6 @@ export const useGlobalState = createGlobalState(
 // @filename: store.ts
 // @include: store
 // ---cut---
-// @include: imports
 // component.ts
 import { useGlobalState } from './store'
 
