@@ -8,7 +8,9 @@ Sugar function to convert a `ref` into an RxJS [Observer](https://rxjs.dev/guide
 
 ## Usage
 
-```ts
+<!-- TODO: import rxjs error if enable twoslash -->
+
+```ts no-twoslash
 import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map, mapTo, startWith, takeUntil, withLatestFrom } from 'rxjs/operators'
