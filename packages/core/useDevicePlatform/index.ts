@@ -1,7 +1,7 @@
 import { readonly, ref, watch } from 'vue'
 import { type ConfigurableWindow, defaultWindow } from '../_configurable'
 
-type OperatingSystem =
+export type OperatingSystem =
   | 'iOS'
   | 'Android OS'
   | 'BlackBerry OS'
@@ -49,7 +49,6 @@ const operatingSystemRules: OperatingSystemRule[] = [
   ['Windows 8', /(Windows NT 6.2)/],
   ['Windows 8.1', /(Windows NT 6.3)/],
   ['Windows 10', /(Windows NT 10.0)/],
-  ['Windows 11', /(Windows NT 11.0)/],
   ['Windows ME', /Windows ME/],
   ['Windows CE', /Windows CE|WinCE|Microsoft Pocket Internet Explorer/],
   ['Open BSD', /OpenBSD/],
@@ -77,7 +76,7 @@ function _detectOS(ua: string): OperatingSystem | null {
 export function useDevicePlatform(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
 
-  const os = ref<string | null>(null)
+  const os = ref<OperatingSystem | null>(null)
 
   if (window) {
     watch(
