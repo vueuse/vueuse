@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
+import { createFileSystemTypesCache } from '@shikijs/vitepress-twoslash/cache-fs'
 import { withPwa } from '@vite-pwa/vitepress'
 import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
@@ -79,6 +80,7 @@ export default withPwa(defineConfig({
           },
         },
         includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
+        typesCache: createFileSystemTypesCache(),
       }),
     ],
   },
