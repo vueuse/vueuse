@@ -32,7 +32,7 @@ export interface UseCountdownReturn extends Pausable {
   /**
    * Resets the countdown and repeatsLeft to their initial values.
    */
-  reset: () => void
+  reset: (countdown?: MaybeRefOrGetter<number>) => void
   /**
    * Stops the countdown and resets its state.
    */
@@ -40,7 +40,7 @@ export interface UseCountdownReturn extends Pausable {
   /**
    * Reset the countdown and start it again.
    */
-  start: (initialCountdown?: MaybeRefOrGetter<number>) => void
+  start: (countdown?: MaybeRefOrGetter<number>) => void
 }
 
 /**
@@ -64,8 +64,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     }
   }, options?.interval ?? 1000, { immediate: options?.immediate ?? false })
 
-  const reset = () => {
-    remaining.value = toValue(initialCountdown)
+  const reset = (countdown?: MaybeRefOrGetter<number>) => {
+    remaining.value = toValue(countdown) ?? toValue(initialCountdown)
   }
 
   const stop = () => {
@@ -81,8 +81,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     }
   }
 
-  const start = () => {
-    reset()
+  const start = (countdown?: MaybeRefOrGetter<number>) => {
+    reset(countdown)
     intervalController.resume()
   }
 
