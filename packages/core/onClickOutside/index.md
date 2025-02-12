@@ -26,21 +26,21 @@ onClickOutside(target, event => console.log(event))
 </template>
 ```
 
-If you need more control over triggering the handler, you can use the `controller` option.
+If you need more control over triggering the handler, you can use the `controls` option.
 
 ```ts
-const controller = onClickOutside(
+const { cancel, fire } = onClickOutside(
   modalRef,
   (event) => {
     modal.value = false
   },
-  { controller: true },
+  { controls: true },
 )
 
 useEventListener('pointermove', (e) => {
-  controller.cancel()
+  cancel()
   // or
-  controller.fire(e)
+  fire(e)
 })
 ```
 
