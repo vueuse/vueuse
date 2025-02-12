@@ -37,7 +37,7 @@ export function useCssVar(
     const el = toValue(elRef)
     if (el && window && key) {
       const value = window.getComputedStyle(el).getPropertyValue(key)?.trim()
-      variable.value = value || initialValue
+      variable.value = value || variable.value || initialValue
     }
   }
 
@@ -55,20 +55,20 @@ export function useCssVar(
         old[0].style.removeProperty(old[1])
       updateCssVar()
     },
-    { immediate: true },
   )
 
   watch(
-    variable,
-    (val) => {
+    [variable, elRef],
+    ([val, el]) => {
       const raw_prop = toValue(prop)
-      if (elRef.value?.style && raw_prop) {
+      if (el?.style && raw_prop) {
         if (val == null)
-          elRef.value.style.removeProperty(raw_prop)
+          el.style.removeProperty(raw_prop)
         else
-          elRef.value.style.setProperty(raw_prop, val)
+          el.style.setProperty(raw_prop, val)
       }
     },
+    { immediate: true },
   )
 
   return variable
