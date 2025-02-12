@@ -4,7 +4,7 @@ import { onClickOutside } from '.'
 
 export const vOnClickOutside: ObjectDirective<
   HTMLElement,
-  OnClickOutsideHandler | [(evt: any) => void, OnClickOutsideOptions]
+  OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>]
 > = {
   mounted(el, binding) {
     const capture = !binding.modifiers.bubble

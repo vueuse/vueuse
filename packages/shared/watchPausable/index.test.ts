@@ -36,4 +36,25 @@ describe('watchPausable', () => {
     expect(isActive.value).toBeTruthy()
     expect(cb).toHaveBeenCalledTimes(2)
   })
+
+  it('should work with initialState "paused"', async () => {
+    const num = ref(0)
+    const cb = vi.fn()
+    const { resume, isActive } = watchPausable(num, cb, { initialState: 'paused' })
+
+    expect(isActive.value).toBeFalsy()
+    expect(cb).not.toHaveBeenCalled()
+    num.value = 1
+    await nextTick()
+    expect(isActive.value).toBeFalsy()
+    expect(cb).not.toHaveBeenCalled()
+
+    resume()
+    expect(isActive.value).toBeTruthy()
+    expect(cb).not.toHaveBeenCalled()
+    num.value = 2
+    await nextTick()
+    expect(isActive.value).toBeTruthy()
+    expect(cb).toHaveBeenCalledWith(2, 1, expect.anything())
+  })
 })

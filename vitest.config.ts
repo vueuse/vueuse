@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
-import { defineConfig } from 'vitest/config'
+import { coverageConfigDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [
@@ -28,7 +28,13 @@ export default defineConfig({
   test: {
     reporters: 'dot',
     coverage: {
-      exclude: ['./packages/**/demo.vue'],
+      exclude: [
+        'packages/.vitepress/**',
+        'playgrounds/**',
+        '**/(unocss,taze).config.ts',
+        'scripts/**',
+        ...coverageConfigDefaults.exclude,
+      ],
     },
     clearMocks: true,
     workspace: [
