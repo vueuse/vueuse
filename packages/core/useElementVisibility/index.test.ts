@@ -28,7 +28,12 @@ describe('useElementVisibility', () => {
   describe('when internally using useIntersectionObserver', async () => {
     beforeAll(() => {
       vi.resetAllMocks()
-      vi.mock('../useIntersectionObserver')
+      vi.mock('../useIntersectionObserver', () => ({
+        useIntersectionObserver: vi.fn((_target) => {
+          const stop = vi.fn()
+          return { stop }
+        }),
+      }))
     })
 
     const { useIntersectionObserver } = await import('../useIntersectionObserver')
