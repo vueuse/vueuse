@@ -35,7 +35,6 @@ function formatOrdinal(num: number) {
   return num + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0])
 }
 
-
 export function formatDate(date: Date, formatStr: string, options: UseDateFormatOptions = {}) {
   const years = date.getFullYear()
   const month = date.getMonth()
