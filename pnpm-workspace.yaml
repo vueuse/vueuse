@@ -30,6 +30,7 @@ catalog:
   '@vue/test-utils': ^2.4.6
   async-validator: ^4.2.5
   axios: ^1.7.9
+  ky: ^1.7.4
   bumpp: ^9.10.0
   change-case: ^5.4.4
   consola: ^3.3.3

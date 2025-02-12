@@ -35,6 +35,10 @@
       "import": "./useAxios.mjs",
       "require": "./useAxios.cjs"
     },
+    "./useKy": {
+      "import": "./useKy.mjs",
+      "require": "./useKy.cjs"
+    },
     "./useCookies": {
       "import": "./useCookies.mjs",
       "require": "./useCookies.cjs"
@@ -114,6 +118,7 @@
     "fuse.js": "^7",
     "idb-keyval": "^6",
     "jwt-decode": "^4",
+    "ky": "^1",
     "nprogress": "^0.2",
     "qrcode": "^1.5",
     "sortablejs": "^1",
@@ -142,6 +147,9 @@
       "optional": true
     },
     "jwt-decode": {
+      "optional": true
+    },
+    "ky": {
       "optional": true
     },
     "nprogress": {
@@ -174,6 +182,7 @@
     "fuse.js": "catalog:",
     "idb-keyval": "catalog:",
     "jwt-decode": "catalog:",
+    "ky": "catalog:",
     "nprogress": "catalog:",
     "qrcode": "catalog:",
     "sortablejs": "catalog:",
