@@ -8,7 +8,7 @@ import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 
-export interface OnClickOutsideOptions extends ConfigurableWindow {
+export interface OnClickOutsideOptions<Controls extends boolean = false> extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
@@ -24,16 +24,16 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    */
   detectIframe?: boolean
   /**
-   * Use controls to cancel/fire listener.
+   * Use controls to cancel/trigger listener.
    * @default false
    */
-  controls?: boolean
+  controls?: Controls
 }
 
 export type OnClickOutsideHandler<
   T extends {
     detectIframe: OnClickOutsideOptions['detectIframe']
-    controls: OnClickOutsideOptions['controls']
+    controls: boolean
   } = { detectIframe: false, controls: false },
 > = (
   event: T['controls'] extends true ? Event | (T['detectIframe'] extends true
@@ -53,29 +53,29 @@ let _iOSWorkaround = false
  * @param handler
  * @param options
  */
-export function onClickOutside<T extends OnClickOutsideOptions & { controls?: false }>(
+export function onClickOutside(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'], controls: false }>,
-  options?: T,
-): Fn
+  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: true }>,
+  options: OnClickOutsideOptions<true>,
+): { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
 
-export function onClickOutside<T extends OnClickOutsideOptions & { controls: true }>(
+export function onClickOutside(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'], controls: true }>,
-  options: T,
-): { stop: Fn, cancel: Fn, fire: (event: Event) => void }
+  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: false }>,
+  options?: OnClickOutsideOptions<false>,
+): Fn
 
 // Implementation
 export function onClickOutside(
   target: MaybeElementRef,
   handler: OnClickOutsideHandler,
-  options: OnClickOutsideOptions = {},
+  options: OnClickOutsideOptions<boolean> = {},
 ) {
   const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, controls = false } = options
 
   if (!window) {
     return controls
-      ? { stop: noop, cancel: noop, fire: noop }
+      ? { stop: noop, cancel: noop, trigger: noop }
       : noop
   }
 
@@ -181,8 +181,10 @@ export function onClickOutside(
   if (controls) {
     return {
       stop,
-      cancel: () => { shouldListen = false },
-      fire: (event: Event) => {
+      cancel: () => {
+        shouldListen = false
+      },
+      trigger: (event: Event) => {
         shouldListen = true
         listener(event)
         shouldListen = false

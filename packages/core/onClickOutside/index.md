@@ -29,7 +29,7 @@ onClickOutside(target, event => console.log(event))
 If you need more control over triggering the handler, you can use the `controls` option.
 
 ```ts
-const { cancel, fire } = onClickOutside(
+const { cancel, trigger } = onClickOutside(
   modalRef,
   (event) => {
     modal.value = false
@@ -40,7 +40,7 @@ const { cancel, fire } = onClickOutside(
 useEventListener('pointermove', (e) => {
   cancel()
   // or
-  fire(e)
+  trigger(e)
 })
 ```
 
