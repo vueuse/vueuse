@@ -112,6 +112,7 @@ export function onLongPress(
   }
 
   function onMove(ev: PointerEvent) {
+    console.log("onMove options?.distanceThreshold", options?.distanceThreshold);
     if (options?.modifiers?.self && ev.target !== elementRef.value)
       return
 
@@ -127,6 +128,7 @@ export function onLongPress(
     const dx = ev.x - posStart.x
     const dy = ev.y - posStart.y
     const distance = Math.sqrt(dx * dx + dy * dy)
+    console.log("onMove distance", distance);
     if (distance >= (options?.distanceThreshold ?? DEFAULT_THRESHOLD))
       clear()
   }
