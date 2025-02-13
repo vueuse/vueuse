@@ -224,8 +224,12 @@ export function useAnimate(
   }
 
   watch(() => unrefElement(target), (el) => {
-    if (el)
+    if (el) {
       update()
+    }
+    else {
+      animate.value = undefined
+    }
   })
 
   watch(() => keyframes, (value) => {
