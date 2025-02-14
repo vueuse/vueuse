@@ -129,6 +129,11 @@ export default antfu(
         from: 'vue',
         name: 'shallowRef',
       },
+      {
+        from: 'vue',
+        name: 'ref',
+        as: 'deepRef',
+      },
     ],
   }),
 )
