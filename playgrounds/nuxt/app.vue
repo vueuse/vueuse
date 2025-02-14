@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useWindowSize } from '@vueuse/core'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, shallowRef } from 'vue'
 
 const mounted = shallowRef(false)
 const { width, height } = useWindowSize()

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useArrayFilter } from './index'
 
 describe('useArrayFilter', () => {
@@ -21,7 +21,7 @@ describe('useArrayFilter', () => {
   })
 
   it('should work with reactive array', () => {
-    const list = ref([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    const list = deepRef([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     const result = useArrayFilter(list, i => i % 2 === 0)
     expect(result.value).toStrictEqual([0, 2, 4, 6, 8])
     list.value.shift()
@@ -29,7 +29,7 @@ describe('useArrayFilter', () => {
   })
 
   it('should allow values other than boolean in fn', () => {
-    const list = ref([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    const list = deepRef([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     const result = useArrayFilter(list, i => i % 2)
     expect(result.value).toStrictEqual([1, 3, 5, 7, 9])
   })

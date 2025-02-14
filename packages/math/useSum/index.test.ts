@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useSum } from './index'
 
 describe('useSum', () => {
@@ -8,7 +8,7 @@ describe('useSum', () => {
   })
 
   it('array usage', () => {
-    const array = ref([1, 2, 3, 4])
+    const array = deepRef([1, 2, 3, 4])
     const sum = useSum(array)
     expect(sum.value).toBe(10)
     array.value = [-1, -2, 3, 4]

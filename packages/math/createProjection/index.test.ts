@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { createProjection } from './index'
 
 describe('createProjection', () => {
@@ -10,7 +10,7 @@ describe('createProjection', () => {
   it('should work with projector', () => {
     const fromStart = shallowRef(0)
     const fromEnd = shallowRef(10)
-    const toRange = ref<[number, number]>([50, 100])
+    const toRange = deepRef<[number, number]>([50, 100])
 
     const useProjector = createProjection(
       () => [fromStart.value, fromEnd.value],

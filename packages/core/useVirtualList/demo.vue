@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { useVirtualList } from '@vueuse/core'
-import { computed, ref, shallowRef } from 'vue'
+import { computed, ref as deepRef, shallowRef } from 'vue'
 
-const index: Ref = ref()
+const index: Ref = deepRef()
 const search = shallowRef('')
 
 const allItems = Array.from(Array.from({ length: 99999 }).keys())

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useArraySome } from './index'
 
 describe('useArraySome', () => {
@@ -21,7 +21,7 @@ describe('useArraySome', () => {
   })
 
   it('should work with reactive array', () => {
-    const list = ref([0, 2, 4, 6, 8])
+    const list = deepRef([0, 2, 4, 6, 8])
     const result = useArraySome(list, i => i > 10)
     expect(result.value).toBe(false)
     list.value.push(11)

@@ -2,9 +2,9 @@
 import type { CSSProperties } from 'vue'
 import { useMediaQuery, useParallax } from '@vueuse/core'
 import YAML from 'js-yaml'
-import { computed, reactive, ref } from 'vue'
+import { computed, ref as deepRef, reactive } from 'vue'
 
-const target = ref(null)
+const target = deepRef(null)
 const isMobile = useMediaQuery('(max-width: 700px)')
 
 const parallax = reactive(useParallax(target))

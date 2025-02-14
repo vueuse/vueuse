@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { executeTransition, useTransition } from './index'
 
 function expectBetween(val: number, floor: number, ceiling: number) {
@@ -24,7 +24,7 @@ describe('executeTransition', () => {
   })
 
   it('transitions between vectors', async () => {
-    const source = ref([0, 0, 0])
+    const source = deepRef([0, 0, 0])
 
     const trans = executeTransition(source, [0, 1, 2], [1, 2, 3], { duration: 50 })
 
@@ -78,7 +78,7 @@ describe('useTransition', () => {
   })
 
   it('transitions between vectors', async () => {
-    const source = ref([0, 0])
+    const source = deepRef([0, 0])
     const transition = useTransition(source, { duration: 100 })
 
     expect(transition.value).toEqual([0, 0])
@@ -200,7 +200,7 @@ describe('useTransition', () => {
     const source = shallowRef(0)
     const first = vi.fn(n => n)
     const second = vi.fn(n => n)
-    const easingFn = ref(first)
+    const easingFn = deepRef(first)
 
     useTransition(source, {
       duration: 100,

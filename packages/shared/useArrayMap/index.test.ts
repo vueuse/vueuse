@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useArrayMap } from './index'
 
 describe('useArrayMap', () => {
@@ -21,7 +21,7 @@ describe('useArrayMap', () => {
   })
 
   it('should work with reactive array', () => {
-    const list = ref([0, 1, 2, 3, 4])
+    const list = deepRef([0, 1, 2, 3, 4])
     const result = useArrayMap(list, i => i * 2)
     expect(result.value).toStrictEqual([0, 2, 4, 6, 8])
     list.value.pop()
@@ -29,7 +29,7 @@ describe('useArrayMap', () => {
   })
 
   it('should match the return type of mapper function', () => {
-    const list = ref([0, 1, 2, 3])
+    const list = deepRef([0, 1, 2, 3])
     const result1 = useArrayMap(list, i => i.toString())
     result1.value.forEach(i => expect(i).toBeTypeOf('string'))
 

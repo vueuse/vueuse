@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue'
 import { beforeEach, describe, expect, expectTypeOf, it } from 'vitest'
-import { computed, isReadonly, ref, shallowRef } from 'vue'
+import { computed, ref as deepRef, isReadonly, shallowRef } from 'vue'
 import { useTitle } from './index'
 
 const defaultTitle = 'VueUse testing'
@@ -51,7 +51,7 @@ describe('useTitle', () => {
       })
 
       it('null', () => {
-        const targetRef = ref<null | string>(null)
+        const targetRef = deepRef<null | string>(null)
         const title = useTitle(targetRef)
         expect(title.value).toEqual(null)
         targetRef.value = 'new title'
@@ -61,7 +61,7 @@ describe('useTitle', () => {
       })
 
       it('undefined', () => {
-        const targetRef = ref<undefined | string>(undefined)
+        const targetRef = deepRef<undefined | string>(undefined)
         const title = useTitle(targetRef)
         expect(title.value).toEqual(undefined)
         targetRef.value = 'new title'

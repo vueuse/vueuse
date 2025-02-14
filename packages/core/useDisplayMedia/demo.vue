@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useDisplayMedia } from '@vueuse/core'
-import { ref, watchEffect } from 'vue'
+import { ref as deepRef, watchEffect } from 'vue'
 
-const video = ref<HTMLVideoElement>()
+const video = deepRef<HTMLVideoElement>()
 const { stream, enabled } = useDisplayMedia()
 
 watchEffect(() => {

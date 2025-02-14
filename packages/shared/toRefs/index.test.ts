@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, reactive, ref, watchSyncEffect } from 'vue'
+import { computed, ref as deepRef, reactive, watchSyncEffect } from 'vue'
 import { toRefs } from './index'
 
 describe('toRefs', () => {
@@ -32,7 +32,7 @@ describe('toRefs', () => {
   })
 
   it('should return refs when an object ref was passed', () => {
-    const obj = ref({ a: 'a', b: 0 })
+    const obj = deepRef({ a: 'a', b: 0 })
     const refs = toRefs(obj)
     expect(refs.a.value).toBe('a')
     expect(refs.b.value).toBe(0)
@@ -44,7 +44,7 @@ describe('toRefs', () => {
   })
 
   it('should return refs when an array ref was passed', () => {
-    const arr = ref(['a', 0])
+    const arr = deepRef(['a', 0])
     const refs = toRefs(arr)
     expect(refs[0].value).toBe('a')
     expect(refs[1].value).toBe(0)
@@ -99,7 +99,7 @@ describe('toRefs', () => {
 
   it('should trigger unwanted effects with replaceRef = false', () => {
     const spy = vi.fn()
-    const obj = ref({
+    const obj = deepRef({
       a: 'a',
       b: 0,
     })
@@ -118,7 +118,7 @@ describe('toRefs', () => {
 
   it('should not trigger unwanted effects with replaceRef = false', () => {
     const spy = vi.fn()
-    const obj = ref({
+    const obj = deepRef({
       a: 'a',
       b: 0,
     })
@@ -144,7 +144,7 @@ describe('toRefs', () => {
       }
     }
 
-    const obj = ref(new SomeClass())
+    const obj = deepRef(new SomeClass())
 
     const { v } = toRefs(obj)
 

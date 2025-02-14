@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref, shallowRef } from 'vue'
+import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { useRefHistory } from './index'
 
 describe('useRefHistory - sync', () => {
@@ -64,7 +64,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: object with deep', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { history, undo } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
@@ -86,7 +86,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: shallow watch with clone', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { history, undo } = useRefHistory(v, { flush: 'sync', clone: true })
 
     expect(history.value.length).toBe(1)
@@ -113,7 +113,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: dump + parse', () => {
-    const v = ref({ a: 'bar' })
+    const v = deepRef({ a: 'bar' })
     const { history, undo } = useRefHistory(v, {
       flush: 'sync',
       deep: true,
@@ -150,7 +150,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: without batch', () => {
-    const v = ref({ foo: 1, bar: 'one' })
+    const v = deepRef({ foo: 1, bar: 'one' })
     const { history } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
@@ -166,7 +166,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: with batch', () => {
-    const v = ref({ foo: 1, bar: 'one' })
+    const v = deepRef({ foo: 1, bar: 'one' })
     const { history, batch } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
@@ -367,7 +367,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: object with deep', async () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { history } = useRefHistory(v, { deep: true })
 
     expect(history.value.length).toBe(1)
@@ -385,7 +385,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: dump + parse', async () => {
-    const v = ref({ a: 'bar' })
+    const v = deepRef({ a: 'bar' })
     const { history, undo } = useRefHistory(v, {
       deep: true,
       dump: v => JSON.stringify(v),

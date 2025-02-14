@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSpeechRecognition } from '@vueuse/core'
-import { ref, shallowRef, watch } from 'vue'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 
 const lang = shallowRef('en-US')
 
@@ -45,7 +45,7 @@ if (speech.isSupported.value) {
   })
 }
 
-const sampled = ref<string[]>([])
+const sampled = deepRef<string[]>([])
 
 function start() {
   color.value = 'transparent'
@@ -56,7 +56,7 @@ function start() {
 
 const { isListening, isSupported, stop, result } = speech
 
-const selectedLanguage = ref(lang.value)
+const selectedLanguage = deepRef(lang.value)
 watch(lang, lang => isListening.value ? null : selectedLanguage.value = lang)
 watch(isListening, isListening => isListening ? null : selectedLanguage.value = lang.value)
 </script>

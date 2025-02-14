@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -14,7 +14,7 @@ export function useWindowFocus(options: ConfigurableWindow = {}): Ref<boolean> {
   if (!window)
     return shallowRef(false)
 
-  const focused = ref(window.document.hasFocus())
+  const focused = deepRef(window.document.hasFocus())
 
   const listenerOptions = { passive: true }
 

@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import antfu from '@antfu/eslint-config'
+import { createSimplePlugin } from 'eslint-factory'
 import { createAutoInsert } from 'eslint-plugin-unimport'
 
 const dir = fileURLToPath(new URL('.', import.meta.url))
@@ -135,5 +136,21 @@ export default antfu(
         as: 'deepRef',
       },
     ],
+  }),
+  createSimplePlugin({
+    name: 'no-ref',
+    exclude: ['**/*.md'],
+    create(context) {
+      return {
+        CallExpression(node) {
+          if (node.callee.type === 'Identifier' && node.callee.name === 'ref') {
+            context.report({
+              node,
+              message: 'Usage of ref() is restricted. Use shallowRef() or deepRef() instead.',
+            })
+          }
+        },
+      }
+    },
   }),
 )

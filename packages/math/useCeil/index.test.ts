@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useCeil } from './index'
 
 describe('useCeil', () => {
@@ -7,7 +7,7 @@ describe('useCeil', () => {
     expect(useCeil).toBeDefined()
   })
   it('should work', () => {
-    const base = ref(0.95)
+    const base = deepRef(0.95)
     const result = useCeil(base)
     expect(result.value).toBe(1)
     base.value = -7.004

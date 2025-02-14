@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useArrayFindIndex } from './index'
 
 describe('useArrayFindIndex', () => {
@@ -29,7 +29,7 @@ describe('useArrayFindIndex', () => {
   })
 
   it('should work with reactive array', () => {
-    const list = ref([0, 2, 4, 6, 8])
+    const list = deepRef([0, 2, 4, 6, 8])
     const result = useArrayFindIndex(list, i => i % 2 === 0)
     expect(result.value).toBe(0)
     list.value.unshift(-1)

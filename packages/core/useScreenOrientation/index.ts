@@ -1,5 +1,5 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -32,8 +32,8 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
 
   const screenOrientation = (isSupported.value ? window!.screen.orientation : {}) as ScreenOrientation
 
-  const orientation = ref<OrientationType | undefined>(screenOrientation.type)
-  const angle = ref(screenOrientation.angle || 0)
+  const orientation = deepRef<OrientationType | undefined>(screenOrientation.type)
+  const angle = deepRef(screenOrientation.angle || 0)
 
   if (isSupported.value) {
     useEventListener(window, 'orientationchange', () => {

@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type { UseFuseOptions } from './index'
-import { computed, ref, shallowRef, watch } from 'vue'
+import { computed, ref as deepRef, shallowRef, watch } from 'vue'
 import { useFuse } from './index'
 
 interface DataItem {
@@ -8,7 +8,7 @@ interface DataItem {
   lastName: string
 }
 
-const data = ref<DataItem[]>([
+const data = deepRef<DataItem[]>([
   {
     firstName: 'Roslyn',
     lastName: 'Mitchell',
@@ -101,8 +101,8 @@ const keys = computed(() => {
   else return ['firstName', 'lastName']
 })
 
-const resultLimit = ref<number | undefined>(undefined)
-const resultLimitString = ref<string>('')
+const resultLimit = shallowRef<number | undefined>(undefined)
+const resultLimitString = shallowRef<string>('')
 watch(resultLimitString, () => {
   if (resultLimitString.value === '') {
     resultLimit.value = undefined

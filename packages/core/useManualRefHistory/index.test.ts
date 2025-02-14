@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isReactive, ref, shallowRef } from 'vue'
+import { ref as deepRef, isReactive, shallowRef } from 'vue'
 import { useManualRefHistory } from './index'
 
 describe('useManualRefHistory', () => {
@@ -68,7 +68,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('object with deep', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { commit, undo, history } = useManualRefHistory(v, { clone: true })
 
     expect(history.value.length).toBe(1)
@@ -91,7 +91,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('object with clone function', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { commit, undo, history } = useManualRefHistory(v, { clone: x => JSON.parse(JSON.stringify(x)) })
 
     expect(history.value.length).toBe(1)
@@ -114,7 +114,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('dump + parse', () => {
-    const v = ref({ a: 'bar' })
+    const v = deepRef({ a: 'bar' })
     const { history, commit, undo } = useManualRefHistory(v, {
       dump: v => JSON.stringify(v),
       parse: (v: string) => JSON.parse(v),

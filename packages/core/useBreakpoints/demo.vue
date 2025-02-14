@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const smWidth = breakpointsTailwind.sm
 
-const reactiveStuff = ref<keyof typeof breakpointsTailwind>('sm')
+const reactiveStuff = deepRef<keyof typeof breakpointsTailwind>('sm')
 const isGreaterThanBreakpoint = breakpoints.greaterOrEqual(() => reactiveStuff.value)
 
 const current = breakpoints.current()

@@ -1,7 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
 export interface UseNowOptions<Controls extends boolean> {
@@ -34,7 +34,7 @@ export function useNow(options: UseNowOptions<boolean> = {}) {
     interval = 'requestAnimationFrame',
   } = options
 
-  const now = ref(new Date())
+  const now = deepRef(new Date())
 
   const update = () => now.value = new Date()
 

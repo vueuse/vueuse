@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { usePrevious } from './index'
 
 describe('usePrevious', () => {
@@ -30,7 +30,7 @@ describe('usePrevious', () => {
   })
 
   it('works with object', () => {
-    const target = ref<any>({ a: 1 })
+    const target = deepRef<any>({ a: 1 })
     const previous = usePrevious(target)
 
     expect(previous.value).toEqual(undefined)

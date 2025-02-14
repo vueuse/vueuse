@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useAverage } from './index'
 
 describe('useAverage', () => {
@@ -8,7 +8,7 @@ describe('useAverage', () => {
   })
 
   it('should be the average', () => {
-    const arr = ref([1, 2, 3])
+    const arr = deepRef([1, 2, 3])
 
     const v = useAverage(arr)
 
@@ -20,7 +20,7 @@ describe('useAverage', () => {
 
   it('should be the average when some are ref', () => {
     const a = shallowRef(2)
-    const arr = ref([1, a, 9])
+    const arr = deepRef([1, a, 9])
 
     const v = useAverage(arr)
 
@@ -32,7 +32,7 @@ describe('useAverage', () => {
 
   it('should be the average when some items are getter', () => {
     const a = shallowRef(1)
-    const arr = ref([1, () => a.value + 1, 9])
+    const arr = deepRef([1, () => a.value + 1, 9])
 
     const v = useAverage(arr)
 
@@ -43,7 +43,7 @@ describe('useAverage', () => {
   })
 
   it('should be the average when the array is a getter', () => {
-    const arr = ref([1, 2, 3])
+    const arr = deepRef([1, 2, 3])
     const last = shallowRef(0)
 
     const v = useAverage(() => arr.value.concat(last.value))

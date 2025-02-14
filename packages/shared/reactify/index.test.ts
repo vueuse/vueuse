@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { reactify } from './index'
 
 describe('reactify', () => {
   it('one arg', () => {
-    const base = ref(1.5)
+    const base = deepRef(1.5)
     const floor = reactify(Math.floor)
     const result = floor(base)
 
@@ -53,7 +53,7 @@ describe('reactify', () => {
   })
 
   it('jSON.stringify', () => {
-    const base = ref<any>(0)
+    const base = deepRef<any>(0)
     const stringify = reactify(JSON.stringify)
     const result = stringify(base, null, 2)
 

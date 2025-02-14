@@ -2,7 +2,7 @@
 
 import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { readonly, ref, shallowRef } from 'vue'
+import { ref as deepRef, readonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -64,13 +64,13 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
 
   const isOnline = shallowRef(true)
   const saveData = shallowRef(false)
-  const offlineAt: Ref<number | undefined> = ref(undefined)
-  const onlineAt: Ref<number | undefined> = ref(undefined)
-  const downlink: Ref<number | undefined> = ref(undefined)
-  const downlinkMax: Ref<number | undefined> = ref(undefined)
-  const rtt: Ref<number | undefined> = ref(undefined)
-  const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
-  const type: Ref<NetworkType> = ref<NetworkType>('unknown')
+  const offlineAt: Ref<number | undefined> = deepRef(undefined)
+  const onlineAt: Ref<number | undefined> = deepRef(undefined)
+  const downlink: Ref<number | undefined> = deepRef(undefined)
+  const downlinkMax: Ref<number | undefined> = deepRef(undefined)
+  const rtt: Ref<number | undefined> = deepRef(undefined)
+  const effectiveType: Ref<NetworkEffectiveType> = deepRef(undefined)
+  const type: Ref<NetworkType> = deepRef<NetworkType>('unknown')
 
   const connection = isSupported.value && (navigator as any).connection
 

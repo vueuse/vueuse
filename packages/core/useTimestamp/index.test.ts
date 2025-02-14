@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useTimestamp } from './index'
 
 describe('useTimestamp', () => {
@@ -13,7 +13,7 @@ describe('useTimestamp', () => {
   })
 
   it('allows for a delayed start using requestAnimationFrame', async () => {
-    const now = ref()
+    const now = deepRef()
     const callback = vi.fn((time) => {
       now.value = time
     })

@@ -1,6 +1,6 @@
 import type { Ref, ShallowRef, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
@@ -92,7 +92,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     shallow = true,
     throwError,
   } = options ?? {}
-  const state = shallow ? shallowRef(initialState) : ref(initialState)
+  const state = shallow ? shallowRef(initialState) : deepRef(initialState)
   const isReady = shallowRef(false)
   const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)

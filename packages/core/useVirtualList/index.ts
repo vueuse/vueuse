@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { ComputedRef, Ref, ShallowRef, StyleValue } from 'vue'
-import { computed, ref, shallowRef, watch } from 'vue'
+import { computed, ref as deepRef, shallowRef, watch } from 'vue'
 import { useElementSize } from '../useElementSize'
 
 type UseVirtualListItemSize = number | ((index: number) => number)
@@ -114,10 +114,10 @@ function useVirtualListResources<T>(list: MaybeRef<readonly T[]>): UseVirtualLis
   const containerRef = shallowRef<HTMLElement | null>(null)
   const size = useElementSize(containerRef)
 
-  const currentList: Ref<UseVirtualListItem<T>[]> = ref([])
+  const currentList: Ref<UseVirtualListItem<T>[]> = deepRef([])
   const source = shallowRef(list)
 
-  const state: Ref<{ start: number, end: number }> = ref({ start: 0, end: 10 })
+  const state: Ref<{ start: number, end: number }> = deepRef({ start: 0, end: 10 })
 
   return { state, source, currentList, size, containerRef }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDateFormat, useTimestamp, useWebWorkerFn } from '@vueuse/core'
-import { computed, nextTick, ref, shallowRef } from 'vue'
+import { computed, ref as deepRef, nextTick, shallowRef } from 'vue'
 
 function heavyTask() {
   const randomNumber = () => Math.trunc(Math.random() * 5_000_00)
@@ -14,7 +14,7 @@ const time = useTimestamp()
 const computedTime = useDateFormat(time, 'YYYY-MM-DD HH:mm:ss SSS')
 const running = computed(() => workerStatus.value === 'RUNNING')
 
-const data = ref<number[] | null>(null)
+const data = deepRef<number[] | null>(null)
 const runner = shallowRef('')
 
 async function baseSort() {

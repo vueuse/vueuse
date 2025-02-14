@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { nextTwoTick } from '../../.test'
 import { useCached } from './index'
 
@@ -34,7 +34,7 @@ describe('useCached', () => {
   })
 
   it('should work with custom comparator', async () => {
-    const arrayRef = ref([1])
+    const arrayRef = deepRef([1])
     const initialArrayValue = arrayRef.value
 
     const cachedArrayRef = useCached(arrayRef, arrayEquals)

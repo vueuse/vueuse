@@ -1,6 +1,6 @@
 import type { JwtHeader, JwtPayload } from 'jwt-decode'
 import { describe, expect, it, vi } from 'vitest'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useJwt } from './index'
 
 interface CustomJwtHeader extends JwtHeader {
@@ -40,7 +40,7 @@ describe('useJwt', () => {
   })
 
   it('reactivity', () => {
-    const jwt = ref(encodedJwt.value)
+    const jwt = deepRef(encodedJwt.value)
     const { header, payload } = useJwt<CustomJwtPayload, CustomJwtHeader>(jwt)
     expect(header.value?.foo).toBeUndefined()
     expect(payload.value?.foo).toBeUndefined()

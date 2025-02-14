@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { useProjection } from './index'
 
-const from = ref<[number, number]>([0, 10])
-const to = ref<[number, number]>([10, 100])
+const from = deepRef<[number, number]>([0, 10])
+const to = deepRef<[number, number]>([10, 100])
 const input = shallowRef(0)
 
 const output = useProjection(input, from, to)

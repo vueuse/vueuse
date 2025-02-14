@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computed, ref, shallowRef } from 'vue'
+import { computed, ref as deepRef, shallowRef } from 'vue'
 import { useFavicon } from './index'
 
 describe('useFavicon', () => {
@@ -40,13 +40,13 @@ describe('useFavicon', () => {
   })
 
   it('ref null', () => {
-    const targetRef = ref(null)
+    const targetRef = deepRef(null)
     const favicon = useFavicon(targetRef)
     expect(favicon.value).toEqual(null)
   })
 
   it('ref undefined', () => {
-    const favicon = useFavicon(ref(undefined))
+    const favicon = useFavicon(deepRef(undefined))
     expect(favicon.value).toEqual(undefined)
   })
 

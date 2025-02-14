@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { nextTick, reactive, ref, shallowRef } from 'vue'
+import { ref as deepRef, nextTick, reactive, shallowRef } from 'vue'
 import { watchTriggerable } from './index'
 
 describe('watchTriggerable', () => {
@@ -38,7 +38,7 @@ describe('watchTriggerable', () => {
   it('source array', async () => {
     const source1 = shallowRef(0)
     const source2 = reactive({ a: 'a' })
-    const effect1 = ref(-1)
+    const effect1 = deepRef(-1)
     const effect2 = shallowRef('z')
     let cleanupCount = -1
     const { trigger } = watchTriggerable([source1, () => source2.a], ([value1, value2], _, onCleanup) => {

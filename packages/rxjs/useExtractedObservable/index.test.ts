@@ -1,7 +1,7 @@
 import { BehaviorSubject, of, Subject } from 'rxjs'
 import { delay, endWith, tap } from 'rxjs/operators'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, reactive, ref, shallowRef } from 'vue'
+import { ref as deepRef, nextTick, reactive, shallowRef } from 'vue'
 import { useExtractedObservable } from './index'
 
 describe('useExtractedObservable', () => {
@@ -105,7 +105,7 @@ describe('useExtractedObservable', () => {
     it('doesn\'t call onError when the observable doesn\'t emit an error', async () => {
       expect.hasAssertions()
 
-      const re = ref([1, 2])
+      const re = deepRef([1, 2])
       const onError = vi.fn()
 
       /* const obsRef = */ useExtractedObservable(re, (arr: unknown[]) => of(...arr), {
@@ -126,7 +126,7 @@ describe('useExtractedObservable', () => {
     it('calls onComplete when an observable completes', async () => {
       expect.hasAssertions()
 
-      const re = ref()
+      const re = deepRef()
       const extractor = (args: unknown[]) => of(...args)
       const onComplete = vi.fn()
 
@@ -151,7 +151,7 @@ describe('useExtractedObservable', () => {
       vi.useFakeTimers()
       expect.hasAssertions()
 
-      const re = ref([13, 23, 420])
+      const re = deepRef([13, 23, 420])
       const extractor = (arr: unknown[]) => of(...arr).pipe(
         delay(1000),
       )

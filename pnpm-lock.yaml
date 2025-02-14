@@ -378,6 +378,9 @@ importers:
       eslint:
         specifier: ^9.20.1
         version: 9.20.1(jiti@2.4.2)
+      eslint-factory:
+        specifier: ^0.1.2
+        version: 0.1.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
       eslint-plugin-format:
         specifier: 'catalog:'
         version: 1.0.1(eslint@9.20.1(jiti@2.4.2))
@@ -4404,6 +4407,11 @@ packages:
 
   eslint-config-flat-gitignore@2.0.0:
     resolution: {integrity: sha512-9iH+DZO94uxsw5iFjzqa9GfahA5oK3nA1GoJK/6u8evAtooYJMwuSWiLcGDfrdLoqdQ5/kqFJKKuMY/+SAasvg==}
+    peerDependencies:
+      eslint: ^9.20.1
+
+  eslint-factory@0.1.2:
+    resolution: {integrity: sha512-0APUA89aVVxJ0BnP84Wbg1dx9co9ZixotdKjO0S0jz6uq51ev2JBNXpeu5do9oasEc9dn+v7wywUA2WBbmB/RA==}
     peerDependencies:
       eslint: ^9.20.1
 
@@ -12433,6 +12441,14 @@ snapshots:
     dependencies:
       '@eslint/compat': 1.2.5(eslint@9.20.1(jiti@2.4.2))
       eslint: 9.20.1(jiti@2.4.2)
+
+  eslint-factory@0.1.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3):
+    dependencies:
+      '@typescript-eslint/utils': 8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
+      eslint: 9.20.1(jiti@2.4.2)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   eslint-flat-config-utils@2.0.1:
     dependencies:

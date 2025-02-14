@@ -1,5 +1,5 @@
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { onElementRemoval } from '../onElementRemoval'
 import { useEventListener } from '../useEventListener'
@@ -44,7 +44,7 @@ export function useActiveElement<T extends HTMLElement>(
     return element
   }
 
-  const activeElement = ref<T | null | undefined>()
+  const activeElement = deepRef<T | null | undefined>()
   const trigger = () => {
     activeElement.value = getDeepActiveElement() as T | null | undefined
   }
