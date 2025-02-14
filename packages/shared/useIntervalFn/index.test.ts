@@ -1,7 +1,7 @@
 import type { Pausable } from '../utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
-import { useIntervalFn } from '.'
+import { useIntervalFn } from './index'
 
 describe('useIntervalFn', () => {
   let callback = vi.fn()

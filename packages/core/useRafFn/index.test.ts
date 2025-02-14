@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { useRafFn } from '.'
+import { useRafFn } from './index'
 
 describe('useRafFn', () => {
   it('should be defined', () => {

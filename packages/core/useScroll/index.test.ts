@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { reactive } from 'vue'
-import { useScroll } from '.'
+import { useScroll } from './index'
 
 describe('useScroll', () => {
   it('should be defined', () => {

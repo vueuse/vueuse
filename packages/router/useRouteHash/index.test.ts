@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { computed, nextTick, reactive, ref, watch } from 'vue'
-import { useRouteHash } from '.'
+import { useRouteHash } from './index'
 
 describe('useRouteHash', () => {
   const getRoute = (hash?: any) => reactive({

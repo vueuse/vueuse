@@ -1,8 +1,8 @@
 import type { PropType } from 'vue'
-import type { UseSortableOptions } from '.'
+import type { UseSortableOptions } from './index'
 import { useVModel } from '@vueuse/core'
 import { defineComponent, h, reactive, ref } from 'vue'
-import { useSortable } from '.'
+import { useSortable } from './index'
 
 export const UseSortable = /* #__PURE__ */ defineComponent({
   name: 'UseSortable',

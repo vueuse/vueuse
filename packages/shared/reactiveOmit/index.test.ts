@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { reactive } from 'vue'
-import { reactiveOmit } from '.'
+import { reactiveOmit } from './index'
 
 interface TargetObject {
   foo: string

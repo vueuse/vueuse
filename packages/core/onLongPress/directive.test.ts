@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import type { OnLongPressOptions } from '.'
+import type { OnLongPressOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useMin } from '.'
+import { useMin } from './index'
 
 describe('useMin', () => {
   it('should be defined', () => {

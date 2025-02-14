@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { toValue } from 'vue'
-import { useSorted } from '.'
+import { useSorted } from './index'
 
 interface User {
   name: string

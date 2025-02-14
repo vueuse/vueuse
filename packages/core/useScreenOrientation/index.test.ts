@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { useScreenOrientation } from '.'
+import { useScreenOrientation } from './index'
 
 describe('useScreenOrientation', () => {
   it('should be defined', () => {

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
-import { useRouteQuery } from '.'
+import { useRouteQuery } from './index'
 
 describe('useRouteQuery', () => {
   const getRoute = (query: Record<string, any> = {}) => reactive({

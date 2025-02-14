@@ -1,7 +1,7 @@
 import type { JwtHeader, JwtPayload } from 'jwt-decode'
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { useJwt } from '.'
+import { useJwt } from './index'
 
 interface CustomJwtHeader extends JwtHeader {
   foo: string

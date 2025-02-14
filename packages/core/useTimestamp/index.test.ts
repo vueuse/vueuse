@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { useTimestamp } from '.'
+import { useTimestamp } from './index'
 
 describe('useTimestamp', () => {
   vi.useFakeTimers()

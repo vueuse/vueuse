@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useConfirmDialog } from '.'
+import { useConfirmDialog } from './index'
 
 describe('useConfirmDialog', () => {
   it('should be defined', () => {

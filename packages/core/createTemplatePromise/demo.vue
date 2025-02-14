@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createTemplatePromise } from '.'
+import { createTemplatePromise } from './index'
 
 type DialogResult = 'ok' | 'cancel'
 

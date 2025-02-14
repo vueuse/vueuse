@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { syncRef } from '.'
+import { syncRef } from './index'
 
 describe('syncRef', () => {
   it('should work', () => {

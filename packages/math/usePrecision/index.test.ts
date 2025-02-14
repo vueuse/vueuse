@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { usePrecision } from '.'
+import { usePrecision } from './index'
 
 describe('usePrecision', () => {
   it('should be defined', () => {

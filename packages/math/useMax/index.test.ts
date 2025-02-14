@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useMax } from '.'
+import { useMax } from './index'
 
 describe('useMax', () => {
   it('should be defined', () => {

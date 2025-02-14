@@ -1,9 +1,9 @@
 import type { Ref } from 'vue'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useColorMode } from '.'
 import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
+import { useColorMode } from './index'
 
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'

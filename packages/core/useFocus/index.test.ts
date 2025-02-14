@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useFocus } from '.'
+import { useFocus } from './index'
 
 describe('useFocus', () => {
   let target: Ref<HTMLButtonElement>

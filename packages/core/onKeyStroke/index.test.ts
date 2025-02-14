@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
-import type { KeyStrokeEventName } from '.'
+import type { KeyStrokeEventName } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { onKeyStroke } from '.'
+import { onKeyStroke } from './index'
 
 describe('onKeyStroke', () => {
   let element: Ref<HTMLElement>

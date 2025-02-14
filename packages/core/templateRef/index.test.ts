@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h, nextTick, ref } from 'vue'
-import { templateRef } from '.'
 import { mount } from '../../.test'
+import { templateRef } from './index'
 
 describe('templateRef', () => {
   it('should be defined', () => {

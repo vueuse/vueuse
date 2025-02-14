@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { computed, isReadonly, ref } from 'vue'
-import { useClamp } from '.'
+import { useClamp } from './index'
 
 describe('useClamp', () => {
   it('should be defined', () => {

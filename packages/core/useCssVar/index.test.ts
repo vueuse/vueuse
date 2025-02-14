@@ -1,8 +1,8 @@
 import { defaultWindow } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h, nextTick, onMounted, ref, shallowRef, useTemplateRef } from 'vue'
-import { useCssVar } from '.'
 import { mount } from '../../.test'
+import { useCssVar } from './index'
 
 describe('useCssVar', () => {
   it('should be defined', () => {

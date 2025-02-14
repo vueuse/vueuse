@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useProjection } from '.'
+import { useProjection } from './index'
 
 const from = ref<[number, number]>([0, 10])
 const to = ref<[number, number]>([10, 100])

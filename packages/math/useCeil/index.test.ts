@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useCeil } from '.'
+import { useCeil } from './index'
 
 describe('useCeil', () => {
   it('should be defined', () => {

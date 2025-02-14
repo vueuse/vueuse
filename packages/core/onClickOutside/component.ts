@@ -1,5 +1,5 @@
-import type { OnClickOutsideOptions } from '.'
 import type { RenderableComponent } from '../types'
+import type { OnClickOutsideOptions } from './index'
 import { onClickOutside } from '@vueuse/core'
 import { defineComponent, h, ref } from 'vue'
 

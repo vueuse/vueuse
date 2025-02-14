@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useAverage } from '.'
+import { useAverage } from './index'
 
 describe('useAverage', () => {
   it('should be defined', () => {

@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import { describe, expect, it } from 'vitest'
 import { nextTick, ref, toValue } from 'vue'
-import { whenever } from '.'
 import { useSetup } from '../../.test'
+import { whenever } from './index'
 
 describe('whenever', () => {
   const expectType = <T>(value: T) => value

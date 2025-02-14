@@ -2,7 +2,7 @@ import type { Observable } from 'rxjs'
 import { BehaviorSubject } from 'rxjs'
 import { delay } from 'rxjs/operators'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { useObservable } from '.'
+import { useObservable } from './index'
 
 describe('useObservable', () => {
   let testDataSource: BehaviorSubject<TestPerson>

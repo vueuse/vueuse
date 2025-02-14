@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { nextTick, ref, watch, watchEffect } from 'vue'
-import { reactiveComputed } from '.'
+import { reactiveComputed } from './index'
 
 describe('reactiveComputed', () => {
   it('should work', () => {

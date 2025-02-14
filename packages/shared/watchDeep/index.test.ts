@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { watchDeep } from '.'
+import { watchDeep } from './index'
 
 describe('watchDeep', () => {
   it('should work when nested value is updated', async () => {

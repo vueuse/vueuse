@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { useTimeoutFn } from '.'
+import { useTimeoutFn } from './index'
 
 describe('useTimeoutFn', () => {
   beforeEach(() => {

@@ -2,7 +2,7 @@ import type { AnyFn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
-import { onElementRemoval } from '.'
+import { onElementRemoval } from './index'
 
 describe('onElementRemoval', () => {
   let callBackFn: AnyFn

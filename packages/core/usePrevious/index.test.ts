@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { usePrevious } from '.'
+import { usePrevious } from './index'
 
 describe('usePrevious', () => {
   it('works for literals', () => {

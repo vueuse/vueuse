@@ -1,7 +1,7 @@
 import Cookie from 'universal-cookie'
 import { afterEach, describe, expect, it } from 'vitest'
 import { nextTick, watch } from 'vue'
-import { useCookies } from '.'
+import { useCookies } from './index'
 
 describe('useCookies', () => {
   afterEach(() => {

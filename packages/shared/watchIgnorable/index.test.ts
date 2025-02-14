@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { ignorableWatch, watchIgnorable } from '.'
+import { ignorableWatch, watchIgnorable } from './index'
 
 describe('watchIgnorable', () => {
   it('export module', () => {

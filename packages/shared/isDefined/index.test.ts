@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { computed, ref } from 'vue'
-import { isDefined } from '.'
+import { isDefined } from './index'
 
 describe('isDefined', () => {
   it('should be defined', () => {

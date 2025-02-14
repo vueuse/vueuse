@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { useJwt } from '.'
+import { useJwt } from './index'
 
 const encodedJwt = ref('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.L8i6g3PfcHlioHCCPURC9pmXT7gdJpx3kOoyAfNUwCc')
 const { header, payload } = useJwt(encodedJwt)

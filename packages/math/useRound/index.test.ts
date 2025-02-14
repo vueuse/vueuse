@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useRound } from '.'
+import { useRound } from './index'
 
 describe('useRound', () => {
   it('should be defined', () => {

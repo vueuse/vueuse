@@ -1,8 +1,8 @@
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { useInfiniteScroll } from '.'
 import { useElementVisibility } from '../useElementVisibility'
+import { useInfiniteScroll } from './index'
 
 vi.mock('../useElementVisibility')
 describe('useInfiniteScroll', () => {

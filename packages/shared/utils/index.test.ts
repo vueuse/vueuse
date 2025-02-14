@@ -1,4 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
+import type { MockInstance } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import {
   assert,
@@ -20,7 +21,7 @@ import {
   rand,
   throttleFilter,
   timestamp,
-} from '.'
+} from './index'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {

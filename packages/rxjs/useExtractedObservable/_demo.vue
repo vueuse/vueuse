@@ -2,7 +2,7 @@
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
 import { ref } from 'vue'
-import { useExtractedObservable } from '.'
+import { useExtractedObservable } from './index'
 
 const start = ref(0)
 

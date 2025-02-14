@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { reactify } from '.'
+import { reactify } from './index'
 
 describe('reactify', () => {
   it('one arg', () => {

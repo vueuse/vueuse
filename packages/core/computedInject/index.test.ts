@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { computedInject } from '.'
 import { Key, useInjectedSetup } from '../../.test'
+import { computedInject } from './index'
 
 describe('computedInject', () => {
   it('should be defined', () => {
