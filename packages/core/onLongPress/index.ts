@@ -43,7 +43,7 @@ export interface OnLongPressModifiers {
 
 export function onLongPress(
   target: MaybeElementRef,
-  handler: (evt: PointerEvent) => void,
+  handler: (evt: PointerEvent | TouchEvent) => void,
   options?: OnLongPressOptions,
 ) {
   const elementRef = computed(() => unrefElement(target))
@@ -64,7 +64,14 @@ export function onLongPress(
   }
 
   function onRelease(ev: PointerEvent) {
-    const [_startTimestamp, _posStart, _hasLongPressed] = [startTimestamp, posStart, hasLongPressed]
+    if (ev.pointerType === 'touch')
+      return
+
+    const [_startTimestamp, _posStart, _hasLongPressed] = [
+      startTimestamp,
+      posStart,
+      hasLongPressed,
+    ]
     clear()
 
     if (!options?.onMouseUp || !_posStart || !_startTimestamp)
@@ -86,6 +93,9 @@ export function onLongPress(
   }
 
   function onDown(ev: PointerEvent) {
+    if (ev.pointerType === 'touch')
+      return
+
     if (options?.modifiers?.self && ev.target !== elementRef.value)
       return
 
@@ -102,17 +112,16 @@ export function onLongPress(
       y: ev.y,
     }
     startTimestamp = ev.timeStamp
-    timeout = setTimeout(
-      () => {
-        hasLongPressed = true
-        handler(ev)
-      },
-      options?.delay ?? DEFAULT_DELAY,
-    )
+    timeout = setTimeout(() => {
+      hasLongPressed = true
+      handler(ev)
+    }, options?.delay ?? DEFAULT_DELAY)
   }
 
   function onMove(ev: PointerEvent) {
-    console.log("onMove options?.distanceThreshold", options?.distanceThreshold);
+    if (ev.pointerType === 'touch')
+      return
+
     if (options?.modifiers?.self && ev.target !== elementRef.value)
       return
 
@@ -128,7 +137,94 @@ export function onLongPress(
     const dx = ev.x - posStart.x
     const dy = ev.y - posStart.y
     const distance = Math.sqrt(dx * dx + dy * dy)
-    console.log("onMove distance", distance);
+    if (distance >= (options?.distanceThreshold ?? DEFAULT_THRESHOLD))
+      clear()
+  }
+
+  function onTouchRelease(ev: TouchEvent) {
+    const [_startTimestamp, _posStart, _hasLongPressed] = [
+      startTimestamp,
+      posStart,
+      hasLongPressed,
+    ]
+    clear()
+
+    if (!options?.onMouseUp || !_posStart || !_startTimestamp)
+      return
+
+    if (options?.modifiers?.self && ev.target !== elementRef.value)
+      return
+
+    if (options?.modifiers?.prevent)
+      ev.preventDefault()
+
+    if (options?.modifiers?.stop)
+      ev.stopPropagation()
+
+    const dx = ev.touches[0]?.clientX ?? 0 - _posStart.x
+    const dy = ev.touches[0]?.clientY ?? 0 - _posStart.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
+    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed)
+  }
+
+  function onTouchStart(ev: TouchEvent) {
+    if (options?.modifiers?.self && ev.target !== elementRef.value)
+      return
+
+    clear()
+
+    if (options?.modifiers?.prevent)
+      ev.preventDefault()
+
+    if (options?.modifiers?.stop)
+      ev.stopPropagation()
+
+    posStart = {
+      x: ev.touches[0]?.clientX ?? 0,
+      y: ev.touches[0]?.clientY ?? 0,
+    }
+    startTimestamp = ev.timeStamp
+    timeout = setTimeout(() => {
+      hasLongPressed = true
+      handler(ev)
+    }, options?.delay ?? DEFAULT_DELAY)
+  }
+
+  function isTouchOut(x: number, y: number): boolean {
+    const { left, right, top, bottom } = elementRef.value?.getBoundingClientRect() ?? {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+    }
+    const isOutOfBound = x < left || x > right || y < top || y > bottom
+    if (isOutOfBound) {
+      elementRef.value?.dispatchEvent(new CustomEvent('touchout'))
+    }
+    return isOutOfBound
+  }
+
+  function onTouchMove(ev: TouchEvent) {
+    if (options?.modifiers?.self && ev.target !== elementRef.value)
+      return
+
+    const x = ev.touches[0]?.clientX ?? 0
+    const y = ev.touches[0]?.clientY ?? 0
+    if (isTouchOut(x, y))
+      return
+
+    if (!posStart || options?.distanceThreshold === false)
+      return
+
+    if (options?.modifiers?.prevent)
+      ev.preventDefault()
+
+    if (options?.modifiers?.stop)
+      ev.stopPropagation()
+
+    const dx = x - posStart.x
+    const dy = y - posStart.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
     if (distance >= (options?.distanceThreshold ?? DEFAULT_THRESHOLD))
       clear()
   }
@@ -142,6 +238,9 @@ export function onLongPress(
     useEventListener(elementRef, 'pointerdown', onDown, listenerOptions),
     useEventListener(elementRef, 'pointermove', onMove, listenerOptions),
     useEventListener(elementRef, ['pointerup', 'pointerleave'], onRelease, listenerOptions),
+    useEventListener(elementRef, 'touchstart', onTouchStart, listenerOptions),
+    useEventListener(elementRef, 'touchmove', onTouchMove, listenerOptions),
+    useEventListener(elementRef, ['touchend', 'touchout'], onTouchRelease, listenerOptions),
   ]
 
   const stop = () => cleanup.forEach(fn => fn())
