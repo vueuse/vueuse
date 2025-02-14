@@ -1,8 +1,9 @@
 import type { Fn, MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import { toRef } from '@vueuse/shared'
 import { nextTick, ref, toValue, watch } from 'vue'
-import { type ConfigurableWindow, defaultWindow } from '../_configurable'
+import { defaultWindow } from '../_configurable'
 import { useResizeObserver } from '../useResizeObserver'
 
 export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
