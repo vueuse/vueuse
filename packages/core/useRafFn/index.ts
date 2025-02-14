@@ -60,7 +60,6 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   })
   let previousFrameTimestamp = 0
   let rafId: null | number = null
-  let hasCalledOnce = false
 
   function loop(timestamp: DOMHighResTimeStamp) {
     if (!isActive.value || !window)
@@ -79,7 +78,6 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     previousFrameTimestamp = timestamp
     fn({ delta, timestamp })
     if (once) {
-      hasCalledOnce = true
       isActive.value = false
       rafId = null
       return
@@ -88,9 +86,6 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   }
 
   function resume() {
-    if (hasCalledOnce)
-      return
-
     if (!isActive.value && window) {
       isActive.value = true
       previousFrameTimestamp = 0
@@ -99,9 +94,6 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   }
 
   function pause() {
-    if (hasCalledOnce)
-      return
-
     isActive.value = false
     if (rafId != null && window) {
       window.cancelAnimationFrame(rafId)
