@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, ref, shallowRef, toValue, watch } from 'vue'
+import { computed, isRef, reactive, readonly, ref, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -143,6 +143,11 @@ export interface UseFetchOptions {
   fetch?: typeof window.fetch
 
   /**
+   * Adds query search params to URL
+   */
+  query?: MaybeRefOrGetter<Record<string, any>>
+
+  /**
    * Will automatically run fetch when `useFetch` is used
    *
    * @default true
@@ -228,7 +233,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
+  return obj && containsProp(obj, 'query', 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
 }
 
 const reAbsolute = /^(?:[a-z][a-z\d+\-.]*:)?\/\//i
@@ -443,9 +448,17 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         : payload as BodyInit
     }
 
+    const urlValue = new URL(toValue(url))
+
+    if (options.query) {
+      for (const [key, val] of new URLSearchParams(toValue(reactive(options.query)))) {
+        urlValue.searchParams.append(key, val)
+      }
+    }
+
     let isCanceled = false
     const context: BeforeFetchContext = {
-      url: toValue(url),
+      url: urlValue.toString(),
       options: {
         ...defaultFetchOptions,
         ...fetchOptions,
@@ -538,6 +551,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     [
       refetch,
       toRef(url),
+      () => options.query,
     ],
     ([refetch]) => refetch && execute(),
     { deep: true },
