@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { Fn, MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue'
 import { toRef } from '@vueuse/shared'
 import { nextTick, ref, toValue, watch } from 'vue'
@@ -18,6 +18,24 @@ export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   styleTarget?: MaybeRef<HTMLElement | undefined>
   /** Specify the style property that will be used to manipulate height. Can be `height | minHeight`. Default value is `height`. */
   styleProp?: 'height' | 'minHeight'
+}
+
+/**
+ * Call window.requestAnimationFrame(), if not available, just call the function
+ *
+ * @param window
+ * @param fn
+ */
+function tryRequestAnimationFrame(
+  window: Window | undefined = defaultWindow,
+  fn: Fn,
+) {
+  if (window && typeof window.requestAnimationFrame === 'function') {
+    window.requestAnimationFrame(fn)
+  }
+  else {
+    fn()
+  }
 }
 
 export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
@@ -55,7 +73,7 @@ export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
     if (textareaOldWidth.value === contentRect.width)
       return
 
-    window?.requestAnimationFrame(() => {
+    tryRequestAnimationFrame(window, () => {
       textareaOldWidth.value = contentRect.width
       triggerResize()
     })
