@@ -1,8 +1,8 @@
 import type { Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { computed, readonly, ref, toValue } from 'vue'
-import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 
 export interface UseRafFnCallbackArguments {
