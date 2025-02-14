@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
 import { useColorMode } from './index'
@@ -10,7 +10,7 @@ describe('useColorMode', () => {
   const htmlEl = document.querySelector('html')
 
   vi.mock('../usePreferredDark', () => {
-    const mockPreferredDark = ref(false)
+    const mockPreferredDark = shallowRef(false)
     return {
       usePreferredDark: () => mockPreferredDark,
     }

@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
-import { computed, reactive, ref, toValue } from 'vue'
+import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -107,8 +107,8 @@ export function useScroll(
     onError = (e) => { console.error(e) },
   } = options
 
-  const internalX = ref(0)
-  const internalY = ref(0)
+  const internalX = shallowRef(0)
+  const internalY = shallowRef(0)
 
   // Use a computed for x and y because we want to write the value to the refs
   // during a `scrollTo()` without firing additional `scrollTo()`s in the process.
@@ -153,7 +153,7 @@ export function useScroll(
       internalY.value = scrollContainer.scrollTop
   }
 
-  const isScrolling = ref(false)
+  const isScrolling = shallowRef(false)
   const arrivedState = reactive({
     left: true,
     right: false,

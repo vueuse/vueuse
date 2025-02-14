@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useThrottledRefHistory } from './index'
 
 describe('useThrottledRefHistory - sync', () => {
   it('take first snapshot right after data was changed and second after given time', async () => {
     vi.useFakeTimers()
     const ms = 10
-    const v = ref(0)
+    const v = shallowRef(0)
 
     const { history } = useThrottledRefHistory(v, { throttle: ms })
 

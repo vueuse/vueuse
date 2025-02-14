@@ -2,7 +2,7 @@ import type { Equal, Expect } from '@type-challenges/utils'
 import type { Ref } from 'vue'
 import { invoke } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { until } from './index'
 
 describe('until', () => {
@@ -11,15 +11,15 @@ describe('until', () => {
   })
   it('should toBe', () => {
     return new Promise<void>((resolve, reject) => {
-      const r1 = ref(0)
-      const r2 = ref(0)
+      const r1 = shallowRef(0)
+      const r2 = shallowRef(0)
 
       invoke(async () => {
         expect(r1.value).toBe(0)
         expect(r2.value).toBe(0)
         let x = await until(r1).toBe(1)
         expect(x).toBe(1)
-        x = await until(r2).toBe(ref(2))
+        x = await until(r2).toBe(shallowRef(2))
         expect(x).toBe(2)
         resolve()
       }).catch(reject)
@@ -37,7 +37,7 @@ describe('until', () => {
   })
 
   it('should toBeTruthy', async () => {
-    const r = ref(false)
+    const r = shallowRef(false)
     setTimeout(() => {
       r.value = true
     }, 100)
@@ -57,7 +57,7 @@ describe('until', () => {
   })
 
   it('should toBeNaN', async () => {
-    const r = ref(0)
+    const r = shallowRef(0)
     setTimeout(() => {
       r.value = Number.NaN
     }, 100)
@@ -68,10 +68,10 @@ describe('until', () => {
 
   it('should toBe timeout with ref', async () => {
     vi.useRealTimers()
-    const r = ref(0)
+    const r = shallowRef(0)
     const reject = vi.fn()
     await invoke(async () => {
-      await until(r).toBe(ref(1), { timeout: 200, throwOnTimeout: true })
+      await until(r).toBe(shallowRef(1), { timeout: 200, throwOnTimeout: true })
     }).catch(reject)
 
     expect(reject).toHaveBeenCalledWith('Timeout')
@@ -79,7 +79,7 @@ describe('until', () => {
 
   it('should work for changedTimes', async () => {
     await new Promise<void>((resolve, reject) => {
-      const r = ref(0)
+      const r = shallowRef(0)
 
       invoke(async () => {
         expect(r.value).toBe(0)
@@ -94,7 +94,7 @@ describe('until', () => {
       vi.advanceTimersByTime(100)
     })
     await new Promise<void>((resolve, reject) => {
-      const r = ref(0)
+      const r = shallowRef(0)
 
       invoke(async () => {
         expect(r.value).toBe(0)
@@ -114,7 +114,7 @@ describe('until', () => {
 
   it('should support `not`', () => {
     return new Promise<void>((resolve, reject) => {
-      const r = ref(0)
+      const r = shallowRef(0)
 
       invoke(async () => {
         expect(r.value).toBe(0)
@@ -132,7 +132,7 @@ describe('until', () => {
 
   it('should support `not` as separate instances', () => {
     return new Promise<void>((resolve, reject) => {
-      const r = ref(0)
+      const r = shallowRef(0)
 
       invoke(async () => {
         expect(r.value).toBe(0)
@@ -209,7 +209,7 @@ describe('until', () => {
   it('should immediately timeout', () => {
     vi.useRealTimers()
     return new Promise<void>((resolve, reject) => {
-      const r = ref(0)
+      const r = shallowRef(0)
 
       invoke(async () => {
         expect(r.value).toBe(0)

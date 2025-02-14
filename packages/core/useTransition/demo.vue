@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { TransitionPresets, useTransition } from '@vueuse/core'
 import { rand } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 
 const duration = 1500
 
-const baseNumber = ref(0)
+const baseNumber = shallowRef(0)
 
 const baseVector = ref([0, 0])
 

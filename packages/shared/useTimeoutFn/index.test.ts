@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useTimeoutFn } from './index'
 
 describe('useTimeoutFn', () => {
@@ -9,7 +9,7 @@ describe('useTimeoutFn', () => {
 
   it('basic start/stop', async () => {
     const callback = vi.fn()
-    const interval = ref(0)
+    const interval = shallowRef(0)
     const { start } = useTimeoutFn(callback, interval)
 
     vi.advanceTimersByTime(1)

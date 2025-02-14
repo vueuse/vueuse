@@ -1,7 +1,7 @@
 import type { AfterFetchContext, OnFetchErrorContext } from './index'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
 import { createFetch, useFetch } from './index'
 import '../../.test/mockServer'
@@ -135,7 +135,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should refetch if refetch is set to true', async () => {
-    const url = ref('https://example.com')
+    const url = shallowRef('https://example.com')
     useFetch(url, { refetch: true })
     url.value = 'https://example.com?text'
     await vi.waitFor(() => {
@@ -722,7 +722,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should listen url ref change abort previous request', async () => {
-    const url = ref('https://example.com')
+    const url = shallowRef('https://example.com')
     const { onFetchResponse } = useFetch(url, { refetch: true, immediate: false })
 
     onFetchResponse(onFetchResponseSpy)

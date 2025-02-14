@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { useOffsetPagination } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 
 interface User {
   id: number
@@ -24,8 +24,8 @@ function fetch(page: number, pageSize: number) {
 
 const data: Ref<User[]> = ref([])
 
-const page = ref(1)
-const pageSize = ref(10)
+const page = shallowRef(1)
+const pageSize = shallowRef(10)
 
 fetchData({
   currentPage: page.value,

@@ -2,7 +2,7 @@ import type { Fn } from '@vueuse/shared'
 import type { MockInstance } from 'vitest'
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, ref } from 'vue'
+import { computed, effectScope, nextTick, ref, shallowRef } from 'vue'
 import { useEventListener } from './index'
 
 describe('useEventListener', () => {
@@ -245,7 +245,7 @@ describe('useEventListener', () => {
       const listener = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const active = ref(true)
+      const active = shallowRef(true)
 
       useEventListener(() => active.value ? [el1, el2] : [], 'mousedown', listener)
       await nextTick()
@@ -283,7 +283,7 @@ describe('useEventListener', () => {
       const listener = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const active = ref(true)
+      const active = shallowRef(true)
 
       useEventListener(() => active.value ? [el1, el2] : [], ['mousedown', 'click'], listener)
       await nextTick()

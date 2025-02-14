@@ -2,7 +2,7 @@ import type { MaybeRef } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { readonly, ref, watch } from 'vue'
+import { readonly, ref, shallowRef, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseStyleTagOptions extends ConfigurableDocument {
@@ -56,7 +56,7 @@ export function useStyleTag(
   css: MaybeRef<string>,
   options: UseStyleTagOptions = {},
 ): UseStyleTagReturn {
-  const isLoaded = ref(false)
+  const isLoaded = shallowRef(false)
 
   const {
     document = defaultDocument,

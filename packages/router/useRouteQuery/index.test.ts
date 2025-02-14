@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
+import { computed, effectScope, nextTick, reactive, ref, shallowRef, toValue, watch } from 'vue'
 import { useRouteQuery } from './index'
 
 describe('useRouteQuery', () => {
@@ -374,7 +374,7 @@ describe('useRouteQuery', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const defaultPage = ref(1)
+    const defaultPage = shallowRef(1)
     const defaultLang = () => 'pt-BR'
 
     const page: Ref<any> = useRouteQuery('page', defaultPage, { route, router })

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useEventBus } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 const { on, emit } = useEventBus<string>('vue-use-event-bus')
-const message = ref('')
+const message = shallowRef('')
 const news = [
   'Su Bingtian broke the Asian record and entered the Olympic 100-meter race finals as the first person in China-RTHK',
   'Comprehensive investigation in Zhengzhou to avoid further spread of the epidemic-RTHK',

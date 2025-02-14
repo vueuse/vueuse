@@ -60,7 +60,7 @@ export function useIDBKeyval<T>(
     writeDefaults = true,
   } = options
 
-  const isFinished = ref(false)
+  const isFinished = shallowRef(false)
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
 
   const rawInit: T = toValue(initialValue)

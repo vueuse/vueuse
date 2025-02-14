@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ComputedRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
-import { ref, toValue } from 'vue'
+import { ref, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -53,7 +53,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
 
   const isSupported = useSupported(() => (navigator && 'clipboard' in navigator))
   const content = ref<ClipboardItems>([])
-  const copied = ref(false)
+  const copied = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateContent() {

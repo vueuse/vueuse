@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useClipboardItems, usePermission } from '@vueuse/core'
-import { effect, ref } from 'vue'
+import { effect, shallowRef } from 'vue'
 
-const input = ref('')
+const input = shallowRef('')
 
 const { content, isSupported, copy } = useClipboardItems()
-const computedText = ref('')
-const computedMimeType = ref('')
+const computedText = shallowRef('')
+const computedMimeType = shallowRef('')
 effect(() => {
   Promise.all(content.value.map(item => item.getType('text/plain')))
     .then(async (blobs) => {

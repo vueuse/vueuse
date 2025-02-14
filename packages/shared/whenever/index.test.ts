@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref, toValue } from 'vue'
+import { nextTick, ref, shallowRef, toValue } from 'vue'
 import { useSetup } from '../../.test'
 import { whenever } from './index'
 
@@ -12,7 +12,7 @@ describe('whenever', () => {
     const vm = useSetup(() => {
       const number = ref<number | null | undefined>(1)
       const changeNumber = (v: number) => number.value = v
-      const watchCount = ref(0)
+      const watchCount = shallowRef(0)
       const watchValue: Ref<number | undefined> = ref()
 
       whenever(number, (value) => {
@@ -60,7 +60,7 @@ describe('whenever', () => {
   it('once', async () => {
     const vm = useSetup(() => {
       const number = ref<number | null | undefined>(1)
-      const watchCount = ref(0)
+      const watchCount = shallowRef(0)
       const watchValue: Ref<number | undefined> = ref()
 
       whenever(number, (value) => {

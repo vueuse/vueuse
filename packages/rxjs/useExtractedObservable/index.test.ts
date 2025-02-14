@@ -1,7 +1,7 @@
 import { BehaviorSubject, of, Subject } from 'rxjs'
 import { delay, endWith, tap } from 'rxjs/operators'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, reactive, ref } from 'vue'
+import { nextTick, reactive, ref, shallowRef } from 'vue'
 import { useExtractedObservable } from './index'
 
 describe('useExtractedObservable', () => {
@@ -9,7 +9,7 @@ describe('useExtractedObservable', () => {
     it('should call the extractor immediately', () => {
       const obs = new Subject<number>()
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const extractor = vi.fn((lastValue: number) => obs.pipe(endWith(lastValue)))
 
@@ -25,7 +25,7 @@ describe('useExtractedObservable', () => {
       expect.hasAssertions()
       const obs = new Subject<number>()
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const refObs = useExtractedObservable(last, lastValue => obs.pipe(endWith(lastValue)))
 
@@ -44,7 +44,7 @@ describe('useExtractedObservable', () => {
       expect.hasAssertions()
       const obs = new Subject<number>()
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const refObs = useExtractedObservable(last, lastValue => obs.pipe(endWith(lastValue)), {
         initialValue: 13,
@@ -63,7 +63,7 @@ describe('useExtractedObservable', () => {
       expect.hasAssertions()
       const obs = new BehaviorSubject(16)
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const refObs = useExtractedObservable(last, () => obs, {
         initialValue: 13,
@@ -76,7 +76,7 @@ describe('useExtractedObservable', () => {
   describe('when onError is provided', () => {
     it('calls onError when an observable emits an error', async () => {
       expect.hasAssertions()
-      const re = ref(0)
+      const re = shallowRef(0)
       const error = new Error('Odd number')
 
       const extractor = (num: number) => of(num).pipe(
@@ -176,7 +176,7 @@ describe('useExtractedObservable', () => {
       xyz: 'abc',
     })
 
-    const re = ref('def')
+    const re = shallowRef('def')
 
     const extractor = ([abc, def]: [string, string]) => of(`${abc}${def}`)
 

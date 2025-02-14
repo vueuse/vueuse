@@ -2,7 +2,7 @@
 import { useColorMode, useWindowSize } from '@vueuse/core'
 import { onMounted, reactive, ref } from 'vue'
 
-const mounted = ref(false)
+const mounted = shallowRef(false)
 const { width, height } = useWindowSize()
 const color = useColorMode()
 

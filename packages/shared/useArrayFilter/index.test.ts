@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useArrayFilter } from './index'
 
 describe('useArrayFilter', () => {
@@ -8,11 +8,11 @@ describe('useArrayFilter', () => {
   })
 
   it('should work with array of refs', () => {
-    const item1 = ref(0)
-    const item2 = ref(2)
-    const item3 = ref(4)
-    const item4 = ref(6)
-    const item5 = ref(8)
+    const item1 = shallowRef(0)
+    const item2 = shallowRef(2)
+    const item3 = shallowRef(4)
+    const item4 = shallowRef(6)
+    const item5 = shallowRef(8)
     const list = [item1, item2, item3, item4, item5]
     const result = useArrayFilter(list, i => i % 2 === 0)
     expect(result.value).toStrictEqual([0, 2, 4, 6, 8])

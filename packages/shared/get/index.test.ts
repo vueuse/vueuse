@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { get } from './index'
 
 describe('get', () => {
   it('unref', () => {
-    const a = ref(42)
+    const a = shallowRef(42)
 
     expect(get(a)).toBe(42)
     expect(get(42)).toBe(42)

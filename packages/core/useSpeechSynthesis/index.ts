@@ -59,7 +59,7 @@ export function useSpeechSynthesis(
   const synth = window && (window as any).speechSynthesis as SpeechSynthesis
   const isSupported = useSupported(() => synth)
 
-  const isPlaying = ref(false)
+  const isPlaying = shallowRef(false)
   const status = ref<UseSpeechSynthesisStatus>('init')
 
   const spokenText = toRef(text || '')

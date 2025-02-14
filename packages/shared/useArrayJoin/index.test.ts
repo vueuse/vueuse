@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useArrayJoin } from './index'
 
 describe('useArrayJoin', () => {
@@ -8,8 +8,8 @@ describe('useArrayJoin', () => {
   })
 
   it('should work with array of refs', () => {
-    const item1 = ref('foo')
-    const item2 = ref(0)
+    const item1 = shallowRef('foo')
+    const item2 = shallowRef(0)
     const item3 = ref({ prop: 'val' })
     const list = [item1, item2, item3]
     const result = useArrayJoin(list)

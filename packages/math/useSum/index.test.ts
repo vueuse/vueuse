@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useSum } from './index'
 
 describe('useSum', () => {
@@ -16,8 +16,8 @@ describe('useSum', () => {
   })
 
   it('rest usage', () => {
-    const a = ref(1)
-    const b = ref(2)
+    const a = shallowRef(1)
+    const b = shallowRef(2)
     const sum = useSum(a, () => b.value, 3)
     expect(sum.value).toBe(6)
     b.value = 3

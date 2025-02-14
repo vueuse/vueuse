@@ -28,7 +28,7 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
   } = options
 
   const isSupported = useSupported(() => window && 'BroadcastChannel' in window)
-  const isClosed = ref(false)
+  const isClosed = shallowRef(false)
 
   const channel = ref<BroadcastChannel | undefined>()
   const data = ref()

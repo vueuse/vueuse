@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { rand } from '@vueuse/shared'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { useSorted } from './index'
 
 const objArr = [{
@@ -18,7 +18,7 @@ const objArr = [{
 }]
 const result2 = useSorted(objArr, (a, b) => a.age - b.age)
 
-const arrText = ref('')
+const arrText = shallowRef('')
 const inputArr = computed(() => arrText.value.split(','))
 const inputOut = useSorted(inputArr)
 

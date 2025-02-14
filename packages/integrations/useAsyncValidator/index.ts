@@ -67,7 +67,7 @@ export function useAsyncValidator(
   const valueRef = toRef(value)
 
   const errorInfo = shallowRef<AsyncValidatorError | null>(null)
-  const isFinished = ref(true)
+  const isFinished = shallowRef(true)
   const pass = ref(!immediate || manual)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})

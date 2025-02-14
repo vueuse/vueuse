@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import antfu from '@antfu/eslint-config'
+import { createAutoInsert } from 'eslint-plugin-unimport'
 
 const dir = fileURLToPath(new URL('.', import.meta.url))
 const restricted = [
@@ -122,4 +123,12 @@ export default antfu(
       'no-restricted-imports': 'off',
     },
   },
+  createAutoInsert({
+    imports: [
+      {
+        from: 'vue',
+        name: 'shallowRef',
+      },
+    ],
+  }),
 )

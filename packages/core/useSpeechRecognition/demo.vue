@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useSpeechRecognition } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { ref, shallowRef, watch } from 'vue'
 
-const lang = ref('en-US')
+const lang = shallowRef('en-US')
 
 function sample<T>(arr: T[], size: number) {
   const shuffled = arr.slice(0)
@@ -26,7 +26,7 @@ const speech = useSpeechRecognition({
   continuous: true,
 })
 
-const color = ref('transparent')
+const color = shallowRef('transparent')
 
 if (speech.isSupported.value) {
   // @ts-expect-error missing types

@@ -111,7 +111,7 @@ interface UseVirtualListResources<T> {
 }
 
 function useVirtualListResources<T>(list: MaybeRef<readonly T[]>): UseVirtualListResources<T> {
-  const containerRef = ref<HTMLElement | null>(null)
+  const containerRef = shallowRef<HTMLElement | null>(null)
   const size = useElementSize(containerRef)
 
   const currentList: Ref<UseVirtualListItem<T>[]> = ref([])

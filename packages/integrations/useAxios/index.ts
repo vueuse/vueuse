@@ -178,9 +178,9 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   const initialData = (options as UseAxiosOptionsWithInitialData<T>).initialData
   const response = shallowRef<AxiosResponse<T>>()
   const data = (shallow ? shallowRef : ref)<T>(initialData!) as Ref<T>
-  const isFinished = ref(false)
-  const isLoading = ref(false)
-  const isAborted = ref(false)
+  const isFinished = shallowRef(false)
+  const isLoading = shallowRef(false)
+  const isAborted = shallowRef(false)
   const error = shallowRef<unknown>()
 
   let abortController: AbortController = new AbortController()

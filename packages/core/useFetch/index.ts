@@ -375,9 +375,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const errorEvent = createEventHook<any>()
   const finallyEvent = createEventHook<any>()
 
-  const isFinished = ref(false)
-  const isFetching = ref(false)
-  const aborted = ref(false)
+  const isFinished = shallowRef(false)
+  const isFetching = shallowRef(false)
+  const aborted = shallowRef(false)
   const statusCode = ref<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)

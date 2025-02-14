@@ -1,5 +1,5 @@
 import type { AnyFn, MaybeRefOrGetter, Stoppable } from '../utils'
-import { readonly, ref, toValue } from 'vue'
+import { readonly, shallowRef, toValue } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
 
@@ -36,7 +36,7 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
     immediateCallback = false,
   } = options
 
-  const isPending = ref(false)
+  const isPending = shallowRef(false)
 
   let timer: ReturnType<typeof setTimeout> | null = null
 

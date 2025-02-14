@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computed, ref } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { useFavicon } from './index'
 
 describe('useFavicon', () => {
@@ -32,7 +32,7 @@ describe('useFavicon', () => {
   })
 
   it('ref const', () => {
-    const targetRef = ref('v1')
+    const targetRef = shallowRef('v1')
     const favicon = useFavicon(targetRef)
     expect(favicon.value).toEqual('v1')
     targetRef.value = 'v2'
@@ -51,7 +51,7 @@ describe('useFavicon', () => {
   })
 
   it('computed/readonly', () => {
-    const onoff = ref(1)
+    const onoff = shallowRef(1)
     const target = computed(() => onoff.value === 1 ? 'a.jpg' : 'b.jpg')
     const favicon = useFavicon(target)
     expect(favicon.value).toEqual('a.jpg')

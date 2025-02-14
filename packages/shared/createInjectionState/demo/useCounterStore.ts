@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { createInjectionState } from '../../createInjectionState'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
@@ -22,8 +22,8 @@ export { useCounterStore }
 
 export function useCounterStoreWithDefaultValue() {
   return useCounterStore() ?? {
-    count: ref(0),
-    double: ref(0),
+    count: shallowRef(0),
+    double: shallowRef(0),
     increment: () => {},
   }
 }

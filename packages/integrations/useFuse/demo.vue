@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type { UseFuseOptions } from './index'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, shallowRef, watch } from 'vue'
 import { useFuse } from './index'
 
 interface DataItem {
@@ -91,8 +91,8 @@ const data = ref<DataItem[]>([
   },
 ])
 
-const search = ref('')
-const filterBy = ref('both')
+const search = shallowRef('')
+const filterBy = shallowRef('both')
 const keys = computed(() => {
   if (filterBy.value === 'first')
     return ['firstName']
@@ -116,9 +116,9 @@ watch(resultLimitString, () => {
   }
 })
 
-const exactMatch = ref(false)
-const isCaseSensitive = ref(false)
-const matchAllWhenSearchEmpty = ref(true)
+const exactMatch = shallowRef(false)
+const isCaseSensitive = shallowRef(false)
+const matchAllWhenSearchEmpty = shallowRef(true)
 
 const options = computed<UseFuseOptions<DataItem>>(() => ({
   fuseOptions: {

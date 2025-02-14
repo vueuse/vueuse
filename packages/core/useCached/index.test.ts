@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { nextTwoTick } from '../../.test'
 import { useCached } from './index'
 
@@ -20,7 +20,7 @@ describe('useCached', () => {
   })
 
   it('should work with default comparator', async () => {
-    const booleanRef = ref(true)
+    const booleanRef = shallowRef(true)
 
     const cachedBooleanRef = useCached(booleanRef)
     await nextTwoTick()

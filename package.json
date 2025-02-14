@@ -68,6 +68,7 @@
     "esbuild-register": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-format": "catalog:",
+    "eslint-plugin-unimport": "^0.1.2",
     "export-size": "catalog:",
     "fake-indexeddb": "catalog:",
     "firebase": "catalog:",

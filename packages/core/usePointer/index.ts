@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { PointerType, Position } from '../types'
 import { objectPick, toRefs } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -62,7 +62,7 @@ export function usePointer(options: UsePointerOptions = {}) {
     target = defaultWindow,
   } = options
 
-  const isInside = ref(false)
+  const isInside = shallowRef(false)
   const state = ref(options.initialValue || {}) as unknown as Ref<UsePointerState>
   Object.assign(state.value, defaultState, state.value)
 

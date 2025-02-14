@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { ChangeCaseType } from './index'
 import * as ChangeCase from 'change-case'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useChangeCase } from './index'
 
 const transforms: any = Object.keys(ChangeCase).filter(v => v.endsWith('Case'))
-const input = ref('helloWorld')
+const input = shallowRef('helloWorld')
 const type = ref<ChangeCaseType>(transforms[0])
 const changeCase = useChangeCase(input, type)
 </script>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { useBase64 } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 
-const text = ref('')
+const text = shallowRef('')
 const file = ref() as Ref<File>
 const image = ref() as Ref<HTMLImageElement>
 

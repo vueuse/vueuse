@@ -23,7 +23,7 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   const ssrSupport = ref(typeof ssrWidth === 'number')
 
   const mediaQuery = shallowRef<MediaQueryList>()
-  const matches = ref(false)
+  const matches = shallowRef(false)
 
   const handler = (event: MediaQueryListEvent) => {
     matches.value = event.matches

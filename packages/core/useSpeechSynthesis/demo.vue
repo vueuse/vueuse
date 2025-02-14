@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useSpeechSynthesis } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, shallowRef } from 'vue'
 
 const voice = ref<SpeechSynthesisVoice>(undefined as unknown as SpeechSynthesisVoice)
-const text = ref('Hello, everyone! Good morning!')
-const pitch = ref(1)
-const rate = ref(1)
+const text = shallowRef('Hello, everyone! Good morning!')
+const pitch = shallowRef(1)
+const rate = shallowRef(1)
 
 const speech = useSpeechSynthesis(text, {
   voice,

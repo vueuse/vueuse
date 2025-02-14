@@ -4,7 +4,7 @@ import type { ComputedRef, Ref } from 'vue'
 import { BehaviorSubject, of } from 'rxjs'
 import { delay, map, tap } from 'rxjs/operators'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, nextTick, reactive, ref, shallowRef } from 'vue'
 import { watchExtractedObservable } from './index'
 
 class TestWrapper {
@@ -64,7 +64,7 @@ describe('watchExtractedObservable', () => {
     it('calls onError when an observable emits an error', async () => {
       expect.hasAssertions()
 
-      const re = ref(0)
+      const re = shallowRef(0)
       const error = new Error('Odd number')
 
       const extractor = (num: number) => of(num).pipe(
@@ -191,7 +191,7 @@ describe('watchExtractedObservable', () => {
       xyz: 'abc',
     })
 
-    const re = ref('def')
+    const re = shallowRef('def')
 
     const extractor = ([abc, def]: [string, string]) => of([abc, def])
     const callback = vi.fn(() => {})

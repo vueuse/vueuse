@@ -117,7 +117,7 @@ export function useEventSource<Events extends string[]>(
 ): UseEventSourceReturn<Events> {
   const event: Ref<string | null> = ref(null)
   const data: Ref<string | null> = ref(null)
-  const status = ref('CONNECTING') as Ref<EventSourceStatus>
+  const status = shallowRef('CONNECTING') as Ref<EventSourceStatus>
   const eventSource = ref(null) as Ref<EventSource | null>
   const error = shallowRef(null) as Ref<Event | null>
   const urlRef = toRef(url)

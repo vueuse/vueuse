@@ -7,12 +7,12 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { toObserver } from '../toObserver'
 import { useSubscription } from '../useSubscription'
 import { from, fromEvent } from './index'
 
-const count = ref(0)
+const count = shallowRef(0)
 const button = ref<HTMLButtonElement | null>(null)
 
 useSubscription(

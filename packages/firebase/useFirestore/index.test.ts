@@ -1,7 +1,7 @@
 import type { Firestore } from 'firebase/firestore'
 import { collection, doc } from 'firebase/firestore'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, ref } from 'vue'
+import { computed, effectScope, nextTick, ref, shallowRef } from 'vue'
 import { useFirestore } from './index'
 
 const dummyFirestore = {} as Firestore
@@ -105,7 +105,7 @@ describe('useFirestore', () => {
   })
 
   it('should get user data only when user id exists', async () => {
-    const userId = ref('')
+    const userId = shallowRef('')
     const queryRef = computed(() => !!userId.value && collection(dummyFirestore, `users/${userId.value}/posts`))
     const data = useFirestore(queryRef, [{ id: 'default' }])
     expect(data.value).toEqual([{ id: 'default' }])
@@ -128,7 +128,7 @@ describe('useFirestore', () => {
   it('should close when scope dispose', async () => {
     const scope = effectScope()
     let data: any
-    const userId = ref('')
+    const userId = shallowRef('')
     const queryRef = computed(() => !!userId.value && collection(dummyFirestore, `users/${userId.value}/posts`))
 
     scope.run(() => {
