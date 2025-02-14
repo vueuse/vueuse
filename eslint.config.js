@@ -139,7 +139,7 @@ export default antfu(
   }),
   createSimplePlugin({
     name: 'no-ref',
-    exclude: ['**/*.md'],
+    exclude: ['**/*.md', '**/*.md/**'],
     create(context) {
       return {
         CallExpression(node) {
