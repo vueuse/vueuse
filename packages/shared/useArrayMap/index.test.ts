@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useArrayMap } from '.'
+import { useArrayMap } from './index'
 
 describe('useArrayMap', () => {
   it('should be defined', () => {

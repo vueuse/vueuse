@@ -1,7 +1,7 @@
-import type { OnLongPressOptions } from '.'
 import type { RenderableComponent } from '../types'
+import type { OnLongPressOptions } from './index'
 import { defineComponent, h, ref } from 'vue'
-import { onLongPress } from '.'
+import { onLongPress } from './index'
 
 export interface OnLongPressProps extends RenderableComponent {
   options?: OnLongPressOptions

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useCycleList } from '.'
+import { useCycleList } from './index'
 
 describe('useCycleList', () => {
   it('should work with array', () => {

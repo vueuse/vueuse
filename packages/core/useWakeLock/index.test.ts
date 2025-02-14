@@ -1,7 +1,7 @@
-import type { WakeLockSentinel } from '.'
+import type { WakeLockSentinel } from './index'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useWakeLock } from '.'
+import { useWakeLock } from './index'
 
 class MockWakeLockSentinel extends EventTarget {
   released = false

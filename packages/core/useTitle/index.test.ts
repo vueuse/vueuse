@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import { beforeEach, describe, expect, expectTypeOf, it } from 'vitest'
 import { computed, isReadonly, ref } from 'vue'
-import { useTitle } from '.'
+import { useTitle } from './index'
 
 const defaultTitle = 'VueUse testing'
 

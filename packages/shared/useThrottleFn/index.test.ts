@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { useThrottleFn } from '.'
+import { useThrottleFn } from './index'
 
 describe('useThrottleFn', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick, reactive, ref } from 'vue'
-import { watchArray } from '.'
+import { watchArray } from './index'
 
 describe('watchArray', () => {
   it('should work when two lists are different', async () => {

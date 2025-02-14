@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { useToNumber } from '.'
+import { useToNumber } from './index'
 
 describe('useToNumber', () => {
   it('default', () => {

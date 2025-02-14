@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { effectScope, ref } from 'vue'
-import { autoResetRef, refAutoReset } from '.'
+import { autoResetRef, refAutoReset } from './index'
 
 describe('refAutoReset', () => {
   vi.useFakeTimers()

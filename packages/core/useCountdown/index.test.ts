@@ -1,8 +1,8 @@
 import type { Pausable } from '@vueuse/shared'
-import type { UseCountdownOptions } from '.'
+import type { UseCountdownOptions } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, ref } from 'vue'
-import { useCountdown } from '.'
+import { useCountdown } from './index'
 
 describe('useCountdown', () => {
   vi.useFakeTimers()

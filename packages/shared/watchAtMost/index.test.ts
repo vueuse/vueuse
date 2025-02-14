@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { watchAtMost } from '.'
+import { watchAtMost } from './index'
 
 describe('watchAtMost', () => {
   it('should work', async () => {

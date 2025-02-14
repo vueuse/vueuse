@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { reactive, ref } from 'vue'
-import { useStepper } from '.'
+import { useStepper } from './index'
 
 describe('useStepper', () => {
   it('should be defined', () => {

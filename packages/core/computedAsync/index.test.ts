@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
-import { asyncComputed, computedAsync } from '.'
+import { asyncComputed, computedAsync } from './index'
 
 describe('computed', () => {
   it('is lazy', () => {

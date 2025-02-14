@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createSSRApp, nextTick, ref } from 'vue'
-import { useMediaQuery } from '.'
 import { provideSSRWidth } from '../useSSRWidth'
+import { useMediaQuery } from './index'
 
 describe('useMediaQuery', () => {
   it('should be defined', () => {

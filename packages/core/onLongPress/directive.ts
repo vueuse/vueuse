@@ -1,7 +1,7 @@
 import type { ObjectDirective } from 'vue'
-import type { OnLongPressOptions } from '.'
+import type { OnLongPressOptions } from './index'
 
-import { onLongPress } from '.'
+import { onLongPress } from './index'
 
 type BindingValueFunction = (evt: PointerEvent) => void
 

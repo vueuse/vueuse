@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
-import { useMutationObserver } from '.'
+import { useMutationObserver } from './index'
 
 describe('useMutationObserver', () => {
   it('should be defined', () => {

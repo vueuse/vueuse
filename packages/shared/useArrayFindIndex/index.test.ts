@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useArrayFindIndex } from '.'
+import { useArrayFindIndex } from './index'
 
 describe('useArrayFindIndex', () => {
   it('should be defined', () => {

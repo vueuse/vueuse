@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useRefHistory } from '.'
+import { useRefHistory } from './index'
 
 describe('useRefHistory - sync', () => {
   it('sync: should record', () => {

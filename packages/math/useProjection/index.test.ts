@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { isRef, ref } from 'vue'
-import { useProjection } from '.'
+import { useProjection } from './index'
 
 describe('useProjection', () => {
   it('should be defined', () => {

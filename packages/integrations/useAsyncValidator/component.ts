@@ -1,7 +1,7 @@
 import type { Rules } from 'async-validator'
 import type { PropType } from 'vue'
 import { defineComponent, reactive } from 'vue'
-import { useAsyncValidator } from '.'
+import { useAsyncValidator } from './index'
 
 export const UseAsyncValidator = /* #__PURE__ */ defineComponent({
   name: 'UseAsyncValidator',

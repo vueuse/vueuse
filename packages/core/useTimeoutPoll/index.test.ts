@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, ref } from 'vue'
-import { useTimeoutPoll } from '.'
+import { useTimeoutPoll } from './index'
 
 describe('useTimeoutPoll', () => {
   beforeEach(() => {

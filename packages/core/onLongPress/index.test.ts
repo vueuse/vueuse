@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { onLongPress } from '.'
 import { useEventListener } from '../useEventListener'
+import { onLongPress } from './index'
 
 describe('onLongPress', () => {
   let element: Ref<HTMLElement>

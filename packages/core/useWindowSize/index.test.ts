@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useWindowSize } from '.'
+import { useWindowSize } from './index'
 
 describe('useWindowSize', () => {
   const addEventListenerSpy = vi.spyOn(window, 'addEventListener')

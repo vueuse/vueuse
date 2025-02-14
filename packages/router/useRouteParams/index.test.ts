@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue'
-import { useRouteParams } from '.'
+import { useRouteParams } from './index'
 
 describe('useRouteParams', () => {
   const getRoute = (params: Record<string, any> = {}) => reactive({

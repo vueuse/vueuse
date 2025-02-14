@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useVirtualList } from '.'
+import { useVirtualList } from './index'
 
 describe('useVirtualList', () => {
   it('should be defined', () => {

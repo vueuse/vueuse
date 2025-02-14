@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { reactive, ref } from 'vue'
-import { useArrayReduce } from '.'
+import { useArrayReduce } from './index'
 
 describe('useArrayReduce', () => {
   it('should be defined', () => {

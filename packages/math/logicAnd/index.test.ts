@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref, toValue } from 'vue'
-import { logicAnd } from '.'
+import { logicAnd } from './index'
 
 describe('logicAnd', () => {
   it('should be defined', () => {

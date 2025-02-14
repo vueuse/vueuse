@@ -1,8 +1,8 @@
 import type { ObjectDirective } from 'vue'
-import type { UseElementVisibilityOptions } from '.'
+import type { UseElementVisibilityOptions } from './index'
 
 import { watch } from 'vue'
-import { useElementVisibility } from '.'
+import { useElementVisibility } from './index'
 
 type BindingValueFunction = (state: boolean) => void
 

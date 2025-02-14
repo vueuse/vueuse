@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { interval } from 'rxjs'
 import { ref } from 'vue'
-import { useSubscription } from '.'
+import { useSubscription } from './index'
 
 const count = ref(0)
 useSubscription(

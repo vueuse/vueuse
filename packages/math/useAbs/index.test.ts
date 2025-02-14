@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useAbs } from '.'
+import { useAbs } from './index'
 
 describe('useAbs', () => {
   it('should be defined', () => {

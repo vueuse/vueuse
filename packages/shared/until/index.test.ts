@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { invoke } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { until } from '.'
+import { until } from './index'
 
 describe('until', () => {
   beforeEach(() => {

@@ -21,7 +21,7 @@ import {
   rand,
   throttleFilter,
   timestamp,
-} from '.'
+} from './index'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {

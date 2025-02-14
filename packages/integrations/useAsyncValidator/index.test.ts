@@ -2,7 +2,7 @@ import type { Rules } from 'async-validator'
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useAsyncValidator } from '.'
+import { useAsyncValidator } from './index'
 
 describe('useAsyncValidator', () => {
   let form: {

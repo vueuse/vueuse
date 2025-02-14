@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { reactive, ref, watch } from 'vue'
-import { set } from '.'
+import { set } from './index'
 
 describe('set', () => {
   it('set ref', () => {

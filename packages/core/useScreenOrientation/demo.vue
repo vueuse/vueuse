@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useScreenOrientation } from '.'
+import { useScreenOrientation } from './index'
 
 const { isSupported, orientation, angle } = useScreenOrientation()
 </script>

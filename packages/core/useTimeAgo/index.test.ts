@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue'
 import { timestamp } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
-import { useTimeAgo } from '.'
+import { useTimeAgo } from './index'
 
 type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
 

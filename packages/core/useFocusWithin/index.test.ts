@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useFocusWithin } from '.'
+import { useFocusWithin } from './index'
 
 describe('useFocusWithin', () => {
   let parent: Ref<HTMLFormElement>

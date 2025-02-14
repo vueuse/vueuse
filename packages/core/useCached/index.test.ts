@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useCached } from '.'
 import { nextTwoTick } from '../../.test'
+import { useCached } from './index'
 
 function arrayEquals<T>(a: T[], b: T[]): boolean {
   if (a.length !== b.length)

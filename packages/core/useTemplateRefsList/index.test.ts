@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h, nextTick, ref, toRefs } from 'vue'
-import { useTemplateRefsList } from '.'
 import { mount } from '../../.test'
+import { useTemplateRefsList } from './index'
 
 const Component1 = defineComponent({
   setup() {

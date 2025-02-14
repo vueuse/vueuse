@@ -1,7 +1,7 @@
 import { page, userEvent } from '@vitest/browser/context'
 import { describe, expect, it, vi } from 'vitest'
 import { defineComponent, useTemplateRef } from 'vue'
-import { onClickOutside } from '.'
+import { onClickOutside } from './index'
 
 const complexComponent = defineComponent({
   template: `

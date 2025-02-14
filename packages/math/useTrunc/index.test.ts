@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useTrunc } from '.'
+import { useTrunc } from './index'
 
 // Returns:
 //  0        ->  0

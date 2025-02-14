@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { isRef, watch, watchEffect } from 'vue'
-import { controlledRef, refWithControl } from '.'
+import { controlledRef, refWithControl } from './index'
 
 describe('controlledRef', () => {
   it('should export module', () => {

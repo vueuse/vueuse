@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useFloor } from '.'
+import { useFloor } from './index'
 
 describe('useFloor', () => {
   it('should be defined', () => {

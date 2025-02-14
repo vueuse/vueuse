@@ -1,7 +1,7 @@
-import type { UseOffsetPaginationOptions, UseOffsetPaginationReturn } from '.'
+import type { UseOffsetPaginationOptions, UseOffsetPaginationReturn } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { isRef, nextTick, ref } from 'vue'
-import { useOffsetPagination } from '.'
+import { useOffsetPagination } from './index'
 
 describe('useOffsetPagination', () => {
   it('should be defined', () => {

@@ -1,6 +1,6 @@
 import type { ObjectDirective } from 'vue'
-import type { UseScrollOptions, UseScrollReturn } from '.'
-import { useScroll } from '.'
+import type { UseScrollOptions, UseScrollReturn } from './index'
+import { useScroll } from './index'
 
 type BindingValueFunction = (state: UseScrollReturn) => void
 

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { debouncedWatch, watchDebounced } from '.'
+import { debouncedWatch, watchDebounced } from './index'
 
 describe('watchDebounced', () => {
   it('should export module', () => {

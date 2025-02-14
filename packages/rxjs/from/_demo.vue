@@ -8,9 +8,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators'
 import { ref } from 'vue'
-import { from, fromEvent } from '.'
 import { toObserver } from '../toObserver'
 import { useSubscription } from '../useSubscription'
+import { from, fromEvent } from './index'
 
 const count = ref(0)
 const button = ref<HTMLButtonElement | null>(null)

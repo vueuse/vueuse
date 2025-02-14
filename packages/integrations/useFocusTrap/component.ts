@@ -1,6 +1,6 @@
 import type { RenderableComponent } from '@vueuse/core'
 import type { FocusTrap } from 'focus-trap'
-import type { UseFocusTrapOptions } from '.'
+import type { UseFocusTrapOptions } from './index'
 import { unrefElement } from '@vueuse/core'
 import { createFocusTrap } from 'focus-trap'
 import { defineComponent, h, onScopeDispose, ref, watch } from 'vue'

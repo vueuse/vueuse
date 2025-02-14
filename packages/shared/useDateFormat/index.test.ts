@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatDate, normalizeDate, useDateFormat } from '.'
+import { formatDate, normalizeDate, useDateFormat } from './index'
 
 describe('useDateFormat', () => {
   it('should export module', () => {

@@ -1,9 +1,9 @@
-import type { AfterFetchContext, OnFetchErrorContext } from '.'
+import type { AfterFetchContext, OnFetchErrorContext } from './index'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { createFetch, useFetch } from '.'
 import { isBelowNode18 } from '../../.test'
+import { createFetch, useFetch } from './index'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }

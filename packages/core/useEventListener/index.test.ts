@@ -3,7 +3,7 @@ import type { MockInstance } from 'vitest'
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, effectScope, nextTick, ref } from 'vue'
-import { useEventListener } from '.'
+import { useEventListener } from './index'
 
 describe('useEventListener', () => {
   const options = { capture: true }

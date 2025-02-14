@@ -1,8 +1,8 @@
 import { debounceFilter } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, nextTick, ref, toRaw } from 'vue'
-import { customStorageEventName, StorageSerializers, useStorage } from '.'
 import { mount, nextTwoTick, useSetup } from '../../.test'
+import { customStorageEventName, StorageSerializers, useStorage } from './index'
 
 const KEY = 'custom-key'
 const ANOTHER_KEY = 'another-key'

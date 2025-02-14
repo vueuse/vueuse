@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { computed, reactive, ref, watchSyncEffect } from 'vue'
-import { toRefs } from '.'
+import { toRefs } from './index'
 
 describe('toRefs', () => {
   it('should be defined', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useVModel } from '.'
+import { useVModel } from './index'
 
 describe('useVModel', () => {
   const defaultKey = 'modelValue'

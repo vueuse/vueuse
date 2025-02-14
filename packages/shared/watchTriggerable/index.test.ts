@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { nextTick, reactive, ref } from 'vue'
-import { watchTriggerable } from '.'
+import { watchTriggerable } from './index'
 
 describe('watchTriggerable', () => {
   it('this should work', async () => {

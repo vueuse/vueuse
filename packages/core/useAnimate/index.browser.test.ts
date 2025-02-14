@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { useAnimate } from '@vueuse/core'
 import { describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
-// import { useAnimate } from '.'
+// import { useAnimate } from './index'
 
 describe('useAnimate', () => {
   it('browser should support useAnimate', () => {

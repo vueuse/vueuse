@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref, toValue } from 'vue'
-import { logicNot } from '.'
+import { logicNot } from './index'
 
 describe('logicNot', () => {
   it('should be defined', () => {

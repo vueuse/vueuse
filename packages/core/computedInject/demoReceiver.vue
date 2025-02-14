@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { InjectionKey, Ref } from 'vue'
 import { defineComponent, ref } from 'vue'
-import { computedInject } from '.'
+import { computedInject } from './index'
 
 type OptionsRef = Ref<{ key: number, value: string }[]>
 

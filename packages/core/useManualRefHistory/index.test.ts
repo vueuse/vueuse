@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { isReactive, ref } from 'vue'
-import { useManualRefHistory } from '.'
+import { useManualRefHistory } from './index'
 
 describe('useManualRefHistory', () => {
   it('should record', () => {

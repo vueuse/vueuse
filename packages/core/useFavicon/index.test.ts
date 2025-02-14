@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { computed, ref } from 'vue'
-import { useFavicon } from '.'
+import { useFavicon } from './index'
 
 describe('useFavicon', () => {
   it('no param', () => {

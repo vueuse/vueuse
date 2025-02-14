@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useArrayDifference } from '.'
+import { useArrayDifference } from './index'
 
 describe('useArrayDifference', () => {
   it('should be defined', () => {

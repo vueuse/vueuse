@@ -1,8 +1,8 @@
-import type { UseWebSocketReturn } from '.'
+import type { UseWebSocketReturn } from './index'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useWebSocket } from '.'
 import { useSetup } from '../../.test'
+import { useWebSocket } from './index'
 
 describe('useWebSocket', () => {
   const mockWebSocket = vi.fn<(host: string) => WebSocket>()

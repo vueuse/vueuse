@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
-import { useDebouncedRefHistory } from '.'
+import { useDebouncedRefHistory } from './index'
 
 describe('useDebouncedRefHistory', () => {
   it('once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', async () => {

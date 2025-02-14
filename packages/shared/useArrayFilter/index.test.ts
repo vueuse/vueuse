@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
-import { useArrayFilter } from '.'
+import { useArrayFilter } from './index'
 
 describe('useArrayFilter', () => {
   it('should be defined', () => {
