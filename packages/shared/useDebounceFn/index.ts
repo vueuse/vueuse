@@ -15,9 +15,9 @@ export function useDebounceFn<T extends FunctionArgs>(
   fn: T,
   ms: MaybeRefOrGetter<number> = 200,
   options: DebounceFilterOptions = {},
-): PromisifyFn<T> {
-  return createFilterWrapper(
-    debounceFilter(ms, options),
-    fn,
-  )
+): PromisifyFn<T> & { cancel: () => void } {
+  const filter = debounceFilter(ms, options)
+  const wrapped = createFilterWrapper(filter, fn) as PromisifyFn<T> & { cancel: () => void }
+  wrapped.cancel = () => filter.cancel?.()
+  return wrapped
 }
