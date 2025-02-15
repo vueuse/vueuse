@@ -60,7 +60,7 @@ catalog:
   nprogress: ^0.2.0
   nuxt: ^3.15.4
   ofetch: ^1.4.1
-  playwright: ^1.50.1 # flaky firefox tests with ^1.50.0
+  playwright: 1.49.0 # flaky firefox tests with ^1.50.0
   pnpm: ^10.4.0
   postcss: ^8.5.2
   postcss-nested: ^7.0.2

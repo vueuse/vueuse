@@ -60,7 +60,7 @@ export default defineConfig({
             headless: true,
             instances: [
               { browser: 'chromium' },
-              { browser: 'firefox' },
+              // { browser: 'firefox' }, // flaky FF test: https://github.com/vitest-dev/vitest/issues/7377
               { browser: 'webkit' },
             ],
           },
