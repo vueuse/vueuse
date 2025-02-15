@@ -91,4 +91,18 @@ describe('useRafFn', () => {
     })
     expect(fn1.mock.calls.length).toBeLessThan(fn2.mock.calls.length)
   })
+
+  it('should only be called once when the once option is set to true', async () => {
+    const fn = vi.fn()
+    const fn1 = vi.fn()
+    useRafFn(fn, { once: true })
+    useRafFn(fn1)
+    await vi.waitFor(() => {
+      expect(fn).toHaveBeenCalled()
+      expect(fn1).toHaveBeenCalled()
+    })
+
+    expect(fn.mock.calls.length).toBe(1)
+    expect(fn1.mock.calls.length).toBeGreaterThan(1)
+  })
 })
