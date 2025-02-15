@@ -31,6 +31,12 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    * @default undefined
    */
   fpsLimit?: MaybeRefOrGetter<number>
+  /**
+   * After the requestAnimationFrame loop executed once, it will be automatically stopped.
+   *
+   * @default false
+   */
+  once?: boolean
 }
 
 /**
@@ -45,6 +51,7 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     immediate = true,
     fpsLimit = undefined,
     window = defaultWindow,
+    once = false,
   } = options
 
   const isActive = ref(false)
@@ -70,6 +77,11 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
 
     previousFrameTimestamp = timestamp
     fn({ delta, timestamp })
+    if (once) {
+      isActive.value = false
+      rafId = null
+      return
+    }
     rafId = window.requestAnimationFrame(loop)
   }
 
