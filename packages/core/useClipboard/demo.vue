@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useClipboard, usePermission } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const input = ref('')
+const input = shallowRef('')
 
 const { text, isSupported, copy } = useClipboard()
 const permissionRead = usePermission('clipboard-read')

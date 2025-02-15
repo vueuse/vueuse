@@ -2,10 +2,10 @@
 import { useFetch } from '@vueuse/core'
 import { stringify } from '@vueuse/docs-utils'
 import { useToggle } from '@vueuse/shared'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, shallowRef } from 'vue'
 
-const url = ref('https://httpbin.org/get')
-const refetch = ref(false)
+const url = shallowRef('https://httpbin.org/get')
+const refetch = shallowRef(false)
 
 const toggleRefetch = useToggle(refetch)
 

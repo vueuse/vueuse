@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { useAsyncQueue } from '.'
+import { useAsyncQueue } from './index'
 
 describe('useAsyncQueue', () => {
   const p1 = () => {

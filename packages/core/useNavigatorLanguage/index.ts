@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { ref as deepRef } from 'vue'
 
-import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 import { useEventListener } from '../useEventListener'
@@ -43,7 +43,7 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
 
   const isSupported = useSupported(() => navigator && 'language' in navigator)
 
-  const language = ref<string | undefined>(navigator?.language)
+  const language = deepRef<string | undefined>(navigator?.language)
 
   // Listen to when to user changes language:
   useEventListener(window, 'languagechange', () => {

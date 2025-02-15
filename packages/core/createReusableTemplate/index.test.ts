@@ -2,7 +2,7 @@ import type { Slot } from 'vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { defineComponent, Fragment, h, renderSlot } from 'vue'
-import { createReusableTemplate } from '.'
+import { createReusableTemplate } from './index'
 
 describe('createReusableTemplate', () => {
   it('should work', () => {

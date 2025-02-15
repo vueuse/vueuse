@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { noop } from '@vueuse/shared'
-import { reactive, ref } from 'vue'
+import { reactive, shallowRef } from 'vue'
 
 export type UseAsyncQueueTask<T> = (...args: any[]) => T | Promise<T>
 
@@ -75,7 +75,7 @@ export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
 
   const result = reactive(initialResult) as { [P in keyof T]: UseAsyncQueueResult<T[P]> }
 
-  const activeIndex = ref<number>(-1)
+  const activeIndex = shallowRef<number>(-1)
 
   if (!tasks || tasks.length === 0) {
     onFinished()

@@ -1,8 +1,8 @@
 import type { Options } from 'change-case'
-import type { ChangeCaseType } from '.'
+import type { ChangeCaseType } from './index'
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useChangeCase } from '.'
+import { ref as deepRef } from 'vue'
+import { useChangeCase } from './index'
 
 describe('useChangeCase', () => {
   interface objectValue {
@@ -92,7 +92,7 @@ describe('useChangeCase', () => {
     })
 
     it(`ref ${key}`, () => {
-      const input = ref(helloWorld)
+      const input = deepRef(helloWorld)
       const changeCase = useChangeCase(input, key)
       expect(changeCase.value).toBe(obj[key].helloWorld)
       changeCase.value = vueuse

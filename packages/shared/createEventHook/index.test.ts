@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createEventHook } from '.'
+import { createEventHook } from './index'
 
 describe('createEventHook', () => {
   it('should be defined', () => {

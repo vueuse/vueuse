@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs } from '@vueuse/shared'
-import { computed, ref, toValue } from 'vue'
+import { computed, ref as deepRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -140,11 +140,11 @@ export function useDraggable(
     buttons = [0],
   } = options
 
-  const position = ref<Position>(
+  const position = deepRef<Position>(
     toValue(initialValue) ?? { x: 0, y: 0 },
   )
 
-  const pressedDelta = ref<Position>()
+  const pressedDelta = deepRef<Position>()
 
   const filterEvent = (e: PointerEvent) => {
     if (pointerTypes)

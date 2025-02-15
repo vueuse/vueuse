@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFocusTrap } from '.'
+import { ref as deepRef } from 'vue'
+import { useFocusTrap } from './index'
 
-const target = ref()
+const target = deepRef()
 const { hasFocus, activate, deactivate } = useFocusTrap(target)
 </script>
 

@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { MaybeRef, MaybeRefOrGetter } from '../utils'
-import { isRef, ref, toValue } from 'vue'
+import { ref as deepRef, isRef, toValue } from 'vue'
 
 export interface UseToggleOptions<Truthy, Falsy> {
   truthyValue?: MaybeRefOrGetter<Truthy>
@@ -26,7 +26,7 @@ export function useToggle(
   } = options
 
   const valueIsRef = isRef(initialValue)
-  const _value = ref(initialValue) as Ref<boolean>
+  const _value = deepRef(initialValue) as Ref<boolean>
 
   function toggle(value?: boolean) {
     // has arguments

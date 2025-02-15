@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref, toValue } from 'vue'
+import { ref as deepRef, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
@@ -43,7 +43,7 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
     return document && 'elementFromPoint' in document
   })
 
-  const element = ref<any>(null)
+  const element = deepRef<any>(null)
 
   const cb = () => {
     element.value = toValue(multiple)

@@ -2,7 +2,7 @@ import type { EventHook } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -131,9 +131,9 @@ export function useWebNotification(
     return true
   })
 
-  const permissionGranted = ref(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
+  const permissionGranted = deepRef(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
 
-  const notification: Ref<Notification | null> = ref(null)
+  const notification: Ref<Notification | null> = deepRef(null)
 
   const ensurePermissions = async () => {
     if (!isSupported.value)
