@@ -3,7 +3,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { pxValue } from '@vueuse/shared'
-import { computed, ref, shallowRef, toValue, watchEffect } from 'vue'
+import { computed, getCurrentInstance, ref, shallowRef, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSSRWidth } from '../useSSRWidth'
@@ -20,7 +20,7 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   const { window = defaultWindow, ssrWidth = useSSRWidth() } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
-  const ssrSupport = ref(typeof ssrWidth === 'number')
+  const ssrSupport = ref(getCurrentInstance()?.root.isMounted ? false : typeof ssrWidth === 'number')
 
   const mediaQuery = shallowRef<MediaQueryList>()
   const matches = ref(false)
