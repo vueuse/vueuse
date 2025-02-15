@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { executeTransition, useTransition } from './index'
 
 function expectBetween(val: number, floor: number, ceiling: number) {
@@ -10,7 +10,7 @@ function expectBetween(val: number, floor: number, ceiling: number) {
 
 describe('executeTransition', () => {
   it('transitions between numbers', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
 
     const trans = executeTransition(source, 0, 1, { duration: 50 })
 
@@ -24,7 +24,7 @@ describe('executeTransition', () => {
   })
 
   it('transitions between vectors', async () => {
-    const source = ref([0, 0, 0])
+    const source = deepRef([0, 0, 0])
 
     const trans = executeTransition(source, [0, 1, 2], [1, 2, 3], { duration: 50 })
 
@@ -44,7 +44,7 @@ describe('executeTransition', () => {
   it('transitions can be aborted', async () => {
     let abort = false
 
-    const source = ref(0)
+    const source = shallowRef(0)
 
     const trans = executeTransition(source, 0, 1, {
       abort: () => abort,
@@ -63,7 +63,7 @@ describe('executeTransition', () => {
 
 describe('useTransition', () => {
   it('transitions between numbers', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
     const transition = useTransition(source, { duration: 100 })
 
     expect(transition.value).toBe(0)
@@ -78,7 +78,7 @@ describe('useTransition', () => {
   })
 
   it('transitions between vectors', async () => {
-    const source = ref([0, 0])
+    const source = deepRef([0, 0])
     const transition = useTransition(source, { duration: 100 })
 
     expect(transition.value).toEqual([0, 0])
@@ -95,8 +95,8 @@ describe('useTransition', () => {
   })
 
   it('transitions between refs', async () => {
-    const source1 = ref(0)
-    const source2 = ref(0)
+    const source1 = shallowRef(0)
+    const source2 = shallowRef(0)
     const transition = useTransition([source1, source2], { duration: 100 })
 
     expect(transition.value).toEqual([0, 0])
@@ -114,7 +114,7 @@ describe('useTransition', () => {
   })
 
   it('supports cubic bezier curves', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
 
     // https://cubic-bezier.com/#0,2,0,1
     const easeOutBack = useTransition(source, {
@@ -140,7 +140,7 @@ describe('useTransition', () => {
   })
 
   it('supports custom easing functions', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
     const linear = vi.fn(n => n)
     const transition = useTransition(source, {
       duration: 100,
@@ -160,7 +160,7 @@ describe('useTransition', () => {
   })
 
   it('supports non-linear custom easing functions', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
     const easeInQuad = vi.fn(n => n * n)
     const transition = useTransition(source, {
       duration: 100,
@@ -180,7 +180,7 @@ describe('useTransition', () => {
   })
 
   it('supports delayed transitions', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
 
     const transition = useTransition(source, {
       delay: 100,
@@ -197,10 +197,10 @@ describe('useTransition', () => {
   })
 
   it('supports dynamic transitions', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
     const first = vi.fn(n => n)
     const second = vi.fn(n => n)
-    const easingFn = ref(first)
+    const easingFn = deepRef(first)
 
     useTransition(source, {
       duration: 100,
@@ -228,8 +228,8 @@ describe('useTransition', () => {
   })
 
   it('supports dynamic durations', async () => {
-    const source = ref(0)
-    const duration = ref(100)
+    const source = shallowRef(0)
+    const duration = shallowRef(100)
     const transition = useTransition(source, { duration })
 
     source.value = 1
@@ -251,7 +251,7 @@ describe('useTransition', () => {
   })
 
   it('fires onStarted and onFinished callbacks', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
     const onStarted = vi.fn()
     const onFinished = vi.fn()
 
@@ -279,7 +279,7 @@ describe('useTransition', () => {
   })
 
   it('clears pending transitions before starting a new one', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
     const onStarted = vi.fn()
     const onFinished = vi.fn()
 
@@ -302,8 +302,8 @@ describe('useTransition', () => {
 
   it('can be disabled for sychronous changes', async () => {
     const onStarted = vi.fn()
-    const disabled = ref(false)
-    const source = ref(0)
+    const disabled = shallowRef(false)
+    const source = shallowRef(0)
 
     const transition = useTransition(source, {
       disabled,
@@ -322,7 +322,7 @@ describe('useTransition', () => {
   })
 
   it('begins transition from where previous transition was interrupted', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
 
     const transition = useTransition(source, {
       duration: 100,

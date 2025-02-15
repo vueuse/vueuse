@@ -1,5 +1,5 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { computed, ref } from 'vue'
+import { computed, ref as deepRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -18,7 +18,7 @@ export function useTextSelection(options: ConfigurableWindow = {}) {
     window = defaultWindow,
   } = options
 
-  const selection = ref<Selection | null>(null)
+  const selection = deepRef<Selection | null>(null)
   const text = computed(() => selection.value?.toString() ?? '')
   const ranges = computed<Range[]>(() => selection.value ? getRangesFromSelection(selection.value) : [])
   const rects = computed(() => ranges.value.map(range => range.getBoundingClientRect()))

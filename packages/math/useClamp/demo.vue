@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useClamp } from '@vueuse/math'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const min = ref(0)
-const max = ref(10)
+const min = shallowRef(0)
+const max = shallowRef(10)
 
 const value = useClamp(0, min, max)
 </script>

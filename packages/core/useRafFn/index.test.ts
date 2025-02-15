@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useRafFn } from './index'
 
 describe('useRafFn', () => {
@@ -72,7 +72,7 @@ describe('useRafFn', () => {
 
   it('should handle a framerate change', { retry: 3 }, async () => {
     const initialFramerate = 60
-    const fr = ref(initialFramerate)
+    const fr = deepRef(initialFramerate)
     const fn1 = vi.fn()
     const fn2 = vi.fn()
     useRafFn(fn1, { fpsLimit: fr })

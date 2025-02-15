@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, reactive, ref } from 'vue'
+import { ref as deepRef, nextTick, reactive } from 'vue'
 import { watchArray } from './index'
 
 describe('watchArray', () => {
@@ -11,7 +11,7 @@ describe('watchArray', () => {
       expect(removed).toEqual([2, 3])
     })
 
-    const num = ref([1, 2, 3])
+    const num = deepRef([1, 2, 3])
     watchArray(num, spy)
     num.value = [1, 1, 4]
     await nextTick()
@@ -26,7 +26,7 @@ describe('watchArray', () => {
       expect(removed).toEqual([])
     })
 
-    const num = ref([1, 2, 3])
+    const num = deepRef([1, 2, 3])
     watchArray(num, spy)
     num.value = [1, 2, 3]
     await nextTick()
@@ -41,7 +41,7 @@ describe('watchArray', () => {
       expect(removed).toEqual([])
     })
 
-    const num = ref([1, 2, 3])
+    const num = deepRef([1, 2, 3])
     watchArray(num, spy, { deep: true })
     num.value.push(4)
     await nextTick()
@@ -56,7 +56,7 @@ describe('watchArray', () => {
       expect(removed).toEqual([2])
     })
 
-    const num = ref([1, 2, 3])
+    const num = deepRef([1, 2, 3])
     watchArray(num, spy, { deep: true })
     num.value.splice(1, 1, 5, 6, 7)
     await nextTick()
@@ -86,7 +86,7 @@ describe('watchArray', () => {
       expect(removed).toEqual([])
     })
 
-    const num = ref([1, 2, 3])
+    const num = deepRef([1, 2, 3])
     watchArray(() => num.value, spy)
     num.value = [...num.value, 4]
     await nextTick()
@@ -96,7 +96,7 @@ describe('watchArray', () => {
   it('should work when immediate is true', async () => {
     const spy = vi.fn()
 
-    const num = ref([1, 2, 3])
+    const num = deepRef([1, 2, 3])
     watchArray(() => num.value, spy, { immediate: true })
     expect(spy).toHaveBeenCalledWith([1, 2, 3], [], [1, 2, 3], [], expect.anything())
     num.value = [1, 2, 3, 4]

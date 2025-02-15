@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useCycleList } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 
-const list = ref([
+const list = deepRef([
   'Dog',
   'Cat',
   'Lizard',

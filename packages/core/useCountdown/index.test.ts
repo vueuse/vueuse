@@ -1,7 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
 import type { UseCountdownOptions } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, ref } from 'vue'
+import { effectScope, shallowRef } from 'vue'
 import { useCountdown } from './index'
 
 describe('useCountdown', () => {
@@ -112,7 +112,7 @@ describe('useCountdown', () => {
   })
 
   it('initial interval can be changed', async () => {
-    const countdown = ref(3)
+    const countdown = shallowRef(3)
 
     const { start } = useCountdown(countdown, { ...options, immediate: false })
 

@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import { toArray, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import { notNullish } from '@vueuse/shared'
 import { createFocusTrap } from 'focus-trap'
-import { computed, ref, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 
 export interface UseFocusTrapOptions extends Options {
   /**
@@ -68,8 +68,8 @@ export function useFocusTrap(
   let trap: undefined | FocusTrap
 
   const { immediate, ...focusTrapOptions } = options
-  const hasFocus = ref(false)
-  const isPaused = ref(false)
+  const hasFocus = shallowRef(false)
+  const isPaused = shallowRef(false)
 
   const activate = (opts?: ActivateOptions) => trap && trap.activate(opts)
   const deactivate = (opts?: DeactivateOptions) => trap && trap.deactivate(opts)

@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { useDebouncedRefHistory } from './index'
 
 describe('useDebouncedRefHistory', () => {
   it('once the ref\'s value has changed and some time has passed, ensure the snapshot is updated', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
 
     const { history } = useDebouncedRefHistory(v, { debounce: 10 })
     v.value = 100
@@ -18,7 +18,7 @@ describe('useDebouncedRefHistory', () => {
   })
 
   it('when debounce is undefined', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
 
     const { history } = useDebouncedRefHistory(v, { deep: false })
 

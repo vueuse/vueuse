@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { reactive, ref } from 'vue'
+import { ref as deepRef, reactive, shallowRef } from 'vue'
 import { useArrayUnique } from './index'
 
 describe('useArrayUnique', () => {
@@ -8,11 +8,11 @@ describe('useArrayUnique', () => {
   })
 
   it('should work with array of refs', () => {
-    const item1 = ref(0)
-    const item2 = ref(1)
-    const item3 = ref(1)
-    const item4 = ref(2)
-    const item5 = ref(3)
+    const item1 = shallowRef(0)
+    const item2 = shallowRef(1)
+    const item3 = shallowRef(1)
+    const item4 = shallowRef(2)
+    const item5 = shallowRef(3)
     const list = [item1, item2, item3, item4, item5]
     const result = useArrayUnique(list)
     expect(result.value.length).toBe(4)
@@ -21,7 +21,7 @@ describe('useArrayUnique', () => {
   })
 
   it('should work with ref array', () => {
-    const list = ref([1, 2, 2, 3])
+    const list = deepRef([1, 2, 2, 3])
     const result = useArrayUnique(list)
     expect(result.value.length).toBe(3)
     list.value.push(1)

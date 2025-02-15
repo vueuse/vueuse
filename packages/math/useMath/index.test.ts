@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useMath } from './index'
 
 describe('useMath', () => {
@@ -13,13 +13,13 @@ describe('useMath', () => {
   })
 
   it('should accept refs', () => {
-    const base = ref(2)
-    const exponent = ref(3)
+    const base = shallowRef(2)
+    const exponent = shallowRef(3)
     const result = useMath('pow', base, exponent)
 
     expect(result.value).toBe(8)
 
-    const num = ref(4)
+    const num = shallowRef(4)
     const root = useMath('sqrt', num)
 
     expect(root.value).toBe(2)

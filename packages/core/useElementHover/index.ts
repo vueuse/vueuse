@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { onElementRemoval } from '../onElementRemoval'
 import { unrefElement } from '../unrefElement'
@@ -22,7 +22,7 @@ export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefi
     window = defaultWindow,
   } = options
 
-  const isHovered = ref(false)
+  const isHovered = shallowRef(false)
   let timer: ReturnType<typeof setTimeout> | undefined
 
   const toggle = (entering: boolean) => {

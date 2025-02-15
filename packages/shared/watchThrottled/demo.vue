@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { watchThrottled } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const input = ref('')
-const updated = ref(0)
+const input = shallowRef('')
+const updated = shallowRef(0)
 
 watchThrottled(input, () => {
   updated.value += 1

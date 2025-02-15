@@ -1,5 +1,5 @@
 import type { DefineComponent, Ref, TransitionGroupProps } from 'vue'
-import { defineComponent, Fragment, h, ref, shallowReactive, TransitionGroup } from 'vue'
+import { ref as deepRef, defineComponent, Fragment, h, shallowReactive, TransitionGroup } from 'vue'
 
 export interface TemplatePromiseProps<Return, Args extends any[] = []> {
   /**
@@ -66,7 +66,7 @@ export function createTemplatePromise<Return, Args extends any[] = []>(
   options: TemplatePromiseOptions = {},
 ): TemplatePromise<Return, Args> {
   let index = 0
-  const instances = ref([]) as Ref<TemplatePromiseProps<Return, Args>[]>
+  const instances = deepRef([]) as Ref<TemplatePromiseProps<Return, Args>[]>
 
   function create(...args: Args) {
     const props = shallowReactive({

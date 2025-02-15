@@ -378,9 +378,15 @@ importers:
       eslint:
         specifier: ^9.20.1
         version: 9.20.1(jiti@2.4.2)
+      eslint-factory:
+        specifier: ^0.1.2
+        version: 0.1.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
       eslint-plugin-format:
         specifier: 'catalog:'
         version: 1.0.1(eslint@9.20.1(jiti@2.4.2))
+      eslint-plugin-unimport:
+        specifier: ^0.1.2
+        version: 0.1.2(eslint@9.20.1(jiti@2.4.2))(rollup@4.34.6)(typescript@5.7.3)
       export-size:
         specifier: 'catalog:'
         version: 0.7.0
@@ -4404,6 +4410,11 @@ packages:
     peerDependencies:
       eslint: ^9.20.1
 
+  eslint-factory@0.1.2:
+    resolution: {integrity: sha512-0APUA89aVVxJ0BnP84Wbg1dx9co9ZixotdKjO0S0jz6uq51ev2JBNXpeu5do9oasEc9dn+v7wywUA2WBbmB/RA==}
+    peerDependencies:
+      eslint: ^9.20.1
+
   eslint-flat-config-utils@2.0.1:
     resolution: {integrity: sha512-brf0eAgQ6JlKj3bKfOTuuI7VcCZvi8ZCD1MMTVoEvS/d38j8cByZViLFALH/36+eqB17ukmfmKq3bWzGvizejA==}
 
@@ -4504,6 +4515,11 @@ packages:
   eslint-plugin-unicorn@56.0.1:
     resolution: {integrity: sha512-FwVV0Uwf8XPfVnKSGpMg7NtlZh0G0gBarCaFcMUOoqPxXryxdYxTRRv4kH6B9TFCVIrjRXG+emcxIk2ayZilog==}
     engines: {node: '>=18.18'}
+    peerDependencies:
+      eslint: ^9.20.1
+
+  eslint-plugin-unimport@0.1.2:
+    resolution: {integrity: sha512-C021i+pdXLZXlXwS9QGyRjxYo4PAB7QiOT89GgwwtvcBOhiQpfZFCCLya7iH1ALBICgrKM7GqRSKhUUNTXWALA==}
     peerDependencies:
       eslint: ^9.20.1
 
@@ -12426,6 +12442,14 @@ snapshots:
       '@eslint/compat': 1.2.5(eslint@9.20.1(jiti@2.4.2))
       eslint: 9.20.1(jiti@2.4.2)
 
+  eslint-factory@0.1.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3):
+    dependencies:
+      '@typescript-eslint/utils': 8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
+      eslint: 9.20.1(jiti@2.4.2)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   eslint-flat-config-utils@2.0.1:
     dependencies:
       pathe: 2.0.2
@@ -12597,6 +12621,19 @@ snapshots:
       regjsparser: 0.10.0
       semver: 7.7.1
       strip-indent: 3.0.0
+
+  eslint-plugin-unimport@0.1.2(eslint@9.20.1(jiti@2.4.2))(rollup@4.34.6)(typescript@5.7.3):
+    dependencies:
+      '@typescript-eslint/scope-manager': 8.24.0
+      '@typescript-eslint/utils': 8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
+      debug: 4.4.0(supports-color@9.4.0)
+      eslint: 9.20.1(jiti@2.4.2)
+      pathe: 1.1.2
+      unimport: 3.14.5(rollup@4.34.6)
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+      - typescript
 
   eslint-plugin-unused-imports@4.1.4(@typescript-eslint/eslint-plugin@8.23.0(@typescript-eslint/parser@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint@9.20.1(jiti@2.4.2)):
     dependencies:

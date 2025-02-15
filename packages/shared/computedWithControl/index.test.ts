@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { computedWithControl, controlledComputed } from './index'
 
 describe('computedWithControl', () => {
@@ -9,8 +9,8 @@ describe('computedWithControl', () => {
   })
 
   it('should work', () => {
-    const trigger = ref(0)
-    const data = ref('foo')
+    const trigger = shallowRef(0)
+    const data = shallowRef('foo')
 
     const computed = computedWithControl(trigger, () => data.value.toUpperCase())
 
@@ -26,7 +26,7 @@ describe('computedWithControl', () => {
   })
 
   it('optional old value', () => {
-    const trigger = ref(0)
+    const trigger = shallowRef(0)
 
     const computed = computedWithControl(trigger, (oldValue?: number) =>
       oldValue ? oldValue * 2 : 1)
@@ -58,8 +58,8 @@ describe('computedWithControl', () => {
   })
 
   it('getter and setter', () => {
-    const trigger = ref(0)
-    const data = ref('foo')
+    const trigger = shallowRef(0)
+    const data = shallowRef('foo')
 
     const computed = computedWithControl(trigger, {
       get() {

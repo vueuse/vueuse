@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useShare } from '@vueuse/core'
 import { isClient } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 
-const options = ref({
+const options = deepRef({
   title: 'VueUse',
   text: 'Collection of essential Vue Composition Utilities!',
   url: isClient ? location.href : '',

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useMin } from './index'
 
 describe('useMin', () => {
@@ -13,9 +13,9 @@ describe('useMin', () => {
   })
 
   it('should accept refs', () => {
-    const value1 = ref(10)
-    const value2 = ref(100)
-    const value3 = ref(1000)
+    const value1 = shallowRef(10)
+    const value2 = shallowRef(100)
+    const value3 = shallowRef(1000)
 
     const v = useMin(value1, value2, value3)
     expect(v.value).toBe(10)
@@ -32,7 +32,7 @@ describe('useMin', () => {
 
   it('should accept numbers and refs', () => {
     const value1 = 10
-    const value2 = ref(100)
+    const value2 = shallowRef(100)
 
     const v = useMin(50, value1, value2)
 

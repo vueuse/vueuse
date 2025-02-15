@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -34,7 +34,7 @@ export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModi
     initial = null,
   } = options
 
-  const state = ref(initial) as Ref<boolean>
+  const state = deepRef(initial) as Ref<boolean>
 
   if (document) {
     events.forEach((listenerEvent) => {

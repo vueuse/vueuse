@@ -2,7 +2,7 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { Ref, ShallowRef } from 'vue'
 import { noop, until } from '@vueuse/shared'
 import axios, { AxiosError } from 'axios'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, O extends UseAxiosOptions = UseAxiosOptions<T>> {
   /**
@@ -177,10 +177,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
 
   const initialData = (options as UseAxiosOptionsWithInitialData<T>).initialData
   const response = shallowRef<AxiosResponse<T>>()
-  const data = (shallow ? shallowRef : ref)<T>(initialData!) as Ref<T>
-  const isFinished = ref(false)
-  const isLoading = ref(false)
-  const isAborted = ref(false)
+  const data = (shallow ? shallowRef : deepRef)<T>(initialData!) as Ref<T>
+  const isFinished = shallowRef(false)
+  const isLoading = shallowRef(false)
+  const isAborted = shallowRef(false)
   const error = shallowRef<unknown>()
 
   let abortController: AbortController = new AbortController()

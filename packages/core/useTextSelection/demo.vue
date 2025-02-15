@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTextSelection } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref as deepRef } from 'vue'
 
-const demo = ref()
+const demo = deepRef()
 const { rects, text } = useTextSelection()
 const selectedStyle = computed(() => text.value ? 'text-primary' : 'text-gray-400')
 </script>

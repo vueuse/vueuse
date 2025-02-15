@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
 
 export interface EyeDropperOpenOptions {
@@ -32,7 +32,7 @@ export interface UseEyeDropperOptions {
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const { initialValue = '' } = options
   const isSupported = useSupported(() => typeof window !== 'undefined' && 'EyeDropper' in window)
-  const sRGBHex = ref(initialValue)
+  const sRGBHex = deepRef(initialValue)
 
   async function open(openOptions?: EyeDropperOpenOptions) {
     if (!isSupported.value)

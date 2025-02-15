@@ -1,7 +1,7 @@
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElement, MaybeElementRef } from '../unrefElement'
 import { until } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -29,9 +29,9 @@ export function usePointerLock(target?: MaybeElementRef, options: UsePointerLock
 
   const isSupported = useSupported(() => document && 'pointerLockElement' in document)
 
-  const element = ref<MaybeElement>()
+  const element = deepRef<MaybeElement>()
 
-  const triggerElement = ref<MaybeElement>()
+  const triggerElement = deepRef<MaybeElement>()
 
   let targetElement: MaybeElement
 

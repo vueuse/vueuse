@@ -2,9 +2,9 @@
 import type { Ref } from 'vue'
 import { useFileSystemAccess } from '@vueuse/core'
 import { stringify } from '@vueuse/docs-utils'
-import { reactive, ref } from 'vue'
+import { reactive, shallowRef } from 'vue'
 
-const dataType = ref('Text') as Ref<'Text' | 'ArrayBuffer' | 'Blob'>
+const dataType = shallowRef('Text') as Ref<'Text' | 'ArrayBuffer' | 'Blob'>
 const res = useFileSystemAccess({
   dataType,
   types: [{

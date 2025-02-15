@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { isClient } from '@vueuse/shared'
-import { isRef, ref, toValue, watch } from 'vue'
+import { isRef, shallowRef, toValue, watch } from 'vue'
 import { getDefaultSerialization } from './serialization'
 
 export interface UseBase64Options {
@@ -34,11 +34,11 @@ export interface UseBase64Return {
   execute: () => Promise<string>
 }
 
-export function useBase64(target: MaybeRefOrGetter<string>, options?: UseBase64Options): UseBase64Return
-export function useBase64(target: MaybeRefOrGetter<Blob>, options?: UseBase64Options): UseBase64Return
-export function useBase64(target: MaybeRefOrGetter<ArrayBuffer>, options?: UseBase64Options): UseBase64Return
-export function useBase64(target: MaybeRefOrGetter<HTMLCanvasElement>, options?: ToDataURLOptions): UseBase64Return
-export function useBase64(target: MaybeRefOrGetter<HTMLImageElement>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<string | undefined>, options?: UseBase64Options): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<Blob | undefined>, options?: UseBase64Options): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<ArrayBuffer | undefined>, options?: UseBase64Options): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<HTMLCanvasElement | undefined>, options?: ToDataURLOptions): UseBase64Return
+export function useBase64(target: MaybeRefOrGetter<HTMLImageElement | undefined>, options?: ToDataURLOptions): UseBase64Return
 export function useBase64<T extends Record<string, unknown>>(target: MaybeRefOrGetter<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
 export function useBase64<T extends Map<string, unknown>>(target: MaybeRefOrGetter<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
 export function useBase64<T extends Set<unknown>>(target: MaybeRefOrGetter<T>, options?: UseBase64ObjectOptions<T>): UseBase64Return
@@ -47,8 +47,8 @@ export function useBase64(
   target: any,
   options?: any,
 ) {
-  const base64 = ref('')
-  const promise = ref() as Ref<Promise<string>>
+  const base64 = shallowRef('')
+  const promise = shallowRef<Promise<string>>()
 
   function execute() {
     if (!isClient)
