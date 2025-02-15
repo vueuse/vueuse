@@ -1,6 +1,9 @@
 import type { MaybeRef } from '../utils'
-// eslint-disable-next-line no-restricted-imports
-import { ref, unref } from 'vue'
+import {
+  ref as deepRef,
+  // eslint-disable-next-line no-restricted-imports
+  unref,
+} from 'vue'
 
 export interface UseCounterOptions {
   min?: number
@@ -16,7 +19,7 @@ export interface UseCounterOptions {
  */
 export function useCounter(initialValue: MaybeRef<number> = 0, options: UseCounterOptions = {}) {
   let _initialValue = unref(initialValue)
-  const count = ref(initialValue)
+  const count = deepRef(initialValue)
 
   const {
     max = Number.POSITIVE_INFINITY,

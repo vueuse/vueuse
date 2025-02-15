@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onErrorCaptured, ref } from 'vue'
+import { ref as deepRef, onErrorCaptured } from 'vue'
 
-const error = ref<Error | null>(null)
+const error = deepRef<Error | null>(null)
 
 onErrorCaptured((err) => {
   error.value = err

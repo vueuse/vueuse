@@ -1,7 +1,7 @@
 import { page } from '@vitest/browser/context'
 import { describe, expect, it } from 'vitest'
 import { computed, defineComponent, shallowRef } from 'vue'
-import { useElementBounding } from '.'
+import { useElementBounding } from './index'
 
 const Component = defineComponent({
   template:

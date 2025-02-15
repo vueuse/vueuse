@@ -1,61 +1,52 @@
-import { describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, ref } from 'vue'
-import { useTimeoutPoll } from '.'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { effectScope, shallowRef } from 'vue'
+import { useTimeoutPoll } from './index'
 
 describe('useTimeoutPoll', () => {
-  vi.useFakeTimers()
-  function createTests(immediate: boolean) {
-    it(`supports reactive intervals when immediate is ${immediate}`, async () => {
-      const callback = vi.fn()
-      const interval = ref(0)
-      const { pause, resume } = useTimeoutPoll(callback, interval, { immediate })
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
 
-      if (!immediate)
-        resume()
-      expect(callback).toBeCalled()
-      pause()
+  it('basic pause/resume', async () => {
+    const callback = vi.fn()
+    const interval = shallowRef(0)
+    const { pause, resume } = useTimeoutPoll(callback, interval)
 
-      interval.value = 10
+    await vi.advanceTimersByTimeAsync(1)
+    expect(callback).toBeCalled()
+    pause()
+    interval.value = 10
 
-      resume()
-      callback.mockReset()
-      expect(callback).not.toBeCalled()
-      await vi.advanceTimersByTimeAsync(11)
-      expect(callback).toBeCalled()
+    resume()
+    callback.mockReset()
+    vi.advanceTimersByTime(1)
+    expect(callback).not.toBeCalled()
+    vi.advanceTimersByTime(10)
+    expect(callback).toBeCalled()
+  })
 
-      callback.mockReset()
-      pause()
-      await vi.advanceTimersByTimeAsync(11)
-      expect(callback).not.toBeCalled()
+  it('pause/resume with immediateCallback', async () => {
+    const callback = vi.fn()
+    useTimeoutPoll(callback, 50, { immediateCallback: true })
 
-      resume()
-      expect(callback).toBeCalled()
+    expect(callback).toHaveBeenCalledTimes(1)
 
-      callback.mockReset()
-      await vi.advanceTimersByTimeAsync(11)
+    vi.advanceTimersByTime(100)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('pause/resume in scope', async () => {
+    const callback = vi.fn()
+    const interval = shallowRef(0)
+    const scope = effectScope()
+    await scope.run(async () => {
+      useTimeoutPoll(callback, interval)
+      vi.advanceTimersByTime(1)
       expect(callback).toBeCalled()
     })
-
-    it(`should pause when scope dispose and immediate is ${immediate}`, async () => {
-      const callback = vi.fn()
-      const interval = ref(0)
-      const scope = effectScope()
-      await scope.run(async () => {
-        const { resume } = useTimeoutPoll(callback, interval, { immediate })
-
-        if (!immediate)
-          resume()
-        await nextTick()
-        expect(callback).toBeCalled()
-      })
-      callback.mockReset()
-      scope.stop()
-      interval.value = 10
-      await vi.advanceTimersByTimeAsync(11)
-      expect(callback).not.toBeCalled()
-    })
-  }
-
-  createTests(true)
-  createTests(false)
+    callback.mockClear()
+    await scope.stop()
+    vi.advanceTimersByTime(60)
+    expect(callback).toHaveBeenCalledTimes(0)
+  })
 })

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { computed, nextTick, ref } from 'vue'
-import { asyncComputed, computedAsync } from '.'
+import { computed, nextTick, shallowRef } from 'vue'
+import { asyncComputed, computedAsync } from './index'
 
 describe('computed', () => {
   it('is lazy', () => {
@@ -46,7 +46,7 @@ describe('computedAsync', () => {
   })
 
   it('call onError when error is thrown', async () => {
-    const errorMessage = ref()
+    const errorMessage = shallowRef()
     const func = vi.fn(async () => {
       throw new Error('An Error Message')
     })
@@ -84,7 +84,7 @@ describe('computedAsync', () => {
   })
 
   it('re-computes when dependency changes', async () => {
-    const counter = ref(1)
+    const counter = shallowRef(1)
     const double = computedAsync(() => {
       const result = counter.value * 2
       return Promise.resolve(result)
@@ -106,10 +106,10 @@ describe('computedAsync', () => {
   })
 
   it('uses last result', async () => {
-    const evaluating = ref(false)
+    const evaluating = shallowRef(false)
     const resolutions: Array<() => void> = []
 
-    const counter = ref(1)
+    const counter = shallowRef(1)
     const double = computedAsync(() => {
       const result = counter.value * 2
       return new Promise(resolve => (resolutions.push(() => resolve(result))))
@@ -162,7 +162,7 @@ describe('computedAsync', () => {
 
   it('evaluating works', async () => {
     vi.useFakeTimers()
-    const evaluating = ref(false)
+    const evaluating = shallowRef(false)
 
     const data = computedAsync(
       () => new Promise(resolve => setTimeout(() => resolve('data'), 0)),
@@ -181,7 +181,7 @@ describe('computedAsync', () => {
   })
 
   it('triggers', async () => {
-    const counter = ref(1)
+    const counter = shallowRef(1)
     const double = computedAsync(() => {
       const result = counter.value * 2
       return Promise.resolve(result)
@@ -211,9 +211,9 @@ describe('computedAsync', () => {
   it('cancel is called', async () => {
     vi.useFakeTimers()
     const onCancel = vi.fn()
-    const evaluating = ref(false)
+    const evaluating = shallowRef(false)
 
-    const data = ref('initial')
+    const data = shallowRef('initial')
     const uppercase = computedAsync((cancel) => {
       cancel(onCancel)
 
@@ -246,7 +246,7 @@ describe('computedAsync', () => {
   it('cancel is called for lazy', async () => {
     const onCancel = vi.fn()
 
-    const data = ref('initial')
+    const data = shallowRef('initial')
     const uppercase = computedAsync((cancel) => {
       cancel(() => onCancel())
 

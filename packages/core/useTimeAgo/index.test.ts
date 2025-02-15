@@ -1,8 +1,8 @@
 import type { ComputedRef } from 'vue'
 import { timestamp } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, ref } from 'vue'
-import { useTimeAgo } from '.'
+import { computed, shallowRef } from 'vue'
+import { useTimeAgo } from './index'
 
 type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
 
@@ -27,7 +27,7 @@ function getNeededTimeChange(type: TimeUnit, count: number, adjustSecond?: numbe
 
 describe('useTimeAgo', () => {
   let baseTime: number
-  const changeValue = ref(0)
+  const changeValue = shallowRef(0)
   let changeTime: ComputedRef<number>
 
   function reset() {

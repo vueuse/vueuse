@@ -1,6 +1,6 @@
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
-import { ref, watch } from 'vue'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -29,14 +29,14 @@ export function useMouseInElement(
 
   const { x, y, sourceType } = useMouse(options)
 
-  const targetRef = ref(target ?? window?.document.body)
-  const elementX = ref(0)
-  const elementY = ref(0)
-  const elementPositionX = ref(0)
-  const elementPositionY = ref(0)
-  const elementHeight = ref(0)
-  const elementWidth = ref(0)
-  const isOutside = ref(true)
+  const targetRef = deepRef(target ?? window?.document.body)
+  const elementX = shallowRef(0)
+  const elementY = shallowRef(0)
+  const elementPositionX = shallowRef(0)
+  const elementPositionY = shallowRef(0)
+  const elementHeight = shallowRef(0)
+  const elementWidth = shallowRef(0)
+  const isOutside = shallowRef(true)
 
   let stop = () => {}
 
@@ -63,8 +63,8 @@ export function useMouseInElement(
         const elX = x.value - elementPositionX.value
         const elY = y.value - elementPositionY.value
         isOutside.value = width === 0 || height === 0
-        || elX < 0 || elY < 0
-        || elX > width || elY > height
+          || elX < 0 || elY < 0
+          || elX > width || elY > height
 
         if (handleOutside || !isOutside.value) {
           elementX.value = elX

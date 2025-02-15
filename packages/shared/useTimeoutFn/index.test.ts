@@ -1,17 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
-import { useTimeoutFn } from '.'
+import { shallowRef } from 'vue'
+import { useTimeoutFn } from './index'
 
 describe('useTimeoutFn', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
-  it('supports reactive intervals', async () => {
+
+  it('basic start/stop', async () => {
     const callback = vi.fn()
-    const interval = ref(0)
+    const interval = shallowRef(0)
     const { start } = useTimeoutFn(callback, interval)
 
-    start()
     vi.advanceTimersByTime(1)
     expect(callback).toBeCalled()
 
@@ -23,6 +23,16 @@ describe('useTimeoutFn', () => {
     expect(callback).not.toBeCalled()
     vi.advanceTimersByTime(100)
     expect(callback).toBeCalled()
+  })
+
+  it('stop/start with immediateCallback', async () => {
+    const callback = vi.fn()
+    useTimeoutFn(callback, 50, { immediateCallback: true })
+
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    vi.advanceTimersByTime(100)
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 
   it('supports getting pending status', async () => {

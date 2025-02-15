@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { computed, ref, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
@@ -29,7 +29,7 @@ export function useCssVar(
   options: UseCssVarOptions = {},
 ) {
   const { window = defaultWindow, initialValue, observe = false } = options
-  const variable = ref(initialValue)
+  const variable = shallowRef(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
   function updateCssVar() {
@@ -37,7 +37,7 @@ export function useCssVar(
     const el = toValue(elRef)
     if (el && window && key) {
       const value = window.getComputedStyle(el).getPropertyValue(key)?.trim()
-      variable.value = value || initialValue
+      variable.value = value || variable.value || initialValue
     }
   }
 
@@ -55,20 +55,20 @@ export function useCssVar(
         old[0].style.removeProperty(old[1])
       updateCssVar()
     },
-    { immediate: true },
   )
 
   watch(
-    variable,
-    (val) => {
+    [variable, elRef],
+    ([val, el]) => {
       const raw_prop = toValue(prop)
-      if (elRef.value?.style && raw_prop) {
+      if (el?.style && raw_prop) {
         if (val == null)
-          elRef.value.style.removeProperty(raw_prop)
+          el.style.removeProperty(raw_prop)
         else
-          elRef.value.style.setProperty(raw_prop, val)
+          el.style.setProperty(raw_prop, val)
       }
     },
+    { immediate: true },
   )
 
   return variable

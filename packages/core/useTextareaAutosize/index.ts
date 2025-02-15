@@ -2,7 +2,7 @@ import type { Fn, MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { toRef } from '@vueuse/shared'
-import { nextTick, ref, toValue, watch } from 'vue'
+import { nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useResizeObserver } from '../useResizeObserver'
 
@@ -44,8 +44,8 @@ export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
   const textarea = toRef(options?.element)
   const input = toRef(options?.input ?? '')
   const styleProp = options?.styleProp ?? 'height'
-  const textareaScrollHeight = ref(1)
-  const textareaOldWidth = ref(0)
+  const textareaScrollHeight = shallowRef(1)
+  const textareaOldWidth = shallowRef(0)
 
   function triggerResize() {
     if (!textarea.value)

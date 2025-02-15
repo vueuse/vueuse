@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { useBase64 } from '.'
+import { useBase64 } from './index'
 
 describe('useBase64', () => {
   it('should work with record', async () => {

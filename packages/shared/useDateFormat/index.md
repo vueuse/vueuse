@@ -4,7 +4,8 @@ category: Time
 
 # useDateFormat
 
-Get the formatted date according to the string of tokens passed in, inspired by [dayjs](https://github.com/iamkun/dayjs).
+Get the formatted date according to the string of tokens passed in, inspired
+by [dayjs](https://github.com/iamkun/dayjs).
 
 **List of all available formats (HH:mm:ss by default):**
 
@@ -42,6 +43,10 @@ Get the formatted date according to the string of tokens passed in, inspired by 
 | `dd`   | S-S                      | The min name of the day of the week     |
 | `ddd`  | Sun-Sat                  | The short name of the day of the week   |
 | `dddd` | Sunday-Saturday          | The name of the day of the week         |
+| `z`    | GMT, GMT+1               | The timezone with offset                |
+| `zz`   | GMT, GMT+1               | The timezone with offset                |
+| `zzz`  | GMT, GMT+1               | The timezone with offset                |
+| `zzzz` | GMT, GMT+01:00           | The long timezone with offset           |
 
 - Meridiem is customizable by defining `customMeridiem` in `options`.
 

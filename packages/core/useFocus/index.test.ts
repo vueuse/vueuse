@@ -1,13 +1,13 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useFocus } from '.'
+import { shallowRef } from 'vue'
+import { useFocus } from './index'
 
 describe('useFocus', () => {
   let target: Ref<HTMLButtonElement>
 
   beforeEach(() => {
-    target = ref(document.createElement('button'))
+    target = shallowRef(document.createElement('button'))
     target.value.tabIndex = 0
     document.body.appendChild(target.value)
   })

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import EagerDemo from './demo/EagerDemo.vue'
 import LazyDemo from './demo/LazyDemo.vue'
 import { count } from './demo/state'
 
-const lazyRenders = ref(0)
-const eagerRenders = ref(0)
+const lazyRenders = shallowRef(0)
+const eagerRenders = shallowRef(0)
 </script>
 
 <template>

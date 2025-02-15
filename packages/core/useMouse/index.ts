@@ -1,7 +1,7 @@
 import type { ConfigurableEventFilter, MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -55,9 +55,9 @@ const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtracto
   page: event => [event.pageX, event.pageY],
   client: event => [event.clientX, event.clientY],
   screen: event => [event.screenX, event.screenY],
-  movement: event => (event instanceof Touch
-    ? null
-    : [event.movementX, event.movementY]
+  movement: event => (event instanceof MouseEvent
+    ? [event.movementX, event.movementY]
+    : null
   ),
 } as const
 
@@ -83,9 +83,9 @@ export function useMouse(options: UseMouseOptions = {}) {
   let _prevScrollX = 0
   let _prevScrollY = 0
 
-  const x = ref(initialValue.x)
-  const y = ref(initialValue.y)
-  const sourceType = ref<UseMouseSourceType>(null)
+  const x = shallowRef(initialValue.x)
+  const y = shallowRef(initialValue.y)
+  const sourceType = shallowRef<UseMouseSourceType>(null)
 
   const extractor = typeof type === 'function'
     ? type

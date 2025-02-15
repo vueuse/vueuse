@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { useMagicKeys } from '.'
+import { useMagicKeys } from './index'
 
 describe('useMagicKeys', () => {
   let target: HTMLInputElement

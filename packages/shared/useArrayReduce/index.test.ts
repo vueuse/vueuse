@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { reactive, ref } from 'vue'
-import { useArrayReduce } from '.'
+import { reactive, shallowRef } from 'vue'
+import { useArrayReduce } from './index'
 
 describe('useArrayReduce', () => {
   it('should be defined', () => {
@@ -8,8 +8,8 @@ describe('useArrayReduce', () => {
   })
 
   it('should calculate the array sum', () => {
-    const item1 = ref(1)
-    const item2 = ref(2)
+    const item1 = shallowRef(1)
+    const item2 = shallowRef(2)
     const sum = useArrayReduce([item1, item2, 3], (a, b) => a + b)
     expect(sum.value).toBe(6)
 

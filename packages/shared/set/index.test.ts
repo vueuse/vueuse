@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { reactive, ref, watch } from 'vue'
-import { set } from '.'
+import { reactive, shallowRef, watch } from 'vue'
+import { set } from './index'
 
 describe('set', () => {
   it('set ref', () => {
-    const source = ref('foo')
+    const source = shallowRef('foo')
 
     expect(source.value).toBe('foo')
 

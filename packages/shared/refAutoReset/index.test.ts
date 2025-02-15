@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { effectScope, ref } from 'vue'
-import { autoResetRef, refAutoReset } from '.'
+import { effectScope, shallowRef } from 'vue'
+import { autoResetRef, refAutoReset } from './index'
 
 describe('refAutoReset', () => {
   vi.useFakeTimers()
@@ -39,7 +39,7 @@ describe('refAutoReset', () => {
   })
 
   it('should change afterMs', async () => {
-    const afterMs = ref(150)
+    const afterMs = shallowRef(150)
     const val = refAutoReset('default', afterMs)
     val.value = 'update'
     afterMs.value = 100
@@ -57,7 +57,7 @@ describe('refAutoReset', () => {
   })
 
   it('should not reset when scope dispose', async () => {
-    let val: Ref<string> = ref('')
+    let val: Ref<string> = shallowRef('')
     const scope = effectScope()
 
     scope.run(() => {

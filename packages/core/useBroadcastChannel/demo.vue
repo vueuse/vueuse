@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBroadcastChannel } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 
 const {
   isSupported,
@@ -9,7 +9,7 @@ const {
   error,
 } = useBroadcastChannel({ name: 'vueuse-demo-channel' })
 
-const message = ref('')
+const message = shallowRef('')
 
 watch(data, () => {
   if (data.value)

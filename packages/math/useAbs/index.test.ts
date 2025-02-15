@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useAbs } from '.'
+import { ref as deepRef } from 'vue'
+import { useAbs } from './index'
 
 describe('useAbs', () => {
   it('should be defined', () => {
@@ -8,7 +8,7 @@ describe('useAbs', () => {
   })
 
   it('this should work', () => {
-    const original = ref(-1)
+    const original = deepRef(-1)
     const abs = useAbs(original)
 
     expect(abs.value).toBe(1)
@@ -24,7 +24,7 @@ describe('useAbs', () => {
   })
 
   it('getter', () => {
-    const original = ref(-1)
+    const original = deepRef(-1)
     const abs = useAbs(() => original.value)
 
     expect(abs.value).toBe(1)

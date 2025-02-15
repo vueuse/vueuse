@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import { isClient, toRef } from '@vueuse/shared'
 import QRCode from 'qrcode'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 
 /**
  * Wrapper for qrcode.
@@ -15,7 +15,7 @@ export function useQRCode(
   options?: QRCode.QRCodeToDataURLOptions,
 ) {
   const src = toRef(text)
-  const result = ref('')
+  const result = shallowRef('')
 
   watch(
     src,
