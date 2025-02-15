@@ -1,7 +1,7 @@
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
 import { toArray, tryOnMounted } from '@vueuse/shared'
-import { computed, ref as deepRef, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
@@ -23,8 +23,8 @@ export function useElementSize(
 ) {
   const { window = defaultWindow, box = 'content-box' } = options
   const isSVG = computed(() => unrefElement(target)?.namespaceURI?.includes('svg'))
-  const width = deepRef(initialSize.width)
-  const height = deepRef(initialSize.height)
+  const width = shallowRef(initialSize.width)
+  const height = shallowRef(initialSize.height)
 
   const { stop: stop1 } = useResizeObserver(
     target,
