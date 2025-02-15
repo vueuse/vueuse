@@ -1,8 +1,13 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import antfu from '@antfu/eslint-config'
+import { ESLintUtils } from '@typescript-eslint/utils'
 import { createSimplePlugin } from 'eslint-factory'
 import { createAutoInsert } from 'eslint-plugin-unimport'
+import * as tsutils from 'ts-api-utils'
+import ts from 'typescript'
+
+const { getParserServices } = ESLintUtils
 
 const dir = fileURLToPath(new URL('.', import.meta.url))
 const restricted = [
@@ -147,6 +152,95 @@ export default antfu(
             context.report({
               node,
               message: 'Usage of ref() is restricted. Use shallowRef() or deepRef() instead.',
+            })
+          }
+        },
+      }
+    },
+  }),
+  createSimplePlugin({
+    name: 'no-primitive-shallow',
+    severity: 'warn',
+    include: [
+      'packages/**/index.test.ts',
+      'packages/**/index.ts',
+      'foo.ts',
+    ],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    create(context) {
+      const services = getParserServices(context)
+      // const checker = services.program.getTypeChecker()
+      const hasPrimitiveFlags = type => tsutils.isTypeFlagSet(
+        type,
+        (
+          ts.TypeFlags.StringLike
+          | ts.TypeFlags.NumberLike
+          | ts.TypeFlags.BooleanLike
+          | ts.TypeFlags.Null
+          | ts.TypeFlags.Undefined
+          | ts.TypeFlags.BigIntLike
+          | ts.TypeFlags.EnumLike
+          | ts.TypeFlags.ESSymbolLike
+        ),
+      )
+      const isPrimitive = type => hasPrimitiveFlags(type)
+        || (
+          type.isUnion()
+          && type.types.every(t => hasPrimitiveFlags(t))
+        )
+      return {
+        VariableDeclarator(node) {
+          const { id, init } = node
+
+          if (!init || init.type !== 'CallExpression' || init.callee.type !== 'Identifier' || init.callee.name !== 'deepRef') {
+            return
+          }
+
+          if (init.arguments.length !== 1) {
+            return
+          }
+
+          const [arg] = init.arguments
+          const argType = services.getTypeAtLocation(arg)
+          const { typeArguments } = init
+          const typeArgument = typeArguments?.params[0]
+          let hasPrimitiveValue = false
+
+          if (typeArgument) {
+            const typeArgumentType = services.getTypeAtLocation(typeArgument)
+
+            hasPrimitiveValue = isPrimitive(typeArgumentType)
+          }
+          else {
+            if (id.type === 'Identifier'
+              && id.typeAnnotation !== undefined
+              && id.typeAnnotation.type === 'TSTypeAnnotation'
+              && id.typeAnnotation.typeAnnotation !== undefined
+              && id.typeAnnotation.typeAnnotation.type === 'TSTypeReference'
+              && id.typeAnnotation.typeAnnotation.typeName.type === 'Identifier'
+              && id.typeAnnotation.typeAnnotation.typeName.name === 'Ref'
+              && id.typeAnnotation.typeAnnotation.typeArguments.params.length === 1) {
+              const typeArgument = id.typeAnnotation.typeAnnotation.typeArguments.params[0]
+              const typeArgumentType = services.getTypeAtLocation(typeArgument)
+              hasPrimitiveValue = isPrimitive(typeArgumentType)
+            }
+            else {
+              hasPrimitiveValue = isPrimitive(argType)
+            }
+          }
+
+          if (hasPrimitiveValue) {
+            context.report({
+              node: init.callee,
+              message: 'Usage of primitive value in deepRef() is restricted. Use shallowRef() instead.',
+              fix(fixer) {
+                return fixer.replaceText(init.callee, 'shallowRef')
+              },
             })
           }
         },
