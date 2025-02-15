@@ -1,5 +1,5 @@
 import type { Equal, Expect } from '@type-challenges/utils'
-import type { Ref } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import { invoke } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, shallowRef } from 'vue'
@@ -47,7 +47,7 @@ describe('until', () => {
   })
 
   it('should toBeUndefined', async () => {
-    const r = deepRef<boolean | undefined>(false)
+    const r = shallowRef<boolean | undefined>(false)
     setTimeout(() => {
       r.value = undefined
     }, 100)
@@ -153,7 +153,7 @@ describe('until', () => {
 
   it('should support toBeNull()', () => {
     return new Promise<void>((resolve, reject) => {
-      const r = deepRef<number | null>(null)
+      const r = shallowRef<number | null>(null)
 
       invoke(async () => {
         expect(r.value).toBe(null)
@@ -246,8 +246,8 @@ describe('until', () => {
       const xNotUndef = await until(x).not.toBeUndefined()
       'test' as any as Expect<Equal<typeof xNotUndef, 'x'>>
 
-      const y = deepRef<'y' | null>(null)
-      'test' as any as Expect<Equal<typeof y, Ref<'y' | null>>>
+      const y = shallowRef<'y' | null>(null)
+      'test' as any as Expect<Equal<typeof y, ShallowRef<'y' | null>>>
 
       const yNull = await until(y).toBeNull()
       'test' as any as Expect<Equal<typeof yNull, null>>
@@ -255,8 +255,8 @@ describe('until', () => {
       const yNotNull = await until(y).not.toBeNull()
       'test' as any as Expect<Equal<typeof yNotNull, 'y'>>
 
-      const z = deepRef<1 | 2 | 3>(1)
-      'test' as any as Expect<Equal<typeof z, Ref<1 | 2 | 3>>>
+      const z = shallowRef<1 | 2 | 3>(1)
+      'test' as any as Expect<Equal<typeof z, ShallowRef<1 | 2 | 3>>>
 
       const is1 = (x: number): x is 1 => x === 1
 
