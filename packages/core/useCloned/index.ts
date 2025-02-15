@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref, WatchOptions } from 'vue'
-import { ref as deepRef, isRef, toValue, watch } from 'vue'
+import { ref as deepRef, isRef, shallowRef, toValue, watch } from 'vue'
 
 export interface UseClonedOptions<T = any> extends WatchOptions {
   /**
@@ -44,7 +44,7 @@ export function useCloned<T>(
   options: UseClonedOptions = {},
 ): UseClonedReturn<T> {
   const cloned = deepRef({} as T) as Ref<T>
-  const isModified = deepRef<boolean>(false)
+  const isModified = shallowRef<boolean>(false)
   let _lastSync = false
 
   const {
