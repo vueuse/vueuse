@@ -1,6 +1,7 @@
+import type { Ref } from 'vue'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, watch } from 'vue'
+import { isRef, ref, watch } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'
@@ -43,6 +44,17 @@ export interface UseElementBoundingOptions {
    * @default 'sync'
    */
   updateTiming?: 'sync' | 'next-frame'
+
+  /**
+   * Calculate bounding box values relative to the nearest bounding parent.
+   *
+   * If enabled, the computed values (e.g., `left`, `top`, etc.) are adjusted to be relative
+   * to the nearest bounding parent element (e.g., an element with `transform`, `perspective`,
+   * or `filter` applied) instead of the viewport.
+   *
+   * @default false
+   */
+  relativeToContainer?: boolean
 }
 
 /**
@@ -61,44 +73,42 @@ export function useElementBounding(
     windowScroll = true,
     immediate = true,
     updateTiming = 'sync',
+    relativeToContainer = false,
   } = options
 
-  const height = ref(0)
-  const bottom = ref(0)
-  const left = ref(0)
-  const right = ref(0)
-  const top = ref(0)
-  const width = ref(0)
-  const x = ref(0)
-  const y = ref(0)
+  const container = createDomRect()
+  const { el, ...containerDomRect } = container
+
+  const { height, bottom, left, right, top, width, x, y } = createDomRect()
 
   function recalculate() {
     const el = unrefElement(target)
 
     if (!el) {
       if (reset) {
-        height.value = 0
-        bottom.value = 0
-        left.value = 0
-        right.value = 0
-        top.value = 0
-        width.value = 0
-        x.value = 0
-        y.value = 0
+        resetDomRect({ height, bottom, left, right, top, width, x, y })
+        resetDomRect(containerDomRect)
       }
       return
     }
 
     const rect = el.getBoundingClientRect()
 
-    height.value = rect.height
-    bottom.value = rect.bottom
-    left.value = rect.left
-    right.value = rect.right
-    top.value = rect.top
-    width.value = rect.width
-    x.value = rect.x
-    y.value = rect.y
+    setDomRect({ height, bottom, left, right, top, width, x, y }, rect)
+
+    if (relativeToContainer) {
+      container.el = getBoundingParent(el)
+      const parentRect = container.el.getBoundingClientRect()
+
+      if (parentRect) {
+        top.value -= Math.max(0, parentRect.top)
+        left.value -= Math.max(0, parentRect.left)
+        bottom.value -= Math.max(0, parentRect.top)
+        right.value -= Math.max(0, parentRect.left)
+
+        setDomRect(containerDomRect, parentRect)
+      }
+    }
   }
 
   function update() {
@@ -106,6 +116,58 @@ export function useElementBounding(
       recalculate()
     else if (updateTiming === 'next-frame')
       requestAnimationFrame(() => recalculate())
+  }
+
+  function resetDomRect(target: Record<string, Ref<number>>) {
+    Object.keys(target).forEach((key) => {
+      if (isRef(target[key]))
+        target[key].value = 0
+    })
+  }
+
+  function setDomRect(target: Record<string, Ref<number>>, domRect: DOMRect) {
+    Object.keys(target).forEach((key) => {
+      if (isRef(target[key]))
+        target[key].value = domRect[key as keyof DOMRect] as number
+    })
+  }
+
+  function createDomRect() {
+    const refValue = () => ref(0)
+    return {
+      el: null as HTMLElement | SVGElement | null | undefined,
+      height: refValue(),
+      bottom: refValue(),
+      left: refValue(),
+      right: refValue(),
+      top: refValue(),
+      width: refValue(),
+      x: refValue(),
+      y: refValue(),
+    }
+  }
+
+  function getBoundingParent(el: HTMLElement | SVGElement | null | undefined) {
+    let parent = el?.parentElement
+
+    while (parent) {
+      const style = window.getComputedStyle(parent)
+
+      // Check for properties that create a containing block
+      if (
+        style.transform !== 'none' // Transform applies containment
+        || style.perspective !== 'none' // Perspective creates containment
+        || style.filter !== 'none' // Filter creates a new stacking context
+        || style.willChange.includes('transform') // Will-change can create containment
+        || style.position === 'fixed' // Fixed can create containment in rare cases
+      ) {
+        return parent
+      }
+
+      parent = parent.parentElement
+    }
+
+    return document.body
   }
 
   useResizeObserver(target, update)
@@ -135,6 +197,7 @@ export function useElementBounding(
     x,
     y,
     update,
+    container,
   }
 }
 
