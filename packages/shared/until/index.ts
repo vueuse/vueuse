@@ -1,4 +1,4 @@
-import type { WatchOptions, WatchSource } from 'vue'
+import type { Ref, WatchOptions, WatchSource } from 'vue'
 import type { ElementOf, MaybeRefOrGetter, ShallowUnwrapRef } from '../utils'
 import { isRef, nextTick, toValue, watch } from 'vue'
 import { promiseTimeout } from '../utils'
@@ -56,6 +56,7 @@ export interface UntilValueInstance<T, Not extends boolean = false> extends Unti
   toBeNull: (options?: UntilToMatchOptions) => Not extends true ? Promise<Exclude<T, null>> : Promise<null>
   toBeUndefined: (options?: UntilToMatchOptions) => Not extends true ? Promise<Exclude<T, undefined>> : Promise<undefined>
   toBeNaN: (options?: UntilToMatchOptions) => Promise<T>
+  toBeIn: <P extends Array<any>>(arr: MaybeRefOrGetter<P>, options?: UntilToMatchOptions) => Not extends true ? Promise<T> : Promise<P[number] & T>
 }
 
 export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
@@ -64,22 +65,36 @@ export interface UntilArrayInstance<T> extends UntilBaseInstance<T> {
   toContains: (value: MaybeRefOrGetter<ElementOf<ShallowUnwrapRef<T>>>, options?: UntilToMatchOptions) => Promise<T>
 }
 
+function isWatchSource<T>(source: any): source is WatchSource<T> {
+  if (isRef(source))
+    return true
+  if (typeof source === 'function')
+    return (source as Function).length === 0
+
+  return false
+}
+
 function createUntil<T>(r: any, isNot = false) {
-  function toMatch(
-    condition: (v: any) => boolean,
+  type WatchSourcesRaw<T> = T extends [infer U, ...infer R]
+    ? [U extends WatchSource<infer S> ? S : any, ...WatchSourcesRaw<R>]
+    : T extends WatchSource<infer S> ? S : any
+
+  function watchUntilFactory<S extends WatchSource | WatchSource[]>(
+    sources: S,
+    comparator: (V: WatchSourcesRaw<S>) => any,
     { flush = 'sync', deep = false, timeout, throwOnTimeout }: UntilToMatchOptions = {},
-  ): Promise<T> {
-    let stop: (() => void) | null = null
+  ) {
+    let stop = () => {}
     const watcher = new Promise<T>((resolve) => {
       stop = watch(
-        r,
-        (v) => {
-          if (condition(v) !== isNot) {
+        sources,
+        (newValues) => {
+          if (comparator(newValues as WatchSourcesRaw<S>)) {
             if (stop)
               stop()
             else
               nextTick(() => stop?.())
-            resolve(v)
+            resolve(toValue(r))
           }
         },
         {
@@ -91,6 +106,7 @@ function createUntil<T>(r: any, isNot = false) {
     })
 
     const promises = [watcher]
+
     if (timeout != null) {
       promises.push(
         promiseTimeout(timeout, throwOnTimeout)
@@ -102,45 +118,18 @@ function createUntil<T>(r: any, isNot = false) {
     return Promise.race(promises)
   }
 
+  function toMatch(
+    condition: (v: any) => boolean,
+    options?: UntilToMatchOptions,
+  ): Promise<T> {
+    return watchUntilFactory(r as Ref<number>, val => isNot !== condition(val), options)
+  }
+
   function toBe<P>(value: MaybeRefOrGetter<P | T>, options?: UntilToMatchOptions) {
-    if (!isRef(value))
+    if (!isWatchSource(value))
       return toMatch(v => v === value, options)
 
-    const { flush = 'sync', deep = false, timeout, throwOnTimeout } = options ?? {}
-    let stop: (() => void) | null = null
-    const watcher = new Promise<T>((resolve) => {
-      stop = watch(
-        [r, value],
-        ([v1, v2]) => {
-          if (isNot !== (v1 === v2)) {
-            if (stop)
-              stop()
-            else
-              nextTick(() => stop?.())
-            resolve(v1)
-          }
-        },
-        {
-          flush,
-          deep,
-          immediate: true,
-        },
-      )
-    })
-
-    const promises = [watcher]
-    if (timeout != null) {
-      promises.push(
-        promiseTimeout(timeout, throwOnTimeout)
-          .then(() => toValue(r))
-          .finally(() => {
-            stop?.()
-            return toValue(r)
-          }),
-      )
-    }
-
-    return Promise.race(promises)
+    return watchUntilFactory([r, value] as const, ([v1, v2]) => isNot !== (v1 === v2), options)
   }
 
   function toBeTruthy(options?: UntilToMatchOptions) {
@@ -157,6 +146,13 @@ function createUntil<T>(r: any, isNot = false) {
 
   function toBeNaN(options?: UntilToMatchOptions) {
     return toMatch(Number.isNaN, options)
+  }
+
+  function toBeIn<P extends Array<any>>(arr: MaybeRefOrGetter<P>, options?: UntilToMatchOptions): Promise<P[number] & T> {
+    if (!isWatchSource(arr))
+      return toMatch(v => arr.includes(v), options)
+
+    return watchUntilFactory([r, arr] as const, ([v1, v2]) => isNot !== (v2.includes(v1 as T | P)), options)
   }
 
   function toContains(
@@ -201,6 +197,7 @@ function createUntil<T>(r: any, isNot = false) {
       toBeNull: toBeNull as any,
       toBeNaN,
       toBeUndefined: toBeUndefined as any,
+      toBeIn,
       changed,
       changedTimes,
       get not() {
