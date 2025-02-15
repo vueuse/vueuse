@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { ref as deepRef, shallowRef } from 'vue'
+import { describe, expect, it, vi } from 'vitest'
+import { ref as deepRef, isShallow, shallowRef } from 'vue'
 import { nextTwoTick } from '../../.test'
 import { useCached } from './index'
 
@@ -57,5 +57,28 @@ describe('useCached', () => {
 
     expect(cachedArrayRef.value).not.toBe(initialArrayValue)
     expect(cachedArrayRef.value).toEqual([2])
+  })
+
+  describe('should work with options.deep', () => {
+    // todo: change default with next major
+    it.fails('should return shallowRef by default', () => {
+      const value = deepRef(1)
+
+      const cachedValue = useCached(value, vi.fn())
+      expect(isShallow(cachedValue)).toBe(true)
+    })
+    it('should return deepRef if true', () => {
+      const value = deepRef(1)
+
+      const cachedValue = useCached(value, vi.fn(), { deep: true })
+      expect(isShallow(cachedValue)).toBe(false)
+    })
+
+    it('should return shallowRef if false', () => {
+      const value = deepRef(1)
+
+      const cachedValue = useCached(value, vi.fn(), { deep: false })
+      expect(isShallow(cachedValue)).toBe(true)
+    })
   })
 })
