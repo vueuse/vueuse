@@ -14,13 +14,13 @@ export function useCached<T, D extends boolean = true>(
   comparator: (a: T, b: T) => boolean = (a, b) => a === b,
   options?: UseCachedOptions<D>,
 ) {
-  const { deep = true as D, ...watcherOptions } = options || {}
+  const { deep = true as D } = options || {}
   const cachedValue = createRef(refValue.value, deep)
 
   watch(() => refValue.value, (value) => {
     if (!comparator(value, cachedValue.value))
       cachedValue.value = value
-  }, { deep, ...watcherOptions })
+  }, options)
 
   return cachedValue satisfies UseCachedReturn<T, D>
 }
