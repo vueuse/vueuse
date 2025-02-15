@@ -1,10 +1,12 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { Fn, MaybeRef } from '@vueuse/shared'
 import type { WatchSource } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import { toRef } from '@vueuse/shared'
 import { nextTick, shallowRef, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { useResizeObserver } from '../useResizeObserver'
 
-export interface UseTextareaAutosizeOptions {
+export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   /** Textarea element to autosize. */
   element?: MaybeRef<HTMLTextAreaElement | undefined>
   /** Textarea content. */
@@ -19,7 +21,26 @@ export interface UseTextareaAutosizeOptions {
   styleProp?: 'height' | 'minHeight'
 }
 
-export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
+/**
+ * Call window.requestAnimationFrame(), if not available, just call the function
+ *
+ * @param window
+ * @param fn
+ */
+function tryRequestAnimationFrame(
+  window: Window | undefined = defaultWindow,
+  fn: Fn,
+) {
+  if (window && typeof window.requestAnimationFrame === 'function') {
+    window.requestAnimationFrame(fn)
+  }
+  else {
+    fn()
+  }
+}
+
+export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
+  const { window = defaultWindow } = options
   const textarea = toRef(options?.element)
   const input = toRef(options?.input ?? '')
   const styleProp = options?.styleProp ?? 'height'
@@ -52,8 +73,11 @@ export function useTextareaAutosize(options?: UseTextareaAutosizeOptions) {
   useResizeObserver(textarea, ([{ contentRect }]) => {
     if (textareaOldWidth.value === contentRect.width)
       return
-    textareaOldWidth.value = contentRect.width
-    triggerResize()
+
+    tryRequestAnimationFrame(window, () => {
+      textareaOldWidth.value = contentRect.width
+      triggerResize()
+    })
   })
 
   if (options?.watch)
