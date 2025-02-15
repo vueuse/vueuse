@@ -1,11 +1,10 @@
 import type { ConfigurableDeepRefs } from '@vueuse/core/_configurable'
 import type { MaybeDeepRef } from '@vueuse/shared'
-import type { WatcherOptions } from 'rollup'
-import type { Ref } from 'vue'
+import type { Ref, WatchOptions } from 'vue'
 import { createRef } from '@vueuse/shared'
 import { watch } from 'vue'
 
-export interface UseCachedOptions<D extends boolean = true> extends ConfigurableDeepRefs<D>, WatcherOptions {
+export interface UseCachedOptions<D extends boolean = true> extends ConfigurableDeepRefs<D>, Omit<WatchOptions, 'deep'> {
 
 }
 
