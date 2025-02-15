@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -14,7 +14,7 @@ export function useDocumentVisibility(options: ConfigurableDocument = {}): Ref<D
   if (!document)
     return shallowRef('visible')
 
-  const visibility = deepRef(document.visibilityState)
+  const visibility = shallowRef(document.visibilityState)
 
   useEventListener(document, 'visibilitychange', () => {
     visibility.value = document.visibilityState
