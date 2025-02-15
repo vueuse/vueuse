@@ -4,7 +4,7 @@ import { reactify } from './index'
 
 describe('reactify', () => {
   it('one arg', () => {
-    const base = deepRef(1.5)
+    const base = shallowRef(1.5)
     const floor = reactify(Math.floor)
     const result = floor(base)
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computed, ref as deepRef, shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { isDefined } from './index'
 
 describe('isDefined', () => {
@@ -9,8 +9,8 @@ describe('isDefined', () => {
 
   it('should support refs', () => {
     const definedRef = shallowRef('test')
-    const undefinedRef = deepRef(undefined)
-    const nullRef = deepRef(null)
+    const undefinedRef = shallowRef(undefined)
+    const nullRef = shallowRef(null)
 
     expect(isDefined(definedRef)).toBe(true)
     expect(isDefined(undefinedRef)).toBe(false)
