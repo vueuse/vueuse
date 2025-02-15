@@ -43,6 +43,8 @@ export const defaultLocation = /* #__PURE__ */ isClient ? window.location : unde
 export interface ConfigurableDeepRefs<D extends boolean> {
   /**
    * Return deep refs instead of shallow refs.
+   *
+   * @default true - will be changed to `false` by default in the next major
    */
   deep?: D
 }
