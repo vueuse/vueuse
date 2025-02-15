@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { OnClickOutsideHandler } from '@vueuse/core'
 import { onClickOutside } from '@vueuse/core'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 import { vOnClickOutside } from './directive'
 
 const modal = shallowRef(false)
-const modalRef = deepRef(null)
+const modalRef = useTemplateRef('modalRef')
 
 onClickOutside(
   modalRef,

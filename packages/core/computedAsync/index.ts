@@ -77,7 +77,7 @@ export function computedAsync<T>(
     onError = noop,
   } = options
 
-  const started = deepRef(!lazy)
+  const started = shallowRef(!lazy)
   const current = (shallow ? shallowRef(initialState) : deepRef(initialState)) as Ref<T>
   let counter = 0
 

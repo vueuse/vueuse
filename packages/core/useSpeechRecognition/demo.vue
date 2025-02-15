@@ -56,7 +56,7 @@ function start() {
 
 const { isListening, isSupported, stop, result } = speech
 
-const selectedLanguage = deepRef(lang.value)
+const selectedLanguage = shallowRef(lang.value)
 watch(lang, lang => isListening.value ? null : selectedLanguage.value = lang)
 watch(isListening, isListening => isListening ? null : selectedLanguage.value = lang.value)
 </script>

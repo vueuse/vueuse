@@ -172,7 +172,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const stalled = shallowRef(false)
   const buffered = deepRef<[number, number][]>([])
   const tracks = deepRef<UseMediaTextTrack[]>([])
-  const selectedTrack = deepRef<number>(-1)
+  const selectedTrack = shallowRef<number>(-1)
   const isPictureInPicture = shallowRef(false)
   const muted = shallowRef(false)
 

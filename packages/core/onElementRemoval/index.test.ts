@@ -1,7 +1,7 @@
 import type { AnyFn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref as deepRef, effectScope, nextTick, shallowRef } from 'vue'
+import { effectScope, nextTick, shallowRef } from 'vue'
 import { onElementRemoval } from './index'
 
 describe('onElementRemoval', () => {
@@ -87,7 +87,7 @@ describe('onElementRemoval', () => {
   })
 
   it('should correctly triggered even if the element is assigned a value after initialization', async () => {
-    const targetElement2 = deepRef()
+    const targetElement2 = shallowRef<HTMLElement>()
     onElementRemoval(targetElement2, callBackFn)
 
     const el = document.createElement('div')

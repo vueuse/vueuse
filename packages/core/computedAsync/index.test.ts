@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { computed, ref as deepRef, nextTick, shallowRef } from 'vue'
+import { computed, nextTick, shallowRef } from 'vue'
 import { asyncComputed, computedAsync } from './index'
 
 describe('computed', () => {
@@ -46,7 +46,7 @@ describe('computedAsync', () => {
   })
 
   it('call onError when error is thrown', async () => {
-    const errorMessage = deepRef()
+    const errorMessage = shallowRef()
     const func = vi.fn(async () => {
       throw new Error('An Error Message')
     })
