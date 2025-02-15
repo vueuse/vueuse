@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { reactifyObject } from '.'
+import { shallowRef } from 'vue'
+import { reactifyObject } from './index'
 
 describe('reactifyObject', () => {
   it('math', () => {
     const { pow } = reactifyObject(Math, { includeOwnProperties: true })
 
-    const base = ref(0)
-    const exponent = ref(0)
+    const base = shallowRef(0)
+    const exponent = shallowRef(0)
     const result = pow(base, exponent)
 
     expect(base.value).toBe(0)
@@ -30,7 +30,7 @@ describe('reactifyObject', () => {
   it('jSON', () => {
     const { stringify, parse } = reactifyObject(JSON)
 
-    const base = ref('{"foo":"bar"}')
+    const base = shallowRef('{"foo":"bar"}')
     const result = stringify(parse(base))
 
     expect(result.value).toBe(base.value)

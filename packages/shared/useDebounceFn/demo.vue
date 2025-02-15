@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const updated = ref(0)
-const clicked = ref(0)
+const updated = shallowRef(0)
+const clicked = shallowRef(0)
 const debouncedFn = useDebounceFn(() => {
   updated.value += 1
 }, 1000, { maxWait: 5000 })

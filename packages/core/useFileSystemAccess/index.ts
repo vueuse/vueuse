@@ -1,7 +1,7 @@
 import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { computed, ref, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -106,10 +106,10 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   const window = _window as FileSystemAccessWindow
   const isSupported = useSupported(() => window && 'showSaveFilePicker' in window && 'showOpenFilePicker' in window)
 
-  const fileHandle = ref<FileSystemFileHandle>()
-  const data = ref<string | ArrayBuffer | Blob>()
+  const fileHandle = shallowRef<FileSystemFileHandle>()
+  const data = shallowRef<string | ArrayBuffer | Blob>()
 
-  const file = ref<File>()
+  const file = shallowRef<File>()
   const fileName = computed(() => file.value?.name ?? '')
   const fileMIME = computed(() => file.value?.type ?? '')
   const fileSize = computed(() => file.value?.size ?? 0)
@@ -196,7 +196,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
 }
 
 export interface UseFileSystemAccessReturn<T = string> {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   data: Ref<T | undefined>
   file: Ref<File | undefined>
   fileName: Ref<string>

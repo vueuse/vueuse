@@ -1,14 +1,13 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useFocus } from '.'
-import { retry } from '../../.test'
+import { shallowRef } from 'vue'
+import { useFocus } from './index'
 
 describe('useFocus', () => {
   let target: Ref<HTMLButtonElement>
 
   beforeEach(() => {
-    target = ref(document.createElement('button'))
+    target = shallowRef(document.createElement('button'))
     target.value.tabIndex = 0
     document.body.appendChild(target.value)
   })
@@ -41,11 +40,10 @@ describe('useFocus', () => {
     expect(focused.value).toBeFalsy()
 
     focused.value = true
-
-    await retry(() => expect(document.activeElement).toBe(target.value))
+    expect(document.activeElement).toBe(target.value)
 
     focused.value = false
-    await retry(() => expect(document.activeElement).not.toBe(target.value))
+    expect(document.activeElement).not.toBe(target.value)
   })
 
   it('should only focus when :focus-visible matches with focusVisible=true', () => {
@@ -77,10 +75,8 @@ describe('useFocus', () => {
     it('should initialize focus', async () => {
       const { focused } = useFocus(target, { initialValue: true })
 
-      await retry(() => {
-        expect(document.activeElement).toBe(target.value)
-        expect(focused.value).toBeTruthy()
-      })
+      expect(document.activeElement).toBe(target.value)
+      expect(focused.value).toBeTruthy()
     })
   })
 })

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { computed, isReadonly, ref } from 'vue'
-import { useClamp } from '.'
+import { computed, isReadonly, shallowRef } from 'vue'
+import { useClamp } from './index'
 
 describe('useClamp', () => {
   it('should be defined', () => {
@@ -13,9 +13,9 @@ describe('useClamp', () => {
   })
 
   it('should be max', () => {
-    const value = ref(10)
-    const min = ref(0)
-    const max = ref(100)
+    const value = shallowRef(10)
+    const min = shallowRef(0)
+    const max = shallowRef(100)
 
     const v = useClamp(value, min, max)
 
@@ -32,9 +32,9 @@ describe('useClamp', () => {
   })
 
   it('should be min', () => {
-    const value = ref(10)
-    const min = ref(0)
-    const max = ref(100)
+    const value = shallowRef(10)
+    const min = shallowRef(0)
+    const max = shallowRef(100)
 
     const v = useClamp(value, min, max)
 
@@ -52,10 +52,10 @@ describe('useClamp', () => {
   })
 
   it('should work with computed', () => {
-    const baseRef = ref(10)
+    const baseRef = shallowRef(10)
     const value = computed(() => baseRef.value)
-    const min = ref(0)
-    const max = ref(100)
+    const min = shallowRef(0)
+    const max = shallowRef(100)
 
     const v = useClamp(value, min, max)
 
@@ -71,10 +71,10 @@ describe('useClamp', () => {
   })
 
   it('should work with function', () => {
-    const baseRef = ref(10)
+    const baseRef = shallowRef(10)
     const value = () => baseRef.value
-    const min = ref(0)
-    const max = ref(100)
+    const min = shallowRef(0)
+    const max = shallowRef(100)
 
     const v = useClamp(value, min, max)
 

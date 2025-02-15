@@ -48,5 +48,5 @@ import { klona } from 'klona'
 
 const original = ref({ key: 'value' })
 
-const { cloned, sync } = useCloned(original, { clone: klona })
+const { cloned, isModified, sync } = useCloned(original, { clone: klona })
 ```

@@ -1,12 +1,17 @@
-import { describe, expect, it, vi } from 'vitest'
-import { useScriptTag } from '.'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useSetup } from '../../.test'
+import { useScriptTag } from './index'
 
 describe('useScriptTag', () => {
   const src = 'https://code.jquery.com/jquery-3.5.1.min.js'
 
   const scriptTagElement = (): HTMLScriptElement | null =>
     document.head.querySelector(`script[src="${src}"]`)
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    document.head.innerHTML = ''
+  })
 
   it('should add script tag', async () => {
     const appendChildListener = vi.spyOn(document.head, 'appendChild')

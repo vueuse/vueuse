@@ -1,6 +1,6 @@
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'
@@ -63,14 +63,14 @@ export function useElementBounding(
     updateTiming = 'sync',
   } = options
 
-  const height = ref(0)
-  const bottom = ref(0)
-  const left = ref(0)
-  const right = ref(0)
-  const top = ref(0)
-  const width = ref(0)
-  const x = ref(0)
-  const y = ref(0)
+  const height = shallowRef(0)
+  const bottom = shallowRef(0)
+  const left = shallowRef(0)
+  const right = shallowRef(0)
+  const top = shallowRef(0)
+  const width = shallowRef(0)
+  const x = shallowRef(0)
+  const y = shallowRef(0)
 
   function recalculate() {
     const el = unrefElement(target)

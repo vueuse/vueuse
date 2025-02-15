@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { refDebounced } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 
-const input = ref('')
+const input = shallowRef('')
 const debounced = refDebounced(input, 1000)
-const updated = ref(0)
+const updated = shallowRef(0)
 
 watch(debounced, () => (updated.value += 1))
 </script>

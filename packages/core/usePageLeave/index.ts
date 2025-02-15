@@ -1,5 +1,5 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -11,7 +11,7 @@ import { useEventListener } from '../useEventListener'
  */
 export function usePageLeave(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
-  const isLeft = ref(false)
+  const isLeft = shallowRef(false)
 
   const handler = (event: MouseEvent) => {
     if (!window)
@@ -24,9 +24,10 @@ export function usePageLeave(options: ConfigurableWindow = {}) {
   }
 
   if (window) {
-    useEventListener(window, 'mouseout', handler, { passive: true })
-    useEventListener(window.document, 'mouseleave', handler, { passive: true })
-    useEventListener(window.document, 'mouseenter', handler, { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(window, 'mouseout', handler, listenerOptions)
+    useEventListener(window.document, 'mouseleave', handler, listenerOptions)
+    useEventListener(window.document, 'mouseenter', handler, listenerOptions)
   }
 
   return isLeft

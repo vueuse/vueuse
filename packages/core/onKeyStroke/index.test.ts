@@ -1,15 +1,15 @@
 import type { Ref } from 'vue'
-import type { KeyStrokeEventName } from '.'
+import type { KeyStrokeEventName } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
-import { onKeyStroke } from '.'
+import { shallowRef } from 'vue'
+import { onKeyStroke } from './index'
 
 describe('onKeyStroke', () => {
   let element: Ref<HTMLElement>
   let callBackFn: any
 
   beforeEach(() => {
-    element = ref(document.createElement('div'))
+    element = shallowRef(document.createElement('div'))
     callBackFn = vi.fn()
   })
 

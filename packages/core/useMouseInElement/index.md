@@ -36,3 +36,38 @@ const { x, y, isOutside } = useMouseInElement(target)
   </UseMouseInElement>
 </template>
 ```
+
+## Directive Usage
+
+```vue
+<script setup lang="ts">
+import { vMouseInElement } from '@vueuse/components'
+import { UseMouseSourceType } from '@vueuse/core'
+
+interface MouseInElementType {
+  x: number
+  y: number
+  sourceType: UseMouseSourceType
+  elementX: number
+  elementY: number
+  elementPositionX: number
+  elementPositionY: number
+  elementHeight: number
+  elementWidth: number
+  isOutside: boolean
+}
+
+const options = {
+  handleOutside: true
+}
+function onMouseInElement({ x, y, sourceType, elementX, elementY, elementPositionX, elementPositionY, elementHeight, elementWidth, isOutside }: MouseInElementType) {
+  console.log(x, y, sourceType, elementX, elementY, elementPositionX, elementPositionY, elementHeight, elementWidth, isOutside)
+}
+</script>
+
+<template>
+  <textarea v-mouse-in-element="onMouseInElement" />
+  <!-- with options -->
+  <textarea v-mouse-in-element="[onMouseInElement, options]" />
+</template>
+```

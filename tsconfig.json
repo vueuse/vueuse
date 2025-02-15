@@ -19,8 +19,11 @@
     },
     "resolveJsonModule": true,
     "types": [
+      "@types/web-bluetooth",
+      "@vitest/browser/providers/playwright",
+      "vite-plugin-pwa/vue",
       "vitest",
-      "@types/web-bluetooth"
+      "vitest-browser-vue"
     ],
     "strict": true,
     "strictFunctionTypes": true,

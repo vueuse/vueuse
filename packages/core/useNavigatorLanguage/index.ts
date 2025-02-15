@@ -1,14 +1,14 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { ref as deepRef } from 'vue'
 
-import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface NavigatorLanguageState {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   /**
    *
    * ISO 639-1 standard Language Code
@@ -43,13 +43,13 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
 
   const isSupported = useSupported(() => navigator && 'language' in navigator)
 
-  const language = ref<string | undefined>(navigator?.language)
+  const language = deepRef<string | undefined>(navigator?.language)
 
   // Listen to when to user changes language:
   useEventListener(window, 'languagechange', () => {
     if (navigator)
       language.value = navigator.language
-  })
+  }, { passive: true })
 
   return {
     isSupported,

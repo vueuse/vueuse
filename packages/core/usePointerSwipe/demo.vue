@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { UseSwipeDirection } from '@vueuse/core'
 import { usePointerSwipe } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 
-const target = ref<HTMLElement | null>(null)
-const container = ref<HTMLElement | null>(null)
+const target = shallowRef<HTMLElement | null>(null)
+const container = shallowRef<HTMLElement | null>(null)
 
 const containerWidth = computed(() => container.value?.offsetWidth)
 
-const left = ref('0')
-const opacity = ref(1)
+const left = shallowRef('0')
+const opacity = shallowRef(1)
 
 function reset() {
   left.value = '0'

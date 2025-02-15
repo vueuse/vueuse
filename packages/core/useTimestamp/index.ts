@@ -1,7 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { timestamp, useIntervalFn } from '@vueuse/shared'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
 export interface UseTimestampOptions<Controls extends boolean> {
@@ -55,7 +55,7 @@ export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
     callback,
   } = options
 
-  const ts = ref(timestamp() + offset)
+  const ts = shallowRef(timestamp() + offset)
 
   const update = () => ts.value = timestamp() + offset
   const cb = callback

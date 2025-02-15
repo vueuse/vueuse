@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import type { PointerType, Position } from '../types'
 import type { UseSwipeDirection } from '../useSwipe'
 import { toRef, tryOnMounted } from '@vueuse/shared'
-import { computed, reactive, readonly, ref } from 'vue'
+import { computed, reactive, readonly, shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export interface UsePointerSwipeOptions {
@@ -90,8 +90,8 @@ export function usePointerSwipe(
 
   const { max, abs } = Math
   const isThresholdExceeded = computed(() => max(abs(distanceX.value), abs(distanceY.value)) >= threshold)
-  const isSwiping = ref(false)
-  const isPointerDown = ref(false)
+  const isSwiping = shallowRef(false)
+  const isPointerDown = shallowRef(false)
 
   const direction = computed(() => {
     if (!isThresholdExceeded.value)
@@ -115,6 +115,8 @@ export function usePointerSwipe(
     return options.pointerTypes?.includes(e.pointerType as PointerType) ?? (isReleasingButton || isPrimaryButton) ?? true
   }
 
+  const listenerOptions = { passive: true }
+
   const stops = [
     useEventListener(target, 'pointerdown', (e: PointerEvent) => {
       if (!eventIsAllowed(e))
@@ -127,7 +129,7 @@ export function usePointerSwipe(
       updatePosStart(x, y)
       updatePosEnd(x, y)
       onSwipeStart?.(e)
-    }),
+    }, listenerOptions),
 
     useEventListener(target, 'pointermove', (e: PointerEvent) => {
       if (!eventIsAllowed(e))
@@ -141,7 +143,7 @@ export function usePointerSwipe(
         isSwiping.value = true
       if (isSwiping.value)
         onSwipe?.(e)
-    }),
+    }, listenerOptions),
 
     useEventListener(target, 'pointerup', (e: PointerEvent) => {
       if (!eventIsAllowed(e))
@@ -151,7 +153,7 @@ export function usePointerSwipe(
 
       isPointerDown.value = false
       isSwiping.value = false
-    }),
+    }, listenerOptions),
   ]
 
   tryOnMounted(() => {

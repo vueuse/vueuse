@@ -1,10 +1,10 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { nextTick, ref, watch, watchEffect } from 'vue'
-import { reactiveComputed } from '.'
+import { nextTick, shallowRef, watch, watchEffect } from 'vue'
+import { reactiveComputed } from './index'
 
 describe('reactiveComputed', () => {
   it('should work', () => {
-    const count = ref(0)
+    const count = shallowRef(0)
 
     const state = reactiveComputed(() => {
       return {
@@ -21,7 +21,7 @@ describe('reactiveComputed', () => {
   })
 
   it('should work with dynamic props', async () => {
-    const foo = ref(false)
+    const foo = shallowRef(false)
 
     const state = reactiveComputed(() => {
       return foo.value
@@ -52,5 +52,29 @@ describe('reactiveComputed', () => {
 
     expect(dummy).toBe(1)
     expect(type).toBe('foo')
+  })
+
+  it('should allow for previous value access (for vue 3.4+)', () => {
+    const test = shallowRef(0)
+
+    const obj = reactiveComputed<{ test: number, num: number }>(
+      prev => ({ test: test.value, num: (prev?.num ?? 2) }),
+    )
+
+    obj.num = 5
+    expect(obj).toMatchInlineSnapshot(`
+      {
+        "num": 5,
+        "test": 0,
+      }
+    `)
+
+    test.value = 1
+    expect(obj).toMatchInlineSnapshot(`
+      {
+        "num": 5,
+        "test": 1,
+      }
+    `)
   })
 })

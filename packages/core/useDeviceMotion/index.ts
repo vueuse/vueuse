@@ -4,7 +4,7 @@ import type { ConfigurableEventFilter } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { bypassFilter, createFilterWrapper } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -38,11 +38,11 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
 
   const isSupported = useSupported(() => typeof DeviceMotionEvent !== 'undefined')
   const requirePermissions = useSupported(() => isSupported.value && 'requestPermission' in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function')
-  const permissionGranted = ref(false)
-  const acceleration: Ref<DeviceMotionEvent['acceleration']> = ref({ x: null, y: null, z: null })
-  const rotationRate: Ref<DeviceMotionEvent['rotationRate']> = ref({ alpha: null, beta: null, gamma: null })
-  const interval = ref(0)
-  const accelerationIncludingGravity: Ref<DeviceMotionEvent['accelerationIncludingGravity']> = ref({
+  const permissionGranted = shallowRef(false)
+  const acceleration: Ref<DeviceMotionEvent['acceleration']> = deepRef({ x: null, y: null, z: null })
+  const rotationRate: Ref<DeviceMotionEvent['rotationRate']> = deepRef({ alpha: null, beta: null, gamma: null })
+  const interval = shallowRef(0)
+  const accelerationIncludingGravity: Ref<DeviceMotionEvent['accelerationIncludingGravity']> = deepRef({
     x: null,
     y: null,
     z: null,
@@ -72,7 +72,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
         },
       )
 
-      useEventListener(window, 'devicemotion', onDeviceMotion)
+      useEventListener(window, 'devicemotion', onDeviceMotion, { passive: true })
     }
   }
 

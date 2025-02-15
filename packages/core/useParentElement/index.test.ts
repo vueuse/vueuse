@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, ref } from 'vue'
-import { useParentElement } from '.'
+import { ref as deepRef, defineComponent, h, nextTick } from 'vue'
 import { mount } from '../../.test'
+import { useParentElement } from './index'
 
 describe('useParentElement', () => {
   it('should be defined', () => {
@@ -30,7 +30,7 @@ describe('useParentElement', () => {
   })
 
   it('should accept ref', async () => {
-    const liEl = ref()
+    const liEl = deepRef()
     const parentElement = useParentElement(liEl)
 
     mount(defineComponent({

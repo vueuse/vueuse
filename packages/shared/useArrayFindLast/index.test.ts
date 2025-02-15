@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { reactive, ref } from 'vue'
-import { useArrayFindLast } from '.'
+import { reactive, shallowRef } from 'vue'
 import { useSetup } from '../../.test'
+import { useArrayFindLast } from './index'
 
 describe('useArrayFindLast', () => {
   it('should be defined', () => {
@@ -10,9 +10,9 @@ describe('useArrayFindLast', () => {
 
   it('should find positive', () => {
     useSetup(() => {
-      const item1 = ref(1)
-      const item2 = ref(2)
-      const item3 = ref(3)
+      const item1 = shallowRef(1)
+      const item2 = shallowRef(2)
+      const item3 = shallowRef(3)
       const positive = useArrayFindLast([item1, item2, item3], val => val > 0)
       expect(positive.value).toBe(3)
       item3.value = -1

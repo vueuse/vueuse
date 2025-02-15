@@ -3,7 +3,7 @@
 import type { Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -28,9 +28,9 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
 
   const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
 
-  const locatedAt: Ref<number | null> = ref(null)
+  const locatedAt: Ref<number | null> = deepRef(null)
   const error = shallowRef<GeolocationPositionError | null>(null)
-  const coords: Ref<Omit<GeolocationPosition['coords'], 'toJSON'>> = ref({
+  const coords: Ref<Omit<GeolocationPosition['coords'], 'toJSON'>> = deepRef({
     accuracy: 0,
     latitude: Number.POSITIVE_INFINITY,
     longitude: Number.POSITIVE_INFINITY,

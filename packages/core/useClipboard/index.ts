@@ -1,10 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
-import { computed, ref, toValue } from 'vue'
+import { computed, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
@@ -39,7 +39,7 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
 }
 
 export interface UseClipboardReturn<Optional> {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   text: ComputedRef<string>
   copied: ComputedRef<boolean>
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
@@ -66,29 +66,42 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const permissionRead = usePermission('clipboard-read')
   const permissionWrite = usePermission('clipboard-write')
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
-  const text = ref('')
-  const copied = ref(false)
+  const text = shallowRef('')
+  const copied = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateText() {
-    if (isClipboardApiSupported.value && isAllowed(permissionRead.value)) {
-      navigator!.clipboard.readText().then((value) => {
-        text.value = value
-      })
+    let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
+    if (!useLegacy) {
+      try {
+        navigator!.clipboard.readText().then((value) => {
+          text.value = value
+        })
+      }
+      catch {
+        useLegacy = true
+      }
     }
-    else {
+    if (useLegacy) {
       text.value = legacyRead()
     }
   }
 
   if (isSupported.value && read)
-    useEventListener(['copy', 'cut'], updateText)
+    useEventListener(['copy', 'cut'], updateText, { passive: true })
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
-      if (isClipboardApiSupported.value && isAllowed(permissionWrite.value))
-        await navigator!.clipboard.writeText(value)
-      else
+      let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
+      if (!useLegacy) {
+        try {
+          await navigator!.clipboard.writeText(value)
+        }
+        catch {
+          useLegacy = true
+        }
+      }
+      if (useLegacy)
         legacyCopy(value)
 
       text.value = value

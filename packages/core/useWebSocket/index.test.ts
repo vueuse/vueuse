@@ -1,8 +1,8 @@
-import type { UseWebSocketReturn } from '.'
+import type { UseWebSocketReturn } from './index'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { useWebSocket } from '.'
+import { nextTick, shallowRef } from 'vue'
 import { useSetup } from '../../.test'
+import { useWebSocket } from './index'
 
 describe('useWebSocket', () => {
   const mockWebSocket = vi.fn<(host: string) => WebSocket>()
@@ -18,9 +18,6 @@ describe('useWebSocket', () => {
   afterEach(() => {
     vm?.unmount()
     vi.unstubAllGlobals()
-    mockWebSocket.mockClear()
-    mockWebSocket.prototype.send.mockClear()
-    mockWebSocket.prototype.close.mockClear()
   })
 
   it('should be defined', () => {
@@ -46,7 +43,7 @@ describe('useWebSocket', () => {
   })
 
   it('should reconnect if URL changes', async () => {
-    const url = ref('ws://localhost')
+    const url = shallowRef('ws://localhost')
     vm = useSetup(() => {
       const ref = useWebSocket(url)
 
@@ -64,7 +61,7 @@ describe('useWebSocket', () => {
   })
 
   it('should not reconnect on URL change if immediate and autoConnect are false', async () => {
-    const url = ref('ws://localhost')
+    const url = shallowRef('ws://localhost')
     vm = useSetup(() => {
       const ref = useWebSocket(url, {
         immediate: false,

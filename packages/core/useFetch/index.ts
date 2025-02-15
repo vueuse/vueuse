@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, ref, shallowRef, toValue, watch } from 'vue'
+import { computed, ref as deepRef, isRef, readonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -118,12 +118,22 @@ export interface AfterFetchContext<T = any> {
   response: Response
 
   data: T | null
+
+  context: BeforeFetchContext
+
+  execute: (throwOnFailed?: boolean) => Promise<any>
 }
 
 export interface OnFetchErrorContext<T = any, E = any> {
   error: E
 
   data: T | null
+
+  response: Response | null
+
+  context: BeforeFetchContext
+
+  execute: (throwOnFailed?: boolean) => Promise<any>
 }
 
 export interface UseFetchOptions {
@@ -185,7 +195,7 @@ export interface UseFetchOptions {
    * Will run immediately after the fetch request is returned.
    * Runs after any 4xx and 5xx response
    */
-  onFetchError?: (ctx: { data: any, response: Response | null, error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
+  onFetchError?: (ctx: OnFetchErrorContext) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -371,10 +381,10 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const errorEvent = createEventHook<any>()
   const finallyEvent = createEventHook<any>()
 
-  const isFinished = ref(false)
-  const isFetching = ref(false)
-  const aborted = ref(false)
-  const statusCode = ref<number | null>(null)
+  const isFinished = shallowRef(false)
+  const isFetching = shallowRef(false)
+  const aborted = shallowRef(false)
+  const statusCode = deepRef<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)
   const data = shallowRef<T | null>(initialData || null)
@@ -489,6 +499,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           ({ data: responseData } = await options.afterFetch({
             data: responseData,
             response: fetchResponse,
+            context,
+            execute,
           }))
         }
         data.value = responseData
@@ -504,6 +516,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             data: responseData,
             error: fetchError,
             response: response.value,
+            context,
+            execute,
           }))
         }
 

@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
-import { computed, ref } from 'vue'
+import { computed, ref as deepRef } from 'vue'
 
 export interface UseStepperReturn<StepName, Steps, Step> {
   /** List of steps. */
@@ -46,9 +46,9 @@ export interface UseStepperReturn<StepName, Steps, Step> {
 export function useStepper<T extends string | number>(steps: MaybeRef<T[]>, initialStep?: T): UseStepperReturn<T, T[], T>
 export function useStepper<T extends Record<string, any>>(steps: MaybeRef<T>, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
 export function useStepper(steps: any, initialStep?: any): UseStepperReturn<any, any, any> {
-  const stepsRef = ref<any[]>(steps)
+  const stepsRef = deepRef<any[]>(steps)
   const stepNames = computed<any[]>(() => Array.isArray(stepsRef.value) ? stepsRef.value : Object.keys(stepsRef.value))
-  const index = ref(stepNames.value.indexOf(initialStep ?? stepNames.value[0]))
+  const index = deepRef(stepNames.value.indexOf(initialStep ?? stepNames.value[0]))
   const current = computed(() => at(index.value))
   const isFirst = computed(() => index.value === 0)
   const isLast = computed(() => index.value === stepNames.value.length - 1)

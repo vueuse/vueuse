@@ -31,7 +31,7 @@ the `rootMargin` option (See [MDN IntersectionObserver/rootMargin](https://devel
 
 ```ts
 const targetIsVisible = useElementVisibility(target, {
-  rootMargin: '0 0 100px 0',
+  rootMargin: '0px 0px 100px 0px',
 })
 ```
 

@@ -22,6 +22,24 @@ We use VitePress for rapid development and documenting. You can start it locally
 pnpm dev
 ```
 
+### Testing
+
+```bash
+pnpm test:unit # to run unit tests
+```
+
+If you want to use experimental browser tests, you need to install playwright dependencies first.
+
+```bash
+nlx playwright install --with-deps
+```
+
+and then run
+
+```bash
+pnpm test:browser
+```
+
 ## Contributing
 
 ### Existing functions

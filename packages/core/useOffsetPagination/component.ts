@@ -1,4 +1,4 @@
-import type { UseOffsetPaginationOptions } from '.'
+import type { UseOffsetPaginationOptions } from './index'
 import { useOffsetPagination } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useFavicon } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 
-const type = ref('vueuse')
+const type = shallowRef('vueuse')
 
 const favicon = computed(() =>
   type.value === 'vue' ? 'vue.png' : 'favicon-32x32.png')

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
-import { useRouteQuery } from '.'
+import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
+import { useRouteQuery } from './index'
 
 describe('useRouteQuery', () => {
   const getRoute = (query: Record<string, any> = {}) => reactive({
@@ -63,6 +63,44 @@ describe('useRouteQuery', () => {
     expect(object.value).toEqual({ foo: 'baz' })
   })
 
+  it('should handle transform with only get', async () => {
+    let route = getRoute({
+      search: 'VUE3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteQuery('search', undefined, {
+      transform: {
+        get: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    expect(search.value).toBe('vue3')
+    expect(route.query.search).toBe('VUE3')
+  })
+
+  it('should handle transform with only set', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteQuery('search', undefined, {
+      transform: {
+        set: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    search.value = 'VUE3'
+    expect(search.value).toBe('vue3')
+
+    await nextTick()
+
+    expect(route.query.search).toBe('vue3')
+  })
+
   it('should re-evaluate the value immediately', () => {
     let route = getRoute({
       search: 'vue3',
@@ -119,10 +157,10 @@ describe('useRouteQuery', () => {
     const scopeA = effectScope()
     const scopeB = effectScope()
 
-    let page: Ref<any> = ref(null)
-    let lang: Ref<any> = ref(null)
-    let code: Ref<any> = ref(null)
-    let search: Ref<any> = ref(null)
+    let page: Ref<any> = deepRef(null)
+    let lang: Ref<any> = deepRef(null)
+    let code: Ref<any> = deepRef(null)
+    let search: Ref<any> = deepRef(null)
 
     await scopeA.run(async () => {
       page = useRouteQuery('page', null, { route, router })
@@ -177,12 +215,12 @@ describe('useRouteQuery', () => {
     route.query.page = 2
 
     const defaultPage = 'DEFAULT_PAGE'
-    let page1: Ref<any> = ref(null)
+    let page1: Ref<any> = deepRef(null)
     await scopeA.run(async () => {
       page1 = useRouteQuery('page', defaultPage, { route, router })
     })
 
-    let page2: Ref<any> = ref(null)
+    let page2: Ref<any> = deepRef(null)
     await scopeB.run(async () => {
       page2 = useRouteQuery('page', defaultPage, { route, router })
     })
@@ -336,7 +374,7 @@ describe('useRouteQuery', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const defaultPage = ref(1)
+    const defaultPage = shallowRef(1)
     const defaultLang = () => 'pt-BR'
 
     const page: Ref<any> = useRouteQuery('page', defaultPage, { route, router })

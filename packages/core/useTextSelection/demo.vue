@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { useTextSelection } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
-const demo = ref()
 const { rects, text } = useTextSelection()
 const selectedStyle = computed(() => text.value ? 'text-primary' : 'text-gray-400')
 </script>
 
 <template>
-  <div ref="demo">
+  <div>
     <p class="font-600 text-blue-600">
       You can select any text on the page.
     </p>

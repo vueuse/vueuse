@@ -1,7 +1,7 @@
 import type { Ref, UnwrapRef, WritableComputedRef } from 'vue'
 import type { CloneFn } from '../useCloned'
 import { isDef } from '@vueuse/shared'
-import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
+import { computed, ref as deepRef, getCurrentInstance, nextTick, watch } from 'vue'
 import { cloneFnJSON } from '../useCloned'
 
 export interface UseVModelOptions<T, Passive extends boolean = false> {
@@ -118,7 +118,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   if (passive) {
     const initialValue = getValue()
-    const proxy = ref<P[K]>(initialValue!)
+    const proxy = deepRef<P[K]>(initialValue!)
     let isUpdating = false
 
     watch(

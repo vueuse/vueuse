@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
@@ -28,7 +28,7 @@ const PSEUDO_CLASS_FOCUS_WITHIN = ':focus-within'
 export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWindow = {}): UseFocusWithinReturn {
   const { window = defaultWindow } = options
   const targetElement = computed(() => unrefElement(target))
-  const _focused = ref(false)
+  const _focused = shallowRef(false)
   const focused = computed(() => _focused.value)
   const activeElement = useActiveElement(options)
 
@@ -36,9 +36,10 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
     return { focused }
   }
 
-  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true)
+  const listenerOptions = { passive: true }
+  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
   useEventListener(targetElement, EVENT_FOCUS_OUT, () =>
-    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false)
+    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false, listenerOptions)
 
   return { focused }
 }

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useImage } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 
-const imageOptions = ref({ src: 'https://place-hold.it/300x200' })
+const imageOptions = deepRef({ src: 'https://place-hold.it/300x200' })
 const colors = ['fff', '000', '5f0caa']
 const { isLoading, error } = useImage(imageOptions, { delay: 1000 })
 

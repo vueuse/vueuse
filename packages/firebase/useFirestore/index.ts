@@ -3,7 +3,7 @@ import type { DocumentData, DocumentReference, DocumentSnapshot, Query, QueryDoc
 import type { Ref } from 'vue'
 import { isDef, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { onSnapshot } from 'firebase/firestore'
-import { computed, isRef, ref, watch } from 'vue'
+import { computed, ref as deepRef, isRef, watch } from 'vue'
 
 export interface UseFirestoreOptions {
   errorHandler?: (err: Error) => void
@@ -79,7 +79,7 @@ export function useFirestore<T extends DocumentData>(
     : computed(() => maybeDocRef)
 
   let close = () => { }
-  const data = ref(initialValue) as Ref<T | T[] | null | undefined>
+  const data = deepRef(initialValue) as Ref<T | T[] | null | undefined>
 
   watch(refOfDocRef, (docRef) => {
     close()
