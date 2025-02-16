@@ -4,7 +4,7 @@ import { ref as deepRef, shallowRef } from 'vue'
 export type ShallowOrDeepRef<T = any, D extends boolean = false> = D extends true ? Ref<T> : ShallowRef<T>
 
 /**
- * Return a `deepRef` or `shallowRef` depending on the `deep` param
+ * Returns a `deepRef` or `shallowRef` depending on the `deep` param.
  *
  * @example createRef(1) // ShallowRef<number>
  * @example createRef(1, false) // ShallowRef<number>
