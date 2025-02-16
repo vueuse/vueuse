@@ -1,6 +1,5 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
@@ -30,7 +29,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
 
   const locatedAt = shallowRef<number | null>(null)
   const error = shallowRef<GeolocationPositionError | null>(null)
-  const coords: Ref<Omit<GeolocationPosition['coords'], 'toJSON'>> = deepRef({
+  const coords = deepRef<Omit<GeolocationPosition['coords'], 'toJSON'>>({
     accuracy: 0,
     latitude: Number.POSITIVE_INFINITY,
     longitude: Number.POSITIVE_INFINITY,
