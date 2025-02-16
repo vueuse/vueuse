@@ -1,4 +1,4 @@
-import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, WatchOptions, WatchSource } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
 
 export type {
   MaybeRef,
@@ -75,7 +75,7 @@ export interface Pausable {
   /**
    * A ref indicate whether a pausable instance is active
    */
-  isActive: Readonly<Ref<boolean>>
+  isActive: Readonly<ShallowRef<boolean>>
 
   /**
    * Temporary pause the effect from executing
