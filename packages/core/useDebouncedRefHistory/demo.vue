@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { formatDate, useDebouncedRefHistory } from '@vueuse/core'
 import { useCounter } from '@vueuse/shared'
 import { shallowRef } from 'vue'
