@@ -1,5 +1,5 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ShallowRef, WritableComputedRef } from 'vue'
 import { toRef } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
 
@@ -86,7 +86,7 @@ export function useCycleList<T>(list: MaybeRefOrGetter<T[]>, options?: UseCycleL
 
 export interface UseCycleListReturn<T> {
   state: ShallowRef<T>
-  index: ComputedRef<number>
+  index: WritableComputedRef<number>
   next: (n?: number) => T
   prev: (n?: number) => T
   /**
