@@ -1,4 +1,4 @@
-import type { ShallowRef } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 import { isRef, shallowRef, toValue } from 'vue'
 
@@ -7,7 +7,7 @@ export interface UseToggleOptions<Truthy, Falsy> {
   falsyValue?: MaybeRefOrGetter<Falsy>
 }
 
-export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: ShallowRef<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
+export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
 export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): [ShallowRef<T>, (value?: T) => T]
 
 /**
