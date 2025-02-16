@@ -1,7 +1,7 @@
 // ported from https://dev.to/linusborg/vue-when-a-computed-property-can-be-the-wrong-tool-195j
 // by @linusborg https://github.com/LinusBorg
 
-import type { Ref, WatchOptionsBase } from 'vue'
+import type { ShallowRef, WatchOptionsBase } from 'vue'
 import { readonly, shallowRef, watchEffect } from 'vue'
 
 /**
@@ -12,9 +12,9 @@ import { readonly, shallowRef, watchEffect } from 'vue'
  *
  * @param fn effect function
  * @param options WatchOptionsBase
- * @returns readonly ref
+ * @returns readonly shallowRef
  */
-export function computedEager<T>(fn: () => T, options?: WatchOptionsBase): Readonly<Ref<T>> {
+export function computedEager<T>(fn: () => T, options?: WatchOptionsBase): Readonly<ShallowRef<T>> {
   const result = shallowRef()
 
   watchEffect(() => {

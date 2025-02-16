@@ -1,5 +1,5 @@
 import type { ConfigurableEventFilter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
 import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
@@ -32,8 +32,8 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
 }
 
 export interface UseIdleReturn {
-  idle: Ref<boolean>
-  lastActive: Ref<number>
+  idle: ShallowRef<boolean>
+  lastActive: ShallowRef<number>
   reset: () => void
 }
 

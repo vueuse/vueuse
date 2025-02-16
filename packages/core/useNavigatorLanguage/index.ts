@@ -1,6 +1,6 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { ref as deepRef } from 'vue'
+import { shallowRef } from 'vue'
 
 import { defaultWindow } from '../_configurable'
 
@@ -25,7 +25,7 @@ export interface NavigatorLanguageState {
    * @see https://www.loc.gov/standards/iso639-2/php/code_list.php
    *
    */
-  language: Ref<string | undefined>
+  language: ShallowRef<string | undefined>
 }
 
 /**
@@ -43,7 +43,7 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
 
   const isSupported = useSupported(() => navigator && 'language' in navigator)
 
-  const language = deepRef<string | undefined>(navigator?.language)
+  const language = shallowRef<string | undefined>(navigator?.language)
 
   // Listen to when to user changes language:
   useEventListener(window, 'languagechange', () => {
