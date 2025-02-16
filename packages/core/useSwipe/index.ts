@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
 import { computed, reactive, shallowRef } from 'vue'
@@ -43,7 +43,7 @@ export interface UseSwipeReturn {
    * This flag will always return `true` and be removed in the next major version.
    */
   isPassiveEventSupported: boolean
-  isSwiping: Ref<boolean>
+  isSwiping: ShallowRef<boolean>
   direction: ComputedRef<UseSwipeDirection>
   coordsStart: Readonly<Position>
   coordsEnd: Readonly<Position>
