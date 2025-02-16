@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import { shallowRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
@@ -10,7 +10,7 @@ export interface UseFpsOptions {
   every?: number
 }
 
-export function useFps(options?: UseFpsOptions): Ref<number> {
+export function useFps(options?: UseFpsOptions): ShallowRef<number> {
   const fps = shallowRef(0)
   if (typeof performance === 'undefined')
     return fps
