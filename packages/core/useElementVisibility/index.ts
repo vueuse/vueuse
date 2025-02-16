@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
@@ -32,7 +33,7 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<Us
 export function useElementVisibility(
   element: MaybeComputedElementRef,
   options: UseElementVisibilityOptions = {},
-) {
+): ShallowRef<boolean> {
   const {
     window = defaultWindow,
     scrollTarget,
