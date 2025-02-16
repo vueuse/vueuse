@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type { UseFuseOptions } from './index'
-import { computed, ref as deepRef, shallowRef, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { useFuse } from './index'
 
 interface DataItem {
@@ -8,7 +8,7 @@ interface DataItem {
   lastName: string
 }
 
-const data = deepRef<DataItem[]>([
+const data = shallowRef<DataItem[]>([
   {
     firstName: 'Roslyn',
     lastName: 'Mitchell',

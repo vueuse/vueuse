@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useMouse, usePointerLock } from '@vueuse/core'
-import { ref as deepRef, shallowRef, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 
 const { lock, unlock, element } = usePointerLock()
 const { x, y } = useMouse({ type: 'movement' })
-const rotY = deepRef(-45)
+const rotY = shallowRef(-45)
 const rotX = shallowRef(0)
 
 watch([x, y], ([x, y]) => {

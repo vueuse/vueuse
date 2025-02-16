@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useDropZone } from '@vueuse/core'
-import { ref as deepRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const filesData = deepRef<{ name: string, size: number, type: string, lastModified: number }[]>([])
-const imageFilesData = deepRef<{ name: string, size: number, type: string, lastModified: number }[]>([])
+const filesData = shallowRef<{ name: string, size: number, type: string, lastModified: number }[]>([])
+const imageFilesData = shallowRef<{ name: string, size: number, type: string, lastModified: number }[]>([])
 
 function onDrop(files: File[] | null) {
   filesData.value = []
@@ -29,8 +29,8 @@ function onImageDrop(files: File[] | null) {
   }
 }
 
-const dropZoneRef = deepRef<HTMLElement>()
-const imageDropZoneRef = deepRef<HTMLElement>()
+const dropZoneRef = useTemplateRef<HTMLElement>('dropZoneRef')
+const imageDropZoneRef = useTemplateRef<HTMLElement>('imageDropZoneRef')
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
