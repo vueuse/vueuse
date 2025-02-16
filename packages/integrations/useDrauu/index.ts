@@ -1,7 +1,7 @@
 import type { EventHookOn, MaybeComputedElementRef } from '@vueuse/core'
 import type { Fn } from '@vueuse/shared'
 import type { Brush, Drauu, DrawingMode, Options } from 'drauu'
-import type { Ref } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import { createEventHook, unrefElement } from '@vueuse/core'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { createDrauu } from 'drauu'
@@ -17,8 +17,8 @@ export interface UseDrauuReturn {
   cancel: () => void
   undo: () => boolean | undefined
   redo: () => boolean | undefined
-  canUndo: Ref<boolean>
-  canRedo: Ref<boolean>
+  canUndo: ShallowRef<boolean>
+  canRedo: ShallowRef<boolean>
   brush: Ref<Brush>
 
   onChanged: EventHookOn
