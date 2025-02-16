@@ -9,7 +9,7 @@ const htmlRefOnMouseUp = ref<HTMLElement | null>(null)
 const longPressed = ref(false)
 const clicked = ref(false)
 
-function onLongPressCallback(e: PointerEvent) {
+function onLongPressCallback(e: PointerEvent | TouchEvent) {
   longPressed.value = true
 }
 
