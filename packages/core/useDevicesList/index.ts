@@ -1,6 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { computed, ref as deepRef, shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
@@ -33,7 +33,7 @@ export interface UseDevicesListReturn {
   videoInputs: ComputedRef<MediaDeviceInfo[]>
   audioInputs: ComputedRef<MediaDeviceInfo[]>
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
-  permissionGranted: Ref<boolean>
+  permissionGranted: ShallowRef<boolean>
   ensurePermissions: () => Promise<boolean>
   isSupported: ComputedRef<boolean>
 }
