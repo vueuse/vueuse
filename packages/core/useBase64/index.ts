@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import { isClient } from '@vueuse/shared'
 import { isRef, shallowRef, toValue, watch } from 'vue'
 import { getDefaultSerialization } from './serialization'
@@ -29,8 +29,8 @@ export interface UseBase64ObjectOptions<T> extends UseBase64Options {
 }
 
 export interface UseBase64Return {
-  base64: Ref<string>
-  promise: Ref<Promise<string>>
+  base64: ShallowRef<string>
+  promise: ShallowRef<Promise<string>>
   execute: () => Promise<string>
 }
 
