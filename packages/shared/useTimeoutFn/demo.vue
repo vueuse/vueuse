@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useTimeoutFn } from '@vueuse/core'
-import { ref as deepRef } from 'vue'
+import { shallowRef } from 'vue'
 
 const defaultText = 'Please wait for 3 seconds'
-const text = deepRef(defaultText)
+const text = shallowRef(defaultText)
 const { start, isPending } = useTimeoutFn(() => {
   text.value = 'Fired!'
 }, 3000)

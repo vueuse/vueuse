@@ -9,11 +9,11 @@ Reactive mouse position related to an element
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useMouseInElement } from '@vueuse/core'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const target = ref(null)
+const target = useTemplateRef<HTMLDivElement>('target')
 
 const { x, y, isOutside } = useMouseInElement(target)
 </script>

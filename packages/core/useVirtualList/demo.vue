@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { useVirtualList } from '@vueuse/core'
-import { computed, ref as deepRef, shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 
-const index: Ref = deepRef()
+const index = shallowRef<number>()
 const search = shallowRef('')
 
 const allItems = Array.from(Array.from({ length: 99999 }).keys())
@@ -24,7 +23,8 @@ const { list, containerProps, wrapperProps, scrollTo } = useVirtualList(
   },
 )
 function handleScrollTo() {
-  scrollTo(index.value)
+  if (index.value)
+    scrollTo(index.value)
 }
 </script>
 

@@ -15,8 +15,8 @@ This function takes a snapshot of your counter after 1000ms when the value of it
 
 ```ts
 import { useDebouncedRefHistory } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const counter = ref(0)
+const counter = shallowRef(0)
 const { history, undo, redo } = useDebouncedRefHistory(counter, { deep: true, debounce: 1000 })
 ```

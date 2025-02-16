@@ -30,7 +30,7 @@ yarn add fuse.js
 
 ```ts
 import { useFuse } from '@vueuse/integrations/useFuse'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 const data = [
   'John Smith',
@@ -40,7 +40,7 @@ const data = [
   'Peter Brown',
 ]
 
-const input = ref('Jhon D')
+const input = shallowRef('Jhon D')
 
 const { results } = useFuse(input, data)
 

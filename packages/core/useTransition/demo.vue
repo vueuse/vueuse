@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { TransitionPresets, useTransition } from '@vueuse/core'
 import { rand } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 
 const duration = 1500
 
 const baseNumber = shallowRef(0)
 
-const baseVector = deepRef([0, 0])
+const baseVector = shallowRef([0, 0])
 
 function easeOutElastic(n: number) {
   return n === 0
