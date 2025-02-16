@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useFocusWithin } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 
-const target = ref()
+const target = deepRef()
 
 const { focused } = useFocusWithin(target)
 </script>

@@ -1,7 +1,7 @@
 import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
-import { nextTick, ref, toValue } from 'vue'
+import { nextTick, shallowRef, toValue } from 'vue'
 import { watchWithFilter } from '../watchWithFilter'
 
 export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Immediate> {
@@ -29,7 +29,7 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
     ...watchOptions
   } = options
 
-  const current = ref(0)
+  const current = shallowRef(0)
 
   const stop = watchWithFilter(
     source,

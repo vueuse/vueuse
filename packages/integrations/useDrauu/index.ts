@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import { createEventHook, unrefElement } from '@vueuse/core'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { createDrauu } from 'drauu'
-import { ref, watch } from 'vue'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 
 export type UseDrauuOptions = Omit<Options, 'el'>
 
@@ -39,7 +39,7 @@ export function useDrauu(
   target: MaybeComputedElementRef,
   options?: UseDrauuOptions,
 ): UseDrauuReturn {
-  const drauuInstance = ref<Drauu>()
+  const drauuInstance = deepRef<Drauu>()
 
   let disposables: Fn[] = []
 
@@ -48,12 +48,12 @@ export function useDrauu(
   const onCommittedHook = createEventHook<SVGElement | undefined>()
   const onStartHook = createEventHook<void>()
   const onEndHook = createEventHook<void>()
-  const canUndo = ref(false)
-  const canRedo = ref(false)
-  const altPressed = ref(false)
-  const shiftPressed = ref(false)
+  const canUndo = shallowRef(false)
+  const canRedo = shallowRef(false)
+  const altPressed = shallowRef(false)
+  const shiftPressed = shallowRef(false)
 
-  const brush = ref<Brush>({
+  const brush = deepRef<Brush>({
     color: 'black',
     size: 3,
     arrowEnd: false,

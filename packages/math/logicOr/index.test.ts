@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref, toValue } from 'vue'
+import { shallowRef, toValue } from 'vue'
 import { logicOr } from './index'
 
 describe('logicOr', () => {
@@ -12,12 +12,12 @@ describe('logicOr', () => {
   })
 
   it('returns true only when any arguments are truthy', () => {
-    expect(toValue(logicOr(ref(true), ref(true)))).toBe(true)
-    expect(toValue(logicOr(ref('foo'), ref(false)))).toBe(true)
-    expect(toValue(logicOr(ref('foo'), ref(1), ref(false)))).toBe(true)
+    expect(toValue(logicOr(shallowRef(true), shallowRef(true)))).toBe(true)
+    expect(toValue(logicOr(shallowRef('foo'), shallowRef(false)))).toBe(true)
+    expect(toValue(logicOr(shallowRef('foo'), shallowRef(1), shallowRef(false)))).toBe(true)
 
-    expect(toValue(logicOr(ref(false), ref(false)))).toBe(false)
-    expect(toValue(logicOr(ref(''), ref(0)))).toBe(false)
+    expect(toValue(logicOr(shallowRef(false), shallowRef(false)))).toBe(false)
+    expect(toValue(logicOr(shallowRef(''), shallowRef(0)))).toBe(false)
   })
 
   it('works with values', () => {

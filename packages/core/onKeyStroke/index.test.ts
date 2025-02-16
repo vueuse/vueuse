@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { KeyStrokeEventName } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { onKeyStroke } from './index'
 
 describe('onKeyStroke', () => {
@@ -9,7 +9,7 @@ describe('onKeyStroke', () => {
   let callBackFn: any
 
   beforeEach(() => {
-    element = ref(document.createElement('div'))
+    element = shallowRef(document.createElement('div'))
     callBackFn = vi.fn()
   })
 

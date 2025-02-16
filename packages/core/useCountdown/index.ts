@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref, toValue } from 'vue'
+import { shallowRef, toValue } from 'vue'
 
 export interface UseCountdownOptions {
   /**
@@ -52,7 +52,7 @@ export interface UseCountdownReturn extends Pausable {
  * @see https://vueuse.org/useCountdown
  */
 export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options?: UseCountdownOptions): UseCountdownReturn {
-  const remaining = ref(toValue(initialCountdown))
+  const remaining = shallowRef(toValue(initialCountdown))
 
   const intervalController = useIntervalFn(() => {
     const value = remaining.value - 1

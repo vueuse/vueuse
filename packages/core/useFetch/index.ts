@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, ref, shallowRef, toValue, watch } from 'vue'
+import { computed, isRef, readonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -247,7 +247,13 @@ function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ct
   if (combination === 'overwrite') {
     // use last callback
     return async (ctx: T) => {
-      const callback = callbacks[callbacks.length - 1]
+      let callback
+      for (let i = callbacks.length - 1; i >= 0; i--) {
+        if (callbacks[i] != null) {
+          callback = callbacks[i]
+          break
+        }
+      }
       if (callback)
         return { ...ctx, ...(await callback(ctx)) }
 
@@ -375,10 +381,10 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const errorEvent = createEventHook<any>()
   const finallyEvent = createEventHook<any>()
 
-  const isFinished = ref(false)
-  const isFetching = ref(false)
-  const aborted = ref(false)
-  const statusCode = ref<number | null>(null)
+  const isFinished = shallowRef(false)
+  const isFetching = shallowRef(false)
+  const aborted = shallowRef(false)
+  const statusCode = shallowRef<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)
   const data = shallowRef<T | null>(initialData || null)

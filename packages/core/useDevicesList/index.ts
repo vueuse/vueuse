@@ -2,7 +2,7 @@
 
 import type { ComputedRef, Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
-import { computed, ref } from 'vue'
+import { computed, ref as deepRef, shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
@@ -52,12 +52,12 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     onUpdated,
   } = options
 
-  const devices = ref([]) as Ref<MediaDeviceInfo[]>
+  const devices = deepRef([]) as Ref<MediaDeviceInfo[]>
   const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
   const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
   const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
   const isSupported = useSupported(() => navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
-  const permissionGranted = ref(false)
+  const permissionGranted = shallowRef(false)
   let stream: MediaStream | null
 
   async function update() {

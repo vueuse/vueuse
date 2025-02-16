@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/components",
   "type": "module",
-  "version": "12.6.1",
+  "version": "12.7.0",
   "description": "Renderless components for VueUse",
   "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "license": "MIT",

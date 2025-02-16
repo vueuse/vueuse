@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createSSRApp, nextTick, ref } from 'vue'
+import { createSSRApp, nextTick, shallowRef } from 'vue'
 import { provideSSRWidth } from '../useSSRWidth'
 import { useMediaQuery } from './index'
 
@@ -13,7 +13,7 @@ describe('useMediaQuery', () => {
   })
 
   it('should support ssr media queries', async () => {
-    const query = ref('(min-width: 500px)')
+    const query = shallowRef('(min-width: 500px)')
     const mediaQuery = useMediaQuery(query, { window: null as unknown as undefined, ssrWidth: 500 })
     expect(mediaQuery.value).toBe(true)
     query.value = '(min-width: 501px)'
@@ -49,7 +49,7 @@ describe('useMediaQuery', () => {
     const app = createSSRApp({ render: () => '' })
     provideSSRWidth(500, app)
     await app.runWithContext(async () => {
-      const query = ref('(min-width: 500px)')
+      const query = shallowRef('(min-width: 500px)')
       const mediaQuery = useMediaQuery(query, { window: null as unknown as undefined })
       expect(mediaQuery.value).toBe(true)
       query.value = '(min-width: 501px)'

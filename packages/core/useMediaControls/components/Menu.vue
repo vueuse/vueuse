@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onClickOutside, useEventListener } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const menu = ref()
-const isOpen = ref()
+const menu = useTemplateRef('menu')
+const isOpen = shallowRef(false)
 
 onClickOutside(menu, () => isOpen.value = false)
 useEventListener('keydown', (e) => {

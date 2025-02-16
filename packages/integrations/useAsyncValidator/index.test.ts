@@ -1,7 +1,7 @@
 import type { Rules } from 'async-validator'
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { ref as deepRef, nextTick } from 'vue'
 import { useAsyncValidator } from './index'
 
 describe('useAsyncValidator', () => {
@@ -177,12 +177,12 @@ describe('useAsyncValidator', () => {
   })
 
   it('should reactive', async () => {
-    const form = ref({
+    const form = deepRef({
       name: 'jelf',
       age: 24,
     })
 
-    const rules = ref({
+    const rules = deepRef({
       name: {
         type: 'string',
         min: 5,
@@ -274,12 +274,12 @@ describe('set manual true', () => {
   })
 
   it('manual trigger validator', async () => {
-    const form = ref({
+    const form = deepRef({
       name: 'jelf',
       age: 24,
     })
 
-    const rules = ref({
+    const rules = deepRef({
       name: {
         type: 'string',
         min: 5,

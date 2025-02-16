@@ -2,7 +2,7 @@ import type { Fn } from '@vueuse/shared'
 import type { MockInstance } from 'vitest'
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, ref } from 'vue'
+import { computed, ref as deepRef, effectScope, nextTick, shallowRef } from 'vue'
 import { useEventListener } from './index'
 
 describe('useEventListener', () => {
@@ -153,7 +153,7 @@ describe('useEventListener', () => {
     let listener: () => any
 
     beforeEach(() => {
-      target = ref(document.createElement('div'))
+      target = shallowRef(document.createElement('div'))
       listener = vi.fn()
     })
 
@@ -245,7 +245,7 @@ describe('useEventListener', () => {
       const listener = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const active = ref(true)
+      const active = shallowRef(true)
 
       useEventListener(() => active.value ? [el1, el2] : [], 'mousedown', listener)
       await nextTick()
@@ -283,7 +283,7 @@ describe('useEventListener', () => {
       const listener = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const active = ref(true)
+      const active = shallowRef(true)
 
       useEventListener(() => active.value ? [el1, el2] : [], ['mousedown', 'click'], listener)
       await nextTick()
@@ -310,9 +310,9 @@ describe('useEventListener', () => {
       const listener2 = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const els = ref([el1])
-      const events = ref(['click'])
-      const listeners = ref([listener1])
+      const els = deepRef([el1])
+      const events = deepRef(['click'])
+      const listeners = deepRef([listener1])
 
       useEventListener(els, events, listeners)
       el1.dispatchEvent(new Event('click'))
@@ -340,9 +340,9 @@ describe('useEventListener', () => {
   })
 
   it('should auto re-register', async () => {
-    const target = ref()
+    const target = deepRef()
     const listener = vi.fn()
-    const options = ref<any>(false)
+    const options = deepRef<any>(false)
     useEventListener(target, 'click', listener, options)
 
     const el = document.createElement('div')

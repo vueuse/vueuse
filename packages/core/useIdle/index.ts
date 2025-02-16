@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
 import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -55,8 +55,8 @@ export function useIdle(
     window = defaultWindow,
     eventFilter = throttleFilter(50),
   } = options
-  const idle = ref(initialState)
-  const lastActive = ref(timestamp())
+  const idle = shallowRef(initialState)
+  const lastActive = shallowRef(timestamp())
 
   let timer: any
 

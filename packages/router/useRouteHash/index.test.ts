@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, nextTick, reactive, ref, watch } from 'vue'
+import { computed, nextTick, reactive, shallowRef, watch } from 'vue'
 import { useRouteHash } from './index'
 
 describe('useRouteHash', () => {
@@ -100,7 +100,7 @@ describe('useRouteHash', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const defaultTarget = ref('foo')
+    const defaultTarget = shallowRef('foo')
 
     const target = useRouteHash(defaultTarget, { route, router })
 

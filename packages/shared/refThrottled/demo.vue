@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { refThrottled } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 
-const trailing = ref(true)
-const leading = ref(false)
-const input = ref('')
+const trailing = shallowRef(true)
+const leading = shallowRef(false)
+const input = shallowRef('')
 const throttled = refThrottled(input, 1000, trailing.value, leading.value)
-const updated = ref(0)
+const updated = shallowRef(0)
 
 watch(throttled, () => {
   updated.value += 1

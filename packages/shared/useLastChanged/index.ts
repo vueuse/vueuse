@@ -1,5 +1,5 @@
 import type { Ref, WatchOptions, WatchSource } from 'vue'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { timestamp } from '../utils'
 
 export interface UseLastChangedOptions<
@@ -17,7 +17,7 @@ export interface UseLastChangedOptions<
 export function useLastChanged(source: WatchSource, options?: UseLastChangedOptions<false>): Ref<number | null>
 export function useLastChanged(source: WatchSource, options: UseLastChangedOptions<true> | UseLastChangedOptions<boolean, number>): Ref<number>
 export function useLastChanged(source: WatchSource, options: UseLastChangedOptions<boolean, any> = {}): Ref<number | null> | Ref<number> {
-  const ms = ref<number | null>(options.initialValue ?? null)
+  const ms = shallowRef<number | null>(options.initialValue ?? null)
 
   watch(
     source,

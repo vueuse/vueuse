@@ -3,7 +3,7 @@ import type { Rules, ValidateError, ValidateOption } from 'async-validator'
 import type { Ref } from 'vue'
 import { toRef, until } from '@vueuse/shared'
 import Schema from 'async-validator'
-import { computed, ref, shallowRef, toValue, watch } from 'vue'
+import { computed, ref as deepRef, shallowRef, toValue, watch } from 'vue'
 
 // @ts-expect-error Schema.default is exist in ssr mode
 const AsyncValidatorSchema = Schema.default || Schema
@@ -67,8 +67,8 @@ export function useAsyncValidator(
   const valueRef = toRef(value)
 
   const errorInfo = shallowRef<AsyncValidatorError | null>(null)
-  const isFinished = ref(true)
-  const pass = ref(!immediate || manual)
+  const isFinished = shallowRef(true)
+  const pass = deepRef(!immediate || manual)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 

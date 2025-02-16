@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { pausableWatch, watchPausable } from './index'
 
 describe('watchPausable', () => {
@@ -9,7 +9,7 @@ describe('watchPausable', () => {
   })
 
   it('should work', async () => {
-    const num = ref(0)
+    const num = shallowRef(0)
     const cb = vi.fn()
     const { stop, pause, resume, isActive } = watchPausable(num, cb)
 
@@ -38,7 +38,7 @@ describe('watchPausable', () => {
   })
 
   it('should work with initialState "paused"', async () => {
-    const num = ref(0)
+    const num = shallowRef(0)
     const cb = vi.fn()
     const { resume, isActive } = watchPausable(num, cb, { initialState: 'paused' })
 

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { watchImmediate } from './index'
 
 describe('watchImmediate', () => {
@@ -15,7 +15,7 @@ describe('watchImmediate', () => {
       currentRun++
     })
 
-    const obj = ref('vue-use')
+    const obj = shallowRef('vue-use')
     watchImmediate(obj, spy)
     obj.value = 'VueUse'
     await nextTick()

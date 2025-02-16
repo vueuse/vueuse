@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { watchIgnorable } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const log = ref('')
-const source = ref(0)
+const log = shallowRef('')
+const source = shallowRef(0)
 
 const { ignoreUpdates } = watchIgnorable(
   source,

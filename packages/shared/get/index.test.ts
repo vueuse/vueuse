@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { get } from './index'
 
 describe('get', () => {
   it('unref', () => {
-    const a = ref(42)
+    const a = shallowRef(42)
 
     expect(get(a)).toBe(42)
     expect(get(42)).toBe(42)
   })
 
   it('ref object', () => {
-    const reactive = ref({ foo: 'bar' })
+    const reactive = deepRef({ foo: 'bar' })
     const plain = { foo: 'bar' }
 
     expect(get(reactive, 'foo')).toBe('bar')
@@ -24,7 +24,7 @@ describe('get', () => {
   })
 
   it('ref array', () => {
-    const reactive = ref([1, 2, 3])
+    const reactive = deepRef([1, 2, 3])
     const plain = [1, 2, 3]
 
     expect(get(reactive, 2)).toBe(3)

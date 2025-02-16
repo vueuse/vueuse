@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import type { PointerType, Position } from '../types'
 import type { UseSwipeDirection } from '../useSwipe'
 import { toRef, tryOnMounted } from '@vueuse/shared'
-import { computed, reactive, readonly, ref } from 'vue'
+import { computed, reactive, readonly, shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export interface UsePointerSwipeOptions {
@@ -90,8 +90,8 @@ export function usePointerSwipe(
 
   const { max, abs } = Math
   const isThresholdExceeded = computed(() => max(abs(distanceX.value), abs(distanceY.value)) >= threshold)
-  const isSwiping = ref(false)
-  const isPointerDown = ref(false)
+  const isSwiping = shallowRef(false)
+  const isPointerDown = shallowRef(false)
 
   const direction = computed(() => {
     if (!isThresholdExceeded.value)

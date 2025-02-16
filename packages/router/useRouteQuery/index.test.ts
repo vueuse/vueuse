@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, reactive, ref, toValue, watch } from 'vue'
+import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { useRouteQuery } from './index'
 
 describe('useRouteQuery', () => {
@@ -157,10 +157,10 @@ describe('useRouteQuery', () => {
     const scopeA = effectScope()
     const scopeB = effectScope()
 
-    let page: Ref<any> = ref(null)
-    let lang: Ref<any> = ref(null)
-    let code: Ref<any> = ref(null)
-    let search: Ref<any> = ref(null)
+    let page: Ref<any> = deepRef(null)
+    let lang: Ref<any> = deepRef(null)
+    let code: Ref<any> = deepRef(null)
+    let search: Ref<any> = deepRef(null)
 
     await scopeA.run(async () => {
       page = useRouteQuery('page', null, { route, router })
@@ -215,12 +215,12 @@ describe('useRouteQuery', () => {
     route.query.page = 2
 
     const defaultPage = 'DEFAULT_PAGE'
-    let page1: Ref<any> = ref(null)
+    let page1: Ref<any> = deepRef(null)
     await scopeA.run(async () => {
       page1 = useRouteQuery('page', defaultPage, { route, router })
     })
 
-    let page2: Ref<any> = ref(null)
+    let page2: Ref<any> = deepRef(null)
     await scopeB.run(async () => {
       page2 = useRouteQuery('page', defaultPage, { route, router })
     })
@@ -374,7 +374,7 @@ describe('useRouteQuery', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const defaultPage = ref(1)
+    const defaultPage = shallowRef(1)
     const defaultLang = () => 'pt-BR'
 
     const page: Ref<any> = useRouteQuery('page', defaultPage, { route, router })

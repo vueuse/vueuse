@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, reactive, ref, watch } from 'vue'
+import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
 import { useRouteParams } from './index'
 
 describe('useRouteParams', () => {
@@ -169,10 +169,10 @@ describe('useRouteParams', () => {
     const scopeA = effectScope()
     const scopeB = effectScope()
 
-    let page: Ref<any> = ref(null)
-    let lang: Ref<any> = ref(null)
-    let code: Ref<any> = ref(null)
-    let slug: Ref<any> = ref(null)
+    let page: Ref<any> = deepRef(null)
+    let lang: Ref<any> = deepRef(null)
+    let code: Ref<any> = deepRef(null)
+    let slug: Ref<any> = deepRef(null)
 
     await scopeA.run(async () => {
       page = useRouteParams('page', null, { route, router })
@@ -228,12 +228,12 @@ describe('useRouteParams', () => {
     route.params.page = 2
 
     const defaultPage = 'DEFAULT_PAGE'
-    let page1: Ref<any> = ref(null)
+    let page1: Ref<any> = deepRef(null)
     await scopeA.run(async () => {
       page1 = useRouteParams('page', defaultPage, { route, router })
     })
 
-    let page2: Ref<any> = ref(null)
+    let page2: Ref<any> = deepRef(null)
     await scopeB.run(async () => {
       page2 = useRouteParams('page', defaultPage, { route, router })
     })
@@ -344,7 +344,7 @@ describe('useRouteParams', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const defaultPage = ref(1)
+    const defaultPage = shallowRef(1)
     const defaultLang = () => 'pt-BR'
 
     const page: Ref<any> = useRouteParams('page', defaultPage, { route, router })
