@@ -1,5 +1,5 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
 import { computed, isRef, readonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -8,32 +8,32 @@ export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
-  isFinished: Readonly<Ref<boolean>>
+  isFinished: Readonly<ShallowRef<boolean>>
 
   /**
    * The statusCode of the HTTP fetch response
    */
-  statusCode: Ref<number | null>
+  statusCode: ShallowRef<number | null>
 
   /**
    * The raw response of the fetch response
    */
-  response: Ref<Response | null>
+  response: ShallowRef<Response | null>
 
   /**
    * Any fetch errors that may have occurred
    */
-  error: Ref<any>
+  error: ShallowRef<any>
 
   /**
    * The fetch response body on success, may either be JSON or text
    */
-  data: Ref<T | null>
+  data: ShallowRef<T | null>
 
   /**
    * Indicates if the request is currently being fetched.
    */
-  isFetching: Readonly<Ref<boolean>>
+  isFetching: Readonly<ShallowRef<boolean>>
 
   /**
    * Indicates if the fetch request is able to be aborted
@@ -43,7 +43,7 @@ export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request was aborted
    */
-  aborted: Ref<boolean>
+  aborted: ShallowRef<boolean>
 
   /**
    * Abort the fetch request
