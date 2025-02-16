@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { computed, shallowRef, watch } from 'vue'
@@ -33,7 +33,7 @@ export interface UseFocusReturn {
    * If read as true, then the element has focus. If read as false, then the element does not have focus
    * If set to true, then the element will be focused. If set to false, the element will be blurred.
    */
-  focused: Ref<boolean>
+  focused: ComputedRef<boolean>
 }
 
 /**
