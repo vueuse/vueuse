@@ -1,8 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { ref as deepRef, readonly, shallowRef } from 'vue'
+import { readonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -16,39 +16,39 @@ export interface NetworkState {
   /**
    * If the user is currently connected.
    */
-  isOnline: Readonly<Ref<boolean>>
+  isOnline: Readonly<ShallowRef<boolean>>
   /**
    * The time since the user was last connected.
    */
-  offlineAt: Readonly<Ref<number | undefined>>
+  offlineAt: Readonly<ShallowRef<number | undefined>>
   /**
    * At this time, if the user is offline and reconnects
    */
-  onlineAt: Readonly<Ref<number | undefined>>
+  onlineAt: Readonly<ShallowRef<number | undefined>>
   /**
    * The download speed in Mbps.
    */
-  downlink: Readonly<Ref<number | undefined>>
+  downlink: Readonly<ShallowRef<number | undefined>>
   /**
    * The max reachable download speed in Mbps.
    */
-  downlinkMax: Readonly<Ref<number | undefined>>
+  downlinkMax: Readonly<ShallowRef<number | undefined>>
   /**
    * The detected effective speed type.
    */
-  effectiveType: Readonly<Ref<NetworkEffectiveType | undefined>>
+  effectiveType: Readonly<ShallowRef<NetworkEffectiveType | undefined>>
   /**
    * The estimated effective round-trip time of the current connection.
    */
-  rtt: Readonly<Ref<number | undefined>>
+  rtt: Readonly<ShallowRef<number | undefined>>
   /**
    * If the user activated data saver mode.
    */
-  saveData: Readonly<Ref<boolean | undefined>>
+  saveData: Readonly<ShallowRef<boolean | undefined>>
   /**
    * The detected connection/network type.
    */
-  type: Readonly<Ref<NetworkType>>
+  type: Readonly<ShallowRef<NetworkType>>
 }
 
 /**
@@ -64,13 +64,13 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
 
   const isOnline = shallowRef(true)
   const saveData = shallowRef(false)
-  const offlineAt: Ref<number | undefined> = deepRef(undefined)
-  const onlineAt: Ref<number | undefined> = deepRef(undefined)
-  const downlink: Ref<number | undefined> = deepRef(undefined)
-  const downlinkMax: Ref<number | undefined> = deepRef(undefined)
-  const rtt: Ref<number | undefined> = deepRef(undefined)
-  const effectiveType: Ref<NetworkEffectiveType> = deepRef(undefined)
-  const type: Ref<NetworkType> = deepRef<NetworkType>('unknown')
+  const offlineAt = shallowRef<number | undefined>(undefined)
+  const onlineAt = shallowRef<number | undefined>(undefined)
+  const downlink = shallowRef<number | undefined>(undefined)
+  const downlinkMax = shallowRef<number | undefined>(undefined)
+  const rtt = shallowRef<number | undefined>(undefined)
+  const effectiveType = shallowRef<NetworkEffectiveType>(undefined)
+  const type = shallowRef<NetworkType>('unknown')
 
   const connection = isSupported.value && (navigator as any).connection
 
