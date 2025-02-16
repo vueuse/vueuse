@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { useSetup } from '../../.test'
 import { createGlobalState } from './index'
 
 describe('createGlobalState', () => {
   it('should work after dispose 1', async () => {
     const useGlobalState = createGlobalState(() => {
-      const counter = ref(1)
+      const counter = shallowRef(1)
       const doubled = computed(() => counter.value * 2)
 
       return {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, ref } from 'vue'
+import { defineComponent, h, nextTick, shallowRef } from 'vue'
 import { mount } from '../../.test'
 import { templateRef } from './index'
 
@@ -27,7 +27,7 @@ describe('templateRef', () => {
   it('string ref update', async () => {
     const vm = mount(defineComponent({
       setup() {
-        const refKey = ref('foo')
+        const refKey = shallowRef('foo')
         const fooEl = templateRef<HTMLElement | null>('foo', null)
         const barEl = templateRef<HTMLElement | null>('bar', null)
         return {
@@ -54,7 +54,7 @@ describe('templateRef', () => {
   it('string ref unmount', async () => {
     const vm = mount(defineComponent({
       setup() {
-        const toggle = ref(true)
+        const toggle = shallowRef(true)
         const targetEl = templateRef<HTMLElement | null>('target', null)
         return {
           toggle,

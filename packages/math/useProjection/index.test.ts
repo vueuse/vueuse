@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isRef, ref } from 'vue'
+import { isRef, shallowRef } from 'vue'
 import { useProjection } from './index'
 
 describe('useProjection', () => {
@@ -8,7 +8,7 @@ describe('useProjection', () => {
   })
 
   it('returns a ref', () => {
-    expect(isRef(useProjection(ref(5), [0, 10], [0, 100]))).toBe(true)
+    expect(isRef(useProjection(shallowRef(5), [0, 10], [0, 100]))).toBe(true)
   })
 
   it('projects correctly', () => {
@@ -18,7 +18,7 @@ describe('useProjection', () => {
   })
 
   it('is reactive', () => {
-    const inputRef = ref(5)
+    const inputRef = shallowRef(5)
     const projection = useProjection(inputRef, [0, 10], [0, 100])
     expect(isRef(projection)).toBe(true)
 

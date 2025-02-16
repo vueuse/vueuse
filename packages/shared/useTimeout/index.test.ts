@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useTimeout } from './index'
 
 describe('useTimeout', () => {
@@ -21,7 +21,7 @@ describe('useTimeout', () => {
   })
 
   it('works with ref target', () => {
-    const interval = ref(10)
+    const interval = shallowRef(10)
     const ready = useTimeout(interval)
     expect(ready.value).toEqual(false)
     vi.advanceTimersByTime(10)
@@ -29,7 +29,7 @@ describe('useTimeout', () => {
   })
 
   it('works with controls and ref target', () => {
-    const interval = ref(10)
+    const interval = shallowRef(10)
     const { ready } = useTimeout(interval, { controls: true })
     expect(ready.value).toEqual(false)
     vi.advanceTimersByTime(10)

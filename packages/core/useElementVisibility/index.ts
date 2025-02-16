@@ -3,7 +3,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
 import { watchOnce } from '@vueuse/shared'
-import { ref, toValue } from 'vue'
+import { shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
@@ -40,7 +40,7 @@ export function useElementVisibility(
     rootMargin,
     once = false,
   } = options
-  const elementIsVisible = ref(false)
+  const elementIsVisible = shallowRef(false)
 
   const { stop } = useIntersectionObserver(
     element,

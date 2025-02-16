@@ -1,6 +1,6 @@
 import type { UseOffsetPaginationOptions, UseOffsetPaginationReturn } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { isRef, nextTick, ref } from 'vue'
+import { isRef, nextTick, shallowRef } from 'vue'
 import { useOffsetPagination } from './index'
 
 describe('useOffsetPagination', () => {
@@ -110,7 +110,7 @@ describe('useOffsetPagination', () => {
 
   describe('when the page is outside of the range of possible pages', () => {
     let currentPage: UseOffsetPaginationReturn['currentPage']
-    const page: UseOffsetPaginationOptions['page'] = ref(0)
+    const page: UseOffsetPaginationOptions['page'] = shallowRef(0)
 
     beforeEach(() => {
       ({
@@ -139,7 +139,7 @@ describe('useOffsetPagination', () => {
 
   describe('when the page is a ref', () => {
     let currentPage: UseOffsetPaginationReturn['currentPage']
-    const pageRef = ref(0)
+    const pageRef = shallowRef(0)
 
     beforeEach(() => {
       pageRef.value = 2;
@@ -206,7 +206,7 @@ describe('useOffsetPagination', () => {
 
     describe('when pageSize is given as a ref', () => {
       let currentPageSize: UseOffsetPaginationReturn['currentPageSize']
-      const pageSize = ref(11)
+      const pageSize = shallowRef(11)
 
       beforeEach(() => {
         ({
@@ -308,7 +308,7 @@ describe('useOffsetPagination', () => {
   describe('onPageChange', () => {
     it('is called when the page changes', async () => {
       const onPageChange = vi.fn()
-      const page = ref(1)
+      const page = shallowRef(1)
 
       useOffsetPagination({
         total: 50,
@@ -333,7 +333,7 @@ describe('useOffsetPagination', () => {
 
     it('is called with the correct UseOffsetPaginationReturn values', async () => {
       const onPageChange = vi.fn()
-      const page = ref(1)
+      const page = shallowRef(1)
 
       useOffsetPagination({
         total: 35,
@@ -394,7 +394,7 @@ describe('useOffsetPagination', () => {
   describe('onPageSizeChange', () => {
     it('is called when the page size changes', async () => {
       const onPageSizeChange = vi.fn()
-      const pageSize = ref(5)
+      const pageSize = shallowRef(5)
 
       useOffsetPagination({
         total: 50,
@@ -412,7 +412,7 @@ describe('useOffsetPagination', () => {
     })
 
     it('is called with the correct UseOffsetPaginationReturn values', async () => {
-      const pageSize = ref(5)
+      const pageSize = shallowRef(5)
       const onPageSizeChange = vi.fn()
 
       useOffsetPagination({
@@ -450,7 +450,7 @@ describe('useOffsetPagination', () => {
   describe('onPageCountChange', () => {
     it('is called when the page count changes', async () => {
       const onPageCountChange = vi.fn()
-      const pageSize = ref(5)
+      const pageSize = shallowRef(5)
 
       useOffsetPagination({
         total: 50,
@@ -468,7 +468,7 @@ describe('useOffsetPagination', () => {
     })
 
     it('is called with the correct UseOffsetPaginationReturn values', async () => {
-      const pageSize = ref(5)
+      const pageSize = shallowRef(5)
       const onPageCountChange = vi.fn()
 
       useOffsetPagination({

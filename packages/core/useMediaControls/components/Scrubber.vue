@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener, useMouseInElement, useVModel } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 
 const props = defineProps({
   min: { type: Number, default: 0 },
@@ -11,9 +11,9 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const scrubber = ref()
-const scrubbing = ref(false)
-const pendingValue = ref(0)
+const scrubber = deepRef()
+const scrubbing = shallowRef(false)
+const pendingValue = shallowRef(0)
 
 useEventListener('mouseup', () => scrubbing.value = false, { passive: true })
 

@@ -6,7 +6,7 @@ import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef, toValue, watch } from 'vue'
+import { shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -54,9 +54,9 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   } = options
 
   const lang = toRef(options.lang || 'en-US')
-  const isListening = ref(false)
-  const isFinal = ref(false)
-  const result = ref('')
+  const isListening = shallowRef(false)
+  const isFinal = shallowRef(false)
+  const result = shallowRef('')
   const error = shallowRef(undefined) as Ref<SpeechRecognitionErrorEvent | undefined>
 
   let recognition: SpeechRecognition | undefined

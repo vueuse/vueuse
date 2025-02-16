@@ -2,9 +2,9 @@ packages:
   - packages/*
   - '!playgrounds'
 catalog:
-  '@antfu/eslint-config': ^4.2.0
+  '@antfu/eslint-config': ^4.2.1
   '@antfu/ni': ^23.3.1
-  '@iconify/json': ^2.2.306
+  '@iconify/json': ^2.2.307
   '@nuxt/kit': ^3.15.4
   '@nuxt/schema': ^3.15.4
   '@rollup/plugin-json': ^6.1.0
@@ -60,7 +60,7 @@ catalog:
   nprogress: ^0.2.0
   nuxt: ^3.15.4
   ofetch: ^1.4.1
-  playwright: ^1.50.1 # flaky firefox tests with ^1.50.0
+  playwright: 1.49.0 # flaky firefox tests with ^1.50.0
   pnpm: ^10.4.0
   postcss: ^8.5.2
   postcss-nested: ^7.0.2
@@ -69,7 +69,7 @@ catalog:
   qrcode: ^1.5.4
   remove-markdown: ^0.6.0
   rimraf: ^6.0.1
-  rollup: ^4.34.6
+  rollup: ^4.34.7
   rollup-plugin-dts: ^6.1.1
   rollup-plugin-esbuild: ^6.2.0
   rollup-plugin-pure: ^0.2.1
@@ -84,9 +84,9 @@ catalog:
   typescript: ^5.7.3
   unimport: ^4.1.1
   universal-cookie: ^7.2.2
-  unocss: ^65.4.3
+  unocss: ^65.5.0
   unplugin-icons: ^22.0.0
-  unplugin-vue-components: ^28.0.0
+  unplugin-vue-components: ^28.1.0
   vite: ^6.1.0
   vite-plugin-inspect: ^10.2.1
   vite-plugin-pwa: ^0.21.1

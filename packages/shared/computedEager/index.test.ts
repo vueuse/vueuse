@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, ref, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { nextTwoTick } from '../../.test'
 import { computedEager } from './index'
 
@@ -9,7 +9,7 @@ describe('computedEager', () => {
   })
 
   it('should work', async () => {
-    const foo = ref(0)
+    const foo = shallowRef(0)
 
     const plusOneComputed = computed(() => {
       return foo.value + 1
@@ -46,7 +46,7 @@ describe('computedEager', () => {
   })
 
   it('should not trigger collect change if result is not changed', async () => {
-    const foo = ref(1)
+    const foo = shallowRef(1)
 
     const isOddComputed = computed(() => {
       return foo.value % 2 === 0

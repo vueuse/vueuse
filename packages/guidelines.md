@@ -12,7 +12,8 @@ You can also find some reasons for those design decisions and also some tips for
 - Import all Vue APIs from `"vue"`
 - Use `ref` instead of `reactive` whenever possible
 - Use options object as arguments whenever possible to be more flexible for future extensions.
-- Use `shallowRef` instead of `ref` when wrapping large amounts of data.
+- Prefer `shallowRef` over `ref` whenever possible
+- In case of deep reactivity, prefer explicitly named `deepRef` instead of `ref`
 - Use `configurableWindow` (etc.) when using global variables like `window` to be flexible when working with multi-windows, testing mocks, and SSR.
 - When involved with Web APIs that are not yet implemented by the browser widely, also outputs `isSupported` flag
 - When using `watch` or `watchEffect` internally, also make the `immediate` and `flush` options configurable whenever possible

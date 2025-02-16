@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useArrayDifference } from './index'
 
 describe('useArrayDifference', () => {
@@ -7,8 +7,8 @@ describe('useArrayDifference', () => {
     expect(useArrayDifference).toBeDefined()
   })
   it('should return the difference of two array', () => {
-    const list1 = ref([1, 2, 3, 4, 5])
-    const list2 = ref([4, 5, 6])
+    const list1 = deepRef([1, 2, 3, 4, 5])
+    const list2 = deepRef([4, 5, 6])
 
     const result = useArrayDifference(list1, list2)
     expect(result.value).toEqual([1, 2, 3])
@@ -21,8 +21,8 @@ describe('useArrayDifference', () => {
   })
 
   it('should return the difference of two array with iteratee', () => {
-    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
-    const list2 = ref([{ id: 4 }, { id: 5 }])
+    const list1 = deepRef([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = deepRef([{ id: 4 }, { id: 5 }])
 
     const result = useArrayDifference(list1, list2, (value, othVal) => value.id === othVal.id)
     expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }])
@@ -36,8 +36,8 @@ describe('useArrayDifference', () => {
 
   // key
   it('should return the difference of two array with key', () => {
-    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
-    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }])
+    const list1 = deepRef([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = deepRef([{ id: 3 }, { id: 4 }, { id: 5 }])
 
     const result = useArrayDifference(list1, list2, 'id')
     expect(result.value).toEqual([{ id: 1 }, { id: 2 }])
@@ -50,8 +50,8 @@ describe('useArrayDifference', () => {
   })
 
   it('symmetric diff case 1', () => {
-    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
-    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
+    const list1 = deepRef([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = deepRef([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
 
     const result = useArrayDifference(list1, list2, 'id', { symmetric: true })
     expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 6 }])
@@ -64,8 +64,8 @@ describe('useArrayDifference', () => {
   })
 
   it('symmetric diff case 2', () => {
-    const list1 = ref([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
-    const list2 = ref([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
+    const list1 = deepRef([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }])
+    const list2 = deepRef([{ id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }])
 
     const result = useArrayDifference(list1, list2, (x, y) => x.id === y.id, { symmetric: true })
     expect(result.value).toEqual([{ id: 1 }, { id: 2 }, { id: 6 }])

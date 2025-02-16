@@ -1,6 +1,6 @@
 import { defaultWindow } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, onMounted, ref, shallowRef, useTemplateRef } from 'vue'
+import { defineComponent, h, nextTick, onMounted, shallowRef, useTemplateRef } from 'vue'
 import { mount } from '../../.test'
 import { useCssVar } from './index'
 
@@ -173,7 +173,7 @@ describe('useCssVar', () => {
     const vm = mount(defineComponent({
       setup() {
         const el = useTemplateRef<HTMLDivElement>('el')
-        const key = ref('--color')
+        const key = shallowRef('--color')
         const variable = useCssVar(key, el)
 
         function changeVar() {

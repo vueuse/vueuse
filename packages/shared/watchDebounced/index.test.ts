@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { debouncedWatch, watchDebounced } from './index'
 
 describe('watchDebounced', () => {
@@ -9,7 +9,7 @@ describe('watchDebounced', () => {
   })
 
   it('should work by default', async () => {
-    const num = ref(0)
+    const num = shallowRef(0)
     const cb = vi.fn()
     watchDebounced(num, cb)
 
@@ -20,7 +20,7 @@ describe('watchDebounced', () => {
 
   it('should work when set debounce and maxWait', async () => {
     vi.useFakeTimers()
-    const num = ref(0)
+    const num = shallowRef(0)
     const cb = vi.fn()
     watchDebounced(num, cb, { debounce: 100, maxWait: 150 })
 
@@ -47,7 +47,7 @@ describe('watchDebounced', () => {
 
   it('should work with constant changes over multiple maxWaits', async () => {
     vi.useFakeTimers()
-    const num = ref(0)
+    const num = shallowRef(0)
     const cb = vi.fn()
 
     const constantUpdateOverTime = async (ms: number) => {

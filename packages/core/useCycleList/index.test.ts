@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useCycleList } from './index'
 
 describe('useCycleList', () => {
@@ -31,7 +31,7 @@ describe('useCycleList', () => {
   })
 
   it('should work with ref', () => {
-    const list = ref(['foo', 'bar', 'fooBar'])
+    const list = deepRef(['foo', 'bar', 'fooBar'])
 
     const { state, next, prev, index, go } = useCycleList(list)
 
@@ -71,7 +71,7 @@ describe('useCycleList', () => {
 
   describe('when list empty', () => {
     it('returns the correctly data', () => {
-      const list = ref(['foo', 'bar', 'fooBar'])
+      const list = deepRef(['foo', 'bar', 'fooBar'])
 
       const { state, index } = useCycleList(list)
 
