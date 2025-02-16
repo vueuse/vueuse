@@ -28,7 +28,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
 
   const isSupported = useSupported(() => navigator && 'geolocation' in navigator)
 
-  const locatedAt: Ref<number | null> = deepRef(null)
+  const locatedAt = shallowRef<number | null>(null)
   const error = shallowRef<GeolocationPositionError | null>(null)
   const coords: Ref<Omit<GeolocationPosition['coords'], 'toJSON'>> = deepRef({
     accuracy: 0,
