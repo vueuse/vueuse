@@ -181,6 +181,13 @@ export interface UseFetchOptions {
   updateDataOnError?: boolean
 
   /**
+   * Whether to throw an error when the fetch request fails
+   *
+   * @default false
+   */
+  throwOnFailed?: boolean
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -343,6 +350,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     refetch: false,
     timeout: 0,
     updateDataOnError: false,
+    throwOnFailed: false,
   }
 
   interface InternalConfig {
@@ -374,6 +382,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     fetch = defaultWindow?.fetch,
     initialData,
     timeout,
+    throwOnFailed,
   } = options
 
   // Event Hooks
@@ -634,7 +643,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   if (options.immediate)
-    Promise.resolve().then(() => execute())
+    Promise.resolve().then(() => execute(throwOnFailed))
 
   return {
     ...shell,
