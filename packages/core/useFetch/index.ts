@@ -554,7 +554,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       refetch,
       toRef(url),
     ],
-    ([refetch]) => refetch && execute(),
+    ([refetch]) => refetch && execute(throwOnFailed),
     { deep: true },
   )
 
@@ -603,7 +603,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
               refetch,
               toRef(config.payload),
             ],
-            ([refetch]) => refetch && execute(),
+            ([refetch]) => refetch && execute(throwOnFailed),
             { deep: true },
           )
         }
