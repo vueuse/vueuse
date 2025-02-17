@@ -302,9 +302,11 @@ export function useWebSocket<Data = any>(
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
-          // auto-reconnect will be trigger with ws.onclose()
-          close()
-          explicitlyClosed = false
+          if (status.value !== 'CLOSED') {
+            // auto-reconnect will be trigger with ws.onclose()
+            close()
+            explicitlyClosed = false
+          }
         }, pongTimeout)
       },
       interval,
