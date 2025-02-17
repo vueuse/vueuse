@@ -256,10 +256,11 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        if (
-          (typeof retries === 'number' && (retries < 0 || retried < retries))
-          || (typeof retries === 'function' && retries(retried))
-        ) {
+        const checkRetires = typeof retries === 'function'
+          ? retries
+          : () => typeof retries === 'number' && (retries < 0 || retried < retries)
+
+        if (checkRetires(retried)) {
           retried += 1
           retryTimeout = setTimeout(_init, delay)
         }
