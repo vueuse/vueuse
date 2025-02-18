@@ -4,20 +4,20 @@ import type { Ref, WatchOptions } from 'vue'
 import { createRef } from '@vueuse/shared'
 import { watch } from 'vue'
 
-export interface UseCachedOptions<D extends boolean = true> extends ConfigurableDeepRefs<D>, Omit<WatchOptions, 'deep'> {}
+export interface UseCachedOptions<D extends boolean = true> extends ConfigurableDeepRefs<D>, WatchOptions {}
 
 export function useCached<T, D extends boolean = true>(
   refValue: Ref<T>,
   comparator: (a: T, b: T) => boolean = (a, b) => a === b,
   options?: UseCachedOptions<D>,
 ): UseCachedReturn<T, D> {
-  const { deep = true as D } = options || {}
-  const cachedValue = createRef(refValue.value, deep)
+  const { deepRefs = true as D, ...watchOptions } = options || {}
+  const cachedValue = createRef(refValue.value, deepRefs)
 
   watch(() => refValue.value, (value) => {
     if (!comparator(value, cachedValue.value))
       cachedValue.value = value
-  }, options)
+  }, watchOptions)
 
   return cachedValue
 }

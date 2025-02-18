@@ -46,5 +46,5 @@ export interface ConfigurableDeepRefs<D extends boolean> {
    *
    * @default true - will be changed to `false` by default in the next major
    */
-  deep?: D
+  deepRefs?: D
 }

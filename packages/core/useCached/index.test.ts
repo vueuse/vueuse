@@ -59,7 +59,7 @@ describe('useCached', () => {
     expect(cachedArrayRef.value).toEqual([2])
   })
 
-  describe('should work with options.deep', () => {
+  describe('should work with options.deepRefs', () => {
     // todo: change default with next major
     it.fails('should return shallowRef by default', () => {
       const value = deepRef(1)
@@ -70,14 +70,14 @@ describe('useCached', () => {
     it('should return deepRef if true', () => {
       const value = deepRef(1)
 
-      const cachedValue = useCached(value, vi.fn(), { deep: true })
+      const cachedValue = useCached(value, vi.fn(), { deepRefs: true })
       expect(isShallow(cachedValue)).toBe(false)
     })
 
     it('should return shallowRef if false', () => {
       const value = deepRef(1)
 
-      const cachedValue = useCached(value, vi.fn(), { deep: false })
+      const cachedValue = useCached(value, vi.fn(), { deepRefs: false })
       expect(isShallow(cachedValue)).toBe(true)
     })
   })
