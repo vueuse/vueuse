@@ -1,5 +1,5 @@
 import type { EventHook, EventHookOn } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import { createEventHook, noop } from '@vueuse/shared'
 import { computed, shallowRef } from 'vue'
 
@@ -67,7 +67,7 @@ export function useConfirmDialog<
   ConfirmData = any,
   CancelData = any,
 >(
-  revealed: Ref<boolean> = shallowRef(false),
+  revealed: ShallowRef<boolean> = shallowRef(false),
 ): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   const confirmHook: EventHook = createEventHook<ConfirmData>()
   const cancelHook: EventHook = createEventHook<CancelData>()

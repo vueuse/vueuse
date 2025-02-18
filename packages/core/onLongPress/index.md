@@ -19,10 +19,10 @@ Function provides modifiers in options
 ```vue
 <script setup lang="ts">
 import { onLongPress } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const htmlRefHook = ref<HTMLElement>()
-const longPressedHook = ref(false)
+const htmlRefHook = useTemplateRef<HTMLElement>('htmlRefHook')
+const longPressedHook = shallowRef(false)
 
 function onLongPressCallbackHook(e: PointerEvent) {
   longPressedHook.value = true
@@ -60,9 +60,9 @@ onLongPress(
 ```vue
 <script setup lang="ts">
 import { OnLongPress } from '@vueuse/components'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const longPressedComponent = ref(false)
+const longPressedComponent = shallowRef(false)
 
 function onLongPressCallbackComponent(e: PointerEvent) {
   longPressedComponent.value = true
@@ -94,9 +94,9 @@ function resetComponent() {
 ```vue
 <script setup lang="ts">
 import { vOnLongPress } from '@vueuse/components'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const longPressedDirective = ref(false)
+const longPressedDirective = shallowRef(false)
 
 function onLongPressCallbackDirective(e: PointerEvent) {
   longPressedDirective.value = true

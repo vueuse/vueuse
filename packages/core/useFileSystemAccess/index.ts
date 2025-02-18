@@ -1,5 +1,5 @@
 import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -197,12 +197,12 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
 
 export interface UseFileSystemAccessReturn<T = string> {
   isSupported: ComputedRef<boolean>
-  data: Ref<T | undefined>
-  file: Ref<File | undefined>
-  fileName: Ref<string>
-  fileMIME: Ref<string>
-  fileSize: Ref<number>
-  fileLastModified: Ref<number>
+  data: ShallowRef<T | undefined>
+  file: ShallowRef<File | undefined>
+  fileName: ComputedRef<string>
+  fileMIME: ComputedRef<string>
+  fileSize: ComputedRef<number>
+  fileLastModified: ComputedRef<number>
   open: (_options?: UseFileSystemAccessCommonOptions) => Awaitable<void>
   create: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>
   save: (_options?: UseFileSystemAccessShowSaveFileOptions) => Awaitable<void>

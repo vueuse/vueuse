@@ -11,7 +11,7 @@ Reactive utility to track or set the focus state of a DOM element. State changes
 ```ts
 import { useFocus } from '@vueuse/core'
 
-const target = ref()
+const target = shallowRef()
 const { focused } = useFocus(target)
 
 watch(focused, (focused) => {
@@ -28,7 +28,7 @@ To focus the element on its first render one can provide the `initialValue` opti
 ```ts
 import { useFocus } from '@vueuse/core'
 
-const target = ref()
+const target = shallowRef()
 const { focused } = useFocus(target, { initialValue: true })
 ```
 
@@ -39,11 +39,11 @@ Changes of the `focused` reactive ref will automatically trigger `focus` and `bl
 ```vue
 <script>
 import { useFocus } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 export default {
   setup() {
-    const input = ref()
+    const input = shallowRef()
     const { focused } = useFocus(input)
 
     return {

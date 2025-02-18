@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import { noop } from '@vueuse/shared'
 import { reactive, shallowRef } from 'vue'
 
@@ -13,7 +13,7 @@ export interface UseAsyncQueueResult<T> {
 }
 
 export interface UseAsyncQueueReturn<T> {
-  activeIndex: Ref<number>
+  activeIndex: ShallowRef<number>
   result: T
 }
 

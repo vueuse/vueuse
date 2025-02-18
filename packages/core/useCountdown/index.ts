@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
@@ -28,7 +28,7 @@ export interface UseCountdownReturn extends Pausable {
   /**
    * Current countdown value.
    */
-  remaining: Ref<number>
+  remaining: ShallowRef<number>
   /**
    * Resets the countdown and repeatsLeft to their initial values.
    */

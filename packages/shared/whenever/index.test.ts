@@ -10,7 +10,7 @@ describe('whenever', () => {
   it('ignore falsy state change', async () => {
     // use a component to simulate normal use case
     const vm = useSetup(() => {
-      const number = deepRef<number | null | undefined>(1)
+      const number = shallowRef<number | null | undefined>(1)
       const changeNumber = (v: number) => number.value = v
       const watchCount = shallowRef(0)
       const watchValue: Ref<number | undefined> = deepRef()
@@ -59,7 +59,7 @@ describe('whenever', () => {
 
   it('once', async () => {
     const vm = useSetup(() => {
-      const number = deepRef<number | null | undefined>(1)
+      const number = shallowRef<number | null | undefined>(1)
       const watchCount = shallowRef(0)
       const watchValue: Ref<number | undefined> = deepRef()
 

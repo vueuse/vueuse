@@ -1,7 +1,7 @@
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
-import { ref as deepRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -25,7 +25,7 @@ export interface UseModifierOptions<Initial> extends ConfigurableDocument {
   initial?: Initial
 }
 
-export type UseKeyModifierReturn<Initial> = Ref<Initial extends boolean ? boolean : boolean | null>
+export type UseKeyModifierReturn<Initial> = ShallowRef<Initial extends boolean ? boolean : boolean | null>
 
 export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModifier, options: UseModifierOptions<Initial> = {}): UseKeyModifierReturn<Initial> {
   const {
@@ -34,7 +34,7 @@ export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModi
     initial = null,
   } = options
 
-  const state = deepRef(initial) as Ref<boolean>
+  const state = shallowRef(initial) as ShallowRef<boolean>
 
   if (document) {
     events.forEach((listenerEvent) => {

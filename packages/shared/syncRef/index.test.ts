@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { syncRef } from './index'
 
 describe('syncRef', () => {
@@ -103,8 +103,8 @@ describe('syncRef', () => {
     const ref1 = shallowRef(1)
     const refString = shallowRef('1')
     const refNumber = shallowRef(1)
-    const refNumString = deepRef<number | string>(1)
-    const refNumBoolean = deepRef<number | boolean>(1)
+    const refNumString = shallowRef<number | string>(1)
+    const refNumBoolean = shallowRef<number | boolean>(1)
     // L = A && direction === 'both'
     syncRef(ref0, ref1)()
     syncRef(ref0, ref1, {

@@ -2,7 +2,7 @@
 
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
@@ -46,9 +46,9 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
   } = options
 
   const worker = deepRef<(Worker & { _url?: string }) | undefined>()
-  const workerStatus = deepRef<WebWorkerStatus>('PENDING')
+  const workerStatus = shallowRef<WebWorkerStatus>('PENDING')
   const promise = deepRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
-  const timeoutId = deepRef<number>()
+  const timeoutId = shallowRef<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
     if (worker.value && worker.value._url && window) {

@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { PointerType, Position } from '../types'
 import type { UseSwipeDirection } from '../useSwipe'
 import { toRef, tryOnMounted } from '@vueuse/shared'
@@ -43,12 +43,12 @@ export interface UsePointerSwipeOptions {
 }
 
 export interface UsePointerSwipeReturn {
-  readonly isSwiping: Ref<boolean>
-  direction: Readonly<Ref<UseSwipeDirection>>
+  readonly isSwiping: ShallowRef<boolean>
+  direction: Readonly<ShallowRef<UseSwipeDirection>>
   readonly posStart: Position
   readonly posEnd: Position
-  distanceX: Readonly<Ref<number>>
-  distanceY: Readonly<Ref<number>>
+  distanceX: Readonly<ComputedRef<number>>
+  distanceY: Readonly<ComputedRef<number>>
   stop: () => void
 }
 

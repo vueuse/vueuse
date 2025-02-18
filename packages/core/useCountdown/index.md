@@ -26,10 +26,10 @@ You can use a `ref` to change the initial countdown.
 `start()` and `resume()` also accept a new countdown value for the next countdown.
 
 ```js
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useCountdown } from '@vueuse/core'
 
-const countdown = ref(5)
+const countdown = shallowRef(5)
 const { start, reset } = useCountdown(countdown, {
 })
 

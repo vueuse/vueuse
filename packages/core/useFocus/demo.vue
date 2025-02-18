@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useFocus } from '@vueuse/core'
-import { ref as deepRef } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const text = deepRef()
-const input = deepRef()
-const button = deepRef()
+const text = useTemplateRef<HTMLElement>('text')
+const input = useTemplateRef<HTMLInputElement>('input')
+const button = useTemplateRef<HTMLButtonElement>('button')
 
 const { focused: paragraphFocus } = useFocus(text)
 const { focused: inputFocus } = useFocus(input, { initialValue: true })

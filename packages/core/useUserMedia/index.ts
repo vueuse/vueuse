@@ -36,8 +36,8 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
  * @param options
  */
 export function useUserMedia(options: UseUserMediaOptions = {}) {
-  const enabled = deepRef(options.enabled ?? false)
-  const autoSwitch = deepRef(options.autoSwitch ?? true)
+  const enabled = shallowRef(options.enabled ?? false)
+  const autoSwitch = shallowRef(options.autoSwitch ?? true)
   const constraints = deepRef(options.constraints)
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
