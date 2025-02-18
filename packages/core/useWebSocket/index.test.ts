@@ -373,7 +373,7 @@ describe('useWebSocket', () => {
       await vi.advanceTimersByTimeAsync(500)
       expect(mockWebSocket.prototype.send).toBeCalledWith('ping')
     })
-    it('shoul not send a heartbeat if heartbeat=false', async () => {
+    it('should not send a heartbeat if heartbeat=false', async () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {
           heartbeat: false,
@@ -432,6 +432,31 @@ describe('useWebSocket', () => {
       mockWebSocket.prototype.close.mockClear()
       await vi.advanceTimersByTimeAsync(1500)
       expect(mockWebSocket.prototype.close).not.toHaveBeenCalled()
+    })
+    it('should not send a heartbeat if the connection is closed', async () => {
+      const messageSpy = vi.fn(() => 'ping')
+      vm = useSetup(() => {
+        const ref = useWebSocket('wss://server.example.com', {
+          heartbeat: {
+            message: messageSpy,
+            interval: 500,
+            pongTimeout: 1000,
+          },
+        })
+
+        return {
+          ref,
+        }
+      })
+      expect(vm.ref.status.value).toBe('CONNECTING')
+      vm.ref.ws.value?.onopen?.(new Event('open'))
+      expect(vm.ref.status.value).toBe('OPEN')
+      await vi.advanceTimersByTimeAsync(500)
+      expect(messageSpy).toHaveBeenCalledTimes(1)
+      vm.ref.ws.value?.onclose?.(new CloseEvent('close'))
+      expect(vm.ref.status.value).toBe('CLOSED')
+      await vi.advanceTimersByTimeAsync(2500)
+      expect(messageSpy).toHaveBeenCalledTimes(1)
     })
   })
 })

@@ -247,6 +247,8 @@ export function useWebSocket<Data = any>(
 
     ws.onclose = (ev) => {
       status.value = 'CLOSED'
+      resetHeartbeat()
+      heartbeatPause?.()
       onDisconnected?.(ws, ev)
 
       if (!explicitlyClosed && options.autoReconnect && (wsRef.value == null || ws === wsRef.value)) {
@@ -302,11 +304,9 @@ export function useWebSocket<Data = any>(
         if (pongTimeoutWait != null)
           return
         pongTimeoutWait = setTimeout(() => {
-          if (status.value !== 'CLOSED') {
-            // auto-reconnect will be trigger with ws.onclose()
-            close()
-            explicitlyClosed = false
-          }
+          // auto-reconnect will be trigger with ws.onclose()
+          close()
+          explicitlyClosed = false
         }, pongTimeout)
       },
       interval,
