@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { onStartTyping } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const input = ref<HTMLInputElement | null>(null)
+const input = shallowRef<HTMLInputElement | null>(null)
 
 onStartTyping(() => {
   if (input.value !== document.activeElement)

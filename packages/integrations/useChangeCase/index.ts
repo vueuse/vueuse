@@ -1,28 +1,45 @@
-import type { Options } from 'change-case'
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
-import type { ComputedRef, WritableComputedRef } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
-import * as changeCase from './changeCase'
+import type { Options } from 'change-case'
+import type { ComputedRef, WritableComputedRef } from 'vue'
+import * as changeCase from 'change-case'
+import { computed, ref as deepRef, toValue } from 'vue'
 
-export type ChangeCaseType = keyof typeof changeCase
+type EndsWithCase<T> = T extends `${infer _}Case` ? T : never
+type FilterKeys<T> = { [K in keyof T as K extends string ? K : never]: EndsWithCase<K> }
+type ChangeCaseKeys = FilterKeys<typeof changeCase>
 
-export function useChangeCase(input: MaybeRef<string>, type: ChangeCaseType, options?: Options | undefined): WritableComputedRef<string>
-export function useChangeCase(input: MaybeRefOrGetter<string>, type: ChangeCaseType, options?: Options | undefined): ComputedRef<string>
+export type ChangeCaseType = ChangeCaseKeys[keyof ChangeCaseKeys]
+
+const changeCaseTransforms: any = /* @__PURE__ */ Object.entries(changeCase)
+  .filter(([name, fn]) => typeof fn === 'function' && name.endsWith('Case'))
+  .reduce((acc, [name, fn]) => {
+    acc[name] = fn
+    return acc
+  }, {} as any)
+
+export function useChangeCase(input: MaybeRef<string>, type: MaybeRefOrGetter<ChangeCaseType>, options?: MaybeRefOrGetter<Options> | undefined): WritableComputedRef<string>
+export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrGetter<ChangeCaseType>, options?: MaybeRefOrGetter<Options> | undefined): ComputedRef<string>
 
 /**
  * Reactive wrapper for `change-case`
  *
  * @see https://vueuse.org/useChangeCase
  */
-export function useChangeCase(input: MaybeRefOrGetter<string>, type: ChangeCaseType, options?: Options | undefined) {
-  if (typeof input === 'function')
-    return computed(() => changeCase[type](toValue(input), options))
+export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrGetter<ChangeCaseType>, options?: MaybeRefOrGetter<Options> | undefined) {
+  const typeRef = computed(() => {
+    const t = toValue(type)
+    if (!changeCaseTransforms[t])
+      throw new Error(`Invalid change case type "${t}"`)
+    return t
+  })
 
-  const text = ref(input)
+  if (typeof input === 'function')
+    return computed(() => changeCaseTransforms[typeRef.value](toValue(input), toValue(options)))
+
+  const text = deepRef(input)
   return computed<string>({
     get() {
-      return changeCase[type](text.value, options)
+      return changeCaseTransforms[typeRef.value](text.value, toValue(options))
     },
     set(value) {
       text.value = value

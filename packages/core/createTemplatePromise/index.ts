@@ -1,5 +1,5 @@
-import type { DefineComponent, Ref, TransitionGroupProps } from 'vue-demi'
-import { Fragment, TransitionGroup, defineComponent, h, isVue3, ref, shallowReactive } from 'vue-demi'
+import type { DefineComponent, Ref, TransitionGroupProps } from 'vue'
+import { ref as deepRef, defineComponent, Fragment, h, shallowReactive, TransitionGroup } from 'vue'
 
 export interface TemplatePromiseProps<Return, Args extends any[] = []> {
   /**
@@ -47,7 +47,7 @@ export interface TemplatePromiseOptions {
   transition?: TransitionGroupProps
 }
 
-export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<{}> & {
+export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<object> & {
   new(): {
     $slots: {
       default: (_: TemplatePromiseProps<Return, Args>) => any
@@ -65,16 +65,8 @@ export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<{
 export function createTemplatePromise<Return, Args extends any[] = []>(
   options: TemplatePromiseOptions = {},
 ): TemplatePromise<Return, Args> {
-  // compatibility: Vue 3 or above
-  if (!isVue3) {
-    if (process.env.NODE_ENV !== 'production')
-      throw new Error('[VueUse] createTemplatePromise only works in Vue 3 or above.')
-    // @ts-expect-error incompatible
-    return
-  }
-
   let index = 0
-  const instances = ref([]) as Ref<TemplatePromiseProps<Return, Args>[]>
+  const instances = deepRef([]) as Ref<TemplatePromiseProps<Return, Args>[]>
 
   function create(...args: Args) {
     const props = shallowReactive({
@@ -119,8 +111,7 @@ export function createTemplatePromise<Return, Args extends any[] = []>(
     return renderList
   })
 
-  // eslint-disable-next-line ts/prefer-ts-expect-error
-  // @ts-ignore There's a breaking type change in Vue 3.3 <https://github.com/vuejs/core/pull/7963>
+  // @ts-expect-error There's a breaking type change in Vue 3.3 <https://github.com/vuejs/core/pull/7963>
   component.start = start
 
   return component as any

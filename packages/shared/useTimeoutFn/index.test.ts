@@ -1,26 +1,38 @@
-import { ref } from 'vue-demi'
-import { describe, expect, it, vi } from 'vitest'
-import { promiseTimeout } from '../utils'
-import { useTimeoutFn } from '.'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { shallowRef } from 'vue'
+import { useTimeoutFn } from './index'
 
 describe('useTimeoutFn', () => {
-  it('supports reactive intervals', async () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  it('basic start/stop', async () => {
     const callback = vi.fn()
-    const interval = ref(0)
+    const interval = shallowRef(0)
     const { start } = useTimeoutFn(callback, interval)
 
-    start()
-    await promiseTimeout(1)
+    vi.advanceTimersByTime(1)
     expect(callback).toBeCalled()
 
     callback.mockReset()
     interval.value = 50
 
     start()
-    await promiseTimeout(1)
+    vi.advanceTimersByTime(1)
     expect(callback).not.toBeCalled()
-    await promiseTimeout(100)
+    vi.advanceTimersByTime(100)
     expect(callback).toBeCalled()
+  })
+
+  it('stop/start with immediateCallback', async () => {
+    const callback = vi.fn()
+    useTimeoutFn(callback, 50, { immediateCallback: true })
+
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    vi.advanceTimersByTime(100)
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 
   it('supports getting pending status', async () => {
@@ -35,7 +47,7 @@ describe('useTimeoutFn', () => {
     expect(isPending.value).toBe(true)
     expect(callback).not.toBeCalled()
 
-    await promiseTimeout(1)
+    vi.advanceTimersByTime(1)
 
     expect(isPending.value).toBe(false)
     expect(callback).toBeCalled()

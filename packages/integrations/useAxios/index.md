@@ -23,8 +23,8 @@ const { data, isFinished } = useAxios('/api/posts')
 or use an instance of axios
 
 ```ts
-import axios from 'axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
+import axios from 'axios'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -36,8 +36,8 @@ const { data, isFinished } = useAxios('/posts', instance)
 use an instance of axios with config options
 
 ```ts
-import axios from 'axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
+import axios from 'axios'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -86,8 +86,8 @@ const result = await execute(url)
 use an instance of axios with `immediate` options
 
 ```ts
-import axios from 'axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
+import axios from 'axios'
 
 const instance = axios.create({
   baseURL: '/api',

@@ -1,6 +1,7 @@
 {
   "name": "@vueuse/integrations",
-  "version": "10.9.0",
+  "type": "module",
+  "version": "12.7.0",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -91,20 +92,32 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
+  "files": [
+    "**/*.cjs",
+    "**/*.d.cts",
+    "**/*.d.mts",
+    "**/*.d.ts",
+    "**/*.js",
+    "**/*.mjs"
+  ],
+  "scripts": {
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
+  },
   "peerDependencies": {
-    "async-validator": "*",
-    "axios": "*",
-    "change-case": "*",
-    "drauu": "*",
-    "focus-trap": "*",
-    "fuse.js": "*",
-    "idb-keyval": "*",
-    "jwt-decode": "*",
-    "nprogress": "*",
-    "qrcode": "*",
-    "sortablejs": "*",
-    "universal-cookie": "*"
+    "async-validator": "^4",
+    "axios": "^1",
+    "change-case": "^5",
+    "drauu": "^0.4",
+    "focus-trap": "^7",
+    "fuse.js": "^7",
+    "idb-keyval": "^6",
+    "jwt-decode": "^4",
+    "nprogress": "^0.2",
+    "qrcode": "^1.5",
+    "sortablejs": "^1",
+    "universal-cookie": "^7"
   },
   "peerDependenciesMeta": {
     "async-validator": {
@@ -147,23 +160,23 @@
   "dependencies": {
     "@vueuse/core": "workspace:*",
     "@vueuse/shared": "workspace:*",
-    "vue-demi": ">=0.14.7"
+    "vue": "catalog:"
   },
   "devDependencies": {
-    "@types/nprogress": "^0.2.3",
-    "@types/qrcode": "^1.5.5",
-    "@types/sortablejs": "^1.15.8",
-    "async-validator": "^4.2.5",
-    "axios": "^1.6.7",
-    "change-case": "^4.1.2",
-    "drauu": "^0.3.7",
-    "focus-trap": "^7.5.4",
-    "fuse.js": "^6.6.2",
-    "idb-keyval": "^6.2.1",
-    "jwt-decode": "^3.1.2",
-    "nprogress": "^0.2.0",
-    "qrcode": "^1.5.3",
-    "sortablejs": "^1.15.2",
-    "universal-cookie": "^6.1.3"
+    "@types/nprogress": "catalog:",
+    "@types/qrcode": "catalog:",
+    "@types/sortablejs": "catalog:",
+    "async-validator": "catalog:",
+    "axios": "catalog:",
+    "change-case": "catalog:",
+    "drauu": "catalog:",
+    "focus-trap": "catalog:",
+    "fuse.js": "catalog:",
+    "idb-keyval": "catalog:",
+    "jwt-decode": "catalog:",
+    "nprogress": "catalog:",
+    "qrcode": "catalog:",
+    "sortablejs": "catalog:",
+    "universal-cookie": "catalog:"
   }
 }

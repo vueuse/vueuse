@@ -9,9 +9,9 @@ Reactive [Firebase Realtime Database](https://firebase.google.com/docs/database)
 ## Usage
 
 ```js
+import { useRTDB } from '@vueuse/firebase/useRTDB'
 import { initializeApp } from 'firebase/app'
 import { getDatabase } from 'firebase/database'
-import { useRTDB } from '@vueuse/firebase/useRTDB'
 
 const app = initializeApp({ /* config */ })
 const db = getDatabase(app)

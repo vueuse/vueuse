@@ -1,10 +1,10 @@
-import { tryOnMounted } from '@vueuse/shared'
-import { computed, ref } from 'vue-demi'
-
-import type { MaybeElement } from '../unrefElement'
-import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableDocument } from '../_configurable'
+import type { MaybeElement } from '../unrefElement'
+import { tryOnMounted } from '@vueuse/shared'
+
+import { computed, ref as deepRef } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { useMutationObserver } from '../useMutationObserver'
 
 export type UseTextDirectionValue = 'ltr' | 'rtl' | 'auto'
 
@@ -46,7 +46,7 @@ export function useTextDirection(options: UseTextDirectionOptions = {}) {
     return document?.querySelector(selector)?.getAttribute('dir') as UseTextDirectionValue ?? initialValue
   }
 
-  const dir = ref<UseTextDirectionValue>(getValue())
+  const dir = deepRef<UseTextDirectionValue>(getValue())
 
   tryOnMounted(() => dir.value = getValue())
 

@@ -1,11 +1,11 @@
 import type { MaybeRef } from '@vueuse/shared'
-import { objectPick, toRefs } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import type { PointerType, Position } from '../types'
+import { objectPick, toRefs } from '@vueuse/shared'
+import { ref as deepRef, shallowRef } from 'vue'
+import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 export interface UsePointerState extends Position {
   pressure: number
@@ -62,8 +62,8 @@ export function usePointer(options: UsePointerOptions = {}) {
     target = defaultWindow,
   } = options
 
-  const isInside = ref(false)
-  const state = ref(options.initialValue || {}) as unknown as Ref<UsePointerState>
+  const isInside = shallowRef(false)
+  const state = deepRef(options.initialValue || {}) as unknown as Ref<UsePointerState>
   Object.assign(state.value, defaultState, state.value)
 
   const handler = (event: PointerEvent) => {

@@ -1,8 +1,8 @@
-import { ref } from 'vue-demi'
+import type { ConfigurableWindow } from '../_configurable'
+import { ref as deepRef, shallowRef } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 // TypeScript dropped the inline types for these types in 5.2
 // We vendor them here to avoid the dependency
@@ -32,14 +32,14 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
 
   const screenOrientation = (isSupported.value ? window!.screen.orientation : {}) as ScreenOrientation
 
-  const orientation = ref<OrientationType | undefined>(screenOrientation.type)
-  const angle = ref(screenOrientation.angle || 0)
+  const orientation = deepRef<OrientationType | undefined>(screenOrientation.type)
+  const angle = shallowRef(screenOrientation.angle || 0)
 
   if (isSupported.value) {
     useEventListener(window, 'orientationchange', () => {
       orientation.value = screenOrientation.type
       angle.value = screenOrientation.angle
-    })
+    }, { passive: true })
   }
 
   const lockOrientation = (type: OrientationLockType) => {

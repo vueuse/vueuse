@@ -1,10 +1,12 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { ref, watchEffect } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
+import { pxValue } from '@vueuse/shared'
+import { computed, shallowRef, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
+import { useSSRWidth } from '../useSSRWidth'
 import { useSupported } from '../useSupported'
 
 /**
@@ -14,49 +16,48 @@ import { useSupported } from '../useSupported'
  * @param query
  * @param options
  */
-export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow = {}) {
-  const { window = defaultWindow } = options
+export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow & { ssrWidth?: number } = {}) {
+  const { window = defaultWindow, ssrWidth = useSSRWidth() } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
-  let mediaQuery: MediaQueryList | undefined
-  const matches = ref(false)
+  const ssrSupport = shallowRef(typeof ssrWidth === 'number')
+
+  const mediaQuery = shallowRef<MediaQueryList>()
+  const matches = shallowRef(false)
 
   const handler = (event: MediaQueryListEvent) => {
     matches.value = event.matches
   }
 
-  const cleanup = () => {
-    if (!mediaQuery)
-      return
-    if ('removeEventListener' in mediaQuery)
-      mediaQuery.removeEventListener('change', handler)
-    else
-      // @ts-expect-error deprecated API
-      mediaQuery.removeListener(handler)
-  }
+  watchEffect(() => {
+    if (ssrSupport.value) {
+      // Exit SSR support on mounted if window available
+      ssrSupport.value = !isSupported.value
 
-  const stopWatch = watchEffect(() => {
+      const queryStrings = toValue(query).split(',')
+      matches.value = queryStrings.some((queryString) => {
+        const not = queryString.includes('not all')
+        const minWidth = queryString.match(/\(\s*min-width:\s*(-?\d+(?:\.\d*)?[a-z]+\s*)\)/)
+        const maxWidth = queryString.match(/\(\s*max-width:\s*(-?\d+(?:\.\d*)?[a-z]+\s*)\)/)
+        let res = Boolean(minWidth || maxWidth)
+        if (minWidth && res) {
+          res = ssrWidth! >= pxValue(minWidth[1])
+        }
+        if (maxWidth && res) {
+          res = ssrWidth! <= pxValue(maxWidth[1])
+        }
+        return not ? !res : res
+      })
+      return
+    }
     if (!isSupported.value)
       return
 
-    cleanup()
-
-    mediaQuery = window!.matchMedia(toValue(query))
-
-    if ('addEventListener' in mediaQuery)
-      mediaQuery.addEventListener('change', handler)
-    else
-      // @ts-expect-error deprecated API
-      mediaQuery.addListener(handler)
-
-    matches.value = mediaQuery.matches
+    mediaQuery.value = window!.matchMedia(toValue(query))
+    matches.value = mediaQuery.value.matches
   })
 
-  tryOnScopeDispose(() => {
-    stopWatch()
-    cleanup()
-    mediaQuery = undefined
-  })
+  useEventListener(mediaQuery, 'change', handler, { passive: true })
 
-  return matches
+  return computed(() => matches.value)
 }

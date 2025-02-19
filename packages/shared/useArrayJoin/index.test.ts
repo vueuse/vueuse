@@ -1,6 +1,6 @@
-import { ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { useArrayJoin } from '.'
+import { ref as deepRef, shallowRef } from 'vue'
+import { useArrayJoin } from './index'
 
 describe('useArrayJoin', () => {
   it('should be defined', () => {
@@ -8,9 +8,9 @@ describe('useArrayJoin', () => {
   })
 
   it('should work with array of refs', () => {
-    const item1 = ref('foo')
-    const item2 = ref(0)
-    const item3 = ref({ prop: 'val' })
+    const item1 = shallowRef('foo')
+    const item2 = shallowRef(0)
+    const item3 = deepRef({ prop: 'val' })
     const list = [item1, item2, item3]
     const result = useArrayJoin(list)
     expect(result.value).toBe('foo,0,[object Object]')
@@ -19,7 +19,7 @@ describe('useArrayJoin', () => {
   })
 
   it('should work with reactive array', () => {
-    const list = ref(['string', 0, { prop: 'val' }, false, [1], [[2]], null, undefined, []])
+    const list = deepRef(['string', 0, { prop: 'val' }, false, [1], [[2]], null, undefined, []])
     const result = useArrayJoin(list)
     expect(result.value).toBe('string,0,[object Object],false,1,2,,,')
     list.value.push(true)
@@ -29,8 +29,8 @@ describe('useArrayJoin', () => {
   })
 
   it('should work with reactive separator', () => {
-    const list = ref(['string', 0, { prop: 'val' }, [1], [[2]], null, undefined, []])
-    const separator = ref()
+    const list = deepRef(['string', 0, { prop: 'val' }, [1], [[2]], null, undefined, []])
+    const separator = deepRef()
     const result = useArrayJoin(list, separator)
     expect(result.value).toBe('string,0,[object Object],1,2,,,')
     separator.value = ''

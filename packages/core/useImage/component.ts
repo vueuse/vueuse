@@ -1,8 +1,8 @@
-import { defineComponent, h, reactive } from 'vue-demi'
-import { useImage } from '../useImage'
-import type { UseImageOptions } from '../useImage'
-
 import type { RenderableComponent } from '../types'
+import type { UseImageOptions } from '../useImage'
+import { defineComponent, h, reactive } from 'vue'
+
+import { useImage } from '../useImage'
 
 export const UseImage = /* #__PURE__ */ defineComponent<UseImageOptions & RenderableComponent>({
   name: 'UseImage',
@@ -16,6 +16,12 @@ export const UseImage = /* #__PURE__ */ defineComponent<UseImageOptions & Render
     'loading',
     'crossorigin',
     'referrerPolicy',
+    'width',
+    'height',
+    'decoding',
+    'fetchPriority',
+    'ismap',
+    'usemap',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const data = reactive(useImage(props))

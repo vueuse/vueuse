@@ -1,7 +1,8 @@
-import { ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { onElementRemoval } from '../onElementRemoval'
+import { useEventListener } from '../useEventListener'
 
 export interface UseActiveElementOptions extends ConfigurableWindow, ConfigurableDocumentOrShadowRoot {
   /**
@@ -10,6 +11,12 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
    * @default true
    */
   deep?: boolean
+  /**
+   * Track active element when it's removed from the DOM
+   * Using a MutationObserver under the hood
+   * @default false
+   */
+  triggerOnRemoval?: boolean
 }
 
 /**
@@ -24,6 +31,7 @@ export function useActiveElement<T extends HTMLElement>(
   const {
     window = defaultWindow,
     deep = true,
+    triggerOnRemoval = false,
   } = options
   const document = options.document ?? window?.document
 
@@ -36,18 +44,37 @@ export function useActiveElement<T extends HTMLElement>(
     return element
   }
 
-  const activeElement = ref<T | null | undefined>()
+  const activeElement = shallowRef<T | null | undefined>()
   const trigger = () => {
     activeElement.value = getDeepActiveElement() as T | null | undefined
   }
 
   if (window) {
-    useEventListener(window, 'blur', (event) => {
-      if (event.relatedTarget !== null)
-        return
-      trigger()
-    }, true)
-    useEventListener(window, 'focus', trigger, true)
+    const listenerOptions = {
+      capture: true,
+      passive: true,
+    }
+
+    useEventListener(
+      window,
+      'blur',
+      (event) => {
+        if (event.relatedTarget !== null)
+          return
+        trigger()
+      },
+      listenerOptions,
+    )
+    useEventListener(
+      window,
+      'focus',
+      trigger,
+      listenerOptions,
+    )
+  }
+
+  if (triggerOnRemoval) {
+    onElementRemoval(activeElement, trigger, { document })
   }
 
   trigger()

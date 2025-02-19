@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/nuxt",
   "type": "module",
-  "version": "10.9.0",
+  "version": "12.7.0",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -33,19 +33,31 @@
   "main": "./index.cjs",
   "module": "./index.mjs",
   "types": "./index.d.ts",
+  "files": [
+    "*.cjs",
+    "*.d.cts",
+    "*.d.mts",
+    "*.d.ts",
+    "*.js",
+    "*.mjs"
+  ],
+  "scripts": {
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
+  },
   "peerDependencies": {
     "nuxt": "^3.0.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.10.2",
+    "@nuxt/kit": "catalog:",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
-    "local-pkg": "^0.5.0",
-    "vue-demi": ">=0.14.7"
+    "local-pkg": "catalog:",
+    "vue": "catalog:"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.10.2",
-    "nuxt": "^3.10.2",
-    "unimport": "^3.7.1"
+    "@nuxt/schema": "catalog:",
+    "nuxt": "catalog:",
+    "unimport": "catalog:"
   }
 }

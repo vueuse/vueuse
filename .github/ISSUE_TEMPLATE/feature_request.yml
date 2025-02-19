@@ -1,13 +1,25 @@
 name: 🚀 New feature proposal
 description: Propose a new feature to be added to VueUse
-labels: [enhancement]
+type: Feature
+title: '`functionName` | '
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for your interest in the project and taking the time to fill out this feature report!
 
-        > **Warning**: **⚠️ Slowing down new functions**
+        Please follow the one of the following title formats:
+        - `` `functionName` | Short Description `` - if related to a specific function
+        - `Short Description` - if it's a general feature request
+
+        For example:
+        ```
+        `useFetch` | Support for custom headers
+        ```
+
+        > [!Warning]
+        >
+        > **Slowing down new functions**
         >
         > As the VueUse audience continues to grow, we have been inundated with an overwhelming number of feature requests and pull requests. As a result, maintaining the project has become increasingly challenging and has stretched our capacity to its limits. As such, in the near future, we may need to slow down our acceptance of new features and prioritize the stability and quality of existing functions. **Please note that new features for VueUse may not be accepted at this time.** If you have any new ideas, we suggest that you first incorporate them into your own codebase, iterate on them to suit your needs, and assess their generalizability. If you strongly believe that your ideas are beneficial to the community, you may submit a pull request along with your use cases, and we would be happy to review and discuss them. Thank you for your understanding.
   - type: textarea

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
 import { interval } from 'rxjs'
-import { useSubscription } from '.'
+import { shallowRef } from 'vue'
+import { useSubscription } from './index'
 
-const count = ref(0)
+const count = shallowRef(0)
 useSubscription(
   interval(1000)
     .subscribe(() => {

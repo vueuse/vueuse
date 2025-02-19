@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import { interval } from 'rxjs'
 import {
   map,
@@ -8,12 +7,13 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators'
-import { useSubscription } from '../useSubscription'
+import { ref as deepRef, shallowRef } from 'vue'
 import { toObserver } from '../toObserver'
-import { from, fromEvent } from '.'
+import { useSubscription } from '../useSubscription'
+import { from, fromEvent } from './index'
 
-const count = ref(0)
-const button = ref<HTMLButtonElement | null>(null)
+const count = shallowRef(0)
+const button = deepRef<HTMLButtonElement | null>(null)
 
 useSubscription(
   interval(1000)

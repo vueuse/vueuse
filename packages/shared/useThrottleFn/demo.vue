@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useThrottleFn } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const updated = ref(0)
-const clicked = ref(0)
+const updated = shallowRef(0)
+const clicked = shallowRef(0)
 const throttledFn = useThrottleFn(() => {
   updated.value += 1
 }, 1000)

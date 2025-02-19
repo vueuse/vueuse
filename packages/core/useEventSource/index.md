@@ -20,21 +20,25 @@ See the [Type Declarations](#type-declarations) for more options.
 
 You can define named events with the second parameter
 
-```js
+```ts
 import { useEventSource } from '@vueuse/core'
 
 const { event, data } = useEventSource('https://event-source-url', ['notice', 'update'] as const)
 ```
 
-### Immediate
+### immediate
 
-Auto-connect (enabled by default).
+Enable by default.
 
-This will call `open()` automatically for you and you don't need to call it by yourself.
+Establish the connection immediately when the composable is called.
 
-If url is provided as a ref, this also controls whether a connection is re-established when its value is changed (or whether you need to call open() again for the change to take effect).
+### autoConnect
 
-### Auto-reconnection
+Enable by default.
+
+If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
+
+### Auto Reconnection on Errors
 
 Reconnect on errors automatically (disabled by default).
 

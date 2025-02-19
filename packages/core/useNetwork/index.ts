@@ -1,54 +1,54 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { ComputedRef, ShallowRef } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
+import { readonly, shallowRef } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
 export interface NetworkState {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   /**
    * If the user is currently connected.
    */
-  isOnline: Ref<boolean>
+  isOnline: Readonly<ShallowRef<boolean>>
   /**
    * The time since the user was last connected.
    */
-  offlineAt: Ref<number | undefined>
+  offlineAt: Readonly<ShallowRef<number | undefined>>
   /**
    * At this time, if the user is offline and reconnects
    */
-  onlineAt: Ref<number | undefined>
+  onlineAt: Readonly<ShallowRef<number | undefined>>
   /**
    * The download speed in Mbps.
    */
-  downlink: Ref<number | undefined>
+  downlink: Readonly<ShallowRef<number | undefined>>
   /**
    * The max reachable download speed in Mbps.
    */
-  downlinkMax: Ref<number | undefined>
+  downlinkMax: Readonly<ShallowRef<number | undefined>>
   /**
    * The detected effective speed type.
    */
-  effectiveType: Ref<NetworkEffectiveType | undefined>
+  effectiveType: Readonly<ShallowRef<NetworkEffectiveType | undefined>>
   /**
    * The estimated effective round-trip time of the current connection.
    */
-  rtt: Ref<number | undefined>
+  rtt: Readonly<ShallowRef<number | undefined>>
   /**
    * If the user activated data saver mode.
    */
-  saveData: Ref<boolean | undefined>
+  saveData: Readonly<ShallowRef<boolean | undefined>>
   /**
    * The detected connection/network type.
    */
-  type: Ref<NetworkType>
+  type: Readonly<ShallowRef<NetworkType>>
 }
 
 /**
@@ -62,15 +62,15 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
   const navigator = window?.navigator
   const isSupported = useSupported(() => navigator && 'connection' in navigator)
 
-  const isOnline = ref(true)
-  const saveData = ref(false)
-  const offlineAt: Ref<number | undefined> = ref(undefined)
-  const onlineAt: Ref<number | undefined> = ref(undefined)
-  const downlink: Ref<number | undefined> = ref(undefined)
-  const downlinkMax: Ref<number | undefined> = ref(undefined)
-  const rtt: Ref<number | undefined> = ref(undefined)
-  const effectiveType: Ref<NetworkEffectiveType> = ref(undefined)
-  const type: Ref<NetworkType> = ref<NetworkType>('unknown')
+  const isOnline = shallowRef(true)
+  const saveData = shallowRef(false)
+  const offlineAt = shallowRef<number | undefined>(undefined)
+  const onlineAt = shallowRef<number | undefined>(undefined)
+  const downlink = shallowRef<number | undefined>(undefined)
+  const downlinkMax = shallowRef<number | undefined>(undefined)
+  const rtt = shallowRef<number | undefined>(undefined)
+  const effectiveType = shallowRef<NetworkEffectiveType>(undefined)
+  const type = shallowRef<NetworkType>('unknown')
 
   const connection = isSupported.value && (navigator as any).connection
 
@@ -92,34 +92,36 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
     }
   }
 
+  const listenerOptions = { passive: true }
+
   if (window) {
     useEventListener(window, 'offline', () => {
       isOnline.value = false
       offlineAt.value = Date.now()
-    })
+    }, listenerOptions)
 
     useEventListener(window, 'online', () => {
       isOnline.value = true
       onlineAt.value = Date.now()
-    })
+    }, listenerOptions)
   }
 
   if (connection)
-    useEventListener(connection, 'change', updateNetworkInformation, false)
+    useEventListener(connection, 'change', updateNetworkInformation, listenerOptions)
 
   updateNetworkInformation()
 
   return {
     isSupported,
-    isOnline,
-    saveData,
-    offlineAt,
-    onlineAt,
-    downlink,
-    downlinkMax,
-    effectiveType,
-    rtt,
-    type,
+    isOnline: readonly(isOnline),
+    saveData: readonly(saveData),
+    offlineAt: readonly(offlineAt),
+    onlineAt: readonly(onlineAt),
+    downlink: readonly(downlink),
+    downlinkMax: readonly(downlinkMax),
+    effectiveType: readonly(effectiveType),
+    rtt: readonly(rtt),
+    type: readonly(type),
   }
 }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
 import { usePointer } from '@vueuse/core'
+import { reactive } from 'vue'
 
 const pointer = reactive(usePointer())
 </script>

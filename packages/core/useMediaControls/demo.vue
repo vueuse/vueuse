@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
-import { stringify } from '@vueuse/docs-utils'
 import { useMediaControls } from '@vueuse/core'
-import Scrubber from './components/Scrubber.vue'
+import { stringify } from '@vueuse/docs-utils'
+import { computed, reactive, shallowRef, useTemplateRef } from 'vue'
 import Menu from './components/Menu.vue'
 import MenuItem from './components/MenuItem.vue'
+import Scrubber from './components/Scrubber.vue'
 import Spinner from './components/Spinner.vue'
 
-const video = ref<HTMLVideoElement>()
-const loop = ref(false)
+const video = useTemplateRef<HTMLVideoElement>('video')
+const loop = shallowRef(false)
 const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
 
 const controls = useMediaControls(video, {

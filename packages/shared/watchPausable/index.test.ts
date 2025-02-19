@@ -1,6 +1,6 @@
-import { nextTick, ref } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
-import { pausableWatch, watchPausable } from '.'
+import { nextTick, shallowRef } from 'vue'
+import { pausableWatch, watchPausable } from './index'
 
 describe('watchPausable', () => {
   it('should export module', () => {
@@ -9,7 +9,7 @@ describe('watchPausable', () => {
   })
 
   it('should work', async () => {
-    const num = ref(0)
+    const num = shallowRef(0)
     const cb = vi.fn()
     const { stop, pause, resume, isActive } = watchPausable(num, cb)
 
@@ -35,5 +35,26 @@ describe('watchPausable', () => {
     await nextTick()
     expect(isActive.value).toBeTruthy()
     expect(cb).toHaveBeenCalledTimes(2)
+  })
+
+  it('should work with initialState "paused"', async () => {
+    const num = shallowRef(0)
+    const cb = vi.fn()
+    const { resume, isActive } = watchPausable(num, cb, { initialState: 'paused' })
+
+    expect(isActive.value).toBeFalsy()
+    expect(cb).not.toHaveBeenCalled()
+    num.value = 1
+    await nextTick()
+    expect(isActive.value).toBeFalsy()
+    expect(cb).not.toHaveBeenCalled()
+
+    resume()
+    expect(isActive.value).toBeTruthy()
+    expect(cb).not.toHaveBeenCalled()
+    num.value = 2
+    await nextTick()
+    expect(isActive.value).toBeTruthy()
+    expect(cb).toHaveBeenCalledWith(2, 1, expect.anything())
   })
 })

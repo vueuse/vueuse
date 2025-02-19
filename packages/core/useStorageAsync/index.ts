@@ -1,14 +1,13 @@
 import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { toValue, watchWithFilter } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { ref, shallowRef } from 'vue-demi'
 import type { StorageLikeAsync } from '../ssr-handlers'
-import { getSSRHandler } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
-import { StorageSerializers } from '../useStorage'
-import { useEventListener } from '../useEventListener'
-import { guessSerializerType } from '../useStorage/guess'
+import { watchWithFilter } from '@vueuse/shared'
+import { ref as deepRef, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { getSSRHandler } from '../ssr-handlers'
+import { useEventListener } from '../useEventListener'
+import { StorageSerializers } from '../useStorage'
+import { guessSerializerType } from '../useStorage/guess'
 
 export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
   /**
@@ -55,7 +54,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   const rawInit: T = toValue(initialValue)
   const type = guessSerializerType<T>(rawInit)
 
-  const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
+  const data = (shallow ? shallowRef : deepRef)(toValue(initialValue)) as RemovableRef<T>
   const serializer = options.serializer ?? StorageSerializers[type]
 
   if (!storage) {
@@ -98,7 +97,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   read()
 
   if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)))
+    useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)), { passive: true })
 
   if (storage) {
     watchWithFilter(
@@ -122,5 +121,5 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     )
   }
 
-  return data as RemovableRef<T>
+  return data
 }

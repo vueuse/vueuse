@@ -1,11 +1,11 @@
-import { nextTick, ref, shallowRef } from 'vue-demi'
 import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
+import { pausableWatch, tryOnMounted } from '@vueuse/shared'
+import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import { guessSerializerType } from './guess'
 
 export interface Serializer<T> {
@@ -121,19 +121,19 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
   initOnMounted?: boolean
 }
 
-export function useStorage(key: string, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
-export function useStorage(key: string, defaults: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
-export function useStorage(key: string, defaults: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
-export function useStorage<T>(key: string, defaults: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: string, defaults: MaybeRefOrGetter<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
+export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
+export function useStorage<T>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
  *
  * @see https://vueuse.org/useStorage
  */
-export function useStorage<T extends(string | number | boolean | object | null)>(
-  key: string,
+export function useStorage<T extends (string | number | boolean | object | null)>(
+  key: MaybeRefOrGetter<string>,
   defaults: MaybeRefOrGetter<T>,
   storage: StorageLike | undefined,
   options: UseStorageOptions<T> = {},
@@ -153,7 +153,8 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : ref)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
+  const data = (shallow ? shallowRef : deepRef)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
+  const keyComputed = computed<string>(() => toValue(key))
 
   if (!storage) {
     try {
@@ -177,11 +178,23 @@ export function useStorage<T extends(string | number | boolean | object | null)>
     { flush, deep, eventFilter },
   )
 
+  watch(keyComputed, () => update(), { flush })
+
   if (window && listenToStorageChanges) {
     tryOnMounted(() => {
-      // this should be fine since we are in a mounted hook
-      useEventListener(window, 'storage', update)
-      useEventListener(window, customStorageEventName, updateFromCustomEvent)
+      /**
+       * Attaching event listeners here should be fine since we are in a mounted hook
+       *
+       * The custom event is needed for same-document syncing when using custom
+       * storage backends, but it doesn't work across different documents.
+       *
+       * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
+       */
+      if (storage instanceof Storage)
+        useEventListener(window, 'storage', update, { passive: true })
+      else
+        useEventListener(window, customStorageEventName, updateFromCustomEvent)
+
       if (initOnMounted)
         update()
     })
@@ -193,32 +206,35 @@ export function useStorage<T extends(string | number | boolean | object | null)>
 
   function dispatchWriteEvent(oldValue: string | null, newValue: string | null) {
     // send custom event to communicate within same page
-    // importantly this should _not_ be a StorageEvent since those cannot
-    // be constructed with a non-built-in storage area
     if (window) {
-      window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
-        detail: {
-          key,
-          oldValue,
-          newValue,
-          storageArea: storage!,
-        },
-      }))
+      const payload = {
+        key: keyComputed.value,
+        oldValue,
+        newValue,
+        storageArea: storage as Storage,
+      }
+      // We also use a CustomEvent since StorageEvent cannot
+      // be constructed with a non-built-in storage area
+      window.dispatchEvent(storage instanceof Storage
+        ? new StorageEvent('storage', payload)
+        : new CustomEvent<StorageEventLike>(customStorageEventName, {
+          detail: payload,
+        }))
     }
   }
 
   function write(v: unknown) {
     try {
-      const oldValue = storage!.getItem(key)
+      const oldValue = storage!.getItem(keyComputed.value)
 
       if (v == null) {
         dispatchWriteEvent(oldValue, null)
-        storage!.removeItem(key)
+        storage!.removeItem(keyComputed.value)
       }
       else {
         const serialized = serializer.write(v as any)
         if (oldValue !== serialized) {
-          storage!.setItem(key, serialized)
+          storage!.setItem(keyComputed.value, serialized)
           dispatchWriteEvent(oldValue, serialized)
         }
       }
@@ -231,11 +247,11 @@ export function useStorage<T extends(string | number | boolean | object | null)>
   function read(event?: StorageEventLike) {
     const rawValue = event
       ? event.newValue
-      : storage!.getItem(key)
+      : storage!.getItem(keyComputed.value)
 
     if (rawValue == null) {
       if (writeDefaults && rawInit != null)
-        storage!.setItem(key, serializer.write(rawInit))
+        storage!.setItem(keyComputed.value, serializer.write(rawInit))
       return rawInit
     }
     else if (!event && mergeDefaults) {
@@ -263,7 +279,7 @@ export function useStorage<T extends(string | number | boolean | object | null)>
       return
     }
 
-    if (event && event.key !== key)
+    if (event && event.key !== keyComputed.value)
       return
 
     pauseWatch()

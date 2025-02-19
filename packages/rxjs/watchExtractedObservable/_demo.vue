@@ -2,7 +2,7 @@
 import type { Observable } from 'rxjs'
 import { fromEvent } from 'rxjs'
 import { map, skip, tap } from 'rxjs/operators'
-import { computed, reactive, ref } from 'vue-demi'
+import { computed, ref as deepRef, reactive } from 'vue'
 import { watchExtractedObservable } from './index'
 
 class AudioPlayer {
@@ -61,7 +61,7 @@ class AudioPlayer {
   }
 }
 
-const audio = ref<HTMLAudioElement>()
+const audio = deepRef<HTMLAudioElement>()
 const player = computed(() => audio.value ? new AudioPlayer(audio.value) : null)
 
 const state = reactive({

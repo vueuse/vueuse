@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { stringify } from '@vueuse/docs-utils'
 import { useElementSize } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
+import { reactive, useTemplateRef } from 'vue'
 
-const el = ref(null)
+const el = useTemplateRef('el')
 const size = reactive(
   useElementSize(
     el,

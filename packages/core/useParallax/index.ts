@@ -1,10 +1,10 @@
-import type { ComputedRef } from 'vue-demi'
-import { computed, reactive } from 'vue-demi'
+import type { ComputedRef } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { computed, reactive } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { useDeviceOrientation } from '../useDeviceOrientation'
 import { useMouseInElement } from '../useMouseInElement'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import { useScreenOrientation } from '../useScreenOrientation'
 
 export interface UseParallaxOptions extends ConfigurableWindow {
@@ -60,8 +60,9 @@ export function useParallax(
   const source = computed(() => {
     if (orientation.isSupported
       && ((orientation.alpha != null && orientation.alpha !== 0) || (orientation.gamma != null && orientation.gamma !== 0))
-    )
+    ) {
       return 'deviceOrientation'
+    }
     return 'mouse'
   })
 

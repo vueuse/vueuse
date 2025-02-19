@@ -1,5 +1,5 @@
-import { defineComponent, reactive } from 'vue-demi'
 import { useDeviceOrientation } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue'
 
 export const UseDeviceOrientation = /* #__PURE__ */ defineComponent({
   name: 'UseDeviceOrientation',

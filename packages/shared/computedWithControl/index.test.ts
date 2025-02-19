@@ -1,6 +1,6 @@
-import { isVue3, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { computedWithControl, controlledComputed } from '.'
+import { shallowRef } from 'vue'
+import { computedWithControl, controlledComputed } from './index'
 
 describe('computedWithControl', () => {
   it('should export', () => {
@@ -9,8 +9,8 @@ describe('computedWithControl', () => {
   })
 
   it('should work', () => {
-    const trigger = ref(0)
-    const data = ref('foo')
+    const trigger = shallowRef(0)
+    const data = shallowRef('foo')
 
     const computed = computedWithControl(trigger, () => data.value.toUpperCase())
 
@@ -25,7 +25,24 @@ describe('computedWithControl', () => {
     expect(computed.value).toBe('BAR')
   })
 
-  it.runIf(isVue3)('custom trigger', () => {
+  it('optional old value', () => {
+    const trigger = shallowRef(0)
+
+    const computed = computedWithControl(trigger, (oldValue?: number) =>
+      oldValue ? oldValue * 2 : 1)
+
+    expect(computed.value).toBe(1)
+
+    trigger.value += 1
+
+    expect(computed.value).toBe(2)
+
+    trigger.value -= 1
+
+    expect(computed.value).toBe(4)
+  })
+
+  it('custom trigger', () => {
     let count = 0
     const computed = computedWithControl(() => {}, () => count)
 
@@ -41,8 +58,8 @@ describe('computedWithControl', () => {
   })
 
   it('getter and setter', () => {
-    const trigger = ref(0)
-    const data = ref('foo')
+    const trigger = shallowRef(0)
+    const data = shallowRef('foo')
 
     const computed = computedWithControl(trigger, {
       get() {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { reactive, shallowRef } from 'vue'
+import type { MaybeElement } from '@vueuse/core'
 import { useAnimate } from '@vueuse/core'
 import { stringify } from '@vueuse/docs-utils'
-import type { MaybeElement } from '@vueuse/core'
+import { reactive, useTemplateRef } from 'vue'
 
-const el = shallowRef<MaybeElement>()
+const el = useTemplateRef<MaybeElement>('el')
 
 const {
   play,

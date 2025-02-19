@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
-import { useExtractedObservable } from '.'
+import { shallowRef } from 'vue'
+import { useExtractedObservable } from './index'
 
-const start = ref(0)
+const start = shallowRef(0)
 
 const count = useExtractedObservable(
   start,

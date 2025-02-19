@@ -1,7 +1,7 @@
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
 import type { EventHook, EventHookOn } from '@vueuse/shared'
+import type { ComputedRef, ShallowRef } from 'vue'
 import { createEventHook, noop } from '@vueuse/shared'
+import { computed, shallowRef } from 'vue'
 
 export type UseConfirmDialogRevealResult<C, D>
   = {
@@ -67,7 +67,7 @@ export function useConfirmDialog<
   ConfirmData = any,
   CancelData = any,
 >(
-  revealed: Ref<boolean> = ref(false),
+  revealed: ShallowRef<boolean> = shallowRef(false),
 ): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   const confirmHook: EventHook = createEventHook<ConfirmData>()
   const cancelHook: EventHook = createEventHook<CancelData>()

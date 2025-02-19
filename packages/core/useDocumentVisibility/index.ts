@@ -1,24 +1,24 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
+import { shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 /**
  * Reactively track `document.visibilityState`.
  *
  * @see https://vueuse.org/useDocumentVisibility
  */
-export function useDocumentVisibility(options: ConfigurableDocument = {}): Ref<DocumentVisibilityState> {
+export function useDocumentVisibility(options: ConfigurableDocument = {}): ShallowRef<DocumentVisibilityState> {
   const { document = defaultDocument } = options
   if (!document)
-    return ref('visible')
+    return shallowRef('visible')
 
-  const visibility = ref(document.visibilityState)
+  const visibility = shallowRef(document.visibilityState)
 
   useEventListener(document, 'visibilitychange', () => {
     visibility.value = document.visibilityState
-  })
+  }, { passive: true })
 
   return visibility
 }

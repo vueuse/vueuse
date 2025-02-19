@@ -1,10 +1,10 @@
-import { defineComponent, h, ref } from 'vue-demi'
-import { onClickOutside } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
-import type { OnClickOutsideOptions } from '.'
+import type { OnClickOutsideOptions } from './index'
+import { onClickOutside } from '@vueuse/core'
+import { defineComponent, h, shallowRef } from 'vue'
 
 export interface OnClickOutsideProps extends RenderableComponent {
-  options?: OnClickOutsideOptions
+  options?: Omit<OnClickOutsideOptions, 'controls'>
 }
 
 export const OnClickOutside = /* #__PURE__ */ defineComponent<OnClickOutsideProps>({
@@ -12,7 +12,7 @@ export const OnClickOutside = /* #__PURE__ */ defineComponent<OnClickOutsideProp
   props: ['as', 'options'] as unknown as undefined,
   emits: ['trigger'],
   setup(props, { slots, emit }) {
-    const target = ref()
+    const target = shallowRef<HTMLDivElement>()
     onClickOutside(target, (e) => {
       emit('trigger', e)
     }, props.options)

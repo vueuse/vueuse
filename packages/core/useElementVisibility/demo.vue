@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref(null)
+const el = useTemplateRef('el')
 const isVisible = useElementVisibility(el)
 </script>
 

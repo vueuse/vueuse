@@ -1,6 +1,6 @@
-import { defineComponent, reactive, ref } from 'vue-demi'
 import type { UsePointerOptions } from '@vueuse/core'
 import { usePointer } from '@vueuse/core'
+import { defineComponent, reactive, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export const UsePointer = /* #__PURE__ */ defineComponent<Omit<UsePointerOptions, 'target'> & { target: 'window' | 'self' }>({
@@ -11,7 +11,7 @@ export const UsePointer = /* #__PURE__ */ defineComponent<Omit<UsePointerOptions
     'target',
   ] as unknown as undefined,
   setup(props, { slots }) {
-    const el = ref<HTMLElement | null>(null)
+    const el = shallowRef<HTMLElement | null>(null)
 
     const data = reactive(usePointer({
       ...props,

@@ -1,39 +1,39 @@
 import type { EventHookOn, Fn, MaybeRefOrGetter, Stoppable } from '@vueuse/shared'
-import { containsProp, createEventHook, toRef, toValue, until, useTimeoutFn } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, isRef, readonly, ref, shallowRef, watch } from 'vue-demi'
+import type { ComputedRef, ShallowRef } from 'vue'
+import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
+import { computed, isRef, readonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request has finished
    */
-  isFinished: Readonly<Ref<boolean>>
+  isFinished: Readonly<ShallowRef<boolean>>
 
   /**
    * The statusCode of the HTTP fetch response
    */
-  statusCode: Ref<number | null>
+  statusCode: ShallowRef<number | null>
 
   /**
    * The raw response of the fetch response
    */
-  response: Ref<Response | null>
+  response: ShallowRef<Response | null>
 
   /**
    * Any fetch errors that may have occurred
    */
-  error: Ref<any>
+  error: ShallowRef<any>
 
   /**
    * The fetch response body on success, may either be JSON or text
    */
-  data: Ref<T | null>
+  data: ShallowRef<T | null>
 
   /**
    * Indicates if the request is currently being fetched.
    */
-  isFetching: Readonly<Ref<boolean>>
+  isFetching: Readonly<ShallowRef<boolean>>
 
   /**
    * Indicates if the fetch request is able to be aborted
@@ -43,7 +43,7 @@ export interface UseFetchReturn<T> {
   /**
    * Indicates if the fetch request was aborted
    */
-  aborted: Ref<boolean>
+  aborted: ShallowRef<boolean>
 
   /**
    * Abort the fetch request
@@ -118,12 +118,22 @@ export interface AfterFetchContext<T = any> {
   response: Response
 
   data: T | null
+
+  context: BeforeFetchContext
+
+  execute: (throwOnFailed?: boolean) => Promise<any>
 }
 
 export interface OnFetchErrorContext<T = any, E = any> {
   error: E
 
   data: T | null
+
+  response: Response | null
+
+  context: BeforeFetchContext
+
+  execute: (throwOnFailed?: boolean) => Promise<any>
 }
 
 export interface UseFetchOptions {
@@ -185,7 +195,7 @@ export interface UseFetchOptions {
    * Will run immediately after the fetch request is returned.
    * Runs after any 4xx and 5xx response
    */
-  onFetchError?: (ctx: { data: any, response: Response | null, error: any }) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
+  onFetchError?: (ctx: OnFetchErrorContext) => Promise<Partial<OnFetchErrorContext>> | Partial<OnFetchErrorContext>
 }
 
 export interface CreateFetchOptions {
@@ -221,9 +231,10 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
 }
 
+const reAbsolute = /^(?:[a-z][a-z\d+\-.]*:)?\/\//i
 // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
 function isAbsoluteURL(url: string) {
-  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)
+  return reAbsolute.test(url)
 }
 
 function headersToObject(headers: HeadersInit | undefined) {
@@ -236,7 +247,13 @@ function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ct
   if (combination === 'overwrite') {
     // use last callback
     return async (ctx: T) => {
-      const callback = callbacks[callbacks.length - 1]
+      let callback
+      for (let i = callbacks.length - 1; i >= 0; i--) {
+        if (callbacks[i] != null) {
+          callback = callbacks[i]
+          break
+        }
+      }
       if (callback)
         return { ...ctx, ...(await callback(ctx)) }
 
@@ -364,10 +381,10 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const errorEvent = createEventHook<any>()
   const finallyEvent = createEventHook<any>()
 
-  const isFinished = ref(false)
-  const isFetching = ref(false)
-  const aborted = ref(false)
-  const statusCode = ref<number | null>(null)
+  const isFinished = shallowRef(false)
+  const isFetching = shallowRef(false)
+  const aborted = shallowRef(false)
+  const statusCode = shallowRef<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)
   const data = shallowRef<T | null>(initialData || null)
@@ -415,12 +432,13 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       headers: {},
     }
 
-    if (config.payload) {
+    const payload = toValue(config.payload)
+    if (payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
-      const payload = toValue(config.payload)
-      // Set the payload to json type only if it's not provided and a literal object is provided and the object is not `formData`
+      // Set the payload to json type only if it's not provided and a literal object or array is provided and the object is not `formData`
       // The only case we can deduce the content type and `fetch` can't
-      if (!config.payloadType && payload && Object.getPrototypeOf(payload) === Object.prototype && !(payload instanceof FormData))
+      const proto = Object.getPrototypeOf(payload)
+      if (!config.payloadType && payload && (proto === Object.prototype || Array.isArray(proto)) && !(payload instanceof FormData))
         config.payloadType = 'json'
 
       if (config.payloadType)
@@ -481,6 +499,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           ({ data: responseData } = await options.afterFetch({
             data: responseData,
             response: fetchResponse,
+            context,
+            execute,
           }))
         }
         data.value = responseData
@@ -496,6 +516,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             data: responseData,
             error: fetchError,
             response: response.value,
+            context,
+            execute,
           }))
         }
 
@@ -591,9 +613,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
   function waitUntilFinished() {
     return new Promise<UseFetchReturn<T>>((resolve, reject) => {
-      until(isFinished).toBe(true)
-        .then(() => resolve(shell))
-        .catch(error => reject(error))
+      until(isFinished).toBe(true).then(() => resolve(shell)).catch(reject)
     })
   }
 
@@ -626,8 +646,13 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 }
 
 function joinPaths(start: string, end: string): string {
-  if (!start.endsWith('/') && !end.startsWith('/'))
+  if (!start.endsWith('/') && !end.startsWith('/')) {
     return `${start}/${end}`
+  }
+
+  if (start.endsWith('/') && end.startsWith('/')) {
+    return `${start.slice(0, -1)}${end}`
+  }
 
   return `${start}${end}`
 }

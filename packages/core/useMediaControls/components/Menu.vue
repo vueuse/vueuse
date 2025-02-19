@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue-demi'
 import { onClickOutside, useEventListener } from '@vueuse/core'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const menu = ref()
-const isOpen = ref()
+const menu = useTemplateRef('menu')
+const isOpen = shallowRef(false)
 
 onClickOutside(menu, () => isOpen.value = false)
 useEventListener('keydown', (e) => {
   if (e.key === 'Escape' && isOpen)
     isOpen.value = false
-})
+}, { passive: true })
 
 function open() {
   return isOpen.value = true

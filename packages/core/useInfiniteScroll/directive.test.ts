@@ -1,9 +1,9 @@
-import { defineComponent } from 'vue-demi'
 import type { VueWrapper } from '@vue/test-utils'
+import type { UseInfiniteScrollOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent } from 'vue'
 import { vInfiniteScroll } from './directive'
-import type { UseInfiniteScrollOptions } from '.'
 
 const App = defineComponent({
   props: {

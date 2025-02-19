@@ -1,15 +1,15 @@
-import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'
-import fs from 'fs-extra'
-import ts from 'typescript'
+import { existsSync } from 'node:fs'
+import { join, resolve } from 'node:path'
 import { format } from 'prettier'
+import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
 export function MarkdownTransform(): Plugin {
   const DIR_TYPES = resolve(__dirname, '../../../types/packages')
-  const hasTypes = fs.existsSync(DIR_TYPES)
+  const hasTypes = existsSync(DIR_TYPES)
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
@@ -28,7 +28,7 @@ export function MarkdownTransform(): Plugin {
           if (ending === ']') // already a link
             return _
           const fn = getFunction(name)!
-          return `[\`${fn.name}\`](${fn.docs}) `
+          return `[\`${fn.name}\`](${fn.docs})${ending}`
         },
       )
       // convert links to relative
@@ -80,7 +80,7 @@ ${formattedJS}
           code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
         code = code
-          .replace(/(# \w+?)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
+          .replace(/(# \w+)\n/, `$1\n\n<FunctionInfo fn="${name}"/>\n`)
           .replace(/## (Components?(?:\sUsage)?)/i, '## $1\n<LearnMoreComponents />\n\n')
           .replace(/## (Directives?(?:\sUsage)?)/i, '## $1\n<LearnMoreDirectives />\n\n')
       }
@@ -97,7 +97,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
   const URL = `${GITHUB_BLOB_URL}/${pkg}/${name}`
 
   const dirname = join(DIR_SRC, pkg, name)
-  const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
+  const demoPath = ['demo.vue', 'demo.client.vue'].find(i => existsSync(join(dirname, i)))
   const types = await getTypeDefinition(pkg, name)
 
   if (!types)
@@ -127,7 +127,8 @@ ${code}
     ['Docs', `${URL}/index.md`],
   ])
     .filter(i => i)
-    .map(i => `[${i![0]}](${i![1]})`).join(' • ')
+    .map(i => `[${i![0]}](${i![1]})`)
+    .join(' • ')
 
   const sourceSection = `## Source\n\n${links}\n`
   const ContributorsSection = `

@@ -13,7 +13,7 @@ When using with Nuxt 3, this functions will **NOT** be auto imported in favor of
 ## Install
 
 ```bash
-npm i universal-cookie@^6
+npm i universal-cookie@^7
 ```
 
 ## Usage
@@ -22,8 +22,8 @@ npm i universal-cookie@^6
 
 ```vue
 <script>
-import { defineComponent } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   setup() {

@@ -1,8 +1,8 @@
-import { collection, doc } from 'firebase/firestore'
 import type { Firestore } from 'firebase/firestore'
-import { computed, effectScope, nextTick, ref } from 'vue-demi'
+import { collection, doc } from 'firebase/firestore'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useFirestore } from '.'
+import { computed, ref as deepRef, effectScope, nextTick, shallowRef } from 'vue'
+import { useFirestore } from './index'
 
 const dummyFirestore = {} as Firestore
 
@@ -40,7 +40,7 @@ vi.mock('firebase/firestore', () => {
     return { path }
   })
 
-  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => {}, errorHandler: (err: Error) => void) => {
+  const onSnapshot = vi.fn((docRef: any, callbackFn: (payload: any) => void, errorHandler: (err: Error) => void) => {
     if (docRef.path === 'users/error') {
       errorHandler(new Error('not found'))
       return
@@ -95,7 +95,7 @@ describe('useFirestore', () => {
 
   it('should get reactive query data & unsubscribe previous query when re-querying', async () => {
     const queryRef = collection(dummyFirestore, 'posts')
-    const reactiveQueryRef = ref(queryRef)
+    const reactiveQueryRef = deepRef(queryRef)
     const data = useFirestore(reactiveQueryRef)
     expect(data.value).toEqual([getData(getMockSnapFromRef(reactiveQueryRef.value))])
     reactiveQueryRef.value = collection(dummyFirestore, 'todos')
@@ -105,7 +105,7 @@ describe('useFirestore', () => {
   })
 
   it('should get user data only when user id exists', async () => {
-    const userId = ref('')
+    const userId = shallowRef('')
     const queryRef = computed(() => !!userId.value && collection(dummyFirestore, `users/${userId.value}/posts`))
     const data = useFirestore(queryRef, [{ id: 'default' }])
     expect(data.value).toEqual([{ id: 'default' }])
@@ -128,7 +128,7 @@ describe('useFirestore', () => {
   it('should close when scope dispose', async () => {
     const scope = effectScope()
     let data: any
-    const userId = ref('')
+    const userId = shallowRef('')
     const queryRef = computed(() => !!userId.value && collection(dummyFirestore, `users/${userId.value}/posts`))
 
     scope.run(() => {

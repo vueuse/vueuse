@@ -9,12 +9,12 @@ Watch for changes being made to the DOM tree. [MutationObserver MDN](https://dev
 ## Usage
 
 ```ts
-import { ref } from 'vue'
 import { useMutationObserver } from '@vueuse/core'
+import { ref, useTemplateRef } from 'vue'
 
 export default {
   setup() {
-    const el = ref(null)
+    const el = useTemplateRef('el')
     const messages = ref([])
 
     useMutationObserver(el, (mutations) => {

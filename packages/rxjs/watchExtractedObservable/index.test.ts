@@ -1,10 +1,10 @@
-import type { MockedFunction } from 'vitest'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ComputedRef, Ref } from 'vue-demi'
 import type { Observable, Subject } from 'rxjs'
+import type { MockedFunction } from 'vitest'
+import type { ComputedRef, Ref } from 'vue'
 import { BehaviorSubject, of } from 'rxjs'
-import { computed, nextTick, reactive, ref } from 'vue-demi'
 import { delay, map, tap } from 'rxjs/operators'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { computed, ref as deepRef, nextTick, reactive, shallowRef } from 'vue'
 import { watchExtractedObservable } from './index'
 
 class TestWrapper {
@@ -19,8 +19,6 @@ class TestWrapper {
   }
 }
 
-const waitFor = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
-
 describe('watchExtractedObservable', () => {
   describe('when no options are provided', () => {
     let numRef: Ref<number | undefined>
@@ -29,10 +27,10 @@ describe('watchExtractedObservable', () => {
     let callback: MockedFunction<(num: number) => void>
 
     beforeEach(() => {
-      numRef = ref<number>()
+      numRef = deepRef<number>()
       obj = computed(() => typeof numRef.value == 'number' ? new TestWrapper(numRef.value) : null)
       extractor = vi.fn().mockImplementation((wrapper: TestWrapper) => wrapper.obs$)
-      callback = vi.fn().mockImplementation((num: number) => console.log(num))
+      callback = vi.fn()
     })
 
     it('calls neither the extractor nor the callback if the provided ref is nullish', () => {
@@ -66,7 +64,7 @@ describe('watchExtractedObservable', () => {
     it('calls onError when an observable emits an error', async () => {
       expect.hasAssertions()
 
-      const re = ref(0)
+      const re = shallowRef(0)
       const error = new Error('Odd number')
 
       const extractor = (num: number) => of(num).pipe(
@@ -102,7 +100,7 @@ describe('watchExtractedObservable', () => {
     it('doesn\'t call onError when the observable doesn\'t emit an error', async () => {
       expect.hasAssertions()
 
-      const re = ref([1, 2])
+      const re = deepRef([1, 2])
       const callback = vi.fn()
       const onError = vi.fn()
 
@@ -131,7 +129,7 @@ describe('watchExtractedObservable', () => {
 
   describe('when onComplete is provided', () => {
     it('calls onComplete when an observable completes', async () => {
-      const re = ref([1, 2])
+      const re = deepRef([1, 2])
       const extractor = (args: unknown[]) => of(...args)
       const callback = vi.fn()
       const onComplete = vi.fn()
@@ -161,9 +159,10 @@ describe('watchExtractedObservable', () => {
     })
 
     it('doesn\'t call onComplete if the watched observable has changed before it could complete', async () => {
+      vi.useFakeTimers()
       expect.hasAssertions()
 
-      const re = ref([42, 23, 420])
+      const re = deepRef([42, 23, 420])
       const extractor = (arr: unknown[]) => of(...arr).pipe(
         delay(1000),
         map(() => 42),
@@ -176,16 +175,15 @@ describe('watchExtractedObservable', () => {
         immediate: true,
       })
 
-      setTimeout(() => {
-        re.value = [42]
-      }, 500)
+      await vi.advanceTimersByTimeAsync(500)
+      re.value = [42]
 
-      await waitFor(6000)
+      await vi.advanceTimersByTimeAsync(6000)
 
       expect(onComplete).toHaveBeenCalledOnce()
 
       handle()
-    }, 9000)
+    })
   })
 
   it('properly uses an array of watch sources', () => {
@@ -193,7 +191,7 @@ describe('watchExtractedObservable', () => {
       xyz: 'abc',
     })
 
-    const re = ref('def')
+    const re = shallowRef('def')
 
     const extractor = ([abc, def]: [string, string]) => of([abc, def])
     const callback = vi.fn(() => {})

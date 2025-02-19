@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useWebNotification } from '@vueuse/core'
 import type { UseWebNotificationOptions } from '@vueuse/core'
+import { useWebNotification } from '@vueuse/core'
 
 const options: UseWebNotificationOptions = {
   title: 'Hello, world from VueUse!',

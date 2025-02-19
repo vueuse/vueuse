@@ -19,8 +19,8 @@ Messages are broadcasted via a message event fired at all BroadcastChannel
 objects listening to the channel.
 
 ```js
-import { ref } from 'vue'
 import { useBroadcastChannel } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 const {
   isSupported,
@@ -31,7 +31,7 @@ const {
   isClosed,
 } = useBroadcastChannel({ name: 'vueuse-demo-channel' })
 
-const message = ref('')
+const message = shallowRef('')
 
 message.value = 'Hello, VueUse World!'
 

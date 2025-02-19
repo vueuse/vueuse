@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useTimeoutFn } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 const defaultText = 'Please wait for 3 seconds'
-const text = ref(defaultText)
+const text = shallowRef(defaultText)
 const { start, isPending } = useTimeoutFn(() => {
   text.value = 'Fired!'
 }, 3000)

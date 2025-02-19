@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useToggle } from '@vueuse/shared'
 import { useScroll, useScrollLock } from '@vueuse/core'
+import { useToggle } from '@vueuse/shared'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 useScroll(el)
 const isLocked = useScrollLock(el)
 const toggleLock = useToggle(isLocked)

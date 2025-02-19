@@ -1,6 +1,6 @@
-import type { DefineComponent, Slot } from 'vue-demi'
-import { defineComponent, isVue3, shallowRef, version } from 'vue-demi'
+import type { ComponentObjectPropsOptions, DefineComponent, Slot } from 'vue'
 import { camelize, makeDestructurable } from '@vueuse/shared'
+import { defineComponent, shallowRef } from 'vue'
 
 type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>
 
@@ -33,13 +33,17 @@ export type ReusableTemplatePair<
   reuse: ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>
 }
 
-export interface CreateReusableTemplateOptions {
+export interface CreateReusableTemplateOptions<Props extends Record<string, any>> {
   /**
    * Inherit attrs from reuse component.
    *
    * @default true
    */
   inheritAttrs?: boolean
+  /**
+   * Props definition for reuse component.
+   */
+  props?: ComponentObjectPropsOptions<Props>
 }
 
 /**
@@ -52,16 +56,8 @@ export function createReusableTemplate<
   Bindings extends Record<string, any>,
   MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals = Record<'default', undefined>,
 >(
-  options: CreateReusableTemplateOptions = {},
+  options: CreateReusableTemplateOptions<Bindings> = {},
 ): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps> {
-  // compatibility: Vue 2.7 or above
-  if (!isVue3 && !version.startsWith('2.7.')) {
-    if (process.env.NODE_ENV !== 'production')
-      throw new Error('[VueUse] createReusableTemplate only works in Vue 2.7 or above.')
-    // @ts-expect-error incompatible
-    return
-  }
-
   const {
     inheritAttrs = true,
   } = options
@@ -78,11 +74,17 @@ export function createReusableTemplate<
 
   const reuse = defineComponent({
     inheritAttrs,
-    setup(_, { attrs, slots }) {
+    props: options.props,
+    setup(props, { attrs, slots }) {
       return () => {
         if (!render.value && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        const vnode = render.value?.({ ...keysToCamelKebabCase(attrs), $slots: slots })
+        const vnode = render.value?.({
+          ...(options.props == null
+            ? keysToCamelKebabCase(attrs)
+            : props),
+          $slots: slots,
+        })
 
         return (inheritAttrs && vnode?.length === 1) ? vnode[0] : vnode
       }

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { useActiveElement } from '.'
+import { nextTick } from 'vue'
+import { useActiveElement } from './index'
 
 describe('useActiveElement', () => {
   let shadowHost: HTMLElement
@@ -58,5 +59,33 @@ describe('useActiveElement', () => {
     input.blur()
 
     expect(activeElement.value).to.equal(document.body)
+  })
+
+  it('should update when activeElement is removed w/document', async () => {
+    const activeElement = useActiveElement({ triggerOnRemoval: true })
+
+    input.focus()
+
+    expect(activeElement.value).to.equal(input)
+
+    input.remove()
+
+    await nextTick()
+
+    expect(activeElement.value).to.equal(document.body)
+  })
+
+  it('should update when activeElement is removed w/shadowRoot', async () => {
+    const activeElement = useActiveElement({ triggerOnRemoval: true, document: shadowRoot })
+
+    shadowInput.focus()
+
+    expect(activeElement.value).to.equal(shadowInput)
+
+    shadowInput.remove()
+
+    await nextTick()
+
+    expect(activeElement.value).to.equal(null)
   })
 })

@@ -1,6 +1,6 @@
-import { defineComponent, reactive } from 'vue-demi'
-import type { UseColorModeOptions } from '.'
-import { useColorMode } from '.'
+import type { UseColorModeOptions } from './index'
+import { defineComponent, reactive } from 'vue'
+import { useColorMode } from './index'
 
 export const UseColorMode = /* #__PURE__ */ defineComponent<UseColorModeOptions>({
   name: 'UseColorMode',

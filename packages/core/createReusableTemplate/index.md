@@ -63,8 +63,8 @@ When using with [Options API](https://vuejs.org/guide/introduction.html#api-styl
 
 ```vue
 <script>
-import { defineComponent } from 'vue'
 import { createReusableTemplate } from '@vueuse/core'
+import { defineComponent } from 'vue'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
@@ -178,12 +178,33 @@ const TemplateFoo = createReusableTemplate<{ msg: string }>()
 ```
 
 ::: warning
-Dot notation is not supported in Vue 2.
-:::
-
-::: warning
 Passing boolean props without `v-bind` is not supported. See the [Caveats](#boolean-props) section for more details.
 :::
+
+### Props and Attributes
+
+By default, all props and attributes passed to `<ReuseTemplate>` will be passed to the template. If you don't want certain props to be passed to the DOM, you need to define the runtime props:
+
+```ts
+import { createReusableTemplate } from '@vueuse/core'
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate({
+  props: {
+    msg: String,
+    enable: Boolean,
+  }
+})
+```
+
+If you don't want to pass any props to the template, you can pass the `inheritAttrs` option:
+
+```ts
+import { createReusableTemplate } from '@vueuse/core'
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate({
+  inheritAttrs: false,
+})
+```
 
 ### Passing Slots
 
@@ -212,10 +233,6 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
   </ReuseTemplate>
 </template>
 ```
-
-::: warning
-Passing slots does not work in Vue 2.
-:::
 
 ## Caveats
 

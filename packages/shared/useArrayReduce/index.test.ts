@@ -1,6 +1,6 @@
-import { isVue2, reactive, ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { useArrayReduce } from '.'
+import { reactive, shallowRef } from 'vue'
+import { useArrayReduce } from './index'
 
 describe('useArrayReduce', () => {
   it('should be defined', () => {
@@ -8,8 +8,8 @@ describe('useArrayReduce', () => {
   })
 
   it('should calculate the array sum', () => {
-    const item1 = ref(1)
-    const item2 = ref(2)
+    const item1 = shallowRef(1)
+    const item2 = shallowRef(2)
     const sum = useArrayReduce([item1, item2, 3], (a, b) => a + b)
     expect(sum.value).toBe(6)
 
@@ -20,7 +20,7 @@ describe('useArrayReduce', () => {
     expect(sum.value).toBe(10)
   })
 
-  it.skipIf(isVue2)('should work with reactive array', () => {
+  it('should work with reactive array', () => {
     const list = reactive([1, 2])
     const sum = useArrayReduce(list, (a, b) => a + b)
     expect(sum.value).toBe(3)
@@ -29,12 +29,23 @@ describe('useArrayReduce', () => {
     expect(sum.value).toBe(6)
   })
 
-  it.skipIf(isVue2)('should work with initialValue', () => {
+  it('should work with initialValue', () => {
     const list = reactive([{ num: 1 }, { num: 2 }])
     const sum = useArrayReduce(list, (sum, val) => sum + val.num, 0 as number)
     expect(sum.value).toBe(3)
 
     list.push({ num: 3 })
     expect(sum.value).toBe(6)
+  })
+  it('should work with initialValue being a function', () => {
+    const list = reactive([{ num: 1 }, { num: 2 }])
+    const sum = useArrayReduce(list, (prev, val) => {
+      prev.push(val.num)
+      return prev
+    }, (() => []) as unknown as number[])
+    expect(sum.value).toEqual([1, 2])
+
+    list.push({ num: 3 })
+    expect(sum.value).toEqual([1, 2, 3])
   })
 })

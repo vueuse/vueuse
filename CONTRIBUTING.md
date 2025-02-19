@@ -22,6 +22,24 @@ We use VitePress for rapid development and documenting. You can start it locally
 pnpm dev
 ```
 
+### Testing
+
+```bash
+pnpm test:unit # to run unit tests
+```
+
+If you want to use experimental browser tests, you need to install playwright dependencies first.
+
+```bash
+nlx playwright install --with-deps
+```
+
+and then run
+
+```bash
+pnpm test:browser
+```
+
 ## Contributing
 
 ### Existing functions
@@ -35,7 +53,7 @@ There are some notes for adding new functions
 - Before you start working, it's better to open an issue to discuss first.
 - The implementation should be placed under `packages/core` as a folder and exposing in `index.ts`
 - In the `core` package, try not to introduce 3rd-party dependencies as this package is aimed to be as lightweight as possible.
-- If you'd like to introduce 3rd-party dependencies, please contribute to @vueuse/integrations or create a new add-on.
+- If you'd like to introduce 3rd-party dependencies, please contribute to [@vueuse/integrations](https://github.com/vueuse/vueuse/tree/main/packages/integrations) or create a new add-on.
 - You can find the function template under `packages/core/_template/`, details explained in the [Function Folder](#function-folder) section.
 - When writing documentation for your function, the `<!--FOOTER_STARTS-->` and `<!--FOOTER_ENDS-->` will be automatically updated at build time, so don't feel the need to update them.
 

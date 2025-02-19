@@ -1,8 +1,8 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
-import { ref } from 'vue-demi'
-import { tryOnScopeDispose } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
@@ -24,6 +24,10 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
    * An array that contains the external dependencies needed to run the worker
    */
   dependencies?: string[]
+  /**
+   * An array that contains the local dependencies needed to run the worker
+   */
+  localDependencies?: Function[]
 }
 
 /**
@@ -36,14 +40,15 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
 export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, options: UseWebWorkerOptions = {}) {
   const {
     dependencies = [],
+    localDependencies = [],
     timeout,
     window = defaultWindow,
   } = options
 
-  const worker = ref<(Worker & { _url?: string }) | undefined>()
-  const workerStatus = ref<WebWorkerStatus>('PENDING')
-  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
-  const timeoutId = ref<number>()
+  const worker = deepRef<(Worker & { _url?: string }) | undefined>()
+  const workerStatus = shallowRef<WebWorkerStatus>('PENDING')
+  const promise = deepRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
+  const timeoutId = shallowRef<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
     if (worker.value && worker.value._url && window) {
@@ -61,12 +66,12 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
   tryOnScopeDispose(workerTerminate)
 
   const generateWorker = () => {
-    const blobUrl = createWorkerBlobUrl(fn, dependencies)
+    const blobUrl = createWorkerBlobUrl(fn, dependencies, localDependencies)
     const newWorker: Worker & { _url?: string } = new Worker(blobUrl)
     newWorker._url = blobUrl
 
     newWorker.onmessage = (e: MessageEvent) => {
-      const { resolve = () => {}, reject = () => {} } = promise.value
+      const { resolve = () => { }, reject = () => { } } = promise.value
       const [status, result] = e.data as [WebWorkerStatus, ReturnType<T>]
 
       switch (status) {
@@ -82,7 +87,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     }
 
     newWorker.onerror = (e: ErrorEvent) => {
-      const { reject = () => {} } = promise.value
+      const { reject = () => { } } = promise.value
       e.preventDefault()
       reject(e)
       workerTerminate('ERROR')
@@ -102,7 +107,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
       resolve,
       reject,
     }
-    worker.value && worker.value.postMessage([[...fnArgs]])
+    worker.value?.postMessage([[...fnArgs]])
 
     workerStatus.value = 'RUNNING'
   })

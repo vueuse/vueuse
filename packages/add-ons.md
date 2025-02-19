@@ -13,7 +13,6 @@ Document head manager for Vue 3. SSR ready. Created and maintained by [@egoist](
 - 🏎 **Smooth animations** based on [**Popmotion**](https://popmotion.io/)
 - 🎮 **Declarative** API
 - 🚀 **Plug** & **play** with **10+ presets**
-- ✅ Supports **Vue 2 & 3** using [**vue-demi**](https://github.com/antfu/vue-demi)
 - 🚚 Supports **Nuxt** using [**nuxt-use-motion**](https://github.com/Tahul/nuxt-use-motion)
 - ✨ Written in **TypeScript**
 - 🏋️‍♀️ Lightweight with **<20kb** bundle size
@@ -28,7 +27,6 @@ Document head manager for Vue 3. SSR ready. Created and maintained by [@egoist](
 - 🕹 **Mouse** & **Touch** support
 - 🎮 **Directives** support (**v-drag**, **v-pinch**, **v-move**...)
 - ✨ Written in **TypeScript**
-- ✅ Supports **Vue 2 & 3** using [**vue-demi**](https://github.com/antfu/vue-demi)
 - 🤹 Plays well with [**vueuse/motion**](https://github.com/vueuse/motion) or **any other** animation solution
 
 > Created and maintained by [@Tahul](https://github.com/Tahul)
@@ -39,8 +37,7 @@ Vue composables for playing sound effects.
 
 - 👂 Lets your website **communicate** using 2 **human senses** instead of 1
 - 🔥 Built with **Vue** Composition API
-- ✅ Supports **Vue 2 & 3** using [**vue-demi**](https://github.com/antfu/vue-demi)
-- 🚚 Supports **Nuxt 2 & 3** using [**@vueuse/sound/nuxt**](https://github.com/vueuse/sound#nuxt)
+- 🚚 Supports **Nuxt 3** using [**@vueuse/sound/nuxt**](https://github.com/vueuse/sound#nuxt)
 - ⚡️ **<1kb** bytes (gzip) in your **bundle**! **~10kb** loaded **async**.
 - ✨ Built with **TypeScript**
 - 🗣 Uses a powerful, battle-tested audio utility: [**Howler.js**](https://howlerjs.com/)

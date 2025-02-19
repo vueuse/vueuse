@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const translateX = ref(0)
-const translateY = ref(0)
+const translateX = shallowRef(0)
+const translateY = shallowRef(0)
 
-onKeyStroke(['w', 'W', 'ArrowUp'], () => {
+onKeyStroke(['w', 'W', 'ArrowUp'], (e) => {
+  if (e.key === 'ArrowUp') {
+    e.preventDefault()
+  }
   translateY.value -= 10
 })
 
-onKeyStroke(['s', 'S', 'ArrowDown'], () => {
+onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+  }
   translateY.value += 10
 })
 

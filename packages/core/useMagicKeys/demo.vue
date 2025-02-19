@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
+import { computed } from 'vue'
 import Key from './Key.vue'
 
 const { shift, v, u, e, s, v_u_e, u_s_e, current } = useMagicKeys()

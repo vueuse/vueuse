@@ -128,3 +128,17 @@ export const breakpointsPrimeFlex = {
   lg: 992,
   xl: 1200,
 }
+
+/**
+ * Breakpoints from ElementUI/ElementPlus
+ *
+ * @see https://element.eleme.io/#/en-US/component/layout
+ * @see https://element-plus.org/en-US/component/layout.html
+ */
+export const breakpointsElement = {
+  xs: 0,
+  sm: 768,
+  md: 992,
+  lg: 1200,
+  xl: 1920,
+}

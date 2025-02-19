@@ -1,6 +1,6 @@
-import { computed } from 'vue-demi'
-import { useMediaQuery } from '../useMediaQuery'
 import type { ConfigurableWindow } from '../_configurable'
+import { computed } from 'vue'
+import { useMediaQuery } from '../useMediaQuery'
 
 export type ColorSchemeType = 'dark' | 'light' | 'no-preference'
 

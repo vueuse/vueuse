@@ -1,11 +1,11 @@
-import { ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { syncRef } from '.'
+import { shallowRef } from 'vue'
+import { syncRef } from './index'
 
 describe('syncRef', () => {
   it('should work', () => {
-    const a = ref('foo')
-    const b = ref('bar')
+    const a = shallowRef('foo')
+    const b = shallowRef('bar')
 
     const stop = syncRef(a, b)
 
@@ -30,8 +30,8 @@ describe('syncRef', () => {
   })
 
   it('trl', () => {
-    const left = ref('left')
-    const right = ref('right')
+    const left = shallowRef('left')
+    const right = shallowRef('right')
 
     syncRef(left, right, { direction: 'rtl' })
 
@@ -50,8 +50,8 @@ describe('syncRef', () => {
   })
 
   it('works with mutual convertors', () => {
-    const left = ref(10)
-    const right = ref(2)
+    const left = shallowRef(10)
+    const right = shallowRef(2)
 
     syncRef(left, right, {
       transform: {
@@ -74,8 +74,8 @@ describe('syncRef', () => {
   })
 
   it('works with only rtl convertor', () => {
-    const left = ref(10)
-    const right = ref(2)
+    const left = shallowRef(10)
+    const right = shallowRef(2)
 
     syncRef(left, right, {
       direction: 'rtl',
@@ -99,12 +99,12 @@ describe('syncRef', () => {
   })
 
   it('ts works', () => {
-    const ref0 = ref(0)
-    const ref1 = ref(1)
-    const refString = ref('1')
-    const refNumber = ref(1)
-    const refNumString = ref<number | string>(1)
-    const refNumBoolean = ref<number | boolean>(1)
+    const ref0 = shallowRef(0)
+    const ref1 = shallowRef(1)
+    const refString = shallowRef('1')
+    const refNumber = shallowRef(1)
+    const refNumString = shallowRef<number | string>(1)
+    const refNumBoolean = shallowRef<number | boolean>(1)
     // L = A && direction === 'both'
     syncRef(ref0, ref1)()
     syncRef(ref0, ref1, {
@@ -251,8 +251,8 @@ describe('syncRef', () => {
       direction: 'rtl',
     })
 
-    const bool0 = ref(false)
-    const bool1 = ref(false)
+    const bool0 = shallowRef(false)
+    const bool1 = shallowRef(false)
     syncRef(bool0, bool1)
 
     syncRef(refNumber, refString, {

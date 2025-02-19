@@ -1,7 +1,7 @@
-import { ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
+import { shallowRef } from 'vue'
 import { Key, useInjectedSetup } from '../../.test'
-import { computedInject } from '.'
+import { computedInject } from './index'
 
 describe('computedInject', () => {
   it('should be defined', () => {
@@ -17,7 +17,7 @@ describe('computedInject', () => {
       const anotherComputedNum = computedInject(Key, (source) => {
         if (source)
           return source.value + 10
-      }, ref(10))
+      }, shallowRef(10))
 
       expect(computedNum.value).toBe(2)
       expect(anotherComputedNum.value).toBe(11)

@@ -1,17 +1,16 @@
-import { directiveHooks } from '@vueuse/shared'
-import type { ObjectDirective } from 'vue-demi'
-import { useIntersectionObserver } from '.'
-import type { UseIntersectionObserverOptions } from '.'
+import type { ObjectDirective } from 'vue'
+import type { UseIntersectionObserverOptions } from './index'
+import { useIntersectionObserver } from './index'
 
 type BindingValueFunction = IntersectionObserverCallback
 
 type BindingValueArray = [BindingValueFunction, UseIntersectionObserverOptions]
 
 export const vIntersectionObserver: ObjectDirective<
-HTMLElement,
+  HTMLElement,
 BindingValueFunction | BindingValueArray
 > = {
-  [directiveHooks.mounted](el, binding) {
+  mounted(el, binding) {
     if (typeof binding.value === 'function')
       useIntersectionObserver(el, binding.value)
     else

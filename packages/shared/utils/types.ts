@@ -1,4 +1,9 @@
-import type { ComputedRef, Ref, WatchOptions, WatchSource } from 'vue-demi'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
+
+export type {
+  MaybeRef,
+  MaybeRefOrGetter,
+}
 
 /**
  * Void function
@@ -17,24 +22,6 @@ export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
   get value(): T
   set value(value: T | null | undefined)
 }
-
-/**
- * Maybe it's a ref, or a plain value
- *
- * ```ts
- * type MaybeRef<T> = T | Ref<T>
- * ```
- */
-export type MaybeRef<T> = T | Ref<T>
-
-/**
- * Maybe it's a ref, or a plain value, or a getter function
- *
- * ```ts
- * type MaybeRefOrGetter<T> = (() => T) | T | Ref<T> | ComputedRef<T>
- * ```
- */
-export type MaybeRefOrGetter<T> = MaybeRef<T> | (() => T)
 
 /**
  * Maybe it's a computed ref, or a readonly value, or a getter function
@@ -88,7 +75,7 @@ export interface Pausable {
   /**
    * A ref indicate whether a pausable instance is active
    */
-  isActive: Readonly<Ref<boolean>>
+  isActive: Readonly<ShallowRef<boolean>>
 
   /**
    * Temporary pause the effect from executing

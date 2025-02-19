@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import { noop } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { computed, isRef, ref, shallowRef, watchEffect } from 'vue-demi'
+import { computed, ref as deepRef, isRef, shallowRef, watchEffect } from 'vue'
 
 /**
  * Handle overlapping async evaluations.
@@ -46,9 +46,19 @@ export interface AsyncComputedOptions {
  */
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState: T,
+  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+): Ref<T>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState?: undefined,
+  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+): Ref<T | undefined>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
   optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
-): Ref<T> {
+): Ref<T> | Ref<T | undefined> {
   let options: AsyncComputedOptions
 
   if (isRef(optionsOrRef)) {
@@ -67,8 +77,8 @@ export function computedAsync<T>(
     onError = noop,
   } = options
 
-  const started = ref(!lazy)
-  const current = (shallow ? shallowRef(initialState) : ref(initialState)) as Ref<T>
+  const started = shallowRef(!lazy)
+  const current = (shallow ? shallowRef(initialState) : deepRef(initialState)) as Ref<T>
   let counter = 0
 
   watchEffect(async (onInvalidate) => {

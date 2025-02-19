@@ -1,7 +1,7 @@
 import type { IncomingMessage } from 'node:http'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref } from 'vue-demi'
 import Cookie from 'universal-cookie'
+import { shallowRef } from 'vue'
 
 type RawCookies = Record<string, string>
 
@@ -40,7 +40,7 @@ export function useCookies(
   /**
    * Adds reactivity to get/getAll methods
    */
-  const touches = ref(0)
+  const touches = shallowRef(0)
 
   const onChange = () => {
     const newCookies = cookies.getAll({ doNotParse: true })
@@ -51,8 +51,9 @@ export function useCookies(
         newCookies,
         previousCookies,
       )
-    )
+    ) {
       touches.value++
+    }
 
     previousCookies = newCookies
   }
@@ -74,7 +75,7 @@ export function useCookies(
       if (autoUpdateDependencies && watchingDependencies && !watchingDependencies.includes(args[0]))
         watchingDependencies.push(args[0])
 
-      // eslint-disable-next-line no-unused-expressions
+      // eslint-disable-next-line ts/no-unused-expressions
       touches.value // adds reactivity to method
       return cookies.get<T>(args[0], { doNotParse, ...args[1] })
     },
@@ -82,7 +83,7 @@ export function useCookies(
      * Reactive get all cookies
      */
     getAll: <T = any>(...args: Parameters<Cookie['getAll']>) => {
-      // eslint-disable-next-line no-unused-expressions
+      // eslint-disable-next-line ts/no-unused-expressions
       touches.value // adds reactivity to method
       return cookies.getAll<T>({ doNotParse, ...args[0] })
     },

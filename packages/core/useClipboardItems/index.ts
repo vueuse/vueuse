@@ -1,11 +1,11 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue, useTimeoutFn } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { ComputedRef } from 'vue'
+import type { ConfigurableNavigator } from '../_configurable'
+import { useTimeoutFn } from '@vueuse/shared'
+import { ref as deepRef, shallowRef, toValue } from 'vue'
+import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import type { ConfigurableNavigator } from '../_configurable'
-import { defaultNavigator } from '../_configurable'
 
 export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator {
   /**
@@ -29,7 +29,7 @@ export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator 
 }
 
 export interface UseClipboardItemsReturn<Optional> {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   content: ComputedRef<ClipboardItems>
   copied: ComputedRef<boolean>
   copy: Optional extends true ? (content?: ClipboardItems) => Promise<void> : (text: ClipboardItems) => Promise<void>
@@ -52,9 +52,9 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   } = options
 
   const isSupported = useSupported(() => (navigator && 'clipboard' in navigator))
-  const content = ref<ClipboardItems>([])
-  const copied = ref(false)
-  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring)
+  const content = deepRef<ClipboardItems>([])
+  const copied = shallowRef(false)
+  const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
   function updateContent() {
     if (isSupported.value) {
@@ -65,7 +65,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   }
 
   if (isSupported.value && read)
-    useEventListener(['copy', 'cut'], updateContent)
+    useEventListener(['copy', 'cut'], updateContent, { passive: true })
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {

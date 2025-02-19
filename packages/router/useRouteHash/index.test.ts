@@ -1,6 +1,6 @@
-import { nextTick, reactive, ref } from 'vue-demi'
-import { describe, expect, it } from 'vitest'
-import { useRouteHash } from '.'
+import { describe, expect, it, vi } from 'vitest'
+import { computed, nextTick, reactive, shallowRef, watch } from 'vue'
+import { useRouteHash } from './index'
 
 describe('useRouteHash', () => {
   const getRoute = (hash?: any) => reactive({
@@ -74,11 +74,33 @@ describe('useRouteHash', () => {
     expect(hash.value).toBe('foo')
   })
 
+  it('should trigger effects only once', async () => {
+    const route = getRoute()
+    const router = { replace: (r: any) => Object.assign(route, r) } as any
+    const onUpdate = vi.fn()
+
+    const hash = useRouteHash('baz', { route, router })
+    const hashObj = computed(() => ({
+      hash: hash.value,
+    }))
+
+    watch(hashObj, onUpdate)
+
+    hash.value = 'foo'
+
+    await nextTick()
+    await nextTick()
+
+    expect(hash.value).toBe('foo')
+    expect(route.hash).toBe('foo')
+    expect(onUpdate).toHaveBeenCalledTimes(1)
+  })
+
   it('should allow ref or getter as default value', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const defaultTarget = ref('foo')
+    const defaultTarget = shallowRef('foo')
 
     const target = useRouteHash(defaultTarget, { route, router })
 

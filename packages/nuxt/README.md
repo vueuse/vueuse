@@ -6,6 +6,14 @@
 
 ## Install
 
+Install the vueuse module into your application using [nuxi](https://nuxt.com/docs/api/commands/module):
+
+```bash
+npx nuxi@latest module add vueuse
+```
+
+Or use npm:
+
 ```bash
 npm i @vueuse/nuxt @vueuse/core
 ```
@@ -23,12 +31,15 @@ export default defineNuxtConfig({
 
 The following utils are **disabled** from auto-import for Nuxt to avoid conflicts with Nuxt's built-in utils:
 
+- `toRef`
 - `toRefs`
+- `toValue`
 - `useFetch`
 - `useCookie`
 - `useHead`
 - `useTitle`
 - `useStorage`
+- `useImage`
 
 You can always use them by explicitly import from `@vueuse/core`
 

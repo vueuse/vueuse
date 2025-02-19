@@ -76,8 +76,8 @@ const childProps = reactivePick(props, 'color', 'font')
 Instead of doing this
 
 ```ts
-import { reactive } from 'vue'
 import { useElementBounding } from '@vueuse/core'
+import { reactive } from 'vue'
 
 const { height, width } = useElementBounding() // object of refs
 const size = reactive({ height, width })

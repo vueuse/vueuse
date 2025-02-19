@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { watchDebounced } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const input = ref('')
-const updated = ref(0)
+const input = shallowRef('')
+const updated = shallowRef(0)
 
 watchDebounced(input, () => {
   updated.value += 1

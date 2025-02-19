@@ -1,7 +1,7 @@
-import type { MaybeRefOrGetter, Ref } from 'vue-demi'
-import { ref, shallowRef, watch } from 'vue-demi'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
-import type { Fn } from '@vueuse/shared'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
@@ -36,11 +36,18 @@ export interface UseEventSourceOptions extends EventSourceInit {
   }
 
   /**
-   * Automatically open a connection
+   * Immediately open the connection when calling this composable
    *
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Automatically connect to the websocket when URL changes
+   *
+   * @default true
+   */
+  autoConnect?: boolean
 }
 
 export interface UseEventSourceReturn<Events extends string[]> {
@@ -81,6 +88,11 @@ export interface UseEventSourceReturn<Events extends string[]> {
    * Reference to the current EventSource instance.
    */
   eventSource: Ref<EventSource | null>
+  /**
+   * The last event ID string, for server-sent events.
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
+   */
+  lastEventId: Ref<string | null>
 }
 
 function resolveNestedOptions<T>(options: T | true): T {
@@ -103,12 +115,13 @@ export function useEventSource<Events extends string[]>(
   events: Events = [] as unknown as Events,
   options: UseEventSourceOptions = {},
 ): UseEventSourceReturn<Events> {
-  const event: Ref<string | null> = ref(null)
-  const data: Ref<string | null> = ref(null)
-  const status = ref('CONNECTING') as Ref<EventSourceStatus>
-  const eventSource = ref(null) as Ref<EventSource | null>
+  const event: Ref<string | null> = deepRef(null)
+  const data: Ref<string | null> = deepRef(null)
+  const status = shallowRef('CONNECTING') as Ref<EventSourceStatus>
+  const eventSource = deepRef(null) as Ref<EventSource | null>
   const error = shallowRef(null) as Ref<Event | null>
   const urlRef = toRef(url)
+  const lastEventId = shallowRef<string | null>(null)
 
   let explicitlyClosed = false
   let retried = 0
@@ -116,6 +129,8 @@ export function useEventSource<Events extends string[]>(
   const {
     withCredentials = false,
     immediate = true,
+    autoConnect = true,
+    autoReconnect,
   } = options
 
   const close = () => {
@@ -148,13 +163,13 @@ export function useEventSource<Events extends string[]>(
 
       // only reconnect if EventSource isn't reconnecting by itself
       // this is the case when the connection is closed (readyState is 2)
-      if (es.readyState === 2 && !explicitlyClosed && options.autoReconnect) {
+      if (es.readyState === 2 && !explicitlyClosed && autoReconnect) {
         es.close()
         const {
           retries = -1,
           delay = 1000,
           onFailed,
-        } = resolveNestedOptions(options.autoReconnect)
+        } = resolveNestedOptions(autoReconnect)
         retried += 1
 
         if (typeof retries === 'number' && (retries < 0 || retried < retries))
@@ -169,13 +184,14 @@ export function useEventSource<Events extends string[]>(
     es.onmessage = (e: MessageEvent) => {
       event.value = null
       data.value = e.data
+      lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: string }) => {
         event.value = event_name
         data.value = e.data || null
-      })
+      }, { passive: true })
     }
   }
 
@@ -189,7 +205,10 @@ export function useEventSource<Events extends string[]>(
   }
 
   if (immediate)
-    watch(urlRef, open, { immediate: true })
+    open()
+
+  if (autoConnect)
+    watch(urlRef, open)
 
   tryOnScopeDispose(close)
 
@@ -201,5 +220,6 @@ export function useEventSource<Events extends string[]>(
     error,
     open,
     close,
+    lastEventId,
   }
 }

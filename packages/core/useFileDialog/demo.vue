@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { useFileDialog } from '.'
+import { useFileDialog } from './index'
 
-const { files, open, reset, onChange } = useFileDialog()
+const { files, open, reset, onCancel, onChange } = useFileDialog()
 onChange((files) => {
   /** do something with files */
+})
+
+onCancel(() => {
+  /** do something on cancel */
 })
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { stringify } from '@vueuse/docs-utils'
 import { useDevicePixelRatio } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
+import { reactive } from 'vue'
 
 const pixelRatio = reactive(useDevicePixelRatio())
 const code = stringify(pixelRatio)

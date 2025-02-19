@@ -1,5 +1,4 @@
-import { hasOwn } from '@vueuse/shared'
-import { del, isVue2, set, shallowReactive } from 'vue-demi'
+import { shallowReactive } from 'vue'
 
 type CacheKey = any
 
@@ -27,24 +26,6 @@ export interface UseMemoizeCache<Key, Value> {
    * Clear cache
    */
   clear: () => void
-}
-
-/**
- * Fallback for Vue 2 not able to make a reactive Map
- */
-function getMapVue2Compat<Value>(): UseMemoizeCache<CacheKey, Value> {
-  const data: Record<CacheKey, Value> = shallowReactive({})
-  return {
-    get: key => data[key],
-    set: (key, value) => set(data, key, value),
-    has: key => hasOwn(data, key),
-    delete: key => del(data, key),
-    clear: () => {
-      Object.keys(data).forEach((key) => {
-        del(data, key)
-      })
-    },
-  }
 }
 
 /**
@@ -92,9 +73,6 @@ export function useMemoize<Result, Args extends unknown[]>(
   const initCache = (): UseMemoizeCache<CacheKey, Result> => {
     if (options?.cache)
       return shallowReactive(options.cache)
-    // Use fallback for Vue 2 not able to make a reactive Map
-    if (isVue2)
-      return getMapVue2Compat<Result>()
     return shallowReactive(new Map<CacheKey, Result>())
   }
   const cache = initCache()

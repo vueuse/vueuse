@@ -1,9 +1,9 @@
-import { nextTick } from 'vue-demi'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { useCounter } from '../../shared/useCounter'
+import { nextTick } from 'vue'
 import { useSetup } from '../../.test'
+import { useCounter } from '../../shared/useCounter'
+import { useEventBus } from './index'
 import { events } from './internal'
-import { useEventBus } from '.'
 
 describe('useEventBus', () => {
   const emptyMap = new Map()

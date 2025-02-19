@@ -1,6 +1,6 @@
-import { customRef } from 'vue-demi'
-import { extendRef } from '../extendRef'
 import type { Fn } from '../utils'
+import { customRef } from 'vue'
+import { extendRef } from '../extendRef'
 
 export interface ControlledRefOptions<T> {
   /**
@@ -19,7 +19,7 @@ export interface ControlledRefOptions<T> {
 }
 
 /**
- * Explicitly define the deps of computed.
+ * Fine-grained controls over ref and its reactivity.
  */
 export function refWithControl<T>(
   initial: T,

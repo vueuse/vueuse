@@ -1,6 +1,6 @@
 import type { IpcRenderer } from 'electron'
-import type { Ref } from 'vue-demi'
-import { shallowRef } from 'vue-demi'
+import type { ShallowRef } from 'vue'
+import { shallowRef } from 'vue'
 
 /**
  * Returns Promise<any> - Resolves with the response from the main process.
@@ -12,7 +12,7 @@ import { shallowRef } from 'vue-demi'
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
  * @see https://vueuse.org/useIpcRendererInvoke
  */
-export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: string, ...args: any[]): Ref<T | null>
+export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: string, ...args: any[]): ShallowRef<T | null>
 
 /**
  * Returns Promise<any> - Resolves with the response from the main process.
@@ -24,9 +24,9 @@ export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: strin
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
  * @see https://vueuse.org/useIpcRendererInvoke
  */
-export function useIpcRendererInvoke<T>(channel: string, ...args: any[]): Ref<T | null>
+export function useIpcRendererInvoke<T>(channel: string, ...args: any[]): ShallowRef<T | null>
 
-export function useIpcRendererInvoke<T>(...args: any[]): Ref<T | null> {
+export function useIpcRendererInvoke<T>(...args: any[]): ShallowRef<T | null> {
   let ipcRenderer: IpcRenderer | undefined
   let channel: string
   let invokeArgs: any[]

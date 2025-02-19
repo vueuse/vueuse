@@ -6,19 +6,15 @@ category: Reactivity
 
 Add extra attributes to Ref.
 
-::: warning
-This function only works for Vue 2.7 or above.
-:::
-
 ## Usage
 
 > Please note the extra attribute will not be accessible in Vue's template.
 
 ```ts
-import { ref } from 'vue'
 import { extendRef } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const myRef = ref('content')
+const myRef = shallowRef('content')
 
 const extended = extendRef(myRef, { foo: 'extra data' })
 
@@ -29,8 +25,8 @@ extended.foo === 'extra data'
 Refs will be unwrapped and be reactive
 
 ```ts
-const myRef = ref('content')
-const extraRef = ref('extra')
+const myRef = shallowRef('content')
+const extraRef = shallowRef('extra')
 
 const extended = extendRef(myRef, { extra: extraRef })
 

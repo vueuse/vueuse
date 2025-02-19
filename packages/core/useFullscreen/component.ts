@@ -1,12 +1,12 @@
-import { defineComponent, h, reactive, ref } from 'vue-demi'
-import { useFullscreen } from '@vueuse/core'
 import type { RenderableComponent } from '../types'
+import { useFullscreen } from '@vueuse/core'
+import { ref as deepRef, defineComponent, h, reactive } from 'vue'
 
 export const UseFullscreen = /* #__PURE__ */ defineComponent<RenderableComponent>({
   name: 'UseFullscreen',
   props: ['as'] as unknown as undefined,
   setup(props, { slots }) {
-    const target = ref()
+    const target = deepRef()
     const data = reactive(useFullscreen(target))
 
     return () => {

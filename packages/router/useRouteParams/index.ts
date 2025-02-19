@@ -1,10 +1,10 @@
-import { customRef, nextTick, watch } from 'vue-demi'
-import { useRoute, useRouter } from 'vue-router'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { customRef, nextTick, toValue, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
@@ -33,8 +33,21 @@ export function useRouteParams<
     mode = 'replace',
     route = useRoute(),
     router = useRouter(),
-    transform = value => value as any as K,
+    transform,
   } = options
+
+  let transformGet = (value: T) => value as unknown as K
+  let transformSet = (value: K) => value as unknown as T
+
+  if (typeof transform === 'function') {
+    transformGet = transform
+  }
+  else if (transform) {
+    if (transform.get)
+      transformGet = transform.get
+    if (transform.set)
+      transformSet = transform.set
+  }
 
   if (!_queue.has(router))
     _queue.set(router, new Map())
@@ -56,14 +69,16 @@ export function useRouteParams<
       get() {
         track()
 
-        return transform(param !== undefined ? param : toValue(defaultValue))
+        return transformGet(param !== undefined && param !== '' ? param : toValue(defaultValue))
       },
       set(v) {
+        v = transformSet(v)
+
         if (param === v)
           return
 
-        param = (v === defaultValue || v === null) ? undefined : v
-        _paramsQueue.set(name, (v === defaultValue || v === null) ? undefined : v)
+        param = (v === toValue(defaultValue) || v === null) ? undefined : v
+        _paramsQueue.set(name, (v === toValue(defaultValue) || v === null) ? undefined : v)
 
         trigger()
 
@@ -92,6 +107,9 @@ export function useRouteParams<
   watch(
     () => route.params[name],
     (v) => {
+      if (param === transformGet(v as T))
+        return
+
       param = v
 
       _trigger()

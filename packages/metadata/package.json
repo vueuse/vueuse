@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/metadata",
   "type": "module",
-  "version": "10.9.0",
+  "version": "12.7.0",
   "description": "Metadata for VueUse functions",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -31,9 +31,17 @@
   "module": "./index.mjs",
   "types": "./index.d.ts",
   "files": [
-    "index.*"
+    "*.cjs",
+    "*.d.cts",
+    "*.d.mts",
+    "*.d.ts",
+    "*.js",
+    "*.mjs",
+    "index.json"
   ],
   "scripts": {
-    "update": "esno scripts/update.ts"
+    "update": "tsx scripts/update.ts",
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
   }
 }

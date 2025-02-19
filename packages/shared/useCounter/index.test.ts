@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue-demi'
-import { useCounter } from '.'
+import { shallowRef } from 'vue'
+import { useCounter } from './index'
 
 describe('useCounter', () => {
   it('should be defined', () => {
@@ -45,7 +45,7 @@ describe('useCounter', () => {
   })
 
   it('should be update initial & counter', () => {
-    const initial = ref(0)
+    const initial = shallowRef(0)
     const { count, inc, dec, get, set, reset } = useCounter(initial)
 
     expect(count.value).toBe(0)

@@ -1,17 +1,15 @@
-import { describe, expect, it, vi } from 'vitest'
-import { BehaviorSubject, Subject, of } from 'rxjs'
-import { nextTick, reactive, ref } from 'vue-demi'
+import { BehaviorSubject, of, Subject } from 'rxjs'
 import { delay, endWith, tap } from 'rxjs/operators'
+import { describe, expect, it, vi } from 'vitest'
+import { ref as deepRef, nextTick, reactive, shallowRef } from 'vue'
 import { useExtractedObservable } from './index'
-
-const waitFor = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
 
 describe('useExtractedObservable', () => {
   describe('when no options are provided', () => {
     it('should call the extractor immediately', () => {
       const obs = new Subject<number>()
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const extractor = vi.fn((lastValue: number) => obs.pipe(endWith(lastValue)))
 
@@ -27,7 +25,7 @@ describe('useExtractedObservable', () => {
       expect.hasAssertions()
       const obs = new Subject<number>()
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const refObs = useExtractedObservable(last, lastValue => obs.pipe(endWith(lastValue)))
 
@@ -46,7 +44,7 @@ describe('useExtractedObservable', () => {
       expect.hasAssertions()
       const obs = new Subject<number>()
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const refObs = useExtractedObservable(last, lastValue => obs.pipe(endWith(lastValue)), {
         initialValue: 13,
@@ -65,7 +63,7 @@ describe('useExtractedObservable', () => {
       expect.hasAssertions()
       const obs = new BehaviorSubject(16)
 
-      const last = ref(42)
+      const last = shallowRef(42)
 
       const refObs = useExtractedObservable(last, () => obs, {
         initialValue: 13,
@@ -78,7 +76,7 @@ describe('useExtractedObservable', () => {
   describe('when onError is provided', () => {
     it('calls onError when an observable emits an error', async () => {
       expect.hasAssertions()
-      const re = ref(0)
+      const re = shallowRef(0)
       const error = new Error('Odd number')
 
       const extractor = (num: number) => of(num).pipe(
@@ -107,7 +105,7 @@ describe('useExtractedObservable', () => {
     it('doesn\'t call onError when the observable doesn\'t emit an error', async () => {
       expect.hasAssertions()
 
-      const re = ref([1, 2])
+      const re = deepRef([1, 2])
       const onError = vi.fn()
 
       /* const obsRef = */ useExtractedObservable(re, (arr: unknown[]) => of(...arr), {
@@ -128,7 +126,7 @@ describe('useExtractedObservable', () => {
     it('calls onComplete when an observable completes', async () => {
       expect.hasAssertions()
 
-      const re = ref()
+      const re = deepRef()
       const extractor = (args: unknown[]) => of(...args)
       const onComplete = vi.fn()
 
@@ -150,9 +148,10 @@ describe('useExtractedObservable', () => {
     })
 
     it('doesn\'t call onComplete if the watched observable has changed before it could complete', async () => {
+      vi.useFakeTimers()
       expect.hasAssertions()
 
-      const re = ref([13, 23, 420])
+      const re = deepRef([13, 23, 420])
       const extractor = (arr: unknown[]) => of(...arr).pipe(
         delay(1000),
       )
@@ -162,11 +161,10 @@ describe('useExtractedObservable', () => {
         onComplete,
       })
 
-      setTimeout(() => {
-        re.value = [42]
-      }, 500)
+      await vi.advanceTimersByTimeAsync(500)
+      re.value = [42]
 
-      await waitFor(6000)
+      await vi.advanceTimersByTimeAsync(6000)
 
       expect(onComplete).toHaveBeenCalledOnce()
       expect(obsRef.value).toStrictEqual(42)
@@ -178,7 +176,7 @@ describe('useExtractedObservable', () => {
       xyz: 'abc',
     })
 
-    const re = ref('def')
+    const re = shallowRef('def')
 
     const extractor = ([abc, def]: [string, string]) => of(`${abc}${def}`)
 

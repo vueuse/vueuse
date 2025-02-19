@@ -9,8 +9,8 @@ Reactive [navigator.language](https://developer.mozilla.org/en-US/docs/Web/API/N
 ## Usage
 
 ```ts
-import { defineComponent, ref } from 'vue'
 import { useNavigatorLanguage } from '@vueuse/core'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   setup() {

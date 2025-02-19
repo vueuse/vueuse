@@ -11,7 +11,11 @@ Reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API
 ```js
 import { useWakeLock } from '@vueuse/core'
 
-const { isSupported, isActive, request, release } = useWakeLock()
+const { isSupported, isActive, forceRequest, request, release } = useWakeLock()
 ```
 
-If `request` is called,` isActive` will be **true**, and if `release` is called, or other tab is displayed, or the window is minimized,`isActive` will be **false**.
+When `request` is called, the wake lock will be requested if the document is visible. Otherwise, the request will be queued until the document becomes visible. If the request is successful, `isActive` will be **true**. Whenever the document is hidden, the `isActive` will be **false**.
+
+When `release` is called, the wake lock will be released. If there is a queued request, it will be canceled.
+
+To request a wake lock immediately, even if the document is hidden, use `forceRequest`. Note that this may throw an error if the document is hidden.

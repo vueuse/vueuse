@@ -1,16 +1,18 @@
-import type { Fn } from '@vueuse/shared'
-import { isIOS, noop } from '@vueuse/shared'
+import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import type { ComponentPublicInstance, VNode } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { isIOS, noop } from '@vueuse/shared'
+import { toValue } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
-export interface OnClickOutsideOptions extends ConfigurableWindow {
+export interface OnClickOutsideOptions<Controls extends boolean = false> extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: (MaybeElementRef | string)[]
+  ignore?: MaybeRefOrGetter<(MaybeElementRef | string)[]>
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -21,9 +23,25 @@ export interface OnClickOutsideOptions extends ConfigurableWindow {
    * @default false
    */
   detectIframe?: boolean
+  /**
+   * Use controls to cancel/trigger listener.
+   * @default false
+   */
+  controls?: Controls
 }
 
-export type OnClickOutsideHandler<T extends { detectIframe: OnClickOutsideOptions['detectIframe'] } = { detectIframe: false }> = (evt: T['detectIframe'] extends true ? PointerEvent | FocusEvent : PointerEvent) => void
+export type OnClickOutsideHandler<
+  T extends {
+    detectIframe: OnClickOutsideOptions['detectIframe']
+    controls: boolean
+  } = { detectIframe: false, controls: false },
+> = (
+  event: T['controls'] extends true ? Event | (T['detectIframe'] extends true
+    ? PointerEvent | FocusEvent
+    : PointerEvent) : T['detectIframe'] extends true
+    ? PointerEvent | FocusEvent
+    : PointerEvent,
+) => void
 
 let _iOSWorkaround = false
 
@@ -35,29 +53,46 @@ let _iOSWorkaround = false
  * @param handler
  * @param options
  */
-export function onClickOutside<T extends OnClickOutsideOptions>(
+export function onClickOutside(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
-  options: T = {} as T,
-) {
-  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false } = options
+  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: true }>,
+  options: OnClickOutsideOptions<true>,
+): { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
 
-  if (!window)
-    return noop
+export function onClickOutside(
+  target: MaybeElementRef,
+  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: false }>,
+  options?: OnClickOutsideOptions<false>,
+): Fn
+
+// Implementation
+export function onClickOutside(
+  target: MaybeElementRef,
+  handler: OnClickOutsideHandler,
+  options: OnClickOutsideOptions<boolean> = {},
+) {
+  const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, controls = false } = options
+
+  if (!window) {
+    return controls
+      ? { stop: noop, cancel: noop, trigger: noop }
+      : noop
+  }
 
   // Fixes: https://github.com/vueuse/vueuse/issues/1520
   // How it works: https://stackoverflow.com/a/39712411
   if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
+    const listenerOptions = { passive: true }
     Array.from(window.document.body.children)
-      .forEach(el => el.addEventListener('click', noop))
-    window.document.documentElement.addEventListener('click', noop)
+      .forEach(el => useEventListener(el, 'click', noop, listenerOptions))
+    useEventListener(window.document.documentElement, 'click', noop, listenerOptions)
   }
 
   let shouldListen = true
 
-  const shouldIgnore = (event: PointerEvent) => {
-    return ignore.some((target) => {
+  const shouldIgnore = (event: Event) => {
+    return toValue(ignore).some((target) => {
       if (typeof target === 'string') {
         return Array.from(window.document.querySelectorAll(target))
           .some(el => el === event.target || event.composedPath().includes(el))
@@ -69,13 +104,39 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
     })
   }
 
-  const listener = (event: PointerEvent) => {
+  /**
+   * Determines if the given target has multiple root elements.
+   * Referenced from: https://github.com/vuejs/test-utils/blob/ccb460be55f9f6be05ab708500a41ec8adf6f4bc/src/vue-wrapper.ts#L21
+   */
+  function hasMultipleRoots(target: MaybeElementRef): boolean {
+    const vm = toValue(target) as ComponentPublicInstance
+    return vm && vm.$.subTree.shapeFlag === 16
+  }
+
+  function checkMultipleRoots(target: MaybeElementRef, event: Event): boolean {
+    const vm = toValue(target) as ComponentPublicInstance
+    const children = vm.$.subTree && vm.$.subTree.children
+
+    if (children == null || !Array.isArray(children))
+      return false
+
+    // @ts-expect-error should be VNode
+    return children.some((child: VNode) => child.el === event.target || event.composedPath().includes(child.el))
+  }
+
+  const listener = (event: Event) => {
     const el = unrefElement(target)
+
+    if (event.target == null)
+      return
+
+    if (!(el instanceof Element) && hasMultipleRoots(target) && checkMultipleRoots(target, event))
+      return
 
     if (!el || el === event.target || event.composedPath().includes(el))
       return
 
-    if (event.detail === 0)
+    if ('detail' in event && event.detail === 0)
       shouldListen = !shouldIgnore(event)
 
     if (!shouldListen) {
@@ -83,11 +144,21 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
       return
     }
 
-    handler(event)
+    handler(event as any)
   }
 
+  let isProcessingClick = false
+
   const cleanup = [
-    useEventListener(window, 'click', listener, { passive: true, capture }),
+    useEventListener(window, 'click', (event: PointerEvent) => {
+      if (!isProcessingClick) {
+        isProcessingClick = true
+        setTimeout(() => {
+          isProcessingClick = false
+        }, 0)
+        listener(event)
+      }
+    }, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
       shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
@@ -98,13 +169,28 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
         if (
           window.document.activeElement?.tagName === 'IFRAME'
           && !el?.contains(window.document.activeElement)
-        )
+        ) {
           handler(event as any)
+        }
       }, 0)
-    }),
+    }, { passive: true }),
   ].filter(Boolean) as Fn[]
 
   const stop = () => cleanup.forEach(fn => fn())
+
+  if (controls) {
+    return {
+      stop,
+      cancel: () => {
+        shouldListen = false
+      },
+      trigger: (event: Event) => {
+        shouldListen = true
+        listener(event)
+        shouldListen = false
+      },
+    }
+  }
 
   return stop
 }

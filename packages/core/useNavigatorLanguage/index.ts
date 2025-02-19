@@ -1,14 +1,14 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
+import type { ComputedRef, ShallowRef } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
+import { shallowRef } from 'vue'
+
+import { defaultWindow } from '../_configurable'
 
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
-
 export interface NavigatorLanguageState {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   /**
    *
    * ISO 639-1 standard Language Code
@@ -25,7 +25,7 @@ export interface NavigatorLanguageState {
    * @see https://www.loc.gov/standards/iso639-2/php/code_list.php
    *
    */
-  language: Ref<string | undefined>
+  language: ShallowRef<string | undefined>
 }
 
 /**
@@ -43,13 +43,13 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
 
   const isSupported = useSupported(() => navigator && 'language' in navigator)
 
-  const language = ref<string | undefined>(navigator?.language)
+  const language = shallowRef<string | undefined>(navigator?.language)
 
   // Listen to when to user changes language:
   useEventListener(window, 'languagechange', () => {
     if (navigator)
       language.value = navigator.language
-  })
+  }, { passive: true })
 
   return {
     isSupported,

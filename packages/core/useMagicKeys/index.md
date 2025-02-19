@@ -6,8 +6,6 @@ category: Sensors
 
 Reactive keys pressed state, with magical keys combination support.
 
-<RequiresProxy />
-
 ## Usage
 
 ```js

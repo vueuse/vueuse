@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useFullscreen } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref(null)
+const el = useTemplateRef('el')
 const { toggle } = useFullscreen(el)
 </script>
 

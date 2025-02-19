@@ -1,22 +1,25 @@
+import type { Ref } from 'vue'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue-demi'
+import { nextTick, shallowRef } from 'vue'
 import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
-import { useColorMode } from '.'
+import { useColorMode } from './index'
 
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'
   const htmlEl = document.querySelector('html')
 
   vi.mock('../usePreferredDark', () => {
-    const mockPreferredDark = ref(false)
+    const mockPreferredDark = shallowRef(false)
     return {
       usePreferredDark: () => mockPreferredDark,
     }
   })
 
+  const mockPreferredDark = usePreferredDark() as Ref<boolean>
+
   beforeEach(() => {
-    usePreferredDark().value = false
+    mockPreferredDark.value = false
     localStorage.clear()
     htmlEl!.className = ''
   })
@@ -29,7 +32,7 @@ describe('useColorMode', () => {
   it('should translate auto mode when prefer dark', async () => {
     const mode = useColorMode()
     mode.value = 'auto'
-    usePreferredDark().value = true
+    mockPreferredDark.value = true
     await nextTwoTick()
     expect(mode.value).toBe('dark')
     expect(localStorage.getItem(storageKey)).toBe('auto')
@@ -109,7 +112,7 @@ describe('useColorMode', () => {
 
   it('should only change html class when preferred dark changed', async () => {
     const mode = useColorMode({ emitAuto: true })
-    usePreferredDark().value = true
+    mockPreferredDark.value = true
 
     await nextTwoTick()
     expect(mode.value).toBe('auto')
@@ -122,5 +125,52 @@ describe('useColorMode', () => {
     expect(mode.store.value).toBe('auto')
     expect(mode.system.value).toBe('light')
     expect(mode.state.value).toBe('light')
+  })
+
+  it('should call classList.add/classList.remove only if mode changed', async () => {
+    const target = document.createElement('div')
+
+    const mode = useColorMode({ selector: target, initialValue: 'light' })
+
+    await nextTick()
+
+    const addClass = vi.spyOn(target.classList, 'add')
+    const removeClass = vi.spyOn(target.classList, 'remove')
+
+    mode.value = 'light'
+
+    await nextTick()
+
+    expect(addClass).not.toHaveBeenCalled()
+    expect(removeClass).not.toHaveBeenCalled()
+
+    mode.value = 'dark'
+
+    await nextTick()
+
+    expect(addClass).toHaveBeenCalled()
+    expect(removeClass).toHaveBeenCalled()
+  })
+
+  it('should call setAttribute only if mode changed', async () => {
+    const target = document.createElement('div')
+
+    const mode = useColorMode({ selector: target, initialValue: 'light', attribute: 'data-color-mode' })
+
+    await nextTick()
+
+    const setAttr = vi.spyOn(target, 'setAttribute')
+
+    mode.value = 'light'
+
+    await nextTick()
+
+    expect(setAttr).not.toHaveBeenCalled()
+
+    mode.value = 'dark'
+
+    await nextTick()
+
+    expect(setAttr).toHaveBeenCalled()
   })
 })

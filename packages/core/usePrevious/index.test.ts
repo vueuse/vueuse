@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue-demi'
-import { usePrevious } from '.'
+import { ref as deepRef, shallowRef } from 'vue'
+import { usePrevious } from './index'
 
 describe('usePrevious', () => {
   it('works for literals', () => {
-    const target = ref(1)
+    const target = shallowRef(1)
     const previous = usePrevious(target)
 
     expect(previous.value).toBe(undefined)
@@ -19,7 +19,7 @@ describe('usePrevious', () => {
   })
 
   it('works with initial value', () => {
-    const target = ref('Hello')
+    const target = shallowRef('Hello')
     const previous = usePrevious(() => target.value, 'initial')
 
     expect(previous.value).toBe('initial')
@@ -30,7 +30,7 @@ describe('usePrevious', () => {
   })
 
   it('works with object', () => {
-    const target = ref<any>({ a: 1 })
+    const target = deepRef<any>({ a: 1 })
     const previous = usePrevious(target)
 
     expect(previous.value).toEqual(undefined)

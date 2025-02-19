@@ -1,8 +1,8 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import { toRef, useIntervalFn } from '@vueuse/shared'
-import { useSupported } from '../useSupported'
 import type { ConfigurableNavigator } from '../_configurable'
+import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
+import { useSupported } from '../useSupported'
 
 export interface UseVibrateOptions extends ConfigurableNavigator {
   /**

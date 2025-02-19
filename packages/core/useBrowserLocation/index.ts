@@ -1,11 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import { objectEntries } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { reactive, ref, watch } from 'vue-demi'
-import { useEventListener } from '../useEventListener'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { objectEntries } from '@vueuse/shared'
+import { ref as deepRef, reactive, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 
 const WRITABLE_PROPERTIES = [
   'hash',
@@ -41,7 +41,7 @@ export interface BrowserLocationState {
 export function useBrowserLocation(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
   const refs = Object.fromEntries(
-    WRITABLE_PROPERTIES.map(key => [key, ref()]),
+    WRITABLE_PROPERTIES.map(key => [key, deepRef()]),
   ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>
 
   for (const [key, ref] of objectEntries(refs)) {
@@ -68,11 +68,12 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
     })
   }
 
-  const state = ref(buildState('load'))
+  const state = deepRef(buildState('load'))
 
   if (window) {
-    useEventListener(window, 'popstate', () => state.value = buildState('popstate'), { passive: true })
-    useEventListener(window, 'hashchange', () => state.value = buildState('hashchange'), { passive: true })
+    const listenerOptions = { passive: true }
+    useEventListener(window, 'popstate', () => state.value = buildState('popstate'), listenerOptions)
+    useEventListener(window, 'hashchange', () => state.value = buildState('hashchange'), listenerOptions)
   }
 
   return state

@@ -1,10 +1,11 @@
+import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { ConfigurableWindow } from '../_configurable'
+import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { computed, watch } from 'vue-demi'
-import type { MaybeComputedElementRef } from '../unrefElement'
+import { computed, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
-import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 
 export interface ResizeObserverSize {
   readonly inlineSize: number
@@ -14,9 +15,9 @@ export interface ResizeObserverSize {
 export interface ResizeObserverEntry {
   readonly target: Element
   readonly contentRect: DOMRectReadOnly
-  readonly borderBoxSize?: ReadonlyArray<ResizeObserverSize>
-  readonly contentBoxSize?: ReadonlyArray<ResizeObserverSize>
-  readonly devicePixelContentBoxSize?: ReadonlyArray<ResizeObserverSize>
+  readonly borderBoxSize: ReadonlyArray<ResizeObserverSize>
+  readonly contentBoxSize: ReadonlyArray<ResizeObserverSize>
+  readonly devicePixelContentBoxSize: ReadonlyArray<ResizeObserverSize>
 }
 
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void
@@ -47,7 +48,7 @@ declare class ResizeObserver {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeComputedElementRef | MaybeComputedElementRef[],
+  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
   callback: ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
 ) {
@@ -62,10 +63,12 @@ export function useResizeObserver(
     }
   }
 
-  const targets = computed(() =>
-    Array.isArray(target)
-      ? target.map(el => unrefElement(el))
-      : [unrefElement(target)])
+  const targets = computed(() => {
+    const _targets = toValue(target)
+    return Array.isArray(_targets)
+      ? _targets.map(el => unrefElement(el))
+      : [unrefElement(_targets)]
+  })
 
   const stopWatch = watch(
     targets,
@@ -73,8 +76,10 @@ export function useResizeObserver(
       cleanup()
       if (isSupported.value && window) {
         observer = new ResizeObserver(callback)
-        for (const _el of els)
-          _el && observer!.observe(_el, observerOptions)
+        for (const _el of els) {
+          if (_el)
+            observer!.observe(_el, observerOptions)
+        }
       }
     },
     { immediate: true, flush: 'post' },

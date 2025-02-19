@@ -1,5 +1,5 @@
-import { defineComponent, reactive } from 'vue-demi'
 import { usePreferredReducedMotion } from '@vueuse/core'
+import { defineComponent, reactive } from 'vue'
 
 export const UsePreferredReducedMotion = /* #__PURE__ */ defineComponent({
   name: 'UsePreferredReducedMotion',

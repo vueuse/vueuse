@@ -36,8 +36,7 @@ function submit() {
 }
 
 function allStepsBeforeAreValid(index: number): boolean {
-  return !Array(index)
-    .fill(null)
+  return !Array.from({ length: index }, () => null)
     .some((_, i) => !stepper.at(i)?.isValid())
 }
 </script>

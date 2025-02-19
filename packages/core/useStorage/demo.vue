@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
 import { useStorage } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
 
 const theDefault = {
   name: 'Banana',

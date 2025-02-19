@@ -1,7 +1,7 @@
-import { ref } from 'vue-demi'
+import { shallowRef } from 'vue'
 
 export function useCounter(initialValue = 0) {
-  const count = ref(initialValue)
+  const count = shallowRef(initialValue)
 
   const inc = (delta = 1) => (count.value += delta)
   const dec = (delta = 1) => (count.value -= delta)

@@ -1,5 +1,5 @@
-import type { WatchCallback, WatchOptions, WatchSource } from 'vue-demi'
-import { nextTick, watch } from 'vue-demi'
+import type { WatchCallback, WatchOptions, WatchSource } from 'vue'
+import { nextTick, watch } from 'vue'
 
 export interface WheneverOptions extends WatchOptions {
   /**

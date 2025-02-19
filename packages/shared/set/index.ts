@@ -1,5 +1,4 @@
-import type { Ref } from 'vue-demi'
-import { set as _set, isVue2 } from 'vue-demi'
+import type { Ref } from 'vue'
 
 export function set<T>(ref: Ref<T>, value: T): void
 export function set<O extends object, K extends keyof O>(target: O, key: K, value: O[K]): void
@@ -13,13 +12,7 @@ export function set(...args: any[]) {
     ref.value = value
   }
   if (args.length === 3) {
-    if (isVue2) {
-      // @ts-expect-error case
-      _set(...args)
-    }
-    else {
-      const [target, key, value] = args
-      target[key] = value
-    }
+    const [target, key, value] = args
+    target[key] = value
   }
 }

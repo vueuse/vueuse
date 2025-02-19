@@ -1,5 +1,5 @@
-import type { Ref } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
+import type { Ref } from 'vue'
+import { ref as deepRef, watch } from 'vue'
 import { useThrottleFn } from '../useThrottleFn'
 
 /**
@@ -15,7 +15,7 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
   if (delay <= 0)
     return value
 
-  const throttled: Ref<T> = ref(value.value as T) as Ref<T>
+  const throttled: Ref<T> = deepRef(value.value as T) as Ref<T>
 
   const updater = useThrottleFn(() => {
     throttled.value = value.value
@@ -28,6 +28,6 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
 
 // alias
 export {
-  refThrottled as useThrottle,
   refThrottled as throttledRef,
+  refThrottled as useThrottle,
 }

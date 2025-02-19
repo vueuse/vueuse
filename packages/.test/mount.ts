@@ -1,5 +1,5 @@
-import type { InjectionKey, Ref } from 'vue-demi'
-import { createApp, defineComponent, h, provide, ref } from 'vue-demi'
+import type { InjectionKey, Ref } from 'vue'
+import { createApp, defineComponent, h, provide, shallowRef } from 'vue'
 
 type InstanceType<V> = V extends { new (...arg: any[]): infer X } ? X : never
 type VM<V> = InstanceType<V> & { unmount: () => void }
@@ -38,7 +38,7 @@ export function useInjectedSetup<V>(setup: () => V) {
   const Provider = defineComponent({
     components: Comp,
     setup() {
-      provide(Key, ref(1))
+      provide(Key, shallowRef(1))
     },
     render() {
       return h('div', [])

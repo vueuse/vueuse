@@ -1,9 +1,9 @@
+import type { Import, Preset } from 'unimport'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { isPackageExists } from 'local-pkg'
 import { defineNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
-import type { Import, Preset } from 'unimport'
+import { isPackageExists } from 'local-pkg'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -17,7 +17,6 @@ const disabledFunctions = [
   'useFetch',
   'useCookie',
   'useHead',
-  'useTitle',
   'useStorage',
   'useImage',
 ]
@@ -31,6 +30,7 @@ const packages = [
   'rxjs',
   'sound',
   'math',
+  'router',
 ]
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
@@ -121,8 +121,12 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (pkg === 'shared')
             continue
 
-          if (!isPackageExists(`@vueuse/${pkg}`))
+          if (!isPackageExists(
+            `@vueuse/${pkg}`,
+            { paths: nuxt.options._layers.map(layer => layer.config.rootDir) },
+          )) {
             continue
+          }
 
           const imports = metadata
             .functions

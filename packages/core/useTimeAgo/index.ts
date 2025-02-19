@@ -1,7 +1,6 @@
 import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
-import type { ComputedRef } from 'vue-demi'
-import { computed } from 'vue-demi'
+import type { ComputedRef } from 'vue'
+import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
 export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string
@@ -17,7 +16,7 @@ export interface UseTimeAgoMessagesBuiltIn {
 
 export type UseTimeAgoMessages<UnitNames extends string = UseTimeAgoUnitNamesDefault>
   = UseTimeAgoMessagesBuiltIn
-  & Record<UnitNames, string | UseTimeAgoFormatter<number>>
+    & Record<UnitNames, string | UseTimeAgoFormatter<number>>
 
 export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitNamesDefault> {
   /**

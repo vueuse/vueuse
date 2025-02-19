@@ -1,8 +1,8 @@
-import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue-demi'
-import { ref, watch } from 'vue-demi'
+import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { Fn, MapOldSources, MapSources } from '../utils'
-import { bypassFilter, createFilterWrapper } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
+import { shallowRef, watch } from 'vue'
+import { bypassFilter, createFilterWrapper } from '../utils'
 
 // watchIgnorable(source,callback,options) composable
 //
@@ -40,7 +40,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   let stop: () => void
 
   if (watchOptions.flush === 'sync') {
-    const ignore = ref(false)
+    const ignore = shallowRef(false)
 
     // no op for flush: sync
     ignorePrevAsyncUpdates = () => {}
@@ -76,8 +76,8 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     // are more sync triggers than the ignore count, the we now
     // there are modifications in the source ref value that we
     // need to commit
-    const ignoreCounter = ref(0)
-    const syncCounter = ref(0)
+    const ignoreCounter = shallowRef(0)
+    const syncCounter = shallowRef(0)
 
     ignorePrevAsyncUpdates = () => {
       ignoreCounter.value = syncCounter.value

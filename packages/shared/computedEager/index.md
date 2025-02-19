@@ -8,8 +8,8 @@ alias: eagerComputed
 Eager computed without lazy evaluation.
 
 ::: tip
-Note💡: If you are using Vue 3.4+, you can straight use `computed` instead. Because in Vue 3.4+, if computed new value does not change, `computed`, `effect`, `watch`, `watchEffect`, `render` dependencies will not be triggered.
-Refer: https://github.com/vuejs/core/pull/5912
+Note💡: If you are using Vue 3.4+, you can use `computed` right away. In Vue 3.4+, if the computed new value does not change, `computed`, `effect`, `watch`, `watchEffect`, `render` dependencies will not be triggered.
+See: https://github.com/vuejs/core/pull/5912
 :::
 
 Learn more at [Vue: When a computed property can be the wrong tool](https://dev.to/linusborg/vue-when-a-computed-property-can-be-the-wrong-tool-195j).

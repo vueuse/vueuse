@@ -1,3 +1,3 @@
-import { ref } from 'vue-demi'
+import { shallowRef } from 'vue'
 
-export const count = ref(0)
+export const count = shallowRef(0)

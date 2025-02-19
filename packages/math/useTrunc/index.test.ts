@@ -1,6 +1,6 @@
-import { ref } from 'vue-demi'
 import { describe, expect, it } from 'vitest'
-import { useTrunc } from '.'
+import { ref as deepRef } from 'vue'
+import { useTrunc } from './index'
 
 // Returns:
 //  0        ->  0
@@ -19,7 +19,7 @@ describe('useTrunk', () => {
     expect(useTrunc).toBeDefined()
   })
   it('should work', () => {
-    const base = ref(1.95)
+    const base = deepRef(1.95)
     const result = useTrunc(base)
     expect(result.value).toBe(1)
     base.value = -7.004

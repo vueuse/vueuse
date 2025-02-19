@@ -1,7 +1,7 @@
 import type { IpcRenderer, IpcRendererEvent } from 'electron'
-import type { Ref } from 'vue-demi'
-import { shallowRef } from 'vue-demi'
+import type { ShallowRef } from 'vue'
 import type { IpcRendererListener } from '../_types'
+import { shallowRef } from 'vue'
 import { useIpcRendererInvoke } from '../useIpcRendererInvoke'
 import { useIpcRendererOn } from '../useIpcRendererOn'
 
@@ -54,7 +54,7 @@ export interface UseIpcRendererReturn {
    *
    * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
    */
-  invoke: <T>(channel: string, ...args: any[]) => Ref<T | null>
+  invoke: <T>(channel: string, ...args: any[]) => ShallowRef<T | null>
 
   /**
    * Returns any - The value sent back by the ipcMain handler.
@@ -62,7 +62,7 @@ export interface UseIpcRendererReturn {
    *
    * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrenderersendsyncchannel-args
    */
-  sendSync: <T>(channel: string, ...args: any[]) => Ref<T | null>
+  sendSync: <T>(channel: string, ...args: any[]) => ShallowRef<T | null>
 
   /**
    * Send a message to the main process, optionally transferring ownership of zero or more MessagePort objects.
@@ -90,8 +90,8 @@ export interface UseIpcRendererReturn {
  * Create a `sendSync` function
  */
 function setSendSync(ipcRenderer: IpcRenderer) {
-  return <T>(channel: string, ...args: any[]): Ref<T | null> => {
-    const result = shallowRef<T | null>(null) as Ref<T | null>
+  return <T>(channel: string, ...args: any[]): ShallowRef<T | null> => {
+    const result = shallowRef<T | null>(null) as ShallowRef<T | null>
     result.value = ipcRenderer.sendSync(channel, ...args)
     return result
   }

@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { InjectionKey, Ref } from 'vue-demi'
-import { defineComponent, ref } from 'vue-demi'
-import { computedInject } from '.'
+import type { InjectionKey, Ref } from 'vue'
+import { ref as deepRef, defineComponent } from 'vue'
+import { computedInject } from './index'
 
 type OptionsRef = Ref<{ key: number, value: string }[]>
 
@@ -12,7 +12,7 @@ export default defineComponent({
   setup() {
     const computedArr = computedInject(ArrayKey, (source) => {
       if (!source)
-        return ref([]) as OptionsRef
+        return deepRef([]) as OptionsRef
       const arr = [...source.value]
       arr.unshift({ key: 0, value: 'all' })
       return arr

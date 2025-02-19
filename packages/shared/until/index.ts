@@ -1,7 +1,6 @@
-import type { WatchOptions, WatchSource } from 'vue-demi'
-import { isRef, watch } from 'vue-demi'
-import { toValue } from '../toValue'
+import type { WatchOptions, WatchSource } from 'vue'
 import type { ElementOf, MaybeRefOrGetter, ShallowUnwrapRef } from '../utils'
+import { isRef, nextTick, toValue, watch } from 'vue'
 import { promiseTimeout } from '../utils'
 
 export interface UntilToMatchOptions {
@@ -76,7 +75,10 @@ function createUntil<T>(r: any, isNot = false) {
         r,
         (v) => {
           if (condition(v) !== isNot) {
-            stop?.()
+            if (stop)
+              stop()
+            else
+              nextTick(() => stop?.())
             resolve(v)
           }
         },
@@ -111,7 +113,10 @@ function createUntil<T>(r: any, isNot = false) {
         [r, value],
         ([v1, v2]) => {
           if (isNot !== (v1 === v2)) {
-            stop?.()
+            if (stop)
+              stop()
+            else
+              nextTick(() => stop?.())
             resolve(v1)
           }
         },

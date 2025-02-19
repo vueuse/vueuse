@@ -9,13 +9,13 @@ Wrappers around RxJS's [`from()`](https://rxjs.dev/api/index/function/from) and 
 ## Usage
 
 ```ts
-import { ref } from 'vue'
 import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map, mapTo, takeUntil, withLatestFrom } from 'rxjs/operators'
+import { shallowRef } from 'vue'
 
-const count = ref(0)
-const button = ref<HTMLButtonElement>(null)
+const count = shallowRef(0)
+const button = shallowRef<HTMLButtonElement | null>(null)
 
 useSubscription(
   interval(1000)

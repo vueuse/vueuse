@@ -9,10 +9,10 @@ Reactive base64 transforming. Supports plain text, buffer, files, canvas, object
 ## Usage
 
 ```ts
-import { Ref, ref } from 'vue'
 import { useBase64 } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const text = ref('')
+const text = shallowRef('')
 
 const { base64 } = useBase64(text)
 ```

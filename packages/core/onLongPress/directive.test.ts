@@ -1,11 +1,11 @@
-import { defineComponent, isVue3 } from 'vue-demi'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
+import type { OnLongPressOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { defineComponent } from 'vue'
 import { VOnLongPress, vOnLongPress } from './directive'
-import type { OnLongPressOptions } from '.'
 
 const App = defineComponent({
   props: {
@@ -54,7 +54,7 @@ describe('vOnLongPress', () => {
       expect(wrapper).toBeDefined()
     })
 
-    it.runIf(isVue3)('should trigger longpress after 500ms', async () => {
+    it('should trigger longpress after 500ms', async () => {
       const element = wrapper.get('[data-test=element]')
       await element.trigger('pointerdown')
       await promiseTimeout(500)
@@ -85,7 +85,7 @@ describe('vOnLongPress', () => {
       expect(wrapper).toBeDefined()
     })
 
-    it.runIf(isVue3)('should trigger longpress after 500ms', async () => {
+    it('should trigger longpress after 500ms', async () => {
       const element = wrapper.get('[data-test=element]')
       await element.trigger('pointerdown')
       await promiseTimeout(500)

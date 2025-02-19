@@ -1,7 +1,7 @@
-import { timestamp } from '@vueuse/shared'
-import type { Ref } from 'vue-demi'
-import { computed, markRaw, ref } from 'vue-demi'
+import type { ComputedRef, Ref } from 'vue'
 import type { CloneFn } from '../useCloned'
+import { timestamp } from '@vueuse/shared'
+import { computed, ref as deepRef, markRaw } from 'vue'
 import { cloneFnJSON } from '../useCloned'
 
 export interface UseRefHistoryRecord<T> {
@@ -65,12 +65,12 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * A ref representing if undo is possible (non empty undoStack)
    */
-  canUndo: Ref<boolean>
+  canUndo: ComputedRef<boolean>
 
   /**
    * A ref representing if redo is possible (non empty redoStack)
    */
-  canRedo: Ref<boolean>
+  canRedo: ComputedRef<boolean>
 
   /**
    * Undo changes
@@ -150,10 +150,10 @@ export function useManualRefHistory<Raw, Serialized = Raw>(
     })
   }
 
-  const last: Ref<UseRefHistoryRecord<Serialized>> = ref(_createHistoryRecord()) as Ref<UseRefHistoryRecord<Serialized>>
+  const last: Ref<UseRefHistoryRecord<Serialized>> = deepRef(_createHistoryRecord()) as Ref<UseRefHistoryRecord<Serialized>>
 
-  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
-  const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = ref([])
+  const undoStack: Ref<UseRefHistoryRecord<Serialized>[]> = deepRef([])
+  const redoStack: Ref<UseRefHistoryRecord<Serialized>[]> = deepRef([])
 
   const _setSource = (record: UseRefHistoryRecord<Serialized>) => {
     setSource(source, parse(record.snapshot))

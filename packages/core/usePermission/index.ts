@@ -1,9 +1,9 @@
-import type { Ref } from 'vue-demi'
-import { ref } from 'vue-demi'
-import { createSingletonPromise } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import { createSingletonPromise } from '@vueuse/shared'
+import { shallowRef, toRaw } from 'vue'
 import { defaultNavigator } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 type DescriptorNamePolyfill =
@@ -21,7 +21,8 @@ type DescriptorNamePolyfill =
   'payment-handler' |
   'persistent-storage' |
   'push' |
-  'speaker'
+  'speaker' |
+  'local-fonts'
 
 export type GeneralPermissionDescriptor =
   | PermissionDescriptor
@@ -36,10 +37,10 @@ export interface UsePermissionOptions<Controls extends boolean> extends Configur
   controls?: Controls
 }
 
-export type UsePermissionReturn = Readonly<Ref<PermissionState | undefined>>
+export type UsePermissionReturn = Readonly<ShallowRef<PermissionState | undefined>>
 export interface UsePermissionReturnWithControls {
   state: UsePermissionReturn
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   query: () => Promise<PermissionStatus | undefined>
 }
 
@@ -66,32 +67,37 @@ export function usePermission(
   } = options
 
   const isSupported = useSupported(() => navigator && 'permissions' in navigator)
-  let permissionStatus: PermissionStatus | undefined
+  const permissionStatus = shallowRef<PermissionStatus>()
 
   const desc = typeof permissionDesc === 'string'
     ? { name: permissionDesc } as PermissionDescriptor
     : permissionDesc as PermissionDescriptor
-  const state = ref<PermissionState | undefined>()
+  const state = shallowRef<PermissionState | undefined>()
 
-  const onChange = () => {
-    if (permissionStatus)
-      state.value = permissionStatus.state
+  const update = () => {
+    state.value = permissionStatus.value?.state ?? 'prompt'
   }
+
+  useEventListener(permissionStatus, 'change', update, { passive: true })
 
   const query = createSingletonPromise(async () => {
     if (!isSupported.value)
       return
-    if (!permissionStatus) {
+
+    if (!permissionStatus.value) {
       try {
-        permissionStatus = await navigator!.permissions.query(desc)
-        useEventListener(permissionStatus, 'change', onChange)
-        onChange()
+        permissionStatus.value = await navigator!.permissions.query(desc)
       }
       catch {
-        state.value = 'prompt'
+        permissionStatus.value = undefined
+      }
+      finally {
+        update()
       }
     }
-    return permissionStatus
+
+    if (controls)
+      return toRaw(permissionStatus.value)
   })
 
   query()

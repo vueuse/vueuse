@@ -1,14 +1,14 @@
-import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue-demi'
-import { computed, nextTick, shallowReactive, shallowRef, watch } from 'vue-demi'
 import type { MaybeRef, Mutable } from '@vueuse/shared'
-import { isObject, objectOmit, toValue, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import type { MaybeComputedElementRef } from '../unrefElement'
-import { unrefElement } from '../unrefElement'
+import type { ComputedRef, ShallowRef, WritableComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { MaybeComputedElementRef } from '../unrefElement'
+import { isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, shallowReactive, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
-import { useSupported } from '../useSupported'
+import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 import { useRafFn } from '../useRafFn'
+import { useSupported } from '../useSupported'
 
 export interface UseAnimateOptions extends KeyframeAnimationOptions, ConfigurableWindow {
   /**
@@ -19,6 +19,7 @@ export interface UseAnimateOptions extends KeyframeAnimationOptions, Configurabl
   immediate?: boolean
   /**
    * Whether to commits the end styling state of an animation to the element being animated
+   * In general, you should use `fill` option with this.
    *
    * @default false
    */
@@ -42,7 +43,7 @@ export interface UseAnimateOptions extends KeyframeAnimationOptions, Configurabl
 export type UseAnimateKeyframes = MaybeRef<Keyframe[] | PropertyIndexedKeyframes | null>
 
 export interface UseAnimateReturn {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   animate: ShallowRef<Animation | undefined>
   play: () => void
   pause: () => void
@@ -190,7 +191,8 @@ export function useAnimate(
   }
 
   const reverse = () => {
-    !animate.value && update()
+    if (!animate.value)
+      update()
     try {
       animate.value?.reverse()
       syncResume()
@@ -222,11 +224,17 @@ export function useAnimate(
   }
 
   watch(() => unrefElement(target), (el) => {
-    el && update()
+    if (el) {
+      update()
+    }
+    else {
+      animate.value = undefined
+    }
   })
 
   watch(() => keyframes, (value) => {
-    !animate.value && update()
+    if (animate.value)
+      update()
 
     if (!unrefElement(target) && animate.value) {
       animate.value.effect = new KeyframeEffect(
@@ -237,9 +245,7 @@ export function useAnimate(
     }
   }, { deep: true })
 
-  tryOnMounted(() => {
-    nextTick(() => update(true))
-  })
+  tryOnMounted(() => update(true), false)
 
   tryOnScopeDispose(cancel)
 
@@ -251,8 +257,6 @@ export function useAnimate(
     if (!animate.value)
       animate.value = el.animate(toValue(keyframes), animateOptions)
 
-    if (commitStyles)
-      animate.value.commitStyles()
     if (persist)
       animate.value.persist()
     if (_playbackRate !== 1)
@@ -266,7 +270,12 @@ export function useAnimate(
     onReady?.(animate.value)
   }
 
-  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause)
+  const listenerOptions = { passive: true }
+  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause, listenerOptions)
+  useEventListener(animate, 'finish', () => {
+    if (commitStyles)
+      animate.value?.commitStyles()
+  }, listenerOptions)
 
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)

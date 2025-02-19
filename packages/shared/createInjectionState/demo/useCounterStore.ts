@@ -1,9 +1,9 @@
-import { computed, ref } from 'vue-demi'
+import { computed, ref as deepRef, shallowRef } from 'vue'
 import { createInjectionState } from '../../createInjectionState'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state
-  const count = ref(initialValue)
+  const count = deepRef(initialValue)
 
   // getters
   const double = computed(() => count.value * 2)
@@ -22,8 +22,8 @@ export { useCounterStore }
 
 export function useCounterStoreWithDefaultValue() {
   return useCounterStore() ?? {
-    count: ref(0),
-    double: ref(0),
+    count: shallowRef(0),
+    double: shallowRef(0),
     increment: () => {},
   }
 }

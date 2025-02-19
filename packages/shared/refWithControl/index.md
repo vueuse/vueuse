@@ -87,7 +87,7 @@ console.log(num.value) // 1 (change been dismissed)
 
 ### `onChanged()`
 
-`onChanged` option offers a similar functionally as Vue's `watch` but being synchronoused with less overhead compare to `watch`.
+`onChanged` option offers a similar functionally as Vue's `watch` but being synchronized with less overhead compared to `watch`.
 
 ```ts
 const num = refWithControl(0, {

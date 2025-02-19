@@ -1,10 +1,10 @@
-import { ref } from 'vue-demi'
-import type { Ref } from 'vue-demi'
-import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import type { EventHook } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
+import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface WebNotificationOptions {
@@ -108,11 +108,32 @@ export function useWebNotification(
 
   const defaultWebNotificationOptions: WebNotificationOptions = options
 
-  const isSupported = useSupported(() => !!window && 'Notification' in window)
+  const isSupported = useSupported(() => {
+    if (!window || !('Notification' in window))
+      return false
+    if (Notification.permission === 'granted')
+      return true
 
-  const permissionGranted = ref(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
+    // https://stackoverflow.com/questions/29774836/failed-to-construct-notification-illegal-constructor/29895431
+    // https://issues.chromium.org/issues/40415865
+    try {
+      const notification = new Notification('')
+      notification.onshow = () => {
+        notification.close()
+      }
+    }
+    catch (e) {
+      // Android Chrome: Uncaught TypeError: Failed to construct 'Notification': Illegal constructor. Use ServiceWorkerRegistration.showNotification() instead.
+      // @ts-expect-error catch TypeError
+      if (e.name === 'TypeError')
+        return false
+    }
+    return true
+  })
 
-  const notification: Ref<Notification | null> = ref(null)
+  const permissionGranted = shallowRef(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
+
+  const notification: Ref<Notification | null> = deepRef(null)
 
   const ensurePermissions = async () => {
     if (!isSupported.value)

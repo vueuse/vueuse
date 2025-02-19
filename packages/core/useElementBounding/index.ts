@@ -1,10 +1,10 @@
-import { ref, watch } from 'vue-demi'
-import { tryOnMounted } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
 import type { MaybeComputedElementRef } from '../unrefElement'
+import { tryOnMounted } from '@vueuse/shared'
+import { shallowRef, watch } from 'vue'
 import { unrefElement } from '../unrefElement'
-import { useResizeObserver } from '../useResizeObserver'
+import { useEventListener } from '../useEventListener'
 import { useMutationObserver } from '../useMutationObserver'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface UseElementBoundingOptions {
   /**
@@ -33,6 +33,16 @@ export interface UseElementBoundingOptions {
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * Timing to recalculate the bounding box
+   *
+   * Setting to `next-frame` can be useful when using this together with something like {@link useBreakpoints}
+   * and therefore the layout (which influences the bounding box of the observed element) is not updated on the current tick.
+   *
+   * @default 'sync'
+   */
+  updateTiming?: 'sync' | 'next-frame'
 }
 
 /**
@@ -50,18 +60,19 @@ export function useElementBounding(
     windowResize = true,
     windowScroll = true,
     immediate = true,
+    updateTiming = 'sync',
   } = options
 
-  const height = ref(0)
-  const bottom = ref(0)
-  const left = ref(0)
-  const right = ref(0)
-  const top = ref(0)
-  const width = ref(0)
-  const x = ref(0)
-  const y = ref(0)
+  const height = shallowRef(0)
+  const bottom = shallowRef(0)
+  const left = shallowRef(0)
+  const right = shallowRef(0)
+  const top = shallowRef(0)
+  const width = shallowRef(0)
+  const x = shallowRef(0)
+  const y = shallowRef(0)
 
-  function update() {
+  function recalculate() {
     const el = unrefElement(target)
 
     if (!el) {
@@ -88,6 +99,13 @@ export function useElementBounding(
     width.value = rect.width
     x.value = rect.x
     y.value = rect.y
+  }
+
+  function update() {
+    if (updateTiming === 'sync')
+      recalculate()
+    else if (updateTiming === 'next-frame')
+      requestAnimationFrame(() => recalculate())
   }
 
   useResizeObserver(target, update)

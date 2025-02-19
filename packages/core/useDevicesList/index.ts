@@ -1,12 +1,12 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, Ref } from 'vue-demi'
-import { computed, ref } from 'vue-demi'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
+import type { ConfigurableNavigator } from '../_configurable'
+import { computed, ref as deepRef, shallowRef } from 'vue'
+import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
 import { useSupported } from '../useSupported'
-import type { ConfigurableNavigator } from '../_configurable'
-import { defaultNavigator } from '../_configurable'
 
 export interface UseDevicesListOptions extends ConfigurableNavigator {
   onUpdated?: (devices: MediaDeviceInfo[]) => void
@@ -33,9 +33,9 @@ export interface UseDevicesListReturn {
   videoInputs: ComputedRef<MediaDeviceInfo[]>
   audioInputs: ComputedRef<MediaDeviceInfo[]>
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
-  permissionGranted: Ref<boolean>
+  permissionGranted: ShallowRef<boolean>
   ensurePermissions: () => Promise<boolean>
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
 }
 
 /**
@@ -52,12 +52,12 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     onUpdated,
   } = options
 
-  const devices = ref([]) as Ref<MediaDeviceInfo[]>
+  const devices = deepRef([]) as Ref<MediaDeviceInfo[]>
   const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
   const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
   const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
   const isSupported = useSupported(() => navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
-  const permissionGranted = ref(false)
+  const permissionGranted = shallowRef(false)
   let stream: MediaStream | null
 
   async function update() {
@@ -82,9 +82,16 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     const { state, query } = usePermission('camera', { controls: true })
     await query()
     if (state.value !== 'granted') {
-      stream = await navigator!.mediaDevices.getUserMedia(constraints)
+      let granted = true
+      try {
+        stream = await navigator!.mediaDevices.getUserMedia(constraints)
+      }
+      catch {
+        stream = null
+        granted = false
+      }
       update()
-      permissionGranted.value = true
+      permissionGranted.value = granted
     }
     else {
       permissionGranted.value = true
@@ -97,7 +104,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     if (requestPermissions)
       ensurePermissions()
 
-    useEventListener(navigator!.mediaDevices, 'devicechange', update)
+    useEventListener(navigator!.mediaDevices, 'devicechange', update, { passive: true })
     update()
   }
 

@@ -1,5 +1,5 @@
+import * as fs from 'node:fs/promises'
 import process from 'node:process'
-import fs from 'fs-extra'
 import { metadata } from '../packages/metadata/metadata'
 import { updateContributors, updateCountBadge, updateFunctionREADME, updateFunctionsMD, updateImport, updateIndexREADME, updatePackageJSON, updatePackageREADME } from './utils'
 
@@ -15,7 +15,7 @@ async function run() {
     process.env.NETLIFY && updateContributors(),
   ])
 
-  await fs.copy('./CONTRIBUTING.md', './packages/contributing.md')
+  await fs.copyFile('./CONTRIBUTING.md', './packages/contributing.md')
 }
 
 run()

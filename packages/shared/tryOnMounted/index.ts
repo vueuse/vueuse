@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-restricted-imports
-import { nextTick, onMounted } from 'vue-demi'
 import type { Fn } from '../utils'
+// eslint-disable-next-line no-restricted-imports
+import { nextTick, onMounted } from 'vue'
 import { getLifeCycleTarget } from '../utils'
 
 /**

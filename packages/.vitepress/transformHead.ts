@@ -1,9 +1,9 @@
-import { basename, dirname } from 'node:path'
-import fs from 'node:fs/promises'
-import sharp from 'sharp'
-import removeMD from 'remove-markdown'
 import type { HeadConfig, TransformContext } from 'vitepress'
 import type { VueUseFunction } from '../metadata/types'
+import fs from 'node:fs/promises'
+import { basename, dirname } from 'node:path'
+import removeMD from 'remove-markdown'
+import sharp from 'sharp'
 import { functions } from '../metadata/metadata'
 
 const ogSVGPromise = fs.readFile('./scripts/og-template.svg', 'utf-8')
@@ -48,7 +48,7 @@ async function generateSVG(fn: VueUseFunction, output: string) {
     line3: lines[2] || '',
   }
   const ogSVg = await ogSVGPromise
-  const svg = ogSVg.replace(/\{\{([^}]+)}}/g, (_, name: keyof typeof data) => data[name])
+  const svg = ogSVg.replace(/\{\{([^}]+)\}\}/g, (_, name: keyof typeof data) => data[name])
 
   // eslint-disable-next-line no-console
   console.log(`Generating ${output}`)

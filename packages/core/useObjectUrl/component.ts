@@ -1,6 +1,6 @@
-import { defineComponent } from 'vue-demi'
 import { useObjectUrl } from '@vueuse/core'
 import { toRef } from '@vueuse/shared'
+import { defineComponent } from 'vue'
 
 export interface UseObjectUrlProps {
   object: Blob | MediaSource | undefined

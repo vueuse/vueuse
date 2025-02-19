@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import { computed } from 'vue'
 import { functions } from '@vueuse/metadata'
+import { computed } from 'vue'
 import exportSizes from '../../../export-size.json'
 
 const props = defineProps<{ fn: string }>()

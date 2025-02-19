@@ -1,6 +1,27 @@
-import { isVue3, ref } from 'vue-demi'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, directiveHooks, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
+import type { MockInstance } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { shallowRef } from 'vue'
+import {
+  assert,
+  clamp,
+  createFilterWrapper,
+  createSingletonPromise,
+  debounceFilter,
+  hasOwn,
+  increaseWithUnit,
+  isClient,
+  isDef,
+  isIOS,
+  isObject,
+  noop,
+  now,
+  objectOmit,
+  objectPick,
+  promiseTimeout,
+  rand,
+  throttleFilter,
+  timestamp,
+} from './index'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -31,7 +52,7 @@ describe('utils', () => {
 
 describe('promise', () => {
   it('should promiseTimeout work', async () => {
-    const num = ref(0)
+    const num = shallowRef(0)
     setTimeout(() => {
       num.value = 1
     }, 100)
@@ -77,191 +98,205 @@ describe('filters', () => {
     vi.useFakeTimers()
   })
 
-  it('should debounce', () => {
-    const debouncedFilterSpy = vi.fn()
-    const filter = createFilterWrapper(debounceFilter(1000), debouncedFilterSpy)
+  describe('debounceFilter', () => {
+    it('should debounce', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(debounceFilter(1000), debouncedFilterSpy)
 
-    setTimeout(filter, 200)
-    vi.runAllTimers()
+      setTimeout(filter, 200)
+      vi.runAllTimers()
 
-    setTimeout(filter, 500)
-    vi.advanceTimersByTime(500)
-    expect(debouncedFilterSpy).toHaveBeenCalledOnce()
+      setTimeout(filter, 500)
+      vi.advanceTimersByTime(500)
+      expect(debouncedFilterSpy).toHaveBeenCalledOnce()
+    })
+
+    it('should debounce twice', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(debounceFilter(500), debouncedFilterSpy)
+
+      setTimeout(filter, 500)
+      vi.advanceTimersByTime(500)
+      setTimeout(filter, 1000)
+      vi.advanceTimersByTime(2000)
+
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+    })
+
+    it('should resolve & reject debounced fn', async () => {
+      const debouncedSum = createFilterWrapper(
+        debounceFilter(500, { rejectOnCancel: true }),
+        (a: number, b: number) => a + b,
+      )
+
+      const five = debouncedSum(2, 3)
+      let nine
+      setTimeout(() => {
+        nine = debouncedSum(4, 5)
+      }, 200)
+
+      vi.runAllTimers()
+
+      await expect(five).rejects.toBeUndefined()
+      await expect(nine).resolves.toBe(9)
+    })
+
+    it('should debounce with ref', () => {
+      const debouncedFilterSpy = vi.fn()
+      const debounceTime = shallowRef(0)
+      const filter = createFilterWrapper(debounceFilter(debounceTime), debouncedFilterSpy)
+
+      filter()
+      debounceTime.value = 500
+      filter()
+      setTimeout(filter, 200)
+
+      vi.runAllTimers()
+
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+    })
   })
 
-  it('should debounce twice', () => {
-    const debouncedFilterSpy = vi.fn()
-    const filter = createFilterWrapper(debounceFilter(500), debouncedFilterSpy)
+  describe('throttleFilter', () => {
+    it('should throttle', () => {
+      const throttledFilterSpy = vi.fn()
+      const filter = createFilterWrapper(throttleFilter(1000), throttledFilterSpy)
+      setTimeout(filter, 500)
+      setTimeout(filter, 500)
+      setTimeout(filter, 500)
+      setTimeout(filter, 500)
 
-    setTimeout(filter, 500)
-    vi.advanceTimersByTime(500)
-    setTimeout(filter, 1000)
-    vi.advanceTimersByTime(2000)
+      vi.runAllTimers()
 
-    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+      expect(throttledFilterSpy).toHaveBeenCalledTimes(2)
+    })
+
+    it('should throttle evenly', () => {
+      const debouncedFilterSpy = vi.fn()
+
+      const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
+
+      setTimeout(() => filter(1), 500)
+      setTimeout(() => filter(2), 1000)
+      setTimeout(() => filter(3), 2000)
+
+      vi.runAllTimers()
+
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(3)
+      expect(debouncedFilterSpy).toHaveBeenCalledWith(1)
+      expect(debouncedFilterSpy).toHaveBeenCalledWith(2)
+      expect(debouncedFilterSpy).toHaveBeenCalledWith(3)
+    })
+
+    it('should throttle with ref', () => {
+      const debouncedFilterSpy = vi.fn()
+      const throttle = shallowRef(0)
+      const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
+
+      filter()
+      throttle.value = 1000
+
+      setTimeout(filter, 300)
+      setTimeout(filter, 600)
+      setTimeout(filter, 900)
+
+      vi.runAllTimers()
+
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+    })
+
+    it('should not duplicate single event', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
+
+      setTimeout(filter, 500)
+
+      vi.runAllTimers()
+
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should get trailing value', async () => {
+      const sumSpy = vi.fn((a: number, b: number) => a + b)
+      const throttledSum = createFilterWrapper(
+        throttleFilter(1000, true),
+        sumSpy,
+      )
+
+      let result = throttledSum(2, 3)
+      setTimeout(() => {
+        result = throttledSum(4, 5)
+      }, 600)
+      setTimeout(() => {
+        result = throttledSum(6, 7)
+      }, 900)
+
+      vi.runAllTimers()
+
+      expect(sumSpy).toHaveBeenCalledTimes(2)
+      await expect(result).resolves.toBe(6 + 7)
+
+      setTimeout(() => {
+        result = throttledSum(8, 9)
+      }, 1200)
+      setTimeout(() => {
+        result = throttledSum(10, 11)
+      }, 1800)
+
+      vi.runAllTimers()
+
+      expect(sumSpy).toHaveBeenCalledTimes(4)
+      await expect(result).resolves.toBe(10 + 11)
+    })
+
+    it('should get leading value', async () => {
+      const sumSpy = vi.fn((a: number, b: number) => a + b)
+      const throttledSum = createFilterWrapper(
+        throttleFilter(1000, false),
+        sumSpy,
+      )
+
+      let result = throttledSum(2, 3)
+      setTimeout(() => {
+        result = throttledSum(4, 5)
+      }, 600)
+      setTimeout(() => {
+        result = throttledSum(6, 7)
+      }, 900)
+
+      vi.runAllTimers()
+
+      expect(sumSpy).toHaveBeenCalledTimes(1)
+      await expect(result).resolves.toBe(2 + 3)
+
+      setTimeout(() => {
+        result = throttledSum(8, 9)
+      }, 1200)
+      setTimeout(() => {
+        result = throttledSum(10, 11)
+      }, 1800)
+
+      vi.runAllTimers()
+
+      expect(sumSpy).toHaveBeenCalledTimes(2)
+      await expect(result).resolves.toBe(8 + 9)
+    })
   })
 
-  it('should resolve & reject debounced fn', async () => {
-    const debouncedSum = createFilterWrapper(
-      debounceFilter(500, { rejectOnCancel: true }),
-      (a: number, b: number) => a + b,
-    )
-
-    const five = debouncedSum(2, 3)
-    let nine
-    setTimeout(() => {
-      nine = debouncedSum(4, 5)
-    }, 200)
-
-    vi.runAllTimers()
-
-    await expect(five).rejects.toBeUndefined()
-    await expect(nine).resolves.toBe(9)
-  })
-
-  it('should debounce with ref', () => {
-    const debouncedFilterSpy = vi.fn()
-    const debounceTime = ref(0)
-    const filter = createFilterWrapper(debounceFilter(debounceTime), debouncedFilterSpy)
-
-    filter()
-    debounceTime.value = 500
-    filter()
-    setTimeout(filter, 200)
-
-    vi.runAllTimers()
-
-    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
-  })
-
-  it('should throttle', () => {
-    const throttledFilterSpy = vi.fn()
-    const filter = createFilterWrapper(throttleFilter(1000), throttledFilterSpy)
-    setTimeout(filter, 500)
-    setTimeout(filter, 500)
-    setTimeout(filter, 500)
-    setTimeout(filter, 500)
-
-    vi.runAllTimers()
-
-    expect(throttledFilterSpy).toHaveBeenCalledTimes(2)
-  })
-
-  it('should throttle evenly', () => {
-    const debouncedFilterSpy = vi.fn()
-
-    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
-
-    setTimeout(() => filter(1), 500)
-    setTimeout(() => filter(2), 1000)
-    setTimeout(() => filter(3), 2000)
-
-    vi.runAllTimers()
-
-    expect(debouncedFilterSpy).toHaveBeenCalledTimes(3)
-    expect(debouncedFilterSpy).toHaveBeenCalledWith(1)
-    expect(debouncedFilterSpy).toHaveBeenCalledWith(2)
-    expect(debouncedFilterSpy).toHaveBeenCalledWith(3)
-  })
-
-  it('should throttle with ref', () => {
-    const debouncedFilterSpy = vi.fn()
-    const throttle = ref(0)
-    const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
-
-    filter()
-    throttle.value = 1000
-
-    setTimeout(filter, 300)
-    setTimeout(filter, 600)
-    setTimeout(filter, 900)
-
-    vi.runAllTimers()
-
-    expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
-  })
-
-  it('should not duplicate single event', () => {
-    const debouncedFilterSpy = vi.fn()
-    const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
-
-    setTimeout(filter, 500)
-
-    vi.runAllTimers()
-
-    expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
-  })
-
-  it('should get trailing value', () => {
-    const sumSpy = vi.fn((a: number, b: number) => a + b)
-    const throttledSum = createFilterWrapper(
-      throttleFilter(1000, true),
-      sumSpy,
-    )
-
-    let result = throttledSum(2, 3)
-    setTimeout(() => {
-      result = throttledSum(4, 5)
-    }, 600)
-    setTimeout(() => {
-      result = throttledSum(6, 7)
-    }, 900)
-
-    vi.runAllTimers()
-
-    expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(6 + 7)
-
-    setTimeout(() => {
-      result = throttledSum(8, 9)
-    }, 1200)
-    setTimeout(() => {
-      result = throttledSum(10, 11)
-    }, 1800)
-
-    vi.runAllTimers()
-
-    expect(sumSpy).toHaveBeenCalledTimes(4)
-    expect(result).resolves.toBe(10 + 11)
-  })
-
-  it('should get leading value', () => {
-    const sumSpy = vi.fn((a: number, b: number) => a + b)
-    const throttledSum = createFilterWrapper(
-      throttleFilter(1000, false),
-      sumSpy,
-    )
-
-    let result = throttledSum(2, 3)
-    setTimeout(() => {
-      result = throttledSum(4, 5)
-    }, 600)
-    setTimeout(() => {
-      result = throttledSum(6, 7)
-    }, 900)
-
-    vi.runAllTimers()
-
-    expect(sumSpy).toHaveBeenCalledTimes(1)
-    expect(result).resolves.toBe(2 + 3)
-
-    setTimeout(() => {
-      result = throttledSum(8, 9)
-    }, 1200)
-    setTimeout(() => {
-      result = throttledSum(10, 11)
-    }, 1800)
-
-    vi.runAllTimers()
-
-    expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(8 + 9)
+  describe('pausableFilter', () => {
+    it.todo('should pause')
   })
 })
 
 describe('is', () => {
+  let warnSpy: MockInstance
+
   beforeEach(() => {
-    console.warn = vi.fn()
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('should be client', () => {
@@ -274,9 +309,9 @@ describe('is', () => {
 
   it('should assert', () => {
     assert(true)
-    expect(console.warn).not.toBeCalled()
+    expect(warnSpy).not.toBeCalled()
     assert(false, 'error')
-    expect(console.warn).toHaveBeenCalledWith('error')
+    expect(warnSpy).toHaveBeenCalledWith('error')
   })
 
   it('should be defined', () => {
@@ -306,9 +341,9 @@ describe('is', () => {
     expect(noop()).toBeUndefined()
   })
 
-  it('should be rand', () => {
+  it('should be rand', { retry: 20 }, () => {
     expect(rand(1, 2)).not.toBe(rand(1, 2))
-  }, { retry: 20 })
+  })
 
   it('hasOwn', () => {
     class Parent {a = 1}
@@ -327,29 +362,6 @@ describe('is', () => {
 
     obj3.a = 2
     expect(hasOwn(obj3, 'a')).toBeTruthy()
-  })
-})
-
-describe('compatibility', () => {
-  it('should export module', () => {
-    expect(directiveHooks).toBeDefined()
-  })
-
-  it('directiveHooks', () => {
-    if (isVue3) {
-      expect(directiveHooks).toEqual({
-        mounted: 'mounted',
-        updated: 'updated',
-        unmounted: 'unmounted',
-      })
-    }
-    else {
-      expect(directiveHooks).toEqual({
-        mounted: 'inserted',
-        updated: 'componentUpdated',
-        unmounted: 'unbind',
-      })
-    }
   })
 })
 
@@ -393,7 +405,7 @@ describe('optionsFilters', () => {
 
   it('optionsThrottleFilter should throttle with ref', () => {
     const debouncedFilterSpy = vi.fn()
-    const throttle = ref(0)
+    const throttle = shallowRef(0)
     const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
 
     filter()
@@ -421,7 +433,7 @@ describe('optionsFilters', () => {
     expect(debouncedFilterSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('optionsThrottleFilter should get trailing value', () => {
+  it('optionsThrottleFilter should get trailing value', async () => {
     const sumSpy = vi.fn((a: number, b: number) => a + b)
     const throttledSum = createFilterWrapper(
       throttleFilter({
@@ -442,7 +454,7 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(6 + 7)
+    await expect(result).resolves.toBe(6 + 7)
 
     setTimeout(() => {
       result = throttledSum(8, 9)
@@ -454,10 +466,10 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(4)
-    expect(result).resolves.toBe(10 + 11)
+    await expect(result).resolves.toBe(10 + 11)
   })
 
-  it('optionsThrottleFilter should get leading value', () => {
+  it('optionsThrottleFilter should get leading value', async () => {
     const sumSpy = vi.fn((a: number, b: number) => a + b)
     const throttledSum = createFilterWrapper(
       throttleFilter({
@@ -478,7 +490,7 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(1)
-    expect(result).resolves.toBe(2 + 3)
+    await expect(result).resolves.toBe(2 + 3)
 
     setTimeout(() => {
       result = throttledSum(8, 9)
@@ -490,6 +502,6 @@ describe('optionsFilters', () => {
     vi.runAllTimers()
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
-    expect(result).resolves.toBe(8 + 9)
+    await expect(result).resolves.toBe(8 + 9)
   })
 })

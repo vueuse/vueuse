@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUpdated } from 'vue-demi'
+import { computed, onUpdated } from 'vue'
 import { count } from './state'
 
 const emit = defineEmits(['update'])

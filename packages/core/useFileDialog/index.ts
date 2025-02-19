@@ -1,7 +1,8 @@
 import type { EventHookOn } from '@vueuse/shared'
-import { createEventHook, hasOwn } from '@vueuse/shared'
-import { type Ref, readonly, ref } from 'vue-demi'
+import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
+import { createEventHook, hasOwn } from '@vueuse/shared'
+import { ref as deepRef, readonly } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseFileDialogOptions extends ConfigurableDocument {
@@ -29,6 +30,12 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * @default false
    */
   directory?: boolean
+
+  /**
+   * Initial files to set.
+   * @default null
+   */
+  initialFiles?: Array<File> | FileList
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -43,6 +50,22 @@ export interface UseFileDialogReturn {
   open: (localOptions?: Partial<UseFileDialogOptions>) => void
   reset: () => void
   onChange: EventHookOn<FileList | null>
+  onCancel: EventHookOn
+}
+
+function prepareInitialFiles(files: UseFileDialogOptions['initialFiles']): FileList | null {
+  if (!files)
+    return null
+
+  if (files instanceof FileList)
+    return files
+
+  const dt = new DataTransfer()
+  for (const file of files) {
+    dt.items.add(file)
+  }
+
+  return dt.files
 }
 
 /**
@@ -56,8 +79,9 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     document = defaultDocument,
   } = options
 
-  const files = ref<FileList | null>(null)
-  const { on: onChange, trigger } = createEventHook()
+  const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
+  const { on: onChange, trigger: changeTrigger } = createEventHook()
+  const { on: onCancel, trigger: cancelTrigger } = createEventHook()
   let input: HTMLInputElement | undefined
   if (document) {
     input = document.createElement('input')
@@ -66,15 +90,19 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     input.onchange = (event: Event) => {
       const result = event.target as HTMLInputElement
       files.value = result.files
-      trigger(files.value)
+      changeTrigger(files.value)
+    }
+
+    input.oncancel = () => {
+      cancelTrigger()
     }
   }
 
   const reset = () => {
     files.value = null
-    if (input) {
+    if (input && input.value) {
       input.value = ''
-      trigger(null)
+      changeTrigger(null)
     }
   }
 
@@ -101,6 +129,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     files: readonly(files),
     open,
     reset,
+    onCancel,
     onChange,
   }
 }

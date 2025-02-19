@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue-demi'
-import Item from './Item.vue'
+import { computed } from 'vue'
 import Controller from './Controller.vue'
+import Item from './Item.vue'
 
 const props = defineProps<{ gamepad: Gamepad }>()
-
-const supportsVibration = computed(() => props.gamepad.hapticActuators.length > 0)
+// @ts-expect-error: hapticActuators is not in the Gamepad type
+const supportsVibration = computed(() => props.gamepad?.hapticActuators?.length > 0)
 function vibrate() {
   if (supportsVibration.value) {
+    // @ts-expect-error: hapticActuators is not in the Gamepad type
     const actuator: any = props.gamepad.hapticActuators[0]
     actuator.playEffect('dual-rumble', {
       startDelay: 0,

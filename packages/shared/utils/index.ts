@@ -1,10 +1,9 @@
-import { getCurrentInstance } from 'vue-demi'
+import { getCurrentInstance } from 'vue'
 
-export * from './is'
 export * from './filters'
-export * from './types'
-export * from './compatibility'
+export * from './is'
 export * from './port'
+export * from './types'
 
 export function promiseTimeout(
   ms: number,
@@ -82,12 +81,19 @@ export function increaseWithUnit(target: string | number, delta: number): string
 export function increaseWithUnit(target: string | number, delta: number): string | number {
   if (typeof target === 'number')
     return target + delta
-  const value = target.match(/^-?[0-9]+\.?[0-9]*/)?.[0] || ''
+  const value = target.match(/^-?\d+\.?\d*/)?.[0] || ''
   const unit = target.slice(value.length)
   const result = (Number.parseFloat(value) + delta)
   if (Number.isNaN(result))
     return target
   return result + unit
+}
+
+/**
+ * Get a px value for SSR use, do not rely on this method outside of SSR as REM unit is assumed at 16px, which might not be the case on the client
+ */
+export function pxValue(px: string) {
+  return px.endsWith('rem') ? Number.parseFloat(px) * 16 : Number.parseFloat(px)
 }
 
 /**
@@ -118,4 +124,8 @@ export function objectEntries<T extends object>(obj: T) {
 
 export function getLifeCycleTarget(target?: any) {
   return target || getCurrentInstance()
+}
+
+export function toArray<T>(value: T): T extends readonly any[] ? T : [T] {
+  return Array.isArray(value) ? value as any : [value] as [T]
 }

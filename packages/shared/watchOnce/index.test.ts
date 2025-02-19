@@ -1,10 +1,10 @@
-import { nextTick, ref } from 'vue-demi'
 import { describe, expect, it, vi } from 'vitest'
-import { watchOnce } from '.'
+import { nextTick, shallowRef } from 'vue'
+import { watchOnce } from './index'
 
 describe('watchOnce', () => {
   it('should work', async () => {
-    const num = ref(0)
+    const num = shallowRef(0)
     const spy = vi.fn()
 
     watchOnce(num, spy)

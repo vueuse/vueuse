@@ -1,9 +1,8 @@
 import type { ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
+import type { Ref, ShallowRef } from 'vue'
 import { watchPausable } from '@vueuse/core'
-import type { Ref } from 'vue-demi'
-import { ref, shallowRef, toRaw } from 'vue-demi'
 import { del, get, set, update } from 'idb-keyval'
+import { ref as deepRef, shallowRef, toRaw, toValue } from 'vue'
 
 export interface UseIDBOptions extends ConfigurableFlush {
   /**
@@ -36,7 +35,7 @@ export interface UseIDBOptions extends ConfigurableFlush {
 
 export interface UseIDBKeyvalReturn<T> {
   data: RemovableRef<T>
-  isFinished: Ref<boolean>
+  isFinished: ShallowRef<boolean>
   set: (value: T) => Promise<void>
 }
 
@@ -61,8 +60,8 @@ export function useIDBKeyval<T>(
     writeDefaults = true,
   } = options
 
-  const isFinished = ref(false)
-  const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
+  const isFinished = shallowRef(false)
+  const data = (shallow ? shallowRef : deepRef)(initialValue) as Ref<T>
 
   const rawInit: T = toValue(initialValue)
 

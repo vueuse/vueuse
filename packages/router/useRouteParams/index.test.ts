@@ -1,7 +1,7 @@
-import { effectScope, nextTick, reactive, ref, watch } from 'vue-demi'
+import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
-import type { Ref } from 'vue-demi'
-import { useRouteParams } from '.'
+import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
+import { useRouteParams } from './index'
 
 describe('useRouteParams', () => {
   const getRoute = (params: Record<string, any> = {}) => reactive({
@@ -38,6 +38,69 @@ describe('useRouteParams', () => {
     const id = useRouteParams('id', '1', { transform: Number, route, router })
 
     expect(id.value).toBe(1)
+  })
+
+  it('should handle transform get/set', async () => {
+    let route = getRoute({
+      serialized: '{"foo":"bar"}',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const object = useRouteParams('serialized', undefined, {
+      transform: {
+        get: (value: string) => JSON.parse(value),
+        set: (value: any) => JSON.stringify(value),
+      },
+      router,
+      route,
+    })
+
+    expect(object.value).toEqual({ foo: 'bar' })
+
+    object.value = { foo: 'baz' }
+
+    await nextTick()
+
+    expect(route.params.serialized).toBe('{"foo":"baz"}')
+    expect(object.value).toEqual({ foo: 'baz' })
+  })
+
+  it('should handle transform with only get', async () => {
+    let route = getRoute({
+      search: 'VUE3',
+    })
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteParams('search', undefined, {
+      transform: {
+        get: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    expect(search.value).toBe('vue3')
+    expect(route.params.search).toBe('VUE3')
+  })
+
+  it('should handle transform with only set', async () => {
+    let route = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+
+    const search = useRouteParams('search', undefined, {
+      transform: {
+        set: (value: string) => value.toLowerCase(),
+      },
+      router,
+      route,
+    })
+
+    search.value = 'VUE3'
+    expect(search.value).toBe('vue3')
+
+    await nextTick()
+
+    expect(route.params.search).toBe('vue3')
   })
 
   it('should re-evaluate the value immediately', () => {
@@ -90,16 +153,26 @@ describe('useRouteParams', () => {
     expect(lang.value).toBe('pt-BR')
   })
 
+  // docs @see https://router.vuejs.org/guide/essentials/route-matching-syntax.html#Optional-parameters
+  it('should return default value when use vue-router optional parameters', () => {
+    let route = getRoute({ page: '' })
+    const router = { replace: (r: any) => route = r } as any
+
+    const page: Ref<any> = useRouteParams('page', 'default', { route, router })
+
+    expect(page.value).toBe('default')
+  })
+
   it('should reset state on scope dispose', async () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
     const scopeA = effectScope()
     const scopeB = effectScope()
 
-    let page: Ref<any> = ref(null)
-    let lang: Ref<any> = ref(null)
-    let code: Ref<any> = ref(null)
-    let slug: Ref<any> = ref(null)
+    let page: Ref<any> = deepRef(null)
+    let lang: Ref<any> = deepRef(null)
+    let code: Ref<any> = deepRef(null)
+    let slug: Ref<any> = deepRef(null)
 
     await scopeA.run(async () => {
       page = useRouteParams('page', null, { route, router })
@@ -155,12 +228,12 @@ describe('useRouteParams', () => {
     route.params.page = 2
 
     const defaultPage = 'DEFAULT_PAGE'
-    let page1: Ref<any> = ref(null)
+    let page1: Ref<any> = deepRef(null)
     await scopeA.run(async () => {
       page1 = useRouteParams('page', defaultPage, { route, router })
     })
 
-    let page2: Ref<any> = ref(null)
+    let page2: Ref<any> = deepRef(null)
     await scopeB.run(async () => {
       page2 = useRouteParams('page', defaultPage, { route, router })
     })
@@ -206,6 +279,49 @@ describe('useRouteParams', () => {
     expect(onUpdate).not.toHaveBeenCalled()
   })
 
+  it('should trigger effects only once', async () => {
+    const route = getRoute()
+    const router = { replace: (r: any) => Object.assign(route, r) } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteParams('page', 1, { transform: Number, route, router })
+    const pageObj = computed(() => ({
+      page: page.value,
+    }))
+
+    watch(pageObj, onUpdate)
+
+    page.value = 2
+
+    await nextTick()
+    await nextTick()
+
+    expect(page.value).toBe(2)
+    expect(route.params.page).toBe(2)
+    expect(onUpdate).toHaveBeenCalledTimes(1)
+  })
+
+  it('should trigger effects only once with getter object as watch source', async () => {
+    const route = getRoute({ page: '1' })
+    const router = { replace: (r: any) => {
+      Object.keys(r.params).forEach(paramsKey => r.params[paramsKey] = String(r.params[paramsKey]))
+      return Object.assign(route, r)
+    } } as any
+    const onUpdate = vi.fn()
+
+    const page = useRouteParams('page', 1, { transform: Number, route, router })
+
+    watch(() => ({ page: page.value }), onUpdate)
+
+    page.value = 2
+    await nextTick()
+    await nextTick()
+
+    expect(page.value).toBe(2)
+    expect(route.params.page).toBe('2')
+    expect(onUpdate).toHaveBeenCalledTimes(1)
+  })
+
   it('should keep current query and hash', async () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
@@ -228,7 +344,7 @@ describe('useRouteParams', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const defaultPage = ref(1)
+    const defaultPage = shallowRef(1)
     const defaultLang = () => 'pt-BR'
 
     const page: Ref<any> = useRouteParams('page', defaultPage, { route, router })

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatDate, normalizeDate, useDateFormat } from '.'
+import { formatDate, normalizeDate, useDateFormat } from './index'
 
 describe('useDateFormat', () => {
   it('should export module', () => {
@@ -10,12 +10,14 @@ describe('useDateFormat', () => {
   it('should normalize date', () => {
     const date = new Date(2022, 0, 1, 0, 0, 0)
     const currentDate = new Date().toDateString()
+
     expect(normalizeDate(undefined).toDateString()).toBe(currentDate)
     // @ts-expect-error test null
     expect(normalizeDate(null).toString()).toBe('Invalid Date')
     expect(normalizeDate(new Date()).toDateString()).toBe(currentDate)
     expect(normalizeDate(new Date().toString()).toDateString()).toBe(currentDate)
-    expect(normalizeDate(new Date().toISOString().replace('Z', '')).toDateString()).toBe(currentDate)
+    expect.soft(normalizeDate(new Date().toISOString().replace('Z', '')).toDateString()).toBe(currentDate)
+
     expect(normalizeDate('2022-01')).toEqual(date)
     expect(normalizeDate('2022-01-01')).toEqual(date)
     expect(normalizeDate('2022-01-01T00:00:00.000')).toEqual(date)
@@ -117,5 +119,19 @@ describe('useDateFormat', () => {
   it('formatDate', () => {
     expect(formatDate(new Date('Sun Jul 30 2023 21:15:42 GMT+0800'), 'd'))
       .toMatchInlineSnapshot('"0"')
+  })
+
+  describe('timezone', () => {
+    it.each([
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss z', expected: '03:05:05 GMT+1' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss zz', expected: '03:05:05 GMT+1' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss zzz', expected: '03:05:05 GMT+1' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss zzzz', expected: '03:05:05 GMT+01:00' },
+    ])(
+      'should work with $formatStr',
+      ({ dateStr, formatStr, expected }) => {
+        expect(useDateFormat(new Date(dateStr), formatStr).value).toBe(expected)
+      },
+    )
   })
 })

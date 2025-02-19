@@ -1,6 +1,6 @@
+import type { Ref, ShallowRef, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import type { Ref, UnwrapRef } from 'vue-demi'
-import { ref, shallowRef } from 'vue-demi'
+import { ref as deepRef, shallowRef } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
@@ -78,7 +78,7 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-export function useAsyncState<Data, Params extends any[] = [], Shallow extends boolean = true>(
+export function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Data>,
@@ -92,9 +92,9 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
     shallow = true,
     throwError,
   } = options ?? {}
-  const state = shallow ? shallowRef(initialState) : ref(initialState)
-  const isReady = ref(false)
-  const isLoading = ref(false)
+  const state = shallow ? shallowRef(initialState) : deepRef(initialState)
+  const isReady = shallowRef(false)
+  const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
 
   async function execute(delay = 0, ...args: any[]) {
@@ -130,11 +130,12 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
     return state.value as Data
   }
 
-  if (immediate)
+  if (immediate) {
     execute(delay)
+  }
 
   const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
-    state: state as Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
+    state: state as Shallow extends true ? ShallowRef<Data> : Ref<UnwrapRef<Data>>,
     isReady,
     isLoading,
     error,
@@ -143,9 +144,7 @@ export function useAsyncState<Data, Params extends any[] = [], Shallow extends b
 
   function waitUntilIsLoaded() {
     return new Promise<UseAsyncStateReturnBase<Data, Params, Shallow>>((resolve, reject) => {
-      until(isLoading).toBe(false)
-        .then(() => resolve(shell))
-        .catch(reject)
+      until(isLoading).toBe(false).then(() => resolve(shell)).catch(reject)
     })
   }
 

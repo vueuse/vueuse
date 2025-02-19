@@ -1,6 +1,6 @@
 import { useCloned } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue-demi'
+import { ref as deepRef, nextTick } from 'vue'
 
 describe('useCloned', () => {
   it('works with simple objects', () => {
@@ -18,7 +18,7 @@ describe('useCloned', () => {
   })
 
   it('works with refs', async () => {
-    const data = ref({ test: 'test' })
+    const data = deepRef({ test: 'test' })
 
     const { cloned } = useCloned(data)
 
@@ -30,7 +30,7 @@ describe('useCloned', () => {
   })
 
   it('works with getter function', async () => {
-    const data = ref({ test: 'test' })
+    const data = deepRef({ test: 'test' })
 
     const { cloned } = useCloned(() => data.value)
 
@@ -42,7 +42,7 @@ describe('useCloned', () => {
   })
 
   it('works with refs and manual sync', async () => {
-    const data = ref({ test: 'test' })
+    const data = deepRef({ test: 'test' })
 
     const { cloned, sync } = useCloned(data, { manual: true })
 
@@ -56,7 +56,7 @@ describe('useCloned', () => {
   })
 
   it('works with custom clone function', async () => {
-    const data = ref<Record<string, any>>({ test: 'test' })
+    const data = deepRef<Record<string, any>>({ test: 'test' })
 
     const { cloned } = useCloned(data, {
       clone: source => ({ ...source, proxyTest: true }),
@@ -71,7 +71,7 @@ describe('useCloned', () => {
   })
 
   it('works with watch options', async () => {
-    const data = ref({ test: 'test' })
+    const data = deepRef({ test: 'test' })
 
     const { cloned } = useCloned(data, { immediate: false, deep: false })
 
@@ -92,5 +92,21 @@ describe('useCloned', () => {
     await nextTick()
 
     expect(cloned.value).toEqual(data.value)
+  })
+
+  it('works with use isModified', async () => {
+    const data = deepRef({ test: 'test' })
+
+    const { cloned, isModified, sync } = useCloned(data)
+
+    expect(isModified.value).toEqual(false)
+
+    cloned.value.test = 'vitest'
+
+    expect(isModified.value).toEqual(true)
+
+    sync()
+
+    expect(isModified.value).toEqual(false)
   })
 })

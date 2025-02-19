@@ -1,7 +1,7 @@
-import { ref } from 'vue-demi'
 import { isClient, useDebounceFn } from '@vueuse/shared'
-import { useEventListener } from '../useEventListener'
+import { shallowRef } from 'vue'
 import { useCssVar } from '../useCssVar'
+import { useEventListener } from '../useEventListener'
 
 const topVarName = '--vueuse-safe-area-top'
 const rightVarName = '--vueuse-safe-area-right'
@@ -14,10 +14,10 @@ const leftVarName = '--vueuse-safe-area-left'
  * @see https://vueuse.org/useScreenSafeArea
  */
 export function useScreenSafeArea() {
-  const top = ref('')
-  const right = ref('')
-  const bottom = ref('')
-  const left = ref('')
+  const top = shallowRef('')
+  const right = shallowRef('')
+  const bottom = shallowRef('')
+  const left = shallowRef('')
 
   if (isClient) {
     const topCssVar = useCssVar(topVarName)
@@ -32,7 +32,7 @@ export function useScreenSafeArea() {
 
     update()
 
-    useEventListener('resize', useDebounceFn(update))
+    useEventListener('resize', useDebounceFn(update), { passive: true })
   }
 
   function update() {

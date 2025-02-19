@@ -1,6 +1,7 @@
 {
   "name": "@vueuse/shared",
-  "version": "10.9.0",
+  "type": "module",
+  "version": "12.7.0",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
@@ -30,8 +31,20 @@
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.ts",
+  "files": [
+    "*.cjs",
+    "*.d.cts",
+    "*.d.mts",
+    "*.d.ts",
+    "*.js",
+    "*.mjs"
+  ],
+  "scripts": {
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build"
+  },
   "dependencies": {
-    "vue-demi": ">=0.14.7"
+    "vue": "catalog:"
   }
 }

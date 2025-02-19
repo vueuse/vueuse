@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
-import { reactive, ref } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
+import { reactive, useTemplateRef } from 'vue'
 import Area from './Area.vue'
 
-const target = ref(null)
+const target = useTemplateRef<HTMLElement>('target')
 const mouse = reactive(useMouseInElement(target))
 const text = stringify(mouse)
 </script>

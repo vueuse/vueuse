@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { useIDBKeyval } from '.'
+import { useIDBKeyval } from './index'
 
 const KEY = 'vue-use-idb-keyval'
 
@@ -10,13 +10,13 @@ const stateObject = useIDBKeyval(`${KEY}-object`, {
   size: 'Medium',
   count: 0,
 })
-const textObject = stringify(stateObject)
+const textObject = stringify(stateObject.data)
 
 const stateString = useIDBKeyval(`${KEY}-string`, 'foobar')
 const textString = stateString
 
 const stateArray = useIDBKeyval(`${KEY}-array`, ['foo', 'bar', 'baz'])
-const textArray = stringify(stateArray)
+const textArray = stringify(stateArray.data)
 </script>
 
 <template>

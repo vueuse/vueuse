@@ -57,13 +57,9 @@ const getUser = useMemoize(
 )
 ```
 
-::: warning
-For Vue 2 the key has to be a `string` or `number`
-:::
-
 ### Customize cache mechanism
 
-By default, the results are cached within a `Map` (normal object for Vue 2). You can implement your own mechanism by passing `cache` as options with following structure:
+By default, the results are cached within a `Map`. You can implement your own mechanism by passing `cache` as options with following structure:
 
 ```ts
 export interface MemoizeCache<Key, Value> {

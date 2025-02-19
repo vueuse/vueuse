@@ -4,7 +4,7 @@ category: Reactivity
 
 # toRefs
 
-Extended [`toRefs`](https://v3.vuejs.org/api/refs-api.html#torefs) that also accepts refs of an object.
+Extended [`toRefs`](https://vuejs.org/api/reactivity-utilities.html#torefs) that also accepts refs of an object.
 
 ## Usage
 

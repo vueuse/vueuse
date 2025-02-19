@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { ContributorInfo } from '@vueuse/metadata'
+import { computed } from 'vue'
 // @ts-expect-error missing types
 import _contributors from '/virtual-contributors'
-import { computed } from 'vue'
-import type { ContributorInfo } from '@vueuse/metadata'
 
 const props = defineProps<{ fn: string }>()
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { promiseTimeout } from '@vueuse/shared'
 import { useTimeoutPoll } from '@vueuse/core'
+import { promiseTimeout } from '@vueuse/shared'
+import { shallowRef } from 'vue'
 
-const count = ref(0)
+const count = shallowRef(0)
 
 async function fetchData() {
   await promiseTimeout(1000)

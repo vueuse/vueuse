@@ -1,6 +1,6 @@
+import { afterAll, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useWindowSize } from '.'
+import { useWindowSize } from './index'
 
 describe('useWindowSize', () => {
   const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
@@ -14,11 +14,6 @@ describe('useWindowSize', () => {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   }))
-
-  beforeEach(() => {
-    addEventListenerSpy.mockClear()
-    matchMediaSpy.mockClear()
-  })
 
   afterAll(() => {
     addEventListenerSpy.mockRestore()
@@ -41,6 +36,13 @@ describe('useWindowSize', () => {
 
     expect(width.value).toBe(window.document.documentElement.clientWidth)
     expect(height.value).toBe(window.document.documentElement.clientHeight)
+  })
+
+  it('should use outer size', () => {
+    const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, type: 'outer' })
+
+    expect(width.value).toBe(window.outerWidth)
+    expect(height.value).toBe(window.outerHeight)
   })
 
   it('sets handler for window "resize" event', async () => {

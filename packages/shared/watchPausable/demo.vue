@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { onStartTyping, watchPausable } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const input = ref<HTMLInputElement | null>()
-const log = ref('')
+const input = shallowRef<HTMLInputElement | null>()
+const log = shallowRef('')
 
-const source = ref('')
+const source = shallowRef('')
 
 const watcher = watchPausable(
   source,

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { toRefs } from '@vueuse/shared'
+import { ref as deepRef } from 'vue'
 import Scrubber from '../../core/useMediaControls/components/Scrubber.vue'
-import { useDrauu } from '.'
+import { useDrauu } from './index'
 
-const colors = ref(['black', '#ef4444', '#22c55e', '#3b82f6'])
-const target = ref()
+const colors = deepRef(['black', '#ef4444', '#22c55e', '#3b82f6'])
+const target = deepRef()
 const { undo, redo, canUndo, canRedo, clear, brush } = useDrauu(target, {
   brush: {
     color: 'black',

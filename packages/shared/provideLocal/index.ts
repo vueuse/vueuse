@@ -1,4 +1,4 @@
-import { getCurrentInstance, provide } from 'vue-demi'
+import { getCurrentInstance, provide } from 'vue'
 import { localProvidedStateMap } from './map'
 
 /**

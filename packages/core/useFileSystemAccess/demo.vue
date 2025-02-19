@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
-import type { Ref } from 'vue'
-import { reactive, ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import { useFileSystemAccess } from '@vueuse/core'
+import { stringify } from '@vueuse/docs-utils'
+import { reactive, shallowRef } from 'vue'
 
-const dataType = ref('Text') as Ref<'Text' | 'ArrayBuffer' | 'Blob'>
+const dataType = shallowRef('Text') as ShallowRef<'Text' | 'ArrayBuffer' | 'Blob'>
 const res = useFileSystemAccess({
   dataType,
   types: [{

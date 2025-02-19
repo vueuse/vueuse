@@ -1,7 +1,6 @@
-import { isRef, ref, watch } from 'vue-demi'
-import { toValue } from '../toValue'
-import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import type { Fn, MaybeRefOrGetter, Pausable } from '../utils'
+import { isRef, shallowRef, toValue, watch } from 'vue'
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
 
 export interface UseIntervalFnOptions {
@@ -13,7 +12,7 @@ export interface UseIntervalFnOptions {
   immediate?: boolean
 
   /**
-   * Execute the callback immediate after calling this function
+   * Execute the callback immediately after calling `resume`
    *
    * @default false
    */
@@ -34,7 +33,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
   } = options
 
   let timer: ReturnType<typeof setInterval> | null = null
-  const isActive = ref(false)
+  const isActive = shallowRef(false)
 
   function clean() {
     if (timer) {
@@ -56,7 +55,8 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
     if (immediateCallback)
       cb()
     clean()
-    timer = setInterval(cb, intervalValue)
+    if (isActive.value)
+      timer = setInterval(cb, intervalValue)
   }
 
   if (immediate && isClient)

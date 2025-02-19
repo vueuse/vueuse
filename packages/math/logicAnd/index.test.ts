@@ -1,7 +1,6 @@
-import { ref } from 'vue-demi'
-import { toValue } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { logicAnd } from '.'
+import { shallowRef, toValue } from 'vue'
+import { logicAnd } from './index'
 
 describe('logicAnd', () => {
   it('should be defined', () => {
@@ -13,12 +12,12 @@ describe('logicAnd', () => {
   })
 
   it('returns true only when all arguments are truthy', () => {
-    expect(toValue(logicAnd(ref(true), ref(true)))).toBe(true)
-    expect(toValue(logicAnd(ref('foo'), ref(true)))).toBe(true)
-    expect(toValue(logicAnd(ref('foo'), ref(1)))).toBe(true)
+    expect(toValue(logicAnd(shallowRef(true), shallowRef(true)))).toBe(true)
+    expect(toValue(logicAnd(shallowRef('foo'), shallowRef(true)))).toBe(true)
+    expect(toValue(logicAnd(shallowRef('foo'), shallowRef(1)))).toBe(true)
 
-    expect(toValue(logicAnd(ref(true), ref(false)))).toBe(false)
-    expect(toValue(logicAnd(ref('foo'), ref(0)))).toBe(false)
+    expect(toValue(logicAnd(shallowRef(true), shallowRef(false)))).toBe(false)
+    expect(toValue(logicAnd(shallowRef('foo'), shallowRef(0)))).toBe(false)
   })
 
   it('works with values', () => {

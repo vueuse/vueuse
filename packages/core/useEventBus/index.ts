@@ -1,11 +1,11 @@
 import type { Fn } from '@vueuse/shared'
-import { getCurrentScope } from 'vue-demi'
+import { getCurrentScope } from 'vue'
 import { events } from './internal'
 
 export type EventBusListener<T = unknown, P = any> = (event: T, payload?: P) => void
 export type EventBusEvents<T, P = any> = Set<EventBusListener<T, P>>
 
-// eslint-disable-next-line unused-imports/no-unused-vars
+// eslint-disable-next-line unused-imports/no-unused-vars, ts/no-wrapper-object-types
 export interface EventBusKey<T> extends Symbol { }
 
 export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number
@@ -48,8 +48,7 @@ export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): U
 
     const _off = () => off(listener)
     // auto unsubscribe when scope get disposed
-    // eslint-disable-next-line ts/prefer-ts-expect-error
-    // @ts-ignore vue3 and vue2 mis-align
+    // @ts-expect-error vue3 and vue2 mis-align
     scope?.cleanups?.push(_off)
     return _off
   }

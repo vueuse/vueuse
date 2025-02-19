@@ -1,13 +1,12 @@
-import { directiveHooks } from '@vueuse/shared'
-import type { ObjectDirective } from 'vue-demi'
-import { onClickOutside } from '.'
-import type { OnClickOutsideHandler, OnClickOutsideOptions } from '.'
+import type { ObjectDirective } from 'vue'
+import type { OnClickOutsideHandler, OnClickOutsideOptions } from './index'
+import { onClickOutside } from './index'
 
 export const vOnClickOutside: ObjectDirective<
-HTMLElement,
-OnClickOutsideHandler | [(evt: any) => void, OnClickOutsideOptions]
+  HTMLElement,
+  OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>]
 > = {
-  [directiveHooks.mounted](el, binding) {
+  mounted(el, binding) {
     const capture = !binding.modifiers.bubble
     if (typeof binding.value === 'function') {
       (el as any).__onClickOutside_stop = onClickOutside(el, binding.value, { capture })
@@ -17,7 +16,7 @@ OnClickOutsideHandler | [(evt: any) => void, OnClickOutsideOptions]
       ;(el as any).__onClickOutside_stop = onClickOutside(el, handler, Object.assign({ capture }, options))
     }
   },
-  [directiveHooks.unmounted](el) {
+  unmounted(el) {
     (el as any).__onClickOutside_stop()
   },
 }

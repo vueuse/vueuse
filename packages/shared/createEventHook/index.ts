@@ -8,21 +8,24 @@ import { tryOnScopeDispose } from '../tryOnScopeDispose'
 // any extends void = true
 // so we need to check if T is any first
 type Callback<T> = IsAny<T> extends true
-  ? (param: any) => void
+  ? (...param: any) => void
   : (
       [T] extends [void]
-        ? () => void
-        : (param: T) => void
+        ? (...param: unknown[]) => void
+        : [T] extends [any[]]
+            ? (...param: T) => void
+            : (...param: [T, ...unknown[]]) => void
     )
 
 export type EventHookOn<T = any> = (fn: Callback<T>) => { off: () => void }
 export type EventHookOff<T = any> = (fn: Callback<T>) => void
-export type EventHookTrigger<T = any> = (param?: T) => Promise<unknown[]>
+export type EventHookTrigger<T = any> = (...param: Parameters<Callback<T>>) => Promise<unknown[]>
 
 export interface EventHook<T = any> {
   on: EventHookOn<T>
   off: EventHookOff<T>
   trigger: EventHookTrigger<T>
+  clear: () => void
 }
 
 /**
@@ -37,6 +40,10 @@ export function createEventHook<T = any>(): EventHook<T> {
     fns.delete(fn)
   }
 
+  const clear = () => {
+    fns.clear()
+  }
+
   const on = (fn: Callback<T>) => {
     fns.add(fn)
     const offFn = () => off(fn)
@@ -49,12 +56,13 @@ export function createEventHook<T = any>(): EventHook<T> {
   }
 
   const trigger: EventHookTrigger<T> = (...args) => {
-    return Promise.all(Array.from(fns).map(fn => fn(...(args as [T]))))
+    return Promise.all(Array.from(fns).map(fn => fn(...args)))
   }
 
   return {
     on,
     off,
     trigger,
+    clear,
   }
 }

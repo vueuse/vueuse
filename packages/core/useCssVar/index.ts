@@ -1,11 +1,10 @@
-import { computed, ref, watch } from 'vue-demi'
 import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { toValue } from '@vueuse/shared'
-import { useMutationObserver } from '../useMutationObserver'
 import type { ConfigurableWindow } from '../_configurable'
-import { defaultWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
+import { computed, shallowRef, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseCssVarOptions extends ConfigurableWindow {
   initialValue?: string
@@ -25,20 +24,20 @@ export interface UseCssVarOptions extends ConfigurableWindow {
  * @param options
  */
 export function useCssVar(
-  prop: MaybeRefOrGetter<string>,
+  prop: MaybeRefOrGetter<string | null | undefined>,
   target?: MaybeElementRef,
   options: UseCssVarOptions = {},
 ) {
-  const { window = defaultWindow, initialValue = '', observe = false } = options
-  const variable = ref(initialValue)
+  const { window = defaultWindow, initialValue, observe = false } = options
+  const variable = shallowRef(initialValue)
   const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
 
   function updateCssVar() {
     const key = toValue(prop)
     const el = toValue(elRef)
-    if (el && window) {
+    if (el && window && key) {
       const value = window.getComputedStyle(el).getPropertyValue(key)?.trim()
-      variable.value = value || initialValue
+      variable.value = value || variable.value || initialValue
     }
   }
 
@@ -51,16 +50,25 @@ export function useCssVar(
 
   watch(
     [elRef, () => toValue(prop)],
-    updateCssVar,
-    { immediate: true },
+    (_, old) => {
+      if (old[0] && old[1])
+        old[0].style.removeProperty(old[1])
+      updateCssVar()
+    },
   )
 
   watch(
-    variable,
-    (val) => {
-      if (elRef.value?.style)
-        elRef.value.style.setProperty(toValue(prop), val)
+    [variable, elRef],
+    ([val, el]) => {
+      const raw_prop = toValue(prop)
+      if (el?.style && raw_prop) {
+        if (val == null)
+          el.style.removeProperty(raw_prop)
+        else
+          el.style.setProperty(raw_prop, val)
+      }
     },
+    { immediate: true },
   )
 
   return variable

@@ -10,10 +10,10 @@ Make elements draggable.
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useDraggable } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 
 // `style` will be a helper computed for `left: ?px; top: ?px;`
 const { x, y, style } = useDraggable(el, {
@@ -26,6 +26,17 @@ const { x, y, style } = useDraggable(el, {
     Drag me! I am at {{ x }}, {{ y }}
   </div>
 </template>
+```
+
+Set `preventDefault: true` to override the default drag-and-drop behavior of certain elements in the browser.
+
+```ts
+const { x, y, style } = useDraggable(el, {
+  preventDefault: true,
+  // with `preventDefault: true`
+  // you can disable the native behavior (e.g., for img)
+  // and control the drag-and-drop, preventing the browser interference.
+})
 ```
 
 ## Component Usage

@@ -1,14 +1,12 @@
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { useCounter } from '@vueuse/shared'
+<script setup lang="ts">
 import { formatDate, useDebouncedRefHistory } from '@vueuse/core'
-
-import type { Ref } from 'vue'
+import { useCounter } from '@vueuse/shared'
+import { shallowRef } from 'vue'
 
 function format(ts: number) {
   return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
 }
-const delay: Ref<number> = ref(1000)
+const delay = shallowRef(1000)
 
 const { count, inc, dec } = useCounter()
 const { history, undo, redo, canUndo, canRedo } = useDebouncedRefHistory(
