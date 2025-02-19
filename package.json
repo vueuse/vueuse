@@ -14,7 +14,7 @@
     "clean": "tsx scripts/clean.ts",
     "dev": "nr update && nr docs",
     "docs": "vitepress dev packages --open",
-    "docs:build": "nr update:full && NODE_OPTIONS=\"--max-old-space-size=12288\" vitepress build packages && nr build:redirects",
+    "docs:build": "nr update:full && NODE_OPTIONS=\"--max-old-space-size=24576\" vitepress build packages && nr build:redirects",
     "docs:serve": "vitepress serve packages",
     "lint": "eslint --cache .",
     "lint:fix": "nr lint --fix",
