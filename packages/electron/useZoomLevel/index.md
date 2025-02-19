@@ -31,8 +31,9 @@ Pass a `ref` and the level will be updated when the source ref changes
 
 ```ts
 import { useZoomLevel } from '@vueuse/electron'
+import { shallowRef } from 'vue'
 
-const level = ref(1)
+const level = shallowRef(1)
 
 useZoomLevel(level) // zoom level will match with the ref
 

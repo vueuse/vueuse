@@ -35,7 +35,7 @@ When a source ref is passed, the return ref will be identical to the source ref
 ```ts
 import { useFavicon } from '@vueuse/core'
 // ---cut---
-const source = ref('icon.png')
+const source = shallowRef('icon.png')
 const icon = useFavicon(source)
 
 console.log(icon === source) // true

@@ -12,9 +12,9 @@ Add extra attributes to Ref.
 
 ```ts
 import { extendRef } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const myRef = ref('content')
+const myRef = shallowRef('content')
 
 const extended = extendRef(myRef, { foo: 'extra data' })
 
@@ -27,8 +27,8 @@ Refs will be unwrapped and be reactive
 ```ts
 import { extendRef } from '@vueuse/core'
 // ---cut---
-const myRef = ref('content')
-const extraRef = ref('extra')
+const myRef = shallowRef('content')
+const extraRef = shallowRef('extra')
 
 const extended = extendRef(myRef, { extra: extraRef })
 

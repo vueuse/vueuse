@@ -1,7 +1,7 @@
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef, watch } from 'vue'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
@@ -115,10 +115,10 @@ export function useEventSource<Events extends string[]>(
   events: Events = [] as unknown as Events,
   options: UseEventSourceOptions = {},
 ): UseEventSourceReturn<Events> {
-  const event: Ref<string | null> = ref(null)
-  const data: Ref<string | null> = ref(null)
-  const status = ref('CONNECTING') as Ref<EventSourceStatus>
-  const eventSource = ref(null) as Ref<EventSource | null>
+  const event: Ref<string | null> = deepRef(null)
+  const data: Ref<string | null> = deepRef(null)
+  const status = shallowRef('CONNECTING') as Ref<EventSourceStatus>
+  const eventSource = deepRef(null) as Ref<EventSource | null>
   const error = shallowRef(null) as Ref<Event | null>
   const urlRef = toRef(url)
   const lastEventId = shallowRef<string | null>(null)

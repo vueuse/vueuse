@@ -32,8 +32,9 @@ Pass a `ref` and the title will be updated when the source ref changes:
 
 ```ts
 import { useTitle } from '@vueuse/core'
-// ---cut---
-const messages = ref(0)
+import { shallowRef } from 'vue'
+
+const messages = shallowRef(0)
 
 const title = computed(() => {
   return !messages.value ? 'No message' : `${messages.value} new messages`

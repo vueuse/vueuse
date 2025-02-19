@@ -1,7 +1,7 @@
 import type { MaybeRef } from '@vueuse/shared'
 import type { WebFrame } from 'electron'
 import type { Ref } from 'vue'
-import { isRef, ref, watch } from 'vue'
+import { ref as deepRef, isRef, watch } from 'vue'
 
 export function useZoomFactor(factor: MaybeRef<number>): Ref<number>
 export function useZoomFactor(webFrame: WebFrame, factor: MaybeRef<number>): Ref<number>
@@ -24,11 +24,11 @@ export function useZoomFactor(...args: any[]): Ref<number> {
     || typeof args[0] === 'number'
   ) {
     webFrame = window.require ? window.require('electron').webFrame : undefined
-    newFactor = args.length > 0 ? ref(args[0]) : null
+    newFactor = args.length > 0 ? deepRef(args[0]) : null
   }
   else {
     webFrame = args[0]
-    newFactor = args.length > 1 ? ref(args[1]) : null
+    newFactor = args.length > 1 ? deepRef(args[1]) : null
   }
 
   if (!webFrame)
@@ -37,7 +37,7 @@ export function useZoomFactor(...args: any[]): Ref<number> {
   if (newFactor && newFactor.value === 0)
     throw new Error('the factor must be greater than 0.0.')
 
-  const factor = ref(newFactor ?? webFrame.getZoomFactor())
+  const factor = deepRef(newFactor ?? webFrame.getZoomFactor())
 
   watch(
     factor,

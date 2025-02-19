@@ -25,10 +25,10 @@ npm i sortablejs@^1
 ```vue
 <script setup lang="ts">
 import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref, useTemplateRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const el = useTemplateRef<HTMLElement>('el')
-const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 useSortable(el, list)
 </script>
@@ -47,10 +47,10 @@ useSortable(el, list)
 ```vue
 <script setup lang="ts">
 import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref, useTemplateRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const el = useTemplateRef<HTMLElement>('el')
-const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 const animation = 200
 
@@ -80,9 +80,9 @@ option('animation', animation)
 ```vue
 <script setup lang="ts">
 import { useSortable } from '@vueuse/integrations/useSortable'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 useSortable('#dv', list)
 </script>

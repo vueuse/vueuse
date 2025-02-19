@@ -1,6 +1,7 @@
 import type { Ref, WatchSource } from 'vue'
+import type { ConfigurableFlushSync } from '../utils'
 import { watch } from 'vue'
-import { type ConfigurableFlushSync, toArray } from '../utils'
+import { toArray } from '../utils'
 
 export interface SyncRefsOptions extends ConfigurableFlushSync {
   /**

@@ -12,7 +12,7 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 import { useFirestore } from '@vueuse/firebase/useFirestore'
 import { initializeApp } from 'firebase/app'
 import { collection, doc, getFirestore, limit, orderBy, query } from 'firebase/firestore'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 
 const app = initializeApp({ projectId: 'MY PROJECT ID' })
 const db = getFirestore(app)
@@ -23,13 +23,13 @@ const todos = useFirestore(collection(db, 'todos'))
 const user = useFirestore(doc(db, 'users', 'my-user-id'))
 
 // you can also use ref value for reactive query
-const postsLimit = ref(10)
+const postsLimit = shallowRef(10)
 const postsQuery = computed(() => query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(postsLimit.value)))
 const posts = useFirestore(postsQuery)
 
 // you can use the boolean value to tell a query when it is ready to run
 // when it gets falsy value, return the initial value
-const userId = ref('')
+const userId = shallowRef('')
 const userQuery = computed(() => userId.value && doc(db, 'users', userId.value))
 const userData = useFirestore(userQuery, null)
 ```

@@ -11,9 +11,9 @@ Computed for async functions
 
 ```ts
 import { computedAsync } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const name = ref('jack')
+const name = shallowRef('jack')
 
 const userInfo = computedAsync(
   async () => {
@@ -29,9 +29,9 @@ You will need to pass a ref to track if the async function is evaluating.
 
 ```ts
 import { computedAsync } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const evaluating = ref(false)
+const evaluating = shallowRef(false)
 
 const userInfo = computedAsync(
   async () => { /* your logic */ },
@@ -47,7 +47,7 @@ When the computed source changed before the previous async function gets resolve
 ```ts
 import { computedAsync } from '@vueuse/core'
 // ---cut---
-const packageName = ref('@vueuse/core')
+const packageName = shallowRef('@vueuse/core')
 
 const downloads = computedAsync(async (onCancel) => {
   const abortController = new AbortController()
@@ -69,9 +69,9 @@ By default, `computedAsync` will start resolving immediately on creation, specif
 
 ```ts
 import { computedAsync } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const evaluating = ref(false)
+const evaluating = shallowRef(false)
 
 const userInfo = computedAsync(
   async () => { /* your logic */ },

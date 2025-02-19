@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { increaseWithUnit, pxValue, tryOnMounted } from '@vueuse/shared'
-import { computed, ref, toValue } from 'vue'
+import { computed, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
 import { useSSRWidth } from '../useSSRWidth'
@@ -47,7 +47,7 @@ export function useBreakpoints<K extends string>(
   const { window = defaultWindow, strategy = 'min-width', ssrWidth = useSSRWidth() } = options
 
   const ssrSupport = typeof ssrWidth === 'number'
-  const mounted = ssrSupport ? ref(false) : { value: true }
+  const mounted = ssrSupport ? shallowRef(false) : { value: true }
   if (ssrSupport) {
     tryOnMounted(() => mounted.value = !!window)
   }

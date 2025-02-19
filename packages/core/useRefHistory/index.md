@@ -13,9 +13,9 @@ Track the change history of a ref, also provides undo and redo functionality
 
 ```ts {5} twoslash include usage
 import { useRefHistory } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const counter = ref(0)
+const counter = shallowRef(0)
 const { history, undo, redo } = useRefHistory(counter)
 ```
 
@@ -146,7 +146,7 @@ The default is `'pre'`, to align this composable with the default for Vue's watc
 ```ts
 import { useRefHistory } from '@vueuse/core'
 // ---cut---
-const r = ref(0)
+const r = shallowRef(0)
 const { history, commit } = useRefHistory(r)
 
 r.value = 1

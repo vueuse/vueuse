@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { useNow } from '.'
+import { useNow } from './index'
 
 describe('useNow', () => {
   vi.useFakeTimers()

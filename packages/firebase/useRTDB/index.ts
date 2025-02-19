@@ -2,7 +2,7 @@ import type { DatabaseReference, DataSnapshot } from 'firebase/database'
 import type { Ref } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { onValue } from 'firebase/database'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 
 export interface UseRTDBOptions {
   errorHandler?: (err: Error) => void
@@ -22,7 +22,7 @@ export function useRTDB<T = any>(
     errorHandler = (err: Error) => console.error(err),
     autoDispose = true,
   } = options
-  const data = ref(undefined) as Ref<T | undefined>
+  const data = deepRef(undefined) as Ref<T | undefined>
 
   function update(snapshot: DataSnapshot) {
     data.value = snapshot.val()

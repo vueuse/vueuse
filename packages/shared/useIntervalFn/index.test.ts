@@ -1,7 +1,7 @@
 import type { Pausable } from '../utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, ref } from 'vue'
-import { useIntervalFn } from '.'
+import { effectScope, nextTick, shallowRef } from 'vue'
+import { useIntervalFn } from './index'
 
 describe('useIntervalFn', () => {
   let callback = vi.fn()
@@ -57,7 +57,7 @@ describe('useIntervalFn', () => {
 
     callback = vi.fn()
 
-    const interval = ref(50)
+    const interval = shallowRef(50)
     await exec(useIntervalFn(callback, interval))
 
     callback.mockClear()
@@ -71,7 +71,7 @@ describe('useIntervalFn', () => {
 
     callback = vi.fn()
 
-    const interval = ref(50)
+    const interval = shallowRef(50)
     await execImmediateCallback(useIntervalFn(callback, interval, { immediateCallback: true }))
 
     callback.mockClear()

@@ -1,8 +1,7 @@
 import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, shallowRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -59,12 +58,12 @@ export function useSpeechSynthesis(
   const synth = window && (window as any).speechSynthesis as SpeechSynthesis
   const isSupported = useSupported(() => synth)
 
-  const isPlaying = ref(false)
-  const status = ref<UseSpeechSynthesisStatus>('init')
+  const isPlaying = shallowRef(false)
+  const status = shallowRef<UseSpeechSynthesisStatus>('init')
 
   const spokenText = toRef(text || '')
   const lang = toRef(options.lang || 'en-US')
-  const error = shallowRef(undefined) as Ref<SpeechSynthesisErrorEvent | undefined>
+  const error = shallowRef<SpeechSynthesisErrorEvent | undefined>(undefined)
 
   const toggle = (value = !isPlaying.value) => {
     isPlaying.value = value

@@ -1,7 +1,7 @@
 import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
 import { createEventHook, isObject, toRef, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
-import { ref, toValue, watch, watchEffect } from 'vue'
+import { ref as deepRef, shallowRef, toValue, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -161,20 +161,20 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
 
   const listenerOptions = { passive: true }
 
-  const currentTime = ref(0)
-  const duration = ref(0)
-  const seeking = ref(false)
-  const volume = ref(1)
-  const waiting = ref(false)
-  const ended = ref(false)
-  const playing = ref(false)
-  const rate = ref(1)
-  const stalled = ref(false)
-  const buffered = ref<[number, number][]>([])
-  const tracks = ref<UseMediaTextTrack[]>([])
-  const selectedTrack = ref<number>(-1)
-  const isPictureInPicture = ref(false)
-  const muted = ref(false)
+  const currentTime = shallowRef(0)
+  const duration = shallowRef(0)
+  const seeking = shallowRef(false)
+  const volume = shallowRef(1)
+  const waiting = shallowRef(false)
+  const ended = shallowRef(false)
+  const playing = shallowRef(false)
+  const rate = shallowRef(1)
+  const stalled = shallowRef(false)
+  const buffered = deepRef<[number, number][]>([])
+  const tracks = deepRef<UseMediaTextTrack[]>([])
+  const selectedTrack = shallowRef<number>(-1)
+  const isPictureInPicture = shallowRef(false)
+  const muted = shallowRef(false)
 
   const supportsPictureInPicture = document && 'pictureInPictureEnabled' in document
 

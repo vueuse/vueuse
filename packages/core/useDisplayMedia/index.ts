@@ -1,7 +1,6 @@
 import type { MaybeRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
-import { ref, shallowRef, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -30,7 +29,7 @@ export interface UseDisplayMediaOptions extends ConfigurableNavigator {
  * @param options
  */
 export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
-  const enabled = ref(options.enabled ?? false)
+  const enabled = shallowRef(options.enabled ?? false)
   const video = options.video
   const audio = options.audio
   const { navigator = defaultNavigator } = options
@@ -38,7 +37,7 @@ export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
 
   const constraint: MediaStreamConstraints = { audio, video }
 
-  const stream: Ref<MediaStream | undefined> = shallowRef()
+  const stream = shallowRef<MediaStream | undefined>()
 
   async function _start() {
     if (!isSupported.value || stream.value)

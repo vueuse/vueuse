@@ -27,9 +27,9 @@ You can use a `ref` to change the initial countdown.
 
 ```ts
 import { useCountdown } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const countdown = ref(5)
+const countdown = shallowRef(5)
 const { start, reset } = useCountdown(countdown, {
 })
 

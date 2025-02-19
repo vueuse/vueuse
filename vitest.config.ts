@@ -1,7 +1,11 @@
 import { resolve } from 'node:path'
-import { defineConfig } from 'vitest/config'
+import vue from '@vitejs/plugin-vue'
+import { coverageConfigDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  plugins: [
+    vue(),
+  ],
   resolve: {
     alias: {
       '@vueuse/shared': resolve(import.meta.dirname, 'packages/shared/index.ts'),
@@ -23,8 +27,17 @@ export default defineConfig({
   cacheDir: resolve(import.meta.dirname, 'node_modules/.vite'),
   test: {
     reporters: 'dot',
+    env: {
+      TZ: 'UTC-1', // to have some actual results with timezone offset
+    },
     coverage: {
-      exclude: ['./packages/**/demo.vue'],
+      exclude: [
+        'packages/.vitepress/**',
+        'playgrounds/**',
+        '**/(unocss,taze).config.ts',
+        'scripts/**',
+        ...coverageConfigDefaults.exclude,
+      ],
     },
     clearMocks: true,
     workspace: [
@@ -47,7 +60,7 @@ export default defineConfig({
             headless: true,
             instances: [
               { browser: 'chromium' },
-              { browser: 'firefox' },
+              // { browser: 'firefox' }, // flaky FF test: https://github.com/vitest-dev/vitest/issues/7377
               { browser: 'webkit' },
             ],
           },

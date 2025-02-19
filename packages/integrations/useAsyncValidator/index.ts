@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { Rules, ValidateError, ValidateOption } from 'async-validator'
-import type { Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import { toRef, until } from '@vueuse/shared'
 import Schema from 'async-validator'
-import { computed, ref, shallowRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 
 // @ts-expect-error Schema.default is exist in ssr mode
 const AsyncValidatorSchema = Schema.default || Schema
@@ -21,11 +21,11 @@ export interface UseAsyncValidatorExecuteReturn {
 }
 
 export interface UseAsyncValidatorReturn {
-  pass: Ref<boolean>
-  isFinished: Ref<boolean>
-  errors: Ref<AsyncValidatorError['errors'] | undefined>
-  errorInfo: Ref<AsyncValidatorError | null>
-  errorFields: Ref<AsyncValidatorError['fields'] | undefined>
+  pass: ShallowRef<boolean>
+  isFinished: ShallowRef<boolean>
+  errors: ComputedRef<AsyncValidatorError['errors'] | undefined>
+  errorInfo: ShallowRef<AsyncValidatorError | null>
+  errorFields: ComputedRef<AsyncValidatorError['fields'] | undefined>
   execute: () => Promise<UseAsyncValidatorExecuteReturn>
 }
 
@@ -67,8 +67,8 @@ export function useAsyncValidator(
   const valueRef = toRef(value)
 
   const errorInfo = shallowRef<AsyncValidatorError | null>(null)
-  const isFinished = ref(true)
-  const pass = ref(!immediate || manual)
+  const isFinished = shallowRef(true)
+  const pass = shallowRef(!immediate || manual)
   const errors = computed(() => errorInfo.value?.errors || [])
   const errorFields = computed(() => errorInfo.value?.fields || {})
 
