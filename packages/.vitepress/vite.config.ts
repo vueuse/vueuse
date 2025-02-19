@@ -96,6 +96,7 @@ export default defineConfig({
         },
       },
     },
+    sourcemap: false,
   },
   css: {
     postcss: {
