@@ -95,6 +95,7 @@ export default defineConfig({
             return 'vue'
         },
       },
+      maxParallelFileOps: 5,
     },
     sourcemap: false,
   },
