@@ -90,7 +90,7 @@ catalog:
   vite: ^6.1.0
   vite-plugin-inspect: ^10.2.1
   vite-plugin-pwa: ^0.21.1
-  vitepress: ^2.0.0-alpha.2
+  vitepress: ^1.6.3
   vitest: ^3.0.5
   vitest-browser-vue: ^0.1.0
   vue: ^3.5.13
