@@ -3,7 +3,7 @@ import type { OnLongPressOptions } from './index'
 
 import { onLongPress } from './index'
 
-type BindingValueFunction = (evt: PointerEvent) => void
+type BindingValueFunction = (evt: PointerEvent | TouchEvent) => void
 
 type BindingValueArray = [
   BindingValueFunction,
