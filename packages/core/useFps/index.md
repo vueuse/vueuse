@@ -8,7 +8,7 @@ Reactive FPS (frames per second).
 
 ## Usage
 
-```js
+```ts
 import { useFps } from '@vueuse/core'
 
 const fps = useFps()

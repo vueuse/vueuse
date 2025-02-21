@@ -10,10 +10,7 @@ Make isomorphic destructurable for object and array at the same time. See [this 
 
 TypeScript Example:
 
-<!-- eslint-disable array-bracket-spacing -->
-<!-- eslint-disable ts/no-redeclare -->
-
-```ts
+```ts twoslash include main
 import { makeDestructurable } from '@vueuse/core'
 
 const foo = { name: 'foo' }
@@ -27,10 +24,9 @@ const obj = makeDestructurable(
 
 Usage:
 
-<!-- eslint-disable array-bracket-spacing -->
-<!-- eslint-disable ts/no-redeclare -->
-
-```ts
+```ts twoslash
+// @include: main
+// ---cut---
 let { foo, bar } = obj
 let [foo, bar] = obj
 ```

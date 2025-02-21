@@ -14,7 +14,8 @@ Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipbo
 
 ## Usage
 
-```js
+```vue
+<script setup lang="ts">
 import { useClipboardItems } from '@vueuse/core'
 
 const mime = 'text/plain'
@@ -25,9 +26,8 @@ const source = ref([
 ])
 
 const { content, copy, copied, isSupported } = useClipboardItems({ source })
-```
+</script>
 
-```vue
 <template>
   <div v-if="isSupported">
     <button @click="copy(source)">

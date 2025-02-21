@@ -8,7 +8,7 @@ Mounted state in ref.
 
 ## Usage
 
-```js
+```ts
 import { useMounted } from '@vueuse/core'
 
 const isMounted = useMounted()

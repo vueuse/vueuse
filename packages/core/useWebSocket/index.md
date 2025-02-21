@@ -8,7 +8,7 @@ Reactive [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/
 
 ## Usage
 
-```js
+```ts
 import { useWebSocket } from '@vueuse/core'
 
 const { status, data, send, open, close } = useWebSocket('ws://websocketurl')
@@ -38,7 +38,9 @@ This will call `close()` automatically when the `beforeunload` event is triggere
 
 Reconnect on errors automatically (disabled by default).
 
-```js
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
 const { status, data, close } = useWebSocket('ws://websocketurl', {
   autoReconnect: true,
 })
@@ -46,7 +48,9 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 
 Or with more controls over its behavior:
 
-```js
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
 const { status, data, close } = useWebSocket('ws://websocketurl', {
   autoReconnect: {
     retries: 3,
@@ -64,7 +68,9 @@ Explicitly calling `close()` won't trigger the auto reconnection.
 
 It's common practice to send a small message (heartbeat) for every given time passed to keep the connection active. In this function we provide a convenient helper to do it:
 
-```js
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
 const { status, data, close } = useWebSocket('ws://websocketurl', {
   heartbeat: true,
 })
@@ -72,7 +78,9 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 
 Or with more controls:
 
-```js
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
 const { status, data, close } = useWebSocket('ws://websocketurl', {
   heartbeat: {
     message: 'ping',
@@ -86,9 +94,9 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 
 List of one or more subprotocols to use, in this case soap and wamp.
 
-```js
+```ts
 import { useWebSocket } from '@vueuse/core'
-
+// ---cut---
 const { status, data, send, open, close } = useWebSocket('ws://websocketurl', {
   protocols: ['soap'], // ['soap', 'wamp']
 })

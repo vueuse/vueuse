@@ -8,7 +8,7 @@ Reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Netwo
 
 ## Usage
 
-```js
+```ts
 import { useNetwork } from '@vueuse/core'
 
 const { isOnline, offlineAt, downlink, downlinkMax, effectiveType, saveData, type } = useNetwork()
@@ -18,7 +18,9 @@ console.log(isOnline.value)
 
 To use as an object, wrap it with `reactive()`
 
-```js
+```ts
+import { useNetwork } from '@vueuse/core'
+// ---cut---
 import { reactive } from 'vue'
 
 const network = reactive(useNetwork())

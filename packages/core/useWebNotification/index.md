@@ -11,6 +11,8 @@ The Web Notification interface of the Notifications API is used to configure and
 ## Usage
 
 ```ts
+import { useWebNotification } from '@vueuse/core'
+
 const {
   isSupported,
   notification,
@@ -35,6 +37,9 @@ if (isSupported.value)
 This composable also utilizes the createEventHook utility from '@vueuse/shared`:
 
 ```ts
+import { useWebNotification } from '@vueuse/core'
+const { onClick, onShow, onError, onClose, } = useWebNotification()
+// ---cut---
 onClick((evt: Event) => {
   // Do something with the notification on:click event...
 })
