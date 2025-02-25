@@ -233,15 +233,17 @@ export function useAnimate(
   })
 
   watch(() => keyframes, (value) => {
-    if (animate.value)
+    if (animate.value) {
       update()
 
-    if (unrefElement(target) && animate.value) {
-      animate.value.effect = new KeyframeEffect(
-        unrefElement(target)!,
-        toValue(value),
-        animateOptions,
-      )
+      const targetEl = unrefElement(target)
+      if (targetEl) {
+        animate.value.effect = new KeyframeEffect(
+          targetEl,
+          toValue(value),
+          animateOptions,
+        )
+      }
     }
   }, { deep: true })
 
