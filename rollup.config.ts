@@ -19,11 +19,11 @@ const pluginPure = pure({
   functions: ['defineComponent'],
 })
 
-function esbuildMinifer(options: ESBuildOptions) {
+function esbuildMinifier(options: ESBuildOptions) {
   const { renderChunk } = esbuild(options)
 
   return {
-    name: 'esbuild-minifer',
+    name: 'esbuild-minifier',
     renderChunk,
   }
 }
@@ -98,7 +98,7 @@ export function createRollupConfig(
           extend: true,
           globals: iifeGlobals,
           plugins: [
-            esbuildMinifer({
+            esbuildMinifier({
               minify: true,
             }),
           ],
