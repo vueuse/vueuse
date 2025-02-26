@@ -247,6 +247,8 @@ export function useWebSocket<Data = any>(
 
     ws.onclose = (ev) => {
       status.value = 'CLOSED'
+      resetHeartbeat()
+      heartbeatPause?.()
       onDisconnected?.(ws, ev)
 
       if (!explicitlyClosed && options.autoReconnect && (wsRef.value == null || ws === wsRef.value)) {
