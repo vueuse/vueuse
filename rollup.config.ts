@@ -37,7 +37,7 @@ export function createRollupConfig(
   pkg: PackageManifest,
   cwd = process.cwd(),
 ) {
-  const { globals, external, submodules, iife, build, cjs, mjs, dts, target = 'es2018' } = pkg
+  const { globals, external, submodules, iife, build, mjs, dts, target = 'es2018' } = pkg
   if (build === false)
     return []
 
@@ -71,13 +71,6 @@ export function createRollupConfig(
       output.push({
         file: `${fn}.mjs`,
         format: 'es',
-      })
-    }
-
-    if (cjs !== false) {
-      output.push({
-        file: `${fn}.cjs`,
-        format: 'cjs',
       })
     }
 
@@ -145,10 +138,6 @@ export function createRollupConfig(
         input: `${fn}/component.ts`,
         output: [
           {
-            file: `${fn}/component.cjs`,
-            format: 'cjs',
-          },
-          {
             file: `${fn}/component.mjs`,
             format: 'es',
           },
@@ -166,7 +155,6 @@ export function createRollupConfig(
       configs.push({
         input: `${fn}/component.ts`,
         output: [
-          { file: `${fn}/component.d.cts` },
           { file: `${fn}/component.d.mts` },
           { file: `${fn}/component.d.ts` }, // for node10 compatibility
         ],
