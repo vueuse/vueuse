@@ -8,7 +8,7 @@ Reactive `document.activeElement`
 
 ## Usage
 
-```js
+```ts
 import { useActiveElement } from '@vueuse/core'
 
 const activeElement = useActiveElement()

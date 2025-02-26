@@ -9,7 +9,7 @@ Reactive swipe detection based on [PointerEvents](https://developer.mozilla.org/
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { usePointerSwipe } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 

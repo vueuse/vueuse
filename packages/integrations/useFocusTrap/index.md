@@ -102,6 +102,7 @@ This function can't properly activate focus on elements with conditional renderi
 
 ```vue
 <script setup lang="ts">
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { nextTick, useTemplateRef } from 'vue'
 
 const target = useTemplateRef<HTMLDivElement>('target')

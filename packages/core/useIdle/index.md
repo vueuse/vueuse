@@ -8,7 +8,7 @@ Tracks whether the user is being inactive.
 
 ## Usage
 
-```js
+```ts
 import { useIdle } from '@vueuse/core'
 
 const { idle, lastActive } = useIdle(5 * 60 * 1000) // 5 min
@@ -18,7 +18,7 @@ console.log(idle.value) // true or false
 
 Programatically resetting:
 
-```js
+```ts
 import { useCounter, useIdle } from '@vueuse/core'
 import { watch } from 'vue'
 

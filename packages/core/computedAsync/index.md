@@ -9,7 +9,7 @@ Computed for async functions
 
 ## Usage
 
-```js
+```ts
 import { computedAsync } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -19,7 +19,7 @@ const userInfo = computedAsync(
   async () => {
     return await mockLookUp(name.value)
   },
-  null, // initial state
+  null, /* initial state */
 )
 ```
 
@@ -27,7 +27,7 @@ const userInfo = computedAsync(
 
 You will need to pass a ref to track if the async function is evaluating.
 
-```js
+```ts
 import { computedAsync } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -44,7 +44,9 @@ const userInfo = computedAsync(
 
 When the computed source changed before the previous async function gets resolved, you may want to cancel the previous one. Here is an example showing how to incorporate with the fetch API.
 
-```js
+```ts
+import { computedAsync } from '@vueuse/core'
+// ---cut---
 const packageName = shallowRef('@vueuse/core')
 
 const downloads = computedAsync(async (onCancel) => {
@@ -65,7 +67,7 @@ const downloads = computedAsync(async (onCancel) => {
 
 By default, `computedAsync` will start resolving immediately on creation, specify `lazy: true` to make it start resolving on the first accessing.
 
-```js
+```ts
 import { computedAsync } from '@vueuse/core'
 import { shallowRef } from 'vue'
 

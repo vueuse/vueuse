@@ -9,8 +9,9 @@ Reactive utility to track if an element or one of its decendants has focus. It i
 ## Basic Usage
 
 ```vue
-<script>
+<script setup lang="ts">
 import { useFocusWithin } from '@vueuse/core'
+import { ref, watch } from 'vue'
 
 const target = ref()
 const { focused } = useFocusWithin(target)
@@ -18,7 +19,8 @@ const { focused } = useFocusWithin(target)
 watch(focused, (focused) => {
   if (focused)
     console.log('Target contains the focused element')
-  else console.log('Target does NOT contain the focused element')
+  else
+    console.log('Target does NOT contain the focused element')
 })
 </script>
 

@@ -8,13 +8,15 @@ Reactive current Date instance.
 
 ## Usage
 
-```js
+```ts
 import { useNow } from '@vueuse/core'
 
 const now = useNow()
 ```
 
-```js
+```ts
+import { useNow } from '@vueuse/core'
+// ---cut---
 const { now, pause, resume } = useNow({ controls: true })
 ```
 

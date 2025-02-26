@@ -9,7 +9,7 @@ Manually track the change history of a ref when the using calls `commit()`, also
 
 ## Usage
 
-```ts {5}
+```ts {5} twoslash include usage
 import { useManualRefHistory } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -29,6 +29,8 @@ console.log(history.value)
 You can use `undo` to reset the ref value to the last history point.
 
 ```ts
+// @include: usage
+// ---cut---
 console.log(counter.value) // 1
 undo()
 console.log(counter.value) // 0
@@ -97,6 +99,8 @@ const refHistory = useManualRefHistory(target, {
 We will keep all the history by default (unlimited) until you explicitly clear them up, you can set the maximal amount of history to be kept by `capacity` options.
 
 ```ts
+import { useManualRefHistory } from '@vueuse/core'
+
 const refHistory = useManualRefHistory(target, {
   capacity: 15, // limit to 15 history records
 })
