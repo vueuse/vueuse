@@ -96,29 +96,38 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
 
   read()
 
-  if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)), { passive: true })
+  let watchStop: null | (() => void) = null
 
-  if (storage) {
-    watchWithFilter(
-      data,
-      async () => {
-        try {
-          if (data.value == null)
-            await storage!.removeItem(key)
-          else
-            await storage!.setItem(key, await serializer.write(data.value))
-        }
-        catch (e) {
-          onError(e)
-        }
-      },
-      {
+  async function cb(): Promise<void> {
+    try {
+      if (data.value == null)
+        await storage!.removeItem(key)
+      else
+        await storage!.setItem(key, await serializer.write(data.value))
+    }
+    catch (e) {
+      onError(e)
+    }
+  }
+
+  if (window && listenToStorageChanges) {
+    useEventListener(window, 'storage', async (e) => {
+      watchStop?.()
+      await read(e)
+      watchStop = watchWithFilter(data, cb, {
         flush,
         deep,
         eventFilter,
-      },
-    )
+      })
+    })
+  }
+
+  if (storage) {
+    watchStop = watchWithFilter(data, cb, {
+      flush,
+      deep,
+      eventFilter,
+    })
   }
 
   return data
