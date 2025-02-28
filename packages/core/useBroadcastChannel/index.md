@@ -20,7 +20,7 @@ objects listening to the channel.
 
 ```js
 import { useBroadcastChannel } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 const {
   isSupported,
@@ -31,7 +31,7 @@ const {
   isClosed,
 } = useBroadcastChannel({ name: 'vueuse-demo-channel' })
 
-const message = ref('')
+const message = shallowRef('')
 
 message.value = 'Hello, VueUse World!'
 

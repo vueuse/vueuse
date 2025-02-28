@@ -39,26 +39,19 @@ Collection of essential Vue Composition Utilities
 ```ts
 import { useLocalStorage, useMouse, usePreferredDark } from '@vueuse/core'
 
-export default {
-  setup() {
-    // tracks mouse position
-    const { x, y } = useMouse()
+const { x, y } = useMouse()
 
-    // if user prefers dark theme
-    const isDark = usePreferredDark()
+// if user prefers dark theme
+const isDark = usePreferredDark()
 
-    // persist state in localStorage
-    const store = useLocalStorage(
-      'my-storage',
-      {
-        name: 'Apple',
-        color: 'red',
-      },
-    )
-
-    return { x, y, isDark, store }
+// persist state in localStorage
+const store = useLocalStorage(
+  'my-storage',
+  {
+    name: 'Apple',
+    color: 'red',
   },
-}
+)
 ```
 
 Refer to [functions list](https://vueuse.org/functions) or [documentations](https://vueuse.org/) for more details.

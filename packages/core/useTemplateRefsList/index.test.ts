@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, ref, toRefs } from 'vue'
-import { useTemplateRefsList } from '.'
+import { ref as deepRef, defineComponent, h, nextTick, toRefs } from 'vue'
 import { mount } from '../../.test'
+import { useTemplateRefsList } from './index'
 
 const Component1 = defineComponent({
   setup() {
-    const list = ref([1, 2, 3])
+    const list = deepRef([1, 2, 3])
     const refs = useTemplateRefsList()
     return { list, refs }
   },
@@ -45,7 +45,7 @@ const Child = defineComponent({
 
 const testCom2 = defineComponent({
   setup() {
-    const list = ref([1, 2, 3])
+    const list = deepRef([1, 2, 3])
     const refs = useTemplateRefsList<ChildAPI>()
     return { list, refs }
   },

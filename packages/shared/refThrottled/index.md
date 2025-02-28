@@ -11,8 +11,9 @@ Throttle changing of a ref value.
 
 ```js
 import { refThrottled } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const input = ref('')
+const input = shallowRef('')
 const throttled = refThrottled(input, 1000)
 ```
 
@@ -22,8 +23,9 @@ If you don't want to watch trailing changes, set 3rd param `false` (it's `true` 
 
 ```js
 import { refThrottled } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const input = ref('')
+const input = shallowRef('')
 const throttled = refThrottled(input, 1000, false)
 ```
 
@@ -33,8 +35,9 @@ Allows the callback to be invoked immediately (on the leading edge of the `ms` t
 
 ```js
 import { refThrottled } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const input = ref('')
+const input = shallowRef('')
 const throttled = refThrottled(input, 1000, undefined, false)
 ```
 

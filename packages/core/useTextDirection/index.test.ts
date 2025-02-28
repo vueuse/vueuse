@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { useTextDirection } from '.'
+import { useTextDirection } from './index'
 
 describe('useTextDirection', () => {
   const htmlEl = document.documentElement

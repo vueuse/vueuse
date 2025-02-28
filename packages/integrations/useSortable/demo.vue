@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, useTemplateRef } from 'vue'
-import { useSortable } from '.'
+import { shallowRef, useTemplateRef } from 'vue'
+import { useSortable } from './index'
 
 const el = useTemplateRef<HTMLElement>('el')
-const list = ref([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 const { option } = useSortable(el, list, {
   animation: 150,

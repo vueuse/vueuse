@@ -4,7 +4,7 @@ import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ComputedRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
-import { computed, ref, toValue } from 'vue'
+import { computed, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
@@ -66,17 +66,15 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const permissionRead = usePermission('clipboard-read')
   const permissionWrite = usePermission('clipboard-write')
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
-  const text = ref('')
-  const copied = ref(false)
+  const text = shallowRef('')
+  const copied = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
-  function updateText() {
+  async function updateText() {
     let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
     if (!useLegacy) {
       try {
-        navigator!.clipboard.readText().then((value) => {
-          text.value = value
-        })
+        text.value = await navigator!.clipboard.readText()
       }
       catch {
         useLegacy = true

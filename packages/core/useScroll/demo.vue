@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
-import { computed, ref, toRefs, useTemplateRef } from 'vue'
+import { computed, shallowRef, toRefs, useTemplateRef } from 'vue'
 
 const el = useTemplateRef<HTMLElement>('el')
-const smooth = ref(false)
+const smooth = shallowRef(false)
 const behavior = computed(() => smooth.value ? 'smooth' : 'auto')
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el, { behavior })
 const { left, right, top, bottom } = toRefs(arrivedState)

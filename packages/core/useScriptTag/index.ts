@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ConfigurableDocument } from '../_configurable'
 import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
-import { ref, toValue } from 'vue'
+import { shallowRef, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -72,7 +72,7 @@ export function useScriptTag(
     document = defaultDocument,
     attrs = {},
   } = options
-  const scriptTag = ref<HTMLScriptElement | null>(null)
+  const scriptTag = shallowRef<HTMLScriptElement | null>(null)
 
   let _promise: Promise<HTMLScriptElement | boolean> | null = null
 

@@ -1,7 +1,7 @@
 import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
-import { ref, toValue, watch } from 'vue'
+import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -116,7 +116,7 @@ export interface UseWebSocketReturn<T> {
    * The current websocket status, can be only one of:
    * 'OPEN', 'CONNECTING', 'CLOSED'
    */
-  status: Ref<WebSocketStatus>
+  status: ShallowRef<WebSocketStatus>
 
   /**
    * Closes the websocket connection gracefully.
@@ -170,9 +170,9 @@ export function useWebSocket<Data = any>(
     protocols = [],
   } = options
 
-  const data: Ref<Data | null> = ref(null)
-  const status = ref<WebSocketStatus>('CLOSED')
-  const wsRef = ref<WebSocket | undefined>()
+  const data: Ref<Data | null> = deepRef(null)
+  const status = shallowRef<WebSocketStatus>('CLOSED')
+  const wsRef = deepRef<WebSocket | undefined>()
   const urlRef = toRef(url)
 
   let heartbeatPause: Fn | undefined

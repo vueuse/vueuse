@@ -34,9 +34,9 @@ import { useMouse, useParentElement } from '@vueuse/core'
 const parentEl = useParentElement()
 
 const extractor: UseMouseEventExtractor = event => (
-  event instanceof Touch
-    ? null
-    : [event.offsetX, event.offsetY]
+  event instanceof MouseEvent
+    ? [event.offsetX, event.offsetY]
+    : null
 )
 
 const { x, y, sourceType } = useMouse({ target: parentEl, type: extractor })

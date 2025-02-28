@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCookies } from '.'
+import { useCookies } from './index'
 
 const cookies = useCookies(['locale'])
 </script>

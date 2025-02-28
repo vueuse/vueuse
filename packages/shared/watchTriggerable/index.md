@@ -12,9 +12,9 @@ A `watch` wrapper that supports manual triggering of `WatchCallback`, which retu
 
 ```ts
 import { watchTriggerable } from '@vueuse/core'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 
-const source = ref(0)
+const source = shallowRef(0)
 
 const { trigger, ignoreUpdates } = watchTriggerable(
   source,
@@ -36,9 +36,9 @@ Using `watchTriggerable` will solve this problem.
 
 ```ts
 import { watchTriggerable } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const source = ref(0)
+const source = shallowRef(0)
 
 const { trigger } = watchTriggerable(
   source,

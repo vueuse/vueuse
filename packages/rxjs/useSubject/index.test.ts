@@ -1,8 +1,8 @@
 import { BehaviorSubject, Subject } from 'rxjs'
 import { first, skip } from 'rxjs/operators'
 import { describe, expect, it } from 'vitest'
-import { useSubject } from '.'
 import { useInjectedSetup } from '../../.test'
+import { useSubject } from './index'
 
 describe('useSubject', () => {
   it('should be defined', () => {

@@ -1,7 +1,7 @@
 import type { IncomingMessage } from 'node:http'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import Cookie from 'universal-cookie'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 type RawCookies = Record<string, string>
 
@@ -40,7 +40,7 @@ export function useCookies(
   /**
    * Adds reactivity to get/getAll methods
    */
-  const touches = ref(0)
+  const touches = shallowRef(0)
 
   const onChange = () => {
     const newCookies = cookies.getAll({ doNotParse: true })

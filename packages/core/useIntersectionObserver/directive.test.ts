@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import type { UseIntersectionObserverOptions } from '.'
+import type { UseIntersectionObserverOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent } from 'vue'
