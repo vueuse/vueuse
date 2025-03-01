@@ -55,23 +55,23 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: Ref<Data>
+  readonly data: ShallowRef<Data>
 
   /**
    * The current state of the connection, can be only one of:
    * 'CONNECTING', 'OPEN' 'CLOSED'
    */
-  status: Ref<EventSourceStatus>
+  readonly status: ShallowRef<EventSourceStatus>
 
   /**
    * The latest named event
    */
-  event: Ref<Events[number] | null>
+  readonly event: ShallowRef<Events[number] | null>
 
   /**
    * The current error
    */
-  error: Ref<Event | null>
+  readonly error: ShallowRef<Event | null>
 
   /**
    * Closes the EventSource connection gracefully.
@@ -92,7 +92,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
    * The last event ID string, for server-sent events.
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
    */
-  lastEventId: Ref<string | null>
+  readonly lastEventId: ShallowRef<string | null>
 }
 
 function resolveNestedOptions<T>(options: T | true): T {
