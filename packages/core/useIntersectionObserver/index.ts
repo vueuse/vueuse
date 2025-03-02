@@ -1,5 +1,5 @@
-import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { Pausable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { noop, notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'

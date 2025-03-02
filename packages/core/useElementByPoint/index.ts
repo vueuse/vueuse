@@ -1,5 +1,5 @@
-import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { Pausable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'

@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { readonly, shallowRef, toValue, watch } from 'vue'
 

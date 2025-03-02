@@ -1,4 +1,4 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'

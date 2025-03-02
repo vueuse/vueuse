@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue } from 'vue'

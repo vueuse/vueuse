@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'

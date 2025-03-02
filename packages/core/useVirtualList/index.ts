@@ -1,5 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { ComputedRef, Ref, ShallowRef, StyleValue } from 'vue'
+import type { ComputedRef, MaybeRef, Ref, ShallowRef, StyleValue } from 'vue'
 import { computed, ref as deepRef, shallowRef, watch } from 'vue'
 import { useElementSize } from '../useElementSize'
 

@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'

@@ -1,5 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { PointerType, Position } from '../types'
 import { objectPick, toRefs } from '@vueuse/shared'
