@@ -34,15 +34,11 @@ function isTypedCharValid({
     return false
 
   // 0...9
-  if (keyCode >= 48 && keyCode <= 57)
+  if ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105))
     return true
 
   // A...Z
   if (keyCode >= 65 && keyCode <= 90)
-    return true
-
-  // a...z
-  if (keyCode >= 97 && keyCode <= 122)
     return true
 
   // All other keys.
