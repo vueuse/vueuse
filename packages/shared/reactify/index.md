@@ -19,6 +19,7 @@ Basic example
 
 ```ts
 import { reactify } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 // a plain function
 function add(a: number, b: number): number {
@@ -29,8 +30,8 @@ function add(a: number, b: number): number {
 // (a: number | Ref<number>, b: number | Ref<number>) => ComputedRef<number>
 const reactiveAdd = reactify(add)
 
-const a = ref(1)
-const b = ref(2)
+const a = shallowRef(1)
+const b = shallowRef(2)
 const sum = reactiveAdd(a, b)
 
 console.log(sum.value) // 3
@@ -46,13 +47,14 @@ An example of implementing a reactive [Pythagorean theorem](https://en.wikipedia
 
 ```ts
 import { reactify } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 const pow = reactify(Math.pow)
 const sqrt = reactify(Math.sqrt)
 const add = reactify((a: number, b: number) => a + b)
 
-const a = ref(3)
-const b = ref(4)
+const a = shallowRef(3)
+const b = shallowRef(4)
 const c = sqrt(add(pow(a, 2), pow(b, 2)))
 console.log(c.value) // 5
 
@@ -66,13 +68,14 @@ You can also do it this way:
 
 ```ts
 import { reactify } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 function pythagorean(a: number, b: number) {
   return Math.sqrt(a ** 2 + b ** 2)
 }
 
-const a = ref(3)
-const b = ref(4)
+const a = shallowRef(3)
+const b = shallowRef(4)
 
 const c = reactify(pythagorean)(a, b)
 console.log(c.value) // 5
@@ -82,10 +85,11 @@ Another example of making reactive `stringify`
 
 ```ts
 import { reactify } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 const stringify = reactify(JSON.stringify)
 
-const obj = ref(42)
+const obj = shallowRef(42)
 const dumped = stringify(obj)
 
 console.log(dumped.value) // '42'

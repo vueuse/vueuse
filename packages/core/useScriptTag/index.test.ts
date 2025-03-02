@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { useScriptTag } from '.'
 import { useSetup } from '../../.test'
+import { useScriptTag } from './index'
 
 describe('useScriptTag', () => {
   const src = 'https://code.jquery.com/jquery-3.5.1.min.js'
@@ -9,6 +9,7 @@ describe('useScriptTag', () => {
     document.head.querySelector(`script[src="${src}"]`)
 
   beforeEach(() => {
+    vi.clearAllMocks()
     document.head.innerHTML = ''
   })
 

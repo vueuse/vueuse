@@ -1,10 +1,10 @@
 import type { RawAxiosRequestConfig } from 'axios'
-import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from '.'
+import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from './index'
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { computed, nextTick, ref } from 'vue'
-import { useAxios } from '.'
+import { computed, ref as deepRef, nextTick } from 'vue'
 import { isBelowNode18 } from '../../.test'
+import { useAxios } from './index'
 
 // The tests does not run properly below node 18
 describe.skipIf(isBelowNode18)('useAxios', () => {
@@ -422,7 +422,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
 
   describe('reactivity', () => {
     it('url should be reactive', async () => {
-      const counter = ref(1)
+      const counter = deepRef(1)
       const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
       const { data, execute } = await useAxios(myUrl)
       expect(data.value.id).toBe(1)
@@ -432,7 +432,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     })
 
     it('refetch should be reactive when combined with url', async () => {
-      const counter = ref(1)
+      const counter = deepRef(1)
       const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
       const { data, then } = useAxios(myUrl, undefined, {
         refetch: true,
@@ -447,9 +447,9 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     })
 
     it('automatically refreshes when refetch is enabled', async () => {
-      const counter = ref(1)
+      const counter = deepRef(1)
       const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
-      const refetch = ref(false)
+      const refetch = deepRef(false)
       const { data, then } = useAxios(myUrl, undefined, {
         refetch,
         immediate: true,
@@ -468,9 +468,9 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     })
 
     it('refetch is a ref and should be reactive', async () => {
-      const counter = ref(1)
+      const counter = deepRef(1)
       const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
-      const refetch = ref(false)
+      const refetch = deepRef(false)
       const { data, then } = useAxios(myUrl, undefined, {
         refetch,
         immediate: true,

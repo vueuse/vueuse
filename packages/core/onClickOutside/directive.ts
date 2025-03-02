@@ -1,10 +1,10 @@
 import type { ObjectDirective } from 'vue'
-import type { OnClickOutsideHandler, OnClickOutsideOptions } from '.'
-import { onClickOutside } from '.'
+import type { OnClickOutsideHandler, OnClickOutsideOptions } from './index'
+import { onClickOutside } from './index'
 
 export const vOnClickOutside: ObjectDirective<
   HTMLElement,
-  OnClickOutsideHandler | [(evt: any) => void, OnClickOutsideOptions]
+  OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>]
 > = {
   mounted(el, binding) {
     const capture = !binding.modifiers.bubble

@@ -1,5 +1,5 @@
 import type { Fn, MaybeRefOrGetter, Pausable } from '../utils'
-import { isRef, ref, toValue, watch } from 'vue'
+import { isRef, shallowRef, toValue, watch } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
 
@@ -33,7 +33,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
   } = options
 
   let timer: ReturnType<typeof setInterval> | null = null
-  const isActive = ref(false)
+  const isActive = shallowRef(false)
 
   function clean() {
     if (timer) {

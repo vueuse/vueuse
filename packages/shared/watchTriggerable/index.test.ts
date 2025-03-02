@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { nextTick, reactive, ref } from 'vue'
-import { watchTriggerable } from '.'
+import { nextTick, reactive, shallowRef } from 'vue'
+import { watchTriggerable } from './index'
 
 describe('watchTriggerable', () => {
   it('this should work', async () => {
-    const source = ref(0)
-    const effect = ref(0)
+    const source = shallowRef(0)
+    const effect = shallowRef(0)
     let cleanupCount = -1
     const { trigger } = watchTriggerable(source, (value, oldValue, onCleanup) => {
       onCleanup(() => {
@@ -36,10 +36,10 @@ describe('watchTriggerable', () => {
   })
 
   it('source array', async () => {
-    const source1 = ref(0)
+    const source1 = shallowRef(0)
     const source2 = reactive({ a: 'a' })
-    const effect1 = ref(-1)
-    const effect2 = ref('z')
+    const effect1 = shallowRef(-1)
+    const effect2 = shallowRef('z')
     let cleanupCount = -1
     const { trigger } = watchTriggerable([source1, () => source2.a], ([value1, value2], _, onCleanup) => {
       onCleanup(() => {
@@ -65,7 +65,7 @@ describe('watchTriggerable', () => {
 
   it('source reactive object', async () => {
     const source = reactive({ a: 'a' })
-    const effect = ref('')
+    const effect = shallowRef('')
     let cleanupCount = 0
     const { trigger } = watchTriggerable(source, (value, old, onCleanup) => {
       onCleanup(() => {
@@ -86,8 +86,8 @@ describe('watchTriggerable', () => {
   })
 
   it('trigger should await', async () => {
-    const source = ref(1)
-    const effect = ref(0)
+    const source = shallowRef(1)
+    const effect = shallowRef(0)
     const { trigger } = watchTriggerable(source, async (value) => {
       await new Promise(resolve => setTimeout(resolve, 10))
       effect.value = value

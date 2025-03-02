@@ -10,9 +10,9 @@ Holds the previous value of a ref.
 
 ```ts
 import { usePrevious } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const counter = ref('Hello')
+const counter = shallowRef('Hello')
 const previous = usePrevious(counter)
 
 console.log(previous.value) // undefined

@@ -1,7 +1,7 @@
 import { useScroll } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
 import { reactive } from 'vue'
-import { useWindowScroll } from '.'
+import { useWindowScroll } from './index'
 
 describe('useWindowScroll', () => {
   it('should be defined', () => {

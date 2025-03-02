@@ -11,9 +11,9 @@ Infinite scrolling of the element.
 ```vue
 <script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const data = ref([1, 2, 3, 4, 5, 6])
 
 const { reset } = useInfiniteScroll(

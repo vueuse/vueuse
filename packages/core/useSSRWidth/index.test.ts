@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { createSSRApp, h } from 'vue'
-import { provideSSRWidth, useSSRWidth } from '.'
+import { provideSSRWidth, useSSRWidth } from './index'
 
 describe('useSSRWidth', () => {
   it('should be undefined by default', () => {

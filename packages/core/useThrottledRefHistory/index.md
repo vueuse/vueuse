@@ -13,8 +13,8 @@ This function takes the first snapshot right after the counter's value was chang
 
 ```ts
 import { useThrottledRefHistory } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const counter = ref(0)
+const counter = shallowRef(0)
 const { history, undo, redo } = useThrottledRefHistory(counter, { deep: true, throttle: 1000 })
 ```

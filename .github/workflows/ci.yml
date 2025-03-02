@@ -43,7 +43,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [18.x, 20.x, 22.x]
+        node: [20.x, 22.x]
       fail-fast: false
 
     steps:
@@ -65,7 +65,7 @@ jobs:
         run: nci
 
       - name: Install Playwright Browsers
-        run: nlx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
 
       - name: Build
         run: nr build
@@ -79,6 +79,6 @@ jobs:
       - name: browser tests
         run: pnpm run test:browser
 
-      - if: matrix.node == '18.x'
+      - if: matrix.node == '22.x'
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh

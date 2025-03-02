@@ -1,3 +1,4 @@
+import type { Theme } from 'vitepress'
 import TwoSlashFloatingVue from '@shikijs/vitepress-twoslash/client'
 import DefaultTheme from 'vitepress/theme'
 import { functions } from '../../../packages/metadata/metadata'
@@ -12,8 +13,8 @@ import './styles/overrides.css'
 import 'uno.css'
 
 export default {
-  ...DefaultTheme,
-  enhanceApp(ctx: any) {
+  extends: DefaultTheme,
+  enhanceApp(ctx) {
     if (typeof window !== 'undefined')
       handleRedirects(ctx.router)
     ctx.app.use(TwoSlashFloatingVue)
@@ -33,7 +34,7 @@ export default {
       return false
     }
   },
-}
+} satisfies Theme
 
 // Vue School banner, skip on SSG or in an iframe
 if (typeof window !== 'undefined' && window.self === window.top) {

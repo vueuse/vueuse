@@ -29,9 +29,10 @@ const title = useTitle('New Title')
 Pass a `ref` and the title will be updated when the source ref changes:
 
 ```js
+import { shallowRef } from 'vue'
 import { useTitle } from '@vueuse/core'
 
-const messages = ref(0)
+const messages = shallowRef(0)
 
 const title = computed(() => {
   return !messages.value ? 'No message' : `${messages.value} new messages`

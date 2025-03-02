@@ -9,11 +9,11 @@ Tracks the visibility of an element within the viewport.
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useElementVisibility } from '@vueuse/core'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const target = ref(null)
+const target = useTemplateRef<HTMLDivElement>('target')
 const targetIsVisible = useElementVisibility(target)
 </script>
 
@@ -31,7 +31,7 @@ the `rootMargin` option (See [MDN IntersectionObserver/rootMargin](https://devel
 
 ```ts
 const targetIsVisible = useElementVisibility(target, {
-  rootMargin: '0 0 100px 0',
+  rootMargin: '0px 0px 100px 0px',
 })
 ```
 
@@ -48,12 +48,12 @@ const targetIsVisible = useElementVisibility(target, {
 ## Directive Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { vElementVisibility } from '@vueuse/components'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const target = ref(null)
-const isVisible = ref(false)
+const target = useTemplateRef<HTMLDivElement>('target')
+const isVisible = shallowRef(false)
 
 function onElementVisibility(state) {
   isVisible.value = state

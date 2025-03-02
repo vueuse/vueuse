@@ -9,11 +9,11 @@ const parentEl = useParentElement()
 const mouseDefault = reactive(useMouse())
 const textDefault = stringify(mouseDefault)
 
-const extractor: UseMouseEventExtractor = (e) => {
-  if (typeof Touch !== 'undefined' && e instanceof Touch)
+const extractor: UseMouseEventExtractor = (event) => {
+  if (event instanceof MouseEvent)
+    return [event.offsetX, event.offsetY]
+  else
     return null
-  const event = e as MouseEvent
-  return [event.offsetX, event.offsetY]
 }
 
 const mouseWithExtractor = reactive(useMouse({ target: parentEl, type: extractor }))

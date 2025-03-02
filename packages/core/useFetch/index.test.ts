@@ -1,20 +1,18 @@
-import type { MockInstance } from 'vitest'
+import type { AfterFetchContext, OnFetchErrorContext } from './index'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { createFetch, useFetch } from '.'
+import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
+import { createFetch, useFetch } from './index'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
 
-// Listen to make sure fetch is actually called.
-// Use msw to stub out the req/res
-let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
-let onFetchErrorSpy = vi.fn()
-let onFetchResponseSpy = vi.fn()
-let onFetchFinallySpy = vi.fn()
+let fetchSpy = vi.spyOn(window, 'fetch')
+const onFetchErrorSpy = vi.fn()
+const onFetchResponseSpy = vi.fn()
+const onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
   return (fetchSpy.mock.calls[idx][1]! as any).headers
@@ -24,9 +22,6 @@ function fetchSpyHeaders(idx = 0) {
 describe.skipIf(isBelowNode18)('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
-    onFetchErrorSpy = vi.fn()
-    onFetchResponseSpy = vi.fn()
-    onFetchFinallySpy = vi.fn()
   })
 
   it('should have status code of 200 and message of Hello World', async () => {
@@ -140,7 +135,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should refetch if refetch is set to true', async () => {
-    const url = ref('https://example.com')
+    const url = shallowRef('https://example.com')
     useFetch(url, { refetch: true })
     url.value = 'https://example.com?text'
     await vi.waitFor(() => {
@@ -149,7 +144,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should auto refetch when the refetch is set to true and the payload is a ref', async () => {
-    const param = ref({ num: 1 })
+    const param = deepRef({ num: 1 })
     useFetch('https://example.com', { refetch: true }).post(param)
     param.value.num = 2
     await vi.waitFor(() => {
@@ -727,7 +722,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should listen url ref change abort previous request', async () => {
-    const url = ref('https://example.com')
+    const url = shallowRef('https://example.com')
     const { onFetchResponse } = useFetch(url, { refetch: true, immediate: false })
 
     onFetchResponse(onFetchResponseSpy)
@@ -744,7 +739,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should be generated payloadType on execute', async () => {
-    const form = ref()
+    const form = deepRef()
     const { execute } = useFetch('https://example.com').post(form)
 
     form.value = { x: 1 }
@@ -756,7 +751,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should be generated payloadType on execute with formdata', async () => {
-    const form = ref<any>({ x: 1 })
+    const form = deepRef<any>({ x: 1 })
     const { execute } = useFetch('https://example.com').post(form)
 
     form.value = new FormData()
@@ -773,5 +768,71 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await execute()
     expect(isFetching.value).toBe(false)
     expect(isFinished.value).toBe(true)
+  })
+
+  it('should be possible to re-trigger the request via the afterFetch parameters', async () => {
+    let count = 0
+    let options: Partial<AfterFetchContext> = {}
+    useFetch('https://example.com', {
+      afterFetch: (ctx) => {
+        !count && ctx.execute()
+        count++
+        options = ctx
+        return ctx
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(2)
+      expect(options?.context).toBeDefined()
+      expect(options?.execute).toBeDefined()
+    })
+  })
+
+  it('should be possible to re-trigger the request via the onFetchError parameters', async () => {
+    let count = 0
+    let options: Partial<OnFetchErrorContext> = {}
+    useFetch('https://example.com?status=400&json', {
+      onFetchError: (ctx) => {
+        !count && ctx.execute()
+        count++
+        options = ctx
+        return ctx
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(2)
+      expect(options?.context).toBeDefined()
+      expect(options?.execute).toBeDefined()
+    })
+  })
+
+  it('should partial overwrite when combination is overwrite', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        beforeFetch({ options }) {
+          options.headers = { ...options.headers, before: 'Global' }
+          return { options }
+        },
+        afterFetch(ctx) {
+          ctx.data.after = 'Global'
+          return ctx
+        },
+      },
+    })
+
+    const { data } = useMyFetch('test', {
+      beforeFetch({ options }) {
+        options.headers = { ...options.headers, before: 'Local' }
+      },
+    }).json()
+
+    await vi.waitFor(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ before: 'Local' })
+      expect(data.value).toEqual(expect.objectContaining({ after: 'Global' }))
+    })
   })
 })

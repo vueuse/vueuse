@@ -1,7 +1,7 @@
 import type { Observable } from 'rxjs'
 import type { Ref, UnwrapRef } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 
 export interface UseObservableOptions<I> {
   onError?: (err: any) => void
@@ -15,7 +15,7 @@ export function useObservable<H, I = undefined>(
   observable: Observable<H>,
   options?: UseObservableOptions<I | undefined>,
 ): Readonly<Ref<H | I>> {
-  const value = ref<H | I | undefined>(options?.initialValue)
+  const value = deepRef<H | I | undefined>(options?.initialValue)
   const subscription = observable.subscribe({
     next: val => (value.value = (val as UnwrapRef<H>)),
     error: options?.onError,

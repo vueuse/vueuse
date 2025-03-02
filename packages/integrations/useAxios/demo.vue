@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { computed, ref } from 'vue'
-import { useAxios } from '.'
+import { computed, ref as deepRef } from 'vue'
+import { useAxios } from './index'
 
-const counter = ref(1)
-const refetch = ref(true)
+const counter = deepRef(1)
+const refetch = deepRef(true)
 
 const url = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
 const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios<string>(url, undefined, {

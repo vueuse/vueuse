@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import { beforeEach, describe, expect, expectTypeOf, it } from 'vitest'
-import { computed, isReadonly, ref } from 'vue'
-import { useTitle } from '.'
+import { computed, ref as deepRef, isReadonly, shallowRef } from 'vue'
+import { useTitle } from './index'
 
 const defaultTitle = 'VueUse testing'
 
@@ -41,7 +41,7 @@ describe('useTitle', () => {
 
     describe('ref param', () => {
       it('string', () => {
-        const targetRef = ref('old title')
+        const targetRef = shallowRef('old title')
         const title = useTitle(targetRef)
         expect(title.value).toEqual('old title')
         targetRef.value = 'new title'
@@ -51,7 +51,7 @@ describe('useTitle', () => {
       })
 
       it('null', () => {
-        const targetRef = ref<null | string>(null)
+        const targetRef = deepRef<null | string>(null)
         const title = useTitle(targetRef)
         expect(title.value).toEqual(null)
         targetRef.value = 'new title'
@@ -61,7 +61,7 @@ describe('useTitle', () => {
       })
 
       it('undefined', () => {
-        const targetRef = ref<undefined | string>(undefined)
+        const targetRef = deepRef<undefined | string>(undefined)
         const title = useTitle(targetRef)
         expect(title.value).toEqual(undefined)
         targetRef.value = 'new title'
@@ -74,7 +74,7 @@ describe('useTitle', () => {
 
   describe('with readonly param', () => {
     it('computed', () => {
-      const condition = ref(false)
+      const condition = shallowRef(false)
       const target = computed(() => condition.value ? 'new title' : 'old title')
       const title = useTitle(target)
       expect(title.value).toEqual('old title')
@@ -105,7 +105,7 @@ describe('useTitle', () => {
     })
 
     it('should return a ref if initial value is ref', () => {
-      const title = useTitle(ref(''))
+      const title = useTitle(shallowRef(''))
       expect(isReadonly(title)).toBeFalsy()
       expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
     })

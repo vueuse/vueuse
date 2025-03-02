@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { isReactive, nextTick, reactive, ref, watchSyncEffect } from 'vue'
-import { toReactive } from '.'
+import { ref as deepRef, isReactive, nextTick, reactive, watchSyncEffect } from 'vue'
 import { toRefs } from '../toRefs'
+import { toReactive } from './index'
 
 describe('toReactive', () => {
   it('should be defined', () => {
@@ -9,7 +9,7 @@ describe('toReactive', () => {
   })
 
   it('should work', () => {
-    const r = ref({ a: 'a', b: 0 })
+    const r = deepRef({ a: 'a', b: 0 })
     const state = toReactive(r)
     expect(state.a).toBe('a')
     expect(state.b).toBe(0)
@@ -22,7 +22,7 @@ describe('toReactive', () => {
 
   it('should be enumerable', () => {
     const obj = { a: 'a', b: 0 }
-    const r = ref(obj)
+    const r = deepRef(obj)
     const state = toReactive(r)
 
     expect(JSON.stringify(state)).toBe(JSON.stringify(r.value))
@@ -30,7 +30,7 @@ describe('toReactive', () => {
   })
 
   it('should be reactive', async () => {
-    const r = ref({ a: 'a', b: 0 })
+    const r = deepRef({ a: 'a', b: 0 })
     const state = toReactive(r)
     let dummy = 0
 
@@ -55,7 +55,7 @@ describe('toReactive', () => {
   })
 
   it('should be replaceable', async () => {
-    const r = ref<any>({ a: 'a', b: 0 })
+    const r = deepRef<any>({ a: 'a', b: 0 })
     const state = toReactive(r)
     let dummy = 0
 

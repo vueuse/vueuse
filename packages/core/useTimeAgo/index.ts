@@ -16,7 +16,7 @@ export interface UseTimeAgoMessagesBuiltIn {
 
 export type UseTimeAgoMessages<UnitNames extends string = UseTimeAgoUnitNamesDefault>
   = UseTimeAgoMessagesBuiltIn
-  & Record<UnitNames, string | UseTimeAgoFormatter<number>>
+    & Record<UnitNames, string | UseTimeAgoFormatter<number>>
 
 export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitNamesDefault> {
   /**
