@@ -13,7 +13,7 @@ describe('onStartTyping', () => {
     callBackFn = vi.fn()
   })
 
-  function createKeyDownEvent(keyCode: number) {
+  function dispatchKeyDownEvent(keyCode: number) {
     const ev = new KeyboardEvent('keydown', { keyCode })
     document.dispatchEvent(ev)
   }
@@ -29,7 +29,7 @@ describe('onStartTyping', () => {
 
     letters.forEach((letter) => {
       document.body.focus()
-      createKeyDownEvent(letter)
+      dispatchKeyDownEvent(letter)
     })
 
     expect(callBackFn).toBeCalledTimes(letters.length)
@@ -43,14 +43,33 @@ describe('onStartTyping', () => {
 
     numbers.forEach((number) => {
       document.body.focus()
-      createKeyDownEvent(number)
+      dispatchKeyDownEvent(number)
     })
 
     numpadNumbers.forEach((number) => {
       document.body.focus()
-      createKeyDownEvent(number)
+      dispatchKeyDownEvent(number)
     })
 
     expect(callBackFn).toBeCalledTimes(numbers.length + numpadNumbers.length)
+  })
+
+  it('does not trigger callback with invalid characters', () => {
+    const arrows = range(4, 37)
+    const functionKeys = range(32, 112)
+
+    onStartTyping(callBackFn)
+
+    arrows.forEach((arrow) => {
+      document.body.focus()
+      dispatchKeyDownEvent(arrow)
+    })
+
+    functionKeys.forEach((functionKey) => {
+      document.body.focus()
+      dispatchKeyDownEvent(functionKey)
+    })
+
+    expect(callBackFn).toBeCalledTimes(0)
   })
 })
