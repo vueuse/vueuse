@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { MaybeComputedRefArgs } from '../utils'
 import { computed } from 'vue'
 import { toValueArgsFlat } from '../utils'

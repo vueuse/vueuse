@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { UseAsyncStateOptions } from '../useAsyncState'
 import { toValue, watch } from 'vue'
 import { useAsyncState } from '../useAsyncState'

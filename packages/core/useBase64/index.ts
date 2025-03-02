@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { isClient } from '@vueuse/shared'
 import { isRef, shallowRef, toValue, watch } from 'vue'
 import { getDefaultSerialization } from './serialization'

@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '../utils'
+import type { MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 
 export type DateLike = Date | number | string | undefined

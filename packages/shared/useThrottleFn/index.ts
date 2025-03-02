@@ -1,4 +1,5 @@
-import type { FunctionArgs, MaybeRefOrGetter, PromisifyFn } from '../utils'
+import type { MaybeRefOrGetter } from 'vue'
+import type { FunctionArgs, PromisifyFn } from '../utils'
 import { createFilterWrapper, throttleFilter } from '../utils'
 
 /**

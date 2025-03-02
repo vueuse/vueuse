@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from 'vue'
 import type { RouteParamValueRaw, useRoute, useRouter } from 'vue-router'
 
 export type RouteQueryValueRaw = RouteParamValueRaw | string[]

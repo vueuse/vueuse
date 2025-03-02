@@ -1,5 +1,4 @@
-import type { Ref, ShallowRef } from 'vue'
-import type { MaybeRef, MaybeRefOrGetter } from '../utils'
+import type { MaybeRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isRef, shallowRef, toValue } from 'vue'
 
 export interface UseToggleOptions<Truthy, Falsy> {

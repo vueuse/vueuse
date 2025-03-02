@@ -1,7 +1,6 @@
 /* This implementation is original ported from https://github.com/shorwood/pompaute by Stanley Horwood */
 
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { toRef } from '@vueuse/shared'
 import { readonly, shallowRef, watch } from 'vue'
 

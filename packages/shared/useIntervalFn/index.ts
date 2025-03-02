@@ -1,4 +1,5 @@
-import type { Fn, MaybeRefOrGetter, Pausable } from '../utils'
+import type { MaybeRefOrGetter } from 'vue'
+import type { Fn, Pausable } from '../utils'
 import { isRef, shallowRef, toValue, watch } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'

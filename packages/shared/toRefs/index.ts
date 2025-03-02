@@ -1,5 +1,4 @@
-import type { ToRefs } from 'vue'
-import type { MaybeRef, MaybeRefOrGetter } from '../utils'
+import type { MaybeRef, MaybeRefOrGetter, ToRefs } from 'vue'
 import { toRefs as _toRefs, customRef, isRef, toValue } from 'vue'
 
 export interface ToRefsOptions {

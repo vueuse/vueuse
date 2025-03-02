@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref, WatchOptions } from 'vue'
+import type { MaybeRefOrGetter, Ref, WatchOptions } from 'vue'
 import { ref as deepRef, isRef, shallowRef, toValue, watch } from 'vue'
 
 export interface UseClonedOptions<T = any> extends WatchOptions {

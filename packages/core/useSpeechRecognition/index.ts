@@ -1,7 +1,7 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'

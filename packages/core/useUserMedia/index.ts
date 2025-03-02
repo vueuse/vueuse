@@ -1,7 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, watch } from 'vue'

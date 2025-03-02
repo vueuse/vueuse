@@ -1,4 +1,4 @@
-import type { MaybeRef } from '../utils'
+import type { MaybeRef } from 'vue'
 import {
   shallowRef,
   // eslint-disable-next-line no-restricted-imports

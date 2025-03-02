@@ -1,5 +1,5 @@
-import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { Awaitable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'

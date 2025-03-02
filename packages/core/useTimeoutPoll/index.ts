@@ -1,4 +1,5 @@
-import type { Awaitable, MaybeRefOrGetter, Pausable, UseTimeoutFnOptions } from '@vueuse/shared'
+import type { Awaitable, Pausable, UseTimeoutFnOptions } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import { isClient, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 

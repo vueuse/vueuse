@@ -1,5 +1,4 @@
-import type { ComputedRef, Ref, ToRef } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
+import type { ComputedRef, MaybeRefOrGetter, Ref, ToRef } from 'vue'
 import { customRef, ref as deepRef, readonly,
   // eslint-disable-next-line no-restricted-imports
   toRef as vueToRef } from 'vue'
