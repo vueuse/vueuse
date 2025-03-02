@@ -2,21 +2,48 @@ import type { RawAxiosRequestConfig } from 'axios'
 import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from './index'
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { computed, ref as deepRef, nextTick } from 'vue'
+import { computed, ref as deepRef, nextTick, readonly } from 'vue'
 import { isBelowNode18 } from '../../.test'
 import { useAxios } from './index'
+import '../../.test/mockServer'
 
 // The tests does not run properly below node 18
 describe.skipIf(isBelowNode18)('useAxios', () => {
-  const url = 'https://jsonplaceholder.typicode.com/todos/1'
+  const baseURL = 'https://example.com'
+  const dataObj = {
+    first: {
+      userId: 1,
+      id: 1,
+      title: 'delectus aut autem',
+      completed: false,
+    },
+    second: {
+      userId: 1,
+      id: 2,
+      title: 'quis ut nam facilis et officia qui',
+      completed: false,
+    },
+  } as const
+  const paths = {
+    first: `?json=${encodeURI(JSON.stringify(dataObj.first))}`,
+    second: `?json=${encodeURI(JSON.stringify(dataObj.second))}`,
+  } as const
+  const urls = {
+    first: `${baseURL}${paths.first}`,
+    second: `${baseURL}${paths.second}`,
+    invalid: `${baseURL}/todos/2/3`,
+  } as const
+  const { first: url } = urls
+  const { first: path } = paths
+  const { first: defaultData } = dataObj
   const config: RawAxiosRequestConfig = {
     method: 'GET',
   }
   const instance = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com',
+    baseURL,
   })
+
   const options = { immediate: false }
-  const path = '/todos/1'
   it('params: url', async () => {
     const { isFinished, data, then } = useAxios(url)
     expect(isFinished.value).toBeFalsy()
@@ -46,7 +73,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
   it('params: url config options', async () => {
     const { isLoading, execute, then } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
-    execute('https://jsonplaceholder.typicode.com/todos/2')
+    execute(urls.second)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vi.fn()
 
@@ -207,25 +234,25 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
   })
 
   it('calling axios with config change(param/data etc.) only', async () => {
-    const { isLoading, then, execute } = useAxios('/comments', config, instance, options)
+    const { isLoading, then, execute } = useAxios(baseURL, config, instance, options)
     expect(isLoading.value).toBeFalsy()
-    const paramConfig: RawAxiosRequestConfig = { params: { postId: 1 } }
+    const paramConfig: RawAxiosRequestConfig = { params: { json: JSON.stringify({ foo: 1 }) } }
     execute(paramConfig)
     expect(isLoading.value).toBeTruthy()
     const onRejected = vi.fn()
 
     await then((result) => {
-      expect(result.data.value[0].postId).toBe(1)
+      expect(result.data.value.foo).toBe(1)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
     }, onRejected)
 
-    paramConfig.params = { postId: 2 }
+    paramConfig.params = { json: JSON.stringify({ foo: 2 }) }
     execute(paramConfig)
     expect(isLoading.value).toBeTruthy()
 
     await then((result) => {
-      expect(result.data.value[0].postId).toBe(2)
+      expect(result.data.value.foo).toBe(2)
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
     }, onRejected)
@@ -247,14 +274,13 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const typeConfig: RawAxiosRequestConfig<ReqType> = {
       method: 'POST',
     }
-    const { isLoading, then, execute } = useAxios<ResType, ReqType>('/posts', typeConfig, instance, options)
+    const { isLoading, then, execute } = useAxios<ResType, ReqType, ReqType>(baseURL, typeConfig, instance, options)
     expect(isLoading.value).toBeFalsy()
-    const requestData: ReqType = {
+    execute({ data: {
       title: 'title',
       body: 'body',
       userId: 123,
-    }
-    execute({ data: requestData })
+    } })
     expect(isLoading.value).toBeTruthy()
     const onRejected = vi.fn()
 
@@ -263,7 +289,6 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
       expect(result.data.value?.title).toBe('title')
       expect(result.data.value?.body).toBe('body')
       expect(result.data.value?.userId).toBe(123)
-      expect(result.data.value?.id).toBeDefined()
       expect(isLoading.value).toBeFalsy()
       expect(onRejected).toBeCalledTimes(0)
     }, onRejected)
@@ -272,7 +297,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
   it('should not abort when finished', async () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
-    await execute('https://jsonplaceholder.typicode.com/todos/2')
+    await execute(urls.second)
     expect(isFinished.value).toBeTruthy()
     expect(isLoading.value).toBeFalsy()
     abort()
@@ -283,7 +308,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const { isLoading, isFinished, isAborted, execute, abort } = useAxios(url, config, options)
     expect(isLoading.value).toBeFalsy()
     let error: any
-    const promise = execute('https://jsonplaceholder.typicode.com/todos/2')
+    const promise = execute(urls.second)
       .catch((e) => {
         error = e
       })
@@ -336,7 +361,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const onError = vi.fn()
     const { execute, error, isLoading, isFinished } = useAxios(url, config, { ...options, onError })
     expect(isLoading.value).toBeFalsy()
-    await execute('https://jsonplaceholder.typicode.com/todos/2/3')
+    await execute(urls.invalid)
       .catch(() => {})
     expect(onError).toHaveBeenCalledWith(error.value)
     expect(isFinished.value).toBeTruthy()
@@ -369,7 +394,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     expect(data.value).toEqual(initialData)
     await execute().catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312').catch(() => {})
+    await execute(urls.invalid).catch(() => {})
     expect(data.value).toEqual(initialData)
   })
 
@@ -389,8 +414,8 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData })
     expect(data.value).toEqual(initialData)
     await execute().catch(() => {})
-    expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312').catch(() => {})
+    expect(data.value).toEqual(defaultData)
+    await execute(urls.invalid).catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
   })
 
@@ -421,34 +446,44 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
   })
 
   describe('reactivity', () => {
+    const useSwitch = () => {
+      const counter = deepRef<keyof typeof dataObj>('first')
+      const execute = () => {
+        counter.value = counter.value === 'first' ? 'second' : 'first'
+      }
+
+      return {
+        counter: readonly(counter),
+        data: computed<string>(() => urls[counter.value]),
+        execute,
+      }
+    }
+
     it('url should be reactive', async () => {
-      const counter = deepRef(1)
-      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const { execute: executeSwitch, data: myUrl } = useSwitch()
       const { data, execute } = await useAxios(myUrl)
       expect(data.value.id).toBe(1)
-      counter.value = 2
+      executeSwitch()
       await execute()
       expect(data.value.id).toBe(2)
     })
 
     it('refetch should be reactive when combined with url', async () => {
-      const counter = deepRef(1)
-      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const { execute: executeSwitch, data: myUrl } = useSwitch()
       const { data, then } = useAxios(myUrl, undefined, {
         refetch: true,
         immediate: true,
       })
       await then()
       expect(data.value.id).toBe(1)
-      counter.value = 2
+      executeSwitch()
       await nextTick()
       await then()
       expect(data.value.id).toBe(2)
     })
 
     it('automatically refreshes when refetch is enabled', async () => {
-      const counter = deepRef(1)
-      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const { execute: executeSwitch, data: myUrl } = useSwitch()
       const refetch = deepRef(false)
       const { data, then } = useAxios(myUrl, undefined, {
         refetch,
@@ -456,7 +491,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
       })
       await then()
       expect(data.value.id).toBe(1)
-      counter.value = 2
+      executeSwitch()
       // Should do nothing
       await nextTick()
       await then()
@@ -468,8 +503,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     })
 
     it('refetch is a ref and should be reactive', async () => {
-      const counter = deepRef(1)
-      const myUrl = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+      const { execute: executeSwitch, data: myUrl } = useSwitch()
       const refetch = deepRef(false)
       const { data, then } = useAxios(myUrl, undefined, {
         refetch,
@@ -477,16 +511,19 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
       })
       await then()
       expect(data.value.id).toBe(1)
-      counter.value = 2
+      executeSwitch()
       await nextTick()
       await then()
+      // Should be the same -- no execute occurred
       expect(data.value.id).toBe(1)
       refetch.value = true
+      // Immediately refreshes
       await nextTick()
       await then()
       expect(data.value.id).toBe(2)
       refetch.value = false
-      counter.value = 3
+      // Turns off, does not refetch
+      executeSwitch()
       await nextTick()
       await then()
       expect(data.value.id).toBe(2)
