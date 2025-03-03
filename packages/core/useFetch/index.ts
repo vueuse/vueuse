@@ -432,6 +432,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       headers: {},
     }
 
+    const querys = []
+
     const payload = toValue(config.payload)
     if (payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
@@ -444,14 +446,27 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      defaultFetchOptions.body = config.payloadType === 'json'
-        ? JSON.stringify(payload)
-        : payload as BodyInit
+      if (config.payloadType === 'json') {
+        // json request .get(params) params to get url add query string
+        if (config.method === 'GET') {
+          for (let key in payload) {
+            querys.push(`${key}=${encodeURIComponent(String(payload[key]))}`)
+          }
+        }
+        defaultFetchOptions.body = JSON.stringify(payload)
+      } else {
+        defaultFetchOptions.body = payload as BodyInit
+      }
     }
 
     let isCanceled = false
+
+    let _url = toValue(url)
+    if (querys.length) {
+      _url += (_url.indexOf('?') > -1 ? '&' : '?') + querys.join('&')
+    }
     const context: BeforeFetchContext = {
-      url: toValue(url),
+      url: _url,
       options: {
         ...defaultFetchOptions,
         ...fetchOptions,
