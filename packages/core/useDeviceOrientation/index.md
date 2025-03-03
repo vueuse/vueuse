@@ -26,7 +26,7 @@ const {
 | beta       | `number`  | A number representing the motion of the device around the x axis, express in degrees with values ranging from -180 to 180. |
 | gamma      | `number`  | A number representing the motion of the device around the y axis, express in degrees with values ranging from -90 to 90.   |
 
-You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent#Properties).
+You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent#instance_properties).
 
 ## Component Usage
 
