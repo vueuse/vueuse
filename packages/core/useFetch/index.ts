@@ -440,8 +440,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       headers: {},
     }
 
-    const querys = []
-
+    let _url = toValue(url)
     const payload = toValue(config.payload)
     if (payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
@@ -454,25 +453,24 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      if (config.payloadType === 'json') {
-        // json request .get(params) params to get url add query string
-        if (config.method === 'GET') {
-          for (let key in payload) {
+      // json request .get(params) params to get url add query string
+      if (config.method === 'GET') {
+        defaultFetchOptions.body = undefined
+
+        const querys = []
+        for (let key in payload) {
+          if(payload.hasOwnProperty(key)) {
             querys.push(`${key}=${encodeURIComponent(String(payload[key]))}`)
           }
         }
-        defaultFetchOptions.body = JSON.stringify(payload)
-      } else {
-        defaultFetchOptions.body = payload as BodyInit
+        _url += (_url.indexOf('?') > -1 ? '&' : '?') + querys.join('&')
+      }
+      else {
+        defaultFetchOptions.body = config.payloadType === 'json' ? JSON.stringify(payload) : payload as BodyInit
       }
     }
 
     let isCanceled = false
-
-    let _url = toValue(url)
-    if (querys.length) {
-      _url += (_url.indexOf('?') > -1 ? '&' : '?') + querys.join('&')
-    }
     const context: BeforeFetchContext = {
       url: _url,
       options: {
@@ -514,6 +512,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         if (options.bigintType && config.type === 'json') {
           const res = await fetchResponse.clone().text()
           // responseData = JSON.parse(res.replace(/(?!["'])\b(\d{16,})\b(?!"|')/g, '"$1"'))
+          // eslint-disable-next-line
           responseData = JSON.parse(res, (key: string, value: any, { source }: any): any => {
             const bigintReg = /^-?\d{16,}$/
             switch (options.bigintType) {
