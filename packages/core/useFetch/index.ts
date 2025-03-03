@@ -646,13 +646,11 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 }
 
 function joinPaths(start: string, end: string): string {
-  if (!start.endsWith('/') && !end.startsWith('/')) {
+  if (!start.endsWith('/') && !end.startsWith('/'))
     return `${start}/${end}`
-  }
 
-  if (start.endsWith('/') && end.startsWith('/')) {
+  if (start.endsWith('/') && end.startsWith('/'))
     return `${start.slice(0, -1)}${end}`
-  }
 
   return `${start}${end}`
 }
