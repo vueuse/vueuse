@@ -1,5 +1,5 @@
-import type { ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import type { Ref, ShallowRef } from 'vue'
+import type { ConfigurableFlush, RemovableRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { watchPausable } from '@vueuse/core'
 import { del, get, set, update } from 'idb-keyval'
 import { ref as deepRef, shallowRef, toRaw, toValue } from 'vue'

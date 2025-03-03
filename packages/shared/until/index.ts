@@ -1,5 +1,5 @@
-import type { WatchOptions, WatchSource } from 'vue'
-import type { ElementOf, MaybeRefOrGetter, ShallowUnwrapRef } from '../utils'
+import type { MaybeRefOrGetter, WatchOptions, WatchSource } from 'vue'
+import type { ElementOf, ShallowUnwrapRef } from '../utils'
 import { isRef, nextTick, toValue, watch } from 'vue'
 import { promiseTimeout } from '../utils'
 

@@ -1,6 +1,6 @@
-import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
+import type { ConfigurableDocument } from '@vueuse/core'
 import type { Options } from 'sortablejs'
-import type { MaybeRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { isRef, nextTick, toValue } from 'vue'

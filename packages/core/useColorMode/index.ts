@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { StorageLike } from '../ssr-handlers'
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseStorageOptions } from '../useStorage'

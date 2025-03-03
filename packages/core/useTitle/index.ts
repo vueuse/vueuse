@@ -1,5 +1,5 @@
-import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ReadonlyRefOrGetter } from '@vueuse/shared'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { toValue, watch } from 'vue'

@@ -1,5 +1,5 @@
-import type { Fn, MaybeRef } from '@vueuse/shared'
-import type { WatchSource } from 'vue'
+import type { Fn } from '@vueuse/shared'
+import type { MaybeRef, WatchSource } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { toRef } from '@vueuse/shared'
 import { nextTick, shallowRef, toValue, watch } from 'vue'

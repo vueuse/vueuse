@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
-import type { DebounceFilterOptions, MaybeRefOrGetter } from '../utils'
+import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { DebounceFilterOptions } from '../utils'
 import { ref as deepRef, watch } from 'vue'
 import { useDebounceFn } from '../useDebounceFn'
 

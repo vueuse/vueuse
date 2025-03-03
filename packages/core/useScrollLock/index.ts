@@ -1,4 +1,5 @@
-import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Fn } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import { isIOS, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
 

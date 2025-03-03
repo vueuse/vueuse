@@ -1,5 +1,4 @@
-import type { ComputedRef } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import { containsProp, isObject } from '../utils'
 

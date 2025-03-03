@@ -1,6 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
 import type { ObservableInput, Subscription } from 'rxjs'
-import type { Ref, WatchOptions } from 'vue'
+import type { MaybeRef, Ref, WatchOptions } from 'vue'
 import { fromEvent as fromEventRx, from as fromRxjs, Observable } from 'rxjs'
 import { isRef, watch } from 'vue'
 

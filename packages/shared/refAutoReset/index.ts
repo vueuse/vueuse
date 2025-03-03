@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import { customRef, toValue } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 

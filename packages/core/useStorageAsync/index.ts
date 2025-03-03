@@ -1,4 +1,5 @@
-import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import type { RemovableRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { StorageLikeAsync } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
 import { watchWithFilter } from '@vueuse/shared'

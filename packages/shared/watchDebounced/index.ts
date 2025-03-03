@@ -1,5 +1,5 @@
-import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
-import type { DebounceFilterOptions, MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
+import type { MaybeRefOrGetter, WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { DebounceFilterOptions, MapOldSources, MapSources } from '../utils'
 import { debounceFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 

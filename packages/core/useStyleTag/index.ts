@@ -1,5 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { ShallowRef } from 'vue'
+import type { MaybeRef, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { readonly, shallowRef, watch } from 'vue'

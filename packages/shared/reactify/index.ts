@@ -1,6 +1,5 @@
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter } from 'vue'
 
-import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 // eslint-disable-next-line no-restricted-imports
 import { computed, toValue, unref } from 'vue'
 

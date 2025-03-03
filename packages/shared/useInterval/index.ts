@@ -1,5 +1,5 @@
-import type { ShallowRef } from 'vue'
-import type { MaybeRefOrGetter, Pausable } from '../utils'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { Pausable } from '../utils'
 import { shallowRef } from 'vue'
 import { useIntervalFn } from '../useIntervalFn'
 

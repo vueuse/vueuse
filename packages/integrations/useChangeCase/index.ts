@@ -1,6 +1,5 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Options } from 'change-case'
-import type { ComputedRef, WritableComputedRef } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, WritableComputedRef } from 'vue'
 import * as changeCase from 'change-case'
 import { computed, ref as deepRef, toValue } from 'vue'
 

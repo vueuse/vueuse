@@ -1,6 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
 import type { DocumentData, DocumentReference, DocumentSnapshot, Query, QueryDocumentSnapshot } from 'firebase/firestore'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import { isDef, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
 import { onSnapshot } from 'firebase/firestore'
 import { computed, ref as deepRef, isRef, watch } from 'vue'
