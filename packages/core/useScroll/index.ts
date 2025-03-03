@@ -154,8 +154,8 @@ export function useScroll(
     })
     const scrollContainer
       = (_element as Window)?.document?.documentElement
-        || (_element as Document)?.documentElement
-        || (_element as Element)
+      || (_element as Document)?.documentElement
+      || (_element as Element)
     if (x != null)
       internalX.value = scrollContainer.scrollLeft
     if (y != null)
