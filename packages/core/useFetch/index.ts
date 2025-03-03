@@ -235,7 +235,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError', 'throwOnFailed')
 }
 
 const reAbsolute = /^(?:[a-z][a-z\d+\-.]*:)?\/\//i
@@ -622,7 +622,14 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
   function waitUntilFinished() {
     return new Promise<UseFetchReturn<T>>((resolve, reject) => {
-      until(isFinished).toBe(true).then(() => resolve(shell)).catch(reject)
+      until(isFinished).toBe(true).then(() => {
+        if (error.value && throwOnFailed) {
+          return reject(error.value)
+        }
+        resolve(shell)
+      }).catch((err) => {
+        reject(err)
+      })
     })
   }
 
