@@ -290,7 +290,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   /**
    * Apply composable state to the element, also when element is changed
    */
-  watch([target, volume], () => {
+  watch([target, volume], (_, [oldTarget]) => {
+    if (!oldTarget)
+      return
+
     const el = toValue(target)
     if (!el)
       return
@@ -298,7 +301,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     el.volume = volume.value
   })
 
-  watch([target, muted], () => {
+  watch([target, muted], (_, [oldTarget]) => {
+    if (!oldTarget)
+      return
+
     const el = toValue(target)
     if (!el)
       return
@@ -306,7 +312,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     el.muted = muted.value
   })
 
-  watch([target, rate], () => {
+  watch([target, rate], (_, [oldTarget]) => {
+    if (!oldTarget)
+      return
+
     const el = toValue(target)
     if (!el)
       return
