@@ -24,17 +24,13 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs"
-    },
+    ".": "./index.mjs",
     "./*": "./*"
   },
-  "main": "./index.cjs",
+  "main": "./index.mjs",
   "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "types": "./index.d.mts",
   "files": [
-    "*.cjs",
     "*.d.cts",
     "*.d.mts",
     "*.d.ts",
