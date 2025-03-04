@@ -55,6 +55,7 @@ export function useCssVar(
         old[0].style.removeProperty(old[1])
       updateCssVar()
     },
+    { immediate: true },
   )
 
   watch(

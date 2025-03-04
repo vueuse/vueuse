@@ -19,6 +19,14 @@ describe('useCssVar', () => {
     expect(el.style.getPropertyValue(color)).toBe('red')
   })
 
+  it('should work with css variables', () => {
+    document.documentElement.style.setProperty('--rootColor', 'red')
+
+    const colorNoRef = useCssVar('--rootColor')
+
+    expect(colorNoRef.value).toBe('red')
+  })
+
   it('should use window.document.documentElement as default element if not set', async () => {
     const vm = mount(defineComponent({
       setup() {
