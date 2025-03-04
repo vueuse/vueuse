@@ -627,9 +627,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           return reject(error.value)
         }
         resolve(shell)
-      }).catch((err) => {
-        reject(err)
-      })
+      }).catch(reject)
     })
   }
 
