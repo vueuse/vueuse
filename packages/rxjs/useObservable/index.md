@@ -8,7 +8,9 @@ Use an RxJS [`Observable`](https://rxjs.dev/guide/observable), return a `ref`, a
 
 ## Usage
 
-```ts
+<!-- TODO: import rxjs error if enable twoslash -->
+
+```ts no-twoslash
 import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
@@ -25,7 +27,7 @@ const count = useObservable(
 
 If you want to add custom error handling to an `Observable` that might error, you can supply an optional `onError` configuration. Without this, RxJS will treat any error in the supplied `Observable` as an "unhandled error" and it will be thrown in a new call stack and reported to `window.onerror` (or `process.on('error')` if you happen to be in Node).
 
-```ts
+```ts no-twoslash
 import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map } from 'rxjs/operators'

@@ -10,7 +10,7 @@ Reactive `Array.join`
 
 ### Use with array of multiple refs
 
-```js
+```ts
 import { useArrayJoin } from '@vueuse/core'
 
 const item1 = ref('foo')
@@ -25,7 +25,7 @@ item1.value = 'bar'
 
 ### Use with reactive array
 
-```js
+```ts
 import { useArrayJoin } from '@vueuse/core'
 
 const list = ref(['string', 0, { prop: 'val' }, false, [1], [[2]], null, undefined, []])
@@ -39,7 +39,7 @@ list.value = [null, 'string', undefined]
 
 ### Use with reactive separator
 
-```js
+```ts
 import { useArrayJoin } from '@vueuse/core'
 
 const list = ref(['string', 0, { prop: 'val' }])

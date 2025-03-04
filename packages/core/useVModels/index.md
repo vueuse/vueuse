@@ -9,7 +9,22 @@ Shorthand for props v-model binding. Think it like `toRefs(props)` but changes w
 
 ## Usage
 
-```js
+```ts
+import { useVModels } from '@vueuse/core'
+
+const props = defineProps({
+  foo: string,
+  bar: number,
+})
+
+const emit = defineEmits(['update:foo', 'update:bar'])
+
+const { foo, bar } = useVModels(props, emit)
+```
+
+### Options API
+
+```ts
 import { useVModels } from '@vueuse/core'
 
 export default {
