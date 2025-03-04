@@ -396,6 +396,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   const statusCode = shallowRef<number | null>(null)
   const response = shallowRef<Response | null>(null)
   const error = shallowRef<any>(null)
+  const rawError = shallowRef<any>(null)
   const data = shallowRef<T | null>(initialData || null)
 
   const canAbort = computed(() => supportsAbort && isFetching.value)
@@ -531,6 +532,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         }
 
         error.value = errorData
+        rawError.value = fetchError
         if (options.updateDataOnError)
           data.value = responseData
 
@@ -624,7 +626,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     return new Promise<UseFetchReturn<T>>((resolve, reject) => {
       until(isFinished).toBe(true).then(() => {
         if (error.value && throwOnFailed) {
-          return reject(error.value)
+          return reject(rawError.value)
         }
         resolve(shell)
       }).catch(reject)
