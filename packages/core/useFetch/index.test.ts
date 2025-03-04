@@ -107,10 +107,19 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     const options = { immediate: false }
     const error1 = await useFetch('https://example.com?status=400', options).execute(true).catch(err => err)
     const error2 = await useFetch('https://example.com?status=600', options).execute(true).catch(err => err)
+    let error3: Error
+    try {
+      await useFetch('https://example.com?status=400', { immediate: true, throwOnFailed: true })
+    }
+    catch (err) {
+      error3 = err as Error
+    }
 
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
     expect(error2.name).toBe('Error')
+    expect(error3!.name).toBe('Error')
+    expect(error3!.message).toBe('Bad Request')
   })
 
   it('should abort request and set aborted to true', async () => {
