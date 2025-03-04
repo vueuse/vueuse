@@ -181,6 +181,13 @@ export interface UseFetchOptions {
   updateDataOnError?: boolean
 
   /**
+   * Whether to throw an error when the fetch request fails
+   *
+   * @default false
+   */
+  throwOnFailed?: boolean
+
+  /**
    * Will run immediately before the fetch request is dispatched
    */
   beforeFetch?: (ctx: BeforeFetchContext) => Promise<Partial<BeforeFetchContext> | void> | Partial<BeforeFetchContext> | void
@@ -228,7 +235,7 @@ export interface CreateFetchOptions {
  * to include the new options
  */
 function isFetchOptions(obj: object): obj is UseFetchOptions {
-  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
+  return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError', 'throwOnFailed')
 }
 
 const reAbsolute = /^(?:[a-z][a-z\d+\-.]*:)?\/\//i
@@ -343,6 +350,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     refetch: false,
     timeout: 0,
     updateDataOnError: false,
+    throwOnFailed: false,
   }
 
   interface InternalConfig {
@@ -374,6 +382,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     fetch = defaultWindow?.fetch,
     initialData,
     timeout,
+    throwOnFailed,
   } = options
 
   // Event Hooks
@@ -545,7 +554,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       refetch,
       toRef(url),
     ],
-    ([refetch]) => refetch && execute(),
+    ([refetch]) => refetch && execute(throwOnFailed),
     { deep: true },
   )
 
@@ -594,7 +603,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
               refetch,
               toRef(config.payload),
             ],
-            ([refetch]) => refetch && execute(),
+            ([refetch]) => refetch && execute(throwOnFailed),
             { deep: true },
           )
         }
@@ -613,7 +622,12 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
 
   function waitUntilFinished() {
     return new Promise<UseFetchReturn<T>>((resolve, reject) => {
-      until(isFinished).toBe(true).then(() => resolve(shell)).catch(reject)
+      until(isFinished).toBe(true).then(() => {
+        if (error.value && throwOnFailed) {
+          return reject(error.value)
+        }
+        resolve(shell)
+      }).catch(reject)
     })
   }
 
@@ -634,7 +648,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   if (options.immediate)
-    Promise.resolve().then(() => execute())
+    Promise.resolve().then(() => execute(throwOnFailed))
 
   return {
     ...shell,
