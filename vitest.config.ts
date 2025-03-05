@@ -39,6 +39,7 @@ export default defineConfig({
         ...coverageConfigDefaults.exclude,
       ],
     },
+
     clearMocks: true,
     workspace: [
       'packages/*/vitest.config.ts',
@@ -75,12 +76,14 @@ export default defineConfig({
           include: [
             '!packages/**/*.browser.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
+            'test/*.{test,spec}.ts',
           ],
           server: {
             deps: {
               inline: [
                 'vue',
                 'msw',
+                'vitest-package-exports',
               ],
             },
           },
