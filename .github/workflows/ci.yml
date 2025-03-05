@@ -80,7 +80,7 @@ jobs:
         run: pnpm run test:browser
 
       - if: matrix.node == '20.x'
-        name: Check types
+        name: attw tests
         run: pnpm test:attw
 
       - if: matrix.node == '22.x'
