@@ -4,9 +4,9 @@ import * as fs from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
-import YAML from 'js-yaml'
 import { $fetch } from 'ofetch'
 import Git from 'simple-git'
+import yaml from 'yaml'
 import { packages } from '../meta/packages'
 import { getCategories } from '../packages/metadata/utils'
 
@@ -213,7 +213,7 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
 
     data.category = fn.category || 'Unknown'
 
-    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
+    readme = `---\n${yaml.stringify(data)}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
 
     await fs.writeFile(mdPath, `${readme}\n`, 'utf-8')
   }
