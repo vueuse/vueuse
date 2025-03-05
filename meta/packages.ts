@@ -36,7 +36,6 @@ export const packages: PackageManifest[] = [
     manualImport: true,
     addon: true,
     iife: false,
-    cjs: false,
     utils: true,
     target: 'node14',
     external: [
