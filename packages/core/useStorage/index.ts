@@ -1,4 +1,5 @@
-import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
 import { pausableWatch, tryOnMounted } from '@vueuse/shared'

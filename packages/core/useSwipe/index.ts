@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
 import { computed, reactive, shallowRef } from 'vue'

@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { computed, reactive, shallowRef, toValue } from 'vue'

@@ -1,5 +1,5 @@
-import type { MaybeRef, Mutable } from '@vueuse/shared'
-import type { ComputedRef, ShallowRef, WritableComputedRef } from 'vue'
+import type { Mutable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRef, ShallowRef, WritableComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'

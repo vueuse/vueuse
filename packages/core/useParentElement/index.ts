@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { tryOnMounted } from '@vueuse/shared'
 import { shallowRef, toValue, watch } from 'vue'
 import { unrefElement } from '../unrefElement'

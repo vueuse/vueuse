@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import { computed, isRef, toValue, watchEffect } from 'vue'
 
 export type UseSortedCompareFn<T = any> = (a: T, b: T) => number

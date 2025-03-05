@@ -1,6 +1,4 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-
-import type { ShallowRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import { isClient } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
 import { shallowRef, unref } from 'vue'

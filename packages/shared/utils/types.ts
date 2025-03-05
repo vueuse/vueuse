@@ -1,7 +1,13 @@
 import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
 
 export type {
+  /**
+   * @deprecated use `MaybeRef` from `vue` instead
+   */
   MaybeRef,
+  /**
+   * @deprecated use `MaybeRefOrGetter` from `vue` instead
+   */
   MaybeRefOrGetter,
 }
 
