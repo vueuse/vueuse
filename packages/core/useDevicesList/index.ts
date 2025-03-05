@@ -73,13 +73,15 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   }
 
   async function ensurePermissions() {
+    const deviceName = constraints.video ? 'camera' : 'microphone'
+
     if (!isSupported.value)
       return false
 
     if (permissionGranted.value)
       return true
 
-    const { state, query } = usePermission('camera', { controls: true })
+    const { state, query } = usePermission(deviceName, { controls: true })
     await query()
     if (state.value !== 'granted') {
       let granted = true
