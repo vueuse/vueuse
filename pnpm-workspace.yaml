@@ -4,6 +4,7 @@ packages:
 catalog:
   '@antfu/eslint-config': ^4.5.1
   '@antfu/ni': ^23.3.1
+  '@arethetypeswrong/cli': ^0.17.3
   '@iconify/json': ^2.2.313
   '@nuxt/kit': ^3.15.4
   '@nuxt/schema': ^3.15.4
