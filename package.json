@@ -29,7 +29,7 @@
     "test:firefox": "vitest --project=\"browser (firefox)\"",
     "test:chromium": "vitest --project=\"browser (chromium)\"",
     "test:unit": "vitest --project unit",
-    "test:types": "pnpm -r test:attw",
+    "test:attw": "pnpm -r test:attw",
     "typecheck": "vue-tsc --noEmit",
     "update": "nr -C packages/metadata update && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
