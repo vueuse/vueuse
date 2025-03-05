@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowReadonly, shallowRef, watch } from 'vue'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
@@ -55,23 +55,23 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  readonly data: Readonly<ShallowRef<Data>>
+  data: ShallowRef<Data>
 
   /**
    * The current state of the connection, can be only one of:
    * 'CONNECTING', 'OPEN' 'CLOSED'
    */
-  readonly status: Readonly<ShallowRef<EventSourceStatus>>
+  status: ShallowRef<EventSourceStatus>
 
   /**
    * The latest named event
    */
-  readonly event: Readonly<ShallowRef<Events[number] | null>>
+  event: ShallowRef<Events[number] | null>
 
   /**
    * The current error
    */
-  readonly error: Readonly<ShallowRef<Event | null>>
+  error: ShallowRef<Event | null>
 
   /**
    * Closes the EventSource connection gracefully.
@@ -92,7 +92,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
    * The last event ID string, for server-sent events.
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
    */
-  readonly lastEventId: Readonly<ShallowRef<string | null>>
+  lastEventId: ShallowRef<string | null>
 }
 
 function resolveNestedOptions<T>(options: T | true): T {
@@ -214,12 +214,12 @@ export function useEventSource<Events extends string[], Data = any>(
 
   return {
     eventSource,
-    event: shallowReadonly(event),
-    data: shallowReadonly(data),
-    status: shallowReadonly(status),
-    error: shallowReadonly(error),
+    event,
+    data,
+    status,
+    error,
     open,
     close,
-    lastEventId: shallowReadonly(lastEventId),
+    lastEventId,
   }
 }
