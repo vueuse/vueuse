@@ -21,7 +21,7 @@ export const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
 
 export async function getTypeDefinition(pkg: string, name: string): Promise<string | undefined> {
-  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
+  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.mts`)
 
   if (!existsSync(typingFilepath))
     return
@@ -257,9 +257,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       packageJSON.jsdelivr = './index.iife.min.js'
     }
     packageJSON.files = [
-      '*.d.cts',
       '*.d.mts',
-      '*.d.ts',
       '*.js',
       '*.mjs',
     ]

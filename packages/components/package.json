@@ -30,9 +30,7 @@
   "jsdelivr": "./index.iife.min.js",
   "types": "./index.d.mts",
   "files": [
-    "*.d.cts",
     "*.d.mts",
-    "*.d.ts",
     "*.js",
     "*.mjs"
   ],

@@ -119,9 +119,7 @@ export function createRollupConfig(
       configs.push({
         input,
         output: [
-          { file: `${fn}.d.cts` },
           { file: `${fn}.d.mts` },
-          { file: `${fn}.d.ts` }, // for node10 compatibility
         ],
         plugins: [
           pluginDts,
@@ -156,7 +154,6 @@ export function createRollupConfig(
         input: `${fn}/component.ts`,
         output: [
           { file: `${fn}/component.d.mts` },
-          { file: `${fn}/component.d.ts` }, // for node10 compatibility
         ],
         plugins: [
           pluginDts,

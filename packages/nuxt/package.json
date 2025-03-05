@@ -31,9 +31,7 @@
   "module": "./index.mjs",
   "types": "./index.d.mts",
   "files": [
-    "*.d.cts",
     "*.d.mts",
-    "*.d.ts",
     "*.js",
     "*.mjs"
   ],
