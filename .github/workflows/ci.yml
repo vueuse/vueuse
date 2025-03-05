@@ -79,6 +79,10 @@ jobs:
       - name: browser tests
         run: pnpm run test:browser
 
+      - if: matrix.node == '20.x'
+        name: Check types
+        run: pnpm test:types
+
       - if: matrix.node == '22.x'
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh
