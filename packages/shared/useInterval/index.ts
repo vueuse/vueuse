@@ -1,6 +1,6 @@
-import type { Ref } from 'vue'
-import type { MaybeRefOrGetter, Pausable } from '../utils'
-import { ref } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { Pausable } from '../utils'
+import { shallowRef } from 'vue'
 import { useIntervalFn } from '../useIntervalFn'
 
 export interface UseIntervalOptions<Controls extends boolean> {
@@ -25,7 +25,7 @@ export interface UseIntervalOptions<Controls extends boolean> {
 }
 
 export interface UseIntervalControls {
-  counter: Ref<number>
+  counter: ShallowRef<number>
   reset: () => void
 }
 
@@ -36,7 +36,7 @@ export interface UseIntervalControls {
  * @param interval
  * @param options
  */
-export function useInterval(interval?: MaybeRefOrGetter<number>, options?: UseIntervalOptions<false>): Ref<number>
+export function useInterval(interval?: MaybeRefOrGetter<number>, options?: UseIntervalOptions<false>): ShallowRef<number>
 export function useInterval(interval: MaybeRefOrGetter<number>, options: UseIntervalOptions<true>): UseIntervalControls & Pausable
 export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalOptions<boolean> = {}) {
   const {
@@ -45,7 +45,7 @@ export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: 
     callback,
   } = options
 
-  const counter = ref(0)
+  const counter = shallowRef(0)
   const update = () => counter.value += 1
   const reset = () => {
     counter.value = 0

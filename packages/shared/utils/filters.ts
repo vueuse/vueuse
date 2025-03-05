@@ -1,4 +1,5 @@
-import type { AnyFn, ArgumentsType, Awaited, MaybeRefOrGetter, Pausable, Promisify } from './types'
+import type { MaybeRefOrGetter } from 'vue'
+import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify } from './types'
 import { isRef, readonly, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'

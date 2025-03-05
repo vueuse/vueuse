@@ -1,7 +1,7 @@
-import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { Fn } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
-import { ref, toValue, watch } from 'vue'
+import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -61,7 +61,7 @@ export interface UseWebSocketOptions {
      *
      * @default -1
      */
-    retries?: number | (() => boolean)
+    retries?: number | ((retried: number) => boolean)
 
     /**
      * Delay for reconnect, in milliseconds
@@ -116,7 +116,7 @@ export interface UseWebSocketReturn<T> {
    * The current websocket status, can be only one of:
    * 'OPEN', 'CONNECTING', 'CLOSED'
    */
-  status: Ref<WebSocketStatus>
+  status: ShallowRef<WebSocketStatus>
 
   /**
    * Closes the websocket connection gracefully.
@@ -170,9 +170,9 @@ export function useWebSocket<Data = any>(
     protocols = [],
   } = options
 
-  const data: Ref<Data | null> = ref(null)
-  const status = ref<WebSocketStatus>('CLOSED')
-  const wsRef = ref<WebSocket | undefined>()
+  const data: Ref<Data | null> = deepRef(null)
+  const status = shallowRef<WebSocketStatus>('CLOSED')
+  const wsRef = deepRef<WebSocket | undefined>()
   const urlRef = toRef(url)
 
   let heartbeatPause: Fn | undefined
@@ -247,6 +247,8 @@ export function useWebSocket<Data = any>(
 
     ws.onclose = (ev) => {
       status.value = 'CLOSED'
+      resetHeartbeat()
+      heartbeatPause?.()
       onDisconnected?.(ws, ev)
 
       if (!explicitlyClosed && options.autoReconnect && (wsRef.value == null || ws === wsRef.value)) {
@@ -256,11 +258,12 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
+        const checkRetires = typeof retries === 'function'
+          ? retries
+          : () => typeof retries === 'number' && (retries < 0 || retried < retries)
+
+        if (checkRetires(retried)) {
           retried += 1
-          retryTimeout = setTimeout(_init, delay)
-        }
-        else if (typeof retries === 'function' && retries()) {
           retryTimeout = setTimeout(_init, delay)
         }
         else {

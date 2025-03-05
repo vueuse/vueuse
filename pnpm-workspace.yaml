@@ -2,42 +2,44 @@ packages:
   - packages/*
   - '!playgrounds'
 catalog:
-  '@antfu/eslint-config': ^4.2.0
+  '@antfu/eslint-config': ^4.5.1
   '@antfu/ni': ^23.3.1
-  '@iconify/json': ^2.2.306
+  '@iconify/json': ^2.2.313
   '@nuxt/kit': ^3.15.4
   '@nuxt/schema': ^3.15.4
   '@rollup/plugin-json': ^6.1.0
   '@rollup/plugin-replace': ^6.0.2
-  '@shikijs/vitepress-twoslash': ^2.3.2
+  '@shikijs/vitepress-twoslash': ^3.1.0
   '@type-challenges/utils': ^0.1.1
   '@types/js-yaml': ^4.0.9
   '@types/md5': ^2.3.5
-  '@types/node': ^22.13.4
+  '@types/node': ^22.13.9
   '@types/nprogress': ^0.2.3
   '@types/qrcode': ^1.5.5
   '@types/remove-markdown': ^0.3.4
   '@types/semver': ^7.5.8
   '@types/sortablejs': ^1.15.8
-  '@types/web-bluetooth': ^0.0.20
-  '@typescript-eslint/utils': ^8.24.0
+  '@types/web-bluetooth': ^0.0.21
+  '@typescript-eslint/utils': ^8.26.0
   '@vite-pwa/vitepress': ^0.5.3
   '@vitejs/plugin-vue': ^5.2.1
-  '@vitest/browser': ^3.0.5
-  '@vitest/coverage-v8': ^3.0.5
-  '@vitest/ui': ^3.0.5
+  '@vitest/browser': ^3.0.7
+  '@vitest/coverage-v8': ^3.0.7
+  '@vitest/ui': ^3.0.7
   '@vue/compiler-sfc': ^3.5.13
   '@vue/test-utils': ^2.4.6
   async-validator: ^4.2.5
-  axios: ^1.7.9
+  axios: ^1.8.1
   bumpp: ^10.0.3
   change-case: ^5.4.4
   consola: ^3.4.0
-  drauu: ^0.4.2
+  drauu: ^0.4.3
   electron: ^13.1.0
   esbuild-register: ^3.6.0
-  eslint: ^9.20.1
+  eslint: ^9.21.0
+  eslint-factory: ^0.1.2
   eslint-plugin-format: ^1.0.1
+  eslint-plugin-unimport: ^0.1.2
   export-size: ^0.7.0
   fake-indexeddb: ^6.0.0
   firebase: ^10.14.1
@@ -50,7 +52,7 @@ catalog:
   jsdom: ^26.0.0
   jwt-decode: ^4.0.0
   lint-staged: ^15.4.3
-  local-pkg: ^1.0.0
+  local-pkg: ^1.1.1
   magic-string: ^0.30.17
   markdown-table: ^3.0.4
   md5: ^2.3.0
@@ -60,39 +62,41 @@ catalog:
   nprogress: ^0.2.0
   nuxt: ^3.15.4
   ofetch: ^1.4.1
-  playwright: ^1.50.1 # flaky firefox tests with ^1.50.0
-  pnpm: ^10.4.0
-  postcss: ^8.5.2
+  playwright: 1.49.0
+  pnpm: ^10.5.2
+  postcss: ^8.5.3
   postcss-nested: ^7.0.2
-  prettier: ^3.5.1
+  prettier: ^3.5.3
   prism-theme-vars: ^0.2.5
   qrcode: ^1.5.4
   remove-markdown: ^0.6.0
   rimraf: ^6.0.1
-  rollup: ^4.34.6
+  rollup: ^4.34.9
   rollup-plugin-dts: ^6.1.1
-  rollup-plugin-esbuild: ^6.2.0
-  rollup-plugin-pure: ^0.2.1
+  rollup-plugin-esbuild: ^6.2.1
+  rollup-plugin-pure: ^0.3.0
   rxjs: ^6.6.7
   sharp: ^0.33.5
   simple-git: ^3.27.0
   simple-git-hooks: ^2.11.1
   sortablejs: ^1.15.6
-  taze: ^18.5.0
-  tinyglobby: ^0.2.10
-  tsx: ^4.19.2
-  typescript: ^5.7.3
-  unimport: ^4.1.1
+  taze: ^18.6.0
+  tinyexec: ^0.3.2
+  tinyglobby: ^0.2.12
+  tsx: ^4.19.3
+  typescript: ^5.8.2
+  unimport: ^4.1.2
   universal-cookie: ^7.2.2
-  unocss: ^65.4.3
-  unplugin-icons: ^22.0.0
-  unplugin-vue-components: ^28.0.0
-  vite: ^6.1.0
-  vite-plugin-inspect: ^10.2.1
+  unocss: ^65.5.0
+  unplugin-icons: ^22.1.0
+  unplugin-vue-components: ^28.4.1
+  vite: ^6.2.0
+  vite-plugin-inspect: ^11.0.0
   vite-plugin-pwa: ^0.21.1
-  vitepress: ^1.6.3
-  vitest: ^3.0.5
-  vitest-browser-vue: ^0.1.0
+  vitepress: ^2.0.0-alpha.3
+  vitest: ^3.0.7
+  vitest-browser-vue: ^0.2.0
+  vitest-package-exports: ^0.1.1
   vue: ^3.5.13
   vue-router: ^4.5.0
-  vue-tsc: ^2.2.0
+  vue-tsc: ^2.2.8

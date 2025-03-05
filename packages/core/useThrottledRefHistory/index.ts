@@ -1,5 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import type { UseRefHistoryOptions, UseRefHistoryReturn } from '../useRefHistory'
 import { throttleFilter } from '@vueuse/shared'
 import { useRefHistory } from '../useRefHistory'

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, ref } from 'vue'
-import { useTimeoutPoll } from '.'
+import { effectScope, shallowRef } from 'vue'
+import { useTimeoutPoll } from './index'
 
 describe('useTimeoutPoll', () => {
   beforeEach(() => {
@@ -9,7 +9,7 @@ describe('useTimeoutPoll', () => {
 
   it('basic pause/resume', async () => {
     const callback = vi.fn()
-    const interval = ref(0)
+    const interval = shallowRef(0)
     const { pause, resume } = useTimeoutPoll(callback, interval)
 
     await vi.advanceTimersByTimeAsync(1)
@@ -37,7 +37,7 @@ describe('useTimeoutPoll', () => {
 
   it('pause/resume in scope', async () => {
     const callback = vi.fn()
-    const interval = ref(0)
+    const interval = shallowRef(0)
     const scope = effectScope()
     await scope.run(async () => {
       useTimeoutPoll(callback, interval)

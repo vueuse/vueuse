@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { ConfigurableNavigator, ConfigurableWindow } from '../_configurable'
 import { createEventHook, tryOnMounted } from '@vueuse/shared'
-import { computed, ref } from 'vue'
+import { computed, ref as deepRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useRafFn } from '../useRafFn'
@@ -64,7 +64,7 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     navigator = defaultNavigator,
   } = options
   const isSupported = useSupported(() => navigator && 'getGamepads' in navigator)
-  const gamepads = ref<Gamepad[]>([])
+  const gamepads = deepRef<Gamepad[]>([])
 
   const onConnectedHook = createEventHook<number>()
   const onDisconnectedHook = createEventHook<number>()

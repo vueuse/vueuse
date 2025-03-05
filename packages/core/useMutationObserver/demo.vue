@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useMutationObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref as deepRef, shallowRef, useTemplateRef } from 'vue'
 
-const el = ref(null)
-const messages = ref<string[]>([])
-const className = ref({})
-const style = ref({})
+const el = useTemplateRef<HTMLElement>('el')
+const messages = deepRef<string[]>([])
+const className = shallowRef({})
+const style = shallowRef({})
 
 useMutationObserver(
   el,

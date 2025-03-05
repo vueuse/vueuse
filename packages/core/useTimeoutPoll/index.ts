@@ -1,6 +1,7 @@
-import type { Awaitable, MaybeRefOrGetter, Pausable, UseTimeoutFnOptions } from '@vueuse/shared'
+import type { Awaitable, Pausable, UseTimeoutFnOptions } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import { isClient, tryOnScopeDispose, useTimeoutFn } from '@vueuse/shared'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 export interface UseTimeoutPollOptions {
   /**
@@ -30,7 +31,7 @@ export function useTimeoutPoll(
 
   const { start } = useTimeoutFn(loop, interval, { immediate })
 
-  const isActive = ref(false)
+  const isActive = shallowRef(false)
 
   async function loop() {
     if (!isActive.value)

@@ -34,11 +34,12 @@ export function syncRefs<T>(
     deep = false,
     immediate = true,
   } = options
-  targets = toArray(targets)
+
+  const targetsArray = toArray(targets)
 
   return watch(
     source,
-    newValue => (targets as Ref<T>[]).forEach(target => target.value = newValue),
+    newValue => targetsArray.forEach(target => target.value = newValue),
     { flush, deep, immediate },
   )
 }

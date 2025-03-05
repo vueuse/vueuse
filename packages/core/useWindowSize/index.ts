@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
@@ -47,8 +47,8 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
     type = 'inner',
   } = options
 
-  const width = ref(initialWidth)
-  const height = ref(initialHeight)
+  const width = shallowRef(initialWidth)
+  const height = shallowRef(initialHeight)
 
   const update = () => {
     if (window) {

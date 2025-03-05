@@ -1,6 +1,6 @@
 import type { ObjectDirective } from 'vue'
-import type { OnClickOutsideHandler, OnClickOutsideOptions } from '.'
-import { onClickOutside } from '.'
+import type { OnClickOutsideHandler, OnClickOutsideOptions } from './index'
+import { onClickOutside } from './index'
 
 export const vOnClickOutside: ObjectDirective<
   HTMLElement,

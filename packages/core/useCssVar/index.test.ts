@@ -1,8 +1,8 @@
 import { defaultWindow } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, onMounted, ref, shallowRef, useTemplateRef } from 'vue'
-import { useCssVar } from '.'
+import { defineComponent, h, nextTick, onMounted, shallowRef, useTemplateRef } from 'vue'
 import { mount } from '../../.test'
+import { useCssVar } from './index'
 
 describe('useCssVar', () => {
   it('should be defined', () => {
@@ -17,6 +17,14 @@ describe('useCssVar', () => {
 
     expect(variable.value).toBe('red')
     expect(el.style.getPropertyValue(color)).toBe('red')
+  })
+
+  it('should work with css variables', () => {
+    document.documentElement.style.setProperty('--rootColor', 'red')
+
+    const colorNoRef = useCssVar('--rootColor')
+
+    expect(colorNoRef.value).toBe('red')
   })
 
   it('should use window.document.documentElement as default element if not set', async () => {
@@ -173,7 +181,7 @@ describe('useCssVar', () => {
     const vm = mount(defineComponent({
       setup() {
         const el = useTemplateRef<HTMLDivElement>('el')
-        const key = ref('--color')
+        const key = shallowRef('--color')
         const variable = useCssVar(key, el)
 
         function changeVar() {

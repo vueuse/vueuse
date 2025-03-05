@@ -1,15 +1,13 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-
-import type { Ref } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import { isClient } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
-import { ref, shallowRef, unref } from 'vue'
+import { shallowRef, unref } from 'vue'
 
 import { useEventListener } from '../useEventListener'
 
 export interface UseDropZoneReturn {
-  files: Ref<File[] | null>
-  isOverDropZone: Ref<boolean>
+  files: ShallowRef<File[] | null>
+  isOverDropZone: ShallowRef<boolean>
 }
 
 export interface UseDropZoneOptions {
@@ -36,7 +34,7 @@ export function useDropZone(
   target: MaybeRefOrGetter<HTMLElement | null | undefined>,
   options: UseDropZoneOptions | UseDropZoneOptions['onDrop'] = {},
 ): UseDropZoneReturn {
-  const isOverDropZone = ref(false)
+  const isOverDropZone = shallowRef(false)
   const files = shallowRef<File[] | null>(null)
   let counter = 0
   let isValid = true

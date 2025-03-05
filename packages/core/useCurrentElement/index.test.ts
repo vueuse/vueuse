@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { defineComponent, shallowRef } from 'vue'
-import { useCurrentElement } from '.'
+import { useCurrentElement } from './index'
 
 // Manual triggering only works for Vue 3 - https://vueuse.org/shared/computedWithControl/#manual-triggering
 describe('useCurrentElement', () => {

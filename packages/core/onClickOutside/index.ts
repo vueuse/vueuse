@@ -1,5 +1,5 @@
-import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComponentPublicInstance, VNode } from 'vue'
+import type { Fn } from '@vueuse/shared'
+import type { ComponentPublicInstance, MaybeRefOrGetter, VNode } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { isIOS, noop } from '@vueuse/shared'

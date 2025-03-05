@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useElementVisibility } from '.'
+import { useElementVisibility } from './index'
 
 describe('useElementVisibility', () => {
   let el: HTMLDivElement

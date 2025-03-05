@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { pxValue } from '@vueuse/shared'
-import { computed, ref, shallowRef, toValue, watchEffect } from 'vue'
+import { computed, shallowRef, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSSRWidth } from '../useSSRWidth'
@@ -20,10 +20,10 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   const { window = defaultWindow, ssrWidth = useSSRWidth() } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
-  const ssrSupport = ref(typeof ssrWidth === 'number')
+  const ssrSupport = shallowRef(typeof ssrWidth === 'number')
 
   const mediaQuery = shallowRef<MediaQueryList>()
-  const matches = ref(false)
+  const matches = shallowRef(false)
 
   const handler = (event: MediaQueryListEvent) => {
     matches.value = event.matches

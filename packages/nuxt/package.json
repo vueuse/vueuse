@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/nuxt",
   "type": "module",
-  "version": "12.6.0",
+  "version": "12.8.0",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "prepack": "pnpm run build"
   },
   "peerDependencies": {
-    "nuxt": "^3.0.0"
+    "nuxt": "^3.0.0 || ^4.0.0-0"
   },
   "dependencies": {
     "@nuxt/kit": "catalog:",

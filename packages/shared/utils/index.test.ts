@@ -1,6 +1,6 @@
 import type { MockInstance } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import {
   assert,
   clamp,
@@ -21,7 +21,7 @@ import {
   rand,
   throttleFilter,
   timestamp,
-} from '.'
+} from './index'
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -52,7 +52,7 @@ describe('utils', () => {
 
 describe('promise', () => {
   it('should promiseTimeout work', async () => {
-    const num = ref(0)
+    const num = shallowRef(0)
     setTimeout(() => {
       num.value = 1
     }, 100)
@@ -143,7 +143,7 @@ describe('filters', () => {
 
     it('should debounce with ref', () => {
       const debouncedFilterSpy = vi.fn()
-      const debounceTime = ref(0)
+      const debounceTime = shallowRef(0)
       const filter = createFilterWrapper(debounceFilter(debounceTime), debouncedFilterSpy)
 
       filter()
@@ -190,7 +190,7 @@ describe('filters', () => {
 
     it('should throttle with ref', () => {
       const debouncedFilterSpy = vi.fn()
-      const throttle = ref(0)
+      const throttle = shallowRef(0)
       const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
 
       filter()
@@ -405,7 +405,7 @@ describe('optionsFilters', () => {
 
   it('optionsThrottleFilter should throttle with ref', () => {
     const debouncedFilterSpy = vi.fn()
-    const throttle = ref(0)
+    const throttle = shallowRef(0)
     const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
 
     filter()

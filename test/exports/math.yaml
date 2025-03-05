@@ -1,0 +1,22 @@
+.:
+  and: function
+  createGenericProjection: function
+  createProjection: function
+  logicAnd: function
+  logicNot: function
+  logicOr: function
+  not: function
+  or: function
+  useAbs: function
+  useAverage: function
+  useCeil: function
+  useClamp: function
+  useFloor: function
+  useMath: function
+  useMax: function
+  useMin: function
+  usePrecision: function
+  useProjection: function
+  useRound: function
+  useSum: function
+  useTrunc: function

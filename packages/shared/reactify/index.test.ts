@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { reactify } from '.'
+import { ref as deepRef, shallowRef } from 'vue'
+import { reactify } from './index'
 
 describe('reactify', () => {
   it('one arg', () => {
-    const base = ref(1.5)
+    const base = shallowRef(1.5)
     const floor = reactify(Math.floor)
     const result = floor(base)
 
@@ -16,8 +16,8 @@ describe('reactify', () => {
   })
 
   it('two args', () => {
-    const base = ref(0)
-    const exponent = ref(0)
+    const base = shallowRef(0)
+    const exponent = shallowRef(0)
 
     const pow = reactify(Math.pow)
     const result = pow(base, exponent)
@@ -40,7 +40,7 @@ describe('reactify', () => {
   })
 
   it('mixed with literal', () => {
-    const base = ref(0)
+    const base = shallowRef(0)
 
     const pow = reactify(Math.pow)
     const result = pow(base, 2)
@@ -53,7 +53,7 @@ describe('reactify', () => {
   })
 
   it('jSON.stringify', () => {
-    const base = ref<any>(0)
+    const base = deepRef<any>(0)
     const stringify = reactify(JSON.stringify)
     const result = stringify(base, null, 2)
 
@@ -69,8 +69,8 @@ describe('reactify', () => {
     const sqrt = reactify(Math.sqrt)
     const add = reactify((a: number, b: number) => a + b)
 
-    const a = ref(3)
-    const b = ref(4)
+    const a = shallowRef(3)
+    const b = shallowRef(4)
 
     const c = sqrt(add(pow(a, 2), pow(b, 2)))
 
@@ -85,8 +85,8 @@ describe('reactify', () => {
   it('computed getter', () => {
     const add = reactify((a: number, b: number) => a + b)
 
-    const a = ref(3)
-    const b = ref(4)
+    const a = shallowRef(3)
+    const b = shallowRef(4)
 
     const c = add(a, () => b.value)
 

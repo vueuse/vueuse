@@ -15,12 +15,12 @@ npm i drauu@^0
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { toRefs } from '@vueuse/core'
 import { useDrauu } from '@vueuse/integrations/useDrauu'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const target = ref()
+const target = useTemplateRef<SVGSVGElement>('target')
 const { undo, redo, canUndo, canRedo, brush } = useDrauu(target)
 const { color, size } = toRefs(brush)
 </script>
