@@ -288,9 +288,9 @@ export function useScroll(
     }
   })
 
-  if (observe) {
+  if (observe && element != null && element !== window && element !== document) {
     useMutationObserver(
-      element,
+      element as MaybeRefOrGetter<HTMLElement | SVGElement>,
       () => {
         const _element = toValue(element)
         if (!_element)
