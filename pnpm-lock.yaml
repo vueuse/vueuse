@@ -105,9 +105,15 @@ catalogs:
     esbuild-register:
       specifier: ^3.6.0
       version: 3.6.0
+    eslint-factory:
+      specifier: ^0.1.2
+      version: 0.1.2
     eslint-plugin-format:
       specifier: ^1.0.1
       version: 1.0.1
+    eslint-plugin-unimport:
+      specifier: ^0.1.2
+      version: 0.1.2
     export-size:
       specifier: ^0.7.0
       version: 0.7.0
@@ -222,6 +228,9 @@ catalogs:
     taze:
       specifier: ^18.5.0
       version: 18.5.0
+    tinyexec:
+      specifier: ^0.3.2
+      version: 0.3.2
     tinyglobby:
       specifier: ^0.2.10
       version: 0.2.10
@@ -258,6 +267,9 @@ catalogs:
     vitest-browser-vue:
       specifier: ^0.2.0
       version: 0.2.0
+    vitest-package-exports:
+      specifier: ^0.1.0
+      version: 0.1.0
     vue-router:
       specifier: ^4.5.0
       version: 4.5.0
@@ -379,13 +391,13 @@ importers:
         specifier: ^9.20.1
         version: 9.20.1(jiti@2.4.2)
       eslint-factory:
-        specifier: ^0.1.2
+        specifier: 'catalog:'
         version: 0.1.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
       eslint-plugin-format:
         specifier: 'catalog:'
         version: 1.0.1(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-unimport:
-        specifier: ^0.1.2
+        specifier: 'catalog:'
         version: 0.1.2(eslint@9.20.1(jiti@2.4.2))(rollup@4.34.7)(typescript@5.7.3)
       export-size:
         specifier: 'catalog:'
@@ -478,7 +490,7 @@ importers:
         specifier: 'catalog:'
         version: 18.5.0
       tinyexec:
-        specifier: ^0.3.2
+        specifier: 'catalog:'
         version: 0.3.2
       tinyglobby:
         specifier: 'catalog:'
@@ -514,7 +526,7 @@ importers:
         specifier: 'catalog:'
         version: 0.2.0(@vitest/browser@3.0.7)(vitest@3.0.7)(vue@3.5.13(typescript@5.7.3))
       vitest-package-exports:
-        specifier: ^0.1.0
+        specifier: 'catalog:'
         version: 0.1.0
       vue:
         specifier: ^3.5.13

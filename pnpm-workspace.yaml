@@ -37,7 +37,9 @@ catalog:
   electron: ^13.1.0
   esbuild-register: ^3.6.0
   eslint: ^9.20.1
+  eslint-factory: ^0.1.2
   eslint-plugin-format: ^1.0.1
+  eslint-plugin-unimport: ^0.1.2
   export-size: ^0.7.0
   fake-indexeddb: ^6.0.0
   firebase: ^10.14.1
@@ -60,7 +62,7 @@ catalog:
   nprogress: ^0.2.0
   nuxt: ^3.15.4
   ofetch: ^1.4.1
-  playwright: 1.49.0 # flaky firefox tests with ^1.50.0
+  playwright: 1.49.0
   pnpm: ^10.4.0
   postcss: ^8.5.2
   postcss-nested: ^7.0.2
@@ -79,6 +81,7 @@ catalog:
   simple-git-hooks: ^2.11.1
   sortablejs: ^1.15.6
   taze: ^18.5.0
+  tinyexec: ^0.3.2
   tinyglobby: ^0.2.10
   tsx: ^4.19.2
   typescript: ^5.7.3
@@ -93,6 +96,7 @@ catalog:
   vitepress: ^1.6.3
   vitest: ^3.0.7
   vitest-browser-vue: ^0.2.0
+  vitest-package-exports: ^0.1.0
   vue: ^3.5.13
   vue-router: ^4.5.0
   vue-tsc: ^2.2.0
