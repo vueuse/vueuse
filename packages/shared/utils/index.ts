@@ -126,6 +126,8 @@ export function getLifeCycleTarget(target?: any) {
   return target || getCurrentInstance()
 }
 
-export function toArray<T>(value: T): T extends readonly any[] ? T : [T] {
-  return Array.isArray(value) ? value as any : [value] as [T]
+export function toArray<T>(value: T | readonly T[]): readonly T[]
+export function toArray<T>(value: T | T[]): T[]
+export function toArray<T>(value: T | T[]): T[] {
+  return Array.isArray(value) ? value : [value]
 }
