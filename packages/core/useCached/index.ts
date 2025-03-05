@@ -1,6 +1,6 @@
-import type { ConfigurableDeepRefs } from '@vueuse/core/_configurable'
 import type { ShallowOrDeepRef } from '@vueuse/shared'
 import type { Ref, WatchOptions } from 'vue'
+import type { ConfigurableDeepRefs } from '../_configurable'
 import { createRef } from '@vueuse/shared'
 import { watch } from 'vue'
 
