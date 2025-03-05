@@ -8,7 +8,7 @@ Reactively track window focus with `window.onfocus` and `window.onblur` events.
 
 ## Usage
 
-```js
+```ts
 import { useWindowFocus } from '@vueuse/core'
 
 const focused = useWindowFocus()

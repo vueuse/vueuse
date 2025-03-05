@@ -8,7 +8,7 @@ Safe `onScopeDispose`. Call `onScopeDispose()` if it's inside an effect scope li
 
 ## Usage
 
-```js
+```ts
 import { tryOnScopeDispose } from '@vueuse/core'
 
 tryOnScopeDispose(() => {

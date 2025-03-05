@@ -10,7 +10,7 @@ Transition between values
 
 Define a numeric source value to follow, and when changed the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
 
-```js
+```ts
 import { TransitionPresets, useTransition } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -24,7 +24,9 @@ const output = useTransition(source, {
 
 To synchronize transitions, use an array of numbers. As an example, here is how we could transition between colors.
 
-```js
+```ts
+import { useTransition } from '@vueuse/core'
+// ---cut---
 const source = shallowRef([0, 0, 0])
 
 const output = useTransition(source)
@@ -37,7 +39,9 @@ const color = computed(() => {
 
 Transition easing can be customized using cubic bezier curves. Transitions defined this way work the same as [CSS easing functions](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function#easing_functions).
 
-```js
+```ts
+import { useTransition } from '@vueuse/core'
+// ---cut---
 useTransition(source, {
   transition: [0.75, 0, 0.25, 1],
 })
@@ -73,7 +77,9 @@ The following transitions are available via the `TransitionPresets` constant.
 
 For more complex transitions, a custom function can be provided.
 
-```js
+```ts
+import { useTransition } from '@vueuse/core'
+// ---cut---
 function easeOutElastic(n) {
   return n === 0
     ? 0
@@ -89,7 +95,9 @@ useTransition(source, {
 
 To control when a transition starts, set a `delay` value. To choreograph behavior around a transition, define `onStarted` or `onFinished` callbacks.
 
-```js
+```ts
+import { useTransition } from '@vueuse/core'
+// ---cut---
 useTransition(source, {
   delay: 1000,
   onStarted() {
@@ -105,7 +113,7 @@ To temporarily stop transitioning, define a boolean `disabled` property. Be awar
 
 For more control, transitions can be executed manually by using `executeTransition`. This function returns a promise that resolves upon completion. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
 
-```js
+```ts
 import { executeTransition } from '@vueuse/core'
 
 await executeTransition(source, from, to, {

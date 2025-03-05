@@ -8,7 +8,7 @@ Reactive [Firestore](https://firebase.google.com/docs/firestore) binding. Making
 
 ## Usage
 
-```js {9,12,17,22}
+```ts {9,12,17,22}
 import { useFirestore } from '@vueuse/firebase/useFirestore'
 import { initializeApp } from 'firebase/app'
 import { collection, doc, getFirestore, limit, orderBy, query } from 'firebase/firestore'
@@ -41,13 +41,18 @@ You can reuse the db reference by passing `autoDispose: false`. You can also set
 Note : Getting a not disposed db reference again don't cost a Firestore read.
 
 ```ts
+import { useFirestore } from '@vueuse/firebase/useFirestore'
+import { collection } from 'firebase/firestore'
+// ---cut---
 const todos = useFirestore(collection(db, 'todos'), undefined, { autoDispose: false })
 ```
 
 or use `createGlobalState` from the core package
 
-```js
-// store.js
+```ts twoslash include store
+// @filename: store.ts
+// ---cut---
+// store.ts
 import { createGlobalState } from '@vueuse/core'
 import { useFirestore } from '@vueuse/firebase/useFirestore'
 
@@ -56,14 +61,13 @@ export const useTodos = createGlobalState(
 )
 ```
 
-```js
-// app.js
+```vue
+<!-- app.vue -->
+<script setup lang="ts">
+// @include: store
+// ---cut---
 import { useTodos } from './store'
 
-export default {
-  setup() {
-    const todos = useTodos()
-    return { todos }
-  },
-}
+const todos = useTodos()
+</script>
 ```

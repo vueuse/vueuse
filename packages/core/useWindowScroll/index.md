@@ -8,7 +8,7 @@ Reactive window scroll
 
 ## Usage
 
-```js
+```ts
 import { useWindowScroll } from '@vueuse/core'
 
 const { x, y } = useWindowScroll()

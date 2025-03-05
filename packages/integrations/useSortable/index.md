@@ -98,10 +98,10 @@ useSortable('#dv', list)
 
 ### Tips
 
-If you want to handle the onUpdate yourself, you can pass in onUpdate parameters, and we also exposed a function to move the item position.
+If you want to handle the `onUpdate` yourself, you can pass in `onUpdate` parameters, and we also exposed a function to move the item position.
 
 ```ts
-import { moveArrayElement } from '@vueuse/integrations/useSortable'
+import { moveArrayElement, useSortable } from '@vueuse/integrations/useSortable'
 
 useSortable(el, list, {
   onUpdate: (e) => {

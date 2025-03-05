@@ -9,24 +9,19 @@ Fires when users start typing on non-editable elements.
 ## Usage
 
 ```vue
-<input ref="input" type="text" placeholder="Start typing to focus" />
-```
-
-```ts {7-10}
+<script setup lang="ts">
 import { onStartTyping } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-export default {
-  setup() {
-    const input = ref(null)
+const input = useTemplateRef('input')
 
-    onStartTyping(() => {
-      if (!input.value.active)
-        input.value.focus()
-    })
+onStartTyping(() => {
+  if (!input.value.active)
+    input.value.focus()
+})
+</script>
 
-    return {
-      input,
-    }
-  },
-}
+<template>
+  <input ref="input" type="text" placeholder="Start typing to focus">
+</template>
 ```

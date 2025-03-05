@@ -8,7 +8,7 @@ Wrapper for `setInterval` with controls
 
 ## Usage
 
-```js
+```ts
 import { useIntervalFn } from '@vueuse/core'
 
 const { pause, resume, isActive } = useIntervalFn(() => {
