@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
-import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, watch } from 'vue'
+import { ref as deepRef, shallowReadonly, shallowRef, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
@@ -50,28 +50,28 @@ export interface UseEventSourceOptions extends EventSourceInit {
   autoConnect?: boolean
 }
 
-export interface UseEventSourceReturn<Events extends string[]> {
+export interface UseEventSourceReturn<Events extends string[], Data = any> {
   /**
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: Ref<string | null>
+  readonly data: Readonly<ShallowRef<Data>>
 
   /**
    * The current state of the connection, can be only one of:
    * 'CONNECTING', 'OPEN' 'CLOSED'
    */
-  status: Ref<EventSourceStatus>
+  readonly status: Readonly<ShallowRef<EventSourceStatus>>
 
   /**
    * The latest named event
    */
-  event: Ref<Events[number] | null>
+  readonly event: Readonly<ShallowRef<Events[number] | null>>
 
   /**
    * The current error
    */
-  error: Ref<Event | null>
+  readonly error: Readonly<ShallowRef<Event | null>>
 
   /**
    * Closes the EventSource connection gracefully.
@@ -92,7 +92,7 @@ export interface UseEventSourceReturn<Events extends string[]> {
    * The last event ID string, for server-sent events.
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
    */
-  lastEventId: Ref<string | null>
+  readonly lastEventId: Readonly<ShallowRef<string | null>>
 }
 
 function resolveNestedOptions<T>(options: T | true): T {
@@ -110,16 +110,16 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param events
  * @param options
  */
-export function useEventSource<Events extends string[]>(
+export function useEventSource<Events extends string[], Data = any>(
   url: MaybeRefOrGetter<string | URL | undefined>,
   events: Events = [] as unknown as Events,
   options: UseEventSourceOptions = {},
 ): UseEventSourceReturn<Events> {
-  const event: Ref<string | null> = deepRef(null)
-  const data: Ref<string | null> = deepRef(null)
-  const status = shallowRef('CONNECTING') as Ref<EventSourceStatus>
-  const eventSource = deepRef(null) as Ref<EventSource | null>
-  const error = shallowRef(null) as Ref<Event | null>
+  const event: ShallowRef<string | null> = shallowRef(null)
+  const data: ShallowRef<Data | null> = shallowRef(null)
+  const status = shallowRef<EventSourceStatus>('CONNECTING')
+  const eventSource = deepRef<EventSource | null>(null)
+  const error = shallowRef<Event | null>(null)
   const urlRef = toRef(url)
   const lastEventId = shallowRef<string | null>(null)
 
@@ -188,7 +188,7 @@ export function useEventSource<Events extends string[]>(
     }
 
     for (const event_name of events) {
-      useEventListener(es, event_name, (e: Event & { data?: string }) => {
+      useEventListener(es, event_name, (e: Event & { data?: Data }) => {
         event.value = event_name
         data.value = e.data || null
       }, { passive: true })
@@ -214,12 +214,12 @@ export function useEventSource<Events extends string[]>(
 
   return {
     eventSource,
-    event,
-    data,
-    status,
-    error,
+    event: shallowReadonly(event),
+    data: shallowReadonly(data),
+    status: shallowReadonly(status),
+    error: shallowReadonly(error),
     open,
     close,
-    lastEventId,
+    lastEventId: shallowReadonly(lastEventId),
   }
 }

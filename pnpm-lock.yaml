@@ -105,9 +105,15 @@ catalogs:
     esbuild-register:
       specifier: ^3.6.0
       version: 3.6.0
+    eslint-factory:
+      specifier: ^0.1.2
+      version: 0.1.2
     eslint-plugin-format:
       specifier: ^1.0.1
       version: 1.0.1
+    eslint-plugin-unimport:
+      specifier: ^0.1.2
+      version: 0.1.2
     export-size:
       specifier: ^0.7.0
       version: 0.7.0
@@ -222,6 +228,9 @@ catalogs:
     taze:
       specifier: ^18.5.0
       version: 18.5.0
+    tinyexec:
+      specifier: ^0.3.2
+      version: 0.3.2
     tinyglobby:
       specifier: ^0.2.10
       version: 0.2.10
@@ -258,6 +267,9 @@ catalogs:
     vitest-browser-vue:
       specifier: ^0.2.0
       version: 0.2.0
+    vitest-package-exports:
+      specifier: ^0.1.0
+      version: 0.1.0
     vue-router:
       specifier: ^4.5.0
       version: 4.5.0
@@ -379,13 +391,13 @@ importers:
         specifier: ^9.20.1
         version: 9.20.1(jiti@2.4.2)
       eslint-factory:
-        specifier: ^0.1.2
+        specifier: 'catalog:'
         version: 0.1.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
       eslint-plugin-format:
         specifier: 'catalog:'
         version: 1.0.1(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-unimport:
-        specifier: ^0.1.2
+        specifier: 'catalog:'
         version: 0.1.2(eslint@9.20.1(jiti@2.4.2))(rollup@4.34.7)(typescript@5.7.3)
       export-size:
         specifier: 'catalog:'
@@ -477,6 +489,9 @@ importers:
       taze:
         specifier: 'catalog:'
         version: 18.5.0
+      tinyexec:
+        specifier: 'catalog:'
+        version: 0.3.2
       tinyglobby:
         specifier: 'catalog:'
         version: 0.2.10
@@ -510,6 +525,9 @@ importers:
       vitest-browser-vue:
         specifier: 'catalog:'
         version: 0.2.0(@vitest/browser@3.0.7)(vitest@3.0.7)(vue@3.5.13(typescript@5.7.3))
+      vitest-package-exports:
+        specifier: 'catalog:'
+        version: 0.1.0
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.7.3)
@@ -4716,6 +4734,10 @@ packages:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
 
+  find-up-simple@1.0.0:
+    resolution: {integrity: sha512-q7Us7kcjj2VMePAa02hDAF6d+MzsdsAWEwYyOpwUtlerRBkOEPBCRZrAV4XfcSN8fHAgaD0hP7miwoay6DCprw==}
+    engines: {node: '>=18'}
+
   find-up@4.1.0:
     resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
     engines: {node: '>=8'}
@@ -5558,6 +5580,7 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
@@ -7772,6 +7795,9 @@ packages:
       '@vitest/browser': ^2.1.0 || ^3.0.0-0
       vitest: ^2.1.0 || ^3.0.0-0
       vue: ^3.5.13
+
+  vitest-package-exports@0.1.0:
+    resolution: {integrity: sha512-h83R5dqOstC0xNPLJUqvtu4yx83l7Eu4gMQJZfTYjP7eqvOoVUPK3hMBEQMzndleUygRatr7/kBHOeINEvz1OQ==}
 
   vitest@3.0.7:
     resolution: {integrity: sha512-IP7gPK3LS3Fvn44x30X1dM9vtawm0aesAa2yBIZ9vQf+qB69NXC5776+Qmcr7ohUXIQuLhk7xQR0aSUIDPqavg==}
@@ -12883,6 +12909,8 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
+  find-up-simple@1.0.0: {}
+
   find-up@4.1.0:
     dependencies:
       locate-path: 5.0.0
@@ -16550,6 +16578,11 @@ snapshots:
       '@vue/test-utils': 2.4.6
       vitest: 3.0.7(@types/node@22.13.4)(@vitest/browser@3.0.7)(@vitest/ui@3.0.7)(jiti@2.4.2)(jsdom@26.0.0)(msw@2.3.0(typescript@5.7.3))(terser@5.24.0)(tsx@4.19.2)(yaml@2.7.0)
       vue: 3.5.13(typescript@5.7.3)
+
+  vitest-package-exports@0.1.0:
+    dependencies:
+      find-up-simple: 1.0.0
+      pathe: 2.0.3
 
   vitest@3.0.7(@types/node@22.13.4)(@vitest/browser@3.0.7)(@vitest/ui@3.0.7)(jiti@2.4.2)(jsdom@26.0.0)(msw@2.3.0(typescript@5.7.3))(terser@5.24.0)(tsx@4.19.2)(yaml@2.7.0):
     dependencies:
