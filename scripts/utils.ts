@@ -21,7 +21,7 @@ export const DIR_SRC = resolve(__dirname, '../packages')
 const DIR_TYPES = resolve(__dirname, '../types/packages')
 
 export async function getTypeDefinition(pkg: string, name: string): Promise<string | undefined> {
-  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.mts`)
+  const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
 
   if (!existsSync(typingFilepath))
     return
