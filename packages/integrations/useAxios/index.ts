@@ -98,7 +98,7 @@ export interface UseAxiosOptionsBase<T = any, AxiosErrorResponseData = unknown> 
   /**
    * Callback when axios error is caught.
    */
-  onAxiosError?: (e: AxiosError<AxiosErrorResponseData>) => void
+  onAxiosError?: (e: AxiosError<AxiosErrorResponseData> | undefined) => void
 
   /**
    * Callback when success is caught.
