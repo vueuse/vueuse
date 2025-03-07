@@ -15,7 +15,7 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, AxiosErrorRes
    */
   data: O extends UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData> ? Ref<T> : Ref<T | undefined>
 
-  axiosErrorData: ComputedRef<AxiosErrorResponseData | undefined>
+  axiosErrorResponseData: ComputedRef<AxiosErrorResponseData | undefined>
 
   /**
    * Indicates if the request has finished
@@ -288,13 +288,13 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorRespo
   if (immediate && url)
     (execute as StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData>['execute'])()
 
-  const axiosErrorData = computed((): AxiosErrorResponseData | undefined => {
+  const axiosErrorResponseData = computed((): AxiosErrorResponseData | undefined => {
     return axiosError.value?.response?.data
   })
 
   const result: OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData> = {
     response,
-    axiosErrorData,
+    axiosErrorResponseData,
     data,
     error,
     axiosError,
