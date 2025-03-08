@@ -2,7 +2,7 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRe
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
-import { pausableWatch, tryOnMounted } from '@vueuse/shared'
+import { isObject, pausableWatch, tryOnMounted } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
@@ -154,7 +154,13 @@ export function useStorage<T extends (string | number | boolean | object | null)
     initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : deepRef)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
+  const defaultValue = typeof defaults === 'function' ? defaults() : defaults
+  const rawInit: T = toValue(
+    isObject(defaultValue)
+      ? JSON.parse(JSON.stringify(toValue(defaultValue)))
+      : defaultValue,
+  )
+  const data = (shallow ? shallowRef : deepRef)(rawInit) as RemovableRef<T>
   const keyComputed = computed<string>(() => toValue(key))
 
   if (!storage) {
@@ -169,7 +175,6 @@ export function useStorage<T extends (string | number | boolean | object | null)
   if (!storage)
     return data
 
-  const rawInit: T = toValue(defaults)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 

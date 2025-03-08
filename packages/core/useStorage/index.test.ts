@@ -253,12 +253,35 @@ describe('useStorage', () => {
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
-    expect(state).toBe(init)
+    expect(state).not.toBe(init)
 
     init.value.name = 'b'
     await nextTwoTick()
 
-    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+    expect(state.value).toEqual({ name: 'a', data: 123 })
+    expect(init.value).toEqual({ name: 'b', data: 123 })
+  })
+
+  it('initialValue is a function with return object', async () => {
+    expect(storage.getItem(KEY)).toEqual(undefined)
+
+    const init = deepRef({
+      name: 'a',
+      data: 123,
+    })
+    const state = useStorage(KEY, () => init, storage)
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+
+    expect(state).not.toBe(init)
+
+    init.value.name = 'b'
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+    expect(state.value).toEqual({ name: 'a', data: 123 })
+    expect(init.value).toEqual({ name: 'b', data: 123 })
   })
 
   it('eventFilter', async () => {
