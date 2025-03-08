@@ -1,7 +1,7 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import { noop, until } from '@vueuse/shared'
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, isAxiosError } from 'axios'
 import { computed, ref as deepRef, shallowRef } from 'vue'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptions<T, AxiosErrorResponseData> = UseAxiosOptions<T, AxiosErrorResponseData>> {
@@ -272,7 +272,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorRespo
         error.value = e
         onError(e)
 
-        if (e instanceof AxiosError) {
+        if (isAxiosError<AxiosErrorResponseData>(e)) {
           axiosError.value = e
           onAxiosError(e)
         }
