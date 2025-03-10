@@ -43,8 +43,7 @@
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
     "prepack": "pnpm run build",
-    "test:attw": "attw --pack .",
-    "test:attw-esm-only": "attw --pack --config-path ../../attw-esm-only.json ."
+    "test:attw": "attw --pack --config-path ../../attw-esm-only.json ."
   },
   "peerDependencies": {
     "firebase": ">=9.0.0"
