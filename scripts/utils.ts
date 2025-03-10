@@ -249,18 +249,15 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       url: 'git+https://github.com/vueuse/vueuse.git',
       directory: `packages/${name}`,
     }
-    packageJSON.main = './index.cjs'
-    packageJSON.types = packageJSON.type === 'module' ? './index.d.ts' : './index.d.cts'
+    packageJSON.main = './index.mjs'
+    packageJSON.types = './index.d.mts'
     packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
     }
     packageJSON.files = [
-      '*.cjs',
-      '*.d.cts',
       '*.d.mts',
-      '*.d.ts',
       '*.js',
       '*.mjs',
     ]
@@ -274,27 +271,18 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     }
 
     packageJSON.exports = {
-      '.': {
-        import: './index.mjs',
-        require: './index.cjs',
-      },
-      './*': './*',
+      '.': './index.mjs',
       ...packageJSON.exports,
+      './*': './*',
     }
 
     if (submodules) {
       indexes.functions
         .filter(i => i.package === name)
         .forEach((i) => {
-          packageJSON.exports[`./${i.name}`] = {
-            import: `./${i.name}.mjs`,
-            require: `./${i.name}.cjs`,
-          }
+          packageJSON.exports[`./${i.name}`] = `./${i.name}.mjs`
           if (i.component) {
-            packageJSON.exports[`./${i.name}/component`] = {
-              import: `./${i.name}/component.mjs`,
-              require: `./${i.name}/component.cjs`,
-            }
+            packageJSON.exports[`./${i.name}/component`] = `./${i.name}/component.mjs`
           }
         })
     }
