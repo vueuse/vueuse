@@ -3,7 +3,7 @@
   "type": "module",
   "version": "12.8.2",
   "private": true,
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "pnpm@10.6.2",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
