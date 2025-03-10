@@ -41,11 +41,11 @@
     "test:attw": "attw --pack --config-path ../../attw-esm-only.json ."
   },
   "peerDependencies": {
-    "electron": ">=9.0.0"
+    "electron": ">=9.0.0",
+    "vue": "^3.5.0"
   },
   "dependencies": {
-    "@vueuse/shared": "workspace:*",
-    "vue": "catalog:"
+    "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
     "electron": "catalog:"

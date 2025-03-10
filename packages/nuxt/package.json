@@ -41,14 +41,14 @@
     "test:attw": "attw --pack --config-path ../../attw-esm-only.json ."
   },
   "peerDependencies": {
-    "nuxt": "^3.0.0 || ^4.0.0-0"
+    "nuxt": "^3.0.0 || ^4.0.0-0",
+    "vue": "^3.5.0"
   },
   "dependencies": {
     "@nuxt/kit": "catalog:",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
-    "local-pkg": "catalog:",
-    "vue": "catalog:"
+    "local-pkg": "catalog:"
   },
   "devDependencies": {
     "@nuxt/schema": "catalog:",

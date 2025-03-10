@@ -39,7 +39,7 @@
     "prepack": "pnpm run build",
     "test:attw": "attw --pack --config-path ../../attw-esm-only.json ."
   },
-  "dependencies": {
-    "vue": "catalog:"
+  "peerDependencies": {
+    "vue": "^3.5.0"
   }
 }

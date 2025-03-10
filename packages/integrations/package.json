@@ -67,7 +67,8 @@
     "nprogress": "^0.2",
     "qrcode": "^1.5",
     "sortablejs": "^1",
-    "universal-cookie": "^7"
+    "universal-cookie": "^7",
+    "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
     "async-validator": {
@@ -109,8 +110,7 @@
   },
   "dependencies": {
     "@vueuse/core": "workspace:*",
-    "@vueuse/shared": "workspace:*",
-    "vue": "catalog:"
+    "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/nprogress": "catalog:",
