@@ -38,7 +38,7 @@
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
     "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../attw-esm-only.json ."
+    "test:attw": "attw --pack --config-path ../../.attw.json ."
   },
   "peerDependencies": {
     "electron": ">=9.0.0",

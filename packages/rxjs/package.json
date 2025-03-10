@@ -40,7 +40,7 @@
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
     "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../attw-esm-only.json ."
+    "test:attw": "attw --pack --config-path ../../.attw.json ."
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0",
