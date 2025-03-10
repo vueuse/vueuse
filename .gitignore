@@ -5,6 +5,7 @@
 *.log
 *.tgz
 components.d.ts
+components.d.[cm]ts
 dist
 index.json
 indexes.json
