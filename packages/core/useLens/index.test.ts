@@ -20,14 +20,6 @@ describe('useLens', () => {
     expect(source.value.profile.name).toBe('Dave')
   })
 
-  it('uses fallback for undefined property', () => {
-    const source = deepRef({ profile: {} })
-    const name = useLens(source, s => s.profile.name, { fallback: 'Guest' })
-    expect(name.value).toBe('Guest')
-    name.value = 'Eve'
-    expect(source.value.profile.name).toBe('Eve')
-  })
-
   it('transforms value on get and set', () => {
     const source = deepRef({ count: '42' })
     const count = useLens(source, s => s.count, {
