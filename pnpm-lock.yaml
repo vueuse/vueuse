@@ -36,9 +36,6 @@ catalogs:
     '@type-challenges/utils':
       specifier: ^0.1.1
       version: 0.1.1
-    '@types/js-yaml':
-      specifier: ^4.0.9
-      version: 4.0.9
     '@types/md5':
       specifier: ^2.3.5
       version: 2.3.5
@@ -141,9 +138,6 @@ catalogs:
     idb-keyval:
       specifier: ^6.2.1
       version: 6.2.1
-    js-yaml:
-      specifier: ^4.1.0
-      version: 4.1.0
     jsdom:
       specifier: ^26.0.0
       version: 26.0.0
@@ -279,6 +273,9 @@ catalogs:
     vue-tsc:
       specifier: ^2.2.8
       version: 2.2.8
+    yaml:
+      specifier: ^2.7.0
+      version: 2.7.0
 
 overrides:
   '@typescript-eslint/utils': ^8.26.0
@@ -324,9 +321,6 @@ importers:
       '@type-challenges/utils':
         specifier: 'catalog:'
         version: 0.1.1
-      '@types/js-yaml':
-        specifier: 'catalog:'
-        version: 4.0.9
       '@types/md5':
         specifier: 'catalog:'
         version: 2.3.5
@@ -423,9 +417,6 @@ importers:
       gray-matter:
         specifier: 'catalog:'
         version: 4.0.3
-      js-yaml:
-        specifier: 'catalog:'
-        version: 4.1.0
       jsdom:
         specifier: 'catalog:'
         version: 26.0.0
@@ -540,6 +531,9 @@ importers:
       vue-tsc:
         specifier: 'catalog:'
         version: 2.2.8(typescript@5.8.2)
+      yaml:
+        specifier: 'catalog:'
+        version: 2.7.0
 
   packages/components:
     dependencies:
@@ -2974,9 +2968,6 @@ packages:
 
   '@types/http-proxy@1.17.16':
     resolution: {integrity: sha512-sdWoUajOB1cd0A8cRRQ1cfyWNbmFKLAqBB89Y8x5iYyG/mkJHc0YUH8pdWBy2omi9qtCpiIgGjuwO0dQST2l5w==}
-
-  '@types/js-yaml@4.0.9':
-    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -10729,8 +10720,6 @@ snapshots:
   '@types/http-proxy@1.17.16':
     dependencies:
       '@types/node': 22.13.10
-
-  '@types/js-yaml@4.0.9': {}
 
   '@types/json-schema@7.0.15': {}
 
