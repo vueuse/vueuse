@@ -37,6 +37,13 @@ export interface UseMagicKeysOptions<Reactive extends boolean> {
   passive?: boolean
 
   /**
+   * Custom event handler for registered keydown/keyup event.
+   *
+   * When using `e.preventDefault()`, you will need to pass `passive: false` to useMagicKeys().
+   */
+  onRegisteredEventFired?: (e: KeyboardEvent) => void | boolean
+
+  /**
    * Custom event handler for keydown/keyup event.
    * Useful when you want to apply custom logic.
    *
@@ -76,6 +83,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     target = defaultWindow,
     aliasMap = DefaultMagicKeysAliasMap,
     passive = true,
+    onRegisteredEventFired = noop,
     onEventFired = noop,
   } = options
   const current = reactive(new Set<string>())
@@ -117,6 +125,8 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
 
     for (const key of values) {
       usedKeys.add(key)
+      if (value)
+        onRegisteredEventFired(e)
       setRefs(key, value)
     }
 
