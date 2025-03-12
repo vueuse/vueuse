@@ -1,0 +1,4 @@
+{
+  "profile": "node16",
+  "ignoreRules": ["cjs-resolves-to-esm"]
+}

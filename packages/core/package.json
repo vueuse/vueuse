@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/core",
   "type": "module",
-  "version": "12.8.2",
+  "version": "13.0.0",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -22,39 +22,31 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs"
-    },
+    ".": "./index.mjs",
     "./*": "./*",
-    "./metadata": {
-      "import": "./metadata.mjs",
-      "require": "./metadata.cjs"
-    }
+    "./metadata": "./metadata.mjs"
   },
-  "main": "./index.cjs",
+  "main": "./index.mjs",
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.mts",
   "files": [
-    "*.cjs",
-    "*.d.cts",
     "*.d.mts",
-    "*.d.ts",
     "*.js",
     "*.mjs"
   ],
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
     "prepack": "pnpm run build",
-    "test:attw": "attw --pack .",
-    "test:attw-esm-only": "attw --pack --config-path ../../attw-esm-only.json ."
+    "test:attw": "attw --pack --config-path ../../.attw.json ."
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
   },
   "dependencies": {
     "@types/web-bluetooth": "catalog:",
     "@vueuse/metadata": "workspace:*",
-    "@vueuse/shared": "workspace:*",
-    "vue": "catalog:"
+    "@vueuse/shared": "workspace:*"
   }
 }

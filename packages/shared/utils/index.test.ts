@@ -2,22 +2,24 @@ import type { MockInstance } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
 import {
+  createSingletonPromise,
+  increaseWithUnit,
+  objectOmit,
+  objectPick,
+  promiseTimeout,
+} from './general'
+import {
   assert,
   clamp,
   createFilterWrapper,
-  createSingletonPromise,
   debounceFilter,
   hasOwn,
-  increaseWithUnit,
   isClient,
   isDef,
   isIOS,
   isObject,
   noop,
   now,
-  objectOmit,
-  objectPick,
-  promiseTimeout,
   rand,
   throttleFilter,
   timestamp,
