@@ -1,9 +1,9 @@
-import type { AfterFetchContext, OnFetchErrorContext } from '.'
+import type { AfterFetchContext, OnFetchErrorContext } from './index'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { createFetch, useFetch } from '.'
+import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
+import { createFetch, useFetch } from './index'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
@@ -135,7 +135,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should refetch if refetch is set to true', async () => {
-    const url = ref('https://example.com')
+    const url = shallowRef('https://example.com')
     useFetch(url, { refetch: true })
     url.value = 'https://example.com?text'
     await vi.waitFor(() => {
@@ -144,7 +144,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should auto refetch when the refetch is set to true and the payload is a ref', async () => {
-    const param = ref({ num: 1 })
+    const param = deepRef({ num: 1 })
     useFetch('https://example.com', { refetch: true }).post(param)
     param.value.num = 2
     await vi.waitFor(() => {
@@ -722,7 +722,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should listen url ref change abort previous request', async () => {
-    const url = ref('https://example.com')
+    const url = shallowRef('https://example.com')
     const { onFetchResponse } = useFetch(url, { refetch: true, immediate: false })
 
     onFetchResponse(onFetchResponseSpy)
@@ -739,7 +739,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should be generated payloadType on execute', async () => {
-    const form = ref()
+    const form = deepRef()
     const { execute } = useFetch('https://example.com').post(form)
 
     form.value = { x: 1 }
@@ -751,7 +751,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should be generated payloadType on execute with formdata', async () => {
-    const form = ref<any>({ x: 1 })
+    const form = deepRef<any>({ x: 1 })
     const { execute } = useFetch('https://example.com').post(form)
 
     form.value = new FormData()
@@ -805,6 +805,34 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(fetchSpy).toHaveBeenCalledTimes(2)
       expect(options?.context).toBeDefined()
       expect(options?.execute).toBeDefined()
+    })
+  })
+
+  it('should partial overwrite when combination is overwrite', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      combination: 'overwrite',
+      options: {
+        beforeFetch({ options }) {
+          options.headers = { ...options.headers, before: 'Global' }
+          return { options }
+        },
+        afterFetch(ctx) {
+          ctx.data.after = 'Global'
+          return ctx
+        },
+      },
+    })
+
+    const { data } = useMyFetch('test', {
+      beforeFetch({ options }) {
+        options.headers = { ...options.headers, before: 'Local' }
+      },
+    }).json()
+
+    await vi.waitFor(() => {
+      expect(fetchSpyHeaders()).toMatchObject({ before: 'Local' })
+      expect(data.value).toEqual(expect.objectContaining({ after: 'Global' }))
     })
   })
 })

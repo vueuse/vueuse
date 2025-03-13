@@ -1,11 +1,11 @@
 import type { Pausable } from '@vueuse/shared'
-import type { UseCountdownOptions } from '.'
-import { promiseTimeout } from '@vueuse/shared'
+import type { UseCountdownOptions } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope } from 'vue'
-import { useCountdown } from '.'
+import { effectScope, shallowRef } from 'vue'
+import { useCountdown } from './index'
 
 describe('useCountdown', () => {
+  vi.useFakeTimers()
   let tickCallback = vi.fn()
   let completeCallback = vi.fn()
   let countdown = 3
@@ -33,22 +33,22 @@ describe('useCountdown', () => {
   async function exec({ isActive, pause, resume }: Pausable) {
     expect(isActive.value).toBeTruthy()
     expect(completeCallback).toHaveBeenCalledTimes(0)
-    await promiseTimeout(110)
+    vi.advanceTimersByTime(110)
     expect(tickCallback).toHaveBeenCalledTimes(1)
 
     pause()
     expect(isActive.value).toBeFalsy()
 
-    await promiseTimeout(110)
+    vi.advanceTimersByTime(110)
     expect(tickCallback).toHaveBeenCalledTimes(1)
 
     resume()
     expect(isActive.value).toBeTruthy()
 
-    await promiseTimeout(110)
+    vi.advanceTimersByTime(110)
     expect(tickCallback).toHaveBeenCalledTimes(2)
 
-    await promiseTimeout(110)
+    vi.advanceTimersByTime(110)
     expect(tickCallback).toHaveBeenCalledTimes(3)
     expect(completeCallback).toHaveBeenCalledTimes(1)
   }
@@ -58,14 +58,14 @@ describe('useCountdown', () => {
     expect(isActive.value).toBeTruthy()
     expect(completeCallback).toHaveBeenCalledTimes(0)
 
-    await promiseTimeout(110)
+    vi.advanceTimersByTime(110)
 
     expect(tickCallback).toHaveBeenCalledTimes(1)
     expect(completeCallback).toHaveBeenCalledTimes(0)
 
     stop()
     expect(isActive.value).toBeFalsy()
-    await promiseTimeout(110)
+    vi.advanceTimersByTime(110)
 
     expect(tickCallback).toHaveBeenCalledTimes(1)
     expect(remaining.value).toBe(countdown)
@@ -76,14 +76,14 @@ describe('useCountdown', () => {
     start()
 
     expect(isActive.value).toBeTruthy()
-    await promiseTimeout(210)
+    vi.advanceTimersByTime(210)
 
     expect(tickCallback).toHaveBeenCalledTimes(2)
     expect(completeCallback).toHaveBeenCalledTimes(0)
 
     expect(remaining.value).toBe(1)
 
-    await promiseTimeout(110)
+    vi.advanceTimersByTime(110)
     expect(remaining.value).toBe(0)
     expect(completeCallback).toHaveBeenCalledTimes(1)
   })
@@ -98,8 +98,8 @@ describe('useCountdown', () => {
       await exec(useCountdown(countdown, options))
     })
     tickCallback.mockClear()
-    await scope.stop()
-    await promiseTimeout(300)
+    scope.stop()
+    vi.advanceTimersByTime(300)
     expect(tickCallback).toHaveBeenCalledTimes(0)
   })
 
@@ -107,7 +107,39 @@ describe('useCountdown', () => {
     const { isActive } = useCountdown(5, { interval: -1 })
 
     expect(isActive.value).toBeFalsy()
-    await promiseTimeout(60)
+    vi.advanceTimersByTime(60)
     expect(tickCallback).toHaveBeenCalledTimes(0)
+  })
+
+  it('initial interval can be changed', async () => {
+    const countdown = shallowRef(3)
+
+    const { start } = useCountdown(countdown, { ...options, immediate: false })
+
+    countdown.value = 2
+    start()
+    vi.advanceTimersByTime(210)
+    expect(completeCallback).toHaveBeenCalledTimes(1)
+  })
+
+  it('start can provide a custom interval', async () => {
+    const { start, reset } = useCountdown(countdown, options)
+    vi.advanceTimersByTime(countdown * interval + 10)
+    expect(completeCallback).toHaveBeenCalledTimes(1)
+
+    start(1)
+    vi.advanceTimersByTime(110)
+    expect(completeCallback).toHaveBeenCalledTimes(2)
+
+    start()
+    vi.advanceTimersByTime(110)
+    expect(completeCallback).toHaveBeenCalledTimes(2)
+    vi.advanceTimersByTime(countdown * interval + 10)
+    expect(completeCallback).toHaveBeenCalledTimes(3)
+
+    start(1)
+    reset()
+    vi.advanceTimersByTime(110)
+    expect(completeCallback).toHaveBeenCalledTimes(3)
   })
 })

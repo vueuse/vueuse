@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { shallowRef } from 'vue'
-import { useAnimate } from '.'
+import { useAnimate } from './index'
 
 describe('useAnimate', () => {
   it('should be defined', () => {

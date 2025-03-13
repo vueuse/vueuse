@@ -11,7 +11,6 @@ export interface PackageManifest {
   submodules?: boolean
   build?: boolean
   iife?: boolean
-  cjs?: boolean
   mjs?: boolean
   dts?: boolean
   target?: string

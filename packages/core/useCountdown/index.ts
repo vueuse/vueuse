@@ -1,7 +1,7 @@
-import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { Pausable } from '@vueuse/shared'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref, toValue } from 'vue'
+import { shallowRef, toValue } from 'vue'
 
 export interface UseCountdownOptions {
   /**
@@ -28,11 +28,11 @@ export interface UseCountdownReturn extends Pausable {
   /**
    * Current countdown value.
    */
-  remaining: Ref<number>
+  remaining: ShallowRef<number>
   /**
    * Resets the countdown and repeatsLeft to their initial values.
    */
-  reset: () => void
+  reset: (countdown?: MaybeRefOrGetter<number>) => void
   /**
    * Stops the countdown and resets its state.
    */
@@ -40,7 +40,7 @@ export interface UseCountdownReturn extends Pausable {
   /**
    * Reset the countdown and start it again.
    */
-  start: (initialCountdown?: MaybeRefOrGetter<number>) => void
+  start: (countdown?: MaybeRefOrGetter<number>) => void
 }
 
 /**
@@ -52,7 +52,7 @@ export interface UseCountdownReturn extends Pausable {
  * @see https://vueuse.org/useCountdown
  */
 export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options?: UseCountdownOptions): UseCountdownReturn {
-  const remaining = ref(toValue(initialCountdown))
+  const remaining = shallowRef(toValue(initialCountdown))
 
   const intervalController = useIntervalFn(() => {
     const value = remaining.value - 1
@@ -64,8 +64,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     }
   }, options?.interval ?? 1000, { immediate: options?.immediate ?? false })
 
-  const reset = () => {
-    remaining.value = toValue(initialCountdown)
+  const reset = (countdown?: MaybeRefOrGetter<number>) => {
+    remaining.value = toValue(countdown) ?? toValue(initialCountdown)
   }
 
   const stop = () => {
@@ -81,8 +81,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     }
   }
 
-  const start = () => {
-    reset()
+  const start = (countdown?: MaybeRefOrGetter<number>) => {
+    reset(countdown)
     intervalController.resume()
   }
 

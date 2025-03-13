@@ -1,4 +1,5 @@
-import type { DebounceFilterOptions, FunctionArgs, MaybeRefOrGetter, PromisifyFn } from '../utils'
+import type { MaybeRefOrGetter } from 'vue'
+import type { DebounceFilterOptions, FunctionArgs, PromisifyFn } from '../utils'
 import { createFilterWrapper, debounceFilter } from '../utils'
 
 /**

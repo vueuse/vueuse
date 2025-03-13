@@ -1,12 +1,12 @@
 import type { RenderableComponent } from '../types'
 import { useElementVisibility } from '@vueuse/core'
-import { defineComponent, h, reactive, ref } from 'vue'
+import { ref as deepRef, defineComponent, h, reactive } from 'vue'
 
 export const UseElementVisibility = /* #__PURE__ */ defineComponent<RenderableComponent>({
   name: 'UseElementVisibility',
   props: ['as'] as unknown as undefined,
   setup(props, { slots }) {
-    const target = ref()
+    const target = deepRef()
     const data = reactive({
       isVisible: useElementVisibility(target),
     })

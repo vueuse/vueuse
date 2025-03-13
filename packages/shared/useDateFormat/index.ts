@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '../utils'
+import type { MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 
 export type DateLike = Date | number | string | undefined
@@ -20,7 +20,7 @@ export interface UseDateFormatOptions {
 
 // eslint-disable-next-line regexp/no-misleading-capturing-group
 const REGEX_PARSE = /* #__PURE__ */ /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[T\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/i
-const REGEX_FORMAT = /* #__PURE__ */ /[YMDHhms]o|\[([^\]]+)\]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|SSS/g
+const REGEX_FORMAT = /* #__PURE__ */ /[YMDHhms]o|\[([^\]]+)\]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|z{1,4}|SSS/g
 
 function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   let m = (hours < 12 ? 'AM' : 'PM')
@@ -45,6 +45,9 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const milliseconds = date.getMilliseconds()
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
+  const stripTimeZone = (dateString: string) => {
+    return dateString.split(' ')[1] ?? ''
+  }
   const matches: Record<string, () => string | number> = {
     Yo: () => formatOrdinal(years),
     YY: () => String(years).slice(-2),
@@ -78,6 +81,10 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     AA: () => meridiem(hours, minutes, false, true),
     a: () => meridiem(hours, minutes, true),
     aa: () => meridiem(hours, minutes, true, true),
+    z: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
+    zz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
+    zzz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
+    zzzz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'longOffset' })),
   }
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 ?? matches[match]?.() ?? match)
 }

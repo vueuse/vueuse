@@ -1,4 +1,5 @@
-import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
+import type { Pausable } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'

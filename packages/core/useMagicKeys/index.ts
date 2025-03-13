@@ -1,7 +1,6 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, reactive, ref, toValue } from 'vue'
+import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -168,7 +167,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
             refs[prop] = computed(() => keys.map(key => toValue(proxy[key])).every(Boolean))
           }
           else {
-            refs[prop] = ref(false)
+            refs[prop] = shallowRef(false)
           }
         }
         const r = Reflect.get(target, prop, rec)

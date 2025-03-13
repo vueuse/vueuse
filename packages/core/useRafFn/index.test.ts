@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
-import { useRafFn } from '.'
+import { shallowRef } from 'vue'
+import { useRafFn } from './index'
 
 describe('useRafFn', () => {
   it('should be defined', () => {
@@ -72,7 +72,7 @@ describe('useRafFn', () => {
 
   it('should handle a framerate change', { retry: 3 }, async () => {
     const initialFramerate = 60
-    const fr = ref(initialFramerate)
+    const fr = shallowRef(initialFramerate)
     const fn1 = vi.fn()
     const fn2 = vi.fn()
     useRafFn(fn1, { fpsLimit: fr })
@@ -90,5 +90,19 @@ describe('useRafFn', () => {
       expect(fn2).toHaveBeenCalled()
     })
     expect(fn1.mock.calls.length).toBeLessThan(fn2.mock.calls.length)
+  })
+
+  it('should only be called once when the once option is set to true', async () => {
+    const fn = vi.fn()
+    const fn1 = vi.fn()
+    useRafFn(fn, { once: true })
+    useRafFn(fn1)
+    await vi.waitFor(() => {
+      expect(fn).toHaveBeenCalled()
+      expect(fn1).toHaveBeenCalled()
+    })
+
+    expect(fn.mock.calls.length).toBe(1)
+    expect(fn1.mock.calls.length).toBeGreaterThan(1)
   })
 })

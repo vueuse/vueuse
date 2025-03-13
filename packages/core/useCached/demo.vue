@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { useCached } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 interface Value {
   value: number
   extra: number
 }
 
-const value = ref<Value>({ value: 42, extra: 0 })
+const value = shallowRef<Value>({ value: 42, extra: 0 })
 function comparator(a: Value, b: Value) {
   return a.value === b.value
 }
 const cachedValue = useCached(value, comparator)
 
-const inputValue = ref(value.value.value)
-const inputExtra = ref(value.value.extra)
+const inputValue = shallowRef(value.value.value)
+const inputExtra = shallowRef(value.value.extra)
 
 function onSyncClick() {
   value.value = {

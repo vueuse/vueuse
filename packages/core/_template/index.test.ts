@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { useCounter } from '.'
+import { useCounter } from './index'
 
 describe('useCounter', () => {
   it('should be defined', () => {
