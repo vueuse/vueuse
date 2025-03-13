@@ -41,7 +41,7 @@ export interface UseMagicKeysOptions<Reactive extends boolean> {
    *
    * When using `e.preventDefault()`, you will need to pass `passive: false` to useMagicKeys().
    */
-  onRegisteredEventFired?: (e: KeyboardEvent) => void | boolean
+  onRegisteredEventFired?: (e: KeyboardEvent) => void
 
   /**
    * Custom event handler for keydown/keyup event.
