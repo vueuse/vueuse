@@ -15,6 +15,29 @@ describe('useMagicKeys', () => {
 
     expect(A.value).toBe(true)
   })
+  it('registered event for single key', async () => {
+    let registeredKeydown = false
+    let registeredKeyup = false
+    const { A } = useMagicKeys({
+      target,
+      onRegisteredEventFired(e) {
+        if (e.key === 'A' && e.type === 'keydown') {
+          registeredKeydown = true
+        }
+        if (e.key === 'A' && e.type === 'updown') {
+          registeredKeyup = true
+        }
+      },
+    })
+
+    target.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'A',
+    }))
+
+    expect(A.value).toBe(true)
+    expect(registeredKeydown).toBe(true)
+    expect(registeredKeyup).toBe(false)
+  })
   it('multiple keys', async () => {
     const { Ctrl_Shift_Period } = useMagicKeys({ target })
     expect(Ctrl_Shift_Period.value).toBe(false)
