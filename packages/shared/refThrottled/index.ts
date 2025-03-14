@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { ref as deepRef, watch } from 'vue'
+import { ref as deepRef, toValue, watch } from 'vue'
 import { useThrottleFn } from '../useThrottleFn'
 
 export type RefThrottledReturn<T = any> = Ref<T>
@@ -13,11 +13,11 @@ export type RefThrottledReturn<T = any> = Ref<T>
  * @param trailing if true, update the value again after the delay time is up
  * @param leading if true, update the value on the leading edge of the ms timeout
  */
-export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, leading = true): RefThrottledReturn<T> {
+export function refThrottled<T = any>(value: Ref<T>, delay = 200, trailing = true, leading = true): RefThrottledReturn<T> {
   if (delay <= 0)
     return value
 
-  const throttled = deepRef(value.value) as Ref<T>
+  const throttled = deepRef(toValue(value))
 
   const updater = useThrottleFn(() => {
     throttled.value = value.value
@@ -25,7 +25,7 @@ export function refThrottled<T>(value: Ref<T>, delay = 200, trailing = true, lea
 
   watch(value, () => updater())
 
-  return throttled
+  return throttled as Ref<T>
 }
 
 // alias

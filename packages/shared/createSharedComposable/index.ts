@@ -3,7 +3,7 @@ import type { AnyFn } from '../utils'
 import { effectScope } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
-export type SharedComposableReturn<T = AnyFn> = T
+export type SharedComposableReturn<T extends AnyFn = AnyFn> = T
 
 /**
  * Make a composable function usable with multiple Vue instances.
