@@ -1,6 +1,8 @@
 import { toRefs, toValue } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 
+export type ReactiveOmitReturn<T extends object, K extends keyof T> = Omit<T, K> | Partial<T>
+
 export type ReactiveOmitPredicate<T> = (value: T[keyof T], key: keyof T) => boolean
 
 export function reactiveOmit<T extends object, K extends keyof T>(
@@ -19,7 +21,7 @@ export function reactiveOmit<T extends object>(
 export function reactiveOmit<T extends object, K extends keyof T>(
   obj: T,
   ...keys: (K | K[])[]
-): Omit<T, K> {
+): ReactiveOmitReturn<T, K> {
   const flatKeys = keys.flat() as K[]
   const predicate = flatKeys[0] as unknown as ReactiveOmitPredicate<T>
   return reactiveComputed<any>(() =>

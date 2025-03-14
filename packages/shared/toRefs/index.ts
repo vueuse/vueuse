@@ -15,6 +15,7 @@ export interface ToRefsOptions {
  *
  * @see https://vueuse.org/toRefs
  * @param objectRef A ref or normal object or array.
+ * @param options Options
  */
 export function toRefs<T extends object>(
   objectRef: MaybeRef<T>,

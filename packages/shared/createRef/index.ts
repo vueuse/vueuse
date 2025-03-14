@@ -1,6 +1,8 @@
 import type { Ref, ShallowRef } from 'vue'
 import { ref as deepRef, shallowRef } from 'vue'
 
+export type CreateRefReturn<T = any, D extends boolean = false> = ShallowOrDeepRef<T, D>
+
 export type ShallowOrDeepRef<T = any, D extends boolean = false> = D extends true ? Ref<T> : ShallowRef<T>
 
 /**
