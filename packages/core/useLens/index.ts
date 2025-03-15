@@ -10,7 +10,7 @@ type LensSelector<T> = {
   [index: number]: T extends any[] ? LensSelector<T[number]> : never
 }
 
-interface LensOptions<P, R = P> {
+export interface UseLensOptions<P, R = P> {
   fallback?: P
   transform?: (value: P) => R
   onGet?: (value: P) => R
