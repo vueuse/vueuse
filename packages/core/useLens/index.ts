@@ -79,7 +79,7 @@ const error = {
  * @returns A writable computed ref with the selected property value.
  */
 export function useLens<T, P>(
-  source: Ref<T> | T,
+  source: MaybeRef<T>,
   selector: (lens: LensSelector<T>) => P,
   options: LensOptions<P> & { fallback: P }
 ): WritableComputedRef<P>
