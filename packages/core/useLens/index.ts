@@ -1,5 +1,5 @@
 // #region imports
-import type { Ref, WritableComputedRef, MaybeRef } from 'vue'
+import type { WritableComputedRef, MaybeRef } from 'vue'
 import { computed, isProxy, isRef, toValue } from 'vue'
 // #endregion
 
@@ -95,7 +95,7 @@ export function useLens<T, P>(
  * @returns A writable computed ref with the transformed value.
  */
 export function useLens<T, P, R>(
-  source: Ref<T> | T,
+  source: MaybeRef<T>,
   selector: (lens: LensSelector<T>) => P,
   options: UseLensOptions<P, R> & { transform: (value: P) => R }
 ): WritableComputedRef<R>
@@ -111,7 +111,7 @@ export function useLens<T, P, R>(
  * @returns A writable computed ref with the transformed value on get.
  */
 export function useLens<T, P, R>(
-  source: Ref<T> | T,
+  source: MaybeRef<T>,
   selector: (lens: LensSelector<T>) => P,
   options: UseLensOptions<P, R> & { onGet: (value: P) => R }
 ): WritableComputedRef<R>
@@ -127,7 +127,7 @@ export function useLens<T, P, R>(
  * @returns A writable computed ref with the transformed value on set.
  */
 export function useLens<T, P, R>(
-  source: Ref<T> | T,
+  source: MaybeRef<T>,
   selector: (lens: LensSelector<T>) => P,
   options: UseLensOptions<P, R> & { onSet: (value: R) => P }
 ): WritableComputedRef<P>
@@ -142,7 +142,7 @@ export function useLens<T, P, R>(
  * @returns A writable computed ref with the selected property value or undefined.
  */
 export function useLens<T, P>(
-  source: Ref<T> | T,
+  source: MaybeRef<T>,
   selector: (lens: LensSelector<T>) => P,
   options?: UseLensOptions<P>
 ): WritableComputedRef<P | undefined>
@@ -158,7 +158,7 @@ export function useLens<T, P>(
  * @return {WritableComputedRef<P | R | undefined>}
  */
 export function useLens<T, P, R = P>(
-  source: Ref<T> | T,
+  source: MaybeRef<T>,
   selector: (lens: LensSelector<T>) => P,
   options?: UseLensOptions<P, R>,
 ): WritableComputedRef<P | R | undefined> {
