@@ -1,5 +1,5 @@
 // #region imports
-import type { Ref, WritableComputedRef } from 'vue'
+import type { Ref, WritableComputedRef, MaybeRef } from 'vue'
 import { computed, isProxy, isRef, toValue } from 'vue'
 // #endregion
 
@@ -81,7 +81,7 @@ const error = {
 export function useLens<T, P>(
   source: MaybeRef<T>,
   selector: (lens: LensSelector<T>) => P,
-  options: LensOptions<P> & { fallback: P }
+  options: UseLensOptions<P> & { fallback: P }
 ): WritableComputedRef<P>
 
 /**
@@ -97,7 +97,7 @@ export function useLens<T, P>(
 export function useLens<T, P, R>(
   source: Ref<T> | T,
   selector: (lens: LensSelector<T>) => P,
-  options: LensOptions<P, R> & { transform: (value: P) => R }
+  options: UseLensOptions<P, R> & { transform: (value: P) => R }
 ): WritableComputedRef<R>
 
 /**
@@ -113,7 +113,7 @@ export function useLens<T, P, R>(
 export function useLens<T, P, R>(
   source: Ref<T> | T,
   selector: (lens: LensSelector<T>) => P,
-  options: LensOptions<P, R> & { onGet: (value: P) => R }
+  options: UseLensOptions<P, R> & { onGet: (value: P) => R }
 ): WritableComputedRef<R>
 
 /**
@@ -129,7 +129,7 @@ export function useLens<T, P, R>(
 export function useLens<T, P, R>(
   source: Ref<T> | T,
   selector: (lens: LensSelector<T>) => P,
-  options: LensOptions<P, R> & { onSet: (value: R) => P }
+  options: UseLensOptions<P, R> & { onSet: (value: R) => P }
 ): WritableComputedRef<P>
 
 /**
@@ -144,7 +144,7 @@ export function useLens<T, P, R>(
 export function useLens<T, P>(
   source: Ref<T> | T,
   selector: (lens: LensSelector<T>) => P,
-  options?: LensOptions<P>
+  options?: UseLensOptions<P>
 ): WritableComputedRef<P | undefined>
 // #endregion
 
@@ -160,7 +160,7 @@ export function useLens<T, P>(
 export function useLens<T, P, R = P>(
   source: Ref<T> | T,
   selector: (lens: LensSelector<T>) => P,
-  options?: LensOptions<P, R>,
+  options?: UseLensOptions<P, R>,
 ): WritableComputedRef<P | R | undefined> {
   if (!isRef(source) && !isProxy(source))
     throw error.notRef
