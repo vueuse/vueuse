@@ -4,10 +4,10 @@ import { computed, isProxy, isRef, toValue } from 'vue'
 // #endregion
 
 // #region types
-type LensSelector<T> = {
-  [K in keyof T]: T[K] extends object | any[] ? LensSelector<T[K]> : T[K];
+type UseLensSelector<T> = {
+  [K in keyof T]: T[K] extends object | any[] ? UseLensSelector<T[K]> : T[K];
 } & {
-  [index: number]: T extends any[] ? LensSelector<T[number]> : never
+  [index: number]: T extends any[] ? UseLensSelector<T[number]> : never
 }
 
 export interface UseLensOptions<P, R = P> {
@@ -80,7 +80,7 @@ const error = {
  */
 export function useLens<T, P>(
   source: MaybeRef<T>,
-  selector: (lens: LensSelector<T>) => P,
+  selector: (lens: UseLensSelector<T>) => P,
   options: UseLensOptions<P> & { fallback: P }
 ): WritableComputedRef<P>
 
@@ -96,7 +96,7 @@ export function useLens<T, P>(
  */
 export function useLens<T, P, R>(
   source: MaybeRef<T>,
-  selector: (lens: LensSelector<T>) => P,
+  selector: (lens: UseLensSelector<T>) => P,
   options: UseLensOptions<P, R> & { transform: (value: P) => R }
 ): WritableComputedRef<R>
 
@@ -112,7 +112,7 @@ export function useLens<T, P, R>(
  */
 export function useLens<T, P, R>(
   source: MaybeRef<T>,
-  selector: (lens: LensSelector<T>) => P,
+  selector: (lens: UseLensSelector<T>) => P,
   options: UseLensOptions<P, R> & { onGet: (value: P) => R }
 ): WritableComputedRef<R>
 
@@ -128,7 +128,7 @@ export function useLens<T, P, R>(
  */
 export function useLens<T, P, R>(
   source: MaybeRef<T>,
-  selector: (lens: LensSelector<T>) => P,
+  selector: (lens: UseLensSelector<T>) => P,
   options: UseLensOptions<P, R> & { onSet: (value: R) => P }
 ): WritableComputedRef<P>
 
@@ -143,7 +143,7 @@ export function useLens<T, P, R>(
  */
 export function useLens<T, P>(
   source: MaybeRef<T>,
-  selector: (lens: LensSelector<T>) => P,
+  selector: (lens: UseLensSelector<T>) => P,
   options?: UseLensOptions<P>
 ): WritableComputedRef<P | undefined>
 // #endregion
@@ -159,7 +159,7 @@ export function useLens<T, P>(
  */
 export function useLens<T, P, R = P>(
   source: MaybeRef<T>,
-  selector: (lens: LensSelector<T>) => P,
+  selector: (lens: UseLensSelector<T>) => P,
   options?: UseLensOptions<P, R>,
 ): WritableComputedRef<P | R | undefined> {
   if (!isRef(source) && !isProxy(source))
