@@ -14,7 +14,6 @@ The Web Notification interface of the Notifications API is used to configure and
 Before an app can send a notification, the user must grant the application the right to do so. The user's OS settings may also prevent expected notification behaviour.
 :::
 
-
 ```ts
 const {
   isSupported,
