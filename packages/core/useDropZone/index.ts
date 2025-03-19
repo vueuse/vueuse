@@ -3,6 +3,7 @@ import { isClient } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
 import { shallowRef, unref } from 'vue'
 
+import { useElementHover } from '../useElementHover'
 import { useEventListener } from '../useEventListener'
 
 export interface UseDropZoneReturn {
@@ -80,6 +81,8 @@ export function useDropZone(
       && !('chrome' in window)
     )
 
+    const isInsideTargetElement = useElementHover(target)
+
     const handleDragEvent = (event: DragEvent, eventType: 'enter' | 'over' | 'leave' | 'drop') => {
       const dataTransferItemList = event.dataTransfer?.items
       isValid = (dataTransferItemList && checkValidity(dataTransferItemList)) ?? false
@@ -113,7 +116,7 @@ export function useDropZone(
           break
         case 'leave':
           counter -= 1
-          if (counter === 0)
+          if (counter === 0 || !isInsideTargetElement.value)
             isOverDropZone.value = false
           _options.onLeave?.(null, event)
           break
