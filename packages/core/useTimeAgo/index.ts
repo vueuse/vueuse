@@ -3,7 +3,7 @@ import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
-export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string
+export type UseTimeAgoFormatter<T extends number | string> = (value: T, isPast: boolean) => string
 
 export type UseTimeAgoUnitNamesDefault = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
 
@@ -14,9 +14,11 @@ export interface UseTimeAgoMessagesBuiltIn {
   invalid: string
 }
 
+type CustomUnit<UnitNames extends string = UseTimeAgoUnitNamesDefault> = Record<Exclude<UnitNames, keyof UseTimeAgoMessagesBuiltIn>, string | UseTimeAgoFormatter<number>>
+
 export type UseTimeAgoMessages<UnitNames extends string = UseTimeAgoUnitNamesDefault>
   = UseTimeAgoMessagesBuiltIn
-    & Record<UnitNames, string | UseTimeAgoFormatter<number>>
+    & CustomUnit<UnitNames>
 
 export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitNamesDefault> {
   /**
@@ -72,7 +74,7 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
   updateInterval?: number
 }
 
-export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
+export interface UseTimeAgoUnit<Unit extends string = keyof CustomUnit> {
   max: number
   value: number
   name: Unit
@@ -88,10 +90,10 @@ const DEFAULT_UNITS: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[] = [
   { max: Number.POSITIVE_INFINITY, value: 31536000000, name: 'year' },
 ]
 
-export const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
+export const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages = {
   justNow: 'just now',
-  past: n => n.match(/\d/) ? `${n} ago` : n,
-  future: n => n.match(/\d/) ? `in ${n}` : n,
+  past: n => n.match(/\d/) ? `${n} ago` : `${n}`,
+  future: n => n.match(/\d/) ? `in ${n}` : `${n}`,
   month: (n, past) => n === 1
     ? past
       ? 'last month'
@@ -116,7 +118,7 @@ export const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages<UseTimeAgoUnitNam
   minute: n => `${n} minute${n > 1 ? 's' : ''}`,
   second: n => `${n} second${n > 1 ? 's' : ''}`,
   invalid: '',
-}
+} as const
 
 function DEFAULT_FORMATTER(date: Date) {
   return date.toISOString().slice(0, 10)
@@ -176,11 +178,11 @@ export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefa
     const val = getValue(diff, unit)
     const past = diff > 0
 
-    const str = applyFormat(unit.name as UnitNames, val, past)
+    const str = applyFormat(unit.name as keyof UseTimeAgoMessages<UnitNames>, val, past)
     return applyFormat(past ? 'past' : 'future', str, past)
   }
 
-  function applyFormat(name: UnitNames | keyof UseTimeAgoMessagesBuiltIn, val: number | string, isPast: boolean) {
+  function applyFormat(name: keyof UseTimeAgoMessages<UnitNames>, val: number | string, isPast: boolean) {
     const formatter = messages[name]
     if (typeof formatter === 'function')
       return formatter(val as never, isPast)
