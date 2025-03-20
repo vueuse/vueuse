@@ -92,8 +92,8 @@ const DEFAULT_UNITS: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[] = [
 
 export const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages = {
   justNow: 'just now',
-  past: n => n.match(/\d/) ? `${n} ago` : `${n}`,
-  future: n => n.match(/\d/) ? `in ${n}` : `${n}`,
+  past: n => n.match(/\d/) ? `${n} ago` : n,
+  future: n => n.match(/\d/) ? `in ${n}` : n,
   month: (n, past) => n === 1
     ? past
       ? 'last month'
@@ -118,7 +118,7 @@ export const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages = {
   minute: n => `${n} minute${n > 1 ? 's' : ''}`,
   second: n => `${n} second${n > 1 ? 's' : ''}`,
   invalid: '',
-} as const
+}
 
 function DEFAULT_FORMATTER(date: Date) {
   return date.toISOString().slice(0, 10)
