@@ -3,7 +3,7 @@ import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
-export type UseTimeAgoFormatter<T extends number | string> = (value: T, isPast: boolean) => string
+export type UseTimeAgoFormatter<T = number> = (value: T, isPast: boolean) => string
 
 export type UseTimeAgoUnitNamesDefault = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
 
