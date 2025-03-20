@@ -88,7 +88,7 @@ const DEFAULT_UNITS: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[] = [
   { max: Number.POSITIVE_INFINITY, value: 31536000000, name: 'year' },
 ]
 
-const DEFAULT_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
+export const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
   justNow: 'just now',
   past: n => n.match(/\d/) ? `${n} ago` : n,
   future: n => n.match(/\d/) ? `in ${n}` : n,
@@ -154,7 +154,7 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
 export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(from: Date, options: FormatTimeAgoOptions<UnitNames> = {}, now: Date | number = Date.now()): string {
   const {
     max,
-    messages = DEFAULT_MESSAGES as UseTimeAgoMessages<UnitNames>,
+    messages = USE_TIME_AGO_MESSAGES_DEFAULT as UseTimeAgoMessages<UnitNames>,
     fullDateFormatter = DEFAULT_FORMATTER,
     units = DEFAULT_UNITS as UseTimeAgoUnit<UnitNames>[],
     showSecond = false,
