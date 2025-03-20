@@ -125,6 +125,7 @@
   tryOnUnmounted: function
   unrefElement: function
   until: function
+  USE_TIME_AGO_MESSAGES_DEFAULT: object
   useActiveElement: function
   useAnimate: function
   useArrayDifference: function
