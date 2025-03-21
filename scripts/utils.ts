@@ -210,10 +210,13 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
     let readme = await fs.readFile(mdPath, 'utf-8')
 
     const { content, data = {} } = matter(readme)
+    const yamlData = yaml.stringify(data, {
+      singleQuote: true,
+    })
 
     data.category = fn.category || 'Unknown'
 
-    readme = `---\n${yaml.stringify(data)}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
+    readme = `---\n${yamlData}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
 
     await fs.writeFile(mdPath, `${readme}\n`, 'utf-8')
   }
