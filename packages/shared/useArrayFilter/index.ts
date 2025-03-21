@@ -1,6 +1,8 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 
+export type UseArrayFilterReturn<T = any> = ComputedRef<T[]>
+
 /**
  * Reactive `Array.filter`
  *
@@ -13,14 +15,14 @@ import { computed, toValue } from 'vue'
 export function useArrayFilter<T, S extends T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: T[]) => element is S,
-): ComputedRef<S[]>
+): UseArrayFilterReturn<S>
 export function useArrayFilter<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: T[]) => unknown,
-): ComputedRef<T[]>
+): UseArrayFilterReturn<T>
 export function useArrayFilter<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: T[]) => unknown,
-): ComputedRef<T[]> {
+): UseArrayFilterReturn<T> {
   return computed(() => toValue(list).map(i => toValue(i)).filter(fn))
 }
