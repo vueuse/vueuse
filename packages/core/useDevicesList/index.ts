@@ -44,9 +44,7 @@ export interface UseDevicesListReturn {
  * @see https://vueuse.org/useDevicesList
  * @param options
  */
-export function useDevicesList(
-  options: UseDevicesListOptions = {},
-): UseDevicesListReturn {
+export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesListReturn {
   const {
     navigator = defaultNavigator,
     requestPermissions = false,
@@ -55,23 +53,12 @@ export function useDevicesList(
   } = options
 
   const devices = deepRef([]) as Ref<MediaDeviceInfo[]>
-  const videoInputs = computed(() =>
-    devices.value.filter(i => i.kind === 'videoinput'),
-  )
-  const audioInputs = computed(() =>
-    devices.value.filter(i => i.kind === 'audioinput'),
-  )
-  const audioOutputs = computed(() =>
-    devices.value.filter(i => i.kind === 'audiooutput'),
-  )
-  const isSupported = useSupported(
-    () =>
-      navigator
-      && navigator.mediaDevices
-      && navigator.mediaDevices.enumerateDevices,
-  )
+  const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
+  const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
+  const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
+  const isSupported = useSupported(() => navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
   const permissionGranted = shallowRef(false)
-  let stream: MediaStream | null = null
+  let stream: MediaStream | null
 
   async function update() {
     if (!isSupported.value)
