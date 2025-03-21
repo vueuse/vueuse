@@ -71,26 +71,14 @@ export function useDevicesList(
       && navigator.mediaDevices.enumerateDevices,
   )
   const permissionGranted = shallowRef(false)
-  const requiresStreamToEnumerate = navigator!.userAgent.indexOf('Firefox') > 0
+  let stream: MediaStream | null = null
 
   async function update() {
     if (!isSupported.value)
       return
 
-    let stream: MediaStream | null = null
-
-    if (requiresStreamToEnumerate && !stream) {
-      try {
-        stream = await navigator!.mediaDevices.getUserMedia(constraints)
-      }
-      catch {
-        stream = null
-      }
-    }
-
     devices.value = await navigator!.mediaDevices.enumerateDevices()
     onUpdated?.(devices.value)
-
     if (stream) {
       stream.getTracks().forEach(t => t.stop())
       stream = null
@@ -98,28 +86,46 @@ export function useDevicesList(
   }
 
   async function ensurePermissions() {
+    const deviceName = constraints.video ? 'camera' : 'microphone'
+
     if (!isSupported.value)
       return false
 
     if (permissionGranted.value)
       return true
 
-    const deviceName = constraints.video ? 'camera' : 'microphone'
     const { state, query } = usePermission(deviceName, { controls: true })
     await query()
+    const alwaysRequireStreamToEnumerate = navigator!.userAgent.indexOf('Firefox') > 0
+    if (alwaysRequireStreamToEnumerate || state.value !== 'granted') {
+      let granted = true
+      try {
+        stream = await navigator!.mediaDevices.getUserMedia(constraints)
+      }
+      catch {
+        stream = null
+        granted = false
+      }
+      permissionGranted.value = granted
+    }
+    else {
+      permissionGranted.value = true
+    }
 
-    permissionGranted.value = state.value === 'granted'
+    update()
+
     return permissionGranted.value
   }
 
   if (isSupported.value) {
-    if (requestPermissions)
+    if (requestPermissions) {
       ensurePermissions()
+    }
+    else {
+      update()
+    }
 
-    useEventListener(navigator!.mediaDevices, 'devicechange', update, {
-      passive: true,
-    })
-    update()
+    useEventListener(navigator!.mediaDevices, 'devicechange', update, { passive: true })
   }
 
   return {
