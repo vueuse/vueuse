@@ -12,7 +12,6 @@ catalog:
   '@rollup/plugin-replace': ^6.0.2
   '@shikijs/vitepress-twoslash': ^3.1.0
   '@type-challenges/utils': ^0.1.1
-  '@types/js-yaml': ^4.0.9
   '@types/md5': ^2.3.5
   '@types/node': ^22.13.10
   '@types/nprogress': ^0.2.3
@@ -49,7 +48,7 @@ catalog:
   google-font-installer: ^1.2.0
   gray-matter: ^4.0.3
   idb-keyval: ^6.2.1
-  js-yaml: ^4.1.0
+  yaml: ^2.7.0
   jsdom: ^26.0.0
   jwt-decode: ^4.0.0
   lint-staged: ^15.4.3

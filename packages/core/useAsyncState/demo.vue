@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
 import axios from 'axios'
-import YAML from 'js-yaml'
+import yaml from 'yaml'
 
 const { isLoading, state, isReady, execute } = useAsyncState(
   (args) => {
@@ -20,7 +20,7 @@ const { isLoading, state, isReady, execute } = useAsyncState(
   <div>
     <note>Ready: {{ isReady.toString() }}</note>
     <note>Loading: {{ isLoading.toString() }}</note>
-    <pre lang="json" class="ml-2">{{ YAML.dump(state) }}</pre>
+    <pre lang="json" class="ml-2">{{ yaml.stringify(state) }}</pre>
     <button @click="() => execute(2000, { id: 2 })">
       Execute
     </button>
