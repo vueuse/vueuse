@@ -44,7 +44,9 @@ export interface UseDevicesListReturn {
  * @see https://vueuse.org/useDevicesList
  * @param options
  */
-export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesListReturn {
+export function useDevicesList(
+  options: UseDevicesListOptions = {},
+): UseDevicesListReturn {
   const {
     navigator = defaultNavigator,
     requestPermissions = false,
@@ -53,19 +55,42 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   } = options
 
   const devices = deepRef([]) as Ref<MediaDeviceInfo[]>
-  const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
-  const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
-  const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
-  const isSupported = useSupported(() => navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
+  const videoInputs = computed(() =>
+    devices.value.filter(i => i.kind === 'videoinput'),
+  )
+  const audioInputs = computed(() =>
+    devices.value.filter(i => i.kind === 'audioinput'),
+  )
+  const audioOutputs = computed(() =>
+    devices.value.filter(i => i.kind === 'audiooutput'),
+  )
+  const isSupported = useSupported(
+    () =>
+      navigator
+      && navigator.mediaDevices
+      && navigator.mediaDevices.enumerateDevices,
+  )
   const permissionGranted = shallowRef(false)
-  let stream: MediaStream | null
+  const requiresStreamToEnumerate = navigator!.userAgent.indexOf('Firefox') > 0
 
   async function update() {
     if (!isSupported.value)
       return
 
+    let stream: MediaStream | null = null
+
+    if (requiresStreamToEnumerate && !stream) {
+      try {
+        stream = await navigator!.mediaDevices.getUserMedia(constraints)
+      }
+      catch {
+        stream = null
+      }
+    }
+
     devices.value = await navigator!.mediaDevices.enumerateDevices()
     onUpdated?.(devices.value)
+
     if (stream) {
       stream.getTracks().forEach(t => t.stop())
       stream = null
@@ -73,32 +98,17 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   }
 
   async function ensurePermissions() {
-    const deviceName = constraints.video ? 'camera' : 'microphone'
-
     if (!isSupported.value)
       return false
 
     if (permissionGranted.value)
       return true
 
+    const deviceName = constraints.video ? 'camera' : 'microphone'
     const { state, query } = usePermission(deviceName, { controls: true })
     await query()
-    if (state.value !== 'granted') {
-      let granted = true
-      try {
-        stream = await navigator!.mediaDevices.getUserMedia(constraints)
-      }
-      catch {
-        stream = null
-        granted = false
-      }
-      update()
-      permissionGranted.value = granted
-    }
-    else {
-      permissionGranted.value = true
-    }
 
+    permissionGranted.value = state.value === 'granted'
     return permissionGranted.value
   }
 
@@ -106,7 +116,9 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     if (requestPermissions)
       ensurePermissions()
 
-    useEventListener(navigator!.mediaDevices, 'devicechange', update, { passive: true })
+    useEventListener(navigator!.mediaDevices, 'devicechange', update, {
+      passive: true,
+    })
     update()
   }
 
