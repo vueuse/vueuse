@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/electron",
   "type": "module",
-  "version": "12.8.0",
+  "version": "13.0.0",
   "description": "Electron renderer process modules for VueUse",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "license": "MIT",
@@ -24,33 +24,28 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs"
-    },
+    ".": "./index.mjs",
     "./*": "./*"
   },
-  "main": "./index.cjs",
+  "main": "./index.mjs",
   "module": "./index.mjs",
-  "types": "./index.d.ts",
+  "types": "./index.d.mts",
   "files": [
-    "*.cjs",
-    "*.d.cts",
     "*.d.mts",
-    "*.d.ts",
     "*.js",
     "*.mjs"
   ],
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
-    "prepack": "pnpm run build"
+    "prepack": "pnpm run build",
+    "test:attw": "attw --pack --config-path ../../.attw.json ."
   },
   "peerDependencies": {
-    "electron": ">=9.0.0"
+    "electron": ">=9.0.0",
+    "vue": "^3.5.0"
   },
   "dependencies": {
-    "@vueuse/shared": "workspace:*",
-    "vue": "catalog:"
+    "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
     "electron": "catalog:"
