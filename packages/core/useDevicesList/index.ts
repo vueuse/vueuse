@@ -93,26 +93,22 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
         stream = null
         granted = false
       }
+      update()
       permissionGranted.value = granted
     }
     else {
       permissionGranted.value = true
     }
 
-    update()
-
     return permissionGranted.value
   }
 
   if (isSupported.value) {
-    if (requestPermissions) {
+    if (requestPermissions)
       ensurePermissions()
-    }
-    else {
-      update()
-    }
 
     useEventListener(navigator!.mediaDevices, 'devicechange', update, { passive: true })
+    update()
   }
 
   return {
