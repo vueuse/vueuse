@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { DebounceFilterOptions } from '../utils'
-import { ref as deepRef, toValue, watch } from 'vue'
+import { ref as deepRef, shallowReadonly, toValue, watch } from 'vue'
 import { useDebounceFn } from '../useDebounceFn'
 
 export type RefDebouncedReturn<T = any> = Readonly<Ref<T>>
@@ -10,8 +10,8 @@ export type RefDebouncedReturn<T = any> = Readonly<Ref<T>>
  *
  * @return A new debounced ref.
  */
-export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 200, options: DebounceFilterOptions = {}): RefDebouncedReturn {
-  const debounced = deepRef<T>(toValue(value))
+export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 200, options: DebounceFilterOptions = {}): RefDebouncedReturn<T> {
+  const debounced = deepRef(toValue(value)) as Ref<T>
 
   const updater = useDebounceFn(() => {
     debounced.value = value.value
@@ -19,7 +19,7 @@ export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 20
 
   watch(value, () => updater())
 
-  return debounced
+  return shallowReadonly(debounced)
 }
 
 // alias
