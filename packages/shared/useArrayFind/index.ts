@@ -1,6 +1,8 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 
+export type UseArrayFindReturn<T = any> = ComputedRef<T | undefined>
+
 /**
  * Reactive `Array.find`
  *
@@ -13,7 +15,7 @@ import { computed, toValue } from 'vue'
 export function useArrayFind<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: MaybeRefOrGetter<T>[]) => boolean,
-): ComputedRef<T | undefined> {
+): UseArrayFindReturn {
   return computed(() =>
     toValue<T | undefined>(
       toValue(list)

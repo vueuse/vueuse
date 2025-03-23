@@ -3,16 +3,18 @@ import { toRefs, toValue } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 import { toRef } from '../toRef'
 
+export type ReactivePickReturn<T extends object, K extends keyof T> = { [S in K]: UnwrapRef<T[S]> }
+
 export type ReactivePickPredicate<T> = (value: T[keyof T], key: keyof T) => boolean
 
 export function reactivePick<T extends object, K extends keyof T>(
   obj: T,
   ...keys: (K | K[])[]
-): { [S in K]: UnwrapRef<T[S]> }
+): ReactivePickReturn<T, K>
 export function reactivePick<T extends object>(
   obj: T,
   predicate: ReactivePickPredicate<T>
-): { [S in keyof T]?: UnwrapRef<T[S]> }
+): ReactivePickReturn<T, keyof T>
 
 /**
  * Reactively pick fields from a reactive object

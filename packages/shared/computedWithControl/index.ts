@@ -12,6 +12,8 @@ export interface ComputedWithControlRefExtra {
 export interface ComputedRefWithControl<T> extends ComputedRef<T>, ComputedWithControlRefExtra {}
 export interface WritableComputedRefWithControl<T> extends WritableComputedRef<T>, ComputedWithControlRefExtra {}
 
+export type ComputedWithControlRef<T = any> = ComputedRefWithControl<T> | WritableComputedRefWithControl<T>
+
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
   fn: ComputedGetter<T>
@@ -31,7 +33,7 @@ export function computedWithControl<T, S>(
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
   fn: ComputedGetter<T> | WritableComputedOptions<T>,
-) {
+): ComputedWithControlRef<T> {
   let v: T = undefined!
   let track: Fn
   let trigger: Fn
