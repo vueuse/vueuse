@@ -1,7 +1,7 @@
-import yaml from 'js-yaml'
 import { x } from 'tinyexec'
 import { describe, expect, it } from 'vitest'
 import { getPackageExportsManifest } from 'vitest-package-exports'
+import yaml from 'yaml'
 
 describe('exports-snapshot', async () => {
   const packages: { name: string, path: string, private?: boolean }[] = JSON.parse(
@@ -16,7 +16,7 @@ describe('exports-snapshot', async () => {
         importMode: 'src',
         cwd: pkg.path,
       })
-      await expect(yaml.dump(manifest.exports, { sortKeys: (a, b) => a.localeCompare(b) }))
+      await expect(yaml.stringify(manifest.exports, { sortMapEntries: (a, b) => String(a.key).localeCompare(String(b.key)) }))
         .toMatchFileSnapshot(`./exports/${pkg.name.split('/').pop()}.yaml`)
     })
   }

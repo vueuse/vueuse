@@ -45,7 +45,6 @@
     "@rollup/plugin-replace": "catalog:",
     "@shikijs/vitepress-twoslash": "catalog:",
     "@type-challenges/utils": "catalog:",
-    "@types/js-yaml": "catalog:",
     "@types/md5": "catalog:",
     "@types/node": "catalog:",
     "@types/remove-markdown": "catalog:",
@@ -78,7 +77,6 @@
     "fuse.js": "catalog:",
     "google-font-installer": "catalog:",
     "gray-matter": "catalog:",
-    "js-yaml": "catalog:",
     "jsdom": "catalog:",
     "lint-staged": "catalog:",
     "markdown-table": "catalog:",
@@ -116,7 +114,8 @@
     "vitest-browser-vue": "catalog:",
     "vitest-package-exports": "catalog:",
     "vue": "catalog:",
-    "vue-tsc": "catalog:"
+    "vue-tsc": "catalog:",
+    "yaml": "catalog:"
   },
   "pnpm": {
     "neverBuiltDependencies": [
