@@ -85,7 +85,7 @@ function vibrate() {
 
 To make the Gamepad API easier to use, we provide mappings to map a controller to a controllers button layout.
 
-#### Xbox360 Controller
+#### Xbox360 / PS5 DualSense Controller
 
 ```vue
 <script setup>
@@ -102,4 +102,19 @@ const controller = mapGamepadToXbox360Controller(gamepad)
 </template>
 ```
 
-Currently there are only mappings for the Xbox 360 controller. If you have controller you want to add mappings for, feel free to open a PR for more controller mappings!
+```vue
+<script setup>
+import { mapGamepadToPS5DualSenseController } from '@vueuse/core'
+
+const controller = mapGamepadToPS5DualSenseController(gamepad)
+</script>
+
+<template>
+  <span>{{ controller.buttons["⨯"].pressed }}</span>
+  <span>{{ controller.buttons["○"].pressed }}</span>
+  <span>{{ controller.buttons["□"].pressed }}</span>
+  <span>{{ controller.buttons["△"].pressed }}</span>
+</template>
+```
+
+Currently there are only mappings for the Xbox 360 and the PS5 DualSense controller. If you have controller you want to add mappings for, feel free to open a PR for more controller mappings!
