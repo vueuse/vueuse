@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue'
 import { timestamp } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, shallowRef } from 'vue'
-import { USE_TIME_AGO_MESSAGES_DEFAULT, useTimeAgo } from './index'
+import { useTimeAgo } from './index'
 
 type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
 
@@ -70,9 +70,8 @@ describe('useTimeAgo', () => {
     })
 
     it('just now using custom formatter', () => {
-      // @ts-expect-error mock messages
       expect(useTimeAgo(baseTime, { messages: { second: '{0}', future: '{0}' }, showSecond: true }).value).toBe('0')
-      expect(useTimeAgo(baseTime - 100000, { messages: { ...USE_TIME_AGO_MESSAGES_DEFAULT, past: () => 'and its gone' } }).value).toMatchInlineSnapshot(`"and its gone"`)
+      expect(useTimeAgo(baseTime - 100000, { messages: { past: () => 'and its gone' } }).value).toMatchInlineSnapshot(`"and its gone"`)
     })
   })
 

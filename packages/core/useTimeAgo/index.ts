@@ -36,7 +36,7 @@ export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitN
   /**
    * Messages for formatting the string
    */
-  messages?: UseTimeAgoMessages<UnitNames>
+  messages?: Partial<UseTimeAgoMessages<UnitNames>>
 
   /**
    * Minimum display time unit (default is minute)
@@ -156,12 +156,13 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
 export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(from: Date, options: FormatTimeAgoOptions<UnitNames> = {}, now: Date | number = Date.now()): string {
   const {
     max,
-    messages = USE_TIME_AGO_MESSAGES_DEFAULT as UseTimeAgoMessages<UnitNames>,
     fullDateFormatter = DEFAULT_FORMATTER,
     units = DEFAULT_UNITS as UseTimeAgoUnit<UnitNames>[],
     showSecond = false,
     rounding = 'round',
   } = options
+
+  const messages = { ...USE_TIME_AGO_MESSAGES_DEFAULT, ...options.messages } as UseTimeAgoMessages<UnitNames>
 
   const roundFn = typeof rounding === 'number'
     ? (n: number) => +n.toFixed(rounding)
