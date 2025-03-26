@@ -29,6 +29,12 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * @default false
    */
   directory?: boolean
+
+  /**
+   * The input element to use for file dialog.
+   * @default document.createElement('input')
+   */
+  input?: HTMLInputElement
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -62,7 +68,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
   let input: HTMLInputElement | undefined
   if (document) {
-    input = document.createElement('input')
+    input = options.input || document.createElement('input')
     input.type = 'file'
 
     input.onchange = (event: Event) => {
