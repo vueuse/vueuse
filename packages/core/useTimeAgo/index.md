@@ -37,7 +37,7 @@ const timeAgo = formatTimeAgo(new Date(2021, 0, 1)) // string
 ## Customize messages
 
 ```ts
-import { USE_TIME_AGO_MESSAGES_DEFAULT, useTimeAgo } from '@vueuse/core'
+import { useTimeAgo } from '@vueuse/core'
 
-const timeAgo = useTimeAgo(new Date(2021, 0, 1), { messages: { ...USE_TIME_AGO_MESSAGES_DEFAULT, past: n => n.match(/\d/) ? `${n} AGO! Now its gone` : n, } })
+const timeAgo = useTimeAgo(new Date(2021, 0, 1), { messages: { past: n => n.match(/\d/) ? `${n} AGO! Now its gone` : n, } })
 ```

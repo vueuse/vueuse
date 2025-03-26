@@ -14,7 +14,7 @@ export interface UseTimeAgoMessagesBuiltIn {
   invalid: string
 }
 
-type CustomUnit<UnitNames extends string = UseTimeAgoUnitNamesDefault> = Record<Exclude<UnitNames, keyof UseTimeAgoMessagesBuiltIn>, string | UseTimeAgoFormatter<number>>
+type CustomUnit<UnitNames extends string> = Record<Exclude<UnitNames, keyof UseTimeAgoMessagesBuiltIn>, string | UseTimeAgoFormatter<number>>
 
 export type UseTimeAgoMessages<UnitNames extends string = UseTimeAgoUnitNamesDefault>
   = UseTimeAgoMessagesBuiltIn
@@ -74,7 +74,7 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
   updateInterval?: number
 }
 
-export interface UseTimeAgoUnit<Unit extends string = keyof CustomUnit> {
+export interface UseTimeAgoUnit<Unit extends string> {
   max: number
   value: number
   name: Unit
@@ -90,7 +90,7 @@ const DEFAULT_UNITS: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[] = [
   { max: Number.POSITIVE_INFINITY, value: 31536000000, name: 'year' },
 ]
 
-export const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages = {
+const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
   justNow: 'just now',
   past: n => n.match(/\d/) ? `${n} ago` : n,
   future: n => n.match(/\d/) ? `in ${n}` : n,
