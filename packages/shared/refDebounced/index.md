@@ -28,4 +28,4 @@ You can also pass an optional 3rd parameter including maxWait option. See `useDe
 
 ## Recommended Reading
 
-- [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
+- [**Debounce vs Throttle**: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)
