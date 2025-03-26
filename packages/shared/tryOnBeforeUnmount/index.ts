@@ -1,5 +1,6 @@
+import type { Fn } from '../utils'
 import { onBeforeUnmount } from 'vue'
-import { type Fn, getLifeCycleTarget } from '../utils'
+import { getLifeCycleTarget } from '../utils'
 
 /**
  * Call onBeforeUnmount() if it's inside a component lifecycle, if not, do nothing

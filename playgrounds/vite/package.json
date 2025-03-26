@@ -9,15 +9,7 @@
     "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.0",
-    "@vueuse/core": "file:../../packages/core/dist",
-    "@vueuse/metadata": "file:../../packages/metadata/dist",
-    "@vueuse/shared": "file:../../packages/shared/dist",
-    "vite": "^5.4.11"
-  },
-  "resolutions": {
-    "@vueuse/core": "file:../../packages/core/dist",
-    "@vueuse/metadata": "file:../../packages/metadata/dist",
-    "@vueuse/shared": "file:../../packages/shared/dist"
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.1.0"
   }
 }

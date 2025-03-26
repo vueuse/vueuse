@@ -2,7 +2,7 @@
 
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -17,10 +17,10 @@ export function useDeviceOrientation(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
   const isSupported = useSupported(() => window && 'DeviceOrientationEvent' in window)
 
-  const isAbsolute = ref(false)
-  const alpha: Ref<number | null> = ref(null)
-  const beta: Ref<number | null> = ref(null)
-  const gamma: Ref<number | null> = ref(null)
+  const isAbsolute = shallowRef(false)
+  const alpha: Ref<number | null> = shallowRef(null)
+  const beta: Ref<number | null> = shallowRef(null)
+  const gamma: Ref<number | null> = shallowRef(null)
 
   if (window && isSupported.value) {
     useEventListener(window, 'deviceorientation', (event) => {
@@ -28,7 +28,7 @@ export function useDeviceOrientation(options: ConfigurableWindow = {}) {
       alpha.value = event.alpha
       beta.value = event.beta
       gamma.value = event.gamma
-    })
+    }, { passive: true })
   }
 
   return {

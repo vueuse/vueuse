@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
-import { useActiveElement } from '.'
+import { useActiveElement } from './index'
 
 describe('useActiveElement', () => {
   let shadowHost: HTMLElement

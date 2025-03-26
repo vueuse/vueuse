@@ -1,7 +1,7 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { noop, toValue, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
-import { computed, reactive, ref } from 'vue'
+import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
+import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -83,7 +83,6 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  * @param element
  * @param options
  */
-
 export function useScroll(
   element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
@@ -108,8 +107,8 @@ export function useScroll(
     onError = (e) => { console.error(e) },
   } = options
 
-  const internalX = ref(0)
-  const internalY = ref(0)
+  const internalX = shallowRef(0)
+  const internalY = shallowRef(0)
 
   // Use a computed for x and y because we want to write the value to the refs
   // during a `scrollTo()` without firing additional `scrollTo()`s in the process.
@@ -146,15 +145,15 @@ export function useScroll(
     })
     const scrollContainer
       = (_element as Window)?.document?.documentElement
-      || (_element as Document)?.documentElement
-      || (_element as Element)
+        || (_element as Document)?.documentElement
+        || (_element as Element)
     if (x != null)
       internalX.value = scrollContainer.scrollLeft
     if (y != null)
       internalY.value = scrollContainer.scrollTop
   }
 
-  const isScrolling = ref(false)
+  const isScrolling = shallowRef(false)
   const arrivedState = reactive({
     left: true,
     right: false,
@@ -192,14 +191,15 @@ export function useScroll(
       || unrefElement(target as HTMLElement | SVGElement)
     ) as Element
 
-    const { display, flexDirection } = getComputedStyle(el)
+    const { display, flexDirection, direction } = getComputedStyle(el)
+    const directionMultipler = direction === 'rtl' ? -1 : 1
 
     const scrollLeft = el.scrollLeft
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
 
-    const left = Math.abs(scrollLeft) <= (offset.left || 0)
-    const right = Math.abs(scrollLeft)
+    const left = Math.abs(scrollLeft * directionMultipler) <= (offset.left || 0)
+    const right = Math.abs(scrollLeft * directionMultipler)
       + el.clientWidth >= el.scrollWidth
       - (offset.right || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS

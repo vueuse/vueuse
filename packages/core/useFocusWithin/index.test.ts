@@ -1,23 +1,28 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useFocusWithin } from '.'
+import { shallowRef } from 'vue'
+import { useFocusWithin } from './index'
 
 describe('useFocusWithin', () => {
   let parent: Ref<HTMLFormElement>
   let child: Ref<HTMLDivElement>
+  let child2: Ref<HTMLDivElement>
   let grandchild: Ref<HTMLInputElement>
 
   beforeEach(() => {
-    parent = ref(document.createElement('form'))
+    parent = shallowRef(document.createElement('form'))
     parent.value.tabIndex = 0
     document.body.appendChild(parent.value)
 
-    child = ref(document.createElement('div'))
+    child = shallowRef(document.createElement('div'))
     child.value.tabIndex = 0
     parent.value.appendChild(child.value)
 
-    grandchild = ref(document.createElement('input'))
+    child2 = shallowRef(document.createElement('div'))
+    child2.value.tabIndex = 0
+    parent.value.appendChild(child2.value)
+
+    grandchild = shallowRef(document.createElement('input'))
     grandchild.value.tabIndex = 0
     child.value.appendChild(grandchild.value)
   })
@@ -59,6 +64,24 @@ describe('useFocusWithin', () => {
     expect(focused.value).toBeTruthy()
 
     grandchild.value?.blur()
+    expect(focused.value).toBeFalsy()
+  })
+
+  it('should track the state while the descendants switch focus state', () => {
+    const { focused } = useFocusWithin(parent)
+
+    expect(focused.value).toBeFalsy()
+
+    child.value?.focus()
+    expect(focused.value).toBeTruthy()
+
+    child2.value?.focus()
+    expect(focused.value).toBeTruthy()
+
+    child.value?.focus()
+    expect(focused.value).toBeTruthy()
+
+    child.value?.blur()
     expect(focused.value).toBeFalsy()
   })
 

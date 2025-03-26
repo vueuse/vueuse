@@ -1,22 +1,25 @@
+import type { Ref } from 'vue'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { useColorMode } from '.'
+import { nextTick, shallowRef } from 'vue'
 import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
+import { useColorMode } from './index'
 
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'
   const htmlEl = document.querySelector('html')
 
   vi.mock('../usePreferredDark', () => {
-    const mockPreferredDark = ref(false)
+    const mockPreferredDark = shallowRef(false)
     return {
       usePreferredDark: () => mockPreferredDark,
     }
   })
 
+  const mockPreferredDark = usePreferredDark() as Ref<boolean>
+
   beforeEach(() => {
-    usePreferredDark().value = false
+    mockPreferredDark.value = false
     localStorage.clear()
     htmlEl!.className = ''
   })
@@ -29,7 +32,7 @@ describe('useColorMode', () => {
   it('should translate auto mode when prefer dark', async () => {
     const mode = useColorMode()
     mode.value = 'auto'
-    usePreferredDark().value = true
+    mockPreferredDark.value = true
     await nextTwoTick()
     expect(mode.value).toBe('dark')
     expect(localStorage.getItem(storageKey)).toBe('auto')
@@ -109,7 +112,7 @@ describe('useColorMode', () => {
 
   it('should only change html class when preferred dark changed', async () => {
     const mode = useColorMode({ emitAuto: true })
-    usePreferredDark().value = true
+    mockPreferredDark.value = true
 
     await nextTwoTick()
     expect(mode.value).toBe('auto')

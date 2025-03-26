@@ -1,8 +1,7 @@
 import type { UseDraggableOptions } from '@vueuse/core'
 import type { Position, RenderableComponent } from '../types'
 import { isClient, useDraggable, useStorage } from '@vueuse/core'
-import { toValue } from '@vueuse/shared'
-import { computed, defineComponent, h, reactive, ref } from 'vue'
+import { computed, defineComponent, h, reactive, shallowRef, toValue } from 'vue'
 
 export interface UseDraggableProps extends UseDraggableOptions, RenderableComponent {
   /**
@@ -39,7 +38,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'containerElement',
   ] as unknown as undefined,
   setup(props, { slots }) {
-    const target = ref()
+    const target = shallowRef()
     const handle = computed(() => props.handle ?? target.value)
     const containerElement = computed(() => props.containerElement as (HTMLElement | SVGElement | null | undefined) ?? undefined)
     const disabled = computed(() => !!props.disabled)

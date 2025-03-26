@@ -16,21 +16,25 @@ const { status, data, send, open, close } = useWebSocket('ws://websocketurl')
 
 See the [Type Declarations](#type-declarations) for more options.
 
-### Immediate
+### immediate
 
-Auto-connect (enabled by default).
+Enable by default.
 
-This will call `open()` automatically for you and you don't need to call it by yourself.
+Establish the connection immediately when the composable is called.
 
-If url is provided as a ref, this also controls whether a connection is re-established when its value is changed (or whether you need to call open() again for the change to take effect).
+### autoConnect
 
-### Auto-close
+Enable by default.
 
-Auto-close-connection (enabled by default).
+If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
+
+### autoClose
+
+Enable by default.
 
 This will call `close()` automatically when the `beforeunload` event is triggered or the associated effect scope is stopped.
 
-### Auto-reconnection
+### autoReconnect
 
 Reconnect on errors automatically (disabled by default).
 
@@ -56,7 +60,7 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 
 Explicitly calling `close()` won't trigger the auto reconnection.
 
-### Heartbeat
+### heartbeat
 
 It's common practice to send a small message (heartbeat) for every given time passed to keep the connection active. In this function we provide a convenient helper to do it:
 

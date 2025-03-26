@@ -1,9 +1,8 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
-import { toValue, tryOnScopeDispose } from '@vueuse/shared'
-import { customRef, nextTick, watch } from 'vue'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
@@ -36,8 +35,18 @@ export function useRouteParams<
     transform,
   } = options
 
-  const transformGet = transform && 'get' in transform ? transform.get : transform ?? ((value: T) => value as any as K)
-  const transformSet = transform && 'set' in transform ? transform.set : (value: K) => value as any as T
+  let transformGet = (value: T) => value as unknown as K
+  let transformSet = (value: K) => value as unknown as T
+
+  if (typeof transform === 'function') {
+    transformGet = transform
+  }
+  else if (transform) {
+    if (transform.get)
+      transformGet = transform.get
+    if (transform.set)
+      transformSet = transform.set
+  }
 
   if (!_queue.has(router))
     _queue.set(router, new Map())
@@ -67,8 +76,8 @@ export function useRouteParams<
         if (param === v)
           return
 
-        param = (v === defaultValue || v === null) ? undefined : v
-        _paramsQueue.set(name, (v === defaultValue || v === null) ? undefined : v)
+        param = (v === toValue(defaultValue) || v === null) ? undefined : v
+        _paramsQueue.set(name, (v === toValue(defaultValue) || v === null) ? undefined : v)
 
         trigger()
 

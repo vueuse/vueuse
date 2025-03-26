@@ -1,8 +1,9 @@
-import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
-import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
-import { nextTick, ref, shallowRef } from 'vue'
+import { pausableWatch, tryOnMounted } from '@vueuse/shared'
+import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -121,11 +122,11 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
   initOnMounted?: boolean
 }
 
-export function useStorage(key: string, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
-export function useStorage(key: string, defaults: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
-export function useStorage(key: string, defaults: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
-export function useStorage<T>(key: string, defaults: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: string, defaults: MaybeRefOrGetter<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
+export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
+export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
+export function useStorage<T>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
@@ -133,7 +134,7 @@ export function useStorage<T = unknown>(key: string, defaults: MaybeRefOrGetter<
  * @see https://vueuse.org/useStorage
  */
 export function useStorage<T extends (string | number | boolean | object | null)>(
-  key: string,
+  key: MaybeRefOrGetter<string>,
   defaults: MaybeRefOrGetter<T>,
   storage: StorageLike | undefined,
   options: UseStorageOptions<T> = {},
@@ -153,7 +154,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
     initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : ref)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
+  const data = (shallow ? shallowRef : deepRef)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
+  const keyComputed = computed<string>(() => toValue(key))
 
   if (!storage) {
     try {
@@ -177,6 +179,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
     { flush, deep, eventFilter },
   )
 
+  watch(keyComputed, () => update(), { flush })
+
   if (window && listenToStorageChanges) {
     tryOnMounted(() => {
       /**
@@ -188,7 +192,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
        * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
        */
       if (storage instanceof Storage)
-        useEventListener(window, 'storage', update)
+        useEventListener(window, 'storage', update, { passive: true })
       else
         useEventListener(window, customStorageEventName, updateFromCustomEvent)
 
@@ -205,7 +209,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
     // send custom event to communicate within same page
     if (window) {
       const payload = {
-        key,
+        key: keyComputed.value,
         oldValue,
         newValue,
         storageArea: storage as Storage,
@@ -222,16 +226,16 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
   function write(v: unknown) {
     try {
-      const oldValue = storage!.getItem(key)
+      const oldValue = storage!.getItem(keyComputed.value)
 
       if (v == null) {
         dispatchWriteEvent(oldValue, null)
-        storage!.removeItem(key)
+        storage!.removeItem(keyComputed.value)
       }
       else {
         const serialized = serializer.write(v as any)
         if (oldValue !== serialized) {
-          storage!.setItem(key, serialized)
+          storage!.setItem(keyComputed.value, serialized)
           dispatchWriteEvent(oldValue, serialized)
         }
       }
@@ -244,11 +248,11 @@ export function useStorage<T extends (string | number | boolean | object | null)
   function read(event?: StorageEventLike) {
     const rawValue = event
       ? event.newValue
-      : storage!.getItem(key)
+      : storage!.getItem(keyComputed.value)
 
     if (rawValue == null) {
       if (writeDefaults && rawInit != null)
-        storage!.setItem(key, serializer.write(rawInit))
+        storage!.setItem(keyComputed.value, serializer.write(rawInit))
       return rawInit
     }
     else if (!event && mergeDefaults) {
@@ -276,7 +280,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
       return
     }
 
-    if (event && event.key !== key)
+    if (event && event.key !== keyComputed.value)
       return
 
     pauseWatch()

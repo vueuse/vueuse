@@ -33,10 +33,10 @@ be thrown in a new call stack and reported to `window.onerror` (or `process.on('
 import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith, tap } from 'rxjs/operators'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 // setup()
-const start = ref(0)
+const start = shallowRef(0)
 
 const count = useExtractedObservable(
   start,
@@ -66,10 +66,10 @@ observable completes.
 import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith, takeWhile } from 'rxjs/operators'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 // setup()
-const start = ref(0)
+const start = shallowRef(0)
 
 const count = useExtractedObservable(
   start,
@@ -95,10 +95,10 @@ If you want, you can also pass `watch` options as the last argument:
 import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith, takeWhile } from 'rxjs/operators'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 // setup()
-const start = ref<number>()
+const start = shallowRef<number>()
 
 const count = useExtractedObservable(
   start,

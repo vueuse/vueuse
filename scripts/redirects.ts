@@ -1,4 +1,4 @@
-import fs from 'fs-extra'
+import * as fs from 'node:fs/promises'
 import { functions } from '../packages/metadata/metadata'
 
 async function buildRedirects() {

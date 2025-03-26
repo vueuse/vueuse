@@ -11,9 +11,10 @@ Keep target refs in sync with a source ref
 
 ```ts
 import { syncRefs } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const source = ref('hello')
-const target = ref('target')
+const source = shallowRef('hello')
+const target = shallowRef('target')
 
 const stop = syncRefs(source, target)
 
@@ -30,10 +31,11 @@ You can also pass an array of refs to sync.
 
 ```ts
 import { syncRefs } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const source = ref('hello')
-const target1 = ref('target1')
-const target2 = ref('target2')
+const source = shallowRef('hello')
+const target1 = shallowRef('target1')
+const target2 = shallowRef('target2')
 
 const stop = syncRefs(source, [target1, target2])
 
@@ -77,9 +79,10 @@ When setting `{ flush: 'pre' }`, the target reference will be updated at [the en
 
 ```ts
 import { syncRefs } from '@vueuse/core'
+import { nextTick, shallowRef } from 'vue'
 
-const source = ref('hello')
-const target = ref('target')
+const source = shallowRef('hello')
+const target = shallowRef('target')
 
 syncRefs(source, target, { flush: 'pre' })
 

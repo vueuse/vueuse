@@ -1,7 +1,8 @@
 import type { EventHookOn } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { readonly, type Ref, ref } from 'vue'
+import { ref as deepRef, readonly } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseFileDialogOptions extends ConfigurableDocument {
@@ -31,6 +32,12 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
   directory?: boolean
 
   /**
+   * Initial files to set.
+   * @default null
+   */
+  initialFiles?: Array<File> | FileList
+
+  /**
    * The input element to use for file dialog.
    * @default document.createElement('input')
    */
@@ -52,6 +59,21 @@ export interface UseFileDialogReturn {
   onCancel: EventHookOn
 }
 
+function prepareInitialFiles(files: UseFileDialogOptions['initialFiles']): FileList | null {
+  if (!files)
+    return null
+
+  if (files instanceof FileList)
+    return files
+
+  const dt = new DataTransfer()
+  for (const file of files) {
+    dt.items.add(file)
+  }
+
+  return dt.files
+}
+
 /**
  * Open file dialog with ease.
  *
@@ -63,7 +85,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     document = defaultDocument,
   } = options
 
-  const files = ref<FileList | null>(null)
+  const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
   let input: HTMLInputElement | undefined

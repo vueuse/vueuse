@@ -1,4 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from 'vue'
 import type { RouteParamValueRaw, useRoute, useRouter } from 'vue-router'
 
 export type RouteQueryValueRaw = RouteParamValueRaw | string[]
@@ -26,10 +26,13 @@ export interface ReactiveRouteOptions {
 
 export interface ReactiveRouteOptionsWithTransform<V, R> extends ReactiveRouteOptions {
   /**
-   * Function to transform data before return
+   * Function to transform data before return, or an object with one or both functions:
+   * `get` to transform data before returning, and `set` to transform data before setting
    */
-  transform?: ((val: V) => R) | {
-    get: (value: V) => R
-    set: (value: R) => V
-  }
+  transform?:
+    | ((val: V) => R)
+    | ({
+      get?: (value: V) => R
+      set?: (value: R) => V
+    })
 }

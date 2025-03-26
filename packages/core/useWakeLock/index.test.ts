@@ -1,8 +1,7 @@
-import type { WakeLockSentinel } from '.'
-import { promiseTimeout } from '@vueuse/shared'
-import { describe, expect, it } from 'vitest'
+import type { WakeLockSentinel } from './index'
+import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useWakeLock } from '.'
+import { useWakeLock } from './index'
 
 class MockWakeLockSentinel extends EventTarget {
   released = false
@@ -56,6 +55,7 @@ describe('useWakeLock', () => {
   })
 
   it('isActive changed if show other tabs or minimize window', async () => {
+    vi.useFakeTimers()
     defineWakeLockAPI()
 
     const { isActive, request } = useWakeLock()
@@ -63,7 +63,7 @@ describe('useWakeLock', () => {
     expect(isActive.value).toBeFalsy()
 
     await request('screen')
-    await promiseTimeout(10)
+    await vi.advanceTimersByTimeAsync(10)
 
     expect(isActive.value).toBeTruthy()
 

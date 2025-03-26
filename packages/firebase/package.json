@@ -1,6 +1,7 @@
 {
   "name": "@vueuse/firebase",
-  "version": "12.0.0",
+  "type": "module",
+  "version": "13.0.0",
   "description": "Enables realtime bindings for Firebase",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -23,34 +24,32 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs"
-    },
+    ".": "./index.mjs",
     "./*": "./*",
-    "./useAuth": {
-      "import": "./useAuth.mjs",
-      "require": "./useAuth.cjs"
-    },
-    "./useFirestore": {
-      "import": "./useFirestore.mjs",
-      "require": "./useFirestore.cjs"
-    },
-    "./useRTDB": {
-      "import": "./useRTDB.mjs",
-      "require": "./useRTDB.cjs"
-    }
+    "./useAuth": "./useAuth.mjs",
+    "./useFirestore": "./useFirestore.mjs",
+    "./useRTDB": "./useRTDB.mjs"
   },
-  "main": "./index.cjs",
+  "main": "./index.mjs",
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.cts",
+  "types": "./index.d.mts",
+  "files": [
+    "**/*.d.mts",
+    "**/*.js",
+    "**/*.mjs"
+  ],
+  "scripts": {
+    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "prepack": "pnpm run build",
+    "test:attw": "attw --pack --config-path ../../.attw.json ."
+  },
   "peerDependencies": {
-    "firebase": ">=9.0.0"
+    "firebase": ">=9.0.0",
+    "vue": "^3.5.0"
   },
   "dependencies": {
-    "@vueuse/shared": "workspace:*",
-    "vue": "catalog:"
+    "@vueuse/shared": "workspace:*"
   }
 }

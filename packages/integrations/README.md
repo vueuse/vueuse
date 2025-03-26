@@ -35,10 +35,10 @@ npm i @vueuse/integrations
 For better tree-shaking result, import functions from submodules, for example:
 
 ```ts
-import { useAxios } from '@vueuse/integrations/useAxios'
-
 // Don't
 import { useAxios } from '@vueuse/integrations'
+
+import { useAxios } from '@vueuse/integrations/useAxios'
 ```
 
 ## License

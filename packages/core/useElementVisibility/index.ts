@@ -1,13 +1,27 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
-import { ref } from 'vue'
+import { watchOnce } from '@vueuse/shared'
+import { shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
 export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
+  /**
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin
+   */
+  rootMargin?: MaybeRefOrGetter<string>
+  /**
+   * The element that is used as the viewport for checking visibility of the target.
+   */
   scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
+  /**
+   * Stop tracking when element visibility changes for the first time
+   *
+   * @default false
+   */
+  once?: boolean
 }
 
 /**
@@ -19,10 +33,16 @@ export function useElementVisibility(
   element: MaybeComputedElementRef,
   options: UseElementVisibilityOptions = {},
 ) {
-  const { window = defaultWindow, scrollTarget, threshold = 0 } = options
-  const elementIsVisible = ref(false)
+  const {
+    window = defaultWindow,
+    scrollTarget,
+    threshold = 0,
+    rootMargin,
+    once = false,
+  } = options
+  const elementIsVisible = shallowRef(false)
 
-  useIntersectionObserver(
+  const { stop } = useIntersectionObserver(
     element,
     (intersectionObserverEntries) => {
       let isIntersecting = elementIsVisible.value
@@ -36,11 +56,18 @@ export function useElementVisibility(
         }
       }
       elementIsVisible.value = isIntersecting
+
+      if (once) {
+        watchOnce(elementIsVisible, () => {
+          stop()
+        })
+      }
     },
     {
       root: scrollTarget,
       window,
       threshold,
+      rootMargin: toValue(rootMargin),
     },
   )
 

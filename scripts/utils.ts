@@ -1,11 +1,12 @@
 import type { PackageIndexes, VueUseFunction } from '@vueuse/metadata'
+import { existsSync } from 'node:fs'
+import * as fs from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import fs from 'fs-extra'
 import matter from 'gray-matter'
-import YAML from 'js-yaml'
 import { $fetch } from 'ofetch'
 import Git from 'simple-git'
+import yaml from 'yaml'
 import { packages } from '../meta/packages'
 import { getCategories } from '../packages/metadata/utils'
 
@@ -22,7 +23,7 @@ const DIR_TYPES = resolve(__dirname, '../types/packages')
 export async function getTypeDefinition(pkg: string, name: string): Promise<string | undefined> {
   const typingFilepath = join(DIR_TYPES, `${pkg}/${name}/index.d.ts`)
 
-  if (!fs.existsSync(typingFilepath))
+  if (!existsSync(typingFilepath))
     return
 
   let types = await fs.readFile(typingFilepath, 'utf-8')
@@ -96,7 +97,7 @@ export async function updateImport({ packages, functions }: PackageIndexes) {
     await fs.writeFile(join(dir, 'index.ts'), `${imports.join('\n')}\n`)
 
     // temporary file for export-size
-    await fs.remove(join(dir, 'index.mjs'))
+    await fs.rm(join(dir, 'index.mjs'), { force: true })
   }
 }
 
@@ -155,7 +156,7 @@ export async function updatePackageREADME({ packages, functions }: PackageIndexe
   for (const { name, dir } of Object.values(packages)) {
     const readmePath = join(dir, 'README.md')
 
-    if (!fs.existsSync(readmePath))
+    if (!existsSync(readmePath))
       continue
 
     const functionMD = stringifyFunctions(functions.filter(i => i.package === name), false)
@@ -196,23 +197,26 @@ export async function updateFunctionsMD({ packages, functions }: PackageIndexes)
 }
 
 export async function updateFunctionREADME(indexes: PackageIndexes) {
-  const hasTypes = fs.existsSync(DIR_TYPES)
+  const hasTypes = existsSync(DIR_TYPES)
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
 
   for (const fn of indexes.functions) {
     const mdPath = `packages/${fn.package}/${fn.name}/index.md`
-    if (!fs.existsSync(mdPath))
+    if (!existsSync(mdPath))
       continue
 
     let readme = await fs.readFile(mdPath, 'utf-8')
 
     const { content, data = {} } = matter(readme)
+    const yamlData = yaml.stringify(data, {
+      singleQuote: true,
+    })
 
     data.category = fn.category || 'Unknown'
 
-    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
+    readme = `---\n${yamlData}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
 
     await fs.writeFile(mdPath, `${readme}\n`, 'utf-8')
   }
@@ -226,12 +230,12 @@ export async function updateCountBadge(indexes: PackageIndexes) {
 }
 
 export async function updatePackageJSON(indexes: PackageIndexes) {
-  const { version } = await fs.readJSON('package.json')
+  const { version } = JSON.parse(await fs.readFile('package.json', { encoding: 'utf8' }))
 
   for (const { name, description, author, submodules, iife } of packages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
-    const packageJSON = await fs.readJSON(packageJSONPath)
+    const packageJSON = JSON.parse(await fs.readFile(packageJSONPath, { encoding: 'utf8' }))
 
     packageJSON.version = version
     packageJSON.description = description || packageJSON.description
@@ -239,6 +243,7 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     packageJSON.bugs = {
       url: 'https://github.com/vueuse/vueuse/issues',
     }
+    packageJSON.type = 'module'
     packageJSON.homepage = name === 'core'
       ? 'https://github.com/vueuse/vueuse#readme'
       : `https://github.com/vueuse/vueuse/tree/main/packages/${name}#readme`
@@ -247,45 +252,51 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       url: 'git+https://github.com/vueuse/vueuse.git',
       directory: `packages/${name}`,
     }
-    packageJSON.main = './index.cjs'
-    packageJSON.types = packageJSON.type === 'module' ? './index.d.ts' : './index.d.cts'
+    packageJSON.main = './index.mjs'
+    packageJSON.types = './index.d.mts'
     packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
     }
+    packageJSON.files = [
+      '*.d.mts',
+      '*.js',
+      '*.mjs',
+    ]
+
+    if (submodules) {
+      packageJSON.files = packageJSON.files.map((i: string) => `**/${i}`)
+    }
+
+    if (name === 'metadata') {
+      packageJSON.files.push('index.json')
+    }
+
     packageJSON.exports = {
-      '.': {
-        import: './index.mjs',
-        require: './index.cjs',
-      },
-      './*': './*',
+      '.': './index.mjs',
       ...packageJSON.exports,
+      './*': './*',
     }
 
     if (submodules) {
       indexes.functions
         .filter(i => i.package === name)
         .forEach((i) => {
-          packageJSON.exports[`./${i.name}`] = {
-            import: `./${i.name}.mjs`,
-            require: `./${i.name}.cjs`,
-          }
+          packageJSON.exports[`./${i.name}`] = `./${i.name}.mjs`
           if (i.component) {
-            packageJSON.exports[`./${i.name}/component`] = {
-              import: `./${i.name}/component.mjs`,
-              require: `./${i.name}/component.cjs`,
-            }
+            packageJSON.exports[`./${i.name}/component`] = `./${i.name}/component.mjs`
           }
         })
     }
 
-    await fs.writeJSON(packageJSONPath, packageJSON, { spaces: 2 })
+    await fs.writeFile(packageJSONPath, `${JSON.stringify(packageJSON, null, 2)}\n`)
   }
 }
 
 async function fetchContributors(page = 1) {
-  const additional = ['egoist']
+  // contributors that contribute to repos other than `vueuse/vueuse`, required for contributor avatar to work
+  const additional = ['egoist', 'Tahul', 'BobbieGoede']
 
   const collaborators: string[] = []
   const data = await $fetch<{ login: string }[]>(`https://api.github.com/repos/vueuse/vueuse/contributors?per_page=100&page=${page}`, {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { useConfirmDialog } from '.'
+import { nextTick, shallowRef } from 'vue'
+import { useConfirmDialog } from './index'
 
 describe('useConfirmDialog', () => {
   it('should be defined', () => {
@@ -8,7 +8,7 @@ describe('useConfirmDialog', () => {
   })
 
   it('should open the dialog and close on confirm', () => {
-    const show = ref(false)
+    const show = shallowRef(false)
 
     const {
       reveal,
@@ -23,7 +23,7 @@ describe('useConfirmDialog', () => {
   })
 
   it('should close on cancel', () => {
-    const show = ref(false)
+    const show = shallowRef(false)
 
     const {
       reveal,
@@ -38,8 +38,8 @@ describe('useConfirmDialog', () => {
   })
 
   it('should execute `onReveal` fn on open dialog', () => {
-    const show = ref(false)
-    const message = ref('initial')
+    const show = shallowRef(false)
+    const message = shallowRef('initial')
 
     const {
       reveal,
@@ -58,8 +58,8 @@ describe('useConfirmDialog', () => {
   })
 
   it('should execute a callback inside `onConfirm` hook only after confirming', () => {
-    const show = ref(false)
-    const message = ref('initial')
+    const show = shallowRef(false)
+    const message = shallowRef('initial')
 
     const {
       reveal,
@@ -79,8 +79,8 @@ describe('useConfirmDialog', () => {
   })
 
   it('should execute a callback inside `onCancel` hook only after canceling dialog', () => {
-    const show = ref(false)
-    const message = ref('initial')
+    const show = shallowRef(false)
+    const message = shallowRef('initial')
 
     const {
       reveal,
@@ -100,8 +100,8 @@ describe('useConfirmDialog', () => {
   })
 
   it('should pass data from confirm fn to `onConfirm` hook', () => {
-    const message = ref('initial')
-    const show = ref(false)
+    const message = shallowRef('initial')
+    const show = shallowRef(false)
     const data = { value: 'confirm' }
 
     const {
@@ -121,8 +121,8 @@ describe('useConfirmDialog', () => {
   })
 
   it('should pass data from cancel fn to `onCancel` hook', async () => {
-    const message = ref('initial')
-    const show = ref(false)
+    const message = shallowRef('initial')
+    const show = shallowRef(false)
     const data = { value: 'confirm' }
 
     const {
@@ -142,7 +142,7 @@ describe('useConfirmDialog', () => {
   })
 
   it('should return promise that will be resolved on `confirm()`', async () => {
-    const show = ref(false)
+    const show = shallowRef(false)
 
     const {
       reveal,
@@ -151,7 +151,7 @@ describe('useConfirmDialog', () => {
 
     setTimeout(() => {
       confirm(true)
-    }, 10)
+    }, 1)
 
     const { data, isCanceled } = await reveal()
 
@@ -162,7 +162,7 @@ describe('useConfirmDialog', () => {
   })
 
   it('should return promise that will be resolved on `cancel()`', async () => {
-    const show = ref(false)
+    const show = shallowRef(false)
 
     const {
       reveal,
@@ -171,7 +171,7 @@ describe('useConfirmDialog', () => {
 
     setTimeout(() => {
       cancel(true)
-    }, 10)
+    }, 1)
 
     const { data, isCanceled } = await reveal()
 

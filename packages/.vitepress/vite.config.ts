@@ -1,6 +1,7 @@
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import UnoCSS from 'unocss/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
@@ -12,6 +13,7 @@ import { ChangeLog } from './plugins/changelog'
 import { Contributors } from './plugins/contributors'
 import { MarkdownTransform } from './plugins/markdownTransform'
 
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const require = createRequire(import.meta.url)
 const [changeLog, contributions] = await Promise.all([
   getChangeLog(process.env.CI ? 1000 : 100),
@@ -41,7 +43,7 @@ export default defineConfig({
           componentPrefix: '',
         }),
       ],
-      dts: resolve(__dirname, 'components.d.ts'),
+      dts: resolve(__dirname, 'components.d.mts'),
       transformer: 'vue3',
     }),
     Icons({
@@ -69,14 +71,13 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: [
-      'vue',
       '@vueuse/shared',
       '@vueuse/core',
       'body-scroll-lock',
     ],
     include: [
       'axios',
-      'js-yaml',
+      'yaml',
       'nprogress',
       'qrcode',
       'tslib',

@@ -1,9 +1,8 @@
 import type { Ref } from 'vue'
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { whenever } from '.'
+import { ref as deepRef, nextTick, shallowRef, toValue } from 'vue'
 import { useSetup } from '../../.test'
-import { toValue } from '../toValue'
+import { whenever } from './index'
 
 describe('whenever', () => {
   const expectType = <T>(value: T) => value
@@ -11,10 +10,10 @@ describe('whenever', () => {
   it('ignore falsy state change', async () => {
     // use a component to simulate normal use case
     const vm = useSetup(() => {
-      const number = ref<number | null | undefined>(1)
+      const number = shallowRef<number | null | undefined>(1)
       const changeNumber = (v: number) => number.value = v
-      const watchCount = ref(0)
-      const watchValue: Ref<number | undefined> = ref()
+      const watchCount = shallowRef(0)
+      const watchValue: Ref<number | undefined> = deepRef()
 
       whenever(number, (value) => {
         watchCount.value += 1
@@ -60,9 +59,9 @@ describe('whenever', () => {
 
   it('once', async () => {
     const vm = useSetup(() => {
-      const number = ref<number | null | undefined>(1)
-      const watchCount = ref(0)
-      const watchValue: Ref<number | undefined> = ref()
+      const number = shallowRef<number | null | undefined>(1)
+      const watchCount = shallowRef(0)
+      const watchValue: Ref<number | undefined> = deepRef()
 
       whenever(number, (value) => {
         watchCount.value += 1

@@ -17,10 +17,10 @@ Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipbo
 ```js
 import { useClipboardItems } from '@vueuse/core'
 
-const mime = 'text/html'
+const mime = 'text/plain'
 const source = ref([
   new ClipboardItem({
-    [mime]: new Blob(['\'<b>HTML content</b>\'', { type: mime }]),
+    [mime]: new Blob(['plain text'], { type: mime }),
   })
 ])
 
@@ -36,7 +36,7 @@ const { content, copy, copied, isSupported } = useClipboardItems({ source })
       <span v-else>Copied!</span>
     </button>
     <p>
-      Current copied: <code>{{ text || 'none' }}</code>
+      Current copied: <code>{{ content || 'none' }}</code>
     </p>
   </div>
   <p v-else>

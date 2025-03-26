@@ -1,6 +1,7 @@
 name: 🐞 Bug report
 description: Report an issue with VueUse
 labels: [pending triage]
+type: Bug
 title: 'BUG | `functionName` | '
 body:
   - type: markdown
@@ -9,7 +10,7 @@ body:
         Thanks for taking the time to fill out this bug report!
 
         Please follow the one of the following title formats:
-        - `BUG | \`functionName\` | Short Description`
+        - ``BUG | `functionName` | Short Description``
 
         For example:
         ```

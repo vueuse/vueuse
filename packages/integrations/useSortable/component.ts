@@ -1,6 +1,8 @@
+import type { PropType } from 'vue'
+import type { UseSortableOptions } from './index'
 import { useVModel } from '@vueuse/core'
-import { defineComponent, h, type PropType, reactive, ref } from 'vue'
-import { useSortable, type UseSortableOptions } from '.'
+import { ref as deepRef, defineComponent, h, reactive } from 'vue'
+import { useSortable } from './index'
 
 export const UseSortable = /* #__PURE__ */ defineComponent({
   name: 'UseSortable',
@@ -21,7 +23,7 @@ export const UseSortable = /* #__PURE__ */ defineComponent({
 
   setup(props, { slots }) {
     const list = useVModel(props, 'modelValue')
-    const target = ref()
+    const target = deepRef()
     const data = reactive(useSortable(target, list, props.options))
     return () => {
       if (slots.default)

@@ -1,7 +1,6 @@
-import { toValue } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { logicNot } from '.'
+import { shallowRef, toValue } from 'vue'
+import { logicNot } from './index'
 
 describe('logicNot', () => {
   it('should be defined', () => {
@@ -9,13 +8,13 @@ describe('logicNot', () => {
   })
 
   it('returns the logical complement of the given ref', () => {
-    expect(toValue(logicNot(ref(true)))).toBe(false)
-    expect(toValue(logicNot(ref('foo')))).toBe(false)
-    expect(toValue(logicNot(ref(1)))).toBe(false)
+    expect(toValue(logicNot(shallowRef(true)))).toBe(false)
+    expect(toValue(logicNot(shallowRef('foo')))).toBe(false)
+    expect(toValue(logicNot(shallowRef(1)))).toBe(false)
 
-    expect(toValue(logicNot(ref(false)))).toBe(true)
-    expect(toValue(logicNot(ref('')))).toBe(true)
-    expect(toValue(logicNot(ref(0)))).toBe(true)
+    expect(toValue(logicNot(shallowRef(false)))).toBe(true)
+    expect(toValue(logicNot(shallowRef('')))).toBe(true)
+    expect(toValue(logicNot(shallowRef(0)))).toBe(true)
   })
 
   it('returns the logical complement of the given value', () => {

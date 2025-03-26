@@ -1,7 +1,6 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref, UnwrapNestedRefs } from 'vue'
-import { noop, syncRef, toValue } from '@vueuse/shared'
-import { computed, isReadonly, isRef, reactive, watch } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, UnwrapNestedRefs } from 'vue'
+import { noop, syncRef } from '@vueuse/shared'
+import { computed, isReadonly, isRef, reactive, toValue, watch } from 'vue'
 import { useClamp } from '../../math/useClamp'
 
 export interface UseOffsetPaginationOptions {

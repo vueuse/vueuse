@@ -1,7 +1,7 @@
 import type { ConfigurableDocument } from '../_configurable'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeElement, MaybeElementRef } from '../unrefElement'
 import { until } from '@vueuse/shared'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -12,8 +12,6 @@ import { useSupported } from '../useSupported'
 //     unadjustedMovement?: boolean
 //   }
 // }
-
-type MaybeHTMLElement = HTMLElement | undefined | null
 
 export interface UsePointerLockOptions extends ConfigurableDocument {
   // pointerLockOptions?: PointerLockOptions
@@ -26,26 +24,28 @@ export interface UsePointerLockOptions extends ConfigurableDocument {
  * @param target
  * @param options
  */
-export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, options: UsePointerLockOptions = {}) {
+export function usePointerLock(target?: MaybeElementRef, options: UsePointerLockOptions = {}) {
   const { document = defaultDocument } = options
 
   const isSupported = useSupported(() => document && 'pointerLockElement' in document)
 
-  const element = ref<MaybeHTMLElement>()
+  const element = shallowRef<MaybeElement>()
 
-  const triggerElement = ref<MaybeHTMLElement>()
+  const triggerElement = shallowRef<MaybeElement>()
 
-  let targetElement: MaybeHTMLElement
+  let targetElement: MaybeElement
 
   if (isSupported.value) {
+    const listenerOptions = { passive: true }
+
     useEventListener(document, 'pointerlockchange', () => {
       const currentElement = document!.pointerLockElement ?? element.value
       if (targetElement && currentElement === targetElement) {
-        element.value = document!.pointerLockElement as MaybeHTMLElement
+        element.value = document!.pointerLockElement as MaybeElement
         if (!element.value)
           targetElement = triggerElement.value = null
       }
-    })
+    }, listenerOptions)
 
     useEventListener(document, 'pointerlockerror', () => {
       const currentElement = document!.pointerLockElement ?? element.value
@@ -53,11 +53,11 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
         const action = document!.pointerLockElement ? 'release' : 'acquire'
         throw new Error(`Failed to ${action} pointer lock.`)
       }
-    })
+    }, listenerOptions)
   }
 
   async function lock(
-    e: MaybeElementRef<MaybeHTMLElement> | Event,
+    e: MaybeElementRef | Event,
     // options?: PointerLockOptions,
   ) {
     if (!isSupported.value)

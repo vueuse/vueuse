@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
+import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import fs from 'fs-extra'
 import { format } from 'prettier'
 import ts from 'typescript'
 import { packages } from '../../../meta/packages'
@@ -9,7 +9,7 @@ import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
 export function MarkdownTransform(): Plugin {
   const DIR_TYPES = resolve(__dirname, '../../../types/packages')
-  const hasTypes = fs.existsSync(DIR_TYPES)
+  const hasTypes = existsSync(DIR_TYPES)
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
@@ -28,7 +28,7 @@ export function MarkdownTransform(): Plugin {
           if (ending === ']') // already a link
             return _
           const fn = getFunction(name)!
-          return `[\`${fn.name}\`](${fn.docs}) `
+          return `[\`${fn.name}\`](${fn.docs})${ending}`
         },
       )
       // convert links to relative
@@ -97,7 +97,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
   const URL = `${GITHUB_BLOB_URL}/${pkg}/${name}`
 
   const dirname = join(DIR_SRC, pkg, name)
-  const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
+  const demoPath = ['demo.vue', 'demo.client.vue'].find(i => existsSync(join(dirname, i)))
   const types = await getTypeDefinition(pkg, name)
 
   if (!types)

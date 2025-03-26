@@ -1,0 +1,6 @@
+.:
+  useIpcRenderer: function
+  useIpcRendererInvoke: function
+  useIpcRendererOn: function
+  useZoomFactor: function
+  useZoomLevel: function

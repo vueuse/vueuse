@@ -1,15 +1,13 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-
-import type { Ref } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import { isClient } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
-import { ref, shallowRef, unref } from 'vue'
+import { shallowRef, unref } from 'vue'
 
 import { useEventListener } from '../useEventListener'
 
 export interface UseDropZoneReturn {
-  files: Ref<File[] | null>
-  isOverDropZone: Ref<boolean>
+  files: ShallowRef<File[] | null>
+  isOverDropZone: ShallowRef<boolean>
 }
 
 export interface UseDropZoneOptions {
@@ -17,7 +15,7 @@ export interface UseDropZoneOptions {
    * Allowed data types, if not set, all data types are allowed.
    * Also can be a function to check the data types.
    */
-  dataTypes?: MaybeRef<string[]> | ((types: readonly string[]) => boolean)
+  dataTypes?: MaybeRef<readonly string[]> | ((types: readonly string[]) => boolean)
   onDrop?: (files: File[] | null, event: DragEvent) => void
   onEnter?: (files: File[] | null, event: DragEvent) => void
   onLeave?: (files: File[] | null, event: DragEvent) => void
@@ -36,7 +34,7 @@ export function useDropZone(
   target: MaybeRefOrGetter<HTMLElement | null | undefined>,
   options: UseDropZoneOptions | UseDropZoneOptions['onDrop'] = {},
 ): UseDropZoneReturn {
-  const isOverDropZone = ref(false)
+  const isOverDropZone = shallowRef(false)
   const files = shallowRef<File[] | null>(null)
   let counter = 0
   let isValid = true
@@ -52,20 +50,24 @@ export function useDropZone(
     }
 
     const checkDataTypes = (types: string[]) => {
-      if (_options.dataTypes) {
-        const dataTypes = unref(_options.dataTypes)
-        return typeof dataTypes === 'function'
-          ? dataTypes(types)
-          : dataTypes
-            ? dataTypes.some(item => types.includes(item))
-            : true
-      }
-      return true
+      const dataTypes = unref(_options.dataTypes)
+
+      if (typeof dataTypes === 'function')
+        return dataTypes(types)
+
+      if (!dataTypes?.length)
+        return true
+
+      if (types.length === 0)
+        return false
+
+      return types.every(type =>
+        dataTypes.some(allowedType => type.includes(allowedType)),
+      )
     }
 
-    const checkValidity = (event: DragEvent) => {
-      const items = Array.from(event.dataTransfer?.items ?? [])
-      const types = items.map(item => item.type)
+    const checkValidity = (items: DataTransferItemList) => {
+      const types = Array.from(items ?? []).map(item => item.type)
 
       const dataTypesValid = checkDataTypes(types)
       const multipleFilesValid = multiple || items.length <= 1
@@ -73,13 +75,20 @@ export function useDropZone(
       return dataTypesValid && multipleFilesValid
     }
 
-    const handleDragEvent = (event: DragEvent, eventType: 'enter' | 'over' | 'leave' | 'drop') => {
-      isValid = checkValidity(event)
+    const isSafari = () => (
+      /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent)
+      && !('chrome' in window)
+    )
 
-      if (!isValid) {
-        if (preventDefaultForUnhandled) {
-          event.preventDefault()
-        }
+    const handleDragEvent = (event: DragEvent, eventType: 'enter' | 'over' | 'leave' | 'drop') => {
+      const dataTransferItemList = event.dataTransfer?.items
+      isValid = (dataTransferItemList && checkValidity(dataTransferItemList)) ?? false
+
+      if (preventDefaultForUnhandled) {
+        event.preventDefault()
+      }
+
+      if (!isSafari() && !isValid) {
         if (event.dataTransfer) {
           event.dataTransfer.dropEffect = 'none'
         }
