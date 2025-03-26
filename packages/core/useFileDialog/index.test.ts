@@ -47,4 +47,14 @@ describe('useFileDialog', () => {
     open()
     expect(files.value).toBeNull()
   })
+
+  it('should work with custom input element', () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+    const { open } = useFileDialog({ input })
+
+    open()
+    expect(input.type).toBe('file')
+    expect(input.click).toBeCalled()
+  })
 })

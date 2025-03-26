@@ -1,9 +1,11 @@
 import type { EventHookOn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
+import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
 import { ref as deepRef, readonly } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { unrefElement } from '../unrefElement'
 
 export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
@@ -41,7 +43,7 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * The input element to use for file dialog.
    * @default document.createElement('input')
    */
-  input?: HTMLInputElement
+  input?: MaybeElementRef<HTMLInputElement>
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -90,7 +92,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
   let input: HTMLInputElement | undefined
   if (document) {
-    input = options.input || document.createElement('input')
+    input = unrefElement(options.input) || document.createElement('input')
     input.type = 'file'
 
     input.onchange = (event: Event) => {
