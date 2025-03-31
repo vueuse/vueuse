@@ -13,17 +13,19 @@ export function createGlobalState<Fn extends AnyFn>(
   let initialized = false
   let state: any
   let summary = 0
-  const scope = effectScope(true)
+  let scope = effectScope(true)
 
   function dispose() {
     if (scope && --summary <= 0) {
       scope.stop()
+      state = scope = null;
     }
   }
 
   return ((...args: any[]) => {
+    summary++
+
     if (!initialized) {
-      summary++
       state = scope.run(() => stateFactory(...args))!
       initialized = true
     }
