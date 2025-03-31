@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
@@ -89,6 +89,6 @@ export interface UseBroadcastChannelReturn<D, P> {
   data: Ref<D>
   post: (data: P) => void
   close: () => void
-  error: Ref<Event | null>
-  isClosed: Ref<boolean>
+  error: ShallowRef<Event | null>
+  isClosed: ShallowRef<boolean>
 }

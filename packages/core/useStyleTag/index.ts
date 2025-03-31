@@ -1,5 +1,4 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { readonly, shallowRef, watch } from 'vue'
@@ -35,10 +34,10 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
 
 export interface UseStyleTagReturn {
   id: string
-  css: Ref<string>
+  css: ShallowRef<string>
   load: () => void
   unload: () => void
-  isLoaded: Readonly<Ref<boolean>>
+  isLoaded: Readonly<ShallowRef<boolean>>
 }
 
 let _id = 0

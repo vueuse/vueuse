@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { computed, reactive, shallowRef, toValue } from 'vue'
@@ -198,8 +198,8 @@ export function useScroll(
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
 
-    const left = (scrollLeft * directionMultipler) <= (offset.left || 0)
-    const right = (scrollLeft * directionMultipler)
+    const left = Math.abs(scrollLeft * directionMultipler) <= (offset.left || 0)
+    const right = Math.abs(scrollLeft * directionMultipler)
       + el.clientWidth >= el.scrollWidth
       - (offset.right || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS
@@ -223,8 +223,8 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    const top = scrollTop <= (offset.top || 0)
-    const bottom = scrollTop
+    const top = Math.abs(scrollTop) <= (offset.top || 0)
+    const bottom = Math.abs(scrollTop)
       + el.clientHeight >= el.scrollHeight
       - (offset.bottom || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS

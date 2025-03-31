@@ -1,8 +1,8 @@
-import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { Pausable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref as deepRef, toValue } from 'vue'
+import { shallowRef, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
@@ -17,7 +17,7 @@ export interface UseElementByPointOptions<Multiple extends boolean = false> exte
 
 export interface UseElementByPointReturn<Multiple extends boolean = false> extends Pausable {
   isSupported: ComputedRef<boolean>
-  element: Ref<Multiple extends true ? HTMLElement[] : HTMLElement | null>
+  element: ShallowRef<Multiple extends true ? HTMLElement[] : HTMLElement | null>
 }
 
 /**
@@ -43,7 +43,7 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
     return document && 'elementFromPoint' in document
   })
 
-  const element = deepRef<any>(null)
+  const element = shallowRef<any>(null)
 
   const cb = () => {
     element.value = toValue(multiple)

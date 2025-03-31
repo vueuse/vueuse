@@ -1,7 +1,6 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
 import { computed, shallowRef, toValue } from 'vue'
@@ -70,13 +69,11 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const copied = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
-  function updateText() {
+  async function updateText() {
     let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
     if (!useLegacy) {
       try {
-        navigator!.clipboard.readText().then((value) => {
-          text.value = value
-        })
+        text.value = await navigator!.clipboard.readText()
       }
       catch {
         useLegacy = true

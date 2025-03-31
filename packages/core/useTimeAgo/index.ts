@@ -1,5 +1,5 @@
-import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { Pausable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 

@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { computed, shallowRef } from 'vue'
@@ -14,7 +13,7 @@ export interface UseElementHoverOptions extends ConfigurableWindow {
   triggerOnRemoval?: boolean
 }
 
-export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefined>, options: UseElementHoverOptions = {}): Ref<boolean> {
+export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefined>, options: UseElementHoverOptions = {}): ShallowRef<boolean> {
   const {
     delayEnter = 0,
     delayLeave = 0,

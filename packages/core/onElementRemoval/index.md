@@ -11,11 +11,11 @@ Fires when the element or any element containing it is removed.
 ```vue {13}
 <script setup lang="ts">
 import { onElementRemoval } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const btnRef = ref<HTMLElement | null>(null)
-const btnState = ref(true)
-const removedCount = ref(0)
+const btnRef = useTemplateRef<HTMLElement>('btn')
+const btnState = shallowRef(true)
+const removedCount = shallowRef(0)
 
 function btnOnClick() {
   btnState.value = !btnState.value

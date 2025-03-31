@@ -1,8 +1,7 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
@@ -57,7 +56,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   const isListening = shallowRef(false)
   const isFinal = shallowRef(false)
   const result = shallowRef('')
-  const error = shallowRef(undefined) as Ref<SpeechRecognitionErrorEvent | undefined>
+  const error = shallowRef<SpeechRecognitionErrorEvent | undefined>(undefined)
 
   let recognition: SpeechRecognition | undefined
 

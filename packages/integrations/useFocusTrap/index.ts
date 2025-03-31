@@ -1,7 +1,6 @@
 import type { Arrayable, Fn, MaybeComputedElementRef } from '@vueuse/core'
-import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { ActivateOptions, DeactivateOptions, FocusTrap, Options } from 'focus-trap'
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { toArray, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import { notNullish } from '@vueuse/shared'
 import { createFocusTrap } from 'focus-trap'
@@ -18,12 +17,12 @@ export interface UseFocusTrapReturn {
   /**
    * Indicates if the focus trap is currently active
    */
-  hasFocus: Ref<boolean>
+  hasFocus: ShallowRef<boolean>
 
   /**
    * Indicates if the focus trap is currently paused
    */
-  isPaused: Ref<boolean>
+  isPaused: ShallowRef<boolean>
 
   /**
    * Activate the focus trap

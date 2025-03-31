@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { usePerformanceObserver } from '@vueuse/core'
-import { ref as deepRef } from 'vue'
+import { shallowRef } from 'vue'
 
-const entrys = deepRef<PerformanceEntry[]>([])
+const entrys = shallowRef<PerformanceEntry[]>([])
 usePerformanceObserver({
   entryTypes: ['paint'],
 }, (list) => {

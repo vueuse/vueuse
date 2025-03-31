@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { formatDate, useThrottledRefHistory } from '@vueuse/core'
 import { useCounter } from '@vueuse/shared'
 import { shallowRef } from 'vue'
@@ -7,7 +6,7 @@ import { shallowRef } from 'vue'
 function format(ts: number) {
   return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
 }
-const delay: Ref<number> = shallowRef(1000)
+const delay = shallowRef(1000)
 
 const { count, inc, dec } = useCounter()
 const { history, undo, redo, canUndo, canRedo } = useThrottledRefHistory(

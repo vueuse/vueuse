@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useFocusWithin } from '@vueuse/core'
-import { ref as deepRef } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const target = deepRef()
+const target = useTemplateRef<HTMLFormElement>('target')
 
 const { focused } = useFocusWithin(target)
 </script>

@@ -1,12 +1,14 @@
 import { reactify } from '@vueuse/shared'
-import YAML from 'js-yaml'
+import YAML from 'yaml'
 
 export const stringify = reactify(
-  (input: any) => YAML.dump(input, {
-    skipInvalid: true,
-    forceQuotes: true,
-    condenseFlow: true,
-    noCompatMode: true,
-    quotingType: '\'',
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
   }),
 )

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
 import { useMediaQuery, useParallax } from '@vueuse/core'
-import YAML from 'js-yaml'
-import { computed, ref as deepRef, reactive } from 'vue'
+import { computed, reactive, useTemplateRef } from 'vue'
+import yaml from 'yaml'
 
-const target = deepRef(null)
+const target = useTemplateRef<HTMLElement>('target')
 const isMobile = useMediaQuery('(max-width: 700px)')
 
 const parallax = reactive(useParallax(target))
@@ -92,7 +92,7 @@ const cardStyle = computed(() => ({
 <template>
   <div>
     <div ref="target" :style="targetStyle">
-      <pre :style="infoStyle">{{ YAML.dump(parallax) }}</pre>
+      <pre :style="infoStyle">{{ yaml.stringify(parallax) }}</pre>
       <div :style="containerStyle">
         <div :style="cardStyle">
           <div :style="cardWindowStyle">

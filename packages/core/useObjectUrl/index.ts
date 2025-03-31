@@ -1,6 +1,6 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, readonly, toValue, watch } from 'vue'
+import { readonly, shallowRef, toValue, watch } from 'vue'
 
 /**
  * Reactive URL representing an object.
@@ -9,7 +9,7 @@ import { ref as deepRef, readonly, toValue, watch } from 'vue'
  * @param object
  */
 export function useObjectUrl(object: MaybeRefOrGetter<Blob | MediaSource | null | undefined>) {
-  const url = deepRef<string | undefined>()
+  const url = shallowRef<string | undefined>()
 
   const release = () => {
     if (url.value)

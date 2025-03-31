@@ -1,5 +1,4 @@
-import type { ComputedRef } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 
 // Polyfill for node version < 18

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const root = deepRef(null)
-const target = deepRef(null)
+const root = useTemplateRef<HTMLElement>('root')
+const target = useTemplateRef<HTMLElement>('target')
 const isVisible = shallowRef(false)
 
 const { isActive, pause, resume } = useIntersectionObserver(

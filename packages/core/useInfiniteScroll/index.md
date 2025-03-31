@@ -50,6 +50,17 @@ function resetList() {
 </template>
 ```
 
+## Direction
+
+Different scroll directions require different CSS style settings:
+
+| Direction          | Required CSS                                          |
+| ------------------ | ----------------------------------------------------- |
+| `bottom` (default) | No special settings required                          |
+| `top`              | `display: flex;`<br>`flex-direction: column-reverse;` |
+| `left`             | `display: flex;`<br>`flex-direction: row-reverse;`    |
+| `right`            | `display: flex;`                                      |
+
 ::: warning
 Make sure to indicate when there is no more content to load with `canLoadMore`, otherwise `onLoadMore` will trigger as long as there is space for more content.
 :::

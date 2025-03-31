@@ -1,5 +1,5 @@
-import type { Ref, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
-import type { MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
+import type { MaybeRefOrGetter, ShallowRef, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
+import type { MapOldSources, MapSources } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { nextTick, shallowRef, toValue } from 'vue'
 import { watchWithFilter } from '../watchWithFilter'
@@ -10,7 +10,7 @@ export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Im
 
 export interface WatchAtMostReturn {
   stop: WatchStopHandle
-  count: Ref<number>
+  count: ShallowRef<number>
 }
 
 // overloads

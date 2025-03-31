@@ -1,6 +1,5 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { FuseResult, IFuseOptions } from 'fuse.js'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import Fuse from 'fuse.js'
 import { computed, ref as deepRef, toValue, watch } from 'vue'
 

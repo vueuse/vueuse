@@ -15,7 +15,7 @@ const speech = useSpeechSynthesis(text, {
 
 let synth: SpeechSynthesis
 
-const voices = deepRef<SpeechSynthesisVoice[]>([])
+const voices = shallowRef<SpeechSynthesisVoice[]>([])
 
 onMounted(() => {
   if (speech.isSupported.value) {

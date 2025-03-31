@@ -1,6 +1,6 @@
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
-import { ref as deepRef, shallowRef, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -29,7 +29,7 @@ export function useMouseInElement(
 
   const { x, y, sourceType } = useMouse(options)
 
-  const targetRef = deepRef(target ?? window?.document.body)
+  const targetRef = shallowRef(target ?? window?.document.body)
   const elementX = shallowRef(0)
   const elementY = shallowRef(0)
   const elementPositionX = shallowRef(0)

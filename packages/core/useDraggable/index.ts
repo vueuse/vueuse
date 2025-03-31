@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs } from '@vueuse/shared'
 import { computed, ref as deepRef, toValue } from 'vue'

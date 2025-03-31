@@ -1,6 +1,7 @@
-import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Fn } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import { isIOS, toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref as deepRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 
 import { resolveElement } from '../_resolve-element'
 import { useEventListener } from '../useEventListener'
@@ -56,7 +57,7 @@ export function useScrollLock(
   element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   initialState = false,
 ) {
-  const isLocked = deepRef(initialState)
+  const isLocked = shallowRef(initialState)
   let stopTouchMoveListener: Fn | null = null
   let initialOverflow: CSSStyleDeclaration['overflow'] = ''
 

@@ -1,7 +1,7 @@
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseMouseSourceType } from '../useMouse'
-import { computed, ref as deepRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -71,8 +71,8 @@ export function useMousePressed(options: MousePressedOptions = {}) {
     window = defaultWindow,
   } = options
 
-  const pressed = deepRef(initialValue)
-  const sourceType = deepRef<UseMouseSourceType>(null)
+  const pressed = shallowRef(initialValue)
+  const sourceType = shallowRef<UseMouseSourceType>(null)
 
   if (!window) {
     return {

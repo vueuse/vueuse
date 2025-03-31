@@ -1,5 +1,5 @@
-import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import type { UnwrapNestedRefs } from 'vue'
+import type { Awaitable } from '@vueuse/shared'
+import type { MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
 import type { UseScrollOptions } from '../useScroll'
 import { tryOnUnmounted } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, reactive, toValue, watch } from 'vue'

@@ -1,5 +1,4 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import { identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, ref as deepRef, toValue, watch } from 'vue'
 
