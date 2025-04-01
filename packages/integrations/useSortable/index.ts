@@ -27,7 +27,7 @@ export type UseSortableOptions = Options & ConfigurableDocument
 
 export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeElementRef | null | undefined, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(el: MaybeElementRef, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
 /**
@@ -37,7 +37,7 @@ export function useSortable<T>(el: MaybeElementRef | null | undefined, list: May
  * @param options
  */
 export function useSortable<T>(
-  el: MaybeRefOrGetter<MaybeElementRef | null | undefined> | string,
+  el: MaybeRefOrGetter<MaybeElementRef> | string,
   list: MaybeRefOrGetter<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
