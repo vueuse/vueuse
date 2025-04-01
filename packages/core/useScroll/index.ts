@@ -39,7 +39,9 @@ export interface UseScrollOptions extends ConfigurableWindow {
    * such as attribute modifications, child node additions or removals, or subtree changes.
    * @default false
    */
-  observe?: boolean
+  observe?: boolean | {
+    mutation?: boolean
+  }
 
   /**
    * Trigger it when scrolling.
