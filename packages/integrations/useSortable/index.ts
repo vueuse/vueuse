@@ -27,7 +27,7 @@ export type UseSortableOptions = Options & ConfigurableDocument
 
 export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeElementRef, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(el: MaybeRefOrGetter<MaybeElementRef>, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
 /**
