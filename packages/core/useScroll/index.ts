@@ -37,7 +37,7 @@ export interface UseScrollOptions extends ConfigurableWindow {
   /**
    * Use MutationObserver to monitor specific DOM changes,
    * such as attribute modifications, child node additions or removals, or subtree changes.
-   * @default false
+   * @default { mutation: boolean }
    */
   observe?: boolean | {
     mutation?: boolean
@@ -108,7 +108,9 @@ export function useScroll(
       top: 0,
       bottom: 0,
     },
-    observe = false,
+    observe: _observe = {
+      mutation: false,
+    },
     eventListenerOptions = {
       capture: false,
       passive: true,
@@ -117,6 +119,12 @@ export function useScroll(
     window = defaultWindow,
     onError = (e) => { console.error(e) },
   } = options
+
+  const observe = typeof _observe === 'boolean'
+    ? {
+        mutation: _observe,
+      }
+    : _observe
 
   const internalX = ref(0)
   const internalY = ref(0)
@@ -290,7 +298,7 @@ export function useScroll(
     }
   })
 
-  if (observe && element != null && element !== window && element !== document) {
+  if (observe?.mutation && element != null && element !== window && element !== document) {
     useMutationObserver(
       element as MaybeRefOrGetter<HTMLElement | SVGElement>,
       () => {
