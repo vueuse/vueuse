@@ -10,7 +10,7 @@ describe('useCurrentElement', () => {
   })
 
   it('should return the root element from the current component', () => {
-    const wrapper = mount({
+    const wrapper = mount(defineComponent({
       template: '<p ref="el">test</p>',
       setup() {
         const el = shallowRef<HTMLElement>()
@@ -18,7 +18,7 @@ describe('useCurrentElement', () => {
 
         return { el, currentElement }
       },
-    })
+    }))
     const vm = wrapper.vm
 
     expect(vm.currentElement).toBe(vm.el)
@@ -34,7 +34,7 @@ describe('useCurrentElement', () => {
       },
       template: '<div ref="rootEl">Hello world</div>',
     })
-    const wrapper = mount({
+    const wrapper = mount(defineComponent({
       components: {
         TestVueComponent,
       },
@@ -48,7 +48,7 @@ describe('useCurrentElement', () => {
 
         return { el, currentElementEl }
       },
-    })
+    }))
     const vm = wrapper.vm
 
     expect(vm.currentElementEl).toBe((vm.el as typeof TestVueComponent).rootEl)
