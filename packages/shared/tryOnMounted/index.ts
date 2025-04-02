@@ -11,7 +11,7 @@ import { getLifeCycleTarget } from '../utils'
  * @param target
  */
 export function tryOnMounted(fn: Fn, sync = true, target?: any) {
-  const instance = getLifeCycleTarget()
+  const instance = getLifeCycleTarget(target)
   if (instance)
     onMounted(fn, target)
   else if (sync)
