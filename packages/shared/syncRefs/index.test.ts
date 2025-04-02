@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { syncRefs } from '.'
+import { shallowRef } from 'vue'
+import { syncRefs } from './index'
 
 describe('syncRefs', () => {
   it('should work with array', () => {
-    const source = ref('foo')
-    const target1 = ref('bar')
-    const target2 = ref('bar2')
+    const source = shallowRef('foo')
+    const target1 = shallowRef('bar')
+    const target2 = shallowRef('bar2')
 
     const stop = syncRefs(source, [target1, target2])
 
@@ -27,8 +27,8 @@ describe('syncRefs', () => {
   })
 
   it('should work with non-array', () => {
-    const source = ref('foo')
-    const target = ref('bar')
+    const source = shallowRef('foo')
+    const target = shallowRef('bar')
 
     const stop = syncRefs(source, target)
 

@@ -13,9 +13,9 @@ Reactive media controls for both `audio` and `video` elements
 ```vue
 <script setup lang="ts">
 import { useMediaControls } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { onMounted, useTemplateRef } from 'vue'
 
-const video = ref()
+const video = useTemplateRef('video')
 const { playing, currentTime, duration, volume } = useMediaControls(video, {
   src: 'video.mp4',
 })
@@ -47,8 +47,9 @@ be `-1` if there is no selected track.
 ```vue
 <script setup lang="ts">
 import { useMediaControls } from '@vueuse/core'
-import { ref } from 'vue'
-const video = ref()
+import { useTemplateRef } from 'vue'
+
+const video = useTemplateRef('video')
 const {
   tracks,
   enableTrack

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, h } from 'vue'
-import { useScrollLock } from '.'
 import { mount } from '../../.test'
+import { useScrollLock } from './index'
 
 describe('useScrollLock', () => {
   let targetEl: HTMLElement

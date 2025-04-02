@@ -1,12 +1,12 @@
 {
   "private": true,
-  "packageManager": "pnpm@9.15.2",
+  "packageManager": "pnpm@10.4.0",
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nuxt": "^3.15.0"
+    "nuxt": "^3.15.4"
   }
 }

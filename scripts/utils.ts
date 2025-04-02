@@ -4,9 +4,9 @@ import * as fs from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
-import YAML from 'js-yaml'
 import { $fetch } from 'ofetch'
 import Git from 'simple-git'
+import yaml from 'yaml'
 import { packages } from '../meta/packages'
 import { getCategories } from '../packages/metadata/utils'
 
@@ -210,10 +210,13 @@ export async function updateFunctionREADME(indexes: PackageIndexes) {
     let readme = await fs.readFile(mdPath, 'utf-8')
 
     const { content, data = {} } = matter(readme)
+    const yamlData = yaml.stringify(data, {
+      singleQuote: true,
+    })
 
     data.category = fn.category || 'Unknown'
 
-    readme = `---\n${YAML.dump(data)}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
+    readme = `---\n${yamlData}---\n\n${content.trim()}`.trim().replace(/\r\n/g, '\n')
 
     await fs.writeFile(mdPath, `${readme}\n`, 'utf-8')
   }
@@ -249,18 +252,15 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       url: 'git+https://github.com/vueuse/vueuse.git',
       directory: `packages/${name}`,
     }
-    packageJSON.main = './index.cjs'
-    packageJSON.types = packageJSON.type === 'module' ? './index.d.ts' : './index.d.cts'
+    packageJSON.main = './index.mjs'
+    packageJSON.types = './index.d.mts'
     packageJSON.module = './index.mjs'
     if (iife !== false) {
       packageJSON.unpkg = './index.iife.min.js'
       packageJSON.jsdelivr = './index.iife.min.js'
     }
     packageJSON.files = [
-      '*.cjs',
-      '*.d.cts',
       '*.d.mts',
-      '*.d.ts',
       '*.js',
       '*.mjs',
     ]
@@ -274,27 +274,18 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
     }
 
     packageJSON.exports = {
-      '.': {
-        import: './index.mjs',
-        require: './index.cjs',
-      },
-      './*': './*',
+      '.': './index.mjs',
       ...packageJSON.exports,
+      './*': './*',
     }
 
     if (submodules) {
       indexes.functions
         .filter(i => i.package === name)
         .forEach((i) => {
-          packageJSON.exports[`./${i.name}`] = {
-            import: `./${i.name}.mjs`,
-            require: `./${i.name}.cjs`,
-          }
+          packageJSON.exports[`./${i.name}`] = `./${i.name}.mjs`
           if (i.component) {
-            packageJSON.exports[`./${i.name}/component`] = {
-              import: `./${i.name}/component.mjs`,
-              require: `./${i.name}/component.cjs`,
-            }
+            packageJSON.exports[`./${i.name}/component`] = `./${i.name}/component.mjs`
           }
         })
     }

@@ -1,5 +1,5 @@
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { onElementRemoval } from '../onElementRemoval'
 import { useEventListener } from '../useEventListener'
@@ -44,18 +44,33 @@ export function useActiveElement<T extends HTMLElement>(
     return element
   }
 
-  const activeElement = ref<T | null | undefined>()
+  const activeElement = shallowRef<T | null | undefined>()
   const trigger = () => {
     activeElement.value = getDeepActiveElement() as T | null | undefined
   }
 
   if (window) {
-    useEventListener(window, 'blur', (event) => {
-      if (event.relatedTarget !== null)
-        return
-      trigger()
-    }, true)
-    useEventListener(window, 'focus', trigger, true)
+    const listenerOptions = {
+      capture: true,
+      passive: true,
+    }
+
+    useEventListener(
+      window,
+      'blur',
+      (event) => {
+        if (event.relatedTarget !== null)
+          return
+        trigger()
+      },
+      listenerOptions,
+    )
+    useEventListener(
+      window,
+      'focus',
+      trigger,
+      listenerOptions,
+    )
   }
 
   if (triggerOnRemoval) {

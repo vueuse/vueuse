@@ -1,7 +1,7 @@
-import type { MaybeRef, MaybeRefOrGetter, ReadonlyRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ReadonlyRefOrGetter } from '@vueuse/shared'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { toRef, tryOnBeforeUnmount } from '@vueuse/shared'
+import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { toValue, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
@@ -36,40 +36,34 @@ export type UseTitleOptionsBase = {
 
 export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
 
-export function useTitle(
-  newTitle: ReadonlyRefOrGetter<string | null | undefined>,
-  options?: UseTitleOptions,
-): ComputedRef<string | null | undefined>
-
-export function useTitle(
-  newTitle?: MaybeRef<string | null | undefined>,
-  options?: UseTitleOptions,
-): Ref<string | null | undefined>
-
 /**
  * Reactive document title.
  *
  * @see https://vueuse.org/useTitle
  * @param newTitle
  * @param options
+ * @description It's not SSR compatible. Your value will be applied only on client-side.
  */
+export function useTitle(
+  newTitle: ReadonlyRefOrGetter<string | null | undefined>,
+  options?: UseTitleOptions,
+): ComputedRef<string | null | undefined>
+export function useTitle(
+  newTitle?: MaybeRef<string | null | undefined>,
+  options?: UseTitleOptions,
+): Ref<string | null | undefined>
 export function useTitle(
   newTitle: MaybeRefOrGetter<string | null | undefined> = null,
   options: UseTitleOptions = {},
 ) {
-  /*
-    `titleTemplate` that returns the modified input string will make
-    the `document.title` to be different from the `title.value`,
-    causing the title to update infinitely if `observe` is set to `true`.
-  */
   const {
     document = defaultDocument,
     restoreOnUnmount = t => t,
   } = options
   const originalTitle = document?.title ?? ''
 
-  const title: Ref<string | null | undefined> = toRef(newTitle ?? document?.title ?? null)
-  const isReadonly = newTitle && typeof newTitle === 'function'
+  const title = toRef(newTitle ?? document?.title ?? null)
+  const isReadonly = !!(newTitle && typeof newTitle === 'function')
 
   function format(t: string) {
     if (!('titleTemplate' in options))
@@ -82,9 +76,9 @@ export function useTitle(
 
   watch(
     title,
-    (t, o) => {
-      if (t !== o && document)
-        document.title = format(typeof t === 'string' ? t : '')
+    (newValue, oldValue) => {
+      if (newValue !== oldValue && document)
+        document.title = format(newValue ?? '')
     },
     { immediate: true },
   )
@@ -100,7 +94,7 @@ export function useTitle(
     )
   }
 
-  tryOnBeforeUnmount(() => {
+  tryOnScopeDispose(() => {
     if (restoreOnUnmount) {
       const restoredTitle = restoreOnUnmount(originalTitle, title.value || '')
       if (restoredTitle != null && document)

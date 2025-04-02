@@ -1,5 +1,7 @@
-import type { AnyFn, ArgumentsType, Awaited, MaybeRefOrGetter, Pausable, Promisify } from './types'
-import { isRef, readonly, ref, toValue } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify } from './types'
+import { isRef, readonly, toValue } from 'vue'
+import { toRef } from '../toRef'
 import { noop } from './is'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
@@ -73,6 +75,8 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
     lastRejector = noop
   }
 
+  let lastInvoker: () => void
+
   const filter: EventFilter = (invoke) => {
     const duration = toValue(ms)
     const maxDuration = toValue(options.maxWait)
@@ -90,13 +94,14 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
 
     return new Promise((resolve, reject) => {
       lastRejector = options.rejectOnCancel ? reject : resolve
+      lastInvoker = invoke
       // Create the maxTimer. Clears the regular timer on invoke
       if (maxDuration && !maxTimer) {
         maxTimer = setTimeout(() => {
           if (timer)
             _clearTimeout(timer)
           maxTimer = null
-          resolve(invoke())
+          resolve(lastInvoker())
         }, maxDuration)
       }
 
@@ -206,14 +211,27 @@ export function throttleFilter(...args: any[]) {
   return filter
 }
 
+export interface PausableFilterOptions {
+  /**
+   * The initial state
+   *
+   * @default 'active'
+   */
+  initialState?: 'active' | 'paused'
+}
+
 /**
  * EventFilter that gives extra controls to pause and resume the filter
  *
  * @param extendFilter  Extra filter to apply when the PausableFilter is active, default to none
- *
+ * @param options Options to configure the filter
  */
-export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausable & { eventFilter: EventFilter } {
-  const isActive = ref(true)
+export function pausableFilter(extendFilter: EventFilter = bypassFilter, options: PausableFilterOptions = {}): Pausable & { eventFilter: EventFilter } {
+  const {
+    initialState = 'active',
+  } = options
+
+  const isActive = toRef(initialState === 'active')
 
   function pause() {
     isActive.value = false

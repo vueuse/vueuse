@@ -1,7 +1,7 @@
 import type { ObjectDirective } from 'vue'
-import type { UseElementHoverOptions } from '.'
+import type { UseElementHoverOptions } from './index'
 import { watch } from 'vue'
-import { useElementHover } from '.'
+import { useElementHover } from './index'
 
 type BindingValueFunction = (state: boolean) => void
 

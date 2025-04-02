@@ -1,7 +1,7 @@
 import type { ObjectDirective } from 'vue'
-import type { ElementSize } from '.'
+import type { ElementSize } from './index'
 import { watch } from 'vue'
-import { useElementSize } from '.'
+import { useElementSize } from './index'
 
 type RemoveFirstFromTuple<T extends any[]> =
   T['length'] extends 0 ? undefined :

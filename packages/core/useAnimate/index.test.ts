@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { shallowRef } from 'vue'
-import { useAnimate } from '.'
+import { defineComponent, shallowRef } from 'vue'
+import { useAnimate } from './index'
 
 describe('useAnimate', () => {
   it('should be defined', () => {
@@ -9,7 +9,7 @@ describe('useAnimate', () => {
   })
 
   it('the test environment does not support animate', () => {
-    const wrapper = mount({
+    const wrapper = mount(defineComponent({
       template: '<p ref="el">test</p>',
       setup() {
         const el = shallowRef<HTMLElement>()
@@ -17,7 +17,7 @@ describe('useAnimate', () => {
 
         return { ...animate, el }
       },
-    })
+    }))
     const vm = wrapper.vm
 
     expect(vm.isSupported).toBe(false)

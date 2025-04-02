@@ -1,13 +1,8 @@
-import type { ComputedRef, Ref, ToRef } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
-import {
-  customRef,
-  readonly,
-  ref,
+import type { ComputedRef, MaybeRefOrGetter, Ref, ToRef } from 'vue'
+import { customRef, ref as deepRef, readonly,
   // eslint-disable-next-line no-restricted-imports
-  toRef as vueToRef,
-} from 'vue'
-import { noop } from '../utils'
+  toRef as vueToRef } from 'vue'
+import { noop } from '../utils/is'
 
 /**
  * Normalize value/ref/getter to `ref` or `computed`.
@@ -24,7 +19,7 @@ export function toRef(...args: any[]) {
   const r = args[0]
   return typeof r === 'function'
     ? readonly(customRef(() => ({ get: r as any, set: noop })))
-    : ref(r)
+    : deepRef(r)
 }
 
 /**

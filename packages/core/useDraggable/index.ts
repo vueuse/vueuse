@@ -1,7 +1,7 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs } from '@vueuse/shared'
-import { computed, ref, toValue, watch } from 'vue'
+import { computed, ref as deepRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -182,11 +182,11 @@ export function useDraggable(
     autoScroll = false,
   } = options
 
-  const position = ref<Position>(
+  const position = deepRef<Position>(
     toValue(initialValue) ?? { x: 0, y: 0 },
   )
 
-  const pressedDelta = ref<Position>()
+  const pressedDelta = deepRef<Position>()
 
   const filterEvent = (e: PointerEvent) => {
     if (pointerTypes)
@@ -385,7 +385,10 @@ export function useDraggable(
   }
 
   if (isClient) {
-    const config = { capture: options.capture ?? true }
+    const config = () => ({
+      capture: options.capture ?? true,
+      passive: !toValue(preventDefault),
+    })
     useEventListener(draggingHandle, 'pointerdown', start, config)
     useEventListener(draggingElement, 'pointermove', move, config)
     useEventListener(draggingElement, 'pointerup', end, config)
