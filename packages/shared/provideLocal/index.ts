@@ -1,5 +1,8 @@
+import type { InjectionKey } from 'vue'
 import { getCurrentInstance, provide } from 'vue'
 import { localProvidedStateMap } from './map'
+
+export type ProvideLocalReturn = void
 
 /**
  * On the basis of `provide`, it is allowed to directly call inject to obtain the value after call provide in the same component.
@@ -10,7 +13,7 @@ import { localProvidedStateMap } from './map'
  * const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
  * ```
  */
-export const provideLocal: typeof provide = (key, value) => {
+export function provideLocal<T, K = InjectionKey<T> | string | number>(key: K, value: K extends InjectionKey<infer V> ? V : T): ProvideLocalReturn {
   const instance = getCurrentInstance()?.proxy
   if (instance == null)
     throw new Error('provideLocal must be called in setup')
@@ -21,5 +24,5 @@ export const provideLocal: typeof provide = (key, value) => {
   const localProvidedState = localProvidedStateMap.get(instance)!
   // @ts-expect-error allow InjectionKey as key
   localProvidedState[key] = value
-  provide(key, value)
+  return provide<T, K>(key, value)
 }
