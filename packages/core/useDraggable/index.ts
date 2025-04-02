@@ -151,6 +151,8 @@ export interface UseDraggableOptions {
   }>
 }
 
+const defaultScrollConfig = { speed: 2, margin: 30, direction: 'both' }
+
 /**
  * Make elements draggable.
  *
@@ -200,7 +202,6 @@ export function useDraggable(
   }
 
   const scrollConfig = toValue(autoScroll)
-  const defaultScrollConfig = { speed: 2, margin: 30, direction: 'both' }
   const scrollSettings = typeof scrollConfig === 'object'
     ? {
         speed: toValue(scrollConfig.speed) ?? defaultScrollConfig.speed,
