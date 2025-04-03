@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils'
 import { useAnimate } from '@vueuse/core'
 import { describe, expect, it, vi } from 'vitest'
-import { shallowRef } from 'vue'
+import { defineComponent, shallowRef } from 'vue'
 // import { useAnimate } from './index'
 
 describe('useAnimate', () => {
   it('browser should support useAnimate', () => {
-    const wrapper = mount({
+    const wrapper = mount(defineComponent({
       template: '<p ref="el">test</p>',
       setup() {
         const el = shallowRef<HTMLElement>()
@@ -14,7 +14,7 @@ describe('useAnimate', () => {
 
         return { ...animate, el }
       },
-    })
+    }))
     const vm = wrapper.vm
 
     expect(vm.isSupported).toBe(true)
@@ -22,7 +22,7 @@ describe('useAnimate', () => {
   })
 
   it('should be running', async () => {
-    const wrapper = mount({
+    const wrapper = mount(defineComponent({
       template: '<p ref="el">test</p>',
       setup() {
         const el = shallowRef<HTMLElement>()
@@ -30,7 +30,7 @@ describe('useAnimate', () => {
 
         return { ...animate, el }
       },
-    })
+    }))
     const vm = wrapper.vm
     await vi.waitFor(() => {
       expect(vm.playState).toBe('running')
@@ -42,7 +42,7 @@ describe('useAnimate', () => {
     const keyframes = shallowRef<PropertyIndexedKeyframes>({
       transform: 'rotate(360deg)',
     })
-    const wrapper = mount({
+    const wrapper = mount(defineComponent({
       template: '<p ref="el">test</p>',
       setup() {
         const el = shallowRef<HTMLElement>()
@@ -50,7 +50,7 @@ describe('useAnimate', () => {
 
         return { ...animate, el }
       },
-    })
+    }))
     const vm = wrapper.vm
     await vi.waitFor(() => {
       expect(vm.playState).toBe('finished')
@@ -58,9 +58,7 @@ describe('useAnimate', () => {
 
     keyframes.value = { transform: 'rotate(180deg)' }
 
-    // TODO (43081j): figure out how to get `mount` to type this properly
-    // in the first place. So we can drop the cast
-    const animation = vm.animate as Animation
+    const animation = vm.animate!
 
     await vi.waitFor(() => {
       const keyframe = animation.effect as KeyframeEffect
