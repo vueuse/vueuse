@@ -21,7 +21,7 @@ BindingValueFunction | BindingValueArray
     }
     else {
       const [handler, options] = value
-      const state = reactive(usePointerSwipe(el, options))
+      const state = reactiveOmit(reactive(usePointerSwipe(el, options)), 'stop')
       watch(state, v => handler(v))
     }
   },
