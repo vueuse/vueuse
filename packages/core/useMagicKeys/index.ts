@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, reactive, shallowRef, toValue } from 'vue'
+import { computed, nextTick, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -142,9 +142,9 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     // Solution: Trigger "keyup" event manually when "keydown" event is fired without "keyup"
     if (key && e.getModifierState('Meta') && current.has(key)) {
       updateRefs(e, false)
-      setTimeout(() => {
+      nextTick(() => {
         updateRefs(e, true)
-      }, 0)
+      })
     }
     else {
       updateRefs(e, true)
