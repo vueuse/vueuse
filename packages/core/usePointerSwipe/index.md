@@ -79,7 +79,7 @@ function onSwipe(state: PointerSwipeType) {
 const options = {
   threshold: 10,
   disableTextSelect: true,
-  onSwipeEnd: (state: PointerSwipeType) => {
+  onSwipeEnd: (e: TouchEvent, direction: UseSwipeDirection) => {
     console.log('ended')
   },
 }
