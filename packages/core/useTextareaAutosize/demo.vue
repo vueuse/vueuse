@@ -10,8 +10,14 @@ const { textarea, input } = useTextareaAutosize()
     <textarea
       ref="textarea"
       v-model="input"
-      class="resize-none"
+      class="resize-none responsive-textarea"
       placeholder="What's on your mind?"
     />
   </div>
 </template>
+
+<style scoped>
+.responsive-textarea {
+  min-width: auto;
+}
+</style>
