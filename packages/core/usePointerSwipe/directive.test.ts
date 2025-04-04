@@ -18,7 +18,7 @@ const App = defineComponent({
 
   template: `<template>
   <div v-if="options" v-pointer-swipe="[onSwipe,options]">Hello world!</div>
-  <div v-else v-pointer-swipe="onPointerSwipe">Hello world!</div>
+  <div v-else v-pointer-swipe="onSwipe">Hello world!</div>
   </template>
   `,
 })
