@@ -43,7 +43,7 @@ export interface UseEventSourceOptions extends EventSourceInit {
   immediate?: boolean
 
   /**
-   * Automatically connect to the websocket when URL changes
+   * Automatically connect to the eventSource when URL changes
    *
    * @default true
    */
