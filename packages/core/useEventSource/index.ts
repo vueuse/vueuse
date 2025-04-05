@@ -48,6 +48,13 @@ export interface UseEventSourceOptions extends EventSourceInit {
    * @default true
    */
   autoConnect?: boolean
+
+  /**
+   * Automatically close a connection
+   *
+   * @default true
+   */
+  autoClose?: boolean
 }
 
 export interface UseEventSourceReturn<Events extends string[], Data = any> {
@@ -131,6 +138,7 @@ export function useEventSource<Events extends string[], Data = any>(
     immediate = true,
     autoConnect = true,
     autoReconnect,
+    autoClose = true,
   } = options
 
   const close = () => {
@@ -209,6 +217,9 @@ export function useEventSource<Events extends string[], Data = any>(
 
   if (autoConnect)
     watch(urlRef, open)
+
+  if (autoClose)
+    useEventListener('beforeunload', () => close(), { passive: true })
 
   tryOnScopeDispose(close)
 
