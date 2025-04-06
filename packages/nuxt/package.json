@@ -47,8 +47,7 @@
   "dependencies": {
     "@nuxt/kit": "catalog:",
     "@vueuse/core": "workspace:*",
-    "@vueuse/metadata": "workspace:*",
-    "local-pkg": "catalog:"
+    "@vueuse/metadata": "workspace:*"
   },
   "devDependencies": {
     "@nuxt/schema": "catalog:",

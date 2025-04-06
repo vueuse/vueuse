@@ -147,9 +147,6 @@ catalogs:
     lint-staged:
       specifier: ^15.4.3
       version: 15.4.3
-    local-pkg:
-      specifier: ^1.1.1
-      version: 1.1.1
     markdown-table:
       specifier: ^3.0.4
       version: 3.0.4
@@ -667,9 +664,6 @@ importers:
       '@vueuse/metadata':
         specifier: workspace:*
         version: link:../metadata
-      local-pkg:
-        specifier: 'catalog:'
-        version: 1.1.1
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.2)
