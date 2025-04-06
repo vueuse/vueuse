@@ -3,6 +3,7 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
+import { isPackageExists } from 'local-pkg'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -119,6 +120,13 @@ export default defineNuxtModule<VueUseNuxtOptions>({
         for (const pkg of packages) {
           if (pkg === 'shared')
             continue
+
+          if (pkg !== 'core' && !isPackageExists(
+            `@vueuse/${pkg}`,
+            { paths: nuxt.options._layers.map(layer => layer.config.rootDir) },
+          )) {
+            continue
+          }
 
           const imports = metadata
             .functions
