@@ -103,3 +103,17 @@ const controller = mapGamepadToXbox360Controller(gamepad)
 ```
 
 Currently there are only mappings for the Xbox 360 controller. If you have controller you want to add mappings for, feel free to open a PR for more controller mappings!
+
+### SSR Compatibility
+
+When using this component in SSR environments, wrap it with your framework's client-only component to avoid hydration mismatches:
+
+```vue
+<template>
+  <ClientOnly>
+    <GamepadComponent />
+  </ClientOnly>
+</template>
+```
+
+This ensures proper rendering across server and client environments.
