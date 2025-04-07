@@ -1,4 +1,4 @@
-import type { ConfigurableDocument, MaybeElementRefOrGetter } from '@vueuse/core'
+import type { ConfigurableDocument, MaybeElement } from '@vueuse/core'
 import type { Options } from 'sortablejs'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
@@ -27,7 +27,7 @@ export type UseSortableOptions = Options & ConfigurableDocument
 
 export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeElementRefOrGetter, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
 /**
@@ -37,7 +37,7 @@ export function useSortable<T>(el: MaybeElementRefOrGetter, list: MaybeRefOrGett
  * @param options
  */
 export function useSortable<T>(
-  el: MaybeElementRefOrGetter | string,
+  el: MaybeRefOrGetter<MaybeElement> | string,
   list: MaybeRefOrGetter<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
