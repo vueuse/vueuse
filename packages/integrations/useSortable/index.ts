@@ -1,7 +1,7 @@
-import type { ConfigurableDocument, MaybeElementRef } from '@vueuse/core'
+import type { ConfigurableDocument, MaybeElementRefOrGetter } from '@vueuse/core'
 import type { Options } from 'sortablejs'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
-import { defaultDocument, tryOnMounted, tryOnScopeDispose } from '@vueuse/core'
+import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { isRef, nextTick, toValue } from 'vue'
 
@@ -27,7 +27,7 @@ export type UseSortableOptions = Options & ConfigurableDocument
 
 export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeRefOrGetter<MaybeElementRef>, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(el: MaybeElementRefOrGetter, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
 /**
@@ -37,7 +37,7 @@ export function useSortable<T>(el: MaybeRefOrGetter<MaybeElementRef>, list: Mayb
  * @param options
  */
 export function useSortable<T>(
-  el: MaybeRefOrGetter<MaybeElementRef> | string,
+  el: MaybeElementRefOrGetter | string,
   list: MaybeRefOrGetter<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
@@ -52,7 +52,7 @@ export function useSortable<T>(
   }
 
   const start = () => {
-    const target = (typeof el === 'string' ? document?.querySelector(el) : toValue(el))
+    const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
     if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })

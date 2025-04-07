@@ -5,7 +5,7 @@ export type VueInstance = ComponentPublicInstance
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>
 export type MaybeComputedElementRef<T extends MaybeElement = MaybeElement> = MaybeRefOrGetter<T>
 export type MaybeElement = HTMLElement | SVGElement | VueInstance | undefined | null
-
+export type MaybeElementRefOrGetter<T extends MaybeElement = MaybeElement> = MaybeRef<T> | (() => T)
 export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extends VueInstance ? Exclude<MaybeElement, VueInstance> : T | undefined
 
 /**
