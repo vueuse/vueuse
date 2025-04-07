@@ -121,7 +121,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (pkg === 'shared')
             continue
 
-          if (!isPackageExists(
+          if (pkg !== 'core' && !isPackageExists(
             `@vueuse/${pkg}`,
             { paths: nuxt.options._layers.map(layer => layer.config.rootDir) },
           )) {
