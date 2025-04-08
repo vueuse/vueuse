@@ -45,7 +45,7 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@types/web-bluetooth": "catalog:",
+    "@types/web-bluetooth": "catalog:types",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*"
   }

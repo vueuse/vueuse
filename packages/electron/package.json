@@ -48,6 +48,6 @@
     "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
-    "electron": "catalog:"
+    "electron": "catalog:integrations"
   }
 }

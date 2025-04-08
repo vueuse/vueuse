@@ -50,6 +50,6 @@
     "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
-    "rxjs": "catalog:"
+    "rxjs": "catalog:integrations"
   }
 }

@@ -5,34 +5,239 @@ settings:
   excludeLinksFromLockfile: false
 
 catalogs:
-  default:
+  dev:
     '@antfu/eslint-config':
       specifier: ^4.11.0
       version: 4.11.0
     '@antfu/ni':
       specifier: ^24.3.0
       version: 24.3.0
-    '@arethetypeswrong/cli':
-      specifier: ^0.17.4
-      version: 0.17.4
     '@iconify/json':
       specifier: ^2.2.324
       version: 2.2.324
-    '@nuxt/kit':
-      specifier: ^3.16.2
-      version: 3.16.2
-    '@nuxt/schema':
-      specifier: ^3.16.2
-      version: 3.16.2
     '@rollup/plugin-json':
       specifier: ^6.1.0
       version: 6.1.0
     '@rollup/plugin-replace':
       specifier: ^6.0.2
       version: 6.0.2
+    '@vitejs/plugin-vue':
+      specifier: ^5.2.3
+      version: 5.2.3
+    '@vue/compiler-sfc':
+      specifier: ^3.5.13
+      version: 3.5.13
+    bumpp:
+      specifier: ^10.1.0
+      version: 10.1.0
+    consola:
+      specifier: ^3.4.2
+      version: 3.4.2
+    eslint-factory:
+      specifier: ^0.1.2
+      version: 0.1.2
+    eslint-plugin-format:
+      specifier: ^1.0.1
+      version: 1.0.1
+    eslint-plugin-unimport:
+      specifier: ^0.1.2
+      version: 0.1.2
+    export-size:
+      specifier: ^0.7.0
+      version: 0.7.0
+    jsdom:
+      specifier: ^26.0.0
+      version: 26.0.0
+    lint-staged:
+      specifier: ^15.5.0
+      version: 15.5.0
+    nuxt:
+      specifier: ^3.16.2
+      version: 3.16.2
+    ofetch:
+      specifier: ^1.4.1
+      version: 1.4.1
+    pnpm:
+      specifier: ^10.8.0
+      version: 10.8.0
+    postcss:
+      specifier: ^8.5.3
+      version: 8.5.3
+    postcss-nested:
+      specifier: ^7.0.2
+      version: 7.0.2
+    prettier:
+      specifier: ^3.5.3
+      version: 3.5.3
+    rollup-plugin-dts:
+      specifier: ^6.2.1
+      version: 6.2.1
+    rollup-plugin-esbuild:
+      specifier: ^6.2.1
+      version: 6.2.1
+    rollup-plugin-pure:
+      specifier: ^0.3.0
+      version: 0.3.0
+    sharp:
+      specifier: ^0.34.1
+      version: 0.34.1
+    simple-git:
+      specifier: ^3.27.0
+      version: 3.27.0
+    simple-git-hooks:
+      specifier: ^2.12.1
+      version: 2.12.1
+    taze:
+      specifier: ^19.0.4
+      version: 19.0.4
+    tinyglobby:
+      specifier: ^0.2.12
+      version: 0.2.12
+    tsx:
+      specifier: ^4.19.3
+      version: 4.19.3
+    typescript:
+      specifier: ^5.8.3
+      version: 5.8.3
+    unimport:
+      specifier: ^4.1.3
+      version: 4.1.3
+    unocss:
+      specifier: ^65.5.0
+      version: 65.5.0
+    vite-plugin-inspect:
+      specifier: ^11.0.0
+      version: 11.0.0
+    vue-tsc:
+      specifier: ^2.2.8
+      version: 2.2.8
+  docs:
     '@shikijs/vitepress-twoslash':
       specifier: ^3.2.1
       version: 3.2.1
+    '@vite-pwa/vitepress':
+      specifier: ^1.0.0
+      version: 1.0.0
+    google-font-installer:
+      specifier: ^1.2.0
+      version: 1.2.0
+    gray-matter:
+      specifier: ^4.0.3
+      version: 4.0.3
+    markdown-table:
+      specifier: ^3.0.4
+      version: 3.0.4
+    md5:
+      specifier: ^2.3.0
+      version: 2.3.0
+    remove-markdown:
+      specifier: ^0.6.0
+      version: 0.6.0
+    unplugin-icons:
+      specifier: ^22.1.0
+      version: 22.1.0
+    unplugin-vue-components:
+      specifier: ^28.4.1
+      version: 28.4.1
+    vitepress:
+      specifier: ^2.0.0-alpha.4
+      version: 2.0.0-alpha.4
+    yaml:
+      specifier: ^2.7.1
+      version: 2.7.1
+  integrations:
+    '@nuxt/kit':
+      specifier: ^3.16.2
+      version: 3.16.2
+    '@nuxt/schema':
+      specifier: ^3.16.2
+      version: 3.16.2
+    async-validator:
+      specifier: ^4.2.5
+      version: 4.2.5
+    axios:
+      specifier: ^1.8.4
+      version: 1.8.4
+    change-case:
+      specifier: ^5.4.4
+      version: 5.4.4
+    drauu:
+      specifier: ^0.4.3
+      version: 0.4.3
+    electron:
+      specifier: ^13.1.0
+      version: 13.6.9
+    firebase:
+      specifier: ^10.14.1
+      version: 10.14.1
+    focus-trap:
+      specifier: ^7.6.4
+      version: 7.6.4
+    fuse.js:
+      specifier: ^7.1.0
+      version: 7.1.0
+    idb-keyval:
+      specifier: ^6.2.1
+      version: 6.2.1
+    jwt-decode:
+      specifier: ^4.0.0
+      version: 4.0.0
+    local-pkg:
+      specifier: ^1.1.1
+      version: 1.1.1
+    nprogress:
+      specifier: ^0.2.0
+      version: 0.2.0
+    qrcode:
+      specifier: ^1.5.4
+      version: 1.5.4
+    rxjs:
+      specifier: ^6.6.7
+      version: 6.6.7
+    sortablejs:
+      specifier: ^1.15.6
+      version: 1.15.6
+    universal-cookie:
+      specifier: ^7.2.2
+      version: 7.2.2
+    vue-router:
+      specifier: ^4.5.0
+      version: 4.5.0
+  test:
+    '@arethetypeswrong/cli':
+      specifier: ^0.17.4
+      version: 0.17.4
+    '@vitest/browser':
+      specifier: ^3.1.1
+      version: 3.1.1
+    '@vitest/coverage-v8':
+      specifier: ^3.1.1
+      version: 3.1.1
+    '@vitest/ui':
+      specifier: ^3.1.1
+      version: 3.1.1
+    '@vue/test-utils':
+      specifier: ^2.4.6
+      version: 2.4.6
+    fake-indexeddb:
+      specifier: ^6.0.0
+      version: 6.0.0
+    msw:
+      specifier: ^2.3.0
+      version: 2.3.0
+    playwright:
+      specifier: 1.49.0
+      version: 1.49.0
+    vitest:
+      specifier: ^3.1.1
+      version: 3.1.1
+    vitest-browser-vue:
+      specifier: ^0.2.0
+      version: 0.2.0
+    vitest-package-exports:
+      specifier: ^0.1.1
+      version: 0.1.1
+  types:
     '@type-challenges/utils':
       specifier: ^0.1.1
       version: 0.1.1
@@ -60,225 +265,8 @@ catalogs:
     '@types/web-bluetooth':
       specifier: ^0.0.21
       version: 0.0.21
-    '@vite-pwa/vitepress':
-      specifier: ^1.0.0
-      version: 1.0.0
-    '@vitejs/plugin-vue':
-      specifier: ^5.2.3
-      version: 5.2.3
-    '@vitest/browser':
-      specifier: ^3.1.1
-      version: 3.1.1
-    '@vitest/coverage-v8':
-      specifier: ^3.1.1
-      version: 3.1.1
-    '@vitest/ui':
-      specifier: ^3.1.1
-      version: 3.1.1
-    '@vue/compiler-sfc':
-      specifier: ^3.5.13
-      version: 3.5.13
-    '@vue/test-utils':
-      specifier: ^2.4.6
-      version: 2.4.6
-    async-validator:
-      specifier: ^4.2.5
-      version: 4.2.5
-    axios:
-      specifier: ^1.8.4
-      version: 1.8.4
-    bumpp:
-      specifier: ^10.1.0
-      version: 10.1.0
-    change-case:
-      specifier: ^5.4.4
-      version: 5.4.4
-    consola:
-      specifier: ^3.4.2
-      version: 3.4.2
-    drauu:
-      specifier: ^0.4.3
-      version: 0.4.3
-    electron:
-      specifier: ^13.1.0
-      version: 13.6.9
-    esbuild-register:
-      specifier: ^3.6.0
-      version: 3.6.0
-    eslint-factory:
-      specifier: ^0.1.2
-      version: 0.1.2
-    eslint-plugin-format:
-      specifier: ^1.0.1
-      version: 1.0.1
-    eslint-plugin-unimport:
-      specifier: ^0.1.2
-      version: 0.1.2
-    export-size:
-      specifier: ^0.7.0
-      version: 0.7.0
-    fake-indexeddb:
-      specifier: ^6.0.0
-      version: 6.0.0
-    firebase:
-      specifier: ^10.14.1
-      version: 10.14.1
-    focus-trap:
-      specifier: ^7.6.4
-      version: 7.6.4
-    fuse.js:
-      specifier: ^7.1.0
-      version: 7.1.0
-    google-font-installer:
-      specifier: ^1.2.0
-      version: 1.2.0
-    gray-matter:
-      specifier: ^4.0.3
-      version: 4.0.3
-    idb-keyval:
-      specifier: ^6.2.1
-      version: 6.2.1
-    jsdom:
-      specifier: ^26.0.0
-      version: 26.0.0
-    jwt-decode:
-      specifier: ^4.0.0
-      version: 4.0.0
-    lint-staged:
-      specifier: ^15.5.0
-      version: 15.5.0
-    local-pkg:
-      specifier: ^1.1.1
-      version: 1.1.1
-    markdown-table:
-      specifier: ^3.0.4
-      version: 3.0.4
-    md5:
-      specifier: ^2.3.0
-      version: 2.3.0
-    msw:
-      specifier: ^2.3.0
-      version: 2.3.0
-    node-fetch:
-      specifier: ^3.3.2
-      version: 3.3.2
-    node-fetch-native:
-      specifier: ^1.6.6
-      version: 1.6.6
-    nprogress:
-      specifier: ^0.2.0
-      version: 0.2.0
-    nuxt:
-      specifier: ^3.16.2
-      version: 3.16.2
-    ofetch:
-      specifier: ^1.4.1
-      version: 1.4.1
-    playwright:
-      specifier: 1.49.0
-      version: 1.49.0
-    pnpm:
-      specifier: ^10.8.0
-      version: 10.8.0
-    postcss:
-      specifier: ^8.5.3
-      version: 8.5.3
-    postcss-nested:
-      specifier: ^7.0.2
-      version: 7.0.2
-    prettier:
-      specifier: ^3.5.3
-      version: 3.5.3
-    prism-theme-vars:
-      specifier: ^0.2.5
-      version: 0.2.5
-    qrcode:
-      specifier: ^1.5.4
-      version: 1.5.4
-    remove-markdown:
-      specifier: ^0.6.0
-      version: 0.6.0
-    rollup-plugin-dts:
-      specifier: ^6.2.1
-      version: 6.2.1
-    rollup-plugin-esbuild:
-      specifier: ^6.2.1
-      version: 6.2.1
-    rollup-plugin-pure:
-      specifier: ^0.3.0
-      version: 0.3.0
-    rxjs:
-      specifier: ^6.6.7
-      version: 6.6.7
-    sharp:
-      specifier: ^0.34.1
-      version: 0.34.1
-    simple-git:
-      specifier: ^3.27.0
-      version: 3.27.0
-    simple-git-hooks:
-      specifier: ^2.12.1
-      version: 2.12.1
-    sortablejs:
-      specifier: ^1.15.6
-      version: 1.15.6
-    taze:
-      specifier: ^19.0.4
-      version: 19.0.4
-    tinyexec:
-      specifier: ^1.0.1
-      version: 1.0.1
-    tinyglobby:
-      specifier: ^0.2.12
-      version: 0.2.12
-    tsx:
-      specifier: ^4.19.3
-      version: 4.19.3
-    typescript:
-      specifier: ^5.8.3
-      version: 5.8.3
-    unimport:
-      specifier: ^4.1.3
-      version: 4.1.3
-    universal-cookie:
-      specifier: ^7.2.2
-      version: 7.2.2
-    unocss:
-      specifier: ^65.5.0
-      version: 65.5.0
-    unplugin-icons:
-      specifier: ^22.1.0
-      version: 22.1.0
-    unplugin-vue-components:
-      specifier: ^28.4.1
-      version: 28.4.1
-    vite-plugin-inspect:
-      specifier: ^11.0.0
-      version: 11.0.0
-    vitepress:
-      specifier: ^2.0.0-alpha.4
-      version: 2.0.0-alpha.4
-    vitest:
-      specifier: ^3.1.1
-      version: 3.1.1
-    vitest-browser-vue:
-      specifier: ^0.2.0
-      version: 0.2.0
-    vitest-package-exports:
-      specifier: ^0.1.1
-      version: 0.1.1
-    vue-router:
-      specifier: ^4.5.0
-      version: 4.5.0
-    vue-tsc:
-      specifier: ^2.2.8
-      version: 2.2.8
-    yaml:
-      specifier: ^2.7.1
-      version: 2.7.1
 
 overrides:
-  '@typescript-eslint/utils': ^8.29.1
   '@vueuse/core': workspace:*
   '@vueuse/integrations': workspace:*
   '@vueuse/math': workspace:*
@@ -287,7 +275,6 @@ overrides:
   '@vueuse/rxjs': workspace:*
   '@vueuse/shared': workspace:*
   eslint: ^9.24.0
-  magic-string: ^0.30.17
   rollup: ^4.39.0
   vite: ^6.2.5
   vite-plugin-pwa: ^1.0.0
@@ -298,61 +285,61 @@ importers:
   .:
     devDependencies:
       '@antfu/eslint-config':
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 4.11.0(@typescript-eslint/utils@8.29.1(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3))(@vue/compiler-sfc@3.5.13)(eslint-plugin-format@1.0.1(eslint@9.24.0(jiti@2.4.2)))(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3)(vitest@3.1.1)
       '@antfu/ni':
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 24.3.0
       '@arethetypeswrong/cli':
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 0.17.4
       '@iconify/json':
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 2.2.324
       '@rollup/plugin-json':
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 6.1.0(rollup@4.39.0)
       '@rollup/plugin-replace':
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 6.0.2(rollup@4.39.0)
       '@shikijs/vitepress-twoslash':
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 3.2.1(@nuxt/kit@3.16.2(magicast@0.3.5))(typescript@5.8.3)
       '@type-challenges/utils':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 0.1.1
       '@types/md5':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 2.3.5
       '@types/node':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 22.14.0
       '@types/remove-markdown':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 0.3.4
       '@types/semver':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 7.7.0
       '@vite-pwa/vitepress':
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 1.0.0(vite-plugin-pwa@0.19.0(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1))(workbox-build@7.0.0)(workbox-window@7.0.0))
       '@vitejs/plugin-vue':
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 5.2.3(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))
       '@vitest/browser':
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 3.1.1(msw@2.3.0(typescript@5.8.3))(playwright@1.49.0)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1))(vitest@3.1.1)
       '@vitest/coverage-v8':
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 3.1.1(@vitest/browser@3.1.1)(vitest@3.1.1)
       '@vitest/ui':
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 3.1.1(vitest@3.1.1)
       '@vue/compiler-sfc':
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 3.5.13
       '@vue/test-utils':
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 2.4.6
       '@vueuse/core':
         specifier: workspace:*
@@ -376,163 +363,148 @@ importers:
         specifier: workspace:*
         version: link:packages/shared
       axios:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 1.8.4
       bumpp:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 10.1.0(magicast@0.3.5)
       consola:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 3.4.2
-      esbuild-register:
-        specifier: 'catalog:'
-        version: 3.6.0(esbuild@0.25.2)
       eslint:
         specifier: ^9.24.0
         version: 9.24.0(jiti@2.4.2)
       eslint-factory:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 0.1.2(eslint@9.24.0(jiti@2.4.2))(typescript@5.8.3)
       eslint-plugin-format:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 1.0.1(eslint@9.24.0(jiti@2.4.2))
       eslint-plugin-unimport:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 0.1.2(eslint@9.24.0(jiti@2.4.2))(rollup@4.39.0)(typescript@5.8.3)
       export-size:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 0.7.0
       fake-indexeddb:
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 6.0.0
       firebase:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 10.14.1
       fuse.js:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 7.1.0
       google-font-installer:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 1.2.0
       gray-matter:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 4.0.3
       jsdom:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 26.0.0
       lint-staged:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 15.5.0
       markdown-table:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 3.0.4
       md5:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 2.3.0
       msw:
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 2.3.0(typescript@5.8.3)
-      node-fetch:
-        specifier: 'catalog:'
-        version: 3.3.2
-      node-fetch-native:
-        specifier: 'catalog:'
-        version: 1.6.6
       ofetch:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 1.4.1
       playwright:
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 1.49.0
       pnpm:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 10.8.0
       postcss:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 8.5.3
       postcss-nested:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 7.0.2(postcss@8.5.3)
       prettier:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 3.5.3
-      prism-theme-vars:
-        specifier: 'catalog:'
-        version: 0.2.5
       remove-markdown:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 0.6.0
       rollup:
         specifier: ^4.39.0
         version: 4.39.0
       rollup-plugin-dts:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 6.2.1(rollup@4.39.0)(typescript@5.8.3)
       rollup-plugin-esbuild:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 6.2.1(esbuild@0.25.2)(rollup@4.39.0)
       rollup-plugin-pure:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 0.3.0(rollup@4.39.0)
       sharp:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 0.34.1
       simple-git:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 3.27.0
       simple-git-hooks:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 2.12.1
       taze:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 19.0.4
-      tinyexec:
-        specifier: 'catalog:'
-        version: 1.0.1
       tinyglobby:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 0.2.12
       tsx:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 4.19.3
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 5.8.3
       unocss:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 65.5.0(postcss@8.5.3)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))
       unplugin-icons:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 22.1.0(@vue/compiler-sfc@3.5.13)(vue-template-compiler@2.7.16)
       unplugin-vue-components:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 28.4.1(@babel/parser@7.27.0)(@nuxt/kit@3.16.2(magicast@0.3.5))(vue@3.5.13(typescript@5.8.3))
       vite:
         specifier: ^6.2.5
         version: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1)
       vite-plugin-inspect:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 11.0.0(@nuxt/kit@3.16.2(magicast@0.3.5))(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1))
       vitepress:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 2.0.0-alpha.4(@algolia/client-search@5.19.0)(@types/node@22.14.0)(jiti@2.4.2)(postcss@8.5.3)(search-insights@2.6.0)(terser@5.24.0)(tsx@4.19.3)(typescript@5.8.3)(yaml@2.7.1)
       vitest:
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 3.1.1(@types/node@22.14.0)(@vitest/browser@3.1.1)(@vitest/ui@3.1.1)(jiti@2.4.2)(jsdom@26.0.0)(msw@2.3.0(typescript@5.8.3))(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1)
       vitest-browser-vue:
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 0.2.0(@vitest/browser@3.1.1)(vitest@3.1.1)(vue@3.5.13(typescript@5.8.3))
       vitest-package-exports:
-        specifier: 'catalog:'
+        specifier: catalog:test
         version: 0.1.1
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
       vue-tsc:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 2.2.8(typescript@5.8.3)
       yaml:
-        specifier: 'catalog:'
+        specifier: catalog:docs
         version: 2.7.1
 
   packages/components:
@@ -550,7 +522,7 @@ importers:
   packages/core:
     dependencies:
       '@types/web-bluetooth':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 0.0.21
       '@vueuse/metadata':
         specifier: workspace:*
@@ -572,7 +544,7 @@ importers:
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       electron:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 13.6.9
 
   packages/firebase:
@@ -600,49 +572,49 @@ importers:
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       '@types/nprogress':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 0.2.3
       '@types/qrcode':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 1.5.5
       '@types/sortablejs':
-        specifier: 'catalog:'
+        specifier: catalog:types
         version: 1.15.8
       async-validator:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 4.2.5
       axios:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 1.8.4
       change-case:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 5.4.4
       drauu:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 0.4.3
       focus-trap:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 7.6.4
       fuse.js:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 7.1.0
       idb-keyval:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 6.2.1
       jwt-decode:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 4.0.0
       nprogress:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 0.2.0
       qrcode:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 1.5.4
       sortablejs:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 1.15.6
       universal-cookie:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 7.2.2
 
   packages/math:
@@ -659,7 +631,7 @@ importers:
   packages/nuxt:
     dependencies:
       '@nuxt/kit':
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 3.16.2(magicast@0.3.5)
       '@vueuse/core':
         specifier: workspace:*
@@ -668,20 +640,20 @@ importers:
         specifier: workspace:*
         version: link:../metadata
       local-pkg:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 1.1.1
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       '@nuxt/schema':
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 3.16.2
       nuxt:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 3.16.2(@parcel/watcher@2.4.1)(@types/node@22.14.0)(db0@0.3.1)(encoding@0.1.13)(eslint@9.24.0(jiti@2.4.2))(idb-keyval@6.2.1)(ioredis@5.6.0)(magicast@0.3.5)(rollup@4.39.0)(terser@5.24.0)(tsx@4.19.3)(typescript@5.8.3)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.3)(yaml@2.7.1))(vue-tsc@2.2.8(typescript@5.8.3))(yaml@2.7.1)
       unimport:
-        specifier: 'catalog:'
+        specifier: catalog:dev
         version: 4.1.3
 
   packages/router:
@@ -694,7 +666,7 @@ importers:
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       vue-router:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 4.5.0(vue@3.5.13(typescript@5.8.3))
 
   packages/rxjs:
@@ -707,7 +679,7 @@ importers:
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       rxjs:
-        specifier: 'catalog:'
+        specifier: catalog:integrations
         version: 6.6.7
 
   packages/shared:
@@ -3287,7 +3259,7 @@ packages:
   '@vitest/eslint-plugin@1.1.39':
     resolution: {integrity: sha512-l5/MUFCYI8nxwr62JHlWwXfeQNS8E7xy71lSLGQ3CrjGjBdWLs1Rtee+BvYwy2m4YVPwYqUwdcAIOaZOwPUpfg==}
     peerDependencies:
-      '@typescript-eslint/utils': ^8.29.1
+      '@typescript-eslint/utils': ^8.24.0
       eslint: ^9.24.0
       typescript: '>= 5.0.0'
       vitest: '*'
@@ -4040,10 +4012,6 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
-  data-uri-to-buffer@4.0.1:
-    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
-    engines: {node: '>= 12'}
-
   data-urls@5.0.0:
     resolution: {integrity: sha512-ZYP5VBHshaDAiVZxjbRVcFJpc+4xGgT0bK3vzy1HLN8jTO975HEbuYzZJcHoQEY5K1a0z8YayJkyVETa08eNTg==}
     engines: {node: '>=18'}
@@ -4327,11 +4295,6 @@ packages:
 
   es6-error@4.1.1:
     resolution: {integrity: sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==}
-
-  esbuild-register@3.6.0:
-    resolution: {integrity: sha512-H2/S7Pm8a9CL1uhp9OvjwrBh5Pvx0H8qVOxNu8Wed9Y7qv56MPtq+GGM8RJpq6glYJn9Wspr8uw7l55uyinNeg==}
-    peerDependencies:
-      esbuild: '>=0.12 <1'
 
   esbuild@0.19.11:
     resolution: {integrity: sha512-HJ96Hev2hX/6i5cDVwcqiJBBtuo9+FeIJOtZ9W1kA5M6AMJRHUZlpYZ1/SbEwtO0ioNAW8rUooVpC/WehY2SfA==}
@@ -4670,10 +4633,6 @@ packages:
       picomatch:
         optional: true
 
-  fetch-blob@3.2.0:
-    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
-    engines: {node: ^12.20 || >= 14.13}
-
   fflate@0.8.2:
     resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
 
@@ -4752,10 +4711,6 @@ packages:
   form-data@4.0.1:
     resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
-
-  formdata-polyfill@4.0.10:
-    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
-    engines: {node: '>=12.20.0'}
 
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
@@ -5569,6 +5524,9 @@ packages:
     resolution: {integrity: sha512-686fgAHaJY7wLTFEq7nnKqeQrhqmXB19d1HnqT35Ci7BN6hbAYLZUezTQ062uUHM7ggZEQlqJ94Ftls+KDXU8Q==}
     engines: {node: '>=16.14.0'}
 
+  magic-string@0.25.9:
+    resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
+
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -5903,10 +5861,6 @@ packages:
   node-addon-api@7.0.0:
     resolution: {integrity: sha512-vgbBJTS4m5/KkE16t5Ly0WW9hz46swAstv0hYYwMtbG7AznRhNyfLRe8HZAiWIpcHzoO7HxhLuBQj9rJ/Ho0ZA==}
 
-  node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-
   node-emoji@2.2.0:
     resolution: {integrity: sha512-Z3lTE9pLaJF47NyMhd4ww1yFTAP8YhYI8SleJiHzM46Fgpm5cnNzSl9XfzFNqbaz+VlJrIj3fXQ4DeN1Rjm6cw==}
     engines: {node: '>=18'}
@@ -5922,10 +5876,6 @@ packages:
     peerDependenciesMeta:
       encoding:
         optional: true
-
-  node-fetch@3.3.2:
-    resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   node-forge@1.3.1:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
@@ -6465,9 +6415,6 @@ packages:
     resolution: {integrity: sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
 
-  prism-theme-vars@0.2.5:
-    resolution: {integrity: sha512-/D8gBTScYzi9afwE6v3TC1U/1YFZ6k+ly17mtVRdLpGy7E79YjJJWkXFgUDHJ2gDksV/ZnXF7ydJ4TvoDm2z/Q==}
-
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
@@ -6898,6 +6845,10 @@ packages:
   source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
     engines: {node: '>= 8'}
+
+  sourcemap-codec@1.4.8:
+    resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    deprecated: Please use @jridgewell/sourcemap-codec instead
 
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
@@ -7780,10 +7731,6 @@ packages:
   w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
-
-  web-streams-polyfill@3.2.1:
-    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
-    engines: {node: '>= 8'}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -10321,7 +10268,7 @@ snapshots:
   '@rollup/plugin-replace@2.4.2(rollup@4.39.0)':
     dependencies:
       '@rollup/pluginutils': 3.1.0(rollup@4.39.0)
-      magic-string: 0.30.17
+      magic-string: 0.25.9
       rollup: 4.39.0
 
   '@rollup/plugin-replace@6.0.2(rollup@4.39.0)':
@@ -10515,7 +10462,7 @@ snapshots:
     dependencies:
       ejs: 3.1.9
       json5: 2.2.3
-      magic-string: 0.30.17
+      magic-string: 0.25.9
       string.prototype.matchall: 4.0.8
 
   '@szmarczak/http-timer@1.1.2':
@@ -11890,8 +11837,6 @@ snapshots:
 
   csstype@3.1.3: {}
 
-  data-uri-to-buffer@4.0.1: {}
-
   data-urls@5.0.0:
     dependencies:
       whatwg-mimetype: 4.0.0
@@ -12134,13 +12079,6 @@ snapshots:
 
   es6-error@4.1.1:
     optional: true
-
-  esbuild-register@3.6.0(esbuild@0.25.2):
-    dependencies:
-      debug: 4.4.0
-      esbuild: 0.25.2
-    transitivePeerDependencies:
-      - supports-color
 
   esbuild@0.19.11:
     optionalDependencies:
@@ -12642,11 +12580,6 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.2
 
-  fetch-blob@3.2.0:
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 3.2.1
-
   fflate@0.8.2: {}
 
   file-entry-cache@8.0.0:
@@ -12747,10 +12680,6 @@ snapshots:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-
-  formdata-polyfill@4.0.10:
-    dependencies:
-      fetch-blob: 3.2.0
 
   fraction.js@4.3.7: {}
 
@@ -13613,6 +13542,10 @@ snapshots:
     dependencies:
       magic-string: 0.30.17
 
+  magic-string@0.25.9:
+    dependencies:
+      sourcemap-codec: 1.4.8
+
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -14199,8 +14132,6 @@ snapshots:
 
   node-addon-api@7.0.0: {}
 
-  node-domexception@1.0.0: {}
-
   node-emoji@2.2.0:
     dependencies:
       '@sindresorhus/is': 4.6.0
@@ -14215,12 +14146,6 @@ snapshots:
       whatwg-url: 5.0.0
     optionalDependencies:
       encoding: 0.1.13
-
-  node-fetch@3.3.2:
-    dependencies:
-      data-uri-to-buffer: 4.0.1
-      fetch-blob: 3.2.0
-      formdata-polyfill: 4.0.10
 
   node-forge@1.3.1: {}
 
@@ -14834,8 +14759,6 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 17.0.2
 
-  prism-theme-vars@0.2.5: {}
-
   process-nextick-args@2.0.1: {}
 
   process@0.11.10: {}
@@ -15349,6 +15272,8 @@ snapshots:
   source-map@0.8.0-beta.0:
     dependencies:
       whatwg-url: 7.1.0
+
+  sourcemap-codec@1.4.8: {}
 
   space-separated-tokens@2.0.2: {}
 
@@ -16323,8 +16248,6 @@ snapshots:
   w3c-xmlserializer@5.0.0:
     dependencies:
       xml-name-validator: 5.0.0
-
-  web-streams-polyfill@3.2.1: {}
 
   webidl-conversions@3.0.1: {}
 
