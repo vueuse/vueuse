@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { templateRef } from '@vueuse/core'
+import { templateRef, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { describe, expect, it } from 'vitest'
 import { defineComponent, shallowRef } from 'vue'
@@ -151,5 +151,32 @@ describe('useSortable', () => {
         wrapper.unmount()
       }
     })
+  })
+
+  it('accepts component refs', () => {
+    const SubComponent = defineComponent({
+      template: '<p>foo</p>',
+    })
+    const wrapper = mount(defineComponent({
+      components: { SubComponent },
+      template: '<SubComponent ref="el"></SubComponent>',
+      setup() {
+        const el = templateRef<InstanceType<typeof SubComponent>>('el')
+        const list = shallowRef<string[]>([])
+        const result = useSortable(el, list, {
+        })
+
+        return { ...result, el }
+      },
+    }))
+    const vm = wrapper.vm
+    try {
+      const el = unrefElement(vm.el) as HTMLElement
+      const sortable = Sortable.get(el)
+      expect(sortable).toBeDefined()
+    }
+    finally {
+      wrapper.unmount()
+    }
   })
 })
