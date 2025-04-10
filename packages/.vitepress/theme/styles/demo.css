@@ -95,7 +95,7 @@
 
   textarea {
     display: block;
-    min-width: 20rem;
+    min-width: min(20rem, 100%);
     font-size: 1.05rem;
     padding: 0.5em 1em 0.4em 1em;
     border-radius: 4px;

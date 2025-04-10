@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/integrations",
   "type": "module",
-  "version": "13.0.0",
+  "version": "13.1.0",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -113,20 +113,20 @@
     "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
-    "@types/nprogress": "catalog:",
-    "@types/qrcode": "catalog:",
-    "@types/sortablejs": "catalog:",
-    "async-validator": "catalog:",
-    "axios": "catalog:",
-    "change-case": "catalog:",
-    "drauu": "catalog:",
-    "focus-trap": "catalog:",
-    "fuse.js": "catalog:",
-    "idb-keyval": "catalog:",
-    "jwt-decode": "catalog:",
-    "nprogress": "catalog:",
-    "qrcode": "catalog:",
-    "sortablejs": "catalog:",
-    "universal-cookie": "catalog:"
+    "@types/nprogress": "catalog:types",
+    "@types/qrcode": "catalog:types",
+    "@types/sortablejs": "catalog:types",
+    "async-validator": "catalog:integrations",
+    "axios": "catalog:integrations",
+    "change-case": "catalog:integrations",
+    "drauu": "catalog:integrations",
+    "focus-trap": "catalog:integrations",
+    "fuse.js": "catalog:integrations",
+    "idb-keyval": "catalog:integrations",
+    "jwt-decode": "catalog:integrations",
+    "nprogress": "catalog:integrations",
+    "qrcode": "catalog:integrations",
+    "sortablejs": "catalog:integrations",
+    "universal-cookie": "catalog:integrations"
   }
 }

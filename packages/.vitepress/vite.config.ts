@@ -78,7 +78,7 @@ export default defineConfig({
     ],
     include: [
       'axios',
-      'js-yaml',
+      'yaml',
       'nprogress',
       'qrcode',
       'tslib',
