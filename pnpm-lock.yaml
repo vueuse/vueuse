@@ -81,6 +81,9 @@ catalogs:
     '@vue/compiler-sfc':
       specifier: ^3.5.13
       version: 3.5.13
+    '@vue/repl':
+      specifier: ^4.5.1
+      version: 4.5.1
     '@vue/test-utils':
       specifier: ^2.4.6
       version: 2.4.6
@@ -357,6 +360,9 @@ importers:
       '@vue/compiler-sfc':
         specifier: 'catalog:'
         version: 3.5.13
+      '@vue/repl':
+        specifier: 'catalog:'
+        version: 4.5.1
       '@vue/test-utils':
         specifier: 'catalog:'
         version: 2.4.6
@@ -3376,6 +3382,9 @@ packages:
 
   '@vue/reactivity@3.5.13':
     resolution: {integrity: sha512-NaCwtw8o48B9I6L1zl2p41OHo/2Z4wqYGGIK1Khu5T7yxrn+ATOixn/Udn2m+6kZKB/J7cuT9DbWWhRxqixACg==}
+
+  '@vue/repl@4.5.1':
+    resolution: {integrity: sha512-YYXvFue2GOrZ6EWnoA8yQVKzdCIn45+tpwJHzMof1uwrgyYAVY9ynxCsDYeAuWcpaAeylg/nybhFuqiFy2uvYA==}
 
   '@vue/runtime-core@3.5.13':
     resolution: {integrity: sha512-Fj4YRQ3Az0WTZw1sFe+QDb0aXCerigEpw418pw1HBUKFtnQHWzwojaukAs2X/c9DQz4MQ4bsXTGlcpGxU/RCIw==}
@@ -11329,6 +11338,8 @@ snapshots:
   '@vue/reactivity@3.5.13':
     dependencies:
       '@vue/shared': 3.5.13
+
+  '@vue/repl@4.5.1': {}
 
   '@vue/runtime-core@3.5.13':
     dependencies:

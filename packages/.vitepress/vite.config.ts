@@ -74,6 +74,7 @@ export default defineConfig({
       '@vueuse/shared',
       '@vueuse/core',
       'body-scroll-lock',
+      '@vue/repl',
     ],
     include: [
       'axios',

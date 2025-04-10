@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useDrauu } from '@vueuse/integrations'
 import { toRefs } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import Scrubber from '../../core/useMediaControls/components/Scrubber.vue'
-import { useDrauu } from './index'
 
 const colors = deepRef(['black', '#ef4444', '#22c55e', '#3b82f6'])
 const target = deepRef()
