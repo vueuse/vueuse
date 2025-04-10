@@ -151,12 +151,13 @@ import { defineAsyncComponent } from 'vue'
 const Demo = defineAsyncComponent(() => import('./${demoPath}'))
 import DemoRaw from \'./${demoPath}\?raw'
 import { useStore } from '@vue/repl'
-import { shallowRef } from 'vue'
 
 const store = useStore({
-template: shallowRef({
-  welcomeSFC: DemoRaw
-})
+  template: {
+    value: {
+        welcomeSFC: DemoRaw
+    }
+  }
 })
 
 const serialized = store.serialize()
@@ -181,12 +182,13 @@ const serialized = store.serialize()
 import Demo from \'./${demoPath}\'
 import DemoRaw from \'./${demoPath}\?raw'
 import { useStore } from '@vue/repl'
-import { shallowRef } from 'vue'
 
 const store = useStore({
-template: shallowRef({
-  welcomeSFC: DemoRaw
-})
+  template: {
+    value: {
+        welcomeSFC: DemoRaw
+    }
+  }
 })
 
 const serialized = store.serialize()
