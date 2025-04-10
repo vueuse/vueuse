@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ProjectorFunction } from '../createGenericProjection'
 import { createProjection } from '../createProjection'
 

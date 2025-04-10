@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, watchImmediate } from '@vueuse/shared'
-import { readonly, ref } from 'vue'
+import { readonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
 
@@ -14,7 +14,7 @@ export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
     window = defaultWindow,
   } = options
 
-  const pixelRatio = ref(1)
+  const pixelRatio = shallowRef(1)
   const query = useMediaQuery(() => `(resolution: ${pixelRatio.value}dppx)`, options)
   let stop = noop
 

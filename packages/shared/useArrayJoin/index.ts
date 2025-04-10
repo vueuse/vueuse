@@ -1,6 +1,7 @@
-import type { ComputedRef } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
+
+export type UseArrayJoinReturn = ComputedRef<string>
 
 /**
  * Reactive `Array.join`
@@ -14,6 +15,6 @@ import { computed, toValue } from 'vue'
 export function useArrayJoin(
   list: MaybeRefOrGetter<MaybeRefOrGetter<any>[]>,
   separator?: MaybeRefOrGetter<string>,
-): ComputedRef<string> {
+): UseArrayJoinReturn {
   return computed(() => toValue(list).map(i => toValue(i)).join(toValue(separator)))
 }

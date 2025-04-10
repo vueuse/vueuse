@@ -1,6 +1,6 @@
 import type { ConfigurableDocument, ConfigurableNavigator } from '../_configurable'
 import { whenever } from '@vueuse/shared'
-import { computed, ref, shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { defaultDocument, defaultNavigator } from '../_configurable'
 import { useDocumentVisibility } from '../useDocumentVisibility'
 import { useEventListener } from '../useEventListener'
@@ -31,7 +31,7 @@ export function useWakeLock(options: UseWakeLockOptions = {}) {
     navigator = defaultNavigator,
     document = defaultDocument,
   } = options
-  const requestedType = ref<WakeLockType | false>(false)
+  const requestedType = shallowRef<WakeLockType | false>(false)
   const sentinel = shallowRef<WakeLockSentinel | null>(null)
   const documentVisibility = useDocumentVisibility({ document })
   const isSupported = useSupported(() => navigator && 'wakeLock' in navigator)

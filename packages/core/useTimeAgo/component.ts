@@ -1,5 +1,5 @@
 import type { UseTimeAgoOptions } from '@vueuse/core'
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from 'vue'
 import { useTimeAgo } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 

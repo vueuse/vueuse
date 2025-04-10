@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, isRef, ref, shallowRef, watchEffect } from 'vue'
+import { computed, ref as deepRef, isRef, shallowRef, watchEffect } from 'vue'
 
 /**
  * Handle overlapping async evaluations.
@@ -77,8 +77,8 @@ export function computedAsync<T>(
     onError = noop,
   } = options
 
-  const started = ref(!lazy)
-  const current = (shallow ? shallowRef(initialState) : ref(initialState)) as Ref<T>
+  const started = shallowRef(!lazy)
+  const current = (shallow ? shallowRef(initialState) : deepRef(initialState)) as Ref<T>
   let counter = 0
 
   watchEffect(async (onInvalidate) => {

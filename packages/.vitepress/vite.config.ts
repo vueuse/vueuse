@@ -43,7 +43,7 @@ export default defineConfig({
           componentPrefix: '',
         }),
       ],
-      dts: resolve(__dirname, 'components.d.ts'),
+      dts: resolve(__dirname, 'components.d.mts'),
       transformer: 'vue3',
     }),
     Icons({
@@ -77,7 +77,7 @@ export default defineConfig({
     ],
     include: [
       'axios',
-      'js-yaml',
+      'yaml',
       'nprogress',
       'qrcode',
       'tslib',

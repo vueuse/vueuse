@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 import { useCountdown } from './index'
 
-const countdownSeconds = ref(5)
-const rocketRef = ref<HTMLDivElement>()
+const countdownSeconds = shallowRef(5)
+const rocketRef = useTemplateRef<HTMLDivElement>('rocketRef')
 const { remaining, start, stop, pause, resume } = useCountdown(countdownSeconds, {
   onComplete() {
     rocketRef.value!.classList.add('launching')

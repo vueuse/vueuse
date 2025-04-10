@@ -12,7 +12,6 @@ Use an RxJS [`Observable`](https://rxjs.dev/guide/observable), return a `ref`, a
 import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
-import { ref } from 'vue'
 
 // setup()
 const count = useObservable(
@@ -30,7 +29,6 @@ If you want to add custom error handling to an `Observable` that might error, yo
 import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { ref } from 'vue'
 
 // setup()
 const count = useObservable(
