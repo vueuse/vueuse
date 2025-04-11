@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - '!playgrounds'
+
 catalogs:
   dev:
     '@antfu/eslint-config': ^4.11.0
@@ -42,7 +43,6 @@ catalogs:
     vite-plugin-inspect: ^11.0.0
     vue: ^3.5.13
     vue-tsc: ^2.2.8
-
   docs:
     '@shikijs/vitepress-twoslash': ^3.2.1
     '@vite-pwa/vitepress': ^1.0.0
@@ -57,7 +57,6 @@ catalogs:
     vite-plugin-pwa: ^1.0.0
     vitepress: ^2.0.0-alpha.4
     yaml: ^2.7.1
-
   integrations:
     '@nuxt/kit': ^3.16.2
     '@nuxt/schema': ^3.16.2
@@ -78,7 +77,6 @@ catalogs:
     sortablejs: ^1.15.6
     universal-cookie: ^7.2.2
     vue-router: ^4.5.0
-
   test:
     '@arethetypeswrong/cli': ^0.17.4
     '@vitest/browser': ^3.1.1
@@ -91,7 +89,6 @@ catalogs:
     vitest: ^3.1.1
     vitest-browser-vue: ^0.2.0
     vitest-package-exports: ^0.1.1
-
   types:
     '@type-challenges/utils': ^0.1.1
     '@types/md5': ^2.3.5
@@ -105,3 +102,6 @@ catalogs:
 
 neverBuiltDependencies:
   - electron
+
+patchedDependencies:
+  '@vue/repl': patches/@vue__repl.patch

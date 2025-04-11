@@ -283,6 +283,11 @@ overrides:
   vite-plugin-pwa: ^1.0.0
   vue: ^3.5.13
 
+patchedDependencies:
+  '@vue/repl':
+    hash: 7fba9ef6a550d2b4be3f781a9e20f03128177285a7591e899b5a1dccd53efaed
+    path: patches/@vue__repl.patch
+
 importers:
 
   .:
@@ -343,7 +348,7 @@ importers:
         version: 3.5.13
       '@vue/repl':
         specifier: catalog:docs
-        version: 4.5.1
+        version: 4.5.1(patch_hash=7fba9ef6a550d2b4be3f781a9e20f03128177285a7591e899b5a1dccd53efaed)
       '@vue/test-utils':
         specifier: catalog:test
         version: 2.4.6
@@ -11157,7 +11162,7 @@ snapshots:
     dependencies:
       '@vue/shared': 3.5.13
 
-  '@vue/repl@4.5.1': {}
+  '@vue/repl@4.5.1(patch_hash=7fba9ef6a550d2b4be3f781a9e20f03128177285a7591e899b5a1dccd53efaed)': {}
 
   '@vue/runtime-core@3.5.13':
     dependencies:
