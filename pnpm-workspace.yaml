@@ -2,6 +2,8 @@ packages:
   - packages/*
   - '!playgrounds'
 
+patchedDependencies:
+  '@vue/repl': patches/@vue__repl.patch
 catalogs:
   dev:
     '@antfu/eslint-config': ^4.11.0
@@ -102,6 +104,3 @@ catalogs:
 
 neverBuiltDependencies:
   - electron
-
-patchedDependencies:
-  '@vue/repl': patches/@vue__repl.patch
