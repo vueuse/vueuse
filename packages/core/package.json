@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/core",
   "type": "module",
-  "version": "13.0.0",
+  "version": "13.1.0",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@types/web-bluetooth": "catalog:",
+    "@types/web-bluetooth": "catalog:types",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*"
   }
