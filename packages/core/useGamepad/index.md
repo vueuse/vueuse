@@ -106,14 +106,10 @@ Currently there are only mappings for the Xbox 360 controller. If you have contr
 
 ### SSR Compatibility
 
-When using this component in SSR environments, wrap it with your framework's client-only component to avoid hydration mismatches:
+When using this component in SSR environments, you have a few options to avoid hydration mismatches:
 
-```vue
-<template>
-  <ClientOnly>
-    <GamepadComponent />
-  </ClientOnly>
-</template>
-```
+#### In Nuxt.js
+
+In Nuxt, you can simply rename your component file with the `.client.vue` suffix (e.g., `GamepadComponent.client.vue`) which will automatically make it render only on the client side, avoiding hydration mismatches.
 
 This ensures proper rendering across server and client environments.
