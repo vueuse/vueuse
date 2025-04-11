@@ -103,3 +103,13 @@ const controller = mapGamepadToXbox360Controller(gamepad)
 ```
 
 Currently there are only mappings for the Xbox 360 controller. If you have controller you want to add mappings for, feel free to open a PR for more controller mappings!
+
+### SSR Compatibility
+
+When using this component in SSR environments, you have a few options to avoid hydration mismatches:
+
+#### In Nuxt.js
+
+In Nuxt, you can simply rename your component file with the `.client.vue` suffix (e.g., `GamepadComponent.client.vue`) which will automatically make it render only on the client side, avoiding hydration mismatches.
+
+This ensures proper rendering across server and client environments.
