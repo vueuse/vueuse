@@ -100,11 +100,11 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
       padding: '0',
       margin: '-1px',
       overflow: 'hidden',
-      clipPath: 'inset(0 0 0 0)', // 使用 clip-path 替代 clip
+      clipPath: 'inset(0 0 0 0)', // use clip-path instead of clip.
       whiteSpace: 'nowrap',
       borderWidth: '0',
     })
-    input.ariaLabel = '文件上传'
+    input.ariaLabel = 'file upload'
     if (id) {
       input.id = id ?? DEFAULT_INPUT_ID
     }
