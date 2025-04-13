@@ -2,7 +2,7 @@ packages:
   - packages/*
   - '!playgrounds'
 
-#patchedDependencies:
+# p atchedDependencies:
 #  '@vue/repl': patches/@vue__repl.patch
 
 catalogs:
