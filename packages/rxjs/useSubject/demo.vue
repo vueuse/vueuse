@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { tryOnScopeDispose } from '@vueuse/core'
 import { useSubject } from '@vueuse/rxjs'
-import { tryOnScopeDispose } from '@vueuse/shared'
 import { BehaviorSubject } from 'rxjs'
 import { onMounted, watch } from 'vue'
 
