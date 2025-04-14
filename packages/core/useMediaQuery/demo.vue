@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { computed, reactive } from 'vue'
-import yaml from 'yaml'
 
 const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 const prefersDark = useMediaQuery('(prefers-color-scheme: dark)')
 
-const code = computed(() => yaml.stringify(reactive({
+const code = computed(() => stringify(reactive({
   isLargeScreen,
   prefersDark,
 })))

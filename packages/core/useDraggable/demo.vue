@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { UseDraggable as Draggable } from '@vueuse/components'
 import { useDraggable } from '@vueuse/core'
 import { isClient } from '@vueuse/shared'
 import { shallowRef, useTemplateRef } from 'vue'
-import { UseDraggable as Draggable } from './component'
 
 const el = useTemplateRef<HTMLElement>('el')
 const handle = useTemplateRef<HTMLElement>('handle')

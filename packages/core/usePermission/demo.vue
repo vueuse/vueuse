@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { usePermission } from '@vueuse/core'
 import { computed, reactive } from 'vue'
-import yaml from 'yaml'
 
 const accelerometer = usePermission('accelerometer')
 const accessibilityEvents = usePermission('accessibility-events')
@@ -21,7 +20,7 @@ const push = usePermission('push')
 const speaker = usePermission('speaker')
 const localFonts = usePermission('local-fonts')
 
-const code = computed(() => yaml.stringify(reactive({
+const code = computed(() => stringify(reactive({
   accelerometer,
   accessibilityEvents,
   ambientLightSensor,

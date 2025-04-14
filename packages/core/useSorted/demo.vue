@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useSorted } from '@vueuse/core'
 import { rand } from '@vueuse/shared'
 import { computed, shallowRef } from 'vue'
-import { useSorted } from './index'
 
 const objArr = [{
   name: 'John',
