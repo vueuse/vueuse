@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useFetch } from '@vueuse/core'
+import { useFetch, useToggle } from '@vueuse/core'
 import { stringify } from '@vueuse/internal-docs-utils'
-import { useToggle } from '@vueuse/shared'
 import { computed, reactive, shallowRef } from 'vue'
 
 const url = shallowRef('https://httpbin.org/get')
