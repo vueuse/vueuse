@@ -31,7 +31,7 @@ export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausa
 export function useNow(options: UseNowOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
-    interval = 'requestAnimationFrame',
+    interval = 1000,
   } = options
 
   const now = deepRef(new Date())
