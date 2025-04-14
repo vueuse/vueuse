@@ -15,7 +15,7 @@ export interface UseNowOptions<Controls extends boolean> {
   /**
    * Update interval in milliseconds, or use requestAnimationFrame
    *
-   * @default requestAnimationFrame
+   * @default 1000
    */
   interval?: 'requestAnimationFrame' | number
 }
