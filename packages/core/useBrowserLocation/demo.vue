@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBrowserLocation } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 
 const location = useBrowserLocation()
 const text = stringify(location)

@@ -62,7 +62,7 @@ export default defineConfig({
       '@vueuse/integrations': resolve(__dirname, '../integrations/index.ts'),
       '@vueuse/components': resolve(__dirname, '../components/index.ts'),
       '@vueuse/metadata': resolve(__dirname, '../metadata/index.ts'),
-      '@vueuse/docs-utils': resolve(__dirname, 'plugins/utils.ts'),
+      '@vueuse/internal-docs-utils': resolve(__dirname, '../internal-docs-utils/index.ts'),
     },
     dedupe: [
       'vue',

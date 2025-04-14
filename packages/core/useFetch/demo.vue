@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFetch } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { useToggle } from '@vueuse/shared'
 import { computed, reactive, shallowRef } from 'vue'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { useIDBKeyval } from './index'
 
 const KEY = 'vue-use-idb-keyval'

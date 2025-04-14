@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMediaControls } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { computed, reactive, shallowRef, useTemplateRef } from 'vue'
 import Menu from './components/Menu.vue'
 import MenuItem from './components/MenuItem.vue'

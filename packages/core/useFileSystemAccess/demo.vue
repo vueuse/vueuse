@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ShallowRef } from 'vue'
 import { useFileSystemAccess } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { reactive, shallowRef } from 'vue'
 
 const dataType = shallowRef('Text') as ShallowRef<'Text' | 'ArrayBuffer' | 'Blob'>
