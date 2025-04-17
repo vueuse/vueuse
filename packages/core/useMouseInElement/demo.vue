@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMouseInElement } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { reactive, useTemplateRef } from 'vue'
 import Area from './Area.vue'
 

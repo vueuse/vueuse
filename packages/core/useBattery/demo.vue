@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBattery } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { reactive } from 'vue'
 
 const battery = reactive(useBattery())

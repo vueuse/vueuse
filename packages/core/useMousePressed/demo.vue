@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useMousePressed } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
-import { useToggle } from '@vueuse/shared'
+import { useMousePressed, useToggle } from '@vueuse/core'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { computed, reactive, useTemplateRef } from 'vue'
 
 const el = useTemplateRef<HTMLElement>('el')

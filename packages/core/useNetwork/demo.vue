@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useNetwork } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { stringify } from '@vueuse/internal-docs-utils'
 import { reactive } from 'vue'
 
 const network = reactive(useNetwork())

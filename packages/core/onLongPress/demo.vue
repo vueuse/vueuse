@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { onLongPress } from '@vueuse/core'
 import { shallowRef } from 'vue'
-import { onLongPress } from './'
 
 const htmlRef = shallowRef<HTMLElement | null>(null)
 const htmlRefOptions = shallowRef<HTMLElement | null>(null)
