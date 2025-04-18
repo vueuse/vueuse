@@ -8,6 +8,7 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
   isLoading: Ref<boolean>
   error: Ref<unknown>
   execute: (delay?: number, ...args: Params) => Promise<Data>
+  executeNow: (...args: Params) => Promise<Data>
 }
 
 export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> =
@@ -140,6 +141,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     isLoading,
     error,
     execute,
+    executeNow: (...args: any[]) => execute(0, ...args),
   }
 
   function waitUntilIsLoaded() {
