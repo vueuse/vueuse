@@ -182,23 +182,29 @@ export function useStorage<T extends (string | number | boolean | object | null)
   watch(keyComputed, () => update(), { flush })
 
   if (window && listenToStorageChanges) {
-    tryOnMounted(() => {
-      /**
-       * Attaching event listeners here should be fine since we are in a mounted hook
-       *
-       * The custom event is needed for same-document syncing when using custom
-       * storage backends, but it doesn't work across different documents.
-       *
-       * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
-       */
+    const useStorageListener = ()=> {
       if (storage instanceof Storage)
         useEventListener(window, 'storage', update, { passive: true })
       else
         useEventListener(window, customStorageEventName, updateFromCustomEvent)
+    }
 
-      if (initOnMounted)
+    if (initOnMounted) {
+      tryOnMounted(() => {
+        /**
+         * Attaching event listeners here should be fine since we are in a mounted hook
+         *
+         * The custom event is needed for same-document syncing when using custom
+         * storage backends, but it doesn't work across different documents.
+         *
+         * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
+         */
+        useStorageListener()
         update()
-    })
+      })
+    } else {
+        useStorageListener()
+    }
   }
 
   // avoid reading immediately to avoid hydration mismatch when doing SSR
