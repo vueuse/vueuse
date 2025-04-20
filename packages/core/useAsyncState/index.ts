@@ -17,7 +17,7 @@ export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends bool
 
 export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
   /**
-   * Delay for executing the promise. In milliseconds.
+   * Delay for the first execution of the promise when "immediate" is true. In milliseconds.
    *
    * @default 0
    */
