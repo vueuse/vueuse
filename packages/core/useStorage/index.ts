@@ -182,7 +182,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
   watch(keyComputed, () => update(), { flush })
 
   if (window && listenToStorageChanges) {
-    const useStorageListener = ()=> {
+    const useStorageListener = () => {
       if (storage instanceof Storage)
         useEventListener(window, 'storage', update, { passive: true })
       else
@@ -202,8 +202,9 @@ export function useStorage<T extends (string | number | boolean | object | null)
         useStorageListener()
         update()
       })
-    } else {
-        useStorageListener()
+    }
+    else {
+      useStorageListener()
     }
   }
 
