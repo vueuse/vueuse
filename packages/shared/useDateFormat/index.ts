@@ -119,6 +119,6 @@ export type UseDateFormatReturn<T = string> = ComputedRef<T>
  * @param formatStr - The combination of tokens to format the date
  * @param options - UseDateFormatOptions
  */
-export function useDateFormat<T>(date: MaybeRefOrGetter<DateLike>, formatStr: MaybeRefOrGetter<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}): UseDateFormatReturn<T> {
+export function useDateFormat<T = string>(date: MaybeRefOrGetter<DateLike>, formatStr: MaybeRefOrGetter<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}): UseDateFormatReturn<T> {
   return computed(() => formatDate(normalizeDate(toValue(date)), toValue(formatStr), options))
 }
