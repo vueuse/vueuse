@@ -6,6 +6,7 @@ describe('useElementVisibility', () => {
 
   beforeEach(() => {
     el = document.createElement('div')
+    vi.clearAllMocks()
   })
 
   it('should work when el is not an element', async () => {
@@ -34,6 +35,19 @@ describe('useElementVisibility', () => {
           return { stop }
         }),
       }))
+
+      vi.mock('../watchOnce', () => {
+        return {
+          watchOnce: vi.fn((source, callback) => {
+            // Immediately execute the callback if the source is true
+            if (typeof source === 'object' && source.value === true) {
+              callback(true)
+            }
+          }),
+        }
+      })
+
+      vi.useFakeTimers()
     })
 
     const { useIntersectionObserver } = await import('../useIntersectionObserver')
@@ -110,6 +124,29 @@ describe('useElementVisibility', () => {
 
       useElementVisibility(el, { scrollTarget: mockScrollTarget })
       expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.root).toBe(mockScrollTarget)
+    })
+
+    it('should stop observing when once is true and element becomes visible', async () => {
+      const isVisible = useElementVisibility(el, { once: true })
+
+      const mockStop = vi.mocked(useIntersectionObserver).mock.results[0].value.stop
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+
+      // Element is not visible initially
+      expect(isVisible.value).toBe(false)
+
+      // Simulate element becoming visible
+      callMockCallbackWithIsIntersectingValue(true)
+
+      // Value should be updated to true
+      expect(isVisible.value).toBe(true)
+
+      // Wait for the callback to be called
+      await vi.runAllTimersAsync()
+
+      // stop should be called once
+      expect(mockStop).toHaveBeenCalledTimes(1)
     })
   })
 })
