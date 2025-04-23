@@ -9,7 +9,7 @@ export const UseElementSize = /* #__PURE__ */ defineComponent<Partial<ElementSiz
   props: ['width', 'height', 'box', 'as'] as unknown as undefined,
   setup(props, { slots }) {
     const target = deepRef()
-    const data = reactive(useElementSize(target, { width: props.width ?? 0, height: props.height }, { box: props.box }))
+    const data = reactive(useElementSize(target, { width: props.width ?? 0, height: props.height ?? 0 }, { box: props.box }))
 
     return () => {
       if (slots.default)
