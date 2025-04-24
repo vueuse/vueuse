@@ -114,7 +114,7 @@ export function useEventSource<Events extends string[], Data = any>(
   url: MaybeRefOrGetter<string | URL | undefined>,
   events: Events = [] as unknown as Events,
   options: UseEventSourceOptions = {},
-): UseEventSourceReturn<Events> {
+): UseEventSourceReturn<Events, Data> {
   const event: ShallowRef<string | null> = shallowRef(null)
   const data: ShallowRef<Data | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
