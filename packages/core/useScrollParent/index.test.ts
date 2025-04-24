@@ -7,8 +7,8 @@ describe('useScroll', () => {
     expect(useScrollParent).toBeDefined()
   })
 
-  it('should have default parent', async () => {
-    const scrollParent = useScrollParent(document)
+  it('should have fallback parent', async () => {
+    const scrollParent = useScrollParent(document.scrollingElement || document.documentElement)
     expect(scrollParent.value).toBe(defaultDocument)
   })
 })

@@ -18,7 +18,7 @@ export interface UseScrollParentOptions extends ConfigurableDocument {
   onError?: (error: unknown) => void
 }
 
-export type ScrollParent = HTMLElement | SVGElement | Document | null | undefined
+export type ScrollParent = Element | null | undefined
 
 /**
  * Reactive nearest scrollable parent of the element
@@ -50,9 +50,10 @@ export function useScrollParent(
   function getScrollParent(
     element: ScrollParent,
   ) {
+    const rootScrollingElement = root?.scrollingElement || root?.documentElement
     let node: ScrollParent = element
     let level = 0
-    while (node && node !== root && isElement(node as Element) && level < lookupLevel) {
+    while (node && node !== rootScrollingElement && isElement(node as Element) && level < lookupLevel) {
       const { overflowY } = window.getComputedStyle(node as Element)
       if (overflowScrollReg.test(overflowY)) {
         return node
@@ -61,7 +62,7 @@ export function useScrollParent(
       level++
     }
 
-    return root
+    return rootScrollingElement
   }
 
   return computed(() => {
