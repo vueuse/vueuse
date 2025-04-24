@@ -100,7 +100,8 @@ function updateScrollState() {
 }
 ```
 
-> **Note:** it's recommended to call `measure()` inside `nextTick()`, to ensure the DOM is updated first.
+> [!NOTE]
+> it's recommended to call `measure()` inside `nextTick()`, to ensure the DOM is updated first.
 > The scroll state is initialized automatically `onMount`.
 > You only need to call `measure()` manually if you want to recalculate the state after some dynamic changes.
 
