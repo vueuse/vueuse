@@ -19,7 +19,6 @@ export interface UseScrollParentOptions extends ConfigurableDocument {
 }
 
 export type ScrollParent = Element | null | undefined
-
 /**
  * Reactive nearest scrollable parent of the element
  *
@@ -30,7 +29,7 @@ export type ScrollParent = Element | null | undefined
 export function useScrollParent(
   element: MaybeRefOrGetter<ScrollParent>,
   options: UseScrollParentOptions = {},
-): ComputedRef<ScrollParent> {
+): ComputedRef<Record<'x' | 'y', ScrollParent>> {
   const {
     document: root = defaultDocument,
     lookupLevel = 10,
@@ -38,43 +37,54 @@ export function useScrollParent(
   } = options
   const overflowScrollReg = /scroll|auto|overlay/i
 
-  function isElement(node: Element) {
-    const ELEMENT_NODE_TYPE = 1
-    return (
-      node.tagName !== 'HTML'
+  function isElement(node: unknown): node is Element {
+    return node instanceof Element
+      && node.nodeType === 1 /* ELEMENT_NODE_TYPE */
+      && node.tagName !== 'HTML'
       && node.tagName !== 'BODY'
-      && node.nodeType === ELEMENT_NODE_TYPE
-    )
   }
 
   function getScrollParent(
     element: ScrollParent,
   ) {
+    if (!isElement(element))
+      throw new Error(`[useScrollParent] Invalid element: expected a DOM Element but got ${typeof element}`)
+
     const rootScrollingElement = root?.scrollingElement || root?.documentElement
+    const fallback = rootScrollingElement ?? null
+
     let node: ScrollParent = element
     let level = 0
     while (node && node !== rootScrollingElement && isElement(node as Element) && level < lookupLevel) {
-      const { overflowY } = window.getComputedStyle(node as Element)
-      if (overflowScrollReg.test(overflowY)) {
-        return node
+      const { overflowY, overflowX } = window.getComputedStyle(node as Element)
+      const hasOverflowY = overflowScrollReg.test(overflowY)
+      const hasOverflowX = overflowScrollReg.test(overflowX)
+
+      if (hasOverflowY || hasOverflowX) {
+        return {
+          y: hasOverflowY ? node : null,
+          x: hasOverflowX ? node : null,
+        }
       }
+
       node = node.parentNode as ScrollParent
       level++
     }
 
-    return rootScrollingElement
+    return { x: fallback, y: fallback }
   }
 
   return computed(() => {
     try {
       const _element = toValue(element)
-      if (!_element)
-        return
-      return getScrollParent(_element)
+      if (_element) {
+        return getScrollParent(_element)
+      }
     }
     catch (e) {
       onError(e)
     }
+    return { x: null, y: null }
   })
 }
 
