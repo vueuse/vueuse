@@ -23,5 +23,8 @@ export function fromEvent<T extends HTMLElement | null>(value: MaybeRef<T>, even
       }, { immediate: true })
     })
   }
-  return fromEventRx(value as NonNullable<T>, event)
+  if (value === null) {
+    throw new Error('The value is `null`, and it should be an HTMLElement.')
+  }
+  return fromEventRx(value, event)
 }

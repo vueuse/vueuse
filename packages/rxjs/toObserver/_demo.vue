@@ -7,13 +7,13 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 import { from, fromEvent } from '../from'
 import { useSubscription } from '../useSubscription'
 import { toObserver } from './index'
 
 const count = shallowRef(0)
-const button = deepRef<HTMLButtonElement | null>(null)
+const button = useTemplateRef('buttonRef')
 
 useSubscription(
   interval(1000)
