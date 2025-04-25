@@ -10,7 +10,7 @@ export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: Watch
   return fromRxjs(value)
 }
 
-export function fromEvent<T extends HTMLElement>(value: MaybeRef<T>, event: string): Observable<Event> {
+export function fromEvent<T extends HTMLElement | null>(value: MaybeRef<T>, event: string): Observable<Event> {
   if (isRef<T>(value)) {
     return new Observable((subscriber) => {
       let innerSub: Subscription | undefined
@@ -23,5 +23,5 @@ export function fromEvent<T extends HTMLElement>(value: MaybeRef<T>, event: stri
       }, { immediate: true })
     })
   }
-  return fromEventRx(value, event)
+  return fromEventRx(value as NonNullable<T>, event)
 }

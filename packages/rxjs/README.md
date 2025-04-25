@@ -35,7 +35,9 @@ import { concatAll, map, mergeMap, pluck, scan, take } from 'rxjs/operators'
 import { ref } from 'vue'
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com'
-const button = ref<HTMLButtonElement>(null)
+const button = ref<HTMLButtonElement | null>(null)
+// or use `useTemplateRef` in vue3.5+
+// const button = useTemplateRef('buttonRef')
 
 const posts = useObservable(
   fromEvent(button, 'click').pipe(

@@ -16,6 +16,8 @@ import { shallowRef } from 'vue'
 
 const count = shallowRef(0)
 const button = shallowRef<HTMLButtonElement | null>(null)
+// or use `useTemplateRef` in vue3.5+
+// const button = useTemplateRef('buttonRef')
 
 useSubscription(
   interval(1000)
