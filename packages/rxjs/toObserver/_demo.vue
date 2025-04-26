@@ -28,7 +28,7 @@ useSubscription(
 </script>
 
 <template>
-  <button @click="count++">
+  <button ref="buttonRef" @click="count++">
     count is: {{ count }}
   </button>
   <button ref="button">
