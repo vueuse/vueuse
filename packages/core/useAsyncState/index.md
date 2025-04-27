@@ -28,18 +28,18 @@ You can also trigger it manually. This is useful when you want to control when t
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
 
-const { state, execute, executeNow } = useAsyncState(logEvent, undefined, { immediate: false })
+const { state, execute, executeImmediate } = useAsyncState(action, '', { immediate: false })
 
-async function logEvent(event) {
-  console.log('Event:', event)
-  await new Promise(resolve => setTimeout(resolve, 50))
+async function action(event) {
+  await new Promise(resolve => setTimeout(resolve, 500))
+  return `${event.target.textContent} clicked!`
 }
 </script>
 
 <template>
   <p>State: {{ state }}</p>
 
-  <button class="button" @click="executeNow">
+  <button class="button" @click="executeImmediate">
     Execute now
   </button>
 
