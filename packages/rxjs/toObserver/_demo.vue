@@ -13,7 +13,7 @@ import { useSubscription } from '../useSubscription'
 import { toObserver } from './index'
 
 const count = shallowRef(0)
-const button = useTemplateRef('buttonRef')
+const button = useTemplateRef('button')
 
 useSubscription(
   interval(1000)
@@ -28,7 +28,7 @@ useSubscription(
 </script>
 
 <template>
-  <button ref="buttonRef" @click="count++">
+  <button @click="count++">
     count is: {{ count }}
   </button>
   <button ref="button">
