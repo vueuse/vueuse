@@ -88,14 +88,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          if (id.includes('@vueuse/'))
-            return 'vueuse'
-          if (id.includes('@vue/') || id.includes('/vue/'))
-            return 'vue'
-        },
+        // manualChunks: (id) => {
+        //   if (id.includes('@vueuse/'))
+        //     return 'vueuse'
+        //   if (id.includes('@vue/') || id.includes('/vue/'))
+        //     return 'vue'
+        // },
       },
-      maxParallelFileOps: 5,
     },
     sourcemap: false,
   },
