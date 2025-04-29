@@ -128,7 +128,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       shiftDeps.clear()
     }
     else if (typeof e.getModifierState === 'function' && e.getModifierState('Shift') && value) {
-      [...values].forEach(key => shiftDeps.add(key))
+      [...current, ...values].forEach(key => shiftDeps.add(key))
     }
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
