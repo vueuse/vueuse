@@ -197,6 +197,12 @@ export function useStorage<T extends (string | number | boolean | object | null)
     updateFromCustomEvent(ev)
   }
 
+  /**
+   * The custom event is needed for same-document syncing when using custom
+   * storage backends, but it doesn't work across different documents.
+   *
+   * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
+   */
   if (window && listenToStorageChanges) {
     if (storage instanceof Storage)
       useEventListener(window, 'storage', onStorageEvent, { passive: true })
