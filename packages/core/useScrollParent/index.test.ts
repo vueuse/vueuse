@@ -39,6 +39,57 @@ describe('useScrollParent', () => {
     expect(result.value.y).toBe(null)
   })
 
+  it('should return overflow-hidden parent', async () => {
+    const parent = document.createElement('div')
+    const child = document.createElement('div')
+    parent.style.overflowY = 'hidden'
+    parent.appendChild(child)
+    document.body.appendChild(parent)
+
+    const target = shallowRef<HTMLElement | null>(child)
+    const normalResult = useScrollParent(target)
+    const includeResult = useScrollParent(target, { includeHidden: true })
+
+    await nextTick()
+    expect(normalResult.value.y).toBe(fallback)
+    expect(includeResult.value.y).toBe(parent)
+  })
+
+  it('should return fallback when element is position fixed', async () => {
+    const parent = document.createElement('div')
+    const child = document.createElement('div')
+    child.style.position = 'fixed'
+    parent.style.overflowY = 'auto'
+    parent.appendChild(child)
+    document.body.appendChild(parent)
+
+    const target = shallowRef<HTMLElement | null>(child)
+    const normalResult = useScrollParent(target)
+
+    await nextTick()
+    expect(normalResult.value.y).toBe(fallback)
+  })
+
+  it('should return non-static positioned scrollable parent element when element is position absolute', async () => {
+    const noStaticWrapper = document.createElement('div')
+    const parent = document.createElement('div')
+    const child = document.createElement('div')
+    child.style.position = 'absolute'
+    parent.style.overflowY = 'auto'
+    parent.style.position = 'static'
+    noStaticWrapper.style.position = 'relative'
+    noStaticWrapper.style.overflowY = 'auto'
+    parent.appendChild(child)
+    noStaticWrapper.appendChild(parent)
+    document.body.appendChild(noStaticWrapper)
+
+    const target = shallowRef<HTMLElement | null>(child)
+    const normalResult = useScrollParent(target)
+
+    await nextTick()
+    expect(normalResult.value.y).toBe(noStaticWrapper)
+  })
+
   it('should return fallback when no scrollable parent', async () => {
     const node = document.createElement('div')
     document.body.appendChild(node)

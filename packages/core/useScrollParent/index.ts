@@ -11,6 +11,12 @@ export interface UseScrollParentOptions extends ConfigurableDocument {
    */
   lookupLevel?: number
   /**
+   * If true, treat 'overflow: hidden' as scrollable; otherwise, only 'auto' and 'scroll' are allowed.
+   *
+   * @default false
+   */
+  includeHidden?: boolean
+  /**
    * On error callback
    *
    * Default log error to `console.error`
@@ -32,10 +38,15 @@ export function useScrollParent(
 ): ComputedRef<Record<'x' | 'y', ScrollParent>> {
   const {
     document: root = defaultDocument,
+    includeHidden = false,
     lookupLevel = 10,
     onError = (e) => { console.error(e) },
   } = options
-  const overflowScrollReg = /scroll|auto|overlay/i
+
+  const baseRegex = 'scroll|overlay|auto'
+  const overflowScrollReg = includeHidden
+    ? new RegExp(`${baseRegex}|hidden`, 'i')
+    : new RegExp(baseRegex, 'i')
 
   function isElement(node: unknown): node is Element {
     return node instanceof Element
@@ -53,22 +64,38 @@ export function useScrollParent(
     const rootScrollingElement = root?.scrollingElement || root?.documentElement
     const fallback = rootScrollingElement ?? null
 
+    const { position } = window.getComputedStyle(element)
+    // The element itself is fixed positioned
+    // Ignoring the transform-like styles of its parent, and falls back directly.
+    if (position === 'fixed') {
+      return { x: fallback, y: fallback }
+    }
+
+    // When the element itself is absolutely positioned
+    // Only a non-static positioned and scrollable parent can be considered its correct scroll container.
+    const excludeStaticParent = position === 'absolute'
+
     let node: ScrollParent = element
     let level = 0
     while (node && node !== rootScrollingElement && isElement(node as Element) && level < lookupLevel) {
-      const { overflowY, overflowX } = window.getComputedStyle(node as Element)
+      const { overflowY, overflowX, position } = window.getComputedStyle(node as Element)
+      const _node = node
+
+      node = node.parentNode as ScrollParent
+      level++
+      if (excludeStaticParent && position === 'static') {
+        continue
+      }
+
       const hasOverflowY = overflowScrollReg.test(overflowY)
       const hasOverflowX = overflowScrollReg.test(overflowX)
 
       if (hasOverflowY || hasOverflowX) {
         return {
-          y: hasOverflowY ? node : null,
-          x: hasOverflowX ? node : null,
+          y: hasOverflowY ? _node : null,
+          x: hasOverflowX ? _node : null,
         }
       }
-
-      node = node.parentNode as ScrollParent
-      level++
     }
 
     return { x: fallback, y: fallback }
