@@ -1,9 +1,9 @@
 import type { RenderableComponent } from '@vueuse/core'
 import type { FocusTrap } from 'focus-trap'
-import type { UseFocusTrapOptions } from '.'
+import type { UseFocusTrapOptions } from './index'
 import { unrefElement } from '@vueuse/core'
 import { createFocusTrap } from 'focus-trap'
-import { defineComponent, h, onScopeDispose, ref, watch } from 'vue'
+import { ref as deepRef, defineComponent, h, onScopeDispose, watch } from 'vue'
 
 export interface ComponentUseFocusTrapOptions extends RenderableComponent {
   options?: UseFocusTrapOptions
@@ -14,7 +14,7 @@ export const UseFocusTrap = /* #__PURE__ */ defineComponent <ComponentUseFocusTr
   props: ['as', 'options'] as unknown as undefined,
   setup(props, { slots }) {
     let trap: undefined | FocusTrap
-    const target = ref()
+    const target = deepRef()
 
     const activate = () => trap && trap.activate()
     const deactivate = () => trap && trap.deactivate()

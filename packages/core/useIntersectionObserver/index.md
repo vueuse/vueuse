@@ -9,12 +9,12 @@ Detects that a target element's visibility.
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = useTemplateRef<HTMLDivElement>('target')
+const targetIsVisible = shallowRef(false)
 
 const { stop } = useIntersectionObserver(
   target,
@@ -36,11 +36,11 @@ const { stop } = useIntersectionObserver(
 ```vue
 <script setup lang="ts">
 import { vIntersectionObserver } from '@vueuse/components'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const root = ref(null)
+const root = useTemplateRef<HTMLDivElement>('root')
 
-const isVisible = ref(false)
+const isVisible = shallowRef(false)
 
 function onIntersectionObserver([entry]: IntersectionObserverEntry[]) {
   isVisible.value = entry?.isIntersecting || false

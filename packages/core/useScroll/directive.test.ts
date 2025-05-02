@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import type { UseScrollOptions } from '.'
+import type { UseScrollOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent } from 'vue'

@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { useRefHistory } from '.'
+import { ref as deepRef, nextTick, shallowRef } from 'vue'
+import { useRefHistory } from './index'
 
 describe('useRefHistory - sync', () => {
   it('sync: should record', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history } = useRefHistory(v, { flush: 'sync' })
 
     expect(history.value.length).toBe(1)
@@ -18,7 +18,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: should be able to undo and redo', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v, { flush: 'sync' })
 
     expect(canUndo.value).toBe(false)
@@ -64,7 +64,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: object with deep', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { history, undo } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
@@ -86,7 +86,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: shallow watch with clone', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { history, undo } = useRefHistory(v, { flush: 'sync', clone: true })
 
     expect(history.value.length).toBe(1)
@@ -113,7 +113,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: dump + parse', () => {
-    const v = ref({ a: 'bar' })
+    const v = deepRef({ a: 'bar' })
     const { history, undo } = useRefHistory(v, {
       flush: 'sync',
       deep: true,
@@ -136,7 +136,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: commit', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { commit, history } = useRefHistory(v, { flush: 'sync' })
 
     expect(history.value.length).toBe(1)
@@ -150,7 +150,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: without batch', () => {
-    const v = ref({ foo: 1, bar: 'one' })
+    const v = deepRef({ foo: 1, bar: 'one' })
     const { history } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
@@ -166,7 +166,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: with batch', () => {
-    const v = ref({ foo: 1, bar: 'one' })
+    const v = deepRef({ foo: 1, bar: 'one' })
     const { history, batch } = useRefHistory(v, { flush: 'sync', deep: true })
 
     expect(history.value.length).toBe(1)
@@ -193,7 +193,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: pause and resume', () => {
-    const v = ref(1)
+    const v = shallowRef(1)
     const { history, pause, resume, last } = useRefHistory(v, { flush: 'sync' })
 
     expect(history.value.length).toBe(1)
@@ -229,7 +229,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: reset', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v, { flush: 'sync' })
 
     expect(history.value.length).toBe(1)
@@ -284,7 +284,7 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: dispose', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history, dispose, last } = useRefHistory(v, { flush: 'sync' })
 
     v.value = 1
@@ -327,7 +327,7 @@ describe('useRefHistory - sync', () => {
 
 describe('useRefHistory - pre', () => {
   it('pre: should record', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
@@ -342,7 +342,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: should be able to undo and redo', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { undo, redo, clear, canUndo, canRedo, history, last } = useRefHistory(v)
 
     expect(canUndo.value).toBe(false)
@@ -392,7 +392,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: object with deep', async () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { history } = useRefHistory(v, { deep: true })
 
     expect(history.value.length).toBe(1)
@@ -410,7 +410,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: dump + parse', async () => {
-    const v = ref({ a: 'bar' })
+    const v = deepRef({ a: 'bar' })
     const { history, undo } = useRefHistory(v, {
       deep: true,
       dump: v => JSON.stringify(v),
@@ -434,7 +434,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: commit', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { commit, history, undo } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
@@ -457,7 +457,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: pause and resume', async () => {
-    const v = ref(1)
+    const v = shallowRef(1)
     const { history, pause, resume, last } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
@@ -498,7 +498,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: reset', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history, commit, undoStack, redoStack, pause, reset, undo } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
@@ -558,7 +558,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: auto batching', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history } = useRefHistory(v)
 
     expect(history.value.length).toBe(1)
@@ -584,7 +584,7 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: dispose', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history, dispose, last } = useRefHistory(v)
 
     v.value = 1

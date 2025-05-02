@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { reactive, ref } from 'vue'
-import { useStepper } from '.'
+import { reactive, shallowRef } from 'vue'
+import { useStepper } from './index'
 
 describe('useStepper', () => {
   it('should be defined', () => {
@@ -9,7 +9,7 @@ describe('useStepper', () => {
 
   describe('common', () => {
     it('steps are reactive', () => {
-      const flag = ref(true)
+      const flag = shallowRef(true)
       const steps = reactive({
         first: {
           title: 'First',

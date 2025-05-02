@@ -10,13 +10,14 @@ Cache a ref with a custom comparator.
 
 ```ts
 import { useCached } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 interface Data {
   value: number
   extra: number
 }
 
-const source = ref<Data>({ value: 42, extra: 0 })
+const source = shallowRef<Data>({ value: 42, extra: 0 })
 const cached = useCached(source, (a, b) => a.value === b.value)
 
 source.value = {

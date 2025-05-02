@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { ignorableWatch, watchIgnorable } from '.'
+import { nextTick, shallowRef } from 'vue'
+import { ignorableWatch, watchIgnorable } from './index'
 
 describe('watchIgnorable', () => {
   it('export module', () => {
@@ -9,8 +9,8 @@ describe('watchIgnorable', () => {
   })
 
   it('ignore async updates', async () => {
-    const source = ref(0)
-    const target = ref(0)
+    const source = shallowRef(0)
+    const target = shallowRef(0)
     const { ignoreUpdates } = watchIgnorable(source, value => target.value = value)
 
     source.value = 1
@@ -36,8 +36,8 @@ describe('watchIgnorable', () => {
   })
 
   it('ignore prev async updates', async () => {
-    const source = ref(0)
-    const target = ref(0)
+    const source = shallowRef(0)
+    const target = shallowRef(0)
     const { ignorePrevAsyncUpdates } = watchIgnorable(source, value => target.value = value)
 
     source.value = 1
@@ -61,8 +61,8 @@ describe('watchIgnorable', () => {
   })
 
   it('ignore sync updates', () => {
-    const source = ref(0)
-    const target = ref(0)
+    const source = shallowRef(0)
+    const target = shallowRef(0)
     const { ignoreUpdates, ignorePrevAsyncUpdates } = watchIgnorable(source, value => target.value = value, { flush: 'sync' })
 
     source.value = 1
@@ -88,7 +88,7 @@ describe('watchIgnorable', () => {
   })
 
   it('stop watch', async () => {
-    const source = ref(0)
+    const source = shallowRef(0)
     const callback = vi.fn()
     const { stop } = watchIgnorable(source, callback)
 

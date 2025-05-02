@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { useOffsetPagination } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 
 interface User {
   id: number
   name: string
 }
-const database = ref([]) as Ref<User[]>
+const database = deepRef<User[]>([])
 
 for (let i = 0; i < 80; i++)
   database.value.push({ id: i, name: `user ${i}` })
@@ -22,10 +21,10 @@ function fetch(page: number, pageSize: number) {
   })
 }
 
-const data: Ref<User[]> = ref([])
+const data = deepRef<User[]>([])
 
-const page = ref(1)
-const pageSize = ref(10)
+const page = shallowRef(1)
+const pageSize = shallowRef(10)
 
 fetchData({
   currentPage: page.value,

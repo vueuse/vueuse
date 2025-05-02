@@ -11,9 +11,9 @@ Computed for async functions
 
 ```js
 import { computedAsync } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const name = ref('jack')
+const name = shallowRef('jack')
 
 const userInfo = computedAsync(
   async () => {
@@ -29,9 +29,9 @@ You will need to pass a ref to track if the async function is evaluating.
 
 ```js
 import { computedAsync } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const evaluating = ref(false)
+const evaluating = shallowRef(false)
 
 const userInfo = computedAsync(
   async () => { /* your logic */ },
@@ -45,7 +45,7 @@ const userInfo = computedAsync(
 When the computed source changed before the previous async function gets resolved, you may want to cancel the previous one. Here is an example showing how to incorporate with the fetch API.
 
 ```js
-const packageName = ref('@vueuse/core')
+const packageName = shallowRef('@vueuse/core')
 
 const downloads = computedAsync(async (onCancel) => {
   const abortController = new AbortController()
@@ -67,9 +67,9 @@ By default, `computedAsync` will start resolving immediately on creation, specif
 
 ```js
 import { computedAsync } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const evaluating = ref(false)
+const evaluating = shallowRef(false)
 
 const userInfo = computedAsync(
   async () => { /* your logic */ },

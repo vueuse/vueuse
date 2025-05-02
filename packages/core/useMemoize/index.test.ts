@@ -1,8 +1,8 @@
 import type { Mock } from 'vitest'
-import type { UseMemoizeCache } from '.'
+import type { UseMemoizeCache } from './index'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed } from 'vue'
-import { useMemoize } from '.'
+import { useMemoize } from './index'
 
 describe('useMemoize', () => {
   const resolver = vi.fn()

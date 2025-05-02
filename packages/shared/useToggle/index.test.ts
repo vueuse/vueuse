@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { isRef, ref, toValue } from 'vue'
-import { useToggle } from '.'
+import { isRef, shallowRef, toValue } from 'vue'
+import { useToggle } from './index'
 
 describe('useToggle', () => {
   it('should be defined', () => {
@@ -54,7 +54,7 @@ describe('useToggle', () => {
   })
 
   it('ref initialValue', () => {
-    const isDark = ref(true)
+    const isDark = shallowRef(true)
     const toggle = useToggle(isDark)
 
     expect(typeof toggle).toBe('function')
@@ -73,7 +73,7 @@ describe('useToggle', () => {
   })
 
   it('should toggle with truthy & falsy', () => {
-    const status = ref('ON')
+    const status = shallowRef('ON')
     const toggle = useToggle(status, {
       truthyValue: 'ON',
       falsyValue: 'OFF',

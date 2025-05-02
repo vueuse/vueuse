@@ -17,7 +17,6 @@ const disabledFunctions = [
   'useFetch',
   'useCookie',
   'useHead',
-  'useTitle',
   'useStorage',
   'useImage',
 ]
@@ -122,8 +121,12 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (pkg === 'shared')
             continue
 
-          if (!isPackageExists(`@vueuse/${pkg}`))
+          if (pkg !== 'core' && !isPackageExists(
+            `@vueuse/${pkg}`,
+            { paths: nuxt.options._layers.map(layer => layer.config.rootDir) },
+          )) {
             continue
+          }
 
           const imports = metadata
             .functions

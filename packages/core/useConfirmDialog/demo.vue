@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useConfirmDialog } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const message = ref('')
-const revaled1 = ref(false)
-const revaled2 = ref(false)
+const message = shallowRef('')
+const revaled1 = shallowRef(false)
+const revaled2 = shallowRef(false)
 
 const dialog1 = useConfirmDialog(revaled1)
 const dialog2 = useConfirmDialog(revaled2)

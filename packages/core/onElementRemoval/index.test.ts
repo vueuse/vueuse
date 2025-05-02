@@ -1,8 +1,8 @@
 import type { AnyFn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick, ref } from 'vue'
-import { onElementRemoval } from '.'
+import { effectScope, nextTick, shallowRef } from 'vue'
+import { onElementRemoval } from './index'
 
 describe('onElementRemoval', () => {
   let callBackFn: AnyFn
@@ -12,9 +12,9 @@ describe('onElementRemoval', () => {
 
   beforeEach(() => {
     callBackFn = vi.fn(m => expect(m[0]).toBeInstanceOf(MutationRecord))
-    grandElement = ref(document.createElement('div'))
-    parentElement = ref(document.createElement('div'))
-    targetElement = ref(document.createElement('div'))
+    grandElement = shallowRef(document.createElement('div'))
+    parentElement = shallowRef(document.createElement('div'))
+    targetElement = shallowRef(document.createElement('div'))
 
     parentElement.value.appendChild(targetElement.value)
     grandElement.value.appendChild(parentElement.value)
@@ -87,7 +87,7 @@ describe('onElementRemoval', () => {
   })
 
   it('should correctly triggered even if the element is assigned a value after initialization', async () => {
-    const targetElement2 = ref()
+    const targetElement2 = shallowRef<HTMLElement>()
     onElementRemoval(targetElement2, callBackFn)
 
     const el = document.createElement('div')

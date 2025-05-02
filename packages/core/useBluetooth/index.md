@@ -47,7 +47,7 @@ This sample illustrates the use of the Web Bluetooth API to read battery level a
 Here, we use the characteristicvaluechanged event listener to handle reading battery level characteristic value. This event listener will optionally handle upcoming notifications as well.
 
 ```ts
-import { pausableWatch, useBluetooth } from '@vueuse/core'
+import { pausableWatch, useBluetooth, useEventListener } from '@vueuse/core'
 
 const {
   isSupported,
@@ -78,9 +78,9 @@ async function getBatteryLevels() {
   )
 
   // Listen to when characteristic value changes on `characteristicvaluechanged` event:
-  batteryLevelCharacteristic.addEventListener('characteristicvaluechanged', (event) => {
+  useEventListener(batteryLevelCharacteristic, 'characteristicvaluechanged', (event) => {
     batteryPercent.value = event.target.value.getUint8(0)
-  })
+  }, { passive: true })
 
   // Convert received buffer to number:
   const batteryLevel = await batteryLevelCharacteristic.readValue()

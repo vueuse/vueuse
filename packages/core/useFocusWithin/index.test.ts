@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useFocusWithin } from '.'
+import { shallowRef } from 'vue'
+import { useFocusWithin } from './index'
 
 describe('useFocusWithin', () => {
   let parent: Ref<HTMLFormElement>
@@ -10,19 +10,19 @@ describe('useFocusWithin', () => {
   let grandchild: Ref<HTMLInputElement>
 
   beforeEach(() => {
-    parent = ref(document.createElement('form'))
+    parent = shallowRef(document.createElement('form'))
     parent.value.tabIndex = 0
     document.body.appendChild(parent.value)
 
-    child = ref(document.createElement('div'))
+    child = shallowRef(document.createElement('div'))
     child.value.tabIndex = 0
     parent.value.appendChild(child.value)
 
-    child2 = ref(document.createElement('div'))
+    child2 = shallowRef(document.createElement('div'))
     child2.value.tabIndex = 0
     parent.value.appendChild(child2.value)
 
-    grandchild = ref(document.createElement('input'))
+    grandchild = shallowRef(document.createElement('input'))
     grandchild.value.tabIndex = 0
     child.value.appendChild(grandchild.value)
   })

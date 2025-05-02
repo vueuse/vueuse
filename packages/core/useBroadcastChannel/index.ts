@@ -1,8 +1,9 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface UseBroadcastChannelOptions extends ConfigurableWindow {
@@ -27,10 +28,10 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
   } = options
 
   const isSupported = useSupported(() => window && 'BroadcastChannel' in window)
-  const isClosed = ref(false)
+  const isClosed = shallowRef(false)
 
-  const channel = ref<BroadcastChannel | undefined>()
-  const data = ref()
+  const channel = deepRef<BroadcastChannel | undefined>()
+  const data = deepRef()
   const error = shallowRef<Event | null>(null)
 
   const post = (data: unknown) => {
@@ -49,17 +50,21 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
       error.value = null
       channel.value = new BroadcastChannel(name)
 
-      channel.value.addEventListener('message', (e: MessageEvent) => {
+      const listenerOptions = {
+        passive: true,
+      }
+
+      useEventListener(channel, 'message', (e: MessageEvent) => {
         data.value = e.data
-      }, { passive: true })
+      }, listenerOptions)
 
-      channel.value.addEventListener('messageerror', (e: MessageEvent) => {
+      useEventListener(channel, 'messageerror', (e: MessageEvent) => {
         error.value = e
-      }, { passive: true })
+      }, listenerOptions)
 
-      channel.value.addEventListener('close', () => {
+      useEventListener(channel, 'close', () => {
         isClosed.value = true
-      })
+      }, listenerOptions)
     })
   }
 
@@ -79,11 +84,11 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
 }
 
 export interface UseBroadcastChannelReturn<D, P> {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   channel: Ref<BroadcastChannel | undefined>
   data: Ref<D>
   post: (data: P) => void
   close: () => void
-  error: Ref<Event | null>
-  isClosed: Ref<boolean>
+  error: ShallowRef<Event | null>
+  isClosed: ShallowRef<boolean>
 }

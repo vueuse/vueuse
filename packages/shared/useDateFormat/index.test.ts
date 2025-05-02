@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatDate, normalizeDate, useDateFormat } from '.'
+import { formatDate, normalizeDate, useDateFormat } from './index'
 
 describe('useDateFormat', () => {
   it('should export module', () => {
@@ -119,5 +119,19 @@ describe('useDateFormat', () => {
   it('formatDate', () => {
     expect(formatDate(new Date('Sun Jul 30 2023 21:15:42 GMT+0800'), 'd'))
       .toMatchInlineSnapshot('"0"')
+  })
+
+  describe('timezone', () => {
+    it.each([
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss z', expected: '03:05:05 GMT+1' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss zz', expected: '03:05:05 GMT+1' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss zzz', expected: '03:05:05 GMT+1' },
+      { dateStr: '2022-01-01 03:05:05', formatStr: 'hh:mm:ss zzzz', expected: '03:05:05 GMT+01:00' },
+    ])(
+      'should work with $formatStr',
+      ({ dateStr, formatStr, expected }) => {
+        expect(useDateFormat(new Date(dateStr), formatStr).value).toBe(expected)
+      },
+    )
   })
 })

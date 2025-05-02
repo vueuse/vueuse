@@ -1,6 +1,5 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { JwtDecodeOptions, JwtHeader, JwtPayload } from 'jwt-decode'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { jwtDecode } from 'jwt-decode'
 import { computed, toValue } from 'vue'
 

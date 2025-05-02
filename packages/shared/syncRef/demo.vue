@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { syncRef } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const a = ref('')
-const b = ref('')
+const a = shallowRef('')
+const b = shallowRef('')
 
 syncRef(a, b)
 </script>

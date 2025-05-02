@@ -11,9 +11,9 @@ Manually track the change history of a ref when the using calls `commit()`, also
 
 ```ts {5}
 import { useManualRefHistory } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const counter = ref(0)
+const counter = shallowRef(0)
 const { history, commit, undo, redo } = useManualRefHistory(counter)
 
 counter.value += 1

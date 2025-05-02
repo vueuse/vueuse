@@ -1,5 +1,5 @@
-import type { MaybeRef, Mutable } from '@vueuse/shared'
-import type { ComputedRef, Ref, ShallowRef, WritableComputedRef } from 'vue'
+import type { Mutable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRef, ShallowRef, WritableComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { isObject, objectOmit, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
@@ -43,7 +43,7 @@ export interface UseAnimateOptions extends KeyframeAnimationOptions, Configurabl
 export type UseAnimateKeyframes = MaybeRef<Keyframe[] | PropertyIndexedKeyframes | null>
 
 export interface UseAnimateReturn {
-  isSupported: Ref<boolean>
+  isSupported: ComputedRef<boolean>
   animate: ShallowRef<Animation | undefined>
   play: () => void
   pause: () => void
@@ -224,20 +224,26 @@ export function useAnimate(
   }
 
   watch(() => unrefElement(target), (el) => {
-    if (el)
+    if (el) {
       update()
+    }
+    else {
+      animate.value = undefined
+    }
   })
 
   watch(() => keyframes, (value) => {
-    if (animate.value)
+    if (animate.value) {
       update()
 
-    if (!unrefElement(target) && animate.value) {
-      animate.value.effect = new KeyframeEffect(
-        unrefElement(target)!,
-        toValue(value),
-        animateOptions,
-      )
+      const targetEl = unrefElement(target)
+      if (targetEl) {
+        animate.value.effect = new KeyframeEffect(
+          targetEl,
+          toValue(value),
+          animateOptions,
+        )
+      }
     }
   }, { deep: true })
 
@@ -266,12 +272,12 @@ export function useAnimate(
     onReady?.(animate.value)
   }
 
-  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause)
-
+  const listenerOptions = { passive: true }
+  useEventListener(animate, ['cancel', 'finish', 'remove'], syncPause, listenerOptions)
   useEventListener(animate, 'finish', () => {
     if (commitStyles)
       animate.value?.commitStyles()
-  })
+  }, listenerOptions)
 
   const { resume: resumeRef, pause: pauseRef } = useRafFn(() => {
     if (!animate.value)
