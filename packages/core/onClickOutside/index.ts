@@ -84,9 +84,11 @@ export function onClickOutside(
   if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
     const listenerOptions = { passive: true }
+    // Not using useEventListener because this event handlers must not be disposed.
+    // See previusly linked references and https://github.com/vueuse/vueuse/issues/4724
     Array.from(window.document.body.children)
-      .forEach(el => useEventListener(el, 'click', noop, listenerOptions))
-    useEventListener(window.document.documentElement, 'click', noop, listenerOptions)
+      .forEach(el => el.addEventListener('click', noop, listenerOptions))
+    window.document.documentElement.addEventListener('click', noop, listenerOptions)
   }
 
   let shouldListen = true
