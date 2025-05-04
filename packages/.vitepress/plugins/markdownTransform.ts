@@ -4,6 +4,7 @@ import { join, resolve } from 'node:path'
 import { format } from 'prettier'
 import ts from 'typescript'
 import { packages } from '../../../meta/packages'
+import { version as currentVersion } from '../../../package.json'
 import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
@@ -148,12 +149,24 @@ ${code}
 <script setup>
 import { defineAsyncComponent } from 'vue'
 const Demo = defineAsyncComponent(() => import('./${demoPath}'))
+import DemoRaw from \'./${demoPath}\?raw'
+import { useStore } from '@vue/repl'
+
+const store = useStore({
+  template: {
+    value: {
+        welcomeSFC: DemoRaw
+    }
+  }
+})
+
+const serialized = store.serialize()
 </script>
 
 ## Demo
 
 <DemoContainer>
-<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
+<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a><a :href="\`https://playground.vueuse.org/?vueuse=${currentVersion}\${serialized}\`" target="_blank">playground (beta)</a></p>
 <ClientOnly>
   <Suspense>
     <Demo/>
@@ -167,12 +180,24 @@ const Demo = defineAsyncComponent(() => import('./${demoPath}'))
       : `
 <script setup>
 import Demo from \'./${demoPath}\'
+import DemoRaw from \'./${demoPath}\?raw'
+import { useStore } from '@vue/repl'
+
+const store = useStore({
+  template: {
+    value: {
+        welcomeSFC: DemoRaw
+    }
+  }
+})
+
+const serialized = store.serialize()
 </script>
 
 ## Demo
 
 <DemoContainer>
-<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a></p>
+<p class="demo-source-link"><a href="${URL}/${demoPath}" target="_blank">source</a><a :href="\`https://playground.vueuse.org/?vueuse=${currentVersion}\${serialized}\`" target="_blank">playground (beta)</a></p>
 <Demo/>
 </DemoContainer>
 `
