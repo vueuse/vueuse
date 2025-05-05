@@ -59,6 +59,9 @@ export function useRouteParams<
     param = undefined
   })
 
+  param = toValue(defaultValue) ? toValue(defaultValue) : undefined
+  _paramsQueue.set(name, toValue(defaultValue) ? toValue(defaultValue) : undefined)
+
   let _trigger: () => void
 
   const proxy = customRef<any>((track, trigger) => {
@@ -76,31 +79,31 @@ export function useRouteParams<
         if (param === v)
           return
 
-        param = (v === toValue(defaultValue) || v === null) ? undefined : v
-        _paramsQueue.set(name, (v === toValue(defaultValue) || v === null) ? undefined : v)
+        param = v
+        _paramsQueue.set(name, v)
 
         trigger()
-
-        nextTick(() => {
-          if (_paramsQueue.size === 0)
-            return
-
-          const newParams = Object.fromEntries(_paramsQueue.entries())
-          _paramsQueue.clear()
-
-          const { params, query, hash } = route
-
-          router[toValue(mode)]({
-            params: {
-              ...params,
-              ...newParams,
-            },
-            query,
-            hash,
-          } as LocationAsRelativeRaw)
-        })
       },
     }
+  })
+
+  nextTick(() => {
+    if (_paramsQueue.size === 0)
+      return
+
+    const newParams = Object.fromEntries(_paramsQueue.entries())
+    _paramsQueue.clear()
+
+    const { params, query, hash } = route
+
+    router[toValue(mode)]({
+      params: {
+        ...params,
+        ...newParams,
+      },
+      query,
+      hash,
+    } as LocationAsRelativeRaw)
   })
 
   watch(
