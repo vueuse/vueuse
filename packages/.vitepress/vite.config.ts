@@ -40,7 +40,7 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         IconsResolver({
-          componentPrefix: '',
+          prefix: '',
         }),
       ],
       dts: resolve(__dirname, 'components.d.mts'),
