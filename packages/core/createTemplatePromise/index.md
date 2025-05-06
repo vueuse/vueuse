@@ -7,10 +7,6 @@ outline: deep
 
 Template as Promise. Useful for constructing custom Dialogs, Modals, Toasts, etc.
 
-::: warning
-This function only works for Vue 3
-:::
-
 ## Usage
 
 ```vue
