@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import type { UseMouseEventExtractor } from '@vueuse/core'
-import { useMouse, useParentElement } from '@vueuse/core'
-import { stringify } from '@vueuse/internal-docs-utils'
+import { reactify, useMouse, useParentElement } from '@vueuse/core'
 import { reactive } from 'vue'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const parentEl = useParentElement()
 

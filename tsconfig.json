@@ -10,7 +10,6 @@
     "paths": {
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
-      "@vueuse/internal-docs-utils": ["./packages/internal-docs-utils/index.ts"],
       "@vueuse/integrations": ["./packages/integrations/index.ts"],
       "@vueuse/metadata": ["./packages/metadata/index.ts"],
       "@vueuse/math": ["./packages/math/index.ts"],

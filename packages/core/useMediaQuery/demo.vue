@@ -1,7 +1,19 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
-import { stringify } from '@vueuse/internal-docs-utils'
+import { reactify, useMediaQuery } from '@vueuse/core'
 import { computed, reactive } from 'vue'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 const prefersDark = useMediaQuery('(prefers-color-scheme: dark)')

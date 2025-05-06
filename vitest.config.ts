@@ -12,7 +12,6 @@ export default defineConfig({
       '@vueuse/core': resolve(import.meta.dirname, 'packages/core/index.ts'),
       '@vueuse/math': resolve(import.meta.dirname, 'packages/math/index.ts'),
       '@vueuse/components': resolve(import.meta.dirname, 'packages/components/index.ts'),
-      '@vueuse/internal-docs-utils': resolve(import.meta.dirname, 'packages/internal-docs-utils/index.ts'),
     },
     dedupe: [
       'vue',
