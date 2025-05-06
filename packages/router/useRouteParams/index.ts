@@ -59,8 +59,8 @@ export function useRouteParams<
     param = undefined
   })
 
-  param = toValue(defaultValue) ? toValue(defaultValue) : undefined
-  _paramsQueue.set(name, toValue(defaultValue) ? toValue(defaultValue) : undefined)
+  param = param || (toValue(defaultValue) ? toValue(defaultValue) : undefined)
+  _paramsQueue.set(name, param || (toValue(defaultValue) ? toValue(defaultValue) : undefined))
 
   let _trigger: () => void
 
