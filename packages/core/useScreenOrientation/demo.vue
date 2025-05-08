@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useScreenOrientation } from './index'
+import { useScreenOrientation } from '@vueuse/core'
 
 const { isSupported, orientation, angle } = useScreenOrientation()
 </script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useSortable } from '@vueuse/integrations'
 import { shallowRef, useTemplateRef } from 'vue'
-import { useSortable } from './index'
 
 const el = useTemplateRef<HTMLElement>('el')
 const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])

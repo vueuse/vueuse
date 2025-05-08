@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import type { ShallowRef } from 'vue'
-import { useFileSystemAccess } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { reactify, useFileSystemAccess } from '@vueuse/core'
 import { reactive, shallowRef } from 'vue'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const dataType = shallowRef('Text') as ShallowRef<'Text' | 'ArrayBuffer' | 'Blob'>
 const res = useFileSystemAccess({

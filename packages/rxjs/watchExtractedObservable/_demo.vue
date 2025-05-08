@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Observable } from 'rxjs'
+import { watchExtractedObservable } from '@vueuse/rxjs'
 import { fromEvent } from 'rxjs'
 import { map, skip, tap } from 'rxjs/operators'
 import { computed, ref as deepRef, reactive } from 'vue'
-import { watchExtractedObservable } from './index'
 
 class AudioPlayer {
   public readonly reachEnd$: Observable<unknown>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useDocumentVisibility } from '@vueuse/core'
-import { useTimeoutFn } from '@vueuse/shared'
+import { useDocumentVisibility, useTimeoutFn } from '@vueuse/core'
 import { shallowRef, watch } from 'vue'
 
 const startMessage = '💡 Minimize the page or switch tab then return'
