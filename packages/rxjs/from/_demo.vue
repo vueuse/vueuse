@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { interval } from 'rxjs'
 import {
   map,
@@ -19,7 +18,7 @@ useSubscription(
   interval(1000)
     .pipe(
       mapTo(1),
-      takeUntil(fromEvent(button as Ref<HTMLButtonElement>, 'click')),
+      takeUntil(fromEvent(button, 'click')),
       withLatestFrom(from(count, {
         immediate: true,
         deep: false,
