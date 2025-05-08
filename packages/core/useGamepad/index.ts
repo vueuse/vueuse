@@ -12,43 +12,19 @@ export interface UseGamepadOptions extends ConfigurableWindow, ConfigurableNavig
 }
 
 /**
- * Maps a standard standard gamepad to an Xbox 360 Controller.
+ * Maps a [standard gamepad](https://w3c.github.io/gamepad/#remapping) to an Xbox 360 Controller.
+ * https://support.xbox.com/en-US/help/xbox-360/accessories/controllers
  */
 export function mapGamepadToXbox360Controller(gamepad: Ref<Gamepad | undefined>) {
   return computed(() => {
     if (gamepad.value) {
       return {
+        ...mapGamepadToStandardController(gamepad.value),
         buttons: {
           a: gamepad.value.buttons[0],
           b: gamepad.value.buttons[1],
           x: gamepad.value.buttons[2],
           y: gamepad.value.buttons[3],
-        },
-        bumper: {
-          left: gamepad.value.buttons[4],
-          right: gamepad.value.buttons[5],
-        },
-        triggers: {
-          left: gamepad.value.buttons[6],
-          right: gamepad.value.buttons[7],
-        },
-        stick: {
-          left: {
-            horizontal: gamepad.value.axes[0],
-            vertical: gamepad.value.axes[1],
-            button: gamepad.value.buttons[10],
-          },
-          right: {
-            horizontal: gamepad.value.axes[2],
-            vertical: gamepad.value.axes[3],
-            button: gamepad.value.buttons[11],
-          },
-        },
-        dpad: {
-          up: gamepad.value.buttons[12],
-          down: gamepad.value.buttons[13],
-          left: gamepad.value.buttons[14],
-          right: gamepad.value.buttons[15],
         },
         back: gamepad.value.buttons[8],
         start: gamepad.value.buttons[9],
@@ -57,6 +33,69 @@ export function mapGamepadToXbox360Controller(gamepad: Ref<Gamepad | undefined>)
 
     return null
   })
+}
+
+/**
+ * Maps a [standard gamepad](https://w3c.github.io/gamepad/#remapping) to a PS5 DualSense Controller.
+ *
+ * You can find more about PS5 DualSense controller's original part names at
+ * https://controller.dl.playstation.net/controller/lang/en/DS_partnames.html.
+ */
+export function mapGamepadToPS5DualSenseController(gamepad: Ref<Gamepad | undefined>) {
+  return computed(() => {
+    if (gamepad.value) {
+      return {
+        ...mapGamepadToStandardController(gamepad.value),
+        buttons: {
+          '⨯': gamepad.value.buttons[0],
+          '○': gamepad.value.buttons[1],
+          '□': gamepad.value.buttons[2],
+          '△': gamepad.value.buttons[3],
+          'L1': gamepad.value.buttons[4],
+          'R1': gamepad.value.buttons[5],
+          'L2': gamepad.value.buttons[6],
+          'R2': gamepad.value.buttons[7],
+        },
+        create: gamepad.value.buttons[8],
+        options: gamepad.value.buttons[9],
+      }
+    }
+    return null
+  })
+}
+
+/**
+ * Shared name mapping across different controllers
+ */
+function mapGamepadToStandardController(gamepad: Gamepad) {
+  return {
+    bumper: {
+      left: gamepad.buttons[4],
+      right: gamepad.buttons[5],
+    },
+    triggers: {
+      left: gamepad.buttons[6],
+      right: gamepad.buttons[7],
+    },
+    stick: {
+      left: {
+        horizontal: gamepad.axes[0],
+        vertical: gamepad.axes[1],
+        button: gamepad.buttons[10],
+      },
+      right: {
+        horizontal: gamepad.axes[2],
+        vertical: gamepad.axes[3],
+        button: gamepad.buttons[11],
+      },
+    },
+    dpad: {
+      up: gamepad.buttons[12],
+      down: gamepad.buttons[13],
+      left: gamepad.buttons[14],
+      right: gamepad.buttons[15],
+    },
+  }
 }
 
 export function useGamepad(options: UseGamepadOptions = {}) {
