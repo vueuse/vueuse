@@ -1,10 +1,11 @@
 import type { EventHookOn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { createEventHook, hasOwn } from '@vueuse/shared'
+import { createEventHook, hasOwn, tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, readonly } from 'vue'
 import { defaultDocument } from '../_configurable'
 
+const DEFAULT_INPUT_ID = 'vueuse-file-dialog-input'
 export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
    * @default true
@@ -36,6 +37,10 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * @default null
    */
   initialFiles?: Array<File> | FileList
+  /**
+   * Set the id attribute for the input element (for accessibility and testing purposes).
+   */
+  id?: string
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -77,6 +82,7 @@ function prepareInitialFiles(files: UseFileDialogOptions['initialFiles']): FileL
 export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialogReturn {
   const {
     document = defaultDocument,
+    id,
   } = options
 
   const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
@@ -87,6 +93,27 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     input = document.createElement('input')
     input.type = 'file'
 
+    Object.assign(input.style, {
+      position: 'absolute',
+      width: '1px',
+      height: '1px',
+      padding: '0',
+      margin: '-1px',
+      overflow: 'hidden',
+      clipPath: 'inset(0 0 0 0)', // use clip-path instead of clip.
+      whiteSpace: 'nowrap',
+      borderWidth: '0',
+    })
+    input.ariaLabel = 'file upload'
+    if (id) {
+      input.id = id ?? DEFAULT_INPUT_ID
+    }
+    tryOnScopeDispose(() => {
+      if (input && document && document.body.contains(input)) {
+        document.body.removeChild(input)
+      }
+    })
+    document.body.appendChild(input)
     input.onchange = (event: Event) => {
       const result = event.target as HTMLInputElement
       files.value = result.files
