@@ -1,14 +1,27 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
+import { computed, ref as deepRef } from 'vue'
 import { useAxios } from './index'
 
-const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios(
-  'https://jsonplaceholder.typicode.com/todos/1',
-)
+const counter = deepRef(1)
+const refetch = deepRef(true)
+
+const url = computed(() => `https://jsonplaceholder.typicode.com/todos/${counter.value}`)
+const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios<string>(url, undefined, {
+  refetch,
+  immediate: true,
+})
+
 const text = stringify(data)
 </script>
 
 <template>
+  <button @click="counter = counter + 1">
+    Increment
+  </button>
+  <button @click="refetch = !refetch">
+    Toggle Refetch {{ String(refetch) }}
+  </button>
   <button @click="execute()">
     Execute
   </button>

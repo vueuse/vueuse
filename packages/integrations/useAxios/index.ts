@@ -1,8 +1,8 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import type { Ref, ShallowRef } from 'vue'
-import { noop, until } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import { containsProp, toRef, until } from '@vueuse/shared'
 import axios, { AxiosError } from 'axios'
-import { ref as deepRef, shallowRef } from 'vue'
+import { computed, ref as deepRef, shallowRef, toValue, watch } from 'vue'
 
 export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, O extends UseAxiosOptions = UseAxiosOptions<T>> {
   /**
@@ -70,6 +70,15 @@ export interface UseAxiosOptionsBase<T = any> {
   immediate?: boolean
 
   /**
+   * Will automatically refetch when:
+   * - the URL is changed if the URL is a ref
+   * - the payload is changed if the payload is a ref
+   *
+   * @default false
+   */
+  refetch?: MaybeRefOrGetter<boolean>
+
+  /**
    * Use shallowRef.
    *
    * @default true
@@ -115,15 +124,17 @@ export type UseAxiosOptions<T = any> = UseAxiosOptionsBase<T> | UseAxiosOptionsW
 
 type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
 
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRefOrGetter<string>, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRefOrGetter<string>, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: MaybeRefOrGetter<string>, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRefOrGetter<string>, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRefOrGetter<string>, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: MaybeRefOrGetter<string>, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
+// It's important that if the first argument input is a function, that it's handled in the resolvedArgs, similar to the axios instance resolution
+// toValue calls the function
 
 /**
  * Wrapper for axios.
@@ -131,53 +142,65 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosR
  * @see https://vueuse.org/useAxios
  */
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[]): OverallUseAxiosReturn<T, R, D> & Promise<OverallUseAxiosReturn<T, R, D>> {
-  const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
-  const argsPlaceholder = typeof url === 'string' ? 1 : 0
-  const defaultOptions: UseAxiosOptions<T> = {
-    immediate: !!argsPlaceholder,
-    shallow: true,
-    abortPrevious: true,
-  }
-  let defaultConfig: AxiosRequestConfig<D> = {}
-  let instance: AxiosInstance = axios
-  let options: UseAxiosOptions<T> = defaultOptions
+  const isAxiosInstance = (val: unknown): val is AxiosInstance =>
+    typeof val === 'function'
+    && containsProp(val, 'request', 'get', 'post')
 
-  const isAxiosInstance = (val: any) => !!val?.request
+  const resolvedArgs = computed(() => {
+    const [_firstArg, secondArg, thirdArg, fourthArg] = args as unknown[]
+    const firstArg = isAxiosInstance(_firstArg) ? _firstArg : toValue(_firstArg)
 
-  if (args.length > 0 + argsPlaceholder) {
-    /**
-     * Unable to use `instanceof` here because of (https://github.com/axios/axios/issues/737)
-     * so instead we are checking if there is a `request` on the object to see if it is an
-     * axios instance
-     */
-    if (isAxiosInstance(args[0 + argsPlaceholder]))
-      instance = args[0 + argsPlaceholder]
-    else
-      defaultConfig = args[0 + argsPlaceholder]
-  }
+    let _url: string | undefined
+    let _axiosInstance: AxiosInstance = axios
+    let _config: AxiosRequestConfig<D> | undefined
+    let _options: UseAxiosOptions<unknown> | undefined
 
-  if (args.length > 1 + argsPlaceholder) {
-    if (isAxiosInstance(args[1 + argsPlaceholder]))
-      instance = args[1 + argsPlaceholder]
-  }
-  if (
-    (args.length === 2 + argsPlaceholder && !isAxiosInstance(args[1 + argsPlaceholder]))
-    || args.length === 3 + argsPlaceholder
-  ) {
-    options = args[args.length - 1] || defaultOptions
-  }
+    if (typeof firstArg === 'string')
+      _url = firstArg
+    else if (isAxiosInstance(firstArg))
+      _axiosInstance = firstArg
+    // Axios request config is an object that can be empty. Unlike the rest, we can't use a type guard here
+    // It is simply the least specific type
+    else if (firstArg && typeof firstArg === 'object')
+      _config = firstArg
 
-  const {
-    shallow,
-    onSuccess = noop,
-    onError = noop,
-    immediate,
-    resetOnExecute = false,
-  } = options
+    if (secondArg) {
+      if (isAxiosInstance(secondArg))
+        _axiosInstance = secondArg
+      else if (typeof secondArg === 'object' && secondArg !== null)
+        _config = secondArg
+    }
 
-  const initialData = (options as UseAxiosOptionsWithInitialData<T>).initialData
+    if (thirdArg) {
+      if (isAxiosInstance(thirdArg))
+        _axiosInstance = thirdArg
+      else if (typeof thirdArg === 'object' && thirdArg !== null)
+        _options = thirdArg
+    }
+
+    if (fourthArg)
+      _options = fourthArg
+
+    const defaultOptions: UseAxiosOptions<T> = {
+      immediate: !!_url,
+      shallow: true,
+      abortPrevious: true,
+      refetch: false,
+    }
+
+    return {
+      url: _url,
+      axiosInstance: _axiosInstance,
+      config: _config,
+      options: _options || defaultOptions,
+    }
+  })
+
+  const defaultConfig: AxiosRequestConfig<D> = resolvedArgs.value.config || {}
+
+  const initialData = (resolvedArgs.value.options as UseAxiosOptionsWithInitialData<T>).initialData
   const response = shallowRef<AxiosResponse<T>>()
-  const data = (shallow ? shallowRef : deepRef)<T>(initialData!) as Ref<T>
+  const data = (resolvedArgs.value.options.shallow ? shallowRef : deepRef)<T>(initialData!) as Ref<T>
   const isFinished = shallowRef(false)
   const isLoading = shallowRef(false)
   const isAborted = shallowRef(false)
@@ -205,7 +228,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
    * Reset data to initialData
    */
   const resetData = () => {
-    if (resetOnExecute)
+    if (resolvedArgs.value.options.resetOnExecute)
       data.value = initialData!
   }
 
@@ -223,11 +246,11 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   } as Promise<OverallUseAxiosReturn<T, R, D>>
 
   let executeCounter = 0
-  const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
+  const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = resolvedArgs.value.url, config: AxiosRequestConfig<D> = {}) => {
     error.value = undefined
     const _url = typeof executeUrl === 'string'
       ? executeUrl
-      : url ?? config.url
+      : resolvedArgs.value.url ?? config.url
 
     if (_url === undefined) {
       error.value = new AxiosError(AxiosError.ERR_INVALID_URL)
@@ -236,7 +259,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     }
     resetData()
 
-    if (options.abortPrevious !== false)
+    if (resolvedArgs.value.options.abortPrevious !== false)
       abort()
 
     loading(true)
@@ -245,29 +268,40 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     const currentExecuteCounter = executeCounter
     isAborted.value = false
 
-    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
-      .then((r: any) => {
+    resolvedArgs.value.axiosInstance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
+      .then((r) => {
         if (isAborted.value)
           return
         response.value = r
         const result = r.data
         data.value = result
-        onSuccess(result)
+        resolvedArgs.value.options.onSuccess?.(result)
       })
-      .catch((e: any) => {
+      .catch((e: unknown) => {
         error.value = e
-        onError(e)
+        resolvedArgs.value.options.onError?.(e)
       })
       .finally(() => {
-        options.onFinish?.()
+        resolvedArgs.value.options.onFinish?.()
         if (currentExecuteCounter === executeCounter)
           loading(false)
       })
     return promise
   }
 
-  if (immediate && url)
-    (execute as StrictUseAxiosReturn<T, R, D>['execute'])()
+  const refetch = toRef(resolvedArgs.value.options.refetch)
+  watch([
+    refetch,
+    () => resolvedArgs.value.url,
+  ], ([newRefreshValue, newUrl]) => {
+    if (newRefreshValue && newUrl) {
+      execute(newUrl)
+    }
+  })
+
+  if (resolvedArgs.value.options.immediate && resolvedArgs.value.url) {
+    ;(execute as StrictUseAxiosReturn<T, R, D>['execute'])()
+  }
 
   const result = {
     response,
