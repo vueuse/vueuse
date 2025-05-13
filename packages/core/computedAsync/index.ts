@@ -1,5 +1,5 @@
 import type { Fn } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import { noop } from '@vueuse/shared'
 import { computed, ref as deepRef, isRef, shallowRef, watchEffect } from 'vue'
 
@@ -47,18 +47,28 @@ export interface AsyncComputedOptions {
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState: T,
-  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+  optionsOrRef: AsyncComputedOptions & { lazy: true },
+): ComputedRef<T>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState: undefined,
+  optionsOrRef: AsyncComputedOptions & { lazy: true },
+): ComputedRef<T | undefined>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState: T,
+  optionsOrRef?: Ref<boolean> | (AsyncComputedOptions & { lazy?: false | undefined }),
 ): Ref<T>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: undefined,
-  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+  optionsOrRef?: Ref<boolean> | (AsyncComputedOptions & { lazy?: false | undefined }),
 ): Ref<T | undefined>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
   optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
-): Ref<T> | Ref<T | undefined> {
+): Ref<T> | Ref<T | undefined> | ComputedRef<T> | ComputedRef<T | undefined> {
   let options: AsyncComputedOptions
 
   if (isRef(optionsOrRef)) {
