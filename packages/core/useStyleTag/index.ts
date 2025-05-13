@@ -30,6 +30,13 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
    * @default auto-incremented
    */
   id?: string
+
+  /**
+   * Nonce value for CSP (Content Security Policy)
+   *
+   * @default ''
+   */
+  nonce?: string
 }
 
 export interface UseStyleTagReturn {
@@ -53,7 +60,7 @@ let _id = 0
  */
 export function useStyleTag(
   css: MaybeRef<string>,
-  options: UseStyleTagOptions & { nonce?: string } = {},
+  options: UseStyleTagOptions = {},
 ): UseStyleTagReturn {
   const isLoaded = shallowRef(false)
 
