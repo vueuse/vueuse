@@ -7,8 +7,6 @@ import {
   isRef,
   shallowRef,
   watchEffect,
-  watchPostEffect,
-  watchSyncEffect,
 } from 'vue'
 
 /**
@@ -100,7 +98,7 @@ export function computedAsync<T>(
   const current = (shallow ? shallowRef(initialState) : deepRef(initialState)) as Ref<T>
   let counter = 0
 
-  const cb = async (onInvalidate: AsyncComputedOnCancel) => {
+  watchEffect(async (onInvalidate) => {
     if (!started.value)
       return
 
@@ -139,17 +137,7 @@ export function computedAsync<T>(
 
       hasFinished = true
     }
-  }
-
-  if (flush === 'sync') {
-    watchSyncEffect(cb)
-  }
-  else if (flush === 'post') {
-    watchPostEffect(cb)
-  }
-  else {
-    watchEffect(cb)
-  }
+  }, { flush })
 
   if (lazy) {
     return computed(() => {
