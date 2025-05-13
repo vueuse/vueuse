@@ -14,6 +14,7 @@ export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
  * computed, effect, watch, watchEffect, render dependencies will not be triggered.
  * refer: https://github.com/vuejs/core/pull/5912
  *
+ * @deprecated
  * @param fn effect function
  * @param options WatchOptionsBase
  * @returns readonly shallowRef
