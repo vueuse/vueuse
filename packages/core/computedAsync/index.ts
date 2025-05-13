@@ -1,7 +1,15 @@
 import type { Fn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, ref as deepRef, isRef, shallowRef, watchEffect } from 'vue'
+import {
+  computed,
+  ref as deepRef,
+  isRef,
+  shallowRef,
+  watchEffect,
+  watchPostEffect,
+  watchSyncEffect,
+} from 'vue'
 
 /**
  * Handle overlapping async evaluations.
@@ -29,6 +37,16 @@ export interface AsyncComputedOptions {
    * @default true
    */
   shallow?: boolean
+
+  /**
+   * The flush option allows for greater control over the timing of a history point, default to `pre`
+   *
+   * Possible values: `pre`, `post`, `sync`
+   *
+   * It works in the same way as the flush option in watch and watch effect in vue reactivity
+   * @default 'pre'
+   */
+  flush?: 'pre' | 'post' | 'sync'
 
   /**
    * Callback when error is caught.
@@ -72,6 +90,7 @@ export function computedAsync<T>(
 
   const {
     lazy = false,
+    flush = 'pre',
     evaluating = undefined,
     shallow = true,
     onError = noop,
@@ -81,7 +100,7 @@ export function computedAsync<T>(
   const current = (shallow ? shallowRef(initialState) : deepRef(initialState)) as Ref<T>
   let counter = 0
 
-  watchEffect(async (onInvalidate) => {
+  const cb = async (onInvalidate: AsyncComputedOnCancel) => {
     if (!started.value)
       return
 
@@ -120,7 +139,17 @@ export function computedAsync<T>(
 
       hasFinished = true
     }
-  })
+  }
+
+  if (flush === 'sync') {
+    watchSyncEffect(cb)
+  }
+  else if (flush === 'post') {
+    watchPostEffect(cb)
+  }
+  else {
+    watchEffect(cb)
+  }
 
   if (lazy) {
     return computed(() => {
