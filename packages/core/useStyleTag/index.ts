@@ -34,7 +34,7 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
   /**
    * Nonce value for CSP (Content Security Policy)
    *
-   * @default ''
+   * @default undefined
    */
   nonce?: string
 }
