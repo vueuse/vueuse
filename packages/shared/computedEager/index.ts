@@ -2,7 +2,7 @@
 // by @linusborg https://github.com/LinusBorg
 
 import type { ShallowRef, WatchOptionsBase } from 'vue'
-import { readonly, shallowRef, watchEffect } from 'vue'
+import { computed } from 'vue'
 
 export type ComputedEagerOptions = WatchOptionsBase
 
@@ -14,22 +14,13 @@ export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
  * computed, effect, watch, watchEffect, render dependencies will not be triggered.
  * refer: https://github.com/vuejs/core/pull/5912
  *
- * @deprecated
+ * @deprecated - This composable will be removed in the next major version of VueUse
  * @param fn effect function
  * @param options WatchOptionsBase
  * @returns readonly shallowRef
  */
-export function computedEager<T>(fn: () => T, options?: ComputedEagerOptions): ComputedEagerReturn<T> {
-  const result = shallowRef()
-
-  watchEffect(() => {
-    result.value = fn()
-  }, {
-    ...options,
-    flush: options?.flush ?? 'sync',
-  })
-
-  return readonly(result)
+export function computedEager<T>(fn: () => T, _?: ComputedEagerOptions): ComputedEagerReturn<T> {
+  return computed(fn)
 }
 
 // alias
