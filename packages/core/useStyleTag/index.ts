@@ -53,7 +53,7 @@ let _id = 0
  */
 export function useStyleTag(
   css: MaybeRef<string>,
-  options: UseStyleTagOptions = {},
+  options: UseStyleTagOptions & { nonce?: string } = {},
 ): UseStyleTagReturn {
   const isLoaded = shallowRef(false)
 
@@ -75,6 +75,8 @@ export function useStyleTag(
 
     if (!el.isConnected) {
       el.id = id
+      if (options.nonce)
+        el.nonce = options.nonce
       if (options.media)
         el.media = options.media
       document.head.appendChild(el)
