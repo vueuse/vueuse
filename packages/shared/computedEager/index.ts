@@ -14,9 +14,9 @@ export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
  * computed, effect, watch, watchEffect, render dependencies will not be triggered.
  * refer: https://github.com/vuejs/core/pull/5912
  *
- * @deprecated - This composable will be removed in the next major version of VueUse
+ * @deprecated - Replace with Vue's own computed function
  * @param fn effect function
- * @param options WatchOptionsBase
+ * @param _ WatchOptionsBase
  * @returns readonly shallowRef
  */
 export function computedEager<T>(fn: () => T, _?: ComputedEagerOptions): ComputedEagerReturn<T> {
