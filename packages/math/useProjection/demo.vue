@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useProjection } from '@vueuse/math'
 import { shallowRef } from 'vue'
-import { useProjection } from './index'
 
 const from = shallowRef<[number, number]>([0, 10])
 const to = shallowRef<[number, number]>([10, 100])

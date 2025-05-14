@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import {
   map,
@@ -8,9 +9,6 @@ import {
   withLatestFrom,
 } from 'rxjs/operators'
 import { ref as deepRef, shallowRef } from 'vue'
-import { toObserver } from '../toObserver'
-import { useSubscription } from '../useSubscription'
-import { from, fromEvent } from './index'
 
 const count = shallowRef(0)
 const button = deepRef<HTMLButtonElement | null>(null)
