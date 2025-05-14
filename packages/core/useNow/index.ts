@@ -15,7 +15,7 @@ export interface UseNowOptions<Controls extends boolean> {
   /**
    * Update interval in milliseconds, or use requestAnimationFrame
    *
-   * @default requestAnimationFrame
+   * @default 1000
    */
   interval?: 'requestAnimationFrame' | number
 }
@@ -31,7 +31,7 @@ export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausa
 export function useNow(options: UseNowOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
-    interval = 'requestAnimationFrame',
+    interval = 1000,
   } = options
 
   const now = deepRef(new Date())
