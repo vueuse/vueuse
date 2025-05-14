@@ -33,7 +33,7 @@ export default defineConfig({
       exclude: [
         'packages/.vitepress/**',
         'playgrounds/**',
-        '**/(unocss,taze).config.ts',
+        '**/{unocss,taze}.config.ts',
         'scripts/**',
         ...coverageConfigDefaults.exclude,
       ],
