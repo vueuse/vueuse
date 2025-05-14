@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { toRefs } from '@vueuse/core'
 import { useDrauu } from '@vueuse/integrations'
-import { toRefs } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import Scrubber from '../../core/useMediaControls/components/Scrubber.vue'
 

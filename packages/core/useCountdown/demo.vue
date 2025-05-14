@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
+import { useCountdown, useEventListener } from '@vueuse/core'
 import { shallowRef, useTemplateRef } from 'vue'
-import { useCountdown } from './index'
 
 const countdownSeconds = shallowRef(5)
 const rocketRef = useTemplateRef<HTMLDivElement>('rocketRef')

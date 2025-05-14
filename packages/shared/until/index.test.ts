@@ -224,7 +224,7 @@ describe('until', () => {
   })
 
   it('should type check', () => {
-    // eslint-disable-next-line ts/no-unused-expressions
+    /* eslint-disable ts/no-unused-expressions */
     async () => {
       const x = deepRef<'x'>()
       // type checks are done this way to prevent unused variable warnings
@@ -266,5 +266,6 @@ describe('until', () => {
       const zNot1 = await until(z).not.toMatch(is1)
       'test' as any as Expect<Equal<typeof zNot1, 2 | 3>>
     }
+    /* eslint-enable ts/no-unused-expressions */
   })
 })
