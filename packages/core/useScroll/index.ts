@@ -5,6 +5,7 @@ import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseScrollOptions extends ConfigurableWindow {
   /**
@@ -31,6 +32,15 @@ export interface UseScrollOptions extends ConfigurableWindow {
     right?: number
     top?: number
     bottom?: number
+  }
+
+  /**
+   * Use MutationObserver to monitor specific DOM changes,
+   * such as attribute modifications, child node additions or removals, or subtree changes.
+   * @default { mutation: boolean }
+   */
+  observe?: boolean | {
+    mutation?: boolean
   }
 
   /**
@@ -98,6 +108,9 @@ export function useScroll(
       top: 0,
       bottom: 0,
     },
+    observe: _observe = {
+      mutation: false,
+    },
     eventListenerOptions = {
       capture: false,
       passive: true,
@@ -106,6 +119,12 @@ export function useScroll(
     window = defaultWindow,
     onError = (e) => { console.error(e) },
   } = options
+
+  const observe = typeof _observe === 'boolean'
+    ? {
+        mutation: _observe,
+      }
+    : _observe
 
   const internalX = shallowRef(0)
   const internalY = shallowRef(0)
@@ -278,6 +297,23 @@ export function useScroll(
       onError(e)
     }
   })
+
+  if (observe?.mutation && element != null && element !== window && element !== document) {
+    useMutationObserver(
+      element as MaybeRefOrGetter<HTMLElement | SVGElement>,
+      () => {
+        const _element = toValue(element)
+        if (!_element)
+          return
+        setArrivedState(_element)
+      },
+      {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      },
+    )
+  }
 
   useEventListener(
     element,
