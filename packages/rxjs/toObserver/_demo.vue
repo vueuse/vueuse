@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import {
   map,
@@ -8,9 +9,6 @@ import {
   withLatestFrom,
 } from 'rxjs/operators'
 import { shallowRef, useTemplateRef } from 'vue'
-import { from, fromEvent } from '../from'
-import { useSubscription } from '../useSubscription'
-import { toObserver } from './index'
 
 const count = shallowRef(0)
 const button = useTemplateRef('button')
