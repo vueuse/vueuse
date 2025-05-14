@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import {
@@ -9,16 +8,16 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const count = shallowRef(0)
-const button = deepRef<HTMLButtonElement | null>(null)
+const button = useTemplateRef('button')
 
 useSubscription(
   interval(1000)
     .pipe(
       mapTo(1),
-      takeUntil(fromEvent(button as Ref<HTMLButtonElement>, 'click')),
+      takeUntil(fromEvent(button, 'click')),
       withLatestFrom(from(count).pipe(startWith(0))),
       map(([total, curr]) => curr + total),
     )
