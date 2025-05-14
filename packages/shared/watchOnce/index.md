@@ -4,17 +4,12 @@ category: Watch
 
 # watchOnce
 
-`watch` that only triggers once.
-
-::: tip
-
-[Once Watcher](https://vuejs.org/guide/essentials/watchers.html#once-watchers) has been added to Vue [since 3.4](https://github.com/vuejs/core/pull/9034), use `watch(watchSource, callback, { once: true })` instead on supported versions.
-
-:::
+Shorthand for watching value with `{ once: true }`. Once the callback fires once, the watcher will be stopped.
+See [Vue's docs](https://vuejs.org/guide/essentials/watchers.html#once-watchers) for full details.
 
 ## Usage
 
-After the callback function has been triggered once, the watch will be stopped automatically.
+Similar to `watch`, but with `{ once: true }`
 
 ```ts
 import { watchOnce } from '@vueuse/core'
