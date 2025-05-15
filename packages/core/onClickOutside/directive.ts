@@ -1,6 +1,11 @@
+import type { Fn } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue'
 import type { OnClickOutsideHandler, OnClickOutsideOptions } from './index'
 import { onClickOutside } from './index'
+
+type StopHandle = Fn | { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
+
+const stopClickOutsideMap = new WeakMap<HTMLElement, StopHandle>()
 
 export const vOnClickOutside: ObjectDirective<
   HTMLElement,
@@ -8,16 +13,22 @@ export const vOnClickOutside: ObjectDirective<
 > = {
   mounted(el, binding) {
     const capture = !binding.modifiers.bubble
+    let stop: StopHandle
     if (typeof binding.value === 'function') {
-      (el as any).__onClickOutside_stop = onClickOutside(el, binding.value, { capture })
+      stop = onClickOutside(el, binding.value, { capture })
     }
     else {
       const [handler, options] = binding.value
-      ;(el as any).__onClickOutside_stop = onClickOutside(el, handler, Object.assign({ capture }, options))
+      stop = onClickOutside(el, handler, Object.assign({ capture }, options))
     }
+    stopClickOutsideMap.set(el, stop)
   },
   unmounted(el) {
-    (el as any).__onClickOutside_stop()
+    const stop = stopClickOutsideMap.get(el)
+    if (stop && typeof stop === 'function') {
+      stop()
+    }
+    stopClickOutsideMap.delete(el)
   },
 }
 
