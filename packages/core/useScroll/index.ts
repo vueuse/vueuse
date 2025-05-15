@@ -5,6 +5,7 @@ import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface UseScrollOptions extends ConfigurableWindow {
   /**
@@ -273,6 +274,13 @@ export function useScroll(
       if (!_element)
         return
       setArrivedState(_element)
+      if (_element instanceof HTMLElement) {
+        useResizeObserver(_element, () => {
+          const _element = toValue(element)
+          if (_element)
+            setArrivedState(_element)
+        })
+      }
     }
     catch (e) {
       onError(e)
