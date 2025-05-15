@@ -28,6 +28,9 @@ export const vOnClickOutside: ObjectDirective<
     if (stop && typeof stop === 'function') {
       stop()
     }
+    else {
+      stop?.stop()
+    }
     stopClickOutsideMap.delete(el)
   },
 }
