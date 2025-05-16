@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useToggle } from '@vueuse/shared'
+import { useToggle } from '@vueuse/core'
 import { isDark } from '../../.vitepress/theme/composables/dark'
 
 // const isDark = useDark()

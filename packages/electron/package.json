@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/electron",
   "type": "module",
-  "version": "13.0.0",
+  "version": "13.2.0",
   "description": "Electron renderer process modules for VueUse",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "license": "MIT",
@@ -48,6 +48,6 @@
     "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
-    "electron": "catalog:"
+    "electron": "catalog:integrations"
   }
 }

@@ -55,7 +55,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: ShallowRef<Data>
+  data: ShallowRef<Data | null>
 
   /**
    * The current state of the connection, can be only one of:
@@ -114,7 +114,7 @@ export function useEventSource<Events extends string[], Data = any>(
   url: MaybeRefOrGetter<string | URL | undefined>,
   events: Events = [] as unknown as Events,
   options: UseEventSourceOptions = {},
-): UseEventSourceReturn<Events> {
+): UseEventSourceReturn<Events, Data> {
   const event: ShallowRef<string | null> = shallowRef(null)
   const data: ShallowRef<Data | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')

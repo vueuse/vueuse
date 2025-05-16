@@ -32,10 +32,10 @@ import { from, fromEvent, useObservable } from '@vueuse/rxjs'
 import { forkJoin, of } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import { concatAll, map, mergeMap, pluck, scan, take } from 'rxjs/operators'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com'
-const button = ref<HTMLButtonElement>(null)
+const button = useTemplateRef('buttonRef')
 
 const posts = useObservable(
   fromEvent(button, 'click').pipe(
