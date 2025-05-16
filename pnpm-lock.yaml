@@ -118,6 +118,9 @@ catalogs:
     '@vite-pwa/vitepress':
       specifier: ^1.0.0
       version: 1.0.0
+    '@vue/repl':
+      specifier: ^4.5.1
+      version: 4.5.1
     google-font-installer:
       specifier: ^1.2.0
       version: 1.2.0
@@ -338,6 +341,9 @@ importers:
       '@vue/compiler-sfc':
         specifier: catalog:dev
         version: 3.5.13
+      '@vue/repl':
+        specifier: catalog:docs
+        version: 4.5.1
       '@vue/test-utils':
         specifier: catalog:test
         version: 2.4.6
@@ -3846,6 +3852,9 @@ packages:
 
   '@vue/reactivity@3.5.13':
     resolution: {integrity: sha512-NaCwtw8o48B9I6L1zl2p41OHo/2Z4wqYGGIK1Khu5T7yxrn+ATOixn/Udn2m+6kZKB/J7cuT9DbWWhRxqixACg==}
+
+  '@vue/repl@4.5.1':
+    resolution: {integrity: sha512-YYXvFue2GOrZ6EWnoA8yQVKzdCIn45+tpwJHzMof1uwrgyYAVY9ynxCsDYeAuWcpaAeylg/nybhFuqiFy2uvYA==}
 
   '@vue/runtime-core@3.5.13':
     resolution: {integrity: sha512-Fj4YRQ3Az0WTZw1sFe+QDb0aXCerigEpw418pw1HBUKFtnQHWzwojaukAs2X/c9DQz4MQ4bsXTGlcpGxU/RCIw==}
@@ -12795,6 +12804,8 @@ snapshots:
   '@vue/reactivity@3.5.13':
     dependencies:
       '@vue/shared': 3.5.13
+
+  '@vue/repl@4.5.1': {}
 
   '@vue/runtime-core@3.5.13':
     dependencies:

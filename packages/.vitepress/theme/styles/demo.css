@@ -16,6 +16,8 @@
   font-size: 12px;
   font-weight: 500;
   transition: color 0.5s;
+  display: flex;
+  gap: 0.5rem;
 }
 
 @media (min-width: 720px) {

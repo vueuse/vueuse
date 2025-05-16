@@ -55,6 +55,7 @@
     "@vitest/coverage-v8": "catalog:test",
     "@vitest/ui": "catalog:test",
     "@vue/compiler-sfc": "catalog:dev",
+    "@vue/repl": "catalog:docs",
     "@vue/test-utils": "catalog:test",
     "@vueuse/core": "workspace:*",
     "@vueuse/integrations": "workspace:*",
