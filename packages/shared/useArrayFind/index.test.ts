@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { reactive, ref } from 'vue'
-import { useArrayFind } from '.'
+import { reactive, shallowRef } from 'vue'
 import { useSetup } from '../../.test'
+import { useArrayFind } from './index'
 
 describe('useArrayFind', () => {
   it('should be defined', () => {
@@ -10,9 +10,9 @@ describe('useArrayFind', () => {
 
   it('should find positive', () => {
     useSetup(() => {
-      const item1 = ref(1)
-      const item2 = ref(2)
-      const item3 = ref(3)
+      const item1 = shallowRef(1)
+      const item2 = shallowRef(2)
+      const item3 = shallowRef(3)
       const positive = useArrayFind([item1, item2, item3], val => val > 0)
       expect(positive.value).toBe(1)
       item1.value = -1

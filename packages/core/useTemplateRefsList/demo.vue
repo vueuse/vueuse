@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTemplateRefsList } from '@vueuse/core'
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, shallowRef, watch } from 'vue'
 
-const count = ref(5)
+const count = shallowRef(5)
 const refs = useTemplateRefsList<HTMLDivElement>()
 
 watch(refs, async () => {

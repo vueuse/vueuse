@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { onLongPress } from './'
+import { onLongPress } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const htmlRef = ref<HTMLElement | null>(null)
-const htmlRefOptions = ref<HTMLElement | null>(null)
-const htmlRefOnMouseUp = ref<HTMLElement | null>(null)
+const htmlRef = shallowRef<HTMLElement | null>(null)
+const htmlRefOptions = shallowRef<HTMLElement | null>(null)
+const htmlRefOnMouseUp = shallowRef<HTMLElement | null>(null)
 
-const longPressed = ref(false)
-const clicked = ref(false)
+const longPressed = shallowRef(false)
+const clicked = shallowRef(false)
 
 function onLongPressCallback(e: PointerEvent) {
   longPressed.value = true

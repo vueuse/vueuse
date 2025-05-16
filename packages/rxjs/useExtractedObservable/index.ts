@@ -1,6 +1,6 @@
 import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/shared'
 import type { Subscription } from 'rxjs'
-import type { Ref, WatchOptions, WatchSource } from 'vue'
+import type { ShallowRef, WatchOptions, WatchSource } from 'vue'
 import type { UseObservableOptions } from '../useObservable'
 import type { WatchExtractedObservableCallback } from '../watchExtractedObservable'
 import { tryOnScopeDispose } from '@vueuse/shared'
@@ -24,7 +24,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<Ref<E>>
+): Readonly<ShallowRef<E>>
 
 // overload: multiple sources w/ `as const`
 // watch([foo, bar] as const, () => {})
@@ -42,7 +42,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<Ref<E>>
+): Readonly<ShallowRef<E>>
 
 // overload: single source + cb
 export function useExtractedObservable<
@@ -58,7 +58,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<Ref<E>>
+): Readonly<ShallowRef<E>>
 
 // overload: watching reactive object w/ cb
 export function useExtractedObservable<
@@ -74,7 +74,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<Ref<E>>
+): Readonly<ShallowRef<E>>
 
 // implementation
 export function useExtractedObservable<T = any, E = unknown, Immediate extends Readonly<boolean> = false>(
@@ -82,7 +82,7 @@ export function useExtractedObservable<T = any, E = unknown, Immediate extends R
   extractor: WatchExtractedObservableCallback<any, any, E>,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<Ref<E>> {
+): Readonly<ShallowRef<E>> {
   let subscription: Subscription | undefined
 
   tryOnScopeDispose(() => {
@@ -120,5 +120,5 @@ export function useExtractedObservable<T = any, E = unknown, Immediate extends R
     ...watchOptions,
   })
 
-  return readonly(obsRef) as Readonly<Ref<E>>
+  return readonly(obsRef) as Readonly<ShallowRef<E>>
 }

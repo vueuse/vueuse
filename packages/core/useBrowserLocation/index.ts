@@ -3,7 +3,7 @@
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { objectEntries } from '@vueuse/shared'
-import { reactive, ref, watch } from 'vue'
+import { ref as deepRef, reactive, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -41,7 +41,7 @@ export interface BrowserLocationState {
 export function useBrowserLocation(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
   const refs = Object.fromEntries(
-    WRITABLE_PROPERTIES.map(key => [key, ref()]),
+    WRITABLE_PROPERTIES.map(key => [key, deepRef()]),
   ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>
 
   for (const [key, ref] of objectEntries(refs)) {
@@ -68,7 +68,7 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
     })
   }
 
-  const state = ref(buildState('load'))
+  const state = deepRef(buildState('load'))
 
   if (window) {
     const listenerOptions = { passive: true }

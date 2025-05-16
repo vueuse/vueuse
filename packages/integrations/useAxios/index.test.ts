@@ -1,10 +1,10 @@
 import type { RawAxiosRequestConfig } from 'axios'
-import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from '.'
+import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData } from './index'
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useAxios } from '.'
 import { isBelowNode18 } from '../../.test'
+import { useAxios } from './index'
 
 // The tests does not run properly below node 18
 describe.skipIf(isBelowNode18)('useAxios', () => {

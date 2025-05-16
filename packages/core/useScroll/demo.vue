@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
-import { computed, ref, toRefs } from 'vue'
+import { computed, nextTick, shallowRef, toRefs, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
-const smooth = ref(false)
+const el = useTemplateRef<HTMLElement>('el')
+const smooth = shallowRef(false)
 const behavior = computed(() => smooth.value ? 'smooth' : 'auto')
-const { x, y, isScrolling, arrivedState, directions } = useScroll(el, { behavior })
+const { x, y, isScrolling, arrivedState, directions, measure } = useScroll(el, { behavior })
 const { left, right, top, bottom } = toRefs(arrivedState)
 const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(directions)
 
@@ -27,12 +27,20 @@ const displayY = computed({
     y.value = Number.parseFloat(val)
   },
 })
+
+const height = shallowRef<'h-[500px]' | 'h-[200px]'>('h-[500px]')
+function updateScrollPosition() {
+  height.value = height.value === 'h-[500px]' ? 'h-[200px]' : 'h-[500px]'
+  nextTick(() => {
+    measure()
+  })
+}
 </script>
 
 <template>
   <div class="flex">
     <div ref="el" class="w-300px h-300px m-auto overflow-scroll bg-gray-500/5 rounded">
-      <div class="w-500px h-400px relative">
+      <div class="w-500px relative" :class="height">
         <div position="absolute left-0 top-0" bg="gray-500/5" p="x-2 y-1">
           TopLeft
         </div>
@@ -64,7 +72,13 @@ const displayY = computed({
             <input v-model="displayY" type="number" min="0" max="100" step="10" class="w-full !min-w-0">
           </div>
         </div>
-        <label for="smooth-scrolling-option" text="right" opacity="75">Smooth scrolling</label>
+        <div class="col-span-full flex items-center justify-between">
+          Measure
+          <button @click="updateScrollPosition">
+            Toggle height
+          </button>
+        </div>
+        <label for="smooth-scrolling-option" class="whitespace-nowrap" text="right" opacity="75">Smooth scrolling</label>
         <span><input id="smooth-scrolling-option" v-model="smooth" type="checkbox"></span>
         <span text="right" opacity="75">isScrolling</span>
         <BooleanDisplay :value="isScrolling" />

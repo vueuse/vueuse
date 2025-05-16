@@ -1,10 +1,11 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { pxValue, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, toValue, watchEffect } from 'vue'
+import { pxValue } from '@vueuse/shared'
+import { computed, shallowRef, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSSRWidth } from '../useSSRWidth'
 import { useSupported } from '../useSupported'
 
@@ -19,26 +20,16 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   const { window = defaultWindow, ssrWidth = useSSRWidth() } = options
   const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
 
-  const ssrSupport = ref(typeof ssrWidth === 'number')
+  const ssrSupport = shallowRef(typeof ssrWidth === 'number')
 
-  let mediaQuery: MediaQueryList | undefined
-  const matches = ref(false)
+  const mediaQuery = shallowRef<MediaQueryList>()
+  const matches = shallowRef(false)
 
   const handler = (event: MediaQueryListEvent) => {
     matches.value = event.matches
   }
 
-  const cleanup = () => {
-    if (!mediaQuery)
-      return
-    if ('removeEventListener' in mediaQuery)
-      mediaQuery.removeEventListener('change', handler)
-    else
-      // @ts-expect-error deprecated API
-      mediaQuery.removeListener(handler)
-  }
-
-  const stopWatch = watchEffect(() => {
+  watchEffect(() => {
     if (ssrSupport.value) {
       // Exit SSR support on mounted if window available
       ssrSupport.value = !isSupported.value
@@ -62,24 +53,11 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
     if (!isSupported.value)
       return
 
-    cleanup()
-
-    mediaQuery = window!.matchMedia(toValue(query))
-
-    if ('addEventListener' in mediaQuery)
-      mediaQuery.addEventListener('change', handler)
-    else
-      // @ts-expect-error deprecated API
-      mediaQuery.addListener(handler)
-
-    matches.value = mediaQuery.matches
+    mediaQuery.value = window!.matchMedia(toValue(query))
+    matches.value = mediaQuery.value.matches
   })
 
-  tryOnScopeDispose(() => {
-    stopWatch()
-    cleanup()
-    mediaQuery = undefined
-  })
+  useEventListener(mediaQuery, 'change', handler, { passive: true })
 
   return computed(() => matches.value)
 }

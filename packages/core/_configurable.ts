@@ -39,3 +39,12 @@ export const defaultWindow = /* #__PURE__ */ isClient ? window : undefined
 export const defaultDocument = /* #__PURE__ */ isClient ? window.document : undefined
 export const defaultNavigator = /* #__PURE__ */ isClient ? window.navigator : undefined
 export const defaultLocation = /* #__PURE__ */ isClient ? window.location : undefined
+
+export interface ConfigurableDeepRefs<D extends boolean> {
+  /**
+   * Return deep refs instead of shallow refs.
+   *
+   * @default true - will be changed to `false` by default in the next major
+   */
+  deepRefs?: D
+}

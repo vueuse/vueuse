@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
-import { ref } from 'vue'
-import { useExtractedObservable } from '.'
+import { shallowRef } from 'vue'
 
-const start = ref(0)
+const start = shallowRef(0)
 
 const count = useExtractedObservable(
   start,

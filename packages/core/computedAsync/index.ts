@@ -1,7 +1,13 @@
 import type { Fn } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, isRef, ref, shallowRef, watchEffect } from 'vue'
+import {
+  computed,
+  ref as deepRef,
+  isRef,
+  shallowRef,
+  watchEffect,
+} from 'vue'
 
 /**
  * Handle overlapping async evaluations.
@@ -31,6 +37,16 @@ export interface AsyncComputedOptions {
   shallow?: boolean
 
   /**
+   * The flush option allows for greater control over the timing of a history point, default to `pre`
+   *
+   * Possible values: `pre`, `post`, `sync`
+   *
+   * It works in the same way as the flush option in watch and watch effect in vue reactivity
+   * @default 'pre'
+   */
+  flush?: 'pre' | 'post' | 'sync'
+
+  /**
    * Callback when error is caught.
    */
   onError?: (e: unknown) => void
@@ -47,18 +63,28 @@ export interface AsyncComputedOptions {
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState: T,
-  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+  optionsOrRef: AsyncComputedOptions & { lazy: true },
+): ComputedRef<T>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState: undefined,
+  optionsOrRef: AsyncComputedOptions & { lazy: true },
+): ComputedRef<T | undefined>
+export function computedAsync<T>(
+  evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
+  initialState: T,
+  optionsOrRef?: Ref<boolean> | (AsyncComputedOptions & { lazy?: false | undefined }),
 ): Ref<T>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: undefined,
-  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
+  optionsOrRef?: Ref<boolean> | (AsyncComputedOptions & { lazy?: false | undefined }),
 ): Ref<T | undefined>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: T,
   optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
-): Ref<T> | Ref<T | undefined> {
+): Ref<T> | Ref<T | undefined> | ComputedRef<T> | ComputedRef<T | undefined> {
   let options: AsyncComputedOptions
 
   if (isRef(optionsOrRef)) {
@@ -72,13 +98,14 @@ export function computedAsync<T>(
 
   const {
     lazy = false,
+    flush = 'pre',
     evaluating = undefined,
     shallow = true,
     onError = noop,
   } = options
 
-  const started = ref(!lazy)
-  const current = (shallow ? shallowRef(initialState) : ref(initialState)) as Ref<T>
+  const started = shallowRef(!lazy)
+  const current = (shallow ? shallowRef(initialState) : deepRef(initialState)) as Ref<T>
   let counter = 0
 
   watchEffect(async (onInvalidate) => {
@@ -120,7 +147,7 @@ export function computedAsync<T>(
 
       hasFinished = true
     }
-  })
+  }, { flush })
 
   if (lazy) {
     return computed(() => {

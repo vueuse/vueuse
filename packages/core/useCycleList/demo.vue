@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useCycleList } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const list = ref([
+const list = shallowRef([
   'Dog',
   'Cat',
   'Lizard',

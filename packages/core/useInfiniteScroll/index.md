@@ -11,9 +11,9 @@ Infinite scrolling of the element.
 ```vue
 <script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const data = ref([1, 2, 3, 4, 5, 6])
 
 const { reset } = useInfiniteScroll(
@@ -49,6 +49,17 @@ function resetList() {
   </button>
 </template>
 ```
+
+## Direction
+
+Different scroll directions require different CSS style settings:
+
+| Direction          | Required CSS                                          |
+| ------------------ | ----------------------------------------------------- |
+| `bottom` (default) | No special settings required                          |
+| `top`              | `display: flex;`<br>`flex-direction: column-reverse;` |
+| `left`             | `display: flex;`<br>`flex-direction: row-reverse;`    |
+| `right`            | `display: flex;`                                      |
 
 ::: warning
 Make sure to indicate when there is no more content to load with `canLoadMore`, otherwise `onLoadMore` will trigger as long as there is space for more content.

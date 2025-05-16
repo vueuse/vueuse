@@ -1,9 +1,10 @@
-import type { ComputedRef, Ref, ShallowRef } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { readonly, shallowRef, watch } from 'vue'
 
 import { defaultNavigator } from '../_configurable'
+import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
 export interface UseBluetoothRequestDeviceOptions {
@@ -102,7 +103,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
     if (device.value && device.value.gatt) {
       // Add reset fn to gattserverdisconnected event:
-      device.value.addEventListener('gattserverdisconnected', reset)
+      useEventListener(device, 'gattserverdisconnected', reset, { passive: true })
 
       try {
         // Connect to the device:
@@ -140,9 +141,9 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
 export interface UseBluetoothReturn {
   isSupported: ComputedRef<boolean>
-  isConnected: Readonly<Ref<boolean>>
-  device: Ref<BluetoothDevice | undefined>
+  isConnected: Readonly<ShallowRef<boolean>>
+  device: ShallowRef<BluetoothDevice | undefined>
   requestDevice: () => Promise<void>
   server: ShallowRef<BluetoothRemoteGATTServer | undefined>
-  error: Ref<unknown | null>
+  error: ShallowRef<unknown | null>
 }

@@ -1,8 +1,8 @@
 import { debounceFilter } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent, nextTick, ref, toRaw } from 'vue'
-import { customStorageEventName, StorageSerializers, useStorage } from '.'
+import { ref as deepRef, defineComponent, nextTick, toRaw } from 'vue'
 import { mount, nextTwoTick, useSetup } from '../../.test'
+import { customStorageEventName, StorageSerializers, useStorage } from './index'
 
 const KEY = 'custom-key'
 const ANOTHER_KEY = 'another-key'
@@ -27,9 +27,6 @@ describe('useStorage', () => {
   beforeEach(() => {
     localStorage.clear()
     storageState.clear()
-    storageMock.setItem.mockClear()
-    storageMock.getItem.mockClear()
-    storageMock.removeItem.mockClear()
   })
 
   it('export module', () => {
@@ -248,7 +245,7 @@ describe('useStorage', () => {
   it('pass ref as initialValue', async () => {
     expect(storage.getItem(KEY)).toEqual(undefined)
 
-    const init = ref({
+    const init = deepRef({
       name: 'a',
       data: 123,
     })
@@ -551,7 +548,7 @@ describe('useStorage', () => {
 
   it('updates on key change when thew new storage value is presented', async () => {
     storage.setItem(ANOTHER_KEY, '1')
-    const key = ref(KEY)
+    const key = deepRef(KEY)
     const data = useStorage(key, 0, storage)
 
     data.value = 2
@@ -570,7 +567,7 @@ describe('useStorage', () => {
   })
 
   it('changes to defaults on key change when the new storage value is undefined', async () => {
-    const key = ref(KEY)
+    const key = deepRef(KEY)
     const data = useStorage(key, 0, storage)
 
     data.value = 1
@@ -590,7 +587,7 @@ describe('useStorage', () => {
   })
 
   it('listens to new storage value changes after key change', async () => {
-    const key = ref(KEY)
+    const key = deepRef(KEY)
     const data = useStorage(key, 0, localStorage)
 
     key.value = ANOTHER_KEY

@@ -9,10 +9,11 @@ Debounce execution of a ref value.
 
 ## Usage
 
-```js {4}
+```js {5}
 import { refDebounced } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const input = ref('foo')
+const input = shallowRef('foo')
 const debounced = refDebounced(input, 1000)
 
 input.value = 'bar'
@@ -27,4 +28,4 @@ You can also pass an optional 3rd parameter including maxWait option. See `useDe
 
 ## Recommended Reading
 
-- [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
+- [**Debounce vs Throttle**: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)

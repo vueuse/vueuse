@@ -1,8 +1,8 @@
-import type { Awaitable, MaybeRefOrGetter } from '@vueuse/shared'
-import type { UnwrapNestedRefs } from 'vue'
+import type { Awaitable } from '@vueuse/shared'
+import type { MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
 import type { UseScrollOptions } from '../useScroll'
 import { tryOnUnmounted } from '@vueuse/shared'
-import { computed, nextTick, reactive, ref, toValue, watch } from 'vue'
+import { computed, ref as deepRef, nextTick, reactive, toValue, watch } from 'vue'
 import { resolveElement } from '../_resolve-element'
 import { useElementVisibility } from '../useElementVisibility'
 import { useScroll } from '../useScroll'
@@ -66,7 +66,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
     },
   ))
 
-  const promise = ref<any>()
+  const promise = deepRef<any>()
   const isLoading = computed(() => !!promise.value)
 
   // Document and Window cannot be observed by IntersectionObserver

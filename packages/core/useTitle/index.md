@@ -6,9 +6,8 @@ category: Browser
 
 Reactive document title.
 
-::: tip
-When using with Nuxt 3, this function will **NOT** be auto imported in favor of Nuxt's built-in `useTitle()`.
-Use explicit import if you want to use the function from VueUse.
+::: warning
+This composable isn't compatible with SSR.
 :::
 
 ## Usage
@@ -30,9 +29,10 @@ const title = useTitle('New Title')
 Pass a `ref` and the title will be updated when the source ref changes:
 
 ```js
+import { shallowRef } from 'vue'
 import { useTitle } from '@vueuse/core'
 
-const messages = ref(0)
+const messages = shallowRef(0)
 
 const title = computed(() => {
   return !messages.value ? 'No message' : `${messages.value} new messages`

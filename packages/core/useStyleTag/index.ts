@@ -1,8 +1,7 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { readonly, ref, watch } from 'vue'
+import { readonly, shallowRef, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseStyleTagOptions extends ConfigurableDocument {
@@ -31,14 +30,21 @@ export interface UseStyleTagOptions extends ConfigurableDocument {
    * @default auto-incremented
    */
   id?: string
+
+  /**
+   * Nonce value for CSP (Content Security Policy)
+   *
+   * @default undefined
+   */
+  nonce?: string
 }
 
 export interface UseStyleTagReturn {
   id: string
-  css: Ref<string>
+  css: ShallowRef<string>
   load: () => void
   unload: () => void
-  isLoaded: Readonly<Ref<boolean>>
+  isLoaded: Readonly<ShallowRef<boolean>>
 }
 
 let _id = 0
@@ -56,7 +62,7 @@ export function useStyleTag(
   css: MaybeRef<string>,
   options: UseStyleTagOptions = {},
 ): UseStyleTagReturn {
-  const isLoaded = ref(false)
+  const isLoaded = shallowRef(false)
 
   const {
     document = defaultDocument,
@@ -65,7 +71,7 @@ export function useStyleTag(
     id = `vueuse_styletag_${++_id}`,
   } = options
 
-  const cssRef = ref(css)
+  const cssRef = shallowRef(css)
 
   let stop = () => { }
   const load = () => {
@@ -76,6 +82,8 @@ export function useStyleTag(
 
     if (!el.isConnected) {
       el.id = id
+      if (options.nonce)
+        el.nonce = options.nonce
       if (options.media)
         el.media = options.media
       document.head.appendChild(el)

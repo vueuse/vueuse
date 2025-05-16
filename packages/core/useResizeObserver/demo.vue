@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const el = ref(null)
-const text = ref('')
+const el = useTemplateRef('el')
+const text = shallowRef('')
 
 useResizeObserver(el, (entries) => {
   const [entry] = entries

@@ -1,6 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
 import type { ObservableInput, Subscription } from 'rxjs'
-import type { Ref, WatchOptions } from 'vue'
+import type { MaybeRef, Ref, WatchOptions } from 'vue'
 import { fromEvent as fromEventRx, from as fromRxjs, Observable } from 'rxjs'
 import { isRef, watch } from 'vue'
 
@@ -11,7 +10,7 @@ export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: Watch
   return fromRxjs(value)
 }
 
-export function fromEvent<T extends HTMLElement>(value: MaybeRef<T>, event: string): Observable<Event> {
+export function fromEvent<T extends HTMLElement | null>(value: MaybeRef<T>, event: string): Observable<Event> {
   if (isRef<T>(value)) {
     return new Observable((subscriber) => {
       let innerSub: Subscription | undefined
@@ -23,6 +22,9 @@ export function fromEvent<T extends HTMLElement>(value: MaybeRef<T>, event: stri
         }
       }, { immediate: true })
     })
+  }
+  if (value === null) {
+    throw new Error('The value is `null`, and it should be an HTMLElement.')
   }
   return fromEventRx(value, event)
 }

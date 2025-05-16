@@ -1,6 +1,6 @@
 import type { UseIntervalFnOptions } from '@vueuse/shared'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
 
 /**
@@ -40,7 +40,7 @@ type PerformanceMemory = Performance & {
  * @param options
  */
 export function useMemory(options: UseMemoryOptions = {}) {
-  const memory = ref<MemoryInfo>()
+  const memory = deepRef<MemoryInfo>()
   const isSupported = useSupported(() => typeof performance !== 'undefined' && 'memory' in performance)
 
   if (isSupported.value) {

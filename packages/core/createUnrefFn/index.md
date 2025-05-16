@@ -17,10 +17,10 @@ might be more pertinent in some cases where you want to evaluate the function on
 
 ```ts
 import { createUnrefFn } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const url = ref('https://httpbin.org/post')
-const data = ref({ foo: 'bar' })
+const url = shallowRef('https://httpbin.org/post')
+const data = shallowRef({ foo: 'bar' })
 
 function post(url, data) {
   return fetch(url, { data })

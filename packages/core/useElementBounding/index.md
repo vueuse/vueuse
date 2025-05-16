@@ -11,11 +11,11 @@ Reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element
 ```vue
 <script>
 import { useElementBounding } from '@vueuse/core'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
 export default {
   setup() {
-    const el = ref(null)
+    const el = useTemplateRef('el')
     const { x, y, top, right, bottom, left, width, height }
         = useElementBounding(el)
 

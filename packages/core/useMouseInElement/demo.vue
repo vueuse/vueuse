@@ -1,10 +1,22 @@
 <script setup lang="ts">
-import { useMouseInElement } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
-import { reactive, ref } from 'vue'
+import { reactify, useMouseInElement } from '@vueuse/core'
+import { reactive, useTemplateRef } from 'vue'
+import YAML from 'yaml'
 import Area from './Area.vue'
 
-const target = ref(null)
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
+
+const target = useTemplateRef<HTMLElement>('target')
 const mouse = reactive(useMouseInElement(target))
 const text = stringify(mouse)
 </script>
