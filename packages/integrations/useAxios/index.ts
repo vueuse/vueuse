@@ -1,10 +1,10 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import type { ComputedRef, Ref, ShallowRef } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import { noop, until } from '@vueuse/shared'
 import axios, { AxiosError, isAxiosError } from 'axios'
-import { computed, ref as deepRef, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 
-export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptions<T, AxiosErrorResponseData> = UseAxiosOptions<T, AxiosErrorResponseData>> {
+export interface UseAxiosReturn<T, R = AxiosResponse<T>, D = any, O extends UseAxiosOptions<T, D> = UseAxiosOptions<T, D>> {
   /**
    * Axios Response
    */
@@ -13,9 +13,7 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, AxiosErrorRes
   /**
    * Axios response data
    */
-  data: O extends UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData> ? Ref<T> : Ref<T | undefined>
-
-  axiosErrorResponseData: ComputedRef<AxiosErrorResponseData | undefined>
+  data: O extends UseAxiosOptionsWithInitialData<T, D> ? Ref<T> : Ref<T | undefined>
 
   /**
    * Indicates if the request has finished
@@ -40,7 +38,7 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, AxiosErrorRes
   /**
    * Any Axios errors that may have occurred
    */
-  axiosError: ShallowRef<AxiosError<AxiosErrorResponseData> | undefined>
+  axiosError: ShallowRef<AxiosError<T, D> | undefined>
 
   /**
    * Aborts the current request
@@ -57,19 +55,19 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, AxiosErrorRes
    */
   isCanceled: Ref<boolean>
 }
-export interface StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData = unknown, O extends UseAxiosOptions<T, AxiosErrorResponseData> = UseAxiosOptions<T, AxiosErrorResponseData>> extends UseAxiosReturn<T, R, D, AxiosErrorResponseData, O> {
+export interface StrictUseAxiosReturn<T, R, D, O extends UseAxiosOptions<T, D> = UseAxiosOptions<T, D>> extends UseAxiosReturn<T, R, D, O> {
   /**
    * Manually call the axios request
    */
-  execute: (url?: string | AxiosRequestConfig<D>, config?: AxiosRequestConfig<D>) => Promise<StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O>>
+  execute: (url?: string | AxiosRequestConfig<D>, config?: AxiosRequestConfig<D>) => Promise<StrictUseAxiosReturn<T, R, D, O>>
 }
-export interface EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData = unknown> extends UseAxiosReturn<T, R, D, AxiosErrorResponseData> {
+export interface EasyUseAxiosReturn<T, R, D, O extends UseAxiosOptions<T, D> = UseAxiosOptions<T, D>> extends UseAxiosReturn<T, R, D, O> {
   /**
    * Manually call the axios request
    */
-  execute: (url: string, config?: AxiosRequestConfig<D>) => Promise<EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData>>
+  execute: (url: string, config?: AxiosRequestConfig<D>) => Promise<EasyUseAxiosReturn<T, R, D, O>>
 }
-export interface UseAxiosOptionsBase<T = any, AxiosErrorResponseData = unknown> {
+export interface UseAxiosOptionsBase<T = any, D = any> {
   /**
    * Will automatically run axios request when `useAxios` is used
    *
@@ -98,7 +96,7 @@ export interface UseAxiosOptionsBase<T = any, AxiosErrorResponseData = unknown> 
   /**
    * Callback when axios error is caught.
    */
-  onAxiosError?: (e: AxiosError<AxiosErrorResponseData> | undefined) => void
+  onAxiosError?: (e: AxiosError<T, D>) => void
 
   /**
    * Callback when success is caught.
@@ -116,33 +114,33 @@ export interface UseAxiosOptionsBase<T = any, AxiosErrorResponseData = unknown> 
   onFinish?: () => void
 }
 
-export interface UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData = unknown> extends UseAxiosOptionsBase<T, AxiosErrorResponseData> {
+export interface UseAxiosOptionsWithInitialData<T, D = any> extends UseAxiosOptionsBase<T, D> {
   /**
    * Initial data
    */
   initialData: T
 }
 
-export type UseAxiosOptions<T = any, AxiosErrorResponseData = unknown> = UseAxiosOptionsBase<T, AxiosErrorResponseData> | UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData>
+export type UseAxiosOptions<T = any, D = any> = UseAxiosOptionsBase<T, D> | UseAxiosOptionsWithInitialData<T, D>
 
-type OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData = unknown> = StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData> | EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData>
+type OverallUseAxiosReturn<T, R, D, O extends UseAxiosOptions<T, D>> = StrictUseAxiosReturn<T, R, D, O> | EasyUseAxiosReturn<T, R, D, O>
 
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData> = UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O> & Promise<StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData> = UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O> & Promise<StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData> = UseAxiosOptionsWithInitialData<T, AxiosErrorResponseData>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O> & Promise<StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O> & Promise<StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O> & Promise<StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O> & Promise<StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData> & Promise<EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown>(instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData> & Promise<EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData> & Promise<EasyUseAxiosReturn<T, R, D, AxiosErrorResponseData>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T, D> = UseAxiosOptionsWithInitialData<T, D>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T, D> = UseAxiosOptionsWithInitialData<T, D>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T, D> = UseAxiosOptionsWithInitialData<T, D>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T, D> = UseAxiosOptionsBase<T, D>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T, D> = UseAxiosOptionsBase<T, D>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T, D> = UseAxiosOptionsBase<T, D>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T, D> = UseAxiosOptionsBase<T, D>>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, R, D, O> & Promise<EasyUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T, D> = UseAxiosOptionsBase<T, D>>(instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D, O> & Promise<EasyUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T, D> = UseAxiosOptionsBase<T, D>>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D, O> & Promise<EasyUseAxiosReturn<T, R, D, O>>
 
 /**
  * Wrapper for axios.
  *
  * @see https://vueuse.org/useAxios
  */
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorResponseData = unknown>(...args: any[]): OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData> & Promise<OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData>> {
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptions<T, D> = UseAxiosOptions<T, D>>(...args: any[]): OverallUseAxiosReturn<T, R, D, O> & Promise<OverallUseAxiosReturn<T, R, D, O>> {
   const url: string | undefined = typeof args[0] === 'string' ? args[0] : undefined
   const argsPlaceholder = typeof url === 'string' ? 1 : 0
   const defaultOptions: UseAxiosOptions<T> = {
@@ -195,7 +193,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorRespo
   const isLoading = shallowRef(false)
   const isAborted = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
-  const axiosError = shallowRef<AxiosError<AxiosErrorResponseData, D> | undefined>(undefined)
+  const axiosError = shallowRef<AxiosError<T, D> | undefined>(undefined)
 
   let abortController: AbortController = new AbortController()
 
@@ -224,7 +222,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorRespo
   }
 
   const waitUntilFinished = () =>
-    new Promise<OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData>>((resolve, reject) => {
+    new Promise<OverallUseAxiosReturn<T, R, D, O>>((resolve, reject) => {
       until(isFinished).toBe(true).then(() => error.value
         ? reject(error.value)
         // eslint-disable-next-line ts/no-use-before-define
@@ -234,11 +232,12 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorRespo
   const promise = {
     then: (...args) => waitUntilFinished().then(...args),
     catch: (...args) => waitUntilFinished().catch(...args),
-  } as Promise<OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData>>
+  } as Promise<OverallUseAxiosReturn<T, R, D, O>>
 
   let executeCounter = 0
-  const execute: OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
+  const execute: OverallUseAxiosReturn<T, R, D, O>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
     error.value = undefined
+    axiosError.value = undefined
     const _url = typeof executeUrl === 'string'
       ? executeUrl
       : url ?? config.url
@@ -272,8 +271,9 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorRespo
         error.value = e
         onError(e)
 
-        if (isAxiosError<AxiosErrorResponseData>(e)) {
+        if (isAxiosError<T, D>(e)) {
           axiosError.value = e
+          data.value = e.response?.data ?? initialData
           onAxiosError(e)
         }
       })
@@ -286,15 +286,10 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any, AxiosErrorRespo
   }
 
   if (immediate && url)
-    (execute as StrictUseAxiosReturn<T, R, D, AxiosErrorResponseData>['execute'])()
+    (execute as StrictUseAxiosReturn<T, R, D, O>['execute'])()
 
-  const axiosErrorResponseData = computed((): AxiosErrorResponseData | undefined => {
-    return axiosError.value?.response?.data
-  })
-
-  const result: OverallUseAxiosReturn<T, R, D, AxiosErrorResponseData> = {
+  const result: OverallUseAxiosReturn<T, R, D, O> = {
     response,
-    axiosErrorResponseData,
     data,
     error,
     axiosError,
