@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBluetooth } from './index'
+import { useBluetooth } from '@vueuse/core'
 
 const {
   isConnected,

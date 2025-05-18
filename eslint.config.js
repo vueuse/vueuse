@@ -24,6 +24,7 @@ const restricted = [
 export default antfu(
   {
     formatters: true,
+    pnpm: true,
     ignores: [
       'patches',
       'playgrounds',

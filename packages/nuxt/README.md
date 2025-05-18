@@ -41,7 +41,7 @@ The following utils are **disabled** from auto-import for Nuxt to avoid conflict
 - `useStorage`
 - `useImage`
 
-You can always use them by explicitly import from `@vueuse/core`
+You can always use them by explicitly importing from `@vueuse/core`
 
 ## License
 
