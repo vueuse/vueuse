@@ -40,10 +40,10 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         IconsResolver({
-          componentPrefix: '',
+          prefix: '',
         }),
       ],
-      dts: resolve(__dirname, 'components.d.ts'),
+      dts: resolve(__dirname, 'components.d.mts'),
       transformer: 'vue3',
     }),
     Icons({
@@ -62,7 +62,6 @@ export default defineConfig({
       '@vueuse/integrations': resolve(__dirname, '../integrations/index.ts'),
       '@vueuse/components': resolve(__dirname, '../components/index.ts'),
       '@vueuse/metadata': resolve(__dirname, '../metadata/index.ts'),
-      '@vueuse/docs-utils': resolve(__dirname, 'plugins/utils.ts'),
     },
     dedupe: [
       'vue',
@@ -77,7 +76,7 @@ export default defineConfig({
     ],
     include: [
       'axios',
-      'js-yaml',
+      'yaml',
       'nprogress',
       'qrcode',
       'tslib',

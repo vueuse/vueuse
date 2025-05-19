@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
-import { ref } from 'vue'
-import { useSubscription } from '.'
+import { shallowRef } from 'vue'
 
-const count = ref(0)
+const count = shallowRef(0)
 useSubscription(
   interval(1000)
     .subscribe(() => {

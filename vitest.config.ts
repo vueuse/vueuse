@@ -1,14 +1,17 @@
 import { resolve } from 'node:path'
-import { defineConfig } from 'vitest/config'
+import vue from '@vitejs/plugin-vue'
+import { coverageConfigDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  plugins: [
+    vue(),
+  ],
   resolve: {
     alias: {
       '@vueuse/shared': resolve(import.meta.dirname, 'packages/shared/index.ts'),
       '@vueuse/core': resolve(import.meta.dirname, 'packages/core/index.ts'),
       '@vueuse/math': resolve(import.meta.dirname, 'packages/math/index.ts'),
       '@vueuse/components': resolve(import.meta.dirname, 'packages/components/index.ts'),
-      '@vueuse/docs-utils': resolve(import.meta.dirname, 'packages/.vitepress/plugins/utils.ts'),
     },
     dedupe: [
       'vue',
@@ -23,9 +26,19 @@ export default defineConfig({
   cacheDir: resolve(import.meta.dirname, 'node_modules/.vite'),
   test: {
     reporters: 'dot',
-    coverage: {
-      exclude: ['./packages/**/demo.vue'],
+    env: {
+      TZ: 'UTC-1', // to have some actual results with timezone offset
     },
+    coverage: {
+      exclude: [
+        'packages/.vitepress/**',
+        'playgrounds/**',
+        '**/{unocss,taze}.config.ts',
+        'scripts/**',
+        ...coverageConfigDefaults.exclude,
+      ],
+    },
+
     clearMocks: true,
     workspace: [
       'packages/*/vitest.config.ts',
@@ -47,7 +60,7 @@ export default defineConfig({
             headless: true,
             instances: [
               { browser: 'chromium' },
-              { browser: 'firefox' },
+              // { browser: 'firefox' }, // flaky FF test: https://github.com/vitest-dev/vitest/issues/7377
               { browser: 'webkit' },
             ],
           },
@@ -62,12 +75,14 @@ export default defineConfig({
           include: [
             '!packages/**/*.browser.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
+            'test/*.{test,spec}.ts',
           ],
           server: {
             deps: {
               inline: [
                 'vue',
                 'msw',
+                'vitest-package-exports',
               ],
             },
           },

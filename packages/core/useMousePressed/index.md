@@ -23,10 +23,10 @@ const { pressed } = useMousePressed({ touch: false })
 To only capture `mousedown` and `touchstart` on specific element, you can specify `target` by passing a ref of the element.
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef('el')
+const el = useTemplateRef<HTMLDivElement>('el')
 
 const { pressed } = useMousePressed({ target: el })
 </script>

@@ -1,7 +1,6 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, reactive, ref, toValue } from 'vue'
+import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -86,6 +85,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
   const metaDeps = new Set<string>()
+  const shiftDeps = new Set<string>()
   const usedKeys = new Set<string>()
 
   function setRefs(key: string, value: boolean) {
@@ -120,7 +120,16 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       usedKeys.add(key)
       setRefs(key, value)
     }
-
+    if (key === 'shift' && !value) {
+      shiftDeps.forEach((key) => {
+        current.delete(key)
+        setRefs(key, false)
+      })
+      shiftDeps.clear()
+    }
+    else if (typeof e.getModifierState === 'function' && e.getModifierState('Shift') && value) {
+      [...current, ...values].forEach(key => shiftDeps.add(key))
+    }
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
     // We track it's combination and release manually
@@ -168,7 +177,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
             refs[prop] = computed(() => keys.map(key => toValue(proxy[key])).every(Boolean))
           }
           else {
-            refs[prop] = ref(false)
+            refs[prop] = shallowRef(false)
           }
         }
         const r = Reflect.get(target, prop, rec)

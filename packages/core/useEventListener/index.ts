@@ -1,4 +1,5 @@
-import type { Arrayable, Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Arrayable, Fn } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { isObject, toArray, tryOnScopeDispose, watchImmediate } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports -- We specifically need to use unref here to distinguish between callbacks
 import { computed, toValue, unref } from 'vue'
@@ -149,8 +150,8 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
   const stopWatch = watchImmediate(
     () => [
       firstParamTargets.value?.map(e => unrefElement(e as never)) ?? [defaultWindow].filter(e => e != null),
-      toArray(toValue(firstParamTargets.value ? args[1] : args[0])) as unknown as string[],
-      toArray(unref(firstParamTargets.value ? args[2] : args[1])) as Function[],
+      toArray(toValue(firstParamTargets.value ? args[1] : args[0]) as string[]),
+      toArray(unref(firstParamTargets.value ? args[2] : args[1]) as Function[]),
       // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
       toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
     ] as const,

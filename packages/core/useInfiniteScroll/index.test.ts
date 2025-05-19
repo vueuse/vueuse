@@ -1,8 +1,8 @@
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
-import { useInfiniteScroll } from '.'
+import { ref as deepRef } from 'vue'
 import { useElementVisibility } from '../useElementVisibility'
+import { useInfiniteScroll } from './index'
 
 vi.mock('../useElementVisibility')
 describe('useInfiniteScroll', () => {
@@ -11,7 +11,7 @@ describe('useInfiniteScroll', () => {
   })
 
   it.each([
-    [ref(givenMockElement())],
+    [deepRef(givenMockElement())],
     [givenMockElement()],
     [document],
     [window],
@@ -66,7 +66,7 @@ describe('useInfiniteScroll', () => {
   }
 
   function givenElementVisibilityRefMock(defaultValue: boolean) {
-    const mockVisibilityRef = ref(defaultValue)
+    const mockVisibilityRef = deepRef(defaultValue)
     vi.mocked(useElementVisibility).mockReturnValue(mockVisibilityRef)
     return mockVisibilityRef
   }

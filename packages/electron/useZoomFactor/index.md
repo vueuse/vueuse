@@ -30,9 +30,10 @@ const factor = useZoomFactor(2)
 Pass a `ref` and the factor will be updated when the source ref changes
 
 ```js
+import { shallowRef } from 'vue'
 import { useZoomFactor } from '@vueuse/electron'
 
-const factor = ref(1)
+const factor = shallowRef(1)
 
 useZoomFactor(factor) // zoom factor will match with the ref
 

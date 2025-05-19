@@ -1,7 +1,7 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -28,10 +28,10 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
   } = options
 
   const isSupported = useSupported(() => window && 'BroadcastChannel' in window)
-  const isClosed = ref(false)
+  const isClosed = shallowRef(false)
 
-  const channel = ref<BroadcastChannel | undefined>()
-  const data = ref()
+  const channel = deepRef<BroadcastChannel | undefined>()
+  const data = deepRef()
   const error = shallowRef<Event | null>(null)
 
   const post = (data: unknown) => {
@@ -89,6 +89,6 @@ export interface UseBroadcastChannelReturn<D, P> {
   data: Ref<D>
   post: (data: P) => void
   close: () => void
-  error: Ref<Event | null>
-  isClosed: Ref<boolean>
+  error: ShallowRef<Event | null>
+  isClosed: ShallowRef<boolean>
 }

@@ -3,7 +3,7 @@
 import type { Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 type PostMessage = typeof Worker.prototype['postMessage']
@@ -50,7 +50,7 @@ export function useWebWorker<Data = any>(
     window = defaultWindow,
   } = options ?? {}
 
-  const data: Ref<any> = ref(null)
+  const data: Ref<any> = deepRef(null)
   const worker = shallowRef<Worker>()
 
   const post: PostMessage = (...args) => {

@@ -1,10 +1,47 @@
-import type { MaybeRef } from '../utils'
-// eslint-disable-next-line no-restricted-imports
-import { ref, unref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
+import {
+  shallowReadonly,
+  shallowRef,
+  // eslint-disable-next-line no-restricted-imports
+  unref,
+} from 'vue'
 
 export interface UseCounterOptions {
   min?: number
   max?: number
+}
+
+export interface UseCounterReturn {
+  /**
+   * The current value of the counter.
+   */
+  readonly count: Readonly<Ref<number>>
+  /**
+   * Increment the counter.
+   *
+   * @param {number} [delta=1] The number to increment.
+   */
+  inc: (delta?: number) => void
+  /**
+   * Decrement the counter.
+   *
+   * @param {number} [delta=1] The number to decrement.
+   */
+  dec: (delta?: number) => void
+  /**
+   * Get the current value of the counter.
+   */
+  get: () => number
+  /**
+   * Set the counter to a new value.
+   *
+   * @param val The new value of the counter.
+   */
+  set: (val: number) => void
+  /**
+   * Reset the counter to an initial value.
+   */
+  reset: (val?: number) => number
 }
 
 /**
@@ -16,7 +53,7 @@ export interface UseCounterOptions {
  */
 export function useCounter(initialValue: MaybeRef<number> = 0, options: UseCounterOptions = {}) {
   let _initialValue = unref(initialValue)
-  const count = ref(initialValue)
+  const count = shallowRef(initialValue)
 
   const {
     max = Number.POSITIVE_INFINITY,
@@ -32,5 +69,5 @@ export function useCounter(initialValue: MaybeRef<number> = 0, options: UseCount
     return set(val)
   }
 
-  return { count, inc, dec, get, set, reset }
+  return { count: shallowReadonly(count), inc, dec, get, set, reset }
 }

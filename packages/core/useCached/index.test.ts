@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useCached } from '.'
+import { describe, expect, it, vi } from 'vitest'
+import { ref as deepRef, isShallow, shallowRef } from 'vue'
 import { nextTwoTick } from '../../.test'
+import { useCached } from './index'
 
 function arrayEquals<T>(a: T[], b: T[]): boolean {
   if (a.length !== b.length)
@@ -20,7 +20,7 @@ describe('useCached', () => {
   })
 
   it('should work with default comparator', async () => {
-    const booleanRef = ref(true)
+    const booleanRef = shallowRef(true)
 
     const cachedBooleanRef = useCached(booleanRef)
     await nextTwoTick()
@@ -34,7 +34,7 @@ describe('useCached', () => {
   })
 
   it('should work with custom comparator', async () => {
-    const arrayRef = ref([1])
+    const arrayRef = deepRef([1])
     const initialArrayValue = arrayRef.value
 
     const cachedArrayRef = useCached(arrayRef, arrayEquals)
@@ -57,5 +57,28 @@ describe('useCached', () => {
 
     expect(cachedArrayRef.value).not.toBe(initialArrayValue)
     expect(cachedArrayRef.value).toEqual([2])
+  })
+
+  describe('should work with options.deepRefs', () => {
+    // todo: change default with next major
+    it.fails('should return shallowRef by default', () => {
+      const value = deepRef(1)
+
+      const cachedValue = useCached(value, vi.fn())
+      expect(isShallow(cachedValue)).toBe(true)
+    })
+    it('should return deepRef if true', () => {
+      const value = deepRef(1)
+
+      const cachedValue = useCached(value, vi.fn(), { deepRefs: true })
+      expect(isShallow(cachedValue)).toBe(false)
+    })
+
+    it('should return shallowRef if false', () => {
+      const value = deepRef(1)
+
+      const cachedValue = useCached(value, vi.fn(), { deepRefs: false })
+      expect(isShallow(cachedValue)).toBe(true)
+    })
   })
 })

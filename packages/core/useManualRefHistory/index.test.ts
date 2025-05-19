@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { isReactive, ref } from 'vue'
-import { useManualRefHistory } from '.'
+import { ref as deepRef, isReactive, shallowRef } from 'vue'
+import { useManualRefHistory } from './index'
 
 describe('useManualRefHistory', () => {
   it('should record', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history, commit } = useManualRefHistory(v)
 
     expect(history.value.length).toBe(1)
@@ -19,7 +19,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('should be able to undo and redo', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { commit, undo, redo, clear, canUndo, canRedo, history, last } = useManualRefHistory(v)
 
     expect(canUndo.value).toBe(false)
@@ -68,7 +68,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('object with deep', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { commit, undo, history } = useManualRefHistory(v, { clone: true })
 
     expect(history.value.length).toBe(1)
@@ -91,7 +91,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('object with clone function', () => {
-    const v = ref({ foo: 'bar' })
+    const v = deepRef({ foo: 'bar' })
     const { commit, undo, history } = useManualRefHistory(v, { clone: x => JSON.parse(JSON.stringify(x)) })
 
     expect(history.value.length).toBe(1)
@@ -114,7 +114,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('dump + parse', () => {
-    const v = ref({ a: 'bar' })
+    const v = deepRef({ a: 'bar' })
     const { history, commit, undo } = useManualRefHistory(v, {
       dump: v => JSON.stringify(v),
       parse: (v: string) => JSON.parse(v),
@@ -136,7 +136,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('reset', () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history, commit, undoStack, redoStack, reset, undo } = useManualRefHistory(v)
 
     expect(history.value.length).toBe(1)
@@ -190,7 +190,7 @@ describe('useManualRefHistory', () => {
   })
 
   it('snapshots should not be reactive', async () => {
-    const v = ref(0)
+    const v = shallowRef(0)
     const { history, commit } = useManualRefHistory(v)
 
     expect(history.value.length).toBe(1)

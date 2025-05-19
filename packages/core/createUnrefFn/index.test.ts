@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createUnrefFn } from '.'
+import { createUnrefFn } from './index'
 
 describe('createUnrefFn', () => {
   it('should be defined', () => {

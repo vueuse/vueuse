@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useVirtualList } from '.'
+import { ref as deepRef } from 'vue'
+import { useVirtualList } from './index'
 
 describe('useVirtualList', () => {
   it('should be defined', () => {
@@ -14,7 +14,7 @@ describe('useVirtualList, vertical', () => {
       list,
       containerProps: { ref: containerRef },
       scrollTo,
-    } = useVirtualList(ref(['a', 'b', 'c', 'd', 'e', 'f']), { itemHeight: () => 50, overscan: 1 })
+    } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f']), { itemHeight: () => 50, overscan: 1 })
     const div = { ...document.createElement('div'), clientHeight: 50 }
 
     containerRef.value = div
@@ -33,7 +33,7 @@ describe('useVirtualList, vertical', () => {
       list,
       containerProps: { ref: containerRef },
       scrollTo,
-    } = useVirtualList(ref(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemHeight: () => 50, overscan: 1 })
+    } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemHeight: () => 50, overscan: 1 })
     const div = { ...document.createElement('div'), clientHeight: 50 }
 
     containerRef.value = div
@@ -67,7 +67,7 @@ describe('useVirtualList, horizontal', () => {
       list,
       containerProps: { ref: containerRef },
       scrollTo,
-    } = useVirtualList(ref(['a', 'b', 'c', 'd', 'e', 'f']), { itemWidth: () => 50, overscan: 1 })
+    } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f']), { itemWidth: () => 50, overscan: 1 })
     const div = { ...document.createElement('div'), clientWidth: 50 }
 
     containerRef.value = div
@@ -86,7 +86,7 @@ describe('useVirtualList, horizontal', () => {
       list,
       containerProps: { ref: containerRef },
       scrollTo,
-    } = useVirtualList(ref(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemWidth: () => 50, overscan: 1 })
+    } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemWidth: () => 50, overscan: 1 })
     const div = { ...document.createElement('div'), clientWidth: 50 }
 
     containerRef.value = div
@@ -119,10 +119,10 @@ describe('useVirtualList, horizontal', () => {
 
     const {
       list: readonlyList,
-    } = useVirtualList(ref(readonlyInput), { itemHeight: () => 50, overscan: 1 })
+    } = useVirtualList(deepRef(readonlyInput), { itemHeight: () => 50, overscan: 1 })
     const {
       list: mutableList,
-    } = useVirtualList(ref(mutableInput), { itemHeight: () => 50, overscan: 1 })
+    } = useVirtualList(deepRef(mutableInput), { itemHeight: () => 50, overscan: 1 })
 
     expect(readonlyList.value).toBeDefined()
     expect(mutableList.value).toBeDefined()

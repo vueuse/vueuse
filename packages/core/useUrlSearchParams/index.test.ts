@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useUrlSearchParams } from '.'
+import { useUrlSearchParams } from './index'
 
 describe('useUrlSearchParams', () => {
   const baseURL = 'https://vueuse.org'

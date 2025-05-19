@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { useNavigatorLanguage } from '.'
+import { useNavigatorLanguage } from './index'
 
 describe('useNavigatorLanguage', () => {
   it('should be defined', () => {

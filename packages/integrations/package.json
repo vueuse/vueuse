@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/integrations",
   "type": "module",
-  "version": "12.5.0",
+  "version": "13.2.0",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -22,88 +22,38 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs"
-    },
+    ".": "./index.mjs",
     "./*": "./*",
-    "./useAsyncValidator": {
-      "import": "./useAsyncValidator.mjs",
-      "require": "./useAsyncValidator.cjs"
-    },
-    "./useAxios": {
-      "import": "./useAxios.mjs",
-      "require": "./useAxios.cjs"
-    },
-    "./useCookies": {
-      "import": "./useCookies.mjs",
-      "require": "./useCookies.cjs"
-    },
-    "./useDrauu": {
-      "import": "./useDrauu.mjs",
-      "require": "./useDrauu.cjs"
-    },
-    "./useFocusTrap": {
-      "import": "./useFocusTrap.mjs",
-      "require": "./useFocusTrap.cjs"
-    },
-    "./useFocusTrap/component": {
-      "import": "./useFocusTrap/component.mjs",
-      "require": "./useFocusTrap/component.cjs"
-    },
-    "./useFuse": {
-      "import": "./useFuse.mjs",
-      "require": "./useFuse.cjs"
-    },
-    "./useJwt": {
-      "import": "./useJwt.mjs",
-      "require": "./useJwt.cjs"
-    },
-    "./useNProgress": {
-      "import": "./useNProgress.mjs",
-      "require": "./useNProgress.cjs"
-    },
-    "./useQRCode": {
-      "import": "./useQRCode.mjs",
-      "require": "./useQRCode.cjs"
-    },
-    "./useChangeCase": {
-      "import": "./useChangeCase.mjs",
-      "require": "./useChangeCase.cjs"
-    },
-    "./useAsyncValidator/component": {
-      "import": "./useAsyncValidator/component.mjs",
-      "require": "./useAsyncValidator/component.cjs"
-    },
-    "./useIDBKeyval": {
-      "import": "./useIDBKeyval.mjs",
-      "require": "./useIDBKeyval.cjs"
-    },
-    "./useSortable": {
-      "import": "./useSortable.mjs",
-      "require": "./useSortable.cjs"
-    },
-    "./useSortable/component": {
-      "import": "./useSortable/component.mjs",
-      "require": "./useSortable/component.cjs"
-    }
+    "./useAsyncValidator": "./useAsyncValidator.mjs",
+    "./useAxios": "./useAxios.mjs",
+    "./useCookies": "./useCookies.mjs",
+    "./useDrauu": "./useDrauu.mjs",
+    "./useFocusTrap": "./useFocusTrap.mjs",
+    "./useFocusTrap/component": "./useFocusTrap/component.mjs",
+    "./useFuse": "./useFuse.mjs",
+    "./useJwt": "./useJwt.mjs",
+    "./useNProgress": "./useNProgress.mjs",
+    "./useQRCode": "./useQRCode.mjs",
+    "./useChangeCase": "./useChangeCase.mjs",
+    "./useAsyncValidator/component": "./useAsyncValidator/component.mjs",
+    "./useIDBKeyval": "./useIDBKeyval.mjs",
+    "./useSortable": "./useSortable.mjs",
+    "./useSortable/component": "./useSortable/component.mjs"
   },
-  "main": "./index.cjs",
+  "main": "./index.mjs",
   "module": "./index.mjs",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "types": "./index.d.mts",
   "files": [
-    "**/*.cjs",
-    "**/*.d.cts",
     "**/*.d.mts",
-    "**/*.d.ts",
     "**/*.js",
     "**/*.mjs"
   ],
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
-    "prepack": "pnpm run build"
+    "prepack": "pnpm run build",
+    "test:attw": "attw --pack --config-path ../../.attw.json ."
   },
   "peerDependencies": {
     "async-validator": "^4",
@@ -117,7 +67,8 @@
     "nprogress": "^0.2",
     "qrcode": "^1.5",
     "sortablejs": "^1",
-    "universal-cookie": "^7"
+    "universal-cookie": "^7",
+    "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
     "async-validator": {
@@ -159,24 +110,23 @@
   },
   "dependencies": {
     "@vueuse/core": "workspace:*",
-    "@vueuse/shared": "workspace:*",
-    "vue": "catalog:"
+    "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
-    "@types/nprogress": "catalog:",
-    "@types/qrcode": "catalog:",
-    "@types/sortablejs": "catalog:",
-    "async-validator": "catalog:",
-    "axios": "catalog:",
-    "change-case": "catalog:",
-    "drauu": "catalog:",
-    "focus-trap": "catalog:",
-    "fuse.js": "catalog:",
-    "idb-keyval": "catalog:",
-    "jwt-decode": "catalog:",
-    "nprogress": "catalog:",
-    "qrcode": "catalog:",
-    "sortablejs": "catalog:",
-    "universal-cookie": "catalog:"
+    "@types/nprogress": "catalog:types",
+    "@types/qrcode": "catalog:types",
+    "@types/sortablejs": "catalog:types",
+    "async-validator": "catalog:integrations",
+    "axios": "catalog:integrations",
+    "change-case": "catalog:integrations",
+    "drauu": "catalog:integrations",
+    "focus-trap": "catalog:integrations",
+    "fuse.js": "catalog:integrations",
+    "idb-keyval": "catalog:integrations",
+    "jwt-decode": "catalog:integrations",
+    "nprogress": "catalog:integrations",
+    "qrcode": "catalog:integrations",
+    "sortablejs": "catalog:integrations",
+    "universal-cookie": "catalog:integrations"
   }
 }

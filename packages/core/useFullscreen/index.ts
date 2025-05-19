@@ -1,7 +1,7 @@
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref } from 'vue'
+import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -40,8 +40,8 @@ export function useFullscreen(
     autoExit = false,
   } = options
 
-  const targetRef = computed(() => unrefElement(target) ?? document?.querySelector('html'))
-  const isFullscreen = ref(false)
+  const targetRef = computed(() => unrefElement(target) ?? document?.documentElement)
+  const isFullscreen = shallowRef(false)
 
   const requestMethod = computed<'requestFullscreen' | undefined>(() => {
     return [
@@ -159,6 +159,8 @@ export function useFullscreen(
   const listenerOptions = { capture: false, passive: true }
   useEventListener(document, eventHandlers, handlerCallback, listenerOptions)
   useEventListener(() => unrefElement(targetRef), eventHandlers, handlerCallback, listenerOptions)
+
+  tryOnMounted(handlerCallback, false)
 
   if (autoExit)
     tryOnScopeDispose(exit)

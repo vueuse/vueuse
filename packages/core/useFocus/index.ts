@@ -1,7 +1,7 @@
-import type { Ref } from 'vue'
+import type { WritableComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { computed, ref, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 
@@ -33,7 +33,7 @@ export interface UseFocusReturn {
    * If read as true, then the element has focus. If read as false, then the element does not have focus
    * If set to true, then the element will be focused. If set to false, the element will be blurred.
    */
-  focused: Ref<boolean>
+  focused: WritableComputedRef<boolean>
 }
 
 /**
@@ -46,7 +46,7 @@ export interface UseFocusReturn {
 export function useFocus(target: MaybeElementRef, options: UseFocusOptions = {}): UseFocusReturn {
   const { initialValue = false, focusVisible = false, preventScroll = false } = options
 
-  const innerFocused = ref(false)
+  const innerFocused = shallowRef(false)
   const targetElement = computed(() => unrefElement(target))
 
   const listenerOptions = { passive: true }

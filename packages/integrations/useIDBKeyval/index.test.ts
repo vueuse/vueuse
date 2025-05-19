@@ -1,7 +1,7 @@
 import { get, set } from 'idb-keyval'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useIDBKeyval } from '.'
+import { useIDBKeyval } from './index'
 
 const cache = {} as any
 

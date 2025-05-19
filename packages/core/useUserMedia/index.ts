@@ -1,10 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRef } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref, shallowRef, watch } from 'vue'
+import { ref as deepRef, shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -36,9 +35,9 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
  * @param options
  */
 export function useUserMedia(options: UseUserMediaOptions = {}) {
-  const enabled = ref(options.enabled ?? false)
-  const autoSwitch = ref(options.autoSwitch ?? true)
-  const constraints = ref(options.constraints)
+  const enabled = shallowRef(options.enabled ?? false)
+  const autoSwitch = shallowRef(options.autoSwitch ?? true)
+  const constraints = deepRef(options.constraints)
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
 

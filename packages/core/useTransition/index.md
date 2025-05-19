@@ -12,9 +12,9 @@ Define a numeric source value to follow, and when changed the output will transi
 
 ```js
 import { TransitionPresets, useTransition } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const source = ref(0)
+const source = shallowRef(0)
 
 const output = useTransition(source, {
   duration: 1000,
@@ -25,7 +25,7 @@ const output = useTransition(source, {
 To synchronize transitions, use an array of numbers. As an example, here is how we could transition between colors.
 
 ```js
-const source = ref([0, 0, 0])
+const source = shallowRef([0, 0, 0])
 
 const output = useTransition(source)
 

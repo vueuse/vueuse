@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { createSingletonPromise } from '@vueuse/shared'
 import { shallowRef, toRaw } from 'vue'
@@ -37,7 +37,7 @@ export interface UsePermissionOptions<Controls extends boolean> extends Configur
   controls?: Controls
 }
 
-export type UsePermissionReturn = Readonly<Ref<PermissionState | undefined>>
+export type UsePermissionReturn = Readonly<ShallowRef<PermissionState | undefined>>
 export interface UsePermissionReturnWithControls {
   state: UsePermissionReturn
   isSupported: ComputedRef<boolean>
