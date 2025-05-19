@@ -14,6 +14,7 @@
   UseDocumentVisibility: object
   UseDraggable: object
   UseElementBounding: object
+  UseElementOverflow: object
   UseElementSize: object
   UseElementVisibility: object
   UseEyeDropper: object
@@ -46,6 +47,7 @@
   UseWindowSize: object
   vElementBounding: object
   vElementHover: object
+  vElementOverflow: object
   vElementSize: object
   vElementVisibility: object
   vInfiniteScroll: object
