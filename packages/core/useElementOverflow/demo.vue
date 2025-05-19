@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { useElementOverflow } from './index'
 
-const overflowRef = ref()
+const overflowRef = shallowRef()
 const { isXOverflowed } = useElementOverflow(overflowRef, { observeMutation: true })
-const input = ref('some words here')
-const width = ref(200)
+const input = shallowRef('some words here')
+const width = shallowRef(200)
 </script>
 
 <template>

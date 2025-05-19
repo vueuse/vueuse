@@ -1,6 +1,7 @@
 import type { ObjectDirective } from 'vue'
+import type { UseElementOverflowOptions, UseElementOverflowReturn } from '.'
 import { watch } from 'vue'
-import { useElementOverflow, type UseElementOverflowOptions, type UseElementOverflowReturn } from '.'
+import { useElementOverflow } from '.'
 
 type VElementOverflowHandler = (info: UseElementOverflowReturn) => void
 

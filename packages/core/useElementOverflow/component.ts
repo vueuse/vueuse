@@ -1,12 +1,13 @@
-import { type RenderableComponent, useElementOverflow, type UseElementOverflowOptions } from '@vueuse/core'
-import { defineComponent, h, reactive, ref } from 'vue'
+import type { RenderableComponent, UseElementOverflowOptions } from '@vueuse/core'
+import { useElementOverflow } from '@vueuse/core'
+import { defineComponent, h, reactive, shallowRef } from 'vue'
 
 export const UseElementOverflow = /* #__PURE__ */ defineComponent<UseElementOverflowOptions & RenderableComponent>({
   name: 'UseElementOverflow',
   props: ['observeMutation', 'as'] as unknown as undefined,
   emits: ['update'],
   setup(props, { slots, attrs, emit }) {
-    const target = ref()
+    const target = shallowRef()
     const info = reactive(useElementOverflow(target, {
       observeMutation: props.observeMutation,
       onUpdated: (...args: any[]) => { emit('update', ...args) },

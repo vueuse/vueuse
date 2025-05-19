@@ -1,12 +1,13 @@
 import type { ConfigurableWindow } from '@vueuse/core/_configurable'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import type { ResizeObserverCallback } from '../useResizeObserver'
 import {
   tryOnMounted,
   tryOnUnmounted,
 } from '@vueuse/shared'
-import { effectScope, ref } from 'vue'
+import { effectScope, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
-import { type MaybeComputedElementRef, unrefElement } from '../unrefElement'
+import { unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
 import { useResizeObserver } from '../useResizeObserver'
 
@@ -31,8 +32,8 @@ export interface UseElementOverflowOptions extends ConfigurableWindow {
  */
 export function useElementOverflow(target: MaybeComputedElementRef, option: UseElementOverflowOptions = {}) {
   const { observeMutation = false, onUpdated, window = defaultWindow } = option
-  const isXOverflowed = ref(false)
-  const isYOverflowed = ref(false)
+  const isXOverflowed = shallowRef(false)
+  const isYOverflowed = shallowRef(false)
 
   const scope = effectScope()
 
