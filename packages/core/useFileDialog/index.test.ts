@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { shallowRef } from 'vue'
 import { useFileDialog } from './index'
 
 class DataTransferMock {
@@ -46,5 +47,50 @@ describe('useFileDialog', () => {
 
     open()
     expect(files.value).toBeNull()
+  })
+
+  it('should work with custom input element', () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+    const { open } = useFileDialog({ input })
+
+    open()
+    expect(input.type).toBe('file')
+    expect(input.click).toBeCalled()
+  })
+
+  it('should work with input element passed as template ref', () => {
+    const inputEl = document.createElement('input')
+    inputEl.click = vi.fn()
+
+    const inputRef = shallowRef<HTMLInputElement>(inputEl)
+
+    const { open } = useFileDialog({ input: inputRef })
+
+    open()
+    expect(inputEl.type).toBe('file')
+    expect(inputEl.click).toHaveBeenCalled()
+  })
+
+  it('should trigger onchange and update files when file is selected', async () => {
+    const input = document.createElement('input')
+    const file = new File(['dummy content'], 'example.txt', { type: 'text/plain' })
+
+    Object.defineProperty(input, 'files', {
+      value: [file],
+      writable: true,
+    })
+
+    const { open, onChange, files } = useFileDialog({ input })
+
+    const changeHandler = vi.fn()
+    onChange(changeHandler)
+
+    open()
+
+    input.dispatchEvent(new Event('change'))
+
+    expect(files.value?.[0]).toEqual(file)
+    expect(changeHandler).toHaveBeenCalledWith(files.value)
   })
 })

@@ -2,6 +2,8 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { DebounceFilterOptions, FunctionArgs, PromisifyFn } from '../utils'
 import { createFilterWrapper, debounceFilter } from '../utils'
 
+export type UseDebounceFnReturn<T extends FunctionArgs> = PromisifyFn<T>
+
 /**
  * Debounce execution of a function.
  *
@@ -16,7 +18,7 @@ export function useDebounceFn<T extends FunctionArgs>(
   fn: T,
   ms: MaybeRefOrGetter<number> = 200,
   options: DebounceFilterOptions = {},
-): PromisifyFn<T> {
+): UseDebounceFnReturn<T> {
   return createFilterWrapper(
     debounceFilter(ms, options),
     fn,

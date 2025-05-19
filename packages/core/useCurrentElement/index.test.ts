@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest'
 import { defineComponent, shallowRef } from 'vue'
 import { useCurrentElement } from './index'
 
-// Manual triggering only works for Vue 3 - https://vueuse.org/shared/computedWithControl/#manual-triggering
 describe('useCurrentElement', () => {
   it('should be defined', () => {
     expect(useCurrentElement).toBeDefined()

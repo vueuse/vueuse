@@ -181,29 +181,44 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
   watch(keyComputed, () => update(), { flush })
 
-  if (window && listenToStorageChanges) {
-    tryOnMounted(() => {
-      /**
-       * Attaching event listeners here should be fine since we are in a mounted hook
-       *
-       * The custom event is needed for same-document syncing when using custom
-       * storage backends, but it doesn't work across different documents.
-       *
-       * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
-       */
-      if (storage instanceof Storage)
-        useEventListener(window, 'storage', update, { passive: true })
-      else
-        useEventListener(window, customStorageEventName, updateFromCustomEvent)
+  let firstMounted = false
+  const onStorageEvent = (ev: StorageEvent): void => {
+    if (initOnMounted && !firstMounted) {
+      return
+    }
 
-      if (initOnMounted)
-        update()
-    })
+    update(ev)
+  }
+  const onStorageCustomEvent = (ev: CustomEvent<StorageEventLike>): void => {
+    if (initOnMounted && !firstMounted) {
+      return
+    }
+
+    updateFromCustomEvent(ev)
   }
 
-  // avoid reading immediately to avoid hydration mismatch when doing SSR
-  if (!initOnMounted)
+  /**
+   * The custom event is needed for same-document syncing when using custom
+   * storage backends, but it doesn't work across different documents.
+   *
+   * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
+   */
+  if (window && listenToStorageChanges) {
+    if (storage instanceof Storage)
+      useEventListener(window, 'storage', onStorageEvent, { passive: true })
+    else
+      useEventListener(window, customStorageEventName, onStorageCustomEvent)
+  }
+
+  if (initOnMounted) {
+    tryOnMounted(() => {
+      firstMounted = true
+      update()
+    })
+  }
+  else {
     update()
+  }
 
   function dispatchWriteEvent(oldValue: string | null, newValue: string | null) {
     // send custom event to communicate within same page

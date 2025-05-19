@@ -1,8 +1,20 @@
 <script setup lang="ts">
 import type { MaybeElement } from '@vueuse/core'
-import { useAnimate } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { reactify, useAnimate } from '@vueuse/core'
 import { reactive, useTemplateRef } from 'vue'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const el = useTemplateRef<MaybeElement>('el')
 
