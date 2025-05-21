@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, reactive, shallowRef, toValue } from 'vue'
+import { computed, nextTick, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -147,7 +147,18 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
 
   useEventListener(target, 'keydown', (e: KeyboardEvent) => {
-    updateRefs(e, true)
+    const key = e.key?.toLowerCase()
+    // #3026: doesn't trigger on releasing and pressing again the second key in a combination
+    // Solution: Trigger "keyup" event manually when "keydown" event is fired without "keyup"
+    if (key && e.getModifierState('Meta') && current.has(key)) {
+      updateRefs(e, false)
+      nextTick(() => {
+        updateRefs(e, true)
+      })
+    }
+    else {
+      updateRefs(e, true)
+    }
     return onEventFired(e)
   }, { passive })
   useEventListener(target, 'keyup', (e: KeyboardEvent) => {
