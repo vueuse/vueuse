@@ -1,12 +1,18 @@
-// eslint-disable-next-line no-restricted-imports
-import { ref as deepRef, onMounted } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import { tryOnMounted } from '@vueuse/shared'
+import { ref as deepRef, toValue, watch } from 'vue'
 
-export function useElementBySelector(selector: string) {
-  const select = (): HTMLElement | null => document.querySelector(selector)
+export function useElementBySelector(selector: MaybeRefOrGetter<string>) {
+  const el = deepRef<Element | null>()
+  const select = (): Element | null => el.value = document.querySelector(toValue(selector))
 
-  const el = deepRef<HTMLElement | null>(select())
+  tryOnMounted(select)
 
-  onMounted(() => el.value = select())
+  watch(
+    () => toValue(selector),
+    select,
+    { immediate: true },
+  )
 
   return el
 }
