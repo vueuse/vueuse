@@ -1,11 +1,15 @@
 import type { ConfigurableDocument, MaybeElement } from '@vueuse/core'
 import type { Options } from 'sortablejs'
-import type { MaybeRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import { isRef, nextTick, toValue } from 'vue'
+import { isRef, nextTick, readonly, shallowRef, toValue, watch } from 'vue'
 
 export interface UseSortableReturn {
+  /**
+   * whether sortable is active
+   */
+  isActive: Readonly<ShallowRef<boolean>>
   /**
    * start sortable instance
    */
@@ -45,6 +49,8 @@ export function useSortable<T>(
 
   const { document = defaultDocument, ...resetOptions } = options
 
+  const isActive = shallowRef(false)
+
   const defaultOptions: Options = {
     onUpdate: (e) => {
       moveArrayElement(list, e.oldIndex!, e.newIndex!, e)
@@ -56,11 +62,15 @@ export function useSortable<T>(
     if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
+
+    isActive.value = true
   }
 
   const stop = () => {
     sortable?.destroy()
     sortable = undefined
+
+    isActive.value = false
   }
 
   const option = <K extends keyof Options>(name: K, value?: Options[K]) => {
@@ -70,11 +80,20 @@ export function useSortable<T>(
       return sortable?.option(name)
   }
 
+  watch(() => toValue(el), (value) => {
+    if (isActive.value)
+      stop()
+
+    if (value)
+      start()
+  }, { flush: 'post' })
+
   tryOnMounted(start)
 
   tryOnScopeDispose(stop)
 
   return {
+    isActive: readonly(isActive),
     stop,
     start,
     option: option as UseSortableReturn['option'],
