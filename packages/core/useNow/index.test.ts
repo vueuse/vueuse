@@ -9,7 +9,7 @@ describe('useNow', () => {
     expect(+now.value).toBeLessThanOrEqual(+new Date())
   })
 
-  it('show start lazily if immediate is false', () => {
+  it('starts lazily if immediate is false', () => {
     const initial = +new Date()
     const { now, resume } = useNow({ controls: true, immediate: false })
 
