@@ -4,6 +4,7 @@ import { withPwa } from '@vite-pwa/vitepress'
 import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
+import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
 import viteConfig from './vite.config'
 
@@ -248,6 +249,12 @@ export default withPwa(defineConfig({
     injectManifest: {
       globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}', 'hashmap.json'],
       globIgnores: ['og-*.png'],
+      // for local build + preview
+      // enableWorkboxModulesLogs: true,
+      // minify: false,
+      buildPlugins: {
+        vite: [PWAVirtual()],
+      },
     },
   },
 
