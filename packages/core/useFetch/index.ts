@@ -371,7 +371,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   const {
-    fetch = defaultWindow?.fetch || globalThis?.fetch,
+    fetch = defaultWindow?.fetch ?? globalThis?.fetch,
     initialData,
     timeout,
   } = options
