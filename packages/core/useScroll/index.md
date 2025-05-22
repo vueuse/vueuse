@@ -11,8 +11,9 @@ Reactive scroll position and state.
 ```vue
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 </script>
 
@@ -36,8 +37,9 @@ Set the `x` and `y` values to make the element scroll to that position.
 ```vue
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const { x, y } = useScroll(el)
 </script>
 
@@ -58,8 +60,9 @@ Set `behavior: smooth` to enable smooth scrolling. The `behavior` option default
 
 ```ts
 import { useScroll } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
 const { x, y } = useScroll(el, { behavior: 'smooth' })
 
 // Or as a `ref`:
@@ -67,6 +70,40 @@ const smooth = ref(false)
 const behavior = computed(() => smooth.value ? 'smooth' : 'auto')
 const { x, y } = useScroll(el, { behavior })
 ```
+
+### Recalculate scroll state
+
+You can call the `measure()` method to manually update the scroll position and `arrivedState` at any time.
+
+This is useful, for example, after dynamic content changes or when you want to recalculate the scroll state outside of scroll events.
+
+```ts
+import { useScroll } from '@vueuse/core'
+import { nextTick, onMounted, useTemplateRef, watch } from 'vue'
+
+const el = useTemplateRef<HTMLElement>('el')
+const reactiveValue = shallowRef(false)
+
+const { measure } = useScroll(el)
+
+// In a watcher
+watch(reactiveValue, () => {
+  measure()
+})
+
+// Or inside any function
+function updateScrollState() {
+  // ...some logic
+  nextTick(() => {
+    measure()
+  })
+}
+```
+
+> [!NOTE]
+> it's recommended to call `measure()` inside `nextTick()`, to ensure the DOM is updated first.
+> The scroll state is initialized automatically `onMount`.
+> You only need to call `measure()` manually if you want to recalculate the state after some dynamic changes.
 
 ## Directive Usage
 

@@ -1,7 +1,7 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
-import { computed, reactive, ref, toValue } from 'vue'
+import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -107,8 +107,8 @@ export function useScroll(
     onError = (e) => { console.error(e) },
   } = options
 
-  const internalX = ref(0)
-  const internalY = ref(0)
+  const internalX = shallowRef(0)
+  const internalY = shallowRef(0)
 
   // Use a computed for x and y because we want to write the value to the refs
   // during a `scrollTo()` without firing additional `scrollTo()`s in the process.
@@ -145,15 +145,15 @@ export function useScroll(
     })
     const scrollContainer
       = (_element as Window)?.document?.documentElement
-      || (_element as Document)?.documentElement
-      || (_element as Element)
+        || (_element as Document)?.documentElement
+        || (_element as Element)
     if (x != null)
       internalX.value = scrollContainer.scrollLeft
     if (y != null)
       internalY.value = scrollContainer.scrollTop
   }
 
-  const isScrolling = ref(false)
+  const isScrolling = shallowRef(false)
   const arrivedState = reactive({
     left: true,
     right: false,
@@ -198,8 +198,8 @@ export function useScroll(
     directions.left = scrollLeft < internalX.value
     directions.right = scrollLeft > internalX.value
 
-    const left = (scrollLeft * directionMultipler) <= (offset.left || 0)
-    const right = (scrollLeft * directionMultipler)
+    const left = Math.abs(scrollLeft * directionMultipler) <= (offset.left || 0)
+    const right = Math.abs(scrollLeft * directionMultipler)
       + el.clientWidth >= el.scrollWidth
       - (offset.right || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS
@@ -223,8 +223,8 @@ export function useScroll(
 
     directions.top = scrollTop < internalY.value
     directions.bottom = scrollTop > internalY.value
-    const top = scrollTop <= (offset.top || 0)
-    const bottom = scrollTop
+    const top = Math.abs(scrollTop) <= (offset.top || 0)
+    const bottom = Math.abs(scrollTop)
       + el.clientHeight >= el.scrollHeight
       - (offset.bottom || 0)
       - ARRIVED_STATE_THRESHOLD_PIXELS

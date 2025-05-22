@@ -1,7 +1,7 @@
 import { provideSSRWidth } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
 import { createSSRApp } from 'vue'
-import { breakpointsBootstrapV5, useBreakpoints } from '.'
+import { breakpointsBootstrapV5, useBreakpoints } from './index'
 
 describe('useBreakpoints', () => {
   it('should be defined', () => {

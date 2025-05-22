@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { tryOnScopeDispose } from '@vueuse/shared'

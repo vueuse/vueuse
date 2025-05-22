@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
-import { onLongPress } from '.'
+import { shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
+import { onLongPress } from './index'
 
 describe('onLongPress', () => {
   let element: Ref<HTMLElement>
@@ -203,9 +203,9 @@ describe('onLongPress', () => {
   }
 
   beforeEach(() => {
-    element = ref(document.createElement('div'))
-    parentElement = ref(document.createElement('div'))
-    childElement = ref(document.createElement('div'))
+    element = shallowRef(document.createElement('div'))
+    parentElement = shallowRef(document.createElement('div'))
+    childElement = shallowRef(document.createElement('div'))
     parentElement.value.appendChild(element.value)
     element.value.appendChild(childElement.value)
 

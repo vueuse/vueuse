@@ -1,6 +1,5 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref, WatchOptions } from 'vue'
-import { isRef, ref, toValue, watch } from 'vue'
+import type { MaybeRefOrGetter, Ref, WatchOptions } from 'vue'
+import { ref as deepRef, isRef, shallowRef, toValue, watch } from 'vue'
 
 export interface UseClonedOptions<T = any> extends WatchOptions {
   /**
@@ -24,6 +23,10 @@ export interface UseClonedReturn<T> {
    */
   cloned: Ref<T>
   /**
+   * Ref indicates whether the cloned data is modified
+   */
+  isModified: Ref<boolean>
+  /**
    * Sync cloned data with source manually
    */
   sync: () => void
@@ -39,7 +42,10 @@ export function useCloned<T>(
   source: MaybeRefOrGetter<T>,
   options: UseClonedOptions = {},
 ): UseClonedReturn<T> {
-  const cloned = ref({} as T) as Ref<T>
+  const cloned = deepRef({} as T) as Ref<T>
+  const isModified = shallowRef<boolean>(false)
+  let _lastSync = false
+
   const {
     manual,
     clone = cloneFnJSON,
@@ -48,7 +54,21 @@ export function useCloned<T>(
     immediate = true,
   } = options
 
+  watch(cloned, () => {
+    if (_lastSync) {
+      _lastSync = false
+      return
+    }
+    isModified.value = true
+  }, {
+    deep: true,
+    flush: 'sync',
+  })
+
   function sync() {
+    _lastSync = true
+    isModified.value = false
+
     cloned.value = clone(toValue(source))
   }
 
@@ -63,5 +83,5 @@ export function useCloned<T>(
     sync()
   }
 
-  return { cloned, sync }
+  return { cloned, isModified, sync }
 }

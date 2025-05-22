@@ -158,9 +158,11 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     write(read(), true)
   }
 
-  useEventListener(window, 'popstate', onChanged, false)
+  const listenerOptions = { passive: true }
+
+  useEventListener(window, 'popstate', onChanged, listenerOptions)
   if (mode !== 'history')
-    useEventListener(window, 'hashchange', onChanged, false)
+    useEventListener(window, 'hashchange', onChanged, listenerOptions)
 
   const initial = read()
   if (initial.keys().next().value)

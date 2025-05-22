@@ -5,6 +5,7 @@
 *.log
 *.tgz
 components.d.ts
+components.d.[cm]ts
 dist
 index.json
 indexes.json
@@ -22,3 +23,5 @@ types
 coverage
 .eslintcache
 .vitepress/cache
+
+packages/**/__screenshots__

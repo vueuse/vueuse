@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { useFloor } from '.'
+import { ref as deepRef } from 'vue'
+import { useFloor } from './index'
 
 describe('useFloor', () => {
   it('should be defined', () => {
     expect(useFloor).toBeDefined()
   })
   it('should work', () => {
-    const base = ref(45.95)
+    const base = deepRef(45.95)
     const result = useFloor(base)
     expect(result.value).toBe(45)
     base.value = -45.05

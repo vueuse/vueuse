@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
 import { tryOnScopeDispose } from '@vueuse/shared'
@@ -36,8 +35,18 @@ export function useRouteQuery<
     transform,
   } = options
 
-  const transformGet = transform && 'get' in transform ? transform.get : transform ?? ((value: T) => value as any as K)
-  const transformSet = transform && 'set' in transform ? transform.set : (value: K) => value as any as T
+  let transformGet = (value: T) => value as unknown as K
+  let transformSet = (value: K) => value as unknown as T
+
+  if (typeof transform === 'function') {
+    transformGet = transform
+  }
+  else if (transform) {
+    if (transform.get)
+      transformGet = transform.get
+    if (transform.set)
+      transformSet = transform.set
+  }
 
   if (!_queue.has(router))
     _queue.set(router, new Map())

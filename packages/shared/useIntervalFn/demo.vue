@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useIntervalFn } from '@vueuse/core'
-import { rand } from '@vueuse/shared'
-import { ref } from 'vue'
+import { rand, useIntervalFn } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好', 'Привет']
-const word = ref('Hello')
-const interval = ref(500)
+const word = shallowRef('Hello')
+const interval = shallowRef(500)
 
 const { pause, resume, isActive } = useIntervalFn(() => {
   word.value = greetings[rand(0, greetings.length - 1)]

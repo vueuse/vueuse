@@ -11,3 +11,5 @@ export function useSupported(callback: () => unknown) {
     return Boolean(callback())
   })
 }
+
+export type UseSupportedReturn = ReturnType<typeof useSupported>

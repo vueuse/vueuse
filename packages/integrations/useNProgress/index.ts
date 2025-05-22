@@ -1,8 +1,8 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { NProgressOptions } from 'nprogress'
-import { isClient, tryOnScopeDispose } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
+import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import nprogress from 'nprogress'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, watchEffect } from 'vue'
 
 export type UseNProgressOptions = Partial<NProgressOptions>
 
@@ -15,7 +15,7 @@ export function useNProgress(
   currentProgress: MaybeRefOrGetter<number | null | undefined> = null,
   options?: UseNProgressOptions,
 ) {
-  const progress = ref(currentProgress)
+  const progress = toRef(currentProgress)
   const isLoading = computed({
     set: load => load ? nprogress.start() : nprogress.done(),
     get: () => typeof progress.value === 'number' && progress.value < 1,

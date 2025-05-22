@@ -10,17 +10,23 @@
     "paths": {
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
-      "@vueuse/docs-utils": ["./packages/.vitepress/plugins/utils.ts"],
       "@vueuse/integrations": ["./packages/integrations/index.ts"],
       "@vueuse/metadata": ["./packages/metadata/index.ts"],
       "@vueuse/math": ["./packages/math/index.ts"],
       "@vueuse/shared": ["./packages/shared/index.ts"],
-      "@vueuse/shared/*": ["./packages/shared/*"]
+      "@vueuse/shared/*": ["./packages/shared/*"],
+      "@vueuse/components": ["./packages/components/index.ts"],
+      "@vueuse/components/*": ["./packages/components/*"],
+      "@vueuse/rxjs": ["./packages/rxjs/index.ts"],
+      "@vueuse/rxjs/*": ["./packages/rxjs/*"]
     },
     "resolveJsonModule": true,
     "types": [
+      "@types/web-bluetooth",
+      "@vitest/browser/providers/playwright",
+      "vite-plugin-pwa/vue",
       "vitest",
-      "@types/web-bluetooth"
+      "vitest-browser-vue"
     ],
     "strict": true,
     "strictFunctionTypes": true,

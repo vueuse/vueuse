@@ -1,8 +1,12 @@
 // ported from https://dev.to/linusborg/vue-when-a-computed-property-can-be-the-wrong-tool-195j
 // by @linusborg https://github.com/LinusBorg
 
-import type { Ref, WatchOptionsBase } from 'vue'
+import type { ShallowRef, WatchOptionsBase } from 'vue'
 import { readonly, shallowRef, watchEffect } from 'vue'
+
+export type ComputedEagerOptions = WatchOptionsBase
+
+export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
 
 /**
  * Note: If you are using Vue 3.4+, you can straight use computed instead.
@@ -12,9 +16,9 @@ import { readonly, shallowRef, watchEffect } from 'vue'
  *
  * @param fn effect function
  * @param options WatchOptionsBase
- * @returns readonly ref
+ * @returns readonly shallowRef
  */
-export function computedEager<T>(fn: () => T, options?: WatchOptionsBase): Readonly<Ref<T>> {
+export function computedEager<T>(fn: () => T, options?: ComputedEagerOptions): ComputedEagerReturn<T> {
   const result = shallowRef()
 
   watchEffect(() => {

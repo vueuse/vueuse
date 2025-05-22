@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
-import { useObservable } from '.'
 
 const count = useObservable(
   interval(1000).pipe(

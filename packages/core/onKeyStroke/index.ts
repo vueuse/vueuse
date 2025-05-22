@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'

@@ -1,7 +1,7 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
-import { notNullish, tryOnScopeDispose } from '@vueuse/shared'
+import { notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
@@ -36,7 +36,7 @@ export function useMutationObserver(
 
   const targets = computed(() => {
     const value = toValue(target)
-    const items = (Array.isArray(value) ? value : [value])
+    const items = toArray(value)
       .map(unrefElement)
       .filter(notNullish)
     return new Set(items)

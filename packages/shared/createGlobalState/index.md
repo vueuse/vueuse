@@ -14,11 +14,11 @@ Keep states in the global scope to be reusable across Vue instances.
 ```js
 import { createGlobalState } from '@vueuse/core'
 // store.js
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
 export const useGlobalState = createGlobalState(
   () => {
-    const count = ref(0)
+    const count = shallowRef(0)
     return { count }
   }
 )
@@ -29,12 +29,12 @@ A bigger example:
 ```js
 import { createGlobalState } from '@vueuse/core'
 // store.js
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 
 export const useGlobalState = createGlobalState(
   () => {
     // state
-    const count = ref(0)
+    const count = shallowRef(0)
 
     // getters
     const doubleCount = computed(() => count.value * 2)

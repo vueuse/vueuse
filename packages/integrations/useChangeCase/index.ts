@@ -1,8 +1,7 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Options } from 'change-case'
-import type { ComputedRef, WritableComputedRef } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, WritableComputedRef } from 'vue'
 import * as changeCase from 'change-case'
-import { computed, ref, toValue } from 'vue'
+import { computed, ref as deepRef, toValue } from 'vue'
 
 type EndsWithCase<T> = T extends `${infer _}Case` ? T : never
 type FilterKeys<T> = { [K in keyof T as K extends string ? K : never]: EndsWithCase<K> }
@@ -36,7 +35,7 @@ export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrG
   if (typeof input === 'function')
     return computed(() => changeCaseTransforms[typeRef.value](toValue(input), toValue(options)))
 
-  const text = ref(input)
+  const text = deepRef(input)
   return computed<string>({
     get() {
       return changeCaseTransforms[typeRef.value](text.value, toValue(options))

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFocusTrap } from '.'
+import { useFocusTrap } from '@vueuse/integrations'
+import { useTemplateRef } from 'vue'
 
-const target = ref()
+const target = useTemplateRef<HTMLElement>('target')
 const { hasFocus, activate, deactivate } = useFocusTrap(target)
 </script>
 

@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { useDraggable } from '@vueuse/core'
-import { isClient } from '@vueuse/shared'
-import { ref } from 'vue'
-import { UseDraggable as Draggable } from './component'
+import { UseDraggable as Draggable } from '@vueuse/components'
+import { isClient, useDraggable } from '@vueuse/core'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const el = ref<HTMLElement | null>(null)
-const handle = ref<HTMLElement | null>(null)
+const el = useTemplateRef<HTMLElement>('el')
+const handle = useTemplateRef<HTMLElement>('handle')
 
 const innerWidth = isClient ? window.innerWidth : 200
 
-const disabled = ref(false)
+const disabled = shallowRef(false)
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: innerWidth / 4.2, y: 80 },
   preventDefault: true,

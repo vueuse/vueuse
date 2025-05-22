@@ -1,9 +1,5 @@
 <template>
-  <div class="home" mt-4 flex flex-col items-center>
-    <HomeTeam />
-
+  <div class="home vp-doc" mt-4 flex flex-col items-center>
     <HomeSponsors />
-
-    <HomeContributors />
   </div>
 </template>

@@ -1,7 +1,19 @@
 <script setup lang="ts">
-import { useAsyncState } from '@vueuse/core'
+import { reactify, useAsyncState } from '@vueuse/core'
 import axios from 'axios'
-import YAML from 'js-yaml'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const { isLoading, state, isReady, execute } = useAsyncState(
   (args) => {
@@ -20,8 +32,8 @@ const { isLoading, state, isReady, execute } = useAsyncState(
   <div>
     <note>Ready: {{ isReady.toString() }}</note>
     <note>Loading: {{ isLoading.toString() }}</note>
-    <pre lang="json" class="ml-2">{{ YAML.dump(state) }}</pre>
-    <button @click="execute(2000, { id: 2 })">
+    <pre lang="json" class="ml-2">{{ stringify(state) }}</pre>
+    <button @click="() => execute(2000, { id: 2 })">
       Execute
     </button>
   </div>

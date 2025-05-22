@@ -1,9 +1,8 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { PointerType, Position } from '../types'
 import type { UseSwipeDirection } from '../useSwipe'
 import { toRef, tryOnMounted } from '@vueuse/shared'
-import { computed, reactive, readonly, ref } from 'vue'
+import { computed, reactive, readonly, shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export interface UsePointerSwipeOptions {
@@ -43,12 +42,12 @@ export interface UsePointerSwipeOptions {
 }
 
 export interface UsePointerSwipeReturn {
-  readonly isSwiping: Ref<boolean>
-  direction: Readonly<Ref<UseSwipeDirection>>
+  readonly isSwiping: ShallowRef<boolean>
+  direction: Readonly<ShallowRef<UseSwipeDirection>>
   readonly posStart: Position
   readonly posEnd: Position
-  distanceX: Readonly<Ref<number>>
-  distanceY: Readonly<Ref<number>>
+  distanceX: Readonly<ComputedRef<number>>
+  distanceY: Readonly<ComputedRef<number>>
   stop: () => void
 }
 
@@ -90,8 +89,8 @@ export function usePointerSwipe(
 
   const { max, abs } = Math
   const isThresholdExceeded = computed(() => max(abs(distanceX.value), abs(distanceY.value)) >= threshold)
-  const isSwiping = ref(false)
-  const isPointerDown = ref(false)
+  const isSwiping = shallowRef(false)
+  const isPointerDown = shallowRef(false)
 
   const direction = computed(() => {
     if (!isThresholdExceeded.value)
@@ -115,6 +114,8 @@ export function usePointerSwipe(
     return options.pointerTypes?.includes(e.pointerType as PointerType) ?? (isReleasingButton || isPrimaryButton) ?? true
   }
 
+  const listenerOptions = { passive: true }
+
   const stops = [
     useEventListener(target, 'pointerdown', (e: PointerEvent) => {
       if (!eventIsAllowed(e))
@@ -127,7 +128,7 @@ export function usePointerSwipe(
       updatePosStart(x, y)
       updatePosEnd(x, y)
       onSwipeStart?.(e)
-    }),
+    }, listenerOptions),
 
     useEventListener(target, 'pointermove', (e: PointerEvent) => {
       if (!eventIsAllowed(e))
@@ -141,7 +142,7 @@ export function usePointerSwipe(
         isSwiping.value = true
       if (isSwiping.value)
         onSwipe?.(e)
-    }),
+    }, listenerOptions),
 
     useEventListener(target, 'pointerup', (e: PointerEvent) => {
       if (!eventIsAllowed(e))
@@ -151,12 +152,12 @@ export function usePointerSwipe(
 
       isPointerDown.value = false
       isSwiping.value = false
-    }),
+    }, listenerOptions),
   ]
 
   tryOnMounted(() => {
-    // Disable scroll on for TouchEvents
-    targetRef.value?.style?.setProperty('touch-action', 'none')
+    // Allow vertical scrolling, disable horizontal scrolling by touch
+    targetRef.value?.style?.setProperty('touch-action', 'pan-y')
 
     if (disableTextSelect) {
     // Disable text selection on swipe

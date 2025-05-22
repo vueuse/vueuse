@@ -1,7 +1,7 @@
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
-import { tryOnMounted } from '@vueuse/shared'
-import { computed, ref, watch } from 'vue'
+import { toArray, tryOnMounted } from '@vueuse/shared'
+import { computed, shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
@@ -23,8 +23,8 @@ export function useElementSize(
 ) {
   const { window = defaultWindow, box = 'content-box' } = options
   const isSVG = computed(() => unrefElement(target)?.namespaceURI?.includes('svg'))
-  const width = ref(initialSize.width)
-  const height = ref(initialSize.height)
+  const width = shallowRef(initialSize.width)
+  const height = shallowRef(initialSize.height)
 
   const { stop: stop1 } = useResizeObserver(
     target,
@@ -45,7 +45,7 @@ export function useElementSize(
       }
       else {
         if (boxSize) {
-          const formatBoxSize = Array.isArray(boxSize) ? boxSize : [boxSize]
+          const formatBoxSize = toArray(boxSize)
           width.value = formatBoxSize.reduce((acc, { inlineSize }) => acc + inlineSize, 0)
           height.value = formatBoxSize.reduce((acc, { blockSize }) => acc + blockSize, 0)
         }

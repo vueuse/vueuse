@@ -1,14 +1,26 @@
 <script setup lang="ts">
-import { useMediaControls } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
-import { computed, reactive, ref } from 'vue'
+import { reactify, useMediaControls } from '@vueuse/core'
+import { computed, reactive, shallowRef, useTemplateRef } from 'vue'
+import YAML from 'yaml'
 import Menu from './components/Menu.vue'
 import MenuItem from './components/MenuItem.vue'
 import Scrubber from './components/Scrubber.vue'
 import Spinner from './components/Spinner.vue'
 
-const video = ref<HTMLVideoElement>()
-const loop = ref(false)
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
+
+const video = useTemplateRef<HTMLVideoElement>('video')
+const loop = shallowRef(false)
 const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
 
 const controls = useMediaControls(video, {
