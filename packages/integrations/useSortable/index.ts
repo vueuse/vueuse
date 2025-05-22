@@ -32,7 +32,7 @@ export interface UseSortableOptions extends Options, ConfigurableDocument {
 }
 
 export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
-  options: UseSortableOptions): UseSortableReturn
+  options?: UseSortableOptions): UseSortableReturn
 export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
