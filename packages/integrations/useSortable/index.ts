@@ -1,6 +1,6 @@
 import type { ConfigurableDocument, MaybeElement } from '@vueuse/core'
 import type { Options } from 'sortablejs'
-import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef, WatchOptions } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { isRef, nextTick, readonly, shallowRef, toValue, watch } from 'vue'
@@ -27,10 +27,12 @@ export interface UseSortableReturn {
   option: (<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]) => void) & (<K extends keyof Sortable.Options>(name: K) => Sortable.Options[K])
 }
 
-export type UseSortableOptions = Options & ConfigurableDocument
+export interface UseSortableOptions extends Options, ConfigurableDocument {
+  watchOptions?: WatchOptions
+}
 
 export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
-  options?: UseSortableOptions): UseSortableReturn
+  options: UseSortableOptions): UseSortableReturn
 export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRefOrGetter<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
@@ -47,7 +49,7 @@ export function useSortable<T>(
 ): UseSortableReturn {
   let sortable: Sortable | undefined
 
-  const { document = defaultDocument, ...resetOptions } = options
+  const { document = defaultDocument, watchOptions = { flush: 'post' }, ...resetOptions } = options
 
   const isActive = shallowRef(false)
 
@@ -86,7 +88,7 @@ export function useSortable<T>(
 
     if (value)
       start()
-  }, { flush: 'post' })
+  }, watchOptions)
 
   tryOnMounted(start)
 

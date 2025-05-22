@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { templateRef, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick, onMounted, shallowRef } from 'vue'
+import { computed, defineComponent, h, nextTick, onMounted, shallowRef } from 'vue'
 import { useSortable } from './index'
 
 describe('useSortable', () => {
@@ -188,7 +188,7 @@ describe('useSortable', () => {
       setup() {
         const el = templateRef<HTMLDivElement>('el')
 
-        const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+        const list = shallowRef([])
         const isVisible = shallowRef(false)
 
         const { isActive: sortableIsActive } = useSortable(el, list)
@@ -237,7 +237,7 @@ describe('useSortable', () => {
         const el2 = templateRef<HTMLDivElement>('el2')
         const target = shallowRef<HTMLDivElement | null>(null)
 
-        const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
+        const list = shallowRef([])
 
         useSortable(target, list)
 
@@ -262,16 +262,8 @@ describe('useSortable', () => {
       },
       render() {
         return [
-          h(
-            'div',
-            { ref: 'el' },
-            this.list.map(item => h('div', { key: item.id }, item.name)),
-          ),
-          h(
-            'div',
-            { ref: 'el2' },
-            this.list.map(item => h('div', { key: item.id }, item.name)),
-          ),
+          h('div', { ref: 'el' }),
+          h('div', { ref: 'el2' }),
         ]
       },
     }))
@@ -289,7 +281,63 @@ describe('useSortable', () => {
       vm.switchTarget()
 
       await nextTick()
+
+      expect(Sortable.get(vm.el)).toBeNull()
+      expect(Sortable.get(vm.el2)).toBeDefined()
+    }
+    finally {
+      wrapper.unmount()
+    }
+  })
+
+  it('should work when changing element only once', async () => {
+    const wrapper = mount(defineComponent({
+      setup() {
+        const el = templateRef<HTMLDivElement>('el')
+        const el2 = templateRef<HTMLDivElement>('el2')
+
+        const isSwitched = shallowRef(false)
+        const target = computed(() => isSwitched.value ? el2.value : el.value)
+
+        const list = shallowRef([])
+
+        useSortable(target, list, { watchOptions: { once: true } })
+
+        function switchTarget() {
+          isSwitched.value = !isSwitched.value
+        }
+
+        return {
+          el,
+          el2,
+          target,
+          switchTarget,
+          list,
+        }
+      },
+      render() {
+        return [
+          h('div', { ref: 'el' }),
+          h('div', { ref: 'el2' }),
+        ]
+      },
+    }))
+
+    const vm = wrapper.vm
+
+    try {
+      expect(Sortable.get(vm.el)).toBeDefined()
+      expect(Sortable.get(vm.el2)).toBeUndefined()
+
+      vm.switchTarget()
+
       await nextTick()
+
+      expect(Sortable.get(vm.el)).toBeNull()
+      expect(Sortable.get(vm.el2)).toBeDefined()
+
+      vm.switchTarget()
+
       await nextTick()
 
       expect(Sortable.get(vm.el)).toBeNull()
