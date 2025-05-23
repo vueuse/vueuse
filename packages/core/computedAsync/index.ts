@@ -42,7 +42,7 @@ export interface AsyncComputedOptions {
    * Possible values: `pre`, `post`, `sync`
    *
    * It works in the same way as the flush option in watch and watch effect in vue reactivity
-   * @default 'pre'
+   * @default 'sync'
    */
   flush?: 'pre' | 'post' | 'sync'
 
@@ -98,7 +98,7 @@ export function computedAsync<T>(
 
   const {
     lazy = false,
-    flush = 'pre',
+    flush = 'sync',
     evaluating = undefined,
     shallow = true,
     onError = noop,
