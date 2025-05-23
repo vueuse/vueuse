@@ -24,7 +24,7 @@ precacheAndRoute(
   {
     urlManipulation({ url }) {
       const urls: URL[] = []
-      if (url.pathname.includes('.html')) {
+      if (url.pathname.includes('.html') || url.host !== self.location.host) {
         return urls
       }
       const pathname = url.pathname
