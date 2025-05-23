@@ -18,13 +18,15 @@ const normalizedPaths = new Map(packageNames)
 
 const assetMatcher = /^\/assets\/([a-zA-Z]+)_([a-zA-Z]+)_index\.md\.[\w-]+\.(?:lean\.)?js$/
 
+const selfHostname = self.location.hostname
+
 // self.__WB_MANIFEST is the default injection point
 precacheAndRoute(
   entries,
   {
     urlManipulation({ url }) {
       const urls: URL[] = []
-      if (url.pathname.includes('.html') || url.host !== self.location.host) {
+      if (url.hostname !== selfHostname || url.pathname.includes('.html')) {
         return urls
       }
       const pathname = url.pathname
