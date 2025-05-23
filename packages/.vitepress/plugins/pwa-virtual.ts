@@ -15,7 +15,7 @@ export function PWAVirtual(): Plugin {
         const { categoryNames, metadata } = await packagesPromises
         const packages: [path: string, { url: string, hash: string }][] = []
         for (const name of categoryNames) {
-          if (name[0] === '_' || name[0] === '@') {
+          if (name[0] === '_') {
             continue
           }
 
