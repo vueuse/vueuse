@@ -45,6 +45,13 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends Configurabl
    * Deserialize data from the history
    */
   parse?: (v: Serialized) => Raw
+  /**
+   * Function to determine if the commit should proceed
+   * @param oldValue Previous value
+   * @param newValue New value
+   * @returns boolean indicating if commit should proceed
+   */
+  shouldCommit?: (oldValue: Serialized | undefined, newValue: Raw) => boolean
 }
 
 export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistoryReturn<Raw, Serialized> {
@@ -93,6 +100,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     deep = false,
     flush = 'pre',
     eventFilter,
+    shouldCommit,
   } = options
 
   const {
@@ -137,6 +145,13 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // If the user triggers a commit manually, then reset the watcher
     // so we do not trigger an extra commit in the async watcher
     ignorePrevAsyncUpdates()
+
+    if (shouldCommit) {
+      const history = manualHistory.history.value
+      const lastValue = history.length > 0 ? history[history.length - 1].snapshot : undefined
+      if (!shouldCommit(lastValue, source.value))
+        return
+    }
 
     manualCommit()
   }
