@@ -25,9 +25,9 @@ export interface UseSortableReturn {
 
 export type UseSortableOptions = Options & ConfigurableDocument
 
-export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(selector: string, list: MaybeRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
 /**
@@ -38,7 +38,7 @@ export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRe
  */
 export function useSortable<T>(
   el: MaybeRefOrGetter<MaybeElement> | string,
-  list: MaybeRefOrGetter<T[]>,
+  list: MaybeRef<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
   let sortable: Sortable | undefined
@@ -108,7 +108,7 @@ export function removeNode(node: Node) {
 }
 
 export function moveArrayElement<T>(
-  list: MaybeRefOrGetter<T[]>,
+  list: MaybeRef<T[]>,
   from: number,
   to: number,
   e: Sortable.SortableEvent | null = null,
