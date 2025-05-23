@@ -11,10 +11,8 @@ const App = defineComponent({
 })
 
 describe('useElementBySelector', () => {
-  let wrapper
-
   beforeEach(() => {
-    wrapper = mount(App, {
+    mount(App, {
       attachTo: document.body,
     })
   })

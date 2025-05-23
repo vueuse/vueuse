@@ -1,17 +1,31 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, WatchOptions } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
 import { ref as deepRef, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 
-export function useElementBySelector(selector: MaybeRefOrGetter<string>) {
-  const el = deepRef<Element | null>()
-  const select = (): Element | null => el.value = document.querySelector(toValue(selector))
+export interface UseElementBySelectorOptions extends WatchOptions {
+  window?: ConfigurableWindow['window']
+}
 
-  tryOnMounted(select)
+export function useElementBySelector<TElement extends Element = HTMLElement>(
+  selector: MaybeRefOrGetter<string>,
+  options: UseElementBySelectorOptions = {},
+) {
+  const {
+    window = defaultWindow,
+    immediate = true,
+  } = options
+
+  const el = deepRef<TElement | null>()
+  const select = (newSelector: string): TElement | null | undefined => el.value = window?.document.querySelector<TElement>(newSelector)
+
+  tryOnMounted(() => select(toValue(selector)))
 
   watch(
     () => toValue(selector),
-    select,
-    { immediate: true },
+    newSelector => select(newSelector),
+    { immediate },
   )
 
   return el

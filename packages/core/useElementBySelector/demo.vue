@@ -6,7 +6,7 @@ const el = useElementBySelector('body')
 
 <template>
   <div>
-    <p>Body width: {{ el.offsetWidth }}</p>
-    <p>Body height: {{ el.offsetHeight }}</p>
+    <p>Tag: {{ el?.tagName }}</p>
+    <p>Body height: {{ el?.offsetHeight }}</p>
   </div>
 </template>
