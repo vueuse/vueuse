@@ -38,8 +38,8 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'containerElement',
   ] as unknown as undefined,
   setup(props, { slots }) {
-    const target = shallowRef()
-    const handle = computed(() => props.handle ?? target.value)
+    const target = shallowRef<HTMLElement | SVGElement | null>()
+    const handle = computed(() => toValue(props.handle) ?? target.value)
     const containerElement = computed(() => props.containerElement as (HTMLElement | SVGElement | null | undefined) ?? undefined)
     const disabled = computed(() => !!props.disabled)
     const storageValue = props.storageKey && useStorage(
