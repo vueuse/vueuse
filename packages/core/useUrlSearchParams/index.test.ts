@@ -227,6 +227,24 @@ describe('useUrlSearchParams', () => {
         await nextTick()
         expect(params).toEqual({ foo: null, bar: false })
       })
+
+      it('strips equal sign for empty params when stripEqualSign is true', async () => {
+        const params = useUrlSearchParams(mode, { stripEqualSign: true })
+        params.foo = ''
+        params.bar = ''
+        await nextTick()
+        switch (mode) {
+          case 'history':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/?foo&bar')
+            break
+          case 'hash':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/#?foo&bar')
+            break
+          case 'hash-params':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo&bar')
+            break
+        }
+      })
     })
   })
 

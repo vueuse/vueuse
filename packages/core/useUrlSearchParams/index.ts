@@ -36,6 +36,13 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default 'replace'
    */
   writeMode?: 'replace' | 'push'
+
+  /**
+   * Remove the equal sign from empty parameters
+   * e.g. `?foo&bar` instead of `?foo=&bar=`
+   * @default false
+   */
+  stripEqualSign?: boolean
 }
 
 /**
@@ -55,6 +62,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     removeFalsyValues = false,
     write: enableWrite = true,
     writeMode = 'replace',
+    stripEqualSign = false, // Added stripEqualSign option
     window = defaultWindow!,
   } = options
 
@@ -78,7 +86,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function constructQuery(params: URLSearchParams) {
-    const stringified = params.toString()
+    const stringified = stripEqualSign ? params.toString().replace(/=(&|$)/g, '$1') : params.toString()
 
     if (mode === 'history')
       return `${stringified ? `?${stringified}` : ''}${window.location.hash || ''}`
