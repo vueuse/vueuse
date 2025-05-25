@@ -62,7 +62,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     removeFalsyValues = false,
     write: enableWrite = true,
     writeMode = 'replace',
-    stripEqualSign = false, // Added stripEqualSign option
+    stripEqualSign = false,
     window = defaultWindow!,
   } = options
 
