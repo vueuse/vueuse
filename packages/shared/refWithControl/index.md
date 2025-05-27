@@ -8,10 +8,6 @@ related: computedWithControl
 
 Fine-grained controls over ref and its reactivity.
 
-::: warning
-This function only works for Vue 3
-:::
-
 ## Usage
 
 `refWithControl` uses `extendRef` to provide two extra functions `get` and `set` to have better control over when it should track/trigger the reactivity.
