@@ -57,10 +57,10 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
       return
     isActive.value = true
     if (immediateCallback)
-      cb()
+      cb(control)
     clean()
     if (isActive.value)
-      timer = setInterval(cb, intervalValue)
+      timer = setInterval(()=>cb(control), intervalValue)
   }
 
   if (immediate && isClient)
@@ -76,9 +76,10 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
 
   tryOnScopeDispose(pause)
 
-  return {
+  const control = {
     isActive: shallowReadonly(isActive),
     pause,
     resume,
   }
+  return control
 }
