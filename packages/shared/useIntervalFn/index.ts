@@ -30,7 +30,7 @@ export type UseIntervalFnReturn = Pausable
  * @param interval
  * @param options
  */
-export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalFnOptions = {}): UseIntervalFnReturn {
+export function useIntervalFn(cb: (UseIntervalFnReturn: UseIntervalFnReturn) => any, interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalFnOptions = {}): UseIntervalFnReturn {
   const {
     immediate = true,
     immediateCallback = false,
