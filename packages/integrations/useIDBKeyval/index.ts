@@ -4,7 +4,12 @@ import { watchPausable } from '@vueuse/core'
 import { del, get, set, update } from 'idb-keyval'
 import { ref as deepRef, shallowRef, toRaw, toValue } from 'vue'
 
-export interface UseIDBOptions extends ConfigurableFlush {
+interface Serializer<T> {
+  read: (raw: any) => T
+  write: (value: T) => any
+}
+
+export interface UseIDBOptions<T> extends ConfigurableFlush {
   /**
    * Watch for deep changes
    *
@@ -31,6 +36,11 @@ export interface UseIDBOptions extends ConfigurableFlush {
    * @default true
    */
   writeDefaults?: boolean
+
+  /**
+   * Custom data serialization
+   */
+  serializer?: Serializer<T>
 }
 
 export interface UseIDBKeyvalReturn<T> {
@@ -48,7 +58,7 @@ export interface UseIDBKeyvalReturn<T> {
 export function useIDBKeyval<T>(
   key: IDBValidKey,
   initialValue: MaybeRefOrGetter<T>,
-  options: UseIDBOptions = {},
+  options: UseIDBOptions<T> = {},
 ): UseIDBKeyvalReturn<T> {
   const {
     flush = 'pre',
@@ -64,6 +74,7 @@ export function useIDBKeyval<T>(
   const data = (shallow ? shallowRef : deepRef)(initialValue) as Ref<T>
 
   const rawInit: T = toValue(initialValue)
+  const serializer = options.serializer
 
   async function read() {
     try {
@@ -73,7 +84,12 @@ export function useIDBKeyval<T>(
           await set(key, rawInit)
       }
       else {
-        data.value = rawValue
+        if (serializer) {
+          data.value = serializer.read(rawValue)
+        }
+        else {
+          data.value = rawValue
+        }
       }
     }
     catch (e) {
@@ -90,8 +106,11 @@ export function useIDBKeyval<T>(
         await del(key)
       }
       else {
-        // IndexedDB does not support saving proxies, convert from proxy before saving
-        await update(key, () => toRaw(data.value))
+        let rawValue = toRaw(data.value)
+        if (serializer) {
+          rawValue = serializer.write(rawValue as any)
+        }
+        await update(key, () => rawValue)
       }
     }
     catch (e) {
