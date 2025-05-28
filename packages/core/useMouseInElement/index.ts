@@ -1,6 +1,7 @@
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
 import { shallowRef, watch } from 'vue'
+import { tryOnMounted } from '../../shared/tryOnMounted'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -20,7 +21,7 @@ export interface MouseInElementOptions extends UseMouseOptions {
  * @param options
  */
 export function useMouseInElement(
-  target: MaybeElementRef = window?.document.body,
+  target: MaybeElementRef,
   options: MouseInElementOptions = {},
 ) {
   const {
@@ -31,6 +32,7 @@ export function useMouseInElement(
 
   const { x, y, sourceType } = useMouse(options)
 
+  const targetRef = shallowRef(target ?? window?.document.body)
   const elementX = shallowRef(0)
   const elementY = shallowRef(0)
   const elementPositionX = shallowRef(0)
@@ -43,7 +45,7 @@ export function useMouseInElement(
     if (!window)
       return
 
-    const el = unrefElement(target)
+    const el = unrefElement(targetRef)
     if (!el || !(el instanceof Element))
       return
 
@@ -65,7 +67,7 @@ export function useMouseInElement(
       || elX < 0 || elY < 0
       || elX > width || elY > height
 
-    if (handleOutside || !isOutside.value) {
+    if (handleOutside) {
       elementX.value = elX
       elementY.value = elY
     }
@@ -73,20 +75,23 @@ export function useMouseInElement(
 
   let stop = () => { }
 
+  tryOnMounted(() => {
+    update()
+  })
+
   if (window) {
     const {
       stop: stopResizeObserver,
-    } = useResizeObserver(target, update)
+    } = useResizeObserver(targetRef, update)
     const {
       stop: stopMutationObserver,
-    } = useMutationObserver(target, update, {
+    } = useMutationObserver(targetRef, update, {
       attributeFilter: ['style', 'class'],
     })
 
     const stopWatch = watch(
-      [target, x, y],
+      [targetRef, x, y],
       update,
-      { immediate: true },
     )
 
     stop = () => {
