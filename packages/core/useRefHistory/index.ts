@@ -51,7 +51,7 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends Configurabl
    * @param newValue New value
    * @returns boolean indicating if commit should proceed
    */
-  shouldCommit?: (oldValue: Serialized | undefined, newValue: Raw) => boolean
+  shouldCommit?: (oldValue: Raw | undefined, newValue: Raw) => boolean
 }
 
 export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistoryReturn<Raw, Serialized> {
