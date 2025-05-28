@@ -300,10 +300,10 @@ describe('useRefHistory - sync', () => {
   })
 
   it('sync: should respect shouldCommit option', () => {
-    const v = ref(0)
+    const v = deepRef(0)
     const { history } = useRefHistory(v, {
       flush: 'sync',
-      shouldCommit: (oldValue, newValue) => newValue > 0,
+      shouldCommit: (oldValue: number | undefined, newValue: number) => newValue > 0,
     })
 
     expect(history.value.length).toBe(1)
@@ -603,9 +603,9 @@ describe('useRefHistory - pre', () => {
   })
 
   it('pre: should respect shouldCommit option', async () => {
-    const v = ref(0)
+    const v = deepRef(0)
     const { history } = useRefHistory(v, {
-      shouldCommit: (oldValue, newValue) => newValue > 0,
+      shouldCommit: (oldValue: number | undefined, newValue: number) => newValue > 0,
     })
 
     expect(history.value.length).toBe(1)
