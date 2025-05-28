@@ -1,9 +1,12 @@
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
-import { computed, reactive, toRefs } from 'vue'
-import { useElementBounding } from '../useElementBounding'
+import { shallowRef, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
+import { unrefElement } from '../unrefElement'
+import { useEventListener } from '../useEventListener'
 import { useMouse } from '../useMouse'
-import { useWindowScroll } from '../useWindowScroll'
+import { useMutationObserver } from '../useMutationObserver'
+import { useResizeObserver } from '../useResizeObserver'
 
 export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean
@@ -17,35 +20,101 @@ export interface MouseInElementOptions extends UseMouseOptions {
  * @param options
  */
 export function useMouseInElement(
-  target?: MaybeElementRef,
+  target: MaybeElementRef = window?.document.body,
   options: MouseInElementOptions = {},
 ) {
-  const windowScroll = reactive(useWindowScroll())
-  const mouse = reactive(useMouse(options))
-  const elementBounding = reactive(useElementBounding(target))
+  const {
+    handleOutside = true,
+    window = defaultWindow,
+  } = options
+  const type = options.type || 'page'
 
-  const isOutside = computed(() =>
-    mouse.x < elementBounding.x
-    || mouse.x > elementBounding.x + elementBounding.width
-    || mouse.y < elementBounding.y
-    || mouse.y > elementBounding.y + elementBounding.height,
-  )
+  const { x, y, sourceType } = useMouse(options)
 
-  const result = computed(() => ({
-    x: mouse.x,
-    y: mouse.y,
-    sourceType: mouse.sourceType,
-    elementX: mouse.x - elementBounding.left - windowScroll.x,
-    elementY: mouse.y - elementBounding.top - windowScroll.y,
-    elementPositionX: elementBounding.x,
-    elementPositionY: elementBounding.y,
-    elementHeight: elementBounding.height,
-    elementWidth: elementBounding.width,
-    isOutside,
-  }))
+  const elementX = shallowRef(0)
+  const elementY = shallowRef(0)
+  const elementPositionX = shallowRef(0)
+  const elementPositionY = shallowRef(0)
+  const elementHeight = shallowRef(0)
+  const elementWidth = shallowRef(0)
+  const isOutside = shallowRef(true)
+
+  function update() {
+    if (!window)
+      return
+
+    const el = unrefElement(target)
+    if (!el || !(el instanceof Element))
+      return
+
+    const {
+      left,
+      top,
+      width,
+      height,
+    } = el.getBoundingClientRect()
+
+    elementPositionX.value = left + (type === 'page' ? window.pageXOffset : 0)
+    elementPositionY.value = top + (type === 'page' ? window.pageYOffset : 0)
+    elementHeight.value = height
+    elementWidth.value = width
+
+    const elX = x.value - elementPositionX.value
+    const elY = y.value - elementPositionY.value
+    isOutside.value = width === 0 || height === 0
+      || elX < 0 || elY < 0
+      || elX > width || elY > height
+
+    if (handleOutside || !isOutside.value) {
+      elementX.value = elX
+      elementY.value = elY
+    }
+  }
+
+  let stop = () => { }
+
+  if (window) {
+    const {
+      stop: stopResizeObserver,
+    } = useResizeObserver(target, update)
+    const {
+      stop: stopMutationObserver,
+    } = useMutationObserver(target, update, {
+      attributeFilter: ['style', 'class'],
+    })
+
+    const stopWatch = watch(
+      [target, x, y],
+      update,
+      { immediate: true },
+    )
+
+    stop = () => {
+      stopResizeObserver()
+      stopMutationObserver()
+      stopWatch()
+    }
+
+    useEventListener(
+      document,
+      'mouseleave',
+      () => isOutside.value = true,
+      { passive: true },
+    )
+  }
 
   return {
-    ...toRefs(result.value),
+    x,
+    y,
+    sourceType,
+    elementX,
+    elementY,
+    elementPositionX,
+    elementPositionY,
+    elementHeight,
+    elementWidth,
+    isOutside,
+    stop,
   }
 }
 
