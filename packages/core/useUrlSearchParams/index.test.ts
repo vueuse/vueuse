@@ -228,8 +228,8 @@ describe('useUrlSearchParams', () => {
         expect(params).toEqual({ foo: null, bar: false })
       })
 
-      it('strips equal sign for empty params when stripEqualSign is true', async () => {
-        const params = useUrlSearchParams(mode, { stripEqualSign: true })
+      it('strips equal sign for empty params use customer stringify function', async () => {
+        const params = useUrlSearchParams(mode, { stringify: params => params.toString().replace(/=(&|$)/g, '$1') })
         params.foo = ''
         params.bar = ''
         await nextTick()
