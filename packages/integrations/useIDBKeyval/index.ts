@@ -80,8 +80,10 @@ export function useIDBKeyval<T>(
     try {
       const rawValue = await get<T>(key)
       if (rawValue === undefined) {
-        if (rawInit !== undefined && rawInit !== null && writeDefaults)
-          await set(key, rawInit)
+        if (rawInit !== undefined && rawInit !== null && writeDefaults) {
+          const initValue = serializer ? serializer.write(rawInit) : rawInit
+          await set(key, initValue)
+        }
       }
       else {
         if (serializer) {
