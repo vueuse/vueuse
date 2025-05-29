@@ -64,7 +64,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     write: enableWrite = true,
     writeMode = 'replace',
     window = defaultWindow!,
-    stringify,
+    stringify = params => params.toString(),
   } = options
 
   if (!window)
@@ -87,7 +87,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function constructQuery(params: URLSearchParams) {
-    const stringified = stringify ? stringify(params) : params.toString()
+    const stringified = stringify(params)
     if (mode === 'history')
       return `${stringified ? `?${stringified}` : ''}${window.location.hash || ''}`
     if (mode === 'hash-params')
