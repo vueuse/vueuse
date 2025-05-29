@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter, WatchOptions } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
-import { ref as deepRef, toValue, watch } from 'vue'
+import { readonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseElementBySelectorOptions extends WatchOptions {
@@ -17,7 +17,7 @@ export function useElementBySelector<TElement extends Element = HTMLElement>(
     immediate = true,
   } = options
 
-  const el = deepRef<TElement | null>()
+  const el = shallowRef<TElement | null>()
   const select = (newSelector: string): TElement | null | undefined => el.value = window?.document.querySelector<TElement>(newSelector)
 
   tryOnMounted(() => select(toValue(selector)))
@@ -28,5 +28,5 @@ export function useElementBySelector<TElement extends Element = HTMLElement>(
     { immediate },
   )
 
-  return el
+  return readonly(el)
 }
