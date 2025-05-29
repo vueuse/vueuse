@@ -3,7 +3,8 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
 import { pausableWatch, tryOnMounted } from '@vueuse/shared'
-import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
+// eslint-disable-next-line no-restricted-imports
+import { computed, ref as deepRef, nextTick, shallowRef, toRaw, toValue, unref, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
@@ -154,7 +155,10 @@ export function useStorage<T extends (string | number | boolean | object | null)
     initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : deepRef)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
+  const data = (shallow ? shallowRef : deepRef)(
+    structuredClone(toRaw(unref(typeof defaults === 'function' ? defaults() : defaults))),
+  ) as RemovableRef<T>
+
   const keyComputed = computed<string>(() => toValue(key))
 
   if (!storage) {
@@ -169,7 +173,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
   if (!storage)
     return data
 
-  const rawInit: T = toValue(defaults)
+  const rawInit: T = toValue(data)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
@@ -177,6 +181,14 @@ export function useStorage<T extends (string | number | boolean | object | null)
     data,
     () => write(data.value),
     { flush, deep, eventFilter },
+  )
+
+  watch(
+    () => toValue(defaults),
+    (newDefaults) => {
+      data.value = newDefaults
+    },
+    { flush, deep },
   )
 
   watch(keyComputed, () => update(), { flush })
