@@ -1,7 +1,7 @@
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
 import { shallowRef, watch } from 'vue'
-import { tryOnMounted } from '../../shared/tryOnMounted'
+import { tryOnMounted } from '@vueuse/shared'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
