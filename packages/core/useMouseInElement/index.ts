@@ -1,7 +1,7 @@
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseMouseOptions } from '../useMouse'
-import { shallowRef, watch } from 'vue'
 import { tryOnMounted } from '@vueuse/shared'
+import { shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -11,6 +11,8 @@ import { useResizeObserver } from '../useResizeObserver'
 
 export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean
+  windowScroll?: boolean
+  windowResize?: boolean
 }
 
 /**
@@ -25,6 +27,8 @@ export function useMouseInElement(
   options: MouseInElementOptions = {},
 ) {
   const {
+    windowResize = true,
+    windowScroll = true,
     handleOutside = true,
     window = defaultWindow,
   } = options
@@ -73,7 +77,11 @@ export function useMouseInElement(
     }
   }
 
-  let stop = () => { }
+  const stopFnList: Array<() => void> = []
+  function stop() {
+    stopFnList.forEach(fn => fn())
+    stopFnList.length = 0
+  }
 
   tryOnMounted(() => {
     update()
@@ -94,11 +102,11 @@ export function useMouseInElement(
       update,
     )
 
-    stop = () => {
-      stopResizeObserver()
-      stopMutationObserver()
-      stopWatch()
-    }
+    stopFnList.push(
+      stopResizeObserver,
+      stopMutationObserver,
+      stopWatch,
+    )
 
     useEventListener(
       document,
@@ -106,6 +114,17 @@ export function useMouseInElement(
       () => isOutside.value = true,
       { passive: true },
     )
+
+    if (windowScroll) {
+      stopFnList.push(
+        useEventListener('scroll', update, { capture: true, passive: true }),
+      )
+    }
+    if (windowResize) {
+      stopFnList.push(
+        useEventListener('resize', update, { passive: true }),
+      )
+    }
   }
 
   return {
