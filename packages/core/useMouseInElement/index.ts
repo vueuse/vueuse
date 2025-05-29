@@ -21,7 +21,7 @@ export interface MouseInElementOptions extends UseMouseOptions {
  * @param options
  */
 export function useMouseInElement(
-  target: MaybeElementRef,
+  target?: MaybeElementRef,
   options: MouseInElementOptions = {},
 ) {
   const {
