@@ -298,6 +298,31 @@ describe('useRefHistory - sync', () => {
     expect(history.value[0].snapshot).toBe(2)
     expect(last.value.snapshot).toBe(2)
   })
+
+  it('sync: should respect shouldCommit option', () => {
+    const v = deepRef(0)
+    const { history } = useRefHistory(v, {
+      flush: 'sync',
+      shouldCommit: (oldValue: number | undefined, newValue: number) => newValue > 0,
+    })
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
+
+    v.value = -1
+    expect(history.value.length).toBe(1)
+
+    v.value = 2
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(2)
+
+    v.value = -3
+    expect(history.value.length).toBe(2)
+
+    v.value = 4
+    expect(history.value.length).toBe(3)
+    expect(history.value[0].snapshot).toBe(4)
+  })
 })
 
 describe('useRefHistory - pre', () => {
@@ -575,5 +600,33 @@ describe('useRefHistory - pre', () => {
     expect(history.value.length).toBe(1)
     expect(history.value[0].snapshot).toBe(2)
     expect(last.value.snapshot).toBe(2)
+  })
+
+  it('pre: should respect shouldCommit option', async () => {
+    const v = deepRef(0)
+    const { history } = useRefHistory(v, {
+      shouldCommit: (oldValue: number | undefined, newValue: number) => newValue > 0,
+    })
+
+    expect(history.value.length).toBe(1)
+    expect(history.value[0].snapshot).toBe(0)
+
+    v.value = -1
+    await nextTick()
+    expect(history.value.length).toBe(1)
+
+    v.value = 2
+    await nextTick()
+    expect(history.value.length).toBe(2)
+    expect(history.value[0].snapshot).toBe(2)
+
+    v.value = -3
+    await nextTick()
+    expect(history.value.length).toBe(2)
+
+    v.value = 4
+    await nextTick()
+    expect(history.value.length).toBe(3)
+    expect(history.value[0].snapshot).toBe(4)
   })
 })
