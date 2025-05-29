@@ -110,6 +110,9 @@ export function useRefHistory<Raw, Serialized = Raw>(
     isActive: isTracking,
   } = pausableFilter(eventFilter)
 
+  // Track the last raw value for shouldCommit comparison
+  let lastRawValue: Raw | undefined = source.value
+
   const {
     ignoreUpdates,
     ignorePrevAsyncUpdates,
@@ -133,6 +136,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
     ignoreUpdates(() => {
       source.value = value
+      lastRawValue = value
     })
   }
 
@@ -147,12 +151,11 @@ export function useRefHistory<Raw, Serialized = Raw>(
     ignorePrevAsyncUpdates()
 
     if (shouldCommit) {
-      const history = manualHistory.history.value
-      const lastValue = history.length > 0 ? history[history.length - 1].snapshot : undefined
-      if (!shouldCommit(lastValue, source.value))
+      if (!shouldCommit(lastRawValue, source.value))
         return
     }
 
+    lastRawValue = source.value
     manualCommit()
   }
 
