@@ -10,8 +10,26 @@ import { useMutationObserver } from '../useMutationObserver'
 import { useResizeObserver } from '../useResizeObserver'
 
 export interface MouseInElementOptions extends UseMouseOptions {
+  /**
+   * Whether to handle mouse events when the cursor is outside the target element.
+   * When enabled, mouse position will continue to be tracked even when outside the element bounds.
+   *
+   * @default true
+   */
   handleOutside?: boolean
+
+  /**
+   * Listen to window resize event
+   *
+   * @default true
+   */
   windowScroll?: boolean
+
+  /**
+   * Listen to window scroll event
+   *
+   * @default true
+   */
   windowResize?: boolean
 }
 
