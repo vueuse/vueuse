@@ -87,7 +87,7 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
   event: MaybeRefOrGetter<Arrayable<E>>,
   listener: MaybeRef<(this: HTMLElement, ev: HTMLElementEventMap[E]) => any>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
-): () => void
+): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
