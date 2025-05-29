@@ -11,8 +11,11 @@ interface InferEventTarget<Events> {
   removeEventListener: (event: Events, fn?: any, options?: any) => any
 }
 
+export type DocumentOrShadowRootEventMap = DocumentEventMap & ShadowRootEventMap
+
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
+export type DocumentOrShadowRootEventName = keyof DocumentOrShadowRootEventMap
 
 export interface GeneralEventListener<E = Event> {
   (evt: E): void
@@ -64,10 +67,10 @@ export function useEventListener<E extends keyof WindowEventMap>(
  * @param listener
  * @param options
  */
-export function useEventListener<E extends keyof DocumentEventMap>(
+export function useEventListener<E extends keyof DocumentOrShadowRootEventMap>(
   target: DocumentOrShadowRoot,
   event: MaybeRefOrGetter<Arrayable<E>>,
-  listener: MaybeRef<Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>>,
+  listener: MaybeRef<Arrayable<(this: Document, ev: DocumentOrShadowRootEventMap[E]) => any>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
@@ -87,7 +90,7 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
   event: MaybeRefOrGetter<Arrayable<E>>,
   listener: MaybeRef<(this: HTMLElement, ev: HTMLElementEventMap[E]) => any>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
-): () => void
+): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
