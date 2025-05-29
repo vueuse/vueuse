@@ -47,7 +47,3 @@ const computedRef = computedWithControl(
 
 computedRef.trigger()
 ```
-
-::: warning
-Manual triggering only works for Vue 3
-:::
