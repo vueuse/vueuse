@@ -1,4 +1,4 @@
-import { isClient, useDebounceFn } from '@vueuse/shared'
+import { isClient, tryOnMounted, useDebounceFn } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { useCssVar } from '../useCssVar'
 import { useEventListener } from '../useEventListener'
@@ -30,7 +30,7 @@ export function useScreenSafeArea() {
     bottomCssVar.value = 'env(safe-area-inset-bottom, 0px)'
     leftCssVar.value = 'env(safe-area-inset-left, 0px)'
 
-    update()
+    tryOnMounted(update)
 
     useEventListener('resize', useDebounceFn(update), { passive: true })
   }
