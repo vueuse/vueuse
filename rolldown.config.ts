@@ -1,10 +1,7 @@
 import type { PackageIndexes, PackageManifest } from '@vueuse/metadata'
 import type { OutputOptions, RolldownOptions } from 'rolldown'
-// import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import fs from 'node:fs'
-// import dts from 'rollup-plugin-dts'
 import { dts } from 'rolldown-plugin-dts'
-// import esbuild from 'rollup-plugin-esbuild'
 import { PluginPure as pure } from 'rollup-plugin-pure'
 import { globSync } from 'tinyglobby'
 
@@ -15,22 +12,9 @@ const configs: RolldownOptions[] = []
 
 const pluginDts = dts()
 
-const purePluginDts = dts({
-  emitDtsOnly: true,
-})
-
 const pluginPure = pure({
   functions: ['defineComponent'],
 })
-
-// function esbuildMinifier(options: ESBuildOptions) {
-//   const { renderChunk } = esbuild(options)
-
-//   return {
-//     name: 'esbuild-minifier',
-//     renderChunk,
-//   }
-// }
 
 const externals = [
   'vue',
@@ -96,11 +80,6 @@ export function createRolldownConfig(
           extend: true,
           globals: iifeGlobals,
           minify: true,
-          // plugins: [
-          //   esbuildMinifier({
-          //     minify: true,
-          //   }),
-          // ],
         },
       )
     }
@@ -109,10 +88,6 @@ export function createRolldownConfig(
       input,
       output,
       plugins: [
-        // target
-        //   ? esbuild({ target })
-        //   : pluginEsbuild,
-        // json(),
         pluginPure,
       ],
       external: [
@@ -125,7 +100,6 @@ export function createRolldownConfig(
       configs.push({
         input,
         output: [
-          // { file: `${fn}.d.mts` },
           {
             dir: '',
             format: 'es',
@@ -152,7 +126,6 @@ export function createRolldownConfig(
           },
         ],
         plugins: [
-          // pluginEsbuild,
           pluginPure,
         ],
         external: [
@@ -164,7 +137,6 @@ export function createRolldownConfig(
       configs.push({
         input: `${fn}/component.ts`,
         output: [
-          // { file: `${fn}/component.d.mts` },
           {
             dir: fn,
             format: 'es',
@@ -172,7 +144,7 @@ export function createRolldownConfig(
           },
         ],
         plugins: [
-          purePluginDts,
+          pluginDts,
         ],
         external: [
           ...externals,
@@ -181,8 +153,6 @@ export function createRolldownConfig(
       })
     }
   }
-
-  // console.log(JSON.stringify(configs, null, 2))
 
   return configs
 }
