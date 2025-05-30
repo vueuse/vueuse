@@ -70,7 +70,7 @@ catalogs:
       specifier: ^3.5.3
       version: 3.5.3
     rolldown:
-      specifier: 1.0.0-beta.10
+      specifier: ^1.0.0-beta.10
       version: 1.0.0-beta.10
     rolldown-plugin-dts:
       specifier: 0.13.6
@@ -9655,7 +9655,7 @@ snapshots:
 
   '@babel/helper-builder-binary-assignment-operator-visitor@7.21.5':
     dependencies:
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
 
   '@babel/helper-compilation-targets@7.27.0':
     dependencies:
@@ -9690,7 +9690,7 @@ snapshots:
       '@babel/core': 7.26.10
       '@babel/helper-compilation-targets': 7.27.0
       '@babel/helper-plugin-utils': 7.26.5
-      debug: 4.4.0
+      debug: 4.4.1
       lodash.debounce: 4.0.8
       resolve: 1.22.8
       semver: 6.3.1
@@ -9699,16 +9699,16 @@ snapshots:
 
   '@babel/helper-environment-visitor@7.24.7':
     dependencies:
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
 
   '@babel/helper-function-name@7.24.7':
     dependencies:
       '@babel/template': 7.27.0
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
 
   '@babel/helper-hoist-variables@7.24.7':
     dependencies:
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
 
   '@babel/helper-member-expression-to-functions@7.25.9':
     dependencies:
@@ -9745,7 +9745,7 @@ snapshots:
       '@babel/helper-annotate-as-pure': 7.25.9
       '@babel/helper-environment-visitor': 7.24.7
       '@babel/helper-wrap-function': 7.20.5
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
     transitivePeerDependencies:
       - supports-color
 
@@ -9761,7 +9761,7 @@ snapshots:
   '@babel/helper-simple-access@7.24.7':
     dependencies:
       '@babel/traverse': 7.27.0
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
     transitivePeerDependencies:
       - supports-color
 
@@ -9774,7 +9774,7 @@ snapshots:
 
   '@babel/helper-split-export-declaration@7.24.7':
     dependencies:
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
 
   '@babel/helper-string-parser@7.25.9': {}
 
@@ -9791,7 +9791,7 @@ snapshots:
       '@babel/helper-function-name': 7.24.7
       '@babel/template': 7.27.0
       '@babel/traverse': 7.27.0
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
     transitivePeerDependencies:
       - supports-color
 
@@ -10310,7 +10310,7 @@ snapshots:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.26.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.26.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.26.10)
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.26.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.26.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.26.10)
@@ -10325,7 +10325,7 @@ snapshots:
       '@babel/helper-plugin-utils': 7.26.5
       '@babel/plugin-proposal-unicode-property-regex': 7.18.6(@babel/core@7.26.10)
       '@babel/plugin-transform-dotall-regex': 7.18.6(@babel/core@7.26.10)
-      '@babel/types': 7.27.0
+      '@babel/types': 7.27.3
       esutils: 2.0.3
 
   '@babel/regjsgen@0.8.0': {}
@@ -18911,7 +18911,7 @@ snapshots:
 
   vite-plugin-pwa@0.19.0(vite@6.3.5(@types/node@22.15.18)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.4)(yaml@2.7.1))(workbox-build@7.0.0)(workbox-window@7.0.0):
     dependencies:
-      debug: 4.4.0
+      debug: 4.4.1
       fast-glob: 3.3.3
       pretty-bytes: 6.1.1
       vite: 6.3.5(@types/node@22.15.18)(jiti@2.4.2)(terser@5.24.0)(tsx@4.19.4)(yaml@2.7.1)

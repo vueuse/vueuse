@@ -1,10 +1,10 @@
 import type { PackageIndexes, PackageManifest } from '@vueuse/metadata'
 import type { OutputOptions, RolldownOptions } from 'rolldown'
-import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
+// import type { Options as ESBuildOptions } from 'rollup-plugin-esbuild'
 import fs from 'node:fs'
 // import dts from 'rollup-plugin-dts'
 import { dts } from 'rolldown-plugin-dts'
-import esbuild from 'rollup-plugin-esbuild'
+// import esbuild from 'rollup-plugin-esbuild'
 import { PluginPure as pure } from 'rollup-plugin-pure'
 import { globSync } from 'tinyglobby'
 
@@ -18,14 +18,14 @@ const pluginPure = pure({
   functions: ['defineComponent'],
 })
 
-function esbuildMinifier(options: ESBuildOptions) {
-  const { renderChunk } = esbuild(options)
+// function esbuildMinifier(options: ESBuildOptions) {
+//   const { renderChunk } = esbuild(options)
 
-  return {
-    name: 'esbuild-minifier',
-    renderChunk,
-  }
-}
+//   return {
+//     name: 'esbuild-minifier',
+//     renderChunk,
+//   }
+// }
 
 const externals = [
   'vue',
@@ -90,11 +90,12 @@ export function createRolldownConfig(
           name: iifeName,
           extend: true,
           globals: iifeGlobals,
-          plugins: [
-            esbuildMinifier({
-              minify: true,
-            }),
-          ],
+          minify: true,
+          // plugins: [
+          //   esbuildMinifier({
+          //     minify: true,
+          //   }),
+          // ],
         },
       )
     }
@@ -119,7 +120,12 @@ export function createRolldownConfig(
       configs.push({
         input,
         output: [
-          { file: `${fn}.d.mts` },
+          // { file: `${fn}.d.mts` },
+          {
+            dir: '',
+            format: 'es',
+            // entryFileNames: '[name].d.mts',
+          },
         ],
         plugins: [
           pluginDts,
@@ -153,7 +159,12 @@ export function createRolldownConfig(
       configs.push({
         input: `${fn}/component.ts`,
         output: [
-          { file: `${fn}/component.d.mts` },
+          // { file: `${fn}/component.d.mts` },
+          {
+            dir: '',
+            format: 'es',
+            // entryFileNames: '[name]/component.d.mts',
+          },
         ],
         plugins: [
           pluginDts,
@@ -165,6 +176,8 @@ export function createRolldownConfig(
       })
     }
   }
+
+  // console.log(JSON.stringify(configs, null, 2))
 
   return configs
 }
