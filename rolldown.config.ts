@@ -14,6 +14,11 @@ const functions = metadata.functions as PackageIndexes['functions']
 const configs: RolldownOptions[] = []
 
 const pluginDts = dts()
+
+const purePluginDts = dts({
+  emitDtsOnly: true,
+})
+
 const pluginPure = pure({
   functions: ['defineComponent'],
 })
@@ -124,7 +129,7 @@ export function createRolldownConfig(
           {
             dir: '',
             format: 'es',
-            // entryFileNames: '[name].d.mts',
+            entryFileNames: '[name].mjs',
           },
         ],
         plugins: [
@@ -161,13 +166,13 @@ export function createRolldownConfig(
         output: [
           // { file: `${fn}/component.d.mts` },
           {
-            dir: '',
+            dir: fn,
             format: 'es',
-            // entryFileNames: '[name]/component.d.mts',
+            entryFileNames: '[name].mjs',
           },
         ],
         plugins: [
-          pluginDts,
+          purePluginDts,
         ],
         external: [
           ...externals,
