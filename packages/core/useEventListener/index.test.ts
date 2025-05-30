@@ -360,4 +360,18 @@ describe('useEventListener', () => {
     expect(addSpy).toHaveBeenLastCalledWith('click', listener, true)
     expect(removeSpy).toHaveBeenCalledTimes(1)
   })
+
+  it('document and shadowRoot should be checked', () => {
+    const element = document.createElement('div')
+    const shadowRoot = element.attachShadow({ mode: 'open' })
+    useEventListener(shadowRoot, 'click', function () {
+      expect(this instanceof ShadowRoot).toBe(true)
+      expect(this.host).toBeDefined()
+    })
+    useEventListener(document, 'click', function () {
+      expect(this instanceof Document).toBe(true)
+      // @ts-expect-error host is not defined in Document but defined in ShadowRoot
+      expect(this.host).toBeUndefined()
+    })
+  })
 })
