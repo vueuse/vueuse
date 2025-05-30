@@ -9,6 +9,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nr update && pnpm -r run build",
+    "build:rolldown": "nr update && pnpm -r run build:rolldown",
     "build:redirects": "tsx scripts/redirects.ts",
     "build:types": "vue-tsc --emitDeclarationOnly",
     "clean": "tsx scripts/clean.ts",
@@ -89,6 +90,8 @@
     "postcss-nested": "catalog:dev",
     "prettier": "catalog:dev",
     "remove-markdown": "catalog:docs",
+    "rolldown": "catalog:dev",
+    "rolldown-plugin-dts": "catalog:dev",
     "rollup": "catalog:dev",
     "rollup-plugin-dts": "catalog:dev",
     "rollup-plugin-esbuild": "catalog:dev",
