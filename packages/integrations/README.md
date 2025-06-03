@@ -27,6 +27,7 @@ npm i @vueuse/integrations
 - [`useNProgress`](https://vueuse.org/integrations/useNProgress/) — reactive wrapper for [`nprogress`](https://github.com/rstacruz/nprogress)
 - [`useQRCode`](https://vueuse.org/integrations/useQRCode/) — wrapper for [`qrcode`](https://github.com/soldair/node-qrcode)
 - [`useSortable`](https://vueuse.org/integrations/useSortable/) — wrapper for [`sortable`](https://github.com/SortableJS/Sortable)
+- [`useTemporal`](https://vueuse.org/integrations/useTemporal/) — reactive Temporal API with timezone conversion and calendar system support
 
 <!--FUNCTIONS_LIST_ENDS-->
 
