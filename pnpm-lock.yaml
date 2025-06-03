@@ -73,7 +73,7 @@ catalogs:
       specifier: ^1.0.0-beta.10
       version: 1.0.0-beta.10
     rolldown-plugin-dts:
-      specifier: 0.13.6
+      specifier: ^0.13.6
       version: 0.13.6
     rollup-plugin-dts:
       specifier: ^6.2.1
