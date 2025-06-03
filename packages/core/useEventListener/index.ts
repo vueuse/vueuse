@@ -93,7 +93,7 @@ export function useEventListener<E extends keyof ShadowRootEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 4: Explicitly HTMLElement target
+ * Overload 5: Explicitly HTMLElement target
  *
  * @see https://vueuse.org/useEventListener
  * @param target
@@ -111,7 +111,7 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 5: Custom event target with event type infer
+ * Overload 6: Custom event target with event type infer
  *
  * @see https://vueuse.org/useEventListener
  * @param target
@@ -129,7 +129,7 @@ export function useEventListener<Names extends string, EventType = Event>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 6: Custom event target fallback
+ * Overload 7: Custom event target fallback
  *
  * @see https://vueuse.org/useEventListener
  * @param target
