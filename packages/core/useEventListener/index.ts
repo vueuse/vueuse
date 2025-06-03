@@ -11,11 +11,9 @@ interface InferEventTarget<Events> {
   removeEventListener: (event: Events, fn?: any, options?: any) => any
 }
 
-export type DocumentOrShadowRootEventMap = DocumentEventMap & ShadowRootEventMap
-
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
-export type DocumentOrShadowRootEventName = keyof DocumentOrShadowRootEventMap
+export type ShadowRootEventName = keyof ShadowRootEventMap
 
 export interface GeneralEventListener<E = Event> {
   (evt: E): void
@@ -67,10 +65,28 @@ export function useEventListener<E extends keyof WindowEventMap>(
  * @param listener
  * @param options
  */
-export function useEventListener<E extends keyof DocumentOrShadowRootEventMap>(
-  target: DocumentOrShadowRoot,
+export function useEventListener<E extends keyof DocumentEventMap>(
+  target: Document,
   event: MaybeRefOrGetter<Arrayable<E>>,
-  listener: MaybeRef<Arrayable<(this: Document, ev: DocumentOrShadowRootEventMap[E]) => any>>,
+  listener: MaybeRef<Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>>,
+  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
+): Fn
+
+/**
+ * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
+ *
+ * Overload 4: Explicitly ShadowRoot target
+ *
+ * @see https://vueuse.org/useEventListener
+ * @param target
+ * @param event
+ * @param listener
+ * @param options
+ */
+export function useEventListener<E extends keyof ShadowRootEventMap>(
+  target: ShadowRoot,
+  event: MaybeRefOrGetter<Arrayable<E>>,
+  listener: MaybeRef<Arrayable<(this: Document, ev: ShadowRootEventMap[E]) => any>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
