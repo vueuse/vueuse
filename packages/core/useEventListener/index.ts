@@ -84,9 +84,9 @@ export function useEventListener<E extends keyof DocumentEventMap>(
  * @param options
  */
 export function useEventListener<E extends keyof ShadowRootEventMap>(
-  target: ShadowRoot,
+  target: MaybeRefOrGetter<Arrayable<ShadowRoot> | null | undefined>,
   event: MaybeRefOrGetter<Arrayable<E>>,
-  listener: MaybeRef<Arrayable<(this: Document, ev: ShadowRootEventMap[E]) => any>>,
+  listener: MaybeRef<Arrayable<(this: ShadowRoot, ev: ShadowRootEventMap[E]) => any>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
