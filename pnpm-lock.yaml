@@ -69,9 +69,6 @@ catalogs:
     prettier:
       specifier: ^3.5.3
       version: 3.5.3
-    rolldown:
-      specifier: ^1.0.0-beta.10
-      version: 1.0.0-beta.10
     rolldown-plugin-dts:
       specifier: ^0.13.6
       version: 0.13.6
@@ -284,6 +281,7 @@ overrides:
   '@vueuse/rxjs': workspace:*
   '@vueuse/shared': workspace:*
   eslint: ^9.26.0
+  rolldown: ^1.0.0-beta.10
   rollup: ^4.40.2
   vite: ^6.3.5
   vite-plugin-pwa: ^1.0.0
@@ -450,7 +448,7 @@ importers:
         specifier: catalog:docs
         version: 0.6.2
       rolldown:
-        specifier: catalog:dev
+        specifier: ^1.0.0-beta.10
         version: 1.0.0-beta.10
       rolldown-plugin-dts:
         specifier: catalog:dev
@@ -7452,7 +7450,7 @@ packages:
     resolution: {integrity: sha512-eeiRAhGWK/v3hFFSWQ1FeE+tvRIIKxGH7uA/THMC1FD3HuTtltxx79+8TqAuD4msfgApJyB9k4Gu3YSWPwkTIQ==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
-      rolldown: ^1.0.0-beta.9
+      rolldown: ^1.0.0-beta.10
       typescript: ^5.0.0
       vue-tsc: ~2.2.0
     peerDependenciesMeta:
@@ -7495,7 +7493,7 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
-      rolldown: 1.x
+      rolldown: ^1.0.0-beta.10
       rollup: ^4.40.2
     peerDependenciesMeta:
       rolldown:
