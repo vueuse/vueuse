@@ -38,7 +38,8 @@
     "./useAsyncValidator/component": "./useAsyncValidator/component.mjs",
     "./useIDBKeyval": "./useIDBKeyval.mjs",
     "./useSortable": "./useSortable.mjs",
-    "./useSortable/component": "./useSortable/component.mjs"
+    "./useSortable/component": "./useSortable/component.mjs",
+    "./useTemporal": "./useTemporal.mjs"
   },
   "main": "./index.mjs",
   "module": "./index.mjs",
@@ -56,6 +57,7 @@
     "test:attw": "attw --pack --config-path ../../.attw.json ."
   },
   "peerDependencies": {
+    "@js-temporal/polyfill": "^0.4",
     "async-validator": "^4",
     "axios": "^1",
     "change-case": "^5",
@@ -71,6 +73,9 @@
     "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
+    "@js-temporal/polyfill": {
+      "optional": true
+    },
     "async-validator": {
       "optional": true
     },
@@ -113,6 +118,7 @@
     "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
+    "@js-temporal/polyfill": "catalog:integrations",
     "@types/nprogress": "catalog:types",
     "@types/qrcode": "catalog:types",
     "@types/sortablejs": "catalog:types",
