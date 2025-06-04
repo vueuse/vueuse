@@ -14,9 +14,7 @@ describe('watchClone', () => {
         c: 3,
       },
     })
-    watchClone(num, spy, {
-      deep: true,
-    })
+    watchClone(num, spy)
     num.value.b.c = 100
     await nextTick()
     expect(spy).toBeCalledTimes(1)
@@ -50,9 +48,7 @@ describe('watchClone', () => {
         c: 3,
       },
     })
-    watchClone(() => num, spy, {
-      deep: true,
-    })
+    watchClone(num, spy)
     num.b.c = 100
     await nextTick()
     expect(spy).toBeCalledTimes(1)
