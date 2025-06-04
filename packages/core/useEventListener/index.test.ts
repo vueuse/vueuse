@@ -360,4 +360,38 @@ describe('useEventListener', () => {
     expect(addSpy).toHaveBeenLastCalledWith('click', listener, true)
     expect(removeSpy).toHaveBeenCalledTimes(1)
   })
+
+  it('should check document and shadowRoot', () => {
+    const element = document.createElement('div')
+    const shadowRoot = element.attachShadow({ mode: 'open' })
+    const listener1 = (ele: ShadowRoot) => {
+      expect(ele instanceof ShadowRoot).toBe(true)
+      expect(ele.host).toBeDefined()
+      expect(ele.mode).toBe('open')
+    }
+    const listener2 = (ele: Document) => {
+      expect(ele instanceof Document).toBe(true)
+      // @ts-expect-error host is not defined in Document but defined in ShadowRoot
+      expect(ele.host).toBeUndefined()
+    }
+
+    useEventListener(shadowRoot, 'click', listener1)
+    useEventListener(document, 'click', listener2)
+  })
+
+  it('should check multiple shadowRoots + multiple events', () => {
+    const element1 = document.createElement('div')
+    const shadowRoot1 = element1.attachShadow({ mode: 'open' })
+    const element2 = document.createElement('div')
+    const shadowRoot2 = element2.attachShadow({ mode: 'closed' })
+
+    const listener = vi.fn()
+    const listener2 = (ele: ShadowRoot) => {
+      expect(ele instanceof ShadowRoot).toBe(true)
+      expect(ele.host).toBeDefined()
+      expect(ele.mode).toBeOneOf(['open', 'closed'])
+    }
+
+    useEventListener([shadowRoot1, shadowRoot2], 'click', [listener, listener2])
+  })
 })
