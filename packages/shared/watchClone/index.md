@@ -15,9 +15,7 @@ import { watchClone } from '@vueuse/core'
 
 const obj = ref({ a: 1, b: {
   c: 3
-} }, {
-  deep: true
-})
+}})
 
 watch(obj, (newVal, oldVal) => {
   console.log(newVal) // { a: 1, b: { c: 100 } }
