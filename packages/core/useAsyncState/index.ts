@@ -8,6 +8,7 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
   isLoading: Ref<boolean>
   error: Ref<unknown>
   execute: (delay?: number, ...args: Params) => Promise<Data>
+  cancel: () => void
 }
 
 export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> =
@@ -67,6 +68,13 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
    * @default false
    */
   throwError?: boolean
+ /**
+   *
+   * Only the latest Promise takes effect, and the previous ones will be canceled.
+   *
+   * @default false
+   */
+  cancellable?: boolean
 }
 
 /**
@@ -91,12 +99,13 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     resetOnExecute = true,
     shallow = true,
     throwError,
+    cancellable = false
   } = options ?? {}
   const state = shallow ? shallowRef(initialState) : deepRef(initialState)
   const isReady = shallowRef(false)
   const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
-
+  let cancel = noop
   async function execute(delay = 0, ...args: any[]) {
     if (resetOnExecute)
       state.value = initialState
@@ -107,10 +116,16 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     if (delay > 0)
       await promiseTimeout(delay)
 
-    const _promise = typeof promise === 'function'
+    let _promise = typeof promise === 'function'
       ? promise(...args as Params)
       : promise
-
+    if (cancellable) {
+      _promise = new Promise<Data>((resolve, reject) => {
+          cancel()
+          cancel = () => (resolve = reject = noop)
+          ;(promise as (...args:Params) =>Promise<Data>)(...args as Params).then(res => resolve(res), err => reject(err))
+        })
+    }
     try {
       const data = await _promise
       state.value = data
@@ -140,6 +155,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     isLoading,
     error,
     execute,
+    cancel
   }
 
   function waitUntilIsLoaded() {
