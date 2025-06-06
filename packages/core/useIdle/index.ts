@@ -1,4 +1,4 @@
-import type { ConfigurableEventFilter } from '@vueuse/shared'
+import type { ConfigurableEventFilter, TimerHandle } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
@@ -58,7 +58,7 @@ export function useIdle(
   const idle = shallowRef(initialState)
   const lastActive = shallowRef(timestamp())
 
-  let timer: any
+  let timer: TimerHandle
 
   const reset = () => {
     idle.value = false
