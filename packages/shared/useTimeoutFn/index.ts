@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { AnyFn, Stoppable } from '../utils'
+import type { AnyFn, Stoppable, TimerHandle } from '../utils'
 import { shallowReadonly, shallowRef, toValue } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
@@ -41,12 +41,12 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
 
   const isPending = shallowRef(false)
 
-  let timer: ReturnType<typeof setTimeout> | null = null
+  let timer: TimerHandle
 
   function clear() {
     if (timer) {
       clearTimeout(timer)
-      timer = null
+      timer = undefined
     }
   }
 
@@ -62,7 +62,7 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
     isPending.value = true
     timer = setTimeout(() => {
       isPending.value = false
-      timer = null
+      timer = undefined
 
       cb(...args)
     }, toValue(interval))

@@ -1,4 +1,4 @@
-import type { Fn } from '@vueuse/shared'
+import type { Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
@@ -183,8 +183,8 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  let retryTimeout: ReturnType<typeof setTimeout> | undefined
-  let pongTimeoutWait: ReturnType<typeof setTimeout> | undefined
+  let retryTimeout: TimerHandle
+  let pongTimeoutWait: TimerHandle
 
   const _sendBuffer = () => {
     if (bufferedData.length && wsRef.value && status.value === 'OPEN') {

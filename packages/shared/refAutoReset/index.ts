@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { TimerHandle } from '../utils'
 import { customRef, toValue } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 
@@ -14,7 +15,7 @@ export type RefAutoResetReturn<T = any> = Ref<T>
 export function refAutoReset<T>(defaultValue: MaybeRefOrGetter<T>, afterMs: MaybeRefOrGetter<number> = 10000): RefAutoResetReturn<T> {
   return customRef<T>((track, trigger) => {
     let value: T = toValue(defaultValue)
-    let timer: any
+    let timer: TimerHandle
 
     const resetAfter = () =>
       setTimeout(() => {
