@@ -100,7 +100,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     deep = false,
     flush = 'pre',
     eventFilter,
-    shouldCommit,
+    shouldCommit = () => true,
   } = options
 
   const {
