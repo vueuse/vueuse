@@ -68,7 +68,7 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
    * @default false
    */
   throwError?: boolean
- /**
+  /**
    *
    * Only the latest Promise takes effect, and the previous ones will be canceled.
    *
@@ -99,7 +99,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     resetOnExecute = true,
     shallow = true,
     throwError,
-    cancellable = false
+    cancellable = false,
   } = options ?? {}
   const state = shallow ? shallowRef(initialState) : deepRef(initialState)
   const isReady = shallowRef(false)
@@ -120,11 +120,12 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
       ? promise(...args as Params)
       : promise
     if (cancellable) {
-      _promise = new Promise<Data>((resolve, reject) => {
-          cancel()
-          cancel = () => (resolve = reject = noop)
-          ;(promise as (...args:Params) =>Promise<Data>)(...args as Params).then(res => resolve(res), err => reject(err))
-        })
+      const rawPromise = _promise
+      _promise = new Promise((resolve, reject) => {
+        cancel()
+        cancel = () => (resolve = reject = noop)
+        rawPromise.then(res => resolve(res), err => reject(err))
+      })
     }
     try {
       const data = await _promise
@@ -155,7 +156,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     isLoading,
     error,
     execute,
-    cancel
+    cancel,
   }
 
   function waitUntilIsLoaded() {
