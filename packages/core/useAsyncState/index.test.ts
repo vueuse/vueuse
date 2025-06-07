@@ -8,7 +8,7 @@ describe('useAsyncState', () => {
   })
 
   const p1 = (num = 1) => {
-    return new Promise((resolve) => {
+    return new Promise<number>((resolve) => {
       setTimeout(() => {
         resolve(num)
       }, 50)
@@ -82,5 +82,21 @@ describe('useAsyncState', () => {
   it('should work with throwError', async () => {
     const { execute } = useAsyncState(p2, '0', { throwError: true, immediate: false })
     await expect(execute()).rejects.toThrowError('error')
+  })
+
+  describe('useAsyncState with array destructing', () => {
+    it('should work', async () => {
+      const [state, execute] = useAsyncState(p1, 0, { immediate: false })
+      expect(state.value).toBe(0)
+      await execute(0, 2)
+      expect(state.value).toBe(2)
+    })
+
+    it('should work with error', async () => {
+      const [_state, execute, _isLoading, _isReady, error] = useAsyncState(p2, '0', { immediate: false })
+      expect(error.value).toBeUndefined()
+      await execute()
+      expect(error.value).toBeInstanceOf(Error)
+    })
   })
 })
