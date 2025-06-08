@@ -24,7 +24,7 @@ export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends bool
   UseAsyncStateReturnBase<Data, Params, Shallow>
   & UseAsyncStateReturnArray<Data, Params, Shallow>
 
-export type UseAsyncStateReturnWithThen<Data, Params extends any[], Shallow extends boolean> =
+export type UseAsyncStateReturnWithPromiseLike<Data, Params extends any[], Shallow extends boolean> =
   UseAsyncStateReturn<Data, Params, Shallow>
   & UseAsyncStatePromiseLike<Data, Params, Shallow>
 
@@ -96,7 +96,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Data>,
-): UseAsyncStateReturnWithThen<Data, Params, Shallow> {
+): UseAsyncStateReturnWithPromiseLike<Data, Params, Shallow> {
   const {
     immediate = true,
     delay = 0,
@@ -180,5 +180,5 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     })
   }
 
-  return makeDestructurable({ ...shell, then }, arrayShell) as UseAsyncStateReturnWithThen<Data, Params, Shallow>
+  return makeDestructurable({ ...shell, then }, arrayShell) as UseAsyncStateReturnWithPromiseLike<Data, Params, Shallow>
 }
