@@ -122,6 +122,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
 
     stop = () => {
       disposables.forEach(fn => fn())
+      disposables.length = 0
     }
   }
 
