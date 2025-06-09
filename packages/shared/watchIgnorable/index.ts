@@ -1,7 +1,7 @@
 import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { Fn, MapOldSources, MapSources } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
-import { shallowRef, watch } from 'vue'
+import { watch } from 'vue'
 import { bypassFilter, createFilterWrapper } from '../utils'
 
 // watchIgnorable(source,callback,options) composable
