@@ -12,6 +12,7 @@ import { getChangeLog, getFunctionContributors } from '../../scripts/changelog'
 import { ChangeLog } from './plugins/changelog'
 import { Contributors } from './plugins/contributors'
 import { MarkdownTransform } from './plugins/markdownTransform'
+import { PWAVirtual } from './plugins/pwa-virtual'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const require = createRequire(import.meta.url)
@@ -51,6 +52,7 @@ export default defineConfig({
       defaultStyle: 'display: inline-block',
     }),
     UnoCSS(),
+    PWAVirtual(),
     Inspect(),
   ],
   resolve: {
