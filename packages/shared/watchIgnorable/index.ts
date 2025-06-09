@@ -23,10 +23,11 @@ export function watchIgnorable<T extends object, Immediate extends Readonly<bool
 export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
-  options: WatchWithFilterOptions<Immediate> = {},
+  options: WatchWithFilterOptions<Immediate> & { flush?: 'pre' | 'post' | 'sync' } = {},
 ): WatchIgnorableReturn {
   const {
     eventFilter = bypassFilter,
+    flush,
     ...watchOptions
   } = options
 
@@ -39,7 +40,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   let ignorePrevAsyncUpdates: () => void
   let stop: () => void
 
-  if (watchOptions.flush === 'sync') {
+  if (flush === 'sync') {
     const ignore = shallowRef(false)
 
     // no op for flush: sync
@@ -48,9 +49,13 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     ignoreUpdates = (updater: () => void) => {
       // Call the updater function and count how many sync updates are performed,
       // then add them to the ignore count
-      ignore.value = true
-      updater()
-      ignore.value = false
+      try {
+        ignore.value = true
+        updater()
+      }
+      finally {
+        ignore.value = false
+      }
     }
 
     stop = watch(
