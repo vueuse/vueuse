@@ -9,10 +9,11 @@ import { bypassFilter, createFilterWrapper } from '../utils'
 // Extended watch that exposes a ignoreUpdates(updater) function that allows to update the source without triggering effects
 
 export type IgnoredUpdater = (updater: () => void) => void
+export type IgnoredPrevAsyncUpdates = () => void
 
 export interface WatchIgnorableReturn {
   ignoreUpdates: IgnoredUpdater
-  ignorePrevAsyncUpdates: () => void
+  ignorePrevAsyncUpdates: IgnoredPrevAsyncUpdates
   stop: WatchStopHandle
 }
 
@@ -36,8 +37,8 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   )
 
   let ignoreUpdates: IgnoredUpdater
-  let ignorePrevAsyncUpdates: () => void
-  let stop: () => void
+  let ignorePrevAsyncUpdates: IgnoredPrevAsyncUpdates
+  let stop: WatchStopHandle
 
   if (watchOptions.flush === 'sync') {
     const ignore = shallowRef(false)
