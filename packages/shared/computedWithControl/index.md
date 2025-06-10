@@ -48,10 +48,6 @@ const computedRef = computedWithControl(
 computedRef.trigger()
 ```
 
-::: warning
-Manual triggering only works for Vue 3
-:::
-
 ### Deep Watch
 
 Unlike `computed`, `computedWithControl` is shallow by default.
