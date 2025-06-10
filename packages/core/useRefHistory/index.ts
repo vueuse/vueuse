@@ -150,10 +150,8 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // so we do not trigger an extra commit in the async watcher
     ignorePrevAsyncUpdates()
 
-    if (shouldCommit) {
-      if (!shouldCommit(lastRawValue, source.value))
-        return
-    }
+    if (!shouldCommit(lastRawValue, source.value))
+      return
 
     lastRawValue = source.value
     manualCommit()
