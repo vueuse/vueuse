@@ -231,12 +231,6 @@ function isFetchOptions(obj: object): obj is UseFetchOptions {
   return obj && containsProp(obj, 'immediate', 'refetch', 'initialData', 'timeout', 'beforeFetch', 'afterFetch', 'onFetchError', 'fetch', 'updateDataOnError')
 }
 
-const reAbsolute = /^(?:[a-z][a-z\d+\-.]*:)?\/\//i
-// A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
-function isAbsoluteURL(url: string) {
-  return reAbsolute.test(url)
-}
-
 function headersToObject(headers: HeadersInit | undefined) {
   if (typeof Headers !== 'undefined' && headers instanceof Headers)
     return Object.fromEntries(headers.entries())
@@ -280,12 +274,7 @@ export function createFetch(config: CreateFetchOptions = {}) {
 
   function useFactoryFetch(url: MaybeRefOrGetter<string>, ...args: any[]) {
     const computedUrl = computed(() => {
-      const baseUrl = toValue(config.baseUrl)
-      const targetUrl = toValue(url)
-
-      return (baseUrl && !isAbsoluteURL(targetUrl))
-        ? joinPaths(baseUrl, targetUrl)
-        : targetUrl
+      return new URL(toValue(url), toValue(config.baseUrl)).toString()
     })
 
     let options = _options
@@ -643,16 +632,4 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         .then(onFulfilled, onRejected)
     },
   }
-}
-
-function joinPaths(start: string, end: string): string {
-  if (!start.endsWith('/') && !end.startsWith('/')) {
-    return `${start}/${end}`
-  }
-
-  if (start.endsWith('/') && end.startsWith('/')) {
-    return `${start.slice(0, -1)}${end}`
-  }
-
-  return `${start}${end}`
 }
