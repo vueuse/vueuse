@@ -1,9 +1,9 @@
 import type { EventHookOn } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { ref as deepRef, readonly } from 'vue'
+import { ref as deepRef, readonly, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 
@@ -11,27 +11,27 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
    * @default true
    */
-  multiple?: boolean
+  multiple?: MaybeRef<boolean>
   /**
    * @default '*'
    */
-  accept?: string
+  accept?: MaybeRef<string>
   /**
    * Select the input source for the capture file.
    * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
    */
-  capture?: string
+  capture?: MaybeRef<string>
   /**
    * Reset when open file dialog.
    * @default false
    */
-  reset?: boolean
+  reset?: MaybeRef<boolean>
   /**
    * Select directories instead of files.
    * @see [HTMLInputElement webkitdirectory](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory)
    * @default false
    */
-  directory?: boolean
+  directory?: MaybeRef<boolean>
 
   /**
    * Initial files to set.
@@ -122,13 +122,13 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
       ...options,
       ...localOptions,
     }
-    input.multiple = _options.multiple!
-    input.accept = _options.accept!
+    input.multiple = toValue(_options.multiple)!
+    input.accept = toValue(_options.accept)!
     // webkitdirectory key is not stabled, maybe replaced in the future.
-    input.webkitdirectory = _options.directory!
+    input.webkitdirectory = toValue(_options.directory)!
     if (hasOwn(_options, 'capture'))
-      input.capture = _options.capture!
-    if (_options.reset)
+      input.capture = toValue(_options.capture)!
+    if (toValue(_options.reset))
       reset()
     input.click()
   }

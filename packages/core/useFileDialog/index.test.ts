@@ -93,4 +93,95 @@ describe('useFileDialog', () => {
     expect(files.value?.[0]).toEqual(file)
     expect(changeHandler).toHaveBeenCalledWith(files.value)
   })
+
+  it('should work with ref value for multiple option', () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+
+    const multipleRef = shallowRef(true)
+
+    const { open } = useFileDialog({
+      input,
+      multiple: multipleRef,
+    })
+
+    open()
+    expect(input.multiple).toBe(true)
+
+    multipleRef.value = false
+    open()
+    expect(input.multiple).toBe(false)
+  })
+
+  it('should work with ref value for accept option', () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+
+    const acceptRef = shallowRef('image/*')
+
+    const { open } = useFileDialog({
+      input,
+      accept: acceptRef,
+    })
+
+    open()
+    expect(input.accept).toBe('image/*')
+
+    acceptRef.value = 'video/*'
+    open()
+    expect(input.accept).toBe('video/*')
+  })
+
+  it('should work with ref value for directory option', () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+
+    const directoryRef = shallowRef(true)
+
+    const { open } = useFileDialog({
+      input,
+      directory: directoryRef,
+    })
+
+    open()
+    expect(input.webkitdirectory).toBe(true)
+
+    directoryRef.value = false
+    open()
+    expect(input.webkitdirectory).toBe(false)
+  })
+
+  it('should work with ref value for reset option', () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+
+    const resetRef = shallowRef(true)
+
+    const { open } = useFileDialog({
+      input,
+      reset: resetRef,
+    })
+
+    open()
+    expect(input.click).toHaveBeenCalled() // Assuming reset does not change input attributes
+  })
+
+  it('should work with ref value for capture option', () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+
+    const captureRef = shallowRef('user')
+
+    const { open } = useFileDialog({
+      input,
+      capture: captureRef,
+    })
+
+    open()
+    expect(input.capture).toBe('user')
+
+    captureRef.value = 'environment'
+    open()
+    expect(input.capture).toBe('environment')
+  })
 })
