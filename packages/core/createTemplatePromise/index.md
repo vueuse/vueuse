@@ -7,10 +7,6 @@ outline: deep
 
 Template as Promise. Useful for constructing custom Dialogs, Modals, Toasts, etc.
 
-::: warning
-This function only works for Vue 3
-:::
-
 ## Usage
 
 ```vue
@@ -149,7 +145,7 @@ Learn more about [Vue Transition](https://vuejs.org/guide/built-ins/transition.h
 
 ## Motivation
 
-The common approach to call a dialog or a model programmatically would be like this:
+The common approach to call a dialog or a modal programmatically would be like this:
 
 ```ts
 const dialog = useDialog()

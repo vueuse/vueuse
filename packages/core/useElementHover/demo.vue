@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { vElementHover } from '@vueuse/components'
 import { useElementHover } from '@vueuse/core'
 import { shallowRef, useTemplateRef } from 'vue'
-import { vElementHover } from './directive'
 
 const el = useTemplateRef<HTMLButtonElement>('el')
 const isDirectiveHovered = shallowRef(false)

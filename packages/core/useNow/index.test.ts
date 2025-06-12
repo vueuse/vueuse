@@ -9,6 +9,19 @@ describe('useNow', () => {
     expect(+now.value).toBeLessThanOrEqual(+new Date())
   })
 
+  it('starts lazily if immediate is false', () => {
+    const initial = +new Date()
+    const { now, resume } = useNow({ controls: true, immediate: false })
+
+    expect(+now.value).toBe(initial)
+    vi.advanceTimersByTime(50)
+    expect(+now.value).toBe(initial)
+
+    resume()
+    vi.advanceTimersByTime(50)
+    expect(+now.value).toBeGreaterThan(initial)
+  })
+
   function testControl(interval: any) {
     it(`should control now timestamp by ${interval}`, async () => {
       let initial = +new Date()

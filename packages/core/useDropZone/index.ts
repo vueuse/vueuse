@@ -31,7 +31,7 @@ export interface UseDropZoneOptions {
 }
 
 export function useDropZone(
-  target: MaybeRefOrGetter<HTMLElement | null | undefined>,
+  target: MaybeRefOrGetter<HTMLElement | Document | null | undefined>,
   options: UseDropZoneOptions | UseDropZoneOptions['onDrop'] = {},
 ): UseDropZoneReturn {
   const isOverDropZone = shallowRef(false)
