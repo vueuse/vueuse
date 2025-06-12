@@ -19,3 +19,32 @@ const { state, isReady, isLoading } = useAsyncState(
   { id: null },
 )
 ```
+
+### Manually trigger the async function
+
+You can also trigger it manually. This is useful when you want to control when the async function is executed.
+
+```vue
+<script setup lang="ts">
+import { useAsyncState } from '@vueuse/core'
+
+const { state, execute, executeImmediate } = useAsyncState(action, '', { immediate: false })
+
+async function action(event) {
+  await new Promise(resolve => setTimeout(resolve, 500))
+  return `${event.target.textContent} clicked!`
+}
+</script>
+
+<template>
+  <p>State: {{ state }}</p>
+
+  <button class="button" @click="executeImmediate">
+    Execute now
+  </button>
+
+  <button class="ml-2 button" @click="event => execute(500, event.target)">
+    Execute with delay
+  </button>
+</template>
+```
