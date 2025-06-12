@@ -108,6 +108,14 @@ const { increment } = useCounterStore()!
 
 ## Provide a custom InjectionKey
 
+::: warning
+
+During development, when the file containing `createInjectionState` undergoes Hot Module Replacement (HMR), the injection state may be recreated with a new internal key, causing `useCounterStore` to return `undefined` and potentially leading to runtime errors in components that depend on it.
+
+As a temporary workaround to improve the development experience, you can provide a fixed `injectionKey` when using `createInjectionState`. This ensures that the injection state remains stable across HMR updates.
+
+:::
+
 ```ts
 import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
