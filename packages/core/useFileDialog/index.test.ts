@@ -59,17 +59,29 @@ describe('useFileDialog', () => {
     expect(input.click).toBeCalled()
   })
 
-  it('should work with input element passed as template ref', () => {
-    const inputEl = document.createElement('input')
-    inputEl.click = vi.fn()
+  it('should work with input element passed as template ref', async () => {
+    const inputEl1 = document.createElement('input')
+    inputEl1.click = vi.fn()
+    const input = shallowRef<HTMLInputElement>(inputEl1)
+    const { open } = useFileDialog({ input })
 
-    const inputRef = shallowRef<HTMLInputElement>(inputEl)
+    expect(inputEl1.click).toHaveBeenCalledTimes(0)
+    open()
+    expect(inputEl1.type).toBe('file')
+    expect(inputEl1.click).toHaveBeenCalledTimes(1)
 
-    const { open } = useFileDialog({ input: inputRef })
+    const inputEl2 = document.createElement('input')
+    inputEl2.click = vi.fn()
+
+    input.value = inputEl2
+    await nextTick()
+
+    expect(inputEl2.type).toBe('file')
+    expect(inputEl2.click).toHaveBeenCalledTimes(0)
 
     open()
-    expect(inputEl.type).toBe('file')
-    expect(inputEl.click).toHaveBeenCalled()
+
+    expect(inputEl2.click).toHaveBeenCalledTimes(1)
   })
 
   it('should trigger onchange and update files when file is selected', async () => {
@@ -106,13 +118,18 @@ describe('useFileDialog', () => {
     })
 
     expect(input.multiple).toBe(true)
+
     open()
+
     expect(input.multiple).toBe(true)
 
     multipleRef.value = false
     await nextTick()
+
     expect(input.multiple).toBe(false)
+
     open()
+
     expect(input.multiple).toBe(false)
   })
 
@@ -128,13 +145,18 @@ describe('useFileDialog', () => {
     })
 
     expect(input.accept).toBe('image/*')
+
     open()
+
     expect(input.accept).toBe('image/*')
 
     acceptRef.value = 'video/*'
     await nextTick()
+
     expect(input.accept).toBe('video/*')
+
     open()
+
     expect(input.accept).toBe('video/*')
   })
 
@@ -150,13 +172,18 @@ describe('useFileDialog', () => {
     })
 
     expect(input.webkitdirectory).toBe(true)
+
     open()
+
     expect(input.webkitdirectory).toBe(true)
 
     directoryRef.value = false
     await nextTick()
+
     expect(input.webkitdirectory).toBe(false)
+
     open()
+
     expect(input.webkitdirectory).toBe(false)
   })
 
@@ -171,6 +198,7 @@ describe('useFileDialog', () => {
       reset: resetRef,
     })
     open()
+
     expect(input.click).toHaveBeenCalled() // Assuming reset does not change input attributes
   })
 
@@ -186,13 +214,18 @@ describe('useFileDialog', () => {
     })
 
     expect(input.capture).toBe('user')
+
     open()
+
     expect(input.capture).toBe('user')
 
     captureRef.value = 'environment'
     await nextTick()
+
     expect(input.capture).toBe('environment')
+
     open()
+
     expect(input.capture).toBe('environment')
   })
 })

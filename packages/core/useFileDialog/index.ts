@@ -3,7 +3,7 @@ import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { ref as deepRef, readonly, toValue, watch } from 'vue'
+import { computed, ref as deepRef, readonly, toValue, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 
@@ -90,26 +90,28 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
-  let input: HTMLInputElement | undefined
-  if (document) {
-    input = unrefElement(options.input) || document.createElement('input')
-    input.type = 'file'
+  const inputRef = computed(() => {
+    const input = unrefElement(options.input) ?? (document ? document.createElement('input') : undefined)
+    if (input) {
+      input.type = 'file'
 
-    input.onchange = (event: Event) => {
-      const result = event.target as HTMLInputElement
-      files.value = result.files
-      changeTrigger(files.value)
-    }
+      input.onchange = (event: Event) => {
+        const result = event.target as HTMLInputElement
+        files.value = result.files
+        changeTrigger(files.value)
+      }
 
-    input.oncancel = () => {
-      cancelTrigger()
+      input.oncancel = () => {
+        cancelTrigger()
+      }
     }
-  }
+    return input
+  })
 
   const reset = () => {
     files.value = null
-    if (input && input.value) {
-      input.value = ''
+    if (inputRef.value && inputRef.value.value) {
+      inputRef.value.value = ''
       changeTrigger(null)
     }
   }
@@ -117,52 +119,53 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   /**
    * Apply composable state to the element, also when element is changed
    */
-  watch([() => toValue(input), () => toValue(options.multiple)], () => {
-    const el = toValue(input)
+  watch([inputRef, () => toValue(options.multiple)], () => {
+    const el = inputRef.value
     if (!el)
       return
     el.multiple = toValue(options.multiple)!
   }, { immediate: true })
 
-  watch([() => toValue(input), () => toValue(options.accept)], () => {
-    const el = toValue(input)
+  watch([inputRef, () => toValue(options.accept)], () => {
+    const el = inputRef.value
     if (!el)
       return
     el.accept = toValue(options.accept)!
   }, { immediate: true })
 
-  watch([() => toValue(input), () => toValue(options.directory)], () => {
-    const el = toValue(input)
+  watch([inputRef, () => toValue(options.directory)], () => {
+    const el = inputRef.value
     if (!el)
       return
     // webkitdirectory key is not stabled, maybe replaced in the future.
     el.webkitdirectory = toValue(options.directory)!
   }, { immediate: true })
 
-  watch([() => toValue(input), () => toValue(options.capture)], () => {
-    const el = toValue(input)
+  watch([inputRef, () => toValue(options.capture)], () => {
+    const el = inputRef.value
     if (!el)
       return
     el.capture = toValue(options.capture)!
   }, { immediate: true })
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
-    if (!input)
+    const el = inputRef.value
+    if (!el)
       return
     const _options = {
       ...DEFAULT_OPTIONS,
       ...options,
       ...localOptions,
     }
-    input.multiple = toValue(_options.multiple)!
-    input.accept = toValue(_options.accept)!
+    el.multiple = toValue(_options.multiple)!
+    el.accept = toValue(_options.accept)!
     // webkitdirectory key is not stabled, maybe replaced in the future.
-    input.webkitdirectory = toValue(_options.directory)!
+    el.webkitdirectory = toValue(_options.directory)!
     if (hasOwn(_options, 'capture'))
-      input.capture = toValue(_options.capture)!
+      el.capture = toValue(_options.capture)!
     if (toValue(_options.reset))
       reset()
-    input.click()
+    el.click()
   }
 
   return {
