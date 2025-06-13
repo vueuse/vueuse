@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { shallowRef } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { useFileDialog } from './index'
 
 class DataTransferMock {
@@ -94,7 +94,7 @@ describe('useFileDialog', () => {
     expect(changeHandler).toHaveBeenCalledWith(files.value)
   })
 
-  it('should work with ref value for multiple option', () => {
+  it('should work with ref value for multiple option', async () => {
     const input = document.createElement('input')
     input.click = vi.fn()
 
@@ -105,15 +105,18 @@ describe('useFileDialog', () => {
       multiple: multipleRef,
     })
 
+    expect(input.multiple).toBe(true)
     open()
     expect(input.multiple).toBe(true)
 
     multipleRef.value = false
+    await nextTick()
+    expect(input.multiple).toBe(false)
     open()
     expect(input.multiple).toBe(false)
   })
 
-  it('should work with ref value for accept option', () => {
+  it('should work with ref value for accept option', async () => {
     const input = document.createElement('input')
     input.click = vi.fn()
 
@@ -124,15 +127,18 @@ describe('useFileDialog', () => {
       accept: acceptRef,
     })
 
+    expect(input.accept).toBe('image/*')
     open()
     expect(input.accept).toBe('image/*')
 
     acceptRef.value = 'video/*'
+    await nextTick()
+    expect(input.accept).toBe('video/*')
     open()
     expect(input.accept).toBe('video/*')
   })
 
-  it('should work with ref value for directory option', () => {
+  it('should work with ref value for directory option', async () => {
     const input = document.createElement('input')
     input.click = vi.fn()
 
@@ -143,10 +149,13 @@ describe('useFileDialog', () => {
       directory: directoryRef,
     })
 
+    expect(input.webkitdirectory).toBe(true)
     open()
     expect(input.webkitdirectory).toBe(true)
 
     directoryRef.value = false
+    await nextTick()
+    expect(input.webkitdirectory).toBe(false)
     open()
     expect(input.webkitdirectory).toBe(false)
   })
@@ -161,12 +170,11 @@ describe('useFileDialog', () => {
       input,
       reset: resetRef,
     })
-
     open()
     expect(input.click).toHaveBeenCalled() // Assuming reset does not change input attributes
   })
 
-  it('should work with ref value for capture option', () => {
+  it('should work with ref value for capture option', async () => {
     const input = document.createElement('input')
     input.click = vi.fn()
 
@@ -177,10 +185,13 @@ describe('useFileDialog', () => {
       capture: captureRef,
     })
 
+    expect(input.capture).toBe('user')
     open()
     expect(input.capture).toBe('user')
 
     captureRef.value = 'environment'
+    await nextTick()
+    expect(input.capture).toBe('environment')
     open()
     expect(input.capture).toBe('environment')
   })

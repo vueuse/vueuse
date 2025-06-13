@@ -3,7 +3,7 @@ import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { ref as deepRef, readonly, toValue } from 'vue'
+import { ref as deepRef, readonly, toValue, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 
@@ -113,6 +113,38 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
       changeTrigger(null)
     }
   }
+
+  /**
+   * Apply composable state to the element, also when element is changed
+   */
+  watch([() => toValue(input), () => toValue(options.multiple)], () => {
+    const el = toValue(input)
+    if (!el)
+      return
+    el.multiple = toValue(options.multiple)!
+  }, { immediate: true })
+
+  watch([() => toValue(input), () => toValue(options.accept)], () => {
+    const el = toValue(input)
+    if (!el)
+      return
+    el.accept = toValue(options.accept)!
+  }, { immediate: true })
+
+  watch([() => toValue(input), () => toValue(options.directory)], () => {
+    const el = toValue(input)
+    if (!el)
+      return
+    // webkitdirectory key is not stabled, maybe replaced in the future.
+    el.webkitdirectory = toValue(options.directory)!
+  }, { immediate: true })
+
+  watch([() => toValue(input), () => toValue(options.capture)], () => {
+    const el = toValue(input)
+    if (!el)
+      return
+    el.capture = toValue(options.capture)!
+  }, { immediate: true })
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
     if (!input)
