@@ -48,7 +48,7 @@ export interface UseFetchReturn<T> {
   /**
    * Abort the fetch request
    */
-  abort: Fn
+  abort: (reason?: any) => void
 
   /**
    * Manually call the fetch
@@ -394,9 +394,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   let controller: AbortController | undefined
   let timer: Stoppable | undefined
 
-  const abort = () => {
+  const abort = (reason?: any) => {
     if (supportsAbort) {
-      controller?.abort()
+      controller?.abort(reason)
       controller = new AbortController()
       controller.signal.onabort = () => aborted.value = true
       fetchOptions = {
