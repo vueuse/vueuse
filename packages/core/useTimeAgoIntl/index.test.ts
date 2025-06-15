@@ -1,0 +1,66 @@
+import { describe, expect, it } from 'vitest'
+import { shallowRef } from 'vue'
+import { formatParts, formatTimeAgoIntl, useTimeAgoIntl } from './index'
+
+describe('formatParts', () => {
+  it('should format without spaces by default', () => {
+    const parts1: Intl.RelativeTimeFormatPart[] = [
+      { type: 'integer', value: '5', unit: 'day' },
+      { type: 'literal', value: ' days' },
+    ]
+
+    expect(formatParts(parts1)).toEqual('5 days')
+
+    const parts2: Intl.RelativeTimeFormatPart[] = [
+      { type: 'integer', value: '5', unit: 'day' },
+      { type: 'literal', value: '天后' },
+    ]
+    // autocorrect-disable
+    expect(formatParts(parts2)).toEqual('5天后')
+    // autocorrect-enable
+  })
+
+  it('should format with spaces if insertSpace is true', () => {
+    const parts1: Intl.RelativeTimeFormatPart[] = [
+      { type: 'integer', value: '5', unit: 'day' },
+      { type: 'literal', value: ' days' },
+    ]
+
+    expect(formatParts(parts1, true)).toEqual('5 days')
+
+    const parts2: Intl.RelativeTimeFormatPart[] = [
+      { type: 'integer', value: '5', unit: 'day' },
+      { type: 'literal', value: '天后' },
+    ]
+
+    expect(formatParts(parts2, true)).toEqual('5 天后')
+  })
+})
+
+describe('formatTimeAgoIntl', () => {
+  it('should format a past timestamp', () => {
+    const now = Date.now()
+    const past = new Date(now - 1000 * 60 * 5)
+
+    expect(formatTimeAgoIntl(past, { }, now)).toMatch('5')
+    expect(formatTimeAgoIntl(past, { locale: 'en' }, now)).toEqual('5 minutes ago')
+  })
+
+  it('should format a future timestamp', () => {
+    const now = Date.now()
+    const future = new Date(now + 1000 * 60 * 5)
+
+    expect(formatTimeAgoIntl(future, { locale: 'en' }, now)).toEqual('in 5 minutes')
+  })
+})
+
+describe('useTimeAgoIntl', () => {
+  it('should compute a reactive timeAgo string', () => {
+    const now = Date.now()
+    const past = shallowRef(now - 1000 * 60 * 5)
+
+    const timeAgo = useTimeAgoIntl(past)
+
+    expect(timeAgo.value).toMatch('5')
+  })
+})
