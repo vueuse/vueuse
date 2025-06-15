@@ -49,7 +49,9 @@
   executeTransition: function
   extendRef: function
   formatDate: function
+  formatParts: function
   formatTimeAgo: function
+  formatTimeAgoIntl: function
   get: function
   getLifeCycleTarget: function
   getSSRHandler: function
@@ -259,6 +261,7 @@
   useThrottledRefHistory: function
   useThrottleFn: function
   useTimeAgo: function
+  useTimeAgoIntl: function
   useTimeout: function
   useTimeoutFn: function
   useTimeoutPoll: function
