@@ -94,9 +94,9 @@ describe('useAsyncState', () => {
     }
     const { execute, state } = useAsyncState(p, 0, { cancellable: true })
     execute(0, 1)
-    execute(0, 2)
-    await execute(0, 3)
-    expect(state.value).toBe(3)
+    execute(0, 3)
+    await execute(0, 2)
+    expect(state.value).toBe(2)
   })
 
   it('should support manual cancel()', async () => {
