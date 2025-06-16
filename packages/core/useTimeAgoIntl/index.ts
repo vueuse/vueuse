@@ -112,10 +112,10 @@ export function formatTimeAgoIntl(
   if (parts.length === 0)
     parts = rtf.formatToParts(0, 'second')
 
-  return formatParts(parts, insertSpace)
+  return formatTimeAgoIntlParts(parts, insertSpace)
 }
 
-export function formatParts(parts: Intl.RelativeTimeFormatPart[], insertSpace = false): string {
+export function formatTimeAgoIntlParts(parts: Intl.RelativeTimeFormatPart[], insertSpace = false): string {
   if (!insertSpace)
     return parts.map(part => part.value).join('')
 
