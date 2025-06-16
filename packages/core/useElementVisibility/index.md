@@ -35,6 +35,16 @@ const targetIsVisible = useElementVisibility(target, {
 })
 ```
 
+### threshold
+
+If you want to control the percentage of the visibility required to update the value, you can use the `threshold` option (See [MDN IntersectionObserver/threshold](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#threshold)).
+
+```ts
+const targetIsVisible = useElementVisibility(target, {
+  threshold: 1.0, // 100% visible
+})
+```
+
 ## Component Usage
 
 ```vue
