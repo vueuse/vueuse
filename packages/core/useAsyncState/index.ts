@@ -11,9 +11,9 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
   cancel: () => void
 }
 
-export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean>
-  = UseAsyncStateReturnBase<Data, Params, Shallow>
-    & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
+export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> =
+  UseAsyncStateReturnBase<Data, Params, Shallow>
+  & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
 
 export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
   /**
