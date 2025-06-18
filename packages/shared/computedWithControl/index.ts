@@ -1,6 +1,6 @@
 import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
 import type { Fn } from '../utils'
-import { customRef, shallowRef, watch } from 'vue'
+import { customRef, watch } from 'vue'
 
 export interface ComputedWithControlRefExtra {
   /**
