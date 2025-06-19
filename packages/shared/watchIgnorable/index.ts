@@ -1,7 +1,7 @@
 import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { Fn, MapOldSources, MapSources } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
-import { shallowRef, watch } from 'vue'
+import { watch } from 'vue'
 import { bypassFilter, createFilterWrapper } from '../utils'
 
 // watchIgnorable(source,callback,options) composable
@@ -9,10 +9,11 @@ import { bypassFilter, createFilterWrapper } from '../utils'
 // Extended watch that exposes a ignoreUpdates(updater) function that allows to update the source without triggering effects
 
 export type IgnoredUpdater = (updater: () => void) => void
+export type IgnoredPrevAsyncUpdates = () => void
 
 export interface WatchIgnorableReturn {
   ignoreUpdates: IgnoredUpdater
-  ignorePrevAsyncUpdates: () => void
+  ignorePrevAsyncUpdates: IgnoredPrevAsyncUpdates
   stop: WatchStopHandle
 }
 
@@ -36,11 +37,11 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   )
 
   let ignoreUpdates: IgnoredUpdater
-  let ignorePrevAsyncUpdates: () => void
-  let stop: () => void
+  let ignorePrevAsyncUpdates: IgnoredPrevAsyncUpdates
+  let stop: WatchStopHandle
 
   if (watchOptions.flush === 'sync') {
-    const ignore = shallowRef(false)
+    let ignore = false
 
     // no op for flush: sync
     ignorePrevAsyncUpdates = () => {}
@@ -48,15 +49,15 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     ignoreUpdates = (updater: () => void) => {
       // Call the updater function and count how many sync updates are performed,
       // then add them to the ignore count
-      ignore.value = true
+      ignore = true
       updater()
-      ignore.value = false
+      ignore = false
     }
 
     stop = watch(
       source,
       (...args) => {
-        if (!ignore.value)
+        if (!ignore)
           filteredCb(...args)
       },
       watchOptions,
@@ -76,11 +77,11 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     // are more sync triggers than the ignore count, the we now
     // there are modifications in the source ref value that we
     // need to commit
-    const ignoreCounter = shallowRef(0)
-    const syncCounter = shallowRef(0)
+    let ignoreCounter = 0
+    let syncCounter = 0
 
     ignorePrevAsyncUpdates = () => {
-      ignoreCounter.value = syncCounter.value
+      ignoreCounter = syncCounter
     }
 
     // Sync watch to count modifications to the source
@@ -88,7 +89,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
       watch(
         source,
         () => {
-          syncCounter.value++
+          syncCounter++
         },
         { ...watchOptions, flush: 'sync' },
       ),
@@ -97,9 +98,9 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     ignoreUpdates = (updater: () => void) => {
       // Call the updater function and count how many sync updates are performed,
       // then add them to the ignore count
-      const syncCounterPrev = syncCounter.value
+      const syncCounterPrev = syncCounter
       updater()
-      ignoreCounter.value += syncCounter.value - syncCounterPrev
+      ignoreCounter += syncCounter - syncCounterPrev
     }
 
     disposables.push(
@@ -108,9 +109,9 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
         (...args) => {
           // If a history operation was performed (ignoreCounter > 0) and there are
           // no other changes to the source ref value afterwards, then ignore this commit
-          const ignore = ignoreCounter.value > 0 && ignoreCounter.value === syncCounter.value
-          ignoreCounter.value = 0
-          syncCounter.value = 0
+          const ignore = ignoreCounter > 0 && ignoreCounter === syncCounter
+          ignoreCounter = 0
+          syncCounter = 0
           if (ignore)
             return
 
