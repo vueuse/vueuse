@@ -1,9 +1,9 @@
 import type { EventHookOn } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { ref as deepRef, readonly } from 'vue'
+import { computed, ref as deepRef, readonly, toValue, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 
@@ -11,27 +11,27 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
    * @default true
    */
-  multiple?: boolean
+  multiple?: MaybeRef<boolean>
   /**
    * @default '*'
    */
-  accept?: string
+  accept?: MaybeRef<string>
   /**
    * Select the input source for the capture file.
    * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
    */
-  capture?: string
+  capture?: MaybeRef<string>
   /**
    * Reset when open file dialog.
    * @default false
    */
-  reset?: boolean
+  reset?: MaybeRef<boolean>
   /**
    * Select directories instead of files.
    * @see [HTMLInputElement webkitdirectory](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory)
    * @default false
    */
-  directory?: boolean
+  directory?: MaybeRef<boolean>
 
   /**
    * Initial files to set.
@@ -90,47 +90,82 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
-  let input: HTMLInputElement | undefined
-  if (document) {
-    input = unrefElement(options.input) || document.createElement('input')
-    input.type = 'file'
+  const inputRef = computed(() => {
+    const input = unrefElement(options.input) ?? (document ? document.createElement('input') : undefined)
+    if (input) {
+      input.type = 'file'
 
-    input.onchange = (event: Event) => {
-      const result = event.target as HTMLInputElement
-      files.value = result.files
-      changeTrigger(files.value)
-    }
+      input.onchange = (event: Event) => {
+        const result = event.target as HTMLInputElement
+        files.value = result.files
+        changeTrigger(files.value)
+      }
 
-    input.oncancel = () => {
-      cancelTrigger()
+      input.oncancel = () => {
+        cancelTrigger()
+      }
     }
-  }
+    return input
+  })
 
   const reset = () => {
     files.value = null
-    if (input && input.value) {
-      input.value = ''
+    if (inputRef.value && inputRef.value.value) {
+      inputRef.value.value = ''
       changeTrigger(null)
     }
   }
 
+  /**
+   * Apply composable state to the element, also when element is changed
+   */
+  watch([inputRef, () => toValue(options.multiple)], () => {
+    const el = inputRef.value
+    if (!el)
+      return
+    el.multiple = toValue(options.multiple)!
+  }, { immediate: true })
+
+  watch([inputRef, () => toValue(options.accept)], () => {
+    const el = inputRef.value
+    if (!el)
+      return
+    el.accept = toValue(options.accept)!
+  }, { immediate: true })
+
+  watch([inputRef, () => toValue(options.directory)], () => {
+    const el = inputRef.value
+    if (!el)
+      return
+    // webkitdirectory key is not stabled, maybe replaced in the future.
+    el.webkitdirectory = toValue(options.directory)!
+  }, { immediate: true })
+
+  watch([inputRef, () => toValue(options.capture)], () => {
+    const el = inputRef.value
+    if (!el)
+      return
+    el.capture = toValue(options.capture)!
+  }, { immediate: true })
+
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
-    if (!input)
+    const el = inputRef.value
+    if (!el)
       return
     const _options = {
       ...DEFAULT_OPTIONS,
       ...options,
       ...localOptions,
     }
-    input.multiple = _options.multiple!
-    input.accept = _options.accept!
+    el.multiple = toValue(_options.multiple)!
+    el.accept = toValue(_options.accept)!
     // webkitdirectory key is not stabled, maybe replaced in the future.
-    input.webkitdirectory = _options.directory!
+    el.webkitdirectory = toValue(_options.directory)!
     if (hasOwn(_options, 'capture'))
-      input.capture = _options.capture!
-    if (_options.reset)
+      el.capture = toValue(_options.capture)!
+    if (toValue(_options.reset))
       reset()
-    input.click()
+    el.click()
   }
 
   return {
