@@ -92,8 +92,8 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
   disableTransition?: boolean
 }
 
-export type UseColorModeReturn<T extends string = BasicColorMode> =
-  Ref<T | BasicColorSchema> & {
+export type UseColorModeReturn<T extends string = BasicColorMode>
+  = Ref<T | BasicColorSchema> & {
     store: Ref<T | BasicColorSchema>
     system: ComputedRef<BasicColorMode>
     state: ComputedRef<T | BasicColorMode>

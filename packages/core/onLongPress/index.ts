@@ -1,3 +1,4 @@
+import type { TimerHandle } from '@vueuse/shared'
 import type { Position } from '../types'
 import type { MaybeElementRef } from '../unrefElement'
 import { computed } from 'vue'
@@ -48,7 +49,7 @@ export function onLongPress(
 ) {
   const elementRef = computed(() => unrefElement(target))
 
-  let timeout: ReturnType<typeof setTimeout> | undefined
+  let timeout: TimerHandle
   let posStart: Position | undefined
   let startTimestamp: number | undefined
   let hasLongPressed = false
