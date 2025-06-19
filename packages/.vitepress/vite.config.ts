@@ -12,6 +12,7 @@ import { getChangeLog, getFunctionContributors } from '../../scripts/changelog'
 import { ChangeLog } from './plugins/changelog'
 import { Contributors } from './plugins/contributors'
 import { MarkdownTransform } from './plugins/markdownTransform'
+import { PWAVirtual } from './plugins/pwa-virtual'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const require = createRequire(import.meta.url)
@@ -40,7 +41,7 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         IconsResolver({
-          componentPrefix: '',
+          prefix: '',
         }),
       ],
       dts: resolve(__dirname, 'components.d.mts'),
@@ -51,6 +52,7 @@ export default defineConfig({
       defaultStyle: 'display: inline-block',
     }),
     UnoCSS(),
+    PWAVirtual(),
     Inspect(),
   ],
   resolve: {
@@ -62,7 +64,6 @@ export default defineConfig({
       '@vueuse/integrations': resolve(__dirname, '../integrations/index.ts'),
       '@vueuse/components': resolve(__dirname, '../components/index.ts'),
       '@vueuse/metadata': resolve(__dirname, '../metadata/index.ts'),
-      '@vueuse/docs-utils': resolve(__dirname, 'plugins/utils.ts'),
     },
     dedupe: [
       'vue',
@@ -74,6 +75,7 @@ export default defineConfig({
       '@vueuse/shared',
       '@vueuse/core',
       'body-scroll-lock',
+      '@vue/repl',
     ],
     include: [
       'axios',
@@ -103,5 +105,10 @@ export default defineConfig({
         require('postcss-nested'),
       ],
     },
+  },
+  ssr: {
+    noExternal: [
+      '@vue/repl',
+    ],
   },
 })
