@@ -1,5 +1,6 @@
 .:
   createCookies: function
+  createTemporal: function
   insertNodeAt: function
   moveArrayElement: function
   removeNode: function
@@ -15,6 +16,7 @@
   useNProgress: function
   useQRCode: function
   useSortable: function
+  useTemporal: function
 ./useAsyncValidator:
   useAsyncValidator: function
 ./useAsyncValidator/component:
@@ -49,3 +51,6 @@
   useSortable: function
 ./useSortable/component:
   UseSortable: object
+./useTemporal:
+  createTemporal: function
+  useTemporal: function

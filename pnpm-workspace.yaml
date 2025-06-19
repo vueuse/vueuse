@@ -58,6 +58,7 @@ catalogs:
     vitepress: ^2.0.0-alpha.5
     yaml: ^2.8.0
   integrations:
+    '@js-temporal/polyfill': ^0.4.4
     '@nuxt/kit': ^3.17.4
     '@nuxt/schema': ^3.17.4
     async-validator: ^4.2.5
