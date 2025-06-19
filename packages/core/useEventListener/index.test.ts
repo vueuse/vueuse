@@ -360,4 +360,51 @@ describe('useEventListener', () => {
     expect(addSpy).toHaveBeenLastCalledWith('click', listener, true)
     expect(removeSpy).toHaveBeenCalledTimes(1)
   })
+
+  it('should check document and shadowRoot', async () => {
+    const element = document.createElement('div')
+    const shadowRoot = element.attachShadow({ mode: 'open' })
+    const listener1 = vi.fn()
+    const listener2 = vi.fn()
+
+    useEventListener(shadowRoot, 'click', listener1)
+    useEventListener(document, 'click', listener2)
+
+    shadowRoot.dispatchEvent(new Event('click'))
+    document.dispatchEvent(new Event('click'))
+    expect(listener1).toHaveBeenCalledTimes(1)
+    expect(listener2).toHaveBeenCalledTimes(1)
+  })
+
+  it('should check multiple shadowRoots + multiple events', async () => {
+    const element1 = document.createElement('div')
+    const shadowRoot1 = element1.attachShadow({ mode: 'open' })
+    const element2 = document.createElement('div')
+    const shadowRoot2 = element2.attachShadow({ mode: 'closed' })
+
+    const listener = vi.fn()
+
+    useEventListener([element1, element2, shadowRoot1, shadowRoot2], ['click', 'slotchange'], listener)
+
+    shadowRoot1.dispatchEvent(new Event('click'))
+    shadowRoot2.dispatchEvent(new Event('click'))
+
+    await nextTick()
+
+    expect(listener).toHaveBeenCalledTimes(2)
+
+    element1.dispatchEvent(new Event('click'))
+    element2.dispatchEvent(new Event('click'))
+
+    await nextTick()
+
+    expect(listener).toHaveBeenCalledTimes(4)
+
+    shadowRoot1.dispatchEvent(new Event('slotchange'))
+    shadowRoot2.dispatchEvent(new Event('slotchange'))
+
+    await nextTick()
+
+    expect(listener).toHaveBeenCalledTimes(6)
+  })
 })
