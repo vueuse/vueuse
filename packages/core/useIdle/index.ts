@@ -88,7 +88,8 @@ export function useIdle(
       }, listenerOptions)
     }
 
-    reset()
+    if (!initialState)
+      reset()
   }
 
   return {
