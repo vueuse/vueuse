@@ -1,6 +1,6 @@
 import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
 import type { Fn } from '../utils'
-import { customRef, shallowRef, watch } from 'vue'
+import { customRef, watch } from 'vue'
 
 export interface ComputedWithControlRefExtra {
   /**
@@ -37,10 +37,10 @@ export function computedWithControl<T, S>(
   let v: T = undefined!
   let track: Fn
   let trigger: Fn
-  const dirty = shallowRef(true)
+  let dirty = true
 
   const update = () => {
-    dirty.value = true
+    dirty = true
     trigger()
   }
 
@@ -55,9 +55,9 @@ export function computedWithControl<T, S>(
 
     return {
       get() {
-        if (dirty.value) {
+        if (dirty) {
           v = get(v)
-          dirty.value = false
+          dirty = false
         }
         track()
         return v
