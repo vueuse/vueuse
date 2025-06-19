@@ -1,4 +1,4 @@
-import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
+import type { ComputedGetter, ComputedRef, WatchOptions, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
 import type { Fn } from '../utils'
 import { customRef, watch } from 'vue'
 
@@ -16,12 +16,14 @@ export type ComputedWithControlRef<T = any> = ComputedRefWithControl<T> | Writab
 
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
-  fn: ComputedGetter<T>
+  fn: ComputedGetter<T>,
+  options?: WatchOptions
 ): ComputedRefWithControl<T>
 
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
-  fn: WritableComputedOptions<T>
+  fn: WritableComputedOptions<T>,
+  options?: WatchOptions
 ): WritableComputedRefWithControl<T>
 
 /**
@@ -33,6 +35,7 @@ export function computedWithControl<T, S>(
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
   fn: ComputedGetter<T> | WritableComputedOptions<T>,
+  options: WatchOptions = {},
 ): ComputedWithControlRef<T> {
   let v: T = undefined!
   let track: Fn
@@ -44,7 +47,7 @@ export function computedWithControl<T, S>(
     trigger()
   }
 
-  watch(source, update, { flush: 'sync' })
+  watch(source, update, { flush: 'sync', ...options })
 
   const get = typeof fn === 'function' ? fn : fn.get
   const set = typeof fn === 'function' ? undefined : fn.set
@@ -68,9 +71,7 @@ export function computedWithControl<T, S>(
     }
   }) as ComputedRefWithControl<T>
 
-  if (Object.isExtensible(result))
-    result.trigger = update
-
+  result.trigger = update
   return result
 }
 
