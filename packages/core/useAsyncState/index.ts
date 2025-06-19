@@ -1,8 +1,8 @@
 import type { Ref, ShallowRef, UnwrapRef } from 'vue'
-import { noop, promiseTimeout, until } from '@vueuse/shared'
+import { makeDestructurable, noop, promiseTimeout, until } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 
-export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
+export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> extends Record<string, unknown> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
@@ -11,9 +11,23 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
   executeImmediate: (...args: Params) => Promise<Data>
 }
 
+type UseAsyncStatePromiseLike<Data, Params extends any[], Shallow extends boolean> = PromiseLike<UseAsyncStateReturn<Data, Params, Shallow>>
+
+export type UseAsyncStateReturnArray<Data, Params extends any[], Shallow extends boolean> = [
+  state: UseAsyncStateReturnBase<Data, Params, Shallow>['state'],
+  execute: UseAsyncStateReturnBase<Data, Params, Shallow>['execute'],
+  isLoading: UseAsyncStateReturnBase<Data, Params, Shallow>['isLoading'],
+  isReady: UseAsyncStateReturnBase<Data, Params, Shallow>['isReady'],
+  error: UseAsyncStateReturnBase<Data, Params, Shallow>['error'],
+]
+
 export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean> =
   UseAsyncStateReturnBase<Data, Params, Shallow>
-  & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
+  & UseAsyncStateReturnArray<Data, Params, Shallow>
+
+export type UseAsyncStateReturnWithPromiseLike<Data, Params extends any[], Shallow extends boolean> =
+  UseAsyncStateReturn<Data, Params, Shallow>
+  & UseAsyncStatePromiseLike<Data, Params, Shallow>
 
 export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
   /**
@@ -83,7 +97,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: Data,
   options?: UseAsyncStateOptions<Shallow, Data>,
-): UseAsyncStateReturn<Data, Params, Shallow> {
+): UseAsyncStateReturnWithPromiseLike<Data, Params, Shallow> {
   const {
     immediate = true,
     delay = 0,
@@ -143,18 +157,30 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     execute,
     executeImmediate: (...args: any[]) => execute(0, ...args),
   }
+  const arrayShell: UseAsyncStateReturnArray<Data, Params, Shallow> = [
+    state as Shallow extends true ? ShallowRef<Data> : Ref<UnwrapRef<Data>>,
+    execute,
+    isLoading,
+    isReady,
+    error,
+  ]
+
+  type UseAsyncStateThenParams = Parameters<UseAsyncStatePromiseLike<Data, Params, Shallow>['then']>
+  type UseAsyncStateThenReturn = ReturnType<UseAsyncStatePromiseLike<Data, Params, Shallow>['then']>
+  function then(onFulfilled: UseAsyncStateThenParams[0], onRejected: UseAsyncStateThenParams[1]): UseAsyncStateThenReturn {
+    return waitUntilIsLoaded()
+      .then(onFulfilled, onRejected)
+  }
 
   function waitUntilIsLoaded() {
-    return new Promise<UseAsyncStateReturnBase<Data, Params, Shallow>>((resolve, reject) => {
-      until(isLoading).toBe(false).then(() => resolve(shell)).catch(reject)
+    return new Promise<UseAsyncStateReturn<Data, Params, Shallow>>((resolve, reject) => {
+      until(isLoading).toBe(false).then(
+        () => resolve(
+          makeDestructurable(shell, arrayShell),
+        ),
+      ).catch(reject)
     })
   }
 
-  return {
-    ...shell,
-    then(onFulfilled, onRejected) {
-      return waitUntilIsLoaded()
-        .then(onFulfilled, onRejected)
-    },
-  }
+  return makeDestructurable({ ...shell, then }, arrayShell) as UseAsyncStateReturnWithPromiseLike<Data, Params, Shallow>
 }
