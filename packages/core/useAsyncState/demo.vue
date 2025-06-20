@@ -36,6 +36,7 @@ function p(num = 1) {
   })
 }
 const { execute: _excute, state: num, cancel } = useAsyncState(p, 0, { cancellable: true })
+// num is 2 when cancellable is true, otherwise it's 3
 function executeCancelable() {
   _excute(0, 1)
   _excute(0, 3)
