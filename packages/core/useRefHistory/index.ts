@@ -45,6 +45,13 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends Configurabl
    * Deserialize data from the history
    */
   parse?: (v: Serialized) => Raw
+  /**
+   * Function to determine if the commit should proceed
+   * @param oldValue Previous value
+   * @param newValue New value
+   * @returns boolean indicating if commit should proceed
+   */
+  shouldCommit?: (oldValue: Raw | undefined, newValue: Raw) => boolean
 }
 
 export interface UseRefHistoryReturn<Raw, Serialized> extends UseManualRefHistoryReturn<Raw, Serialized> {
@@ -93,6 +100,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     deep = false,
     flush = 'pre',
     eventFilter,
+    shouldCommit = () => true,
   } = options
 
   const {
@@ -101,6 +109,9 @@ export function useRefHistory<Raw, Serialized = Raw>(
     resume: resumeTracking,
     isActive: isTracking,
   } = pausableFilter(eventFilter)
+
+  // Track the last raw value for shouldCommit comparison
+  let lastRawValue: Raw | undefined = source.value
 
   const {
     ignoreUpdates,
@@ -125,6 +136,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
     ignoreUpdates(() => {
       source.value = value
+      lastRawValue = value
     })
   }
 
@@ -138,6 +150,10 @@ export function useRefHistory<Raw, Serialized = Raw>(
     // so we do not trigger an extra commit in the async watcher
     ignorePrevAsyncUpdates()
 
+    if (!shouldCommit(lastRawValue, source.value))
+      return
+
+    lastRawValue = source.value
     manualCommit()
   }
 

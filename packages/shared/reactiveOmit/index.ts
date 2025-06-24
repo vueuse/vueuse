@@ -1,8 +1,8 @@
 import { toRefs, toValue } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 
-export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined = undefined> =
-  [K] extends [undefined]
+export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined = undefined>
+  = [K] extends [undefined]
     ? Partial<T>
     : Omit<T, Extract<K, keyof T>>
 
