@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { useSpeechSynthesis } from '@vueuse/core'
 import { ref as deepRef, onMounted, shallowRef } from 'vue'
+import { useSpeechSynthesis } from './index'
 
 const voice = deepRef<SpeechSynthesisVoice>(undefined as unknown as SpeechSynthesisVoice)
 const text = shallowRef('Hello, everyone! Good morning!')
 const pitch = shallowRef(1)
 const rate = shallowRef(1)
+const volume = shallowRef(1)
 
 const speech = useSpeechSynthesis(text, {
   voice,
   pitch,
   rate,
+  volume,
 })
 
 let synth: SpeechSynthesis
@@ -93,6 +95,14 @@ function stop() {
         <label class="font-bold mr-3">Rate</label>
         <div class="mt-1" inline-flex>
           <input v-model="rate" type="range" min="0.5" max="2" step="0.1">
+        </div>
+      </div>
+
+      <br>
+      <div inline-flex items-center>
+        <label class="font-bold mr-3">Volume</label>
+        <div class="mt-1" inline-flex>
+          <input v-model="volume" type="range" min="0.5" max="2" step="0.1">
         </div>
       </div>
 
