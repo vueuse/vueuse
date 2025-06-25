@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useSpeechSynthesis } from '@vueuse/core'
 import { ref as deepRef, onMounted, shallowRef } from 'vue'
-import { useSpeechSynthesis } from './index'
 
 const voice = deepRef<SpeechSynthesisVoice>(undefined as unknown as SpeechSynthesisVoice)
 const text = shallowRef('Hello, everyone! Good morning!')
