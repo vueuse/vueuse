@@ -55,15 +55,15 @@ let _iOSWorkaround = false
  */
 export function onClickOutside(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: true }>,
-  options: OnClickOutsideOptions<true>,
-): { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
-
-export function onClickOutside(
-  target: MaybeElementRef,
   handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: false }>,
   options?: OnClickOutsideOptions<false>,
 ): Fn
+
+export function onClickOutside(
+  target: MaybeElementRef,
+  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: true }>,
+  options: OnClickOutsideOptions<true>,
+): { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
 
 // Implementation
 export function onClickOutside(
