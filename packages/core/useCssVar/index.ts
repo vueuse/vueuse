@@ -25,12 +25,12 @@ export interface UseCssVarOptions extends ConfigurableWindow {
  */
 export function useCssVar(
   prop: MaybeRefOrGetter<string | null | undefined>,
-  target?: MaybeElementRef,
+  target: MaybeElementRef = window?.document?.documentElement,
   options: UseCssVarOptions = {},
 ) {
   const { window = defaultWindow, initialValue, observe = false } = options
   const variable = shallowRef(initialValue)
-  const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
+  const elRef = computed(() => unrefElement(target))
 
   function updateCssVar() {
     const key = toValue(prop)
