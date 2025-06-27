@@ -25,16 +25,21 @@ export interface UseCssVarOptions extends ConfigurableWindow {
  */
 export function useCssVar(
   prop: MaybeRefOrGetter<string | null | undefined>,
-  target: MaybeElementRef = window?.document?.documentElement,
+  target?: MaybeElementRef,
   options: UseCssVarOptions = {},
 ) {
   const { window = defaultWindow, initialValue, observe = false } = options
   const variable = shallowRef(initialValue)
-  const elRef = computed(() => unrefElement(target))
+
+  // Element reference for reading - can fallback to documentElement to read global variables
+  const readElRef = computed(() => unrefElement(target) || window?.document?.documentElement)
+
+  // Element reference for writing - only allows writing when target is explicitly provided
+  const writeElRef = computed(() => unrefElement(target))
 
   function updateCssVar() {
     const key = toValue(prop)
-    const el = toValue(elRef)
+    const el = toValue(readElRef)
     if (el && window && key) {
       const value = window.getComputedStyle(el).getPropertyValue(key)?.trim()
       variable.value = value || variable.value || initialValue
@@ -42,15 +47,16 @@ export function useCssVar(
   }
 
   if (observe) {
-    useMutationObserver(elRef, updateCssVar, {
+    useMutationObserver(readElRef, updateCssVar, {
       attributeFilter: ['style', 'class'],
       window,
     })
   }
 
   watch(
-    [elRef, () => toValue(prop)],
+    [writeElRef, () => toValue(prop)],
     (_, old) => {
+      // Only clean up old properties when there's an explicit write target
       if (old[0] && old[1])
         old[0].style.removeProperty(old[1])
       updateCssVar()
@@ -59,9 +65,10 @@ export function useCssVar(
   )
 
   watch(
-    [variable, elRef],
+    [variable, writeElRef],
     ([val, el]) => {
       const raw_prop = toValue(prop)
+      // Only set CSS variable when there's an explicit write target
       if (el?.style && raw_prop) {
         if (val == null)
           el.style.removeProperty(raw_prop)
