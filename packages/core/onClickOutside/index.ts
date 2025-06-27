@@ -36,9 +36,9 @@ export type OnClickOutsideHandler<
     controls: boolean
   } = { detectIframe: false, controls: false },
 > = (
-  event: (T['detectIframe'] extends true ? FocusEvent : never) |
-    (T['controls'] extends true ? Event : never) |
-    PointerEvent,
+  event: (T['detectIframe'] extends true ? FocusEvent : never)
+    | (T['controls'] extends true ? Event : never)
+    | PointerEvent,
 ) => void
 
 interface OnClickOutsideControlsReturn {
