@@ -3,7 +3,9 @@ import { createEventHook, useStorageAsync } from '@vueuse/core'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 const KEY = 'custom-key'
+const KEY2 = 'custom-key2'
 const asyncDelay = 10
+const localStorage = globalThis.localStorage
 
 class AsyncStubStorage implements StorageLikeAsync {
   getItem(key: string): Awaitable<string | null> {
@@ -38,7 +40,7 @@ describe('useStorageAsync', () => {
     localStorage.clear()
   })
 
-  it('onReady', () => {
+  it('onReady', async () => {
     localStorage.setItem(KEY, 'CurrentValue')
 
     const loaded = createEventHook()
@@ -58,6 +60,22 @@ describe('useStorageAsync', () => {
     )
 
     expect(storage.value).toBe('')
-    expect(promise).resolves.toBe('CurrentValue')
+    await expect(promise).resolves.toBe('CurrentValue')
+  })
+
+  it('onReadyByPromise', async () => {
+    localStorage.setItem(KEY2, 'AnotherValue')
+
+    const storage = useStorageAsync(
+      KEY2,
+      '',
+      new AsyncStubStorage(),
+    )
+
+    expect(storage.value).toBe('')
+
+    storage.then((result) => {
+      expect(result.value).toBe('AnotherValue')
+    })
   })
 })
