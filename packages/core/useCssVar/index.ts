@@ -31,15 +31,26 @@ export function useCssVar(
   const { window = defaultWindow, initialValue, observe = false } = options
   const variable = shallowRef(initialValue)
 
-  // Element reference for reading - can fallback to documentElement to read global variables
-  const readElRef = computed(() => unrefElement(target) || window?.document?.documentElement)
+  // Track if target has ever had a truthy value
+  const targetHadValue = shallowRef(false)
 
-  // Element reference for writing - only allows writing when target is explicitly provided
-  const writeElRef = computed(() => unrefElement(target))
+  const elRef = computed(() => {
+    const element = unrefElement(target)
+
+    if (element) {
+      targetHadValue.value = true
+      return element
+    }
+
+    // If target never had a value, use documentElement as fallback
+    // If target had a value but now is undefined, don't use fallback
+    return targetHadValue.value ? null : window?.document?.documentElement
+  })
 
   function updateCssVar() {
     const key = toValue(prop)
-    const el = toValue(readElRef)
+    const el = toValue(elRef)
+    // Only update CSS variable if we have a valid element
     if (el && window && key) {
       const value = window.getComputedStyle(el).getPropertyValue(key)?.trim()
       variable.value = value || variable.value || initialValue
@@ -47,16 +58,15 @@ export function useCssVar(
   }
 
   if (observe) {
-    useMutationObserver(readElRef, updateCssVar, {
+    useMutationObserver(elRef, updateCssVar, {
       attributeFilter: ['style', 'class'],
       window,
     })
   }
 
   watch(
-    [writeElRef, () => toValue(prop)],
+    [elRef, () => toValue(prop)],
     (_, old) => {
-      // Only clean up old properties when there's an explicit write target
       if (old[0] && old[1])
         old[0].style.removeProperty(old[1])
       updateCssVar()
@@ -65,10 +75,10 @@ export function useCssVar(
   )
 
   watch(
-    [variable, writeElRef],
+    [variable, elRef],
     ([val, el]) => {
       const raw_prop = toValue(prop)
-      // Only set CSS variable when there's an explicit write target
+      // Only set CSS property if we have a valid element
       if (el?.style && raw_prop) {
         if (val == null)
           el.style.removeProperty(raw_prop)

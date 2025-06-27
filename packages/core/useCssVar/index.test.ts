@@ -223,4 +223,60 @@ describe('useCssVar', () => {
     expect(vm.variable).toBe('red')
     expect(vm.el?.style.getPropertyValue('--color')).toBe('red')
   })
+
+  it('should handle ref target changing from element to undefined', async () => {
+    const vm = mount(defineComponent({
+      setup() {
+        const el = useTemplateRef<HTMLDivElement>('el')
+        const target = shallowRef<HTMLDivElement | null | undefined>(undefined)
+
+        const color = '--test-color'
+        const variable = useCssVar(color, target, { initialValue: 'green' })
+
+        function setTarget() {
+          target.value = el.value
+        }
+
+        function clearTarget() {
+          target.value = undefined
+        }
+
+        return {
+          el,
+          target,
+          variable,
+          setTarget,
+          clearTarget,
+        }
+      },
+      render() {
+        return h('div', { ref: 'el' })
+      },
+    }))
+
+    await nextTick()
+
+    // Initially target is undefined, should use documentElement
+    expect(vm.variable).toBe('green')
+    expect(document.documentElement.style.getPropertyValue('--test-color')).toBe('green')
+
+    // Set target to actual element
+    vm.setTarget()
+    await nextTick()
+
+    // Should now use the element and remove from documentElement
+    expect(vm.el?.style.getPropertyValue('--test-color')).toBe('green')
+    expect(document.documentElement.style.getPropertyValue('--test-color')).toBe('')
+
+    // Clear target back to undefined
+    vm.clearTarget()
+    await nextTick()
+
+    // Should NOT go back to documentElement since target had a value before
+    expect(vm.el?.style.getPropertyValue('--test-color')).toBe('')
+    expect(document.documentElement.style.getPropertyValue('--test-color')).toBe('')
+
+    // Clean up
+    document.documentElement.style.removeProperty('--test-color')
+  })
 })
