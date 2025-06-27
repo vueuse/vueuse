@@ -1,8 +1,7 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type UseSwipeDirection = 'up' | 'down' | 'left' | 'right' | 'none'
@@ -43,7 +42,7 @@ export interface UseSwipeReturn {
    * This flag will always return `true` and be removed in the next major version.
    */
   isPassiveEventSupported: boolean
-  isSwiping: Ref<boolean>
+  isSwiping: ShallowRef<boolean>
   direction: ComputedRef<UseSwipeDirection>
   coordsStart: Readonly<Position>
   coordsEnd: Readonly<Position>
@@ -80,7 +79,7 @@ export function useSwipe(
   const { max, abs } = Math
   const isThresholdExceeded = computed(() => max(abs(diffX.value), abs(diffY.value)) >= threshold)
 
-  const isSwiping = ref(false)
+  const isSwiping = shallowRef(false)
 
   const direction = computed((): UseSwipeDirection => {
     if (!isThresholdExceeded.value)

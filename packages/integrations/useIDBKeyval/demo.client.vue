@@ -1,6 +1,19 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
-import { useIDBKeyval } from '.'
+import { useIDBKeyval } from '@vueuse/integrations'
+import { reactify } from '@vueuse/shared'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const KEY = 'vue-use-idb-keyval'
 

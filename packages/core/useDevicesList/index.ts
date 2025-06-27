@@ -1,8 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
-import { computed, ref } from 'vue'
+import { computed, ref as deepRef, shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
@@ -33,7 +33,7 @@ export interface UseDevicesListReturn {
   videoInputs: ComputedRef<MediaDeviceInfo[]>
   audioInputs: ComputedRef<MediaDeviceInfo[]>
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
-  permissionGranted: Ref<boolean>
+  permissionGranted: ShallowRef<boolean>
   ensurePermissions: () => Promise<boolean>
   isSupported: ComputedRef<boolean>
 }
@@ -52,12 +52,12 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     onUpdated,
   } = options
 
-  const devices = ref([]) as Ref<MediaDeviceInfo[]>
+  const devices = deepRef([]) as Ref<MediaDeviceInfo[]>
   const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
   const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
   const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))
   const isSupported = useSupported(() => navigator && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices)
-  const permissionGranted = ref(false)
+  const permissionGranted = shallowRef(false)
   let stream: MediaStream | null
 
   async function update() {
@@ -73,17 +73,24 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   }
 
   async function ensurePermissions() {
+    const deviceName = constraints.video ? 'camera' : 'microphone'
+
     if (!isSupported.value)
       return false
 
     if (permissionGranted.value)
       return true
 
-    const { state, query } = usePermission('camera', { controls: true })
+    const { state, query } = usePermission(deviceName, { controls: true })
     await query()
     if (state.value !== 'granted') {
       let granted = true
       try {
+        const allDevices = await navigator!.mediaDevices.enumerateDevices()
+        const hasCamera = allDevices.some(device => device.kind === 'videoinput')
+        const hasMicrophone = allDevices.some(device => device.kind === 'audioinput' || device.kind === 'audiooutput')
+        constraints.video = hasCamera ? constraints.video : false
+        constraints.audio = hasMicrophone ? constraints.audio : false
         stream = await navigator!.mediaDevices.getUserMedia(constraints)
       }
       catch {

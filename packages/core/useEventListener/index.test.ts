@@ -2,8 +2,8 @@ import type { Fn } from '@vueuse/shared'
 import type { MockInstance } from 'vitest'
 import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, effectScope, nextTick, ref } from 'vue'
-import { useEventListener } from '.'
+import { computed, ref as deepRef, effectScope, nextTick, shallowRef } from 'vue'
+import { useEventListener } from './index'
 
 describe('useEventListener', () => {
   const options = { capture: true }
@@ -153,7 +153,7 @@ describe('useEventListener', () => {
     let listener: () => any
 
     beforeEach(() => {
-      target = ref(document.createElement('div'))
+      target = shallowRef(document.createElement('div'))
       listener = vi.fn()
     })
 
@@ -245,7 +245,7 @@ describe('useEventListener', () => {
       const listener = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const active = ref(true)
+      const active = shallowRef(true)
 
       useEventListener(() => active.value ? [el1, el2] : [], 'mousedown', listener)
       await nextTick()
@@ -283,7 +283,7 @@ describe('useEventListener', () => {
       const listener = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const active = ref(true)
+      const active = shallowRef(true)
 
       useEventListener(() => active.value ? [el1, el2] : [], ['mousedown', 'click'], listener)
       await nextTick()
@@ -310,9 +310,9 @@ describe('useEventListener', () => {
       const listener2 = vi.fn()
       const el1 = document.createElement('div')
       const el2 = document.createElement('div')
-      const els = ref([el1])
-      const events = ref(['click'])
-      const listeners = ref([listener1])
+      const els = deepRef([el1])
+      const events = deepRef(['click'])
+      const listeners = deepRef([listener1])
 
       useEventListener(els, events, listeners)
       el1.dispatchEvent(new Event('click'))
@@ -340,9 +340,9 @@ describe('useEventListener', () => {
   })
 
   it('should auto re-register', async () => {
-    const target = ref()
+    const target = deepRef()
     const listener = vi.fn()
-    const options = ref<any>(false)
+    const options = deepRef<any>(false)
     useEventListener(target, 'click', listener, options)
 
     const el = document.createElement('div')
@@ -359,5 +359,52 @@ describe('useEventListener', () => {
     expect(addSpy).toHaveBeenCalledTimes(2)
     expect(addSpy).toHaveBeenLastCalledWith('click', listener, true)
     expect(removeSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should check document and shadowRoot', async () => {
+    const element = document.createElement('div')
+    const shadowRoot = element.attachShadow({ mode: 'open' })
+    const listener1 = vi.fn()
+    const listener2 = vi.fn()
+
+    useEventListener(shadowRoot, 'click', listener1)
+    useEventListener(document, 'click', listener2)
+
+    shadowRoot.dispatchEvent(new Event('click'))
+    document.dispatchEvent(new Event('click'))
+    expect(listener1).toHaveBeenCalledTimes(1)
+    expect(listener2).toHaveBeenCalledTimes(1)
+  })
+
+  it('should check multiple shadowRoots + multiple events', async () => {
+    const element1 = document.createElement('div')
+    const shadowRoot1 = element1.attachShadow({ mode: 'open' })
+    const element2 = document.createElement('div')
+    const shadowRoot2 = element2.attachShadow({ mode: 'closed' })
+
+    const listener = vi.fn()
+
+    useEventListener([element1, element2, shadowRoot1, shadowRoot2], ['click', 'slotchange'], listener)
+
+    shadowRoot1.dispatchEvent(new Event('click'))
+    shadowRoot2.dispatchEvent(new Event('click'))
+
+    await nextTick()
+
+    expect(listener).toHaveBeenCalledTimes(2)
+
+    element1.dispatchEvent(new Event('click'))
+    element2.dispatchEvent(new Event('click'))
+
+    await nextTick()
+
+    expect(listener).toHaveBeenCalledTimes(4)
+
+    shadowRoot1.dispatchEvent(new Event('slotchange'))
+    shadowRoot2.dispatchEvent(new Event('slotchange'))
+
+    await nextTick()
+
+    expect(listener).toHaveBeenCalledTimes(6)
   })
 })

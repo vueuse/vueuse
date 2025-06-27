@@ -13,9 +13,9 @@ Extended `watch` that returns extra `ignoreUpdates(updater)` and `ignorePrevAsyn
 
 ```ts
 import { watchIgnorable } from '@vueuse/core'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 
-const source = ref('foo')
+const source = shallowRef('foo')
 
 const { stop, ignoreUpdates } = watchIgnorable(
   source,
@@ -52,9 +52,9 @@ This feature is only for async flush `'pre'` and `'post'`. If `flush: 'sync'` is
 
 ```ts
 import { watchIgnorable } from '@vueuse/core'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 
-const source = ref('foo')
+const source = shallowRef('foo')
 
 const { ignorePrevAsyncUpdates } = watchIgnorable(
   source,

@@ -10,8 +10,9 @@ Reactively convert a string ref to number.
 
 ```ts
 import { useToNumber } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const str = ref('123')
+const str = shallowRef('123')
 const number = useToNumber(str)
 
 number.value // 123

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFileDialog } from '.'
+import { useFileDialog } from '@vueuse/core'
 
 const { files, open, reset, onCancel, onChange } = useFileDialog()
 onChange((files) => {

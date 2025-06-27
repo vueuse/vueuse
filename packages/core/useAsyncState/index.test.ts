@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
-import { useAsyncState } from '.'
+import { useAsyncState } from './index'
 
 describe('useAsyncState', () => {
   it('should be defined', () => {
@@ -24,6 +24,13 @@ describe('useAsyncState', () => {
     const { execute, state } = useAsyncState(p1, 0)
     expect(state.value).toBe(0)
     await execute(0, 2)
+    expect(state.value).toBe(2)
+  })
+
+  it('should executeImmediate', async () => {
+    const { executeImmediate, state } = useAsyncState(p1, 0)
+    expect(state.value).toBe(0)
+    await executeImmediate(2)
     expect(state.value).toBe(2)
   })
 

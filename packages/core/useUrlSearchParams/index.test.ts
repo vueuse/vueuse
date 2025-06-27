@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useUrlSearchParams } from '.'
+import { useUrlSearchParams } from './index'
 
 describe('useUrlSearchParams', () => {
   const baseURL = 'https://vueuse.org'
@@ -226,6 +226,24 @@ describe('useUrlSearchParams', () => {
         params.bar = false
         await nextTick()
         expect(params).toEqual({ foo: null, bar: false })
+      })
+
+      it('strips equal sign for empty params use customer stringify function', async () => {
+        const params = useUrlSearchParams(mode, { stringify: params => params.toString().replace(/=(&|$)/g, '$1') })
+        params.foo = ''
+        params.bar = ''
+        await nextTick()
+        switch (mode) {
+          case 'history':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/?foo&bar')
+            break
+          case 'hash':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/#?foo&bar')
+            break
+          case 'hash-params':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo&bar')
+            break
+        }
       })
     })
   })

@@ -19,11 +19,11 @@ const pluginPure = pure({
   functions: ['defineComponent'],
 })
 
-function esbuildMinifer(options: ESBuildOptions) {
+function esbuildMinifier(options: ESBuildOptions) {
   const { renderChunk } = esbuild(options)
 
   return {
-    name: 'esbuild-minifer',
+    name: 'esbuild-minifier',
     renderChunk,
   }
 }
@@ -37,7 +37,7 @@ export function createRollupConfig(
   pkg: PackageManifest,
   cwd = process.cwd(),
 ) {
-  const { globals, external, submodules, iife, build, cjs, mjs, dts, target = 'es2018' } = pkg
+  const { globals, external, submodules, iife, build, mjs, dts, target = 'es2018' } = pkg
   if (build === false)
     return []
 
@@ -74,13 +74,6 @@ export function createRollupConfig(
       })
     }
 
-    if (cjs !== false) {
-      output.push({
-        file: `${fn}.cjs`,
-        format: 'cjs',
-      })
-    }
-
     if (iife !== false) {
       output.push(
         {
@@ -98,7 +91,7 @@ export function createRollupConfig(
           extend: true,
           globals: iifeGlobals,
           plugins: [
-            esbuildMinifer({
+            esbuildMinifier({
               minify: true,
             }),
           ],
@@ -126,9 +119,7 @@ export function createRollupConfig(
       configs.push({
         input,
         output: [
-          { file: `${fn}.d.cts` },
           { file: `${fn}.d.mts` },
-          { file: `${fn}.d.ts` }, // for node10 compatibility
         ],
         plugins: [
           pluginDts,
@@ -144,10 +135,6 @@ export function createRollupConfig(
       configs.push({
         input: `${fn}/component.ts`,
         output: [
-          {
-            file: `${fn}/component.cjs`,
-            format: 'cjs',
-          },
           {
             file: `${fn}/component.mjs`,
             format: 'es',
@@ -166,9 +153,7 @@ export function createRollupConfig(
       configs.push({
         input: `${fn}/component.ts`,
         output: [
-          { file: `${fn}/component.d.cts` },
           { file: `${fn}/component.d.mts` },
-          { file: `${fn}/component.d.ts` }, // for node10 compatibility
         ],
         plugins: [
           pluginDts,

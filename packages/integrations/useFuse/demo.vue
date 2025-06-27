@@ -1,14 +1,14 @@
 <script setup lang='ts'>
-import type { UseFuseOptions } from '.'
-import { computed, ref, watch } from 'vue'
-import { useFuse } from '.'
+import type { UseFuseOptions } from '@vueuse/integrations'
+import { useFuse } from '@vueuse/integrations'
+import { computed, shallowRef, watch } from 'vue'
 
 interface DataItem {
   firstName: string
   lastName: string
 }
 
-const data = ref<DataItem[]>([
+const data = shallowRef<DataItem[]>([
   {
     firstName: 'Roslyn',
     lastName: 'Mitchell',
@@ -91,8 +91,8 @@ const data = ref<DataItem[]>([
   },
 ])
 
-const search = ref('')
-const filterBy = ref('both')
+const search = shallowRef('')
+const filterBy = shallowRef('both')
 const keys = computed(() => {
   if (filterBy.value === 'first')
     return ['firstName']
@@ -101,8 +101,8 @@ const keys = computed(() => {
   else return ['firstName', 'lastName']
 })
 
-const resultLimit = ref<number | undefined>(undefined)
-const resultLimitString = ref<string>('')
+const resultLimit = shallowRef<number | undefined>(undefined)
+const resultLimitString = shallowRef<string>('')
 watch(resultLimitString, () => {
   if (resultLimitString.value === '') {
     resultLimit.value = undefined
@@ -116,9 +116,9 @@ watch(resultLimitString, () => {
   }
 })
 
-const exactMatch = ref(false)
-const isCaseSensitive = ref(false)
-const matchAllWhenSearchEmpty = ref(true)
+const exactMatch = shallowRef(false)
+const isCaseSensitive = shallowRef(false)
+const matchAllWhenSearchEmpty = shallowRef(true)
 
 const options = computed<UseFuseOptions<DataItem>>(() => ({
   fuseOptions: {

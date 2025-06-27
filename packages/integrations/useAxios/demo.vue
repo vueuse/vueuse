@@ -1,6 +1,19 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
-import { useAxios } from '.'
+import { useAxios } from '@vueuse/integrations'
+import { reactify } from '@vueuse/shared'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios(
   'https://jsonplaceholder.typicode.com/todos/1',

@@ -2,16 +2,16 @@
 
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
-export type WebWorkerStatus =
-  | 'PENDING'
-  | 'SUCCESS'
-  | 'RUNNING'
-  | 'ERROR'
-  | 'TIMEOUT_EXPIRED'
+export type WebWorkerStatus
+  = | 'PENDING'
+    | 'SUCCESS'
+    | 'RUNNING'
+    | 'ERROR'
+    | 'TIMEOUT_EXPIRED'
 
 export interface UseWebWorkerOptions extends ConfigurableWindow {
   /**
@@ -45,10 +45,10 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     window = defaultWindow,
   } = options
 
-  const worker = ref<(Worker & { _url?: string }) | undefined>()
-  const workerStatus = ref<WebWorkerStatus>('PENDING')
-  const promise = ref<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
-  const timeoutId = ref<number>()
+  const worker = deepRef<(Worker & { _url?: string }) | undefined>()
+  const workerStatus = shallowRef<WebWorkerStatus>('PENDING')
+  const promise = deepRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
+  const timeoutId = shallowRef<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
     if (worker.value && worker.value._url && window) {

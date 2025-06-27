@@ -1,13 +1,13 @@
 import type { InjectionKey, Ref } from 'vue'
 import { createInjectionState, injectLocal } from '@vueuse/shared'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, inject, nextTick, ref } from 'vue'
+import { defineComponent, h, inject, nextTick, shallowRef } from 'vue'
 import { mount, useSetup } from '../../.test'
 
 describe('createInjectionState', () => {
   it('should work for simple nested component', async () => {
     const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
-      const count = ref(initialValue)
+      const count = shallowRef(initialValue)
       return count
     })
 
@@ -40,7 +40,7 @@ describe('createInjectionState', () => {
     const KEY: InjectionKey<Ref<number>> = Symbol('count-state')
 
     const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
-      const count = ref(initialValue)
+      const count = shallowRef(initialValue)
       return count
     }, { injectionKey: KEY })
 
@@ -72,7 +72,7 @@ describe('createInjectionState', () => {
 
   it('allow call useProvidingState and useInjectedState in same component', async () => {
     const [useProvideCountState, useCountState] = createInjectionState((initialValue: number) => {
-      const count = ref(initialValue)
+      const count = shallowRef(initialValue)
       return count
     })
     const vm = useSetup(() => {
@@ -89,7 +89,7 @@ describe('createInjectionState', () => {
   it('allow call useProvidingState and injectLocal in same component', async () => {
     const KEY: InjectionKey<Ref<number>> | string = Symbol('count-state')
     const [useProvideCountState] = createInjectionState((initialValue: number) => {
-      const count = ref(initialValue)
+      const count = shallowRef(initialValue)
       return count
     }, { injectionKey: KEY })
     const vm = useSetup(() => {

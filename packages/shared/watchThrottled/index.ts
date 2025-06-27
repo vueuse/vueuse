@@ -1,5 +1,5 @@
-import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
-import type { MapOldSources, MapSources, MaybeRefOrGetter } from '../utils'
+import type { MaybeRefOrGetter, WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { MapOldSources, MapSources } from '../utils'
 import { throttleFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { OnClickOutsideHandler } from '@vueuse/core'
+import { vOnClickOutside } from '@vueuse/components'
 import { onClickOutside } from '@vueuse/core'
-import { ref } from 'vue'
-import { vOnClickOutside } from './directive'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const modal = ref(false)
-const modalRef = ref(null)
+const modal = shallowRef(false)
+const modalRef = useTemplateRef('modalRef')
 
 onClickOutside(
   modalRef,
@@ -15,7 +15,7 @@ onClickOutside(
   },
 )
 
-const dropdown = ref(false)
+const dropdown = shallowRef(false)
 const dropdownHandler: OnClickOutsideHandler = (event) => {
   console.log(event)
   dropdown.value = false

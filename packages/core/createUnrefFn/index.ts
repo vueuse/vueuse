@@ -1,6 +1,6 @@
 /* This implementation is original ported from https://github.com/shorwood/pompaute by Stanley Horwood */
 
-import type { MaybeRef } from '@vueuse/shared'
+import type { MaybeRef } from 'vue'
 import { toValue } from 'vue'
 
 export type UnrefFn<T> = T extends (...args: infer A) => infer R

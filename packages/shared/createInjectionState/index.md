@@ -11,11 +11,11 @@ Create global state that can be injected into components.
 ```ts
 import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state
-  const count = ref(initialValue)
+  const count = shallowRef(initialValue)
 
   // getters
   const double = computed(() => count.value * 2)
@@ -34,8 +34,8 @@ export { useCounterStore }
 
 export function useCounterStoreWithDefaultValue() {
   return useCounterStore() ?? {
-    count: ref(0),
-    double: ref(0),
+    count: shallowRef(0),
+    double: shallowRef(0),
     increment: () => {},
   }
 }
@@ -71,7 +71,7 @@ import { useCounterStore } from './useCounterStore'
 // use non-null assertion operator to ignore the case that store is not provided.
 const { count, double } = useCounterStore()!
 // if you want to allow component to working without providing store, you can use follow code instead:
-// const { count, double } = useCounterStore() ?? { count: ref(0), double: ref(0) }
+// const { count, double } = useCounterStore() ?? { count: shallowRef(0), double: shallowRef(0) }
 // also, you can use another hook to provide default value
 // const { count, double } = useCounterStoreWithDefaultValue()
 // or throw error
@@ -111,14 +111,14 @@ const { increment } = useCounterStore()!
 ```ts
 import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 
 // custom injectionKey
 const CounterStoreKey = 'counter-store'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state
-  const count = ref(initialValue)
+  const count = shallowRef(initialValue)
 
   // getters
   const double = computed(() => count.value * 2)
@@ -137,11 +137,11 @@ const [useProvideCounterStore, useCounterStore] = createInjectionState((initialV
 ```ts
 import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state
-  const count = ref(initialValue)
+  const count = shallowRef(initialValue)
 
   // getters
   const double = computed(() => count.value * 2)

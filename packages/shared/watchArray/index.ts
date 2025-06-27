@@ -15,7 +15,7 @@ export function watchArray<T, Immediate extends Readonly<boolean> = false>(
 ) {
   let oldList: T[] = options?.immediate
     ? []
-    : [...(source instanceof Function
+    : [...(typeof source === 'function'
         ? source()
         : Array.isArray(source)
           ? source

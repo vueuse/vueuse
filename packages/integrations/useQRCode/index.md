@@ -25,9 +25,9 @@ or passing a `ref` to it, the returned data URL ref will change along with the s
 
 ```ts
 import { useQRCode } from '@vueuse/integrations/useQRCode'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const text = ref('text-to-encode')
+const text = shallowRef('text-to-encode')
 const qrcode = useQRCode(text)
 ```
 

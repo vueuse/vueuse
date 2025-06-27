@@ -10,6 +10,7 @@ Converts ref to reactive. Also made possible to create a "swapable" reactive obj
 
 ```ts
 import { toReactive } from '@vueuse/core'
+import { ref } from 'vue'
 
 const refState = ref({ foo: 'bar' })
 

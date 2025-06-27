@@ -1,9 +1,9 @@
-import type { ConfigurableEventFilter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ConfigurableEventFilter, TimerHandle } from '@vueuse/shared'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
 import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -32,8 +32,8 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
 }
 
 export interface UseIdleReturn {
-  idle: Ref<boolean>
-  lastActive: Ref<number>
+  idle: ShallowRef<boolean>
+  lastActive: ShallowRef<number>
   reset: () => void
 }
 
@@ -55,10 +55,10 @@ export function useIdle(
     window = defaultWindow,
     eventFilter = throttleFilter(50),
   } = options
-  const idle = ref(initialState)
-  const lastActive = ref(timestamp())
+  const idle = shallowRef(initialState)
+  const lastActive = shallowRef(timestamp())
 
-  let timer: any
+  let timer: TimerHandle
 
   const reset = () => {
     idle.value = false
@@ -88,7 +88,8 @@ export function useIdle(
       }, listenerOptions)
     }
 
-    reset()
+    if (!initialState)
+      reset()
   }
 
   return {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRafFn } from './index'
+import { useRafFn } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 const fpsLimit = 60
-const count = ref(0)
-const deltaMs = ref(0)
+const count = shallowRef(0)
+const deltaMs = shallowRef(0)
 const { pause, resume } = useRafFn(({ delta }) => {
   deltaMs.value = delta
   count.value += 1

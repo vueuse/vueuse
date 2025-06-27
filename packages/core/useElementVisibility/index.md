@@ -9,11 +9,11 @@ Tracks the visibility of an element within the viewport.
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useElementVisibility } from '@vueuse/core'
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const target = ref(null)
+const target = useTemplateRef<HTMLDivElement>('target')
 const targetIsVisible = useElementVisibility(target)
 </script>
 
@@ -35,6 +35,16 @@ const targetIsVisible = useElementVisibility(target, {
 })
 ```
 
+### threshold
+
+If you want to control the percentage of the visibility required to update the value, you can use the `threshold` option (See [MDN IntersectionObserver/threshold](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#threshold)).
+
+```ts
+const targetIsVisible = useElementVisibility(target, {
+  threshold: 1.0, // 100% visible
+})
+```
+
 ## Component Usage
 
 ```vue
@@ -48,12 +58,12 @@ const targetIsVisible = useElementVisibility(target, {
 ## Directive Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { vElementVisibility } from '@vueuse/components'
-import { ref } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const target = ref(null)
-const isVisible = ref(false)
+const target = useTemplateRef<HTMLDivElement>('target')
+const isVisible = shallowRef(false)
 
 function onElementVisibility(state) {
   isVisible.value = state

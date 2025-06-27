@@ -1,6 +1,6 @@
-import type { ConfigurableDocument, MaybeRefOrGetter } from '@vueuse/core'
+import type { ConfigurableDocument, MaybeElement } from '@vueuse/core'
 import type { Options } from 'sortablejs'
-import type { MaybeRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { isRef, nextTick, toValue } from 'vue'
@@ -25,9 +25,9 @@ export interface UseSortableReturn {
 
 export type UseSortableOptions = Options & ConfigurableDocument
 
-export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(selector: string, list: MaybeRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeRefOrGetter<HTMLElement | null | undefined>, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
 /**
@@ -37,8 +37,8 @@ export function useSortable<T>(el: MaybeRefOrGetter<HTMLElement | null | undefin
  * @param options
  */
 export function useSortable<T>(
-  el: MaybeRefOrGetter<HTMLElement | null | undefined> | string,
-  list: MaybeRefOrGetter<T[]>,
+  el: MaybeRefOrGetter<MaybeElement> | string,
+  list: MaybeRef<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
   let sortable: Sortable | undefined
@@ -108,7 +108,7 @@ export function removeNode(node: Node) {
 }
 
 export function moveArrayElement<T>(
-  list: MaybeRefOrGetter<T[]>,
+  list: MaybeRef<T[]>,
   from: number,
   to: number,
   e: Sortable.SortableEvent | null = null,

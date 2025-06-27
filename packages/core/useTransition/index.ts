@@ -1,7 +1,6 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import { identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref, toValue, watch } from 'vue'
+import { computed, ref as deepRef, toValue, watch } from 'vue'
 
 /**
  * Cubic bezier points
@@ -219,7 +218,7 @@ export function useTransition(
       : v.map(toValue<number>)
   }
 
-  const outputRef = ref(sourceVal())
+  const outputRef = deepRef(sourceVal())
 
   watch(sourceVal, async (to) => {
     if (toValue(options.disabled))

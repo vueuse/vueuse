@@ -1,0 +1,9 @@
+.:
+  from: function
+  fromEvent: function
+  toObserver: function
+  useExtractedObservable: function
+  useObservable: function
+  useSubject: function
+  useSubscription: function
+  watchExtractedObservable: function

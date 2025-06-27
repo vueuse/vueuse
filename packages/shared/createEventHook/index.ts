@@ -12,12 +12,14 @@ type Callback<T> = IsAny<T> extends true
   : (
       [T] extends [void]
         ? (...param: unknown[]) => void
-        : (...param: [T, ...unknown[]]) => void
+        : [T] extends [any[]]
+            ? (...param: T) => void
+            : (...param: [T, ...unknown[]]) => void
     )
 
 export type EventHookOn<T = any> = (fn: Callback<T>) => { off: () => void }
 export type EventHookOff<T = any> = (fn: Callback<T>) => void
-export type EventHookTrigger<T = any> = (...param: IsAny<T> extends true ? unknown[] : [T, ...unknown[]]) => Promise<unknown[]>
+export type EventHookTrigger<T = any> = (...param: Parameters<Callback<T>>) => Promise<unknown[]>
 
 export interface EventHook<T = any> {
   on: EventHookOn<T>
@@ -26,12 +28,14 @@ export interface EventHook<T = any> {
   clear: () => void
 }
 
+export type EventHookReturn<T> = EventHook<T>
+
 /**
  * Utility for creating event hooks
  *
  * @see https://vueuse.org/createEventHook
  */
-export function createEventHook<T = any>(): EventHook<T> {
+export function createEventHook<T = any>(): EventHookReturn<T> {
   const fns: Set<Callback<T>> = new Set()
 
   const off = (fn: Callback<T>) => {
@@ -54,7 +58,7 @@ export function createEventHook<T = any>(): EventHook<T> {
   }
 
   const trigger: EventHookTrigger<T> = (...args) => {
-    return Promise.all(Array.from(fns).map(fn => fn(...(args as [T, ...unknown[]]))))
+    return Promise.all(Array.from(fns).map(fn => fn(...args)))
   }
 
   return {

@@ -28,7 +28,7 @@ body:
     id: reproduction
     attributes:
       label: Reproduction
-      description: Please provide a link via [vueuse](https://stackblitz.com/edit/vitejs-vite-rptfks/) or a link to a repo that can reproduce the problem you ran into. A [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) is required.
+      description: Please provide a link via [VueUse Playground](https://playground.vueuse.org/), [stackblitz](https://stackblitz.com/edit/vitejs-vite-rptfks/) or a link to a repo that can reproduce the problem you ran into. A [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) is required.
       placeholder: Reproduction
     validations:
       required: true

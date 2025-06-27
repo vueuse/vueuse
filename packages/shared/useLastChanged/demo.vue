@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { timestamp, useLastChanged, useTimeAgo } from '@vueuse/core'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const input = ref('')
+const input = shallowRef('')
 const ms = useLastChanged(input, { initialValue: timestamp() - 1000 * 60 * 5 })
 const timeago = useTimeAgo(ms)
 </script>
