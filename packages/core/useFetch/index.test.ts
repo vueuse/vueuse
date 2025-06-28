@@ -1,11 +1,10 @@
 import type { AfterFetchContext, OnFetchErrorContext } from './index'
 import { until } from '@vueuse/shared'
-import { baseUrl } from '../../.test/mockServer'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
+import { baseUrl } from '../../.test/mockServer'
 import { createFetch, useFetch } from './index'
-import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `${baseUrl}?json=${encodeURI(JSON.stringify(jsonMessage))}`
