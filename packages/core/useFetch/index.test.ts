@@ -1,5 +1,6 @@
 import type { AfterFetchContext, OnFetchErrorContext } from './index'
 import { until } from '@vueuse/shared'
+import { baseUrl } from '../../.test/mockServer'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
@@ -7,7 +8,7 @@ import { createFetch, useFetch } from './index'
 import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
-const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
+const jsonUrl = `${baseUrl}?json=${encodeURI(JSON.stringify(jsonMessage))}`
 
 let fetchSpy = vi.spyOn(window, 'fetch')
 const onFetchErrorSpy = vi.fn()
@@ -25,7 +26,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should have status code of 200 and message of Hello World', async () => {
-    const { statusCode, data } = useFetch('https://example.com?text=hello')
+    const { statusCode, data } = useFetch(`${baseUrl}?text=hello`)
     await vi.waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledOnce()
       expect(data.value).toBe('hello')
@@ -37,7 +38,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     const myHeaders = new Headers()
     myHeaders.append('Authorization', 'test')
 
-    useFetch('https://example.com/', { headers: myHeaders })
+    useFetch(baseUrl, { headers: myHeaders })
 
     await nextTick(() => {
       expect(fetchSpyHeaders()).toEqual({ authorization: 'test' })
@@ -53,7 +54,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should use custom fetch', async () => {
     let count = 0
-    await useFetch('https://example.com/', {
+    await useFetch(baseUrl, {
       fetch: <typeof window.fetch>((input, init) => {
         count = 1
         return window.fetch(input as string, init)
@@ -65,7 +66,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should use custom payloadType', async () => {
     let options: any
-    useFetch('https://example.com', {
+    useFetch(baseUrl, {
       beforeFetch: (ctx) => {
         options = ctx.options
       },
@@ -81,7 +82,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   it('should use \'json\' payloadType', async () => {
     let options: any
     const payload = [1, 2]
-    useFetch('https://example.com', {
+    useFetch(baseUrl, {
       beforeFetch: (ctx) => {
         options = ctx.options
       },
@@ -95,7 +96,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should have an error on 400', async () => {
-    const { error, statusCode } = useFetch('https://example.com?status=400')
+    const { error, statusCode } = useFetch(`${baseUrl}?status=400`)
 
     await vi.waitFor(() => {
       expect(statusCode.value).toBe(400)
@@ -105,8 +106,8 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should throw error', async () => {
     const options = { immediate: false }
-    const error1 = await useFetch('https://example.com?status=400', options).execute(true).catch(err => err)
-    const error2 = await useFetch('https://example.com?status=600', options).execute(true).catch(err => err)
+    const error1 = await useFetch(`${baseUrl}?status=400`, options).execute(true).catch(err => err)
+    const error2 = await useFetch(`${baseUrl}?status=600`, options).execute(true).catch(err => err)
 
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
@@ -114,7 +115,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should abort request and set aborted to true', async () => {
-    const { aborted, abort, execute } = useFetch('https://example.com')
+    const { aborted, abort, execute } = useFetch(baseUrl)
     setTimeout(() => abort(), 0)
     await vi.waitFor(() => {
       expect(aborted.value).toBe(true)
@@ -128,16 +129,16 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should not call if immediate is false', async () => {
-    useFetch('https://example.com', { immediate: false })
+    useFetch(baseUrl, { immediate: false })
     await vi.waitFor(() => {
       expect(fetchSpy).toBeCalledTimes(0)
     })
   })
 
   it('should refetch if refetch is set to true', async () => {
-    const url = shallowRef('https://example.com')
+    const url = shallowRef(baseUrl)
     useFetch(url, { refetch: true })
-    url.value = 'https://example.com?text'
+    url.value = `${baseUrl}?text`
     await vi.waitFor(() => {
       expect(fetchSpy).toBeCalledTimes(2)
     })
@@ -145,7 +146,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should auto refetch when the refetch is set to true and the payload is a ref', async () => {
     const param = deepRef({ num: 1 })
-    useFetch('https://example.com', { refetch: true }).post(param)
+    useFetch(baseUrl, { refetch: true }).post(param)
     param.value.num = 2
     await vi.waitFor(() => {
       expect(fetchSpy).toBeCalledTimes(2)
@@ -153,7 +154,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should create an instance of useFetch with baseUrls', async () => {
-    const baseUrl = 'https://example.com'
     const targetUrl = `${baseUrl}/test`
     const fetchHeaders = { Authorization: 'test' }
     const requestHeaders = { 'Accept-Language': 'en-US' }
@@ -170,7 +170,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await vi.waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledTimes(4)
       Array.from({ length: 4 }).fill(0).forEach((x, i) => {
-        expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, 'https://example.com/test', expect.anything())
+        expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, `${baseUrl}/test`, expect.anything())
       })
       expect(fetchSpyHeaders()).toMatchObject(allHeaders)
     })
@@ -178,7 +178,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should chain beforeFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       options: {
         beforeFetch({ options }) {
           options.headers = { ...options.headers, Global: 'foo' }
@@ -200,7 +199,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should chain afterFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       options: {
         afterFetch(ctx) {
           ctx.data.title = 'Global'
@@ -222,7 +220,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should chain onFetchError function when using a factory instance', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
@@ -244,7 +241,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should chain beforeFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       options: {
         beforeFetch({ options }) {
           options.headers = { ...options.headers, Global: 'foo' }
@@ -270,7 +266,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should chain afterFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       options: {
         afterFetch(ctx) {
           ctx.data.title = 'Global'
@@ -296,7 +291,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should chain onFetchError function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       options: {
         onFetchError(ctx) {
           ctx.error = 'Global'
@@ -322,7 +316,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should overwrite beforeFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       combination: 'overwrite',
       options: {
         beforeFetch({ options }) {
@@ -345,7 +338,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should overwrite afterFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       combination: 'overwrite',
       options: {
         afterFetch(ctx) {
@@ -369,7 +361,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should overwrite onFetchError function when using a factory instance', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       combination: 'overwrite',
       options: {
         onFetchError(ctx) {
@@ -392,7 +383,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should overwrite beforeFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       combination: 'overwrite',
       options: {
         beforeFetch({ options }) {
@@ -419,7 +409,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should overwrite afterFetch function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       combination: 'overwrite',
       options: {
         afterFetch(ctx) {
@@ -447,7 +436,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should overwrite onFetchError function when using a factory instance and the options object in useMyFetch', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
       combination: 'overwrite',
       options: {
         onFetchError(ctx) {
@@ -473,7 +461,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should run the beforeFetch function and add headers to the request', async () => {
-    useFetch('https://example.com', { headers: { 'Accept-Language': 'en-US' } }, {
+    useFetch(baseUrl, { headers: { 'Accept-Language': 'en-US' } }, {
       beforeFetch({ options }) {
         options.headers = {
           ...options.headers,
@@ -490,7 +478,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should run the beforeFetch has default headers', async () => {
-    useFetch('https://example.com', {
+    useFetch(baseUrl, {
       beforeFetch({ options }) {
         expect(options.headers).toBeDefined()
         return { options }
@@ -499,7 +487,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should run the beforeFetch function and cancel the request', async () => {
-    const { execute } = useFetch('https://example.com', {
+    const { execute } = useFetch(baseUrl, {
       immediate: false,
       beforeFetch({ cancel }) {
         cancel()
@@ -525,7 +513,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('async chained beforeFetch and afterFetch should be executed in order', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
+      baseUrl,
       options: {
         async beforeFetch({ options }) {
           await nextTick()
@@ -564,7 +552,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should run the onFetchError function', async () => {
-    const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
+    const { data, error, statusCode } = useFetch(`${baseUrl}?status=400&json`, {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
         ctx.data = 'Internal Server Error'
@@ -580,7 +568,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should return data in onFetchError when updateDataOnError is true', async () => {
-    const { data, error, statusCode } = useFetch('https://example.com?status=400&json', {
+    const { data, error, statusCode } = useFetch(`${baseUrl}?status=400&json`, {
       updateDataOnError: true,
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
@@ -597,7 +585,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should run the onFetchError function when network error', async () => {
-    const { data, error, statusCode } = useFetch('https://example.com?status=500&text=Internal%20Server%20Error', {
+    const { data, error, statusCode } = useFetch(`${baseUrl}?status=500&text=Internal%20Server%20Error`, {
       onFetchError(ctx) {
         ctx.error = 'Internal Server Error'
 
@@ -613,7 +601,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should emit onFetchResponse event', async () => {
-    const { onFetchResponse, onFetchError, onFetchFinally } = useFetch('https://example.com')
+    const { onFetchResponse, onFetchError, onFetchFinally } = useFetch(baseUrl)
 
     onFetchResponse(onFetchResponseSpy)
     onFetchError(onFetchErrorSpy)
@@ -626,7 +614,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should emit onFetchError event', async () => {
-    const { onFetchError, onFetchFinally, onFetchResponse } = useFetch('https://example.com?status=400')
+    const { onFetchError, onFetchFinally, onFetchResponse } = useFetch(`${baseUrl}?status=400`)
 
     onFetchError(onFetchErrorSpy)
     onFetchResponse(onFetchResponseSpy)
@@ -675,7 +663,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should abort request when timeout reached', async () => {
-    const { aborted, execute } = useFetch('https://example.com?delay=100', { timeout: 10 })
+    const { aborted, execute } = useFetch(`${baseUrl}?delay=100`, { timeout: 10 })
 
     await vi.waitFor(() => {
       expect(aborted.value).toBeTruthy()
@@ -705,7 +693,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should abort previous request', async () => {
-    const { onFetchResponse, execute } = useFetch('https://example.com', { immediate: false })
+    const { onFetchResponse, execute } = useFetch(baseUrl, { immediate: false })
 
     onFetchResponse(onFetchResponseSpy)
 
@@ -722,16 +710,16 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should listen url ref change abort previous request', async () => {
-    const url = shallowRef('https://example.com')
+    const url = shallowRef(baseUrl)
     const { onFetchResponse } = useFetch(url, { refetch: true, immediate: false })
 
     onFetchResponse(onFetchResponseSpy)
 
-    url.value = 'https://example.com?t=1'
+    url.value = `${baseUrl}?t=1`
     await nextTick()
-    url.value = 'https://example.com?t=2'
+    url.value = `${baseUrl}?t=2`
     await nextTick()
-    url.value = 'https://example.com?t=3'
+    url.value = `${baseUrl}?t=3`
 
     await vi.waitFor(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
@@ -740,7 +728,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should be generated payloadType on execute', async () => {
     const form = deepRef()
-    const { execute } = useFetch('https://example.com').post(form)
+    const { execute } = useFetch(baseUrl).post(form)
 
     form.value = { x: 1 }
     await execute()
@@ -752,7 +740,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should be generated payloadType on execute with formdata', async () => {
     const form = deepRef<any>({ x: 1 })
-    const { execute } = useFetch('https://example.com').post(form)
+    const { execute } = useFetch(baseUrl).post(form)
 
     form.value = new FormData()
     await execute()
@@ -763,7 +751,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should be modified the request status after the request is completed', async () => {
-    const { isFetching, isFinished, execute } = useFetch('https://example.com', { immediate: false })
+    const { isFetching, isFinished, execute } = useFetch(baseUrl, { immediate: false })
 
     await execute()
     expect(isFetching.value).toBe(false)
@@ -773,7 +761,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   it('should be possible to re-trigger the request via the afterFetch parameters', async () => {
     let count = 0
     let options: Partial<AfterFetchContext> = {}
-    useFetch('https://example.com', {
+    useFetch(baseUrl, {
       afterFetch: (ctx) => {
         !count && ctx.execute()
         count++
@@ -792,7 +780,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   it('should be possible to re-trigger the request via the onFetchError parameters', async () => {
     let count = 0
     let options: Partial<OnFetchErrorContext> = {}
-    useFetch('https://example.com?status=400&json', {
+    useFetch(`${baseUrl}?status=400&json`, {
       onFetchError: (ctx) => {
         !count && ctx.execute()
         count++
@@ -810,7 +798,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should partial overwrite when combination is overwrite', async () => {
     const useMyFetch = createFetch({
-      baseUrl: 'https://example.com',
+      baseUrl,
       combination: 'overwrite',
       options: {
         beforeFetch({ options }) {
@@ -837,7 +825,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
   })
 
   it('should abort with given reason', async () => {
-    const { aborted, abort, execute, onFetchError } = useFetch('https://example.com', { immediate: false })
+    const { aborted, abort, execute, onFetchError } = useFetch(baseUrl, { immediate: false })
     const reason = 'custom abort reason'
     let error: unknown
     onFetchError((err) => {
