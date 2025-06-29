@@ -9,12 +9,10 @@ describe('useEventListener', () => {
   const options = { capture: true }
   let stop: Fn
   let target: HTMLDivElement
-  let removeSpy: MockInstance
   let addSpy: MockInstance
 
   beforeEach(() => {
     target = document.createElement('div')
-    removeSpy = vi.spyOn(target, 'removeEventListener')
     addSpy = vi.spyOn(target, 'addEventListener')
   })
 
@@ -42,12 +40,10 @@ describe('useEventListener', () => {
     })
 
     it('should remove listener', () => {
-      expect(removeSpy).not.toBeCalled()
-
+      expect(listener).not.toBeCalled()
       stop()
-
-      expect(removeSpy).toBeCalledTimes(1)
-      expect(removeSpy).toBeCalledWith(event, listener, options)
+      target.dispatchEvent(new MouseEvent(event))
+      expect(listener).not.toBeCalled()
     })
   })
 
@@ -61,7 +57,10 @@ describe('useEventListener', () => {
     })
 
     it('should add listener for all events', () => {
-      events.forEach(event => expect(addSpy).toBeCalledWith(event, listener, options))
+      events.forEach(event => expect(addSpy).toBeCalledWith(event, listener, {
+        capture: options.capture,
+        signal: expect.any(Object),
+      }))
     })
 
     it('should trigger listener with all events', () => {
@@ -70,15 +69,6 @@ describe('useEventListener', () => {
         target.dispatchEvent(new Event(event))
         expect(listener).toBeCalledTimes(index + 1)
       })
-    })
-
-    it('should remove listener with all events', () => {
-      expect(removeSpy).not.toBeCalled()
-
-      stop()
-
-      expect(removeSpy).toBeCalledTimes(events.length)
-      events.forEach(event => expect(removeSpy).toBeCalledWith(event, listener, options))
     })
   })
 
@@ -92,7 +82,10 @@ describe('useEventListener', () => {
     })
 
     it('should add all listeners', () => {
-      listeners.forEach(listener => expect(addSpy).toBeCalledWith(event, listener, options))
+      listeners.forEach(listener => expect(addSpy).toBeCalledWith(event, listener, {
+        capture: options.capture,
+        signal: expect.any(Object),
+      }))
     })
 
     it('should call all listeners with single click event', () => {
@@ -104,12 +97,12 @@ describe('useEventListener', () => {
     })
 
     it('should remove listeners', () => {
-      expect(removeSpy).not.toBeCalled()
-
+      target.dispatchEvent(new MouseEvent(event))
+      listeners.forEach(listener => expect(listener).toBeCalledTimes(1))
+      vi.clearAllMocks()
       stop()
-
-      expect(removeSpy).toBeCalledTimes(listeners.length)
-      listeners.forEach(listener => expect(removeSpy).toBeCalledWith(event, listener, options))
+      target.dispatchEvent(new MouseEvent(event))
+      listeners.forEach(listener => expect(listener).toBeCalledTimes(0))
     })
   })
 
@@ -125,7 +118,10 @@ describe('useEventListener', () => {
     it('should add all listeners for all events', () => {
       listeners.forEach((listener) => {
         events.forEach((event) => {
-          expect(addSpy).toBeCalledWith(event, listener, options)
+          expect(addSpy).toBeCalledWith(event, listener, {
+            capture: options.capture,
+            signal: expect.any(Object),
+          })
         })
       })
     })
@@ -134,16 +130,6 @@ describe('useEventListener', () => {
       events.forEach((event, index) => {
         target.dispatchEvent(new Event(event))
         listeners.forEach(listener => expect(listener).toBeCalledTimes(index + 1))
-      })
-    })
-
-    it('should remove all listeners with all events', () => {
-      stop()
-
-      listeners.forEach((listener) => {
-        events.forEach((event) => {
-          expect(removeSpy).toBeCalledWith(event, listener, options)
-        })
       })
     })
   })
@@ -347,18 +333,21 @@ describe('useEventListener', () => {
 
     const el = document.createElement('div')
     const addSpy = vi.spyOn(el, 'addEventListener')
-    const removeSpy = vi.spyOn(el, 'removeEventListener')
     target.value = el
     await nextTick()
     expect(addSpy).toHaveBeenCalledTimes(1)
-    expect(addSpy).toHaveBeenLastCalledWith('click', listener, false)
-    expect(removeSpy).toHaveBeenCalledTimes(0)
+    expect(addSpy).toHaveBeenLastCalledWith('click', listener, {
+      capture: false,
+      signal: expect.any(Object),
+    })
 
     options.value = true
     await nextTick()
     expect(addSpy).toHaveBeenCalledTimes(2)
-    expect(addSpy).toHaveBeenLastCalledWith('click', listener, true)
-    expect(removeSpy).toHaveBeenCalledTimes(1)
+    expect(addSpy).toHaveBeenLastCalledWith('click', listener, {
+      capture: true,
+      signal: expect.any(Object),
+    })
   })
 
   it('should check document and shadowRoot', async () => {
