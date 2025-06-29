@@ -67,7 +67,7 @@
     "nprogress": "^0.2",
     "qrcode": "^1.5",
     "sortablejs": "^1",
-    "universal-cookie": "^7",
+    "universal-cookie": "^7 || ^8",
     "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
