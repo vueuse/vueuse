@@ -33,6 +33,8 @@ export function useCssVar(
 
   // Track if target has ever had a truthy value
   let targetHadValue = false
+  // Track the initial target value to distinguish undefined from null
+  const initialTargetValue = toValue(target)
 
   const elRef = computed(() => {
     const element = unrefElement(target)
@@ -42,9 +44,18 @@ export function useCssVar(
       return element
     }
 
-    // If target never had a value, use documentElement as fallback
-    // If target had a value but now is undefined, don't use fallback
-    return targetHadValue ? null : window?.document?.documentElement
+    // If target had a value before, don't use fallback
+    if (targetHadValue) {
+      return null
+    }
+
+    // If initial target was explicitly null, don't use documentElement
+    if (initialTargetValue === null) {
+      return null
+    }
+
+    // If initial target was undefined, use documentElement as fallback
+    return window?.document?.documentElement
   })
 
   function updateCssVar() {
