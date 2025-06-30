@@ -31,10 +31,7 @@ export interface OnClickOutsideOptions<Controls extends boolean = false> extends
 }
 
 export type OnClickOutsideHandler<
-  T extends {
-    detectIframe: OnClickOutsideOptions['detectIframe']
-    controls: boolean
-  } = { detectIframe: false, controls: false },
+  T extends OnClickOutsideOptions<boolean> = OnClickOutsideOptions,
 > = (
   event: (T['detectIframe'] extends true ? FocusEvent : never)
     | (T['controls'] extends true ? Event : never)
@@ -57,28 +54,20 @@ let _iOSWorkaround = false
  * @param handler
  * @param options
  */
-export function onClickOutside(
+export function onClickOutside<
+  T extends OnClickOutsideOptions,
+>(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: true, controls: false }>,
-  options: OnClickOutsideOptions & { detectIframe: true },
+  handler: OnClickOutsideHandler<T>,
+  options?: T
 ): Fn
 
-export function onClickOutside(
+export function onClickOutside<
+  T extends OnClickOutsideOptions<true>,
+>(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler,
-  options?: OnClickOutsideOptions,
-): Fn
-
-export function onClickOutside(
-  target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: false, controls: true }>,
-  options: OnClickOutsideOptions<true> & { detectIframe?: false },
-): OnClickOutsideControlsReturn
-
-export function onClickOutside(
-  target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: true, controls: true }>,
-  options: OnClickOutsideOptions<true> & { detectIframe: true },
+  handler: OnClickOutsideHandler<T>,
+  options: T
 ): OnClickOutsideControlsReturn
 
 // Implementation
