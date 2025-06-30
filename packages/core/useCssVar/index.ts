@@ -32,19 +32,19 @@ export function useCssVar(
   const variable = shallowRef(initialValue)
 
   // Track if target has ever had a truthy value
-  const targetHadValue = shallowRef(false)
+  let targetHadValue = false
 
   const elRef = computed(() => {
     const element = unrefElement(target)
 
     if (element) {
-      targetHadValue.value = true
+      targetHadValue = true
       return element
     }
 
     // If target never had a value, use documentElement as fallback
     // If target had a value but now is undefined, don't use fallback
-    return targetHadValue.value ? null : window?.document?.documentElement
+    return targetHadValue ? null : window?.document?.documentElement
   })
 
   function updateCssVar() {
