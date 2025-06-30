@@ -6,6 +6,7 @@ import { notNullish } from '@vueuse/shared'
 import { createFocusTrap } from 'focus-trap'
 import { computed, shallowRef, toValue, watch } from 'vue'
 
+type ContainerElements = Parameters<FocusTrap['updateContainerElements']>[0]
 export interface UseFocusTrapOptions extends Options {
   /**
    * Immediately activate the trap
@@ -53,6 +54,13 @@ export interface UseFocusTrapReturn {
    * @see https://github.com/focus-trap/focus-trap#trapunpause
    */
   unpause: Fn
+
+  /**
+   * Update the container elements
+   *
+   * @see https://github.com/focus-trap/focus-trap?tab=readme-ov-file#trapupdatecontainerelements
+   */
+  updateContainerElements: (el: ContainerElements) => FocusTrap | undefined
 }
 
 /**
@@ -84,6 +92,13 @@ export function useFocusTrap(
     if (trap) {
       trap.unpause()
       isPaused.value = false
+    }
+  }
+
+  const updateContainerElements = (el: ContainerElements) => {
+    if (trap) {
+      trap.updateContainerElements(el)
+      return trap
     }
   }
 
@@ -138,5 +153,6 @@ export function useFocusTrap(
     deactivate,
     pause,
     unpause,
+    updateContainerElements,
   }
 }

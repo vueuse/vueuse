@@ -3,7 +3,16 @@ import { useFocusTrap } from '@vueuse/integrations'
 import { useTemplateRef } from 'vue'
 
 const target = useTemplateRef<HTMLElement>('target')
-const { hasFocus, activate, deactivate } = useFocusTrap(target)
+const target2 = useTemplateRef<HTMLElement>('target2')
+const { hasFocus, activate, deactivate, updateContainerElements } = useFocusTrap(target)
+
+function focusTopForm() {
+  updateContainerElements(target.value!)
+}
+
+function focusBottomForm() {
+  updateContainerElements(target2.value!)
+}
 </script>
 
 <template>
@@ -30,6 +39,29 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
       <div class="flex flex-row justify-center">
         <button @click="deactivate()">
           Free Focus
+        </button>
+        <button @click="focusBottomForm">
+          Focus Bottom Form
+        </button>
+      </div>
+    </div>
+
+    <div
+      ref="target2"
+      class="shadow-lg bg-green-100 rounded max-w-96 mx-auto p-8"
+    >
+      <h3 class="text-center mb-4">
+        Container 2
+      </h3>
+      <input type="text" placeholder="First Name" class="block w-full mb-2">
+      <input type="text" placeholder="Last Name" class="block w-full mb-2">
+      <textarea placeholder="Comments" class="block w-full mb-4" />
+      <div class="flex gap-2 justify-center">
+        <button @click="deactivate()">
+          Free Focus
+        </button>
+        <button @click="focusTopForm">
+          Focus Top Form
         </button>
       </div>
     </div>
