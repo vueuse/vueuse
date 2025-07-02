@@ -213,9 +213,13 @@ export function useTransition(
   const sourceVal = () => {
     const v = toValue(source)
 
-    return typeof v === 'number'
-      ? v
-      : v.map(toValue<number>)
+    if (typeof v === 'number')
+      return v
+
+    if (Array.isArray(v))
+      return v.map(toValue)
+
+    return 0
   }
 
   const outputRef = deepRef(sourceVal())
