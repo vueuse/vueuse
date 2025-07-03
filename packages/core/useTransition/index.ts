@@ -142,6 +142,9 @@ export function executeTransition<T extends number | number[]>(
   to: MaybeRefOrGetter<T>,
   options: TransitionOptions = {},
 ): PromiseLike<void> {
+  const {
+    window = defaultWindow,
+  } = options
   const fromVal = toValue(from)
   const toVal = toValue(to)
   const v1 = toVec(fromVal)
@@ -177,7 +180,7 @@ export function executeTransition<T extends number | number[]>(
         (source.value as number) = arr[0]
 
       if (now < endAt) {
-        ;(options.window ?? defaultWindow)?.requestAnimationFrame(tick)
+        window?.requestAnimationFrame(tick)
       }
       else {
         source.value = toVal
