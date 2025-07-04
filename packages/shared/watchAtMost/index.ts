@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter, ShallowRef, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef, WatchCallback, WatchHandle, WatchSource } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { nextTick, shallowRef, toValue } from 'vue'
@@ -8,8 +8,7 @@ export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Im
   count: MaybeRefOrGetter<number>
 }
 
-export interface WatchAtMostReturn {
-  stop: WatchStopHandle
+export interface WatchAtMostReturn extends WatchHandle {
   count: ShallowRef<number>
 }
 
@@ -31,17 +30,21 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
 
   const current = shallowRef(0)
 
-  const stop = watchWithFilter(
+  const watchHandle = watchWithFilter(
     source,
     (...args) => {
       current.value += 1
       if (current.value >= toValue(count))
-        nextTick(() => stop())
+        nextTick(() => watchHandle.stop())
 
       cb(...args)
     },
     watchOptions,
   )
 
-  return { count: current, stop }
+  const res = watchHandle as WatchAtMostReturn
+
+  res.count = current
+
+  return res
 }

@@ -51,8 +51,8 @@ export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
 
     return cb(value, oldValue, onCleanup)
   }
-  const res = watchIgnorable(source, _cb, options)
-  const { ignoreUpdates } = res
+  const watchHandle = watchIgnorable(source, _cb, options)
+  const { ignoreUpdates } = watchHandle
 
   const trigger = () => {
     let res: any
@@ -62,10 +62,11 @@ export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
     return res
   }
 
-  return {
-    ...res,
-    trigger,
-  }
+  const res = watchHandle as WatchTriggerableReturn
+
+  res.trigger = trigger
+
+  return res
 }
 
 function getWatchSources(sources: any) {

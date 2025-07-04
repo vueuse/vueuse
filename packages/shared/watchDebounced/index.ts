@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter, WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { MaybeRefOrGetter, WatchCallback, WatchHandle, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
 import type { DebounceFilterOptions, MapOldSources, MapSources } from '../utils'
 import { debounceFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
@@ -17,7 +17,7 @@ export function watchDebounced<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
   options: WatchDebouncedOptions<Immediate> = {},
-): WatchStopHandle {
+): WatchHandle {
   const {
     debounce = 0,
     maxWait = undefined,

@@ -1,4 +1,4 @@
-import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { WatchCallback, WatchHandle, WatchOptions, WatchSource } from 'vue'
 import type { ConfigurableEventFilter, MapOldSources, MapSources } from '../utils'
 import { watch } from 'vue'
 import { bypassFilter, createFilterWrapper } from '../utils'
@@ -15,7 +15,7 @@ export function watchWithFilter<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
   options: WatchWithFilterOptions<Immediate> = {},
-): WatchStopHandle {
+): WatchHandle {
   const {
     eventFilter = bypassFilter,
     ...watchOptions
