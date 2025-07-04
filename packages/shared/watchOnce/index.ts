@@ -1,4 +1,4 @@
-import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { WatchCallback, WatchHandle, WatchOptions, WatchSource } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import { watch } from 'vue'
 
@@ -7,19 +7,19 @@ export function watchOnce<T extends Readonly<WatchSource<unknown>[]>>(
   source: [...T],
   cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
   options?: Omit<WatchOptions<true>, 'once'>
-): WatchStopHandle
+): WatchHandle
 
 export function watchOnce<T>(
   source: WatchSource<T>,
   cb: WatchCallback<T, T | undefined>,
   options?: Omit<WatchOptions<true>, 'once'>
-): WatchStopHandle
+): WatchHandle
 
 export function watchOnce<T extends object>(
   source: T,
   cb: WatchCallback<T, T | undefined>,
   options?: Omit<WatchOptions<true>, 'once'>
-): WatchStopHandle
+): WatchHandle
 
 /**
  * Shorthand for watching value with { once: true }
