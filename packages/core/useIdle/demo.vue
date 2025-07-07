@@ -4,7 +4,7 @@ import { computed } from 'vue'
 
 const { idle, lastActive } = useIdle(5000)
 
-const now = useTimestamp({ interval: 1000 })
+const now = useTimestamp()
 
 const idledFor = computed(() =>
   Math.floor((now.value - lastActive.value) / 1000))
