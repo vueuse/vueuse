@@ -202,7 +202,7 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
 }
 
 function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<readonly T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
-  watch([size.width, size.height, toRef(list), containerRef], () => {
+  watch([size.width, size.height, () => toValue(list), containerRef], () => {
     calculateRange()
   })
 }
