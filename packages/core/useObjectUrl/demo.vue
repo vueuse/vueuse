@@ -17,7 +17,7 @@ function onFileChange(e: Event) {
     <note class="mb-1">
       Select file:
     </note>
-    <input type="file" class="inline-block" @change="onFileChange">
+    <input type="file" @change="onFileChange">
 
     <note class="mt-4 mb-1">
       Object URL:
