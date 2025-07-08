@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith } from 'rxjs/operators'
 import { shallowRef } from 'vue'
-import { useExtractedObservable } from './index'
 
 const start = shallowRef(0)
 

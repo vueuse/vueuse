@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, nextTick, shallowRef } from 'vue'
 import { asyncComputed, computedAsync } from './index'
@@ -43,6 +43,16 @@ describe('computedAsync', () => {
 
     expectTypeOf(data1).toEqualTypeOf<Ref<string | undefined>>()
     expectTypeOf(data2).toEqualTypeOf<Ref<string>>()
+  })
+
+  it('types are correct when lazy', async () => {
+    const func = vi.fn(() => Promise.resolve('data'))
+
+    const data1 = computedAsync(func, undefined, { lazy: true })
+    const data2 = computedAsync(func, 'initialState', { lazy: true })
+
+    expectTypeOf(data1).toEqualTypeOf<ComputedRef<string | undefined>>()
+    expectTypeOf(data2).toEqualTypeOf<ComputedRef<string>>()
   })
 
   it('call onError when error is thrown', async () => {
@@ -274,5 +284,15 @@ describe('computedAsync', () => {
 
     await vi.advanceTimersByTimeAsync(10)
     expect(uppercase.value).toBe('FINAL')
+  })
+
+  it('type when lazy is a boolean', async () => {
+    const lazy: boolean = true
+    const data = [] as string[]
+    const data1 = computedAsync(async () => data, [], { lazy })
+    const data2 = computedAsync(async () => data, undefined, { lazy })
+
+    expectTypeOf(data1).toEqualTypeOf<ComputedRef<string[]>>()
+    expectTypeOf(data2).toEqualTypeOf<ComputedRef<string[] | undefined>>()
   })
 })

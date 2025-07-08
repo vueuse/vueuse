@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/nuxt",
   "type": "module",
-  "version": "13.0.0",
+  "version": "13.5.0",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -45,14 +45,14 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@nuxt/kit": "catalog:",
+    "@nuxt/kit": "catalog:integrations",
     "@vueuse/core": "workspace:*",
     "@vueuse/metadata": "workspace:*",
-    "local-pkg": "catalog:"
+    "local-pkg": "catalog:integrations"
   },
   "devDependencies": {
-    "@nuxt/schema": "catalog:",
-    "nuxt": "catalog:",
-    "unimport": "catalog:"
+    "@nuxt/schema": "catalog:integrations",
+    "nuxt": "catalog:dev",
+    "unimport": "catalog:dev"
   }
 }

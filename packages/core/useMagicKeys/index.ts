@@ -55,8 +55,8 @@ export interface MagicKeysInternal {
   current: Set<string>
 }
 
-export type UseMagicKeysReturn<Reactive extends boolean> =
-  Readonly<
+export type UseMagicKeysReturn<Reactive extends boolean>
+  = Readonly<
     Omit<Reactive extends true
       ? Record<string, boolean>
       : Record<string, ComputedRef<boolean>>, keyof MagicKeysInternal>
@@ -85,6 +85,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
   }
   const refs: Record<string, any> = useReactive ? reactive(obj) : obj
   const metaDeps = new Set<string>()
+  const shiftDeps = new Set<string>()
   const usedKeys = new Set<string>()
 
   function setRefs(key: string, value: boolean) {
@@ -119,7 +120,16 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       usedKeys.add(key)
       setRefs(key, value)
     }
-
+    if (key === 'shift' && !value) {
+      shiftDeps.forEach((key) => {
+        current.delete(key)
+        setRefs(key, false)
+      })
+      shiftDeps.clear()
+    }
+    else if (typeof e.getModifierState === 'function' && e.getModifierState('Shift') && value) {
+      [...current, ...values].forEach(key => shiftDeps.add(key))
+    }
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
     // We track it's combination and release manually
