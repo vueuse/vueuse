@@ -835,4 +835,19 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
       expect(data.value).toEqual(expect.objectContaining({ after: 'Global' }))
     })
   })
+
+  it('should abort with given reason', async () => {
+    const { aborted, abort, execute, onFetchError } = useFetch('https://example.com', { immediate: false })
+    const reason = 'custom abort reason'
+    let error: unknown
+    onFetchError((err) => {
+      error = err
+    })
+    execute()
+    abort(reason)
+    await vi.waitFor(() => {
+      expect(aborted.value).toBe(true)
+      expect(error).toBe(reason)
+    })
+  })
 })

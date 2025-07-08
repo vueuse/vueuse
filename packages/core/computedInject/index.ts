@@ -1,8 +1,8 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import { computed, inject } from 'vue'
 
-export type ComputedInjectGetter<T, K> = (source: T | undefined, ctx?: any) => K
-export type ComputedInjectGetterWithDefault<T, K> = (source: T, ctx?: any) => K
+export type ComputedInjectGetter<T, K> = (source: T | undefined, oldValue?: K) => K
+export type ComputedInjectGetterWithDefault<T, K> = (source: T, oldValue?: K) => K
 export type ComputedInjectSetter<T> = (v: T) => void
 
 export interface WritableComputedInjectOptions<T, K> {
@@ -48,11 +48,11 @@ export function computedInject<T, K = any>(
     source = inject(key, defaultSource, treatDefaultAsFactory) as T
 
   if (typeof options === 'function') {
-    return computed(ctx => options(source, ctx))
+    return computed(oldValue => options(source, oldValue as K | undefined))
   }
   else {
     return computed({
-      get: ctx => options.get(source, ctx),
+      get: oldValue => options.get(source, oldValue as K | undefined),
       set: options.set,
     })
   }

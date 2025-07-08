@@ -74,6 +74,7 @@ export default withPwa(defineConfig({
     codeTransformers: [
       transformerTwoslash(),
     ],
+    languages: ['js', 'ts'],
   },
 
   themeConfig: {
