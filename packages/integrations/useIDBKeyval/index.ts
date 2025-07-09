@@ -68,6 +68,10 @@ export function useIDBKeyval<T>(
       console.error(e)
     },
     writeDefaults = true,
+    serializer: {
+      read: (val)=>val,
+      write: (val)=>val, 
+    }
   } = options
 
   const isFinished = shallowRef(false)
