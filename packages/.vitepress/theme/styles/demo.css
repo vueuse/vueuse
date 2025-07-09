@@ -135,6 +135,39 @@
     border: 1px solid var(--vp-c-border);
   }
 
+  .radio {
+    @apply inline-flex items-center my-auto cursor-pointer select-none;
+  }
+
+  .radio input {
+    appearance: none;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    display: inline-block;
+    vertical-align: middle;
+    background-origin: border-box;
+    user-select: none;
+    flex-shrink: 0;
+    height: 1rem;
+    width: 1rem;
+    @apply bg-gray-400/30;
+    @apply rounded-full h-4 w-4 select-none relative;
+    @apply mr-1;
+    --tw-ring-offset-width: 1px !important;
+    --tw-ring-color: #8885 !important;
+    --tw-ring-offset-color: transparent !important;
+  }
+
+  .radio input:checked::after {
+    content: '';
+    @apply absolute inset-[3px] rounded-full bg-primary;
+  }
+
+  .radio span {
+    @apply ml-1.5 text-13px opacity-70;
+  }
+
   pre,
   .code-block {
     opacity: 0.8;
