@@ -55,8 +55,8 @@ export interface MagicKeysInternal {
   current: Set<string>
 }
 
-export type UseMagicKeysReturn<Reactive extends boolean> =
-  Readonly<
+export type UseMagicKeysReturn<Reactive extends boolean>
+  = Readonly<
     Omit<Reactive extends true
       ? Record<string, boolean>
       : Record<string, ComputedRef<boolean>>, keyof MagicKeysInternal>
