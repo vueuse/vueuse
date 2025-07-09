@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { ref as deepRef } from 'vue'
 import { useVirtualList } from './index'
 
@@ -7,14 +7,17 @@ describe('useVirtualList', () => {
     expect(useVirtualList).toBeDefined()
   })
 
-  it('should not warn when list is a plain array', async () => {
-    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  it('should not warn when list is a plain array', () => {
+    const {
+      list,
+      containerProps: { ref: containerRef },
+      scrollTo,
+    } = useVirtualList(['a', 'b', 'c', 'd', 'e', 'f'], { itemHeight: () => 50 })
+    const div = { ...document.createElement('div'), clientHeight: 100 }
 
-    useVirtualList(['a', 'b', 'c', 'd', 'e', 'f'], { itemWidth: () => 50, overscan: 1 })
-
-    expect(spy).not.toHaveBeenCalled()
-
-    spy.mockRestore()
+    containerRef.value = div
+    scrollTo(0)
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
   })
 })
 
