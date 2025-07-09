@@ -35,7 +35,7 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
    *
    * @default 1
    */
-  volume?: SpeechSynthesisUtterance['volume']
+  volume?: MaybeRefOrGetter<SpeechSynthesisUtterance['volume']>
 }
 
 /**
@@ -74,7 +74,7 @@ export function useSpeechSynthesis(
     utterance.voice = toValue(options.voice) || null
     utterance.pitch = toValue(pitch)
     utterance.rate = toValue(rate)
-    utterance.volume = volume
+    utterance.volume = toValue(volume)
 
     utterance.onstart = () => {
       isPlaying.value = true

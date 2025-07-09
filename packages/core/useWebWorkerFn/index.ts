@@ -6,12 +6,12 @@ import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
-export type WebWorkerStatus =
-  | 'PENDING'
-  | 'SUCCESS'
-  | 'RUNNING'
-  | 'ERROR'
-  | 'TIMEOUT_EXPIRED'
+export type WebWorkerStatus
+  = | 'PENDING'
+    | 'SUCCESS'
+    | 'RUNNING'
+    | 'ERROR'
+    | 'TIMEOUT_EXPIRED'
 
 export interface UseWebWorkerOptions extends ConfigurableWindow {
   /**
