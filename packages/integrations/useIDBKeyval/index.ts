@@ -5,8 +5,8 @@ import { del, get, set, update } from 'idb-keyval'
 import { ref as deepRef, shallowRef, toRaw, toValue } from 'vue'
 
 interface Serializer<T> {
-  read: (raw: any) => T
-  write: (value: T) => any
+  read: (raw: unknown) => T
+  write: (value: T) => unknown
 }
 
 export interface UseIDBOptions<T> extends ConfigurableFlush {
@@ -69,7 +69,7 @@ export function useIDBKeyval<T>(
     },
     writeDefaults = true,
     serializer = {
-      read: (raw: any) => raw as T,
+      read: (raw: unknown) => raw as T,
       write: (value: T) => value,
     },
   } = options
