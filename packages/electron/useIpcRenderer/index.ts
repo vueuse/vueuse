@@ -20,12 +20,25 @@ export interface UseIpcRendererReturn {
   on: (channel: string, listener: IpcRendererListener) => IpcRenderer
 
   /**
+   * Removes the specified `listener` from the listener array for the specified
+   *
+   * @see https://www.electronjs.org/docs/latest/api/ipc-renderer#ipcrendereroffchannel-listener
+   */
+  off: (channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) => IpcRenderer
+
+  /**
    * Adds a one time listener function for the event. This listener is invoked only the next time a message is sent to channel, after which it is removed.
    *
    * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereroncechannel-listener
    */
   once: (channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) => IpcRenderer
 
+  /**
+   * Alias for `ipcRenderer.on`.
+   *
+   * @see https://www.electronjs.org/docs/latest/api/ipc-renderer#ipcrendereraddlistenerchannel-listener
+   */
+  addListener: (channel: string, listener: (event: IpcRendererEvent, ...args: any[]) => void) => IpcRenderer
   /**
    * Removes the specified listener from the listener array for the specified channel.
    *
@@ -72,13 +85,6 @@ export interface UseIpcRendererReturn {
   postMessage: (channel: string, message: any, transfer?: MessagePort[]) => void
 
   /**
-   * Sends a message to a window with webContentsId via channel.
-   *
-   * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrenderersendtowebcontentsid-channel-args
-   */
-  sendTo: (webContentsId: number, channel: string, ...args: any[]) => void
-
-  /**
    * Like ipcRenderer.send but the event will be sent to the <webview> element in the host page instead of the main process.
    *
    * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrenderersendtohostchannel-args
@@ -112,14 +118,15 @@ export function useIpcRenderer(ipcRenderer?: IpcRenderer): UseIpcRendererReturn 
 
   return {
     on: (channel: string, listener: IpcRendererListener) => useIpcRendererOn(channel, listener),
+    off: ipcRenderer.off.bind(ipcRenderer),
     once: ipcRenderer.once.bind(ipcRenderer),
+    addListener: ipcRenderer.addListener.bind(ipcRenderer),
     removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
     removeAllListeners: ipcRenderer.removeAllListeners.bind(ipcRenderer),
     send: ipcRenderer.send,
     invoke: <T>(channel: string, ...args: any[]) => useIpcRendererInvoke<T>(ipcRenderer!, channel, ...args),
     sendSync: setSendSync(ipcRenderer),
     postMessage: ipcRenderer.postMessage,
-    sendTo: ipcRenderer.sendTo,
     sendToHost: ipcRenderer.sendToHost,
   }
 }
