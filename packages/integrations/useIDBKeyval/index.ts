@@ -86,12 +86,7 @@ export function useIDBKeyval<T>(
         }
       }
       else {
-        if (serializer) {
-          data.value = serializer.read(rawValue)
-        }
-        else {
-          data.value = rawValue
-        }
+        data.value = serializer.read(rawValue)
       }
     }
     catch (e) {
