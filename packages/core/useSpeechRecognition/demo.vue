@@ -71,7 +71,7 @@ watch(isListening, isListening => isListening ? null : selectedLanguage.value = 
       >more details</a>
     </div>
     <div v-else>
-      <div space-x-4>
+      <div flex="~ items-center gap-x-4 wrap">
         <label class="radio">
           <input v-model="lang" value="en-US" type="radio">
           <span>English (US)</span>
