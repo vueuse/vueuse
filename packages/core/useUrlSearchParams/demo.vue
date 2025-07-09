@@ -6,8 +6,6 @@ params.foo = 'bar'
 params.vueuse = 'awesome'
 
 function handleAddParams() {
-  if (params.biz)
-    return
   params.biz = 'biz'
 }
 </script>
