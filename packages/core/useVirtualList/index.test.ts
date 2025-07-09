@@ -1,10 +1,20 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { ref as deepRef } from 'vue'
 import { useVirtualList } from './index'
 
 describe('useVirtualList', () => {
   it('should be defined', () => {
     expect(useVirtualList).toBeDefined()
+  })
+
+  it('should not warn when list is a plain array', async () => {
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    useVirtualList(['a', 'b', 'c', 'd', 'e', 'f'], { itemWidth: () => 50, overscan: 1 })
+
+    expect(spy).not.toHaveBeenCalled()
+
+    spy.mockRestore()
   })
 })
 
