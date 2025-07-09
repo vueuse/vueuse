@@ -68,24 +68,23 @@ export function useIDBKeyval<T>(
       console.error(e)
     },
     writeDefaults = true,
-    serializer: {
-      read: (val)=>val,
-      write: (val)=>val, 
-    }
+    serializer = {
+      read: (raw: any) => raw as T,
+      write: (value: T) => value,
+    },
   } = options
 
   const isFinished = shallowRef(false)
   const data = (shallow ? shallowRef : deepRef)(initialValue) as Ref<T>
 
   const rawInit: T = toValue(initialValue)
-  const serializer = options.serializer
 
   async function read() {
     try {
       const rawValue = await get<T>(key)
       if (rawValue === undefined) {
         if (rawInit !== undefined && rawInit !== null && writeDefaults) {
-          const initValue = serializer ? serializer.write(rawInit) : rawInit
+          const initValue = serializer.write(rawInit)
           await set(key, initValue)
         }
       }
@@ -107,11 +106,9 @@ export function useIDBKeyval<T>(
         await del(key)
       }
       else {
-        let rawValue = toRaw(data.value)
-        if (serializer) {
-          rawValue = serializer.write(rawValue as any)
-        }
-        await update(key, () => rawValue)
+        const rawValue = toRaw(data.value)
+        const serializedValue = serializer.write(rawValue)
+        await update(key, () => serializedValue)
       }
     }
     catch (e) {
