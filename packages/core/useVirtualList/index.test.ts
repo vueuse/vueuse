@@ -7,7 +7,7 @@ describe('useVirtualList', () => {
     expect(useVirtualList).toBeDefined()
   })
 
-  it('should not warn when list is a plain array', () => {
+  it('should accept plain arrays as input', () => {
     const {
       list,
       containerProps: { ref: containerRef },
