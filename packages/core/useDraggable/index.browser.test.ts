@@ -4,6 +4,9 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { defineComponent, nextTick, shallowRef } from 'vue'
 import { baseMousePointerEventOptions } from '../useDraggable/index.test'
 
+const margin = 30
+const speed = 2
+
 describe('useDraggable', () => {
   function wait(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -13,7 +16,6 @@ describe('useDraggable', () => {
     axis: 'x' | 'y',
     containerRect: DOMRect,
     el: HTMLElement,
-    margin: number,
     offset: number,
   ) {
     if (axis === 'x') {
@@ -30,7 +32,7 @@ describe('useDraggable', () => {
 
   function mountDraggableAutoScroll({
     initialValue = { x: 100, y: 100 },
-    autoScroll = { margin: 30, speed: 2 },
+    autoScroll = { margin, speed },
   } = {}) {
     const template = `
       <div ref="container" class="scroll-container" style="width: 300px; height: 200px; overflow: auto; border: 1px solid black; box-sizing: border-box;">
@@ -109,13 +111,12 @@ describe('useDraggable', () => {
     it('should auto-scroll horizontally when dragging near right edge', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
-      const margin = 30
 
       await simulateAutoScrollDrag({
         el,
         container,
         pointerdown: { x: elRect.left + dragOffset, y: elRect.top + dragOffset },
-        pointermove: { x: getMove('x', containerRect, el, margin, dragOffset), y: 0 },
+        pointermove: { x: getMove('x', containerRect, el, dragOffset), y: 0 },
       })
 
       expect(container.scrollTop).toBe(0)
@@ -129,13 +130,12 @@ describe('useDraggable', () => {
     it('should auto-scroll vertically when dragging near bottom edge', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
-      const margin = 30
 
       await simulateAutoScrollDrag({
         el,
         container,
         pointerdown: { x: elRect.left + dragOffset, y: elRect.top + dragOffset },
-        pointermove: { x: 0, y: getMove('y', containerRect, el, margin, dragOffset) },
+        pointermove: { x: 0, y: getMove('y', containerRect, el, dragOffset) },
       })
 
       expect(container.scrollLeft).toBe(0)
@@ -149,7 +149,6 @@ describe('useDraggable', () => {
     it('should NOT auto-scroll when dragging outside the margin', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
-      const margin = 30
       const marginOffset = 2
 
       await simulateAutoScrollDrag({
@@ -157,8 +156,8 @@ describe('useDraggable', () => {
         container,
         pointerdown: { x: elRect.left + dragOffset, y: elRect.top + dragOffset },
         pointermove: {
-          x: getMove('x', containerRect, el, margin, dragOffset - marginOffset),
-          y: getMove('y', containerRect, el, margin, dragOffset - marginOffset),
+          x: getMove('x', containerRect, el, dragOffset - marginOffset),
+          y: getMove('y', containerRect, el, dragOffset - marginOffset),
         },
       })
 
@@ -172,9 +171,8 @@ describe('useDraggable', () => {
     it('should auto-scroll both axes when dragging in the bottom-right corner', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
-      const margin = 30
-      const moveX = getMove('x', containerRect, el, margin, dragOffset)
-      const moveY = getMove('y', containerRect, el, margin, dragOffset)
+      const moveX = getMove('x', containerRect, el, dragOffset)
+      const moveY = getMove('y', containerRect, el, dragOffset)
 
       await simulateAutoScrollDrag({
         el,
