@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
 import { useDraggable } from '@vueuse/core'
-import { baseMousePointerEventOptions } from '@vueuse/core/useDraggable/index.test'
 import { afterEach, describe, expect, it } from 'vitest'
 import { defineComponent, nextTick, shallowRef } from 'vue'
+import { baseMousePointerEventOptions } from '../useDraggable/index.test'
 
 describe('useDraggable', () => {
   function wait(ms: number) {
