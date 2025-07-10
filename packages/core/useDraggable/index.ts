@@ -227,16 +227,16 @@ export function useDraggable(
     let deltaY = 0
 
     if (scrollSettings.direction === 'x' || scrollSettings.direction === 'both') {
-      if (position.x <= marginX)
+      if (position.x < marginX)
         deltaX = -speedX
-      else if (position.x + targetRect.width >= clientWidth - marginX)
+      else if (position.x + targetRect.width > clientWidth - marginX)
         deltaX = speedX
     }
 
     if (scrollSettings.direction === 'y' || scrollSettings.direction === 'both') {
-      if (position.y <= marginY)
+      if (position.y < marginY)
         deltaY = -speedY
-      else if (position.y + targetRect.height >= clientHeight - marginY)
+      else if (position.y + targetRect.height > clientHeight - marginY)
         deltaY = speedY
     }
 
@@ -347,7 +347,6 @@ export function useDraggable(
       x += container.scrollLeft
       y += container.scrollTop
     }
-
     if (container && (restrictInView || autoScroll)) {
       if (axis !== 'y') {
         const offsetX = x - container.scrollLeft
