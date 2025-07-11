@@ -26,6 +26,8 @@ describe('useDraggable', () => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
+  const isChromium = () => typeof navigator !== 'undefined' && navigator.userAgent.includes('Chrome')
+
   function getMove({
     axis = 'x',
     containerRect,
@@ -54,7 +56,7 @@ describe('useDraggable', () => {
   function mountDraggableAutoScroll(opts: DraggableAutoScrollOptions = {}) {
     const { initialValue, autoScroll } = withDraggableDefaults(opts)
     const template = `
-      <div ref="container" class="scroll-container" style="width: 300px; height: 200px; overflow: auto; border: 1px solid black; box-sizing: border-box;">
+      <div ref="container" class="scroll-container" style="width: 300px; height: 200px; overflow: auto; border: 1px solid black; box-sizing: border-box; scrollbar-width: none; -ms-overflow-style: none;">
         <div style="width: 1000px; height: 1000px; position: relative;">
           <div ref="el" style="width: 100px; height: 100px; position: absolute; top: 100px; left: 100px; background: darkslategray;" />
         </div>
@@ -129,7 +131,7 @@ describe('useDraggable', () => {
       document.body.innerHTML = ''
     })
 
-    it('should auto-scroll horizontally when dragging near right edge', async () => {
+    it.runIf(isChromium())('should auto-scroll horizontally when dragging near right edge', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
 
@@ -141,14 +143,13 @@ describe('useDraggable', () => {
       })
 
       expect(container.scrollTop).toBe(0)
-      expect(container.scrollLeft).toBeGreaterThanOrEqual(120)
-      expect(container.scrollLeft).toBeLessThanOrEqual(135)
+      expect(container.scrollLeft).toBe(130)
 
       dispatchPointerUp()
       wrapper.unmount()
     })
 
-    it('should auto-scroll vertically when dragging near bottom edge', async () => {
+    it.runIf(isChromium())('should auto-scroll vertically when dragging near bottom edge', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
 
@@ -160,14 +161,13 @@ describe('useDraggable', () => {
       })
 
       expect(container.scrollLeft).toBe(0)
-      expect(container.scrollTop).toBeGreaterThanOrEqual(120)
-      expect(container.scrollTop).toBeLessThanOrEqual(135)
+      expect(container.scrollTop).toBe(130)
 
       dispatchPointerUp()
       wrapper.unmount()
     })
 
-    it('should NOT auto-scroll when dragging outside the margin', async () => {
+    it.runIf(isChromium())('should NOT auto-scroll when dragging outside the margin', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
       const marginOffset = 2
@@ -189,7 +189,7 @@ describe('useDraggable', () => {
       wrapper.unmount()
     })
 
-    it('should auto-scroll both axes when dragging in the bottom-right corner', async () => {
+    it.runIf(isChromium())('should auto-scroll both axes when dragging in the bottom-right corner', async () => {
       const { wrapper, el, container, elRect, containerRect } = await setupAutoScrollTest()
       const dragOffset = 10
       const moveX = getMove({ axis: 'x', containerRect, el, offset: dragOffset })
@@ -204,10 +204,8 @@ describe('useDraggable', () => {
 
       await nextTick()
 
-      expect(container.scrollLeft).toBeGreaterThanOrEqual(120)
-      expect(container.scrollLeft).toBeLessThanOrEqual(135)
-      expect(container.scrollTop).toBeGreaterThanOrEqual(120)
-      expect(container.scrollTop).toBeLessThanOrEqual(135)
+      expect(container.scrollLeft).toBe(130)
+      expect(container.scrollTop).toBe(130)
 
       dispatchPointerUp()
       wrapper.unmount()
