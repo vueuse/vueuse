@@ -12,8 +12,6 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 async function run() {
   // made shared library imported can resolve correctly
   const packagesRoot = resolve(__dirname, '..', 'packages')
-  await fs.writeFile(join(packagesRoot, 'shared/index.mjs'), 'export * from "./dist/index.mjs"', 'utf-8')
-  await fs.writeFile(join(packagesRoot, 'core/index.mjs'), 'export * from "./dist/index.mjs"', 'utf-8')
 
   let md = '# Export size\n\n'
   const mdJSON = <{ [name: string]: string }>{}
@@ -29,7 +27,7 @@ async function run() {
 
   for (const pkg of [...packages.slice(2), packages[1]]) {
     const { exports, packageJSON } = await getExportsSize({
-      pkg: `./packages/${pkg.name}/dist`,
+      pkg: `./packages/${pkg.name}`,
       output: false,
       bundler: 'rollup',
       external: ['vue', ...(pkg.external || [])],
