@@ -142,4 +142,19 @@ describe('useCountdown', () => {
     vi.advanceTimersByTime(110)
     expect(completeCallback).toHaveBeenCalledTimes(3)
   })
+
+  it('multiple start() calls only create one timer', async () => {
+    const { start } = useCountdown(3, options)
+    start()
+    start()
+    start()
+    vi.advanceTimersByTime(310)
+    expect(tickCallback).toHaveBeenCalledTimes(3)
+  })
+
+  it('isActive becomes false after countdown completes', async () => {
+    const { isActive } = useCountdown(2, options)
+    vi.advanceTimersByTime(210)
+    expect(isActive.value).toBe(false)
+  })
 })
