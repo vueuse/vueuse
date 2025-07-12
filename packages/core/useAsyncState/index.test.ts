@@ -90,4 +90,34 @@ describe('useAsyncState', () => {
     const { execute } = useAsyncState(p2, '0', { throwError: true, immediate: false })
     await expect(execute()).rejects.toThrowError('error')
   })
+
+  it('should work with cancellable (only latest promise resolves)', async () => {
+    const p = (num = 1) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(num)
+        }, num * 1000)
+      })
+    }
+    const { execute, state } = useAsyncState(p, 0, { cancellable: true })
+    execute(0, 1)
+    execute(0, 3)
+    await execute(0, 2)
+    expect(state.value).toBe(2)
+  })
+
+  it('should support manual cancel()', async () => {
+    const p = (num = 1) => {
+      return new Promise<number>((resolve) => {
+        setTimeout(() => {
+          resolve(num)
+        }, num * 1000)
+      })
+    }
+    const { execute, state, cancel } = useAsyncState(p, 0, { cancellable: true })
+    execute(0, 3)
+    execute(0, 5)
+    cancel()
+    expect(state.value).toBe(0)
+  })
 })
