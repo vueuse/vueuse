@@ -1,5 +1,5 @@
-import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue'
-import type { Fn, MapOldSources, MapSources } from '../utils'
+import type { WatchCallback, WatchHandle, WatchSource } from 'vue'
+import type { MapOldSources, MapSources } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { watch } from 'vue'
 import { bypassFilter, createFilterWrapper } from '../utils'
@@ -11,10 +11,9 @@ import { bypassFilter, createFilterWrapper } from '../utils'
 export type IgnoredUpdater = (updater: () => void) => void
 export type IgnoredPrevAsyncUpdates = () => void
 
-export interface WatchIgnorableReturn {
+export interface WatchIgnorableReturn extends WatchHandle {
   ignoreUpdates: IgnoredUpdater
   ignorePrevAsyncUpdates: IgnoredPrevAsyncUpdates
-  stop: WatchStopHandle
 }
 
 export function watchIgnorable<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchWithFilterOptions<Immediate>): WatchIgnorableReturn
@@ -38,7 +37,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
 
   let ignoreUpdates: IgnoredUpdater
   let ignorePrevAsyncUpdates: IgnoredPrevAsyncUpdates
-  let stop: WatchStopHandle
+  let watchHandle: WatchHandle
 
   if (watchOptions.flush === 'sync') {
     let ignore = false
@@ -54,7 +53,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
       ignore = false
     }
 
-    stop = watch(
+    watchHandle = watch(
       source,
       (...args) => {
         if (!ignore)
@@ -66,7 +65,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   else {
     // flush 'pre' and 'post'
 
-    const disposables: Fn[] = []
+    const disposables: WatchHandle[] = []
 
     // counters for how many following changes to be ignored
     // ignoreCounter is incremented before there is a history operation
@@ -121,12 +120,29 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
       ),
     )
 
-    stop = () => {
+    watchHandle = (() => {
       disposables.forEach(fn => fn())
+    }) as WatchHandle
+
+    watchHandle.stop = () => {
+      disposables.forEach(fn => fn())
+    }
+
+    watchHandle.pause = () => {
+      disposables.forEach(fn => fn.pause())
+    }
+
+    watchHandle.resume = () => {
+      disposables.forEach(fn => fn.resume())
     }
   }
 
-  return { stop, ignoreUpdates, ignorePrevAsyncUpdates }
+  const res = watchHandle as WatchIgnorableReturn
+
+  res.ignoreUpdates = ignoreUpdates
+  res.ignorePrevAsyncUpdates = ignorePrevAsyncUpdates
+
+  return res
 }
 
 // alias
