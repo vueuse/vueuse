@@ -60,6 +60,7 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
   })
   let previousFrameTimestamp = 0
   let rafId: null | number = null
+  let timeoutId: null | number = null
 
   function loop(timestamp: DOMHighResTimeStamp) {
     if (!isActive.value || !window)
@@ -71,7 +72,17 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     const delta = timestamp - previousFrameTimestamp
 
     if (intervalLimit.value && delta < intervalLimit.value) {
-      rafId = window.requestAnimationFrame(loop)
+      const remainingTime = intervalLimit.value - delta
+
+      if (remainingTime > 4) {
+        timeoutId = window.setTimeout(() => {
+          timeoutId = null
+          rafId = window.requestAnimationFrame(loop)
+        }, remainingTime - 4)
+      }
+      else {
+        rafId = window.requestAnimationFrame(loop)
+      }
       return
     }
 
@@ -80,6 +91,7 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     if (once) {
       isActive.value = false
       rafId = null
+      timeoutId = null
       return
     }
     rafId = window.requestAnimationFrame(loop)
@@ -98,6 +110,10 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     if (rafId != null && window) {
       window.cancelAnimationFrame(rafId)
       rafId = null
+    }
+    if (timeoutId !== null && window) {
+      window.clearTimeout(timeoutId)
+      timeoutId = null
     }
   }
 
