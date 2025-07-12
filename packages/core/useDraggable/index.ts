@@ -320,6 +320,14 @@ export function useDraggable(
     pressedDelta.value = pos
     handleEvent(e)
   }
+
+  function clampContainerScroll(container: HTMLElement) {
+    if (container.scrollLeft > container.scrollWidth - container.clientWidth)
+      container.scrollLeft = Math.max(0, container.scrollWidth - container.clientWidth)
+    if (container.scrollTop > container.scrollHeight - container.clientHeight)
+      container.scrollTop = Math.max(0, container.scrollHeight - container.clientHeight)
+  }
+
   const move = (e: PointerEvent) => {
     if (toValue(options.disabled) || !filterEvent(e))
       return
@@ -327,6 +335,9 @@ export function useDraggable(
       return
 
     const container = toValue(containerElement)
+    if (container)
+      clampContainerScroll(container as HTMLElement)
+
     const targetRect = toValue(target)!.getBoundingClientRect()
     let { x, y } = position.value
     if (axis === 'x' || axis === 'both') {
