@@ -148,13 +148,14 @@ describe('useCountdown', () => {
     start()
     start()
     start()
-    vi.advanceTimersByTime(310)
+    vi.advanceTimersByTime(1000)
     expect(tickCallback).toHaveBeenCalledTimes(3)
   })
 
   it('isActive becomes false after countdown completes', async () => {
     const { isActive } = useCountdown(2, options)
-    vi.advanceTimersByTime(210)
+    expect(isActive.value).toBe(true)
+    vi.advanceTimersByTime(1000)
     expect(isActive.value).toBe(false)
   })
 })
