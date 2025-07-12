@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { useDraggable } from '@vueuse/core'
 import { afterEach, describe, expect, it } from 'vitest'
-import { defineComponent, nextTick, shallowRef } from 'vue'
+import { defineComponent, nextTick, useTemplateRef } from 'vue'
 import { baseMousePointerEventOptions } from '../useDraggable/index.test'
 
 interface DraggableAutoScrollOptions {
@@ -65,8 +65,8 @@ describe('useDraggable', () => {
     return mount(defineComponent({
       template,
       setup() {
-        const el = shallowRef<HTMLElement | null>(null)
-        const container = shallowRef<HTMLElement | null>(null)
+        const el = useTemplateRef<HTMLElement>('el')
+        const container = useTemplateRef<HTMLElement>('container')
         useDraggable(el, {
           initialValue,
           autoScroll,
