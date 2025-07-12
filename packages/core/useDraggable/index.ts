@@ -213,12 +213,19 @@ export function useDraggable(
   const getScrollAxisValues = (value: number | Position): [number, number] =>
     typeof value === 'number' ? [value, value] : [value.x, value.y]
 
+  function clampContainerScroll(container: HTMLElement) {
+    if (container.scrollLeft > container.scrollWidth - container.clientWidth)
+      container.scrollLeft = Math.max(0, container.scrollWidth - container.clientWidth)
+    if (container.scrollTop > container.scrollHeight - container.clientHeight)
+      container.scrollTop = Math.max(0, container.scrollHeight - container.clientHeight)
+  }
+
   const handleAutoScroll = (
     container: HTMLElement | SVGElement,
     targetRect: DOMRect,
     position: Position,
   ) => {
-    const { clientWidth, clientHeight } = container
+    const { clientWidth, clientHeight, scrollLeft, scrollTop, scrollWidth, scrollHeight } = container
 
     const [marginX, marginY] = getScrollAxisValues(scrollSettings.margin)
     const [speedX, speedY] = getScrollAxisValues(scrollSettings.speed)
@@ -227,16 +234,16 @@ export function useDraggable(
     let deltaY = 0
 
     if (scrollSettings.direction === 'x' || scrollSettings.direction === 'both') {
-      if (position.x < marginX)
+      if (position.x < marginX && scrollLeft > 0)
         deltaX = -speedX
-      else if (position.x + targetRect.width > clientWidth - marginX)
+      else if (position.x + targetRect.width > clientWidth - marginX && scrollLeft < scrollWidth - clientWidth)
         deltaX = speedX
     }
 
     if (scrollSettings.direction === 'y' || scrollSettings.direction === 'both') {
-      if (position.y < marginY)
+      if (position.y < marginY && scrollTop > 0)
         deltaY = -speedY
-      else if (position.y + targetRect.height > clientHeight - marginY)
+      else if (position.y + targetRect.height > clientHeight - marginY && scrollTop < scrollHeight - clientHeight)
         deltaY = speedY
     }
 
@@ -252,20 +259,16 @@ export function useDraggable(
       autoScrollInterval = setInterval(() => {
         const targetRect = toValue(target)!.getBoundingClientRect()
         const { x, y } = position.value
-        let adjustedX = x - container.scrollLeft
-        let adjustedY = y - container.scrollTop
-        if (adjustedX >= 0 && adjustedY >= 0) {
+        const relativePosition = { x: x - container.scrollLeft, y: y - container.scrollTop }
+        if (relativePosition.x >= 0 && relativePosition.y >= 0) {
           handleAutoScroll(
             container,
             targetRect,
-            { x: adjustedX, y: adjustedY },
+            relativePosition,
           )
-          adjustedX += container.scrollLeft
-          adjustedY += container.scrollTop
-          position.value = {
-            x: adjustedX,
-            y: adjustedY,
-          }
+          relativePosition.x += container.scrollLeft
+          relativePosition.y += container.scrollTop
+          position.value = relativePosition
         }
       }, 1000 / 60)
     }
@@ -276,22 +279,32 @@ export function useDraggable(
       autoScrollInterval = null
     }
   }
+  const isPointerNearEdge = (
+    pointer: Position,
+    container: HTMLElement | SVGElement,
+    margin: number | Position,
+    targetRect: DOMRect,
+  ) => {
+    const [marginX, marginY] = typeof margin === 'number' ? [margin, margin] : [margin.x, margin.y]
+    const { clientWidth, clientHeight } = container
+    return (
+      pointer.x < marginX
+      || pointer.x + targetRect.width > clientWidth - marginX
+      || pointer.y < marginY
+      || pointer.y + targetRect.height > clientHeight - marginY
+    )
+  }
   const checkAutoScroll = () => {
     if (toValue(options.disabled) || !pressedDelta.value)
       return
     const container = toValue(containerElement)
     if (!container)
       return
+    const targetRect = toValue(target)!.getBoundingClientRect()
+    const { x, y } = position.value
+    const relativePosition = { x: x - container.scrollLeft, y: y - container.scrollTop }
 
-    const isInScrollableArea
-      = (container.scrollLeft > 0
-        && container.scrollLeft + 1
-        < container.scrollWidth - container.clientWidth)
-      || (container.scrollTop > 0
-        && container.scrollTop + 1
-        < container.scrollHeight - container.clientHeight)
-
-    if (isInScrollableArea)
+    if (isPointerNearEdge(relativePosition, container, scrollSettings.margin, targetRect))
       startAutoScroll()
     else stopAutoScroll()
   }
@@ -319,13 +332,6 @@ export function useDraggable(
       return
     pressedDelta.value = pos
     handleEvent(e)
-  }
-
-  function clampContainerScroll(container: HTMLElement) {
-    if (container.scrollLeft > container.scrollWidth - container.clientWidth)
-      container.scrollLeft = Math.max(0, container.scrollWidth - container.clientWidth)
-    if (container.scrollTop > container.scrollHeight - container.clientHeight)
-      container.scrollTop = Math.max(0, container.scrollHeight - container.clientHeight)
   }
 
   const move = (e: PointerEvent) => {
@@ -360,17 +366,17 @@ export function useDraggable(
     }
     if (container && (restrictInView || autoScroll)) {
       if (axis !== 'y') {
-        const offsetX = x - container.scrollLeft
-        if (offsetX < 0)
+        const relativeX = x - container.scrollLeft
+        if (relativeX < 0)
           x = container.scrollLeft
-        else if (offsetX > container.clientWidth - targetRect.width)
+        else if (relativeX > container.clientWidth - targetRect.width)
           x = container.clientWidth - targetRect.width + container.scrollLeft
       }
       if (axis !== 'x') {
-        const offsetY = y - container.scrollTop
-        if (offsetY < 0)
+        const relativeY = y - container.scrollTop
+        if (relativeY < 0)
           y = container.scrollTop
-        else if (offsetY > container.clientHeight - targetRect.height)
+        else if (relativeY > container.clientHeight - targetRect.height)
           y = container.clientHeight - targetRect.height + container.scrollTop
       }
     }
