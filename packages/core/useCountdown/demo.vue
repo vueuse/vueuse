@@ -50,7 +50,7 @@ useEventListener(rocketRef, 'animationend', () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 input {
   width: 40px;
 }
