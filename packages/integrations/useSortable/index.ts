@@ -1,11 +1,15 @@
 import type { ConfigurableDocument, MaybeElement } from '@vueuse/core'
 import type { Options } from 'sortablejs'
-import type { MaybeRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef, WatchOptions } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import { isRef, nextTick, toValue } from 'vue'
+import { isRef, nextTick, readonly, shallowRef, toValue, watch } from 'vue'
 
 export interface UseSortableReturn {
+  /**
+   * whether sortable is active
+   */
+  isActive: Readonly<ShallowRef<boolean>>
   /**
    * start sortable instance
    */
@@ -23,7 +27,9 @@ export interface UseSortableReturn {
   option: (<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]) => void) & (<K extends keyof Sortable.Options>(name: K) => Sortable.Options[K])
 }
 
-export type UseSortableOptions = Options & ConfigurableDocument
+export interface UseSortableOptions extends Options, ConfigurableDocument {
+  watchOptions?: WatchOptions
+}
 
 export function useSortable<T>(selector: string, list: MaybeRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
@@ -43,7 +49,9 @@ export function useSortable<T>(
 ): UseSortableReturn {
   let sortable: Sortable | undefined
 
-  const { document = defaultDocument, ...resetOptions } = options
+  const { document = defaultDocument, watchOptions = { flush: 'post' }, ...resetOptions } = options
+
+  const isActive = shallowRef(false)
 
   const defaultOptions: Options = {
     onUpdate: (e) => {
@@ -56,11 +64,15 @@ export function useSortable<T>(
     if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
+
+    isActive.value = true
   }
 
   const stop = () => {
     sortable?.destroy()
     sortable = undefined
+
+    isActive.value = false
   }
 
   const option = <K extends keyof Options>(name: K, value?: Options[K]) => {
@@ -70,11 +82,20 @@ export function useSortable<T>(
       return sortable?.option(name)
   }
 
+  watch(() => toValue(el), (value) => {
+    if (isActive.value)
+      stop()
+
+    if (value)
+      start()
+  }, watchOptions)
+
   tryOnMounted(start)
 
   tryOnScopeDispose(stop)
 
   return {
+    isActive: readonly(isActive),
     stop,
     start,
     option: option as UseSortableReturn['option'],
