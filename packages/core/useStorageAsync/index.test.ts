@@ -370,6 +370,7 @@ describe('useStorageAsync', () => {
     const ref1 = useStorageAsync(KEY, 'default', storageAsyncMock, { writeDefaults: true })
     await nextTwoTick()
     expect(storageAsyncMock.setItem).toHaveBeenCalledWith(KEY, 'default')
+    expect(ref1.value).toBe('default')
 
     // with writeDefaults: false
     storageState.clear()
@@ -428,6 +429,7 @@ describe('useStorageAsync', () => {
 
     await nextTwoTick()
     expect(onError).toHaveBeenCalledWith(new Error('serializer read error'))
+    expect(store.value).toBe('default')
   })
 
   it('syncs properly within the same document', async () => {
