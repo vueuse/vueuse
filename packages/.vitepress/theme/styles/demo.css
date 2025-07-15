@@ -197,6 +197,7 @@
     white-space: pre;
     overflow-wrap: normal;
     overflow: hidden;
+    max-width: 100%;
   }
 
   .float {
