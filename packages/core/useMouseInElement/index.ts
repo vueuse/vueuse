@@ -93,6 +93,10 @@ export function useMouseInElement(
       elementX.value = elX
       elementY.value = elY
     }
+    else {
+      elementX.value = isOutside.value ? 0 : elX
+      elementY.value = isOutside.value ? 0 : elY
+    }
   }
 
   const stopFnList: Array<() => void> = []
