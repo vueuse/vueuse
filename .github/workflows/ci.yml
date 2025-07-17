@@ -87,7 +87,7 @@ jobs:
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh
 
-  build:
+  release-pr:
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
