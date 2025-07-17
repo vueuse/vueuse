@@ -498,6 +498,155 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
+  it('should provide responseType in beforeFetch context', async () => {
+    let responseTypeInContext: string | undefined
+
+    // 测试默认响应类型 (text)
+    useFetch('https://example.com', {
+      beforeFetch({ responseType }) {
+        responseTypeInContext = responseType
+        return {}
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(responseTypeInContext).toBe('text')
+    })
+
+    // 测试 JSON 响应类型
+    responseTypeInContext = undefined
+    useFetch('https://example.com', {
+      beforeFetch({ responseType }) {
+        responseTypeInContext = responseType
+        return {}
+      },
+    }).json()
+
+    await vi.waitFor(() => {
+      expect(responseTypeInContext).toBe('json')
+    })
+
+    // 测试 blob 响应类型
+    responseTypeInContext = undefined
+    useFetch('https://example.com', {
+      beforeFetch({ responseType }) {
+        responseTypeInContext = responseType
+        return {}
+      },
+    }).blob()
+
+    await vi.waitFor(() => {
+      expect(responseTypeInContext).toBe('blob')
+    })
+  })
+
+  it('should allow changing responseType in beforeFetch', async () => {
+    // 检查在 beforeFetch 中更改响应类型
+    let capturedResponseType: 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData' | undefined
+
+    useFetch(jsonUrl, {
+      beforeFetch(ctx) {
+        // 验证初始为 text
+        expect(ctx.responseType).toBe('text')
+        capturedResponseType = 'json'
+        // 修改为 json
+        return { responseType: capturedResponseType }
+      },
+    })
+
+    await vi.waitFor(() => {
+      // 确认 responseType 已被正确修改
+      expect(capturedResponseType).toBe('json')
+    })
+  })
+
+  it('should provide and respect responseType in createFetch factory', async () => {
+    const useMyFetch = createFetch({
+      baseUrl: 'https://example.com',
+      options: {
+        beforeFetch(ctx) {
+          // 检查 responseType 属性是否存在
+          expect(ctx.responseType).toBeDefined()
+          return {}
+        },
+      },
+    })
+
+    // 记录 beforeFetch 中的 responseType
+    let responseTypeInContext: string | undefined
+
+    // 测试 JSON 方法对 responseType 的影响
+    useMyFetch('?json', {
+      beforeFetch({ responseType }) {
+        responseTypeInContext = responseType
+        return {}
+      },
+    }).json()
+
+    await vi.waitFor(() => {
+      expect(responseTypeInContext).toBe('json')
+    })
+
+    // 测试修改 responseType
+    let modifiedResponseType: 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData' | undefined
+    responseTypeInContext = undefined
+
+    useMyFetch('?json', {
+      beforeFetch(ctx) {
+        responseTypeInContext = ctx.responseType
+        modifiedResponseType = 'json'
+        // 从默认的 text 修改为 json
+        return { responseType: modifiedResponseType }
+      },
+    })
+
+    await vi.waitFor(() => {
+      expect(responseTypeInContext).toBe('text')
+      expect(modifiedResponseType).toBe('json')
+    })
+  })
+
+  it('should correctly set responseType for all response types in beforeFetch', async () => {
+    // 测试所有响应类型
+    type ResponseTypeValue = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
+    const responseTypes: Record<string, ResponseTypeValue> = {
+      text: 'text',
+      json: 'json',
+      blob: 'blob',
+      arrayBuffer: 'arrayBuffer',
+      formData: 'formData',
+    }
+
+    // 为每个响应类型创建测试
+    for (const [method, expectedType] of Object.entries(responseTypes)) {
+      let capturedType: string | undefined
+
+      // 调用对应的方法
+      const fetch = useFetch('https://example.com', {
+        beforeFetch({ responseType }) {
+          capturedType = responseType
+          return {}
+        },
+      })
+
+      // 使用类型安全的方式调用方法
+      if (method === 'text')
+        fetch.text()
+      else if (method === 'json')
+        fetch.json()
+      else if (method === 'blob')
+        fetch.blob()
+      else if (method === 'arrayBuffer')
+        fetch.arrayBuffer()
+      else if (method === 'formData')
+        fetch.formData()
+
+      await vi.waitFor(() => {
+        expect(capturedType).toBe(expectedType)
+      })
+    }
+  })
+
   it('should run the beforeFetch function and cancel the request', async () => {
     const { execute } = useFetch('https://example.com', {
       immediate: false,
