@@ -30,7 +30,9 @@
   // Disable the default formatter
   "prettier.enable": false,
   "editor.formatOnSave": false,
-
+  // Enable Vitest plugin and auto test running in VSCode
+  "vitest.autoRun": true,
+  "vitest.enable": true,
   // Auto fix
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
