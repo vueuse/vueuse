@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMounted } from '@vueuse/core'
-import { defineComponent, h, shallowRef } from 'vue'
+import { defineComponent, h, shallowRef, useTemplateRef } from 'vue'
 
 // Default usage - monitors current component's mount state
 const isMounted = useMounted()
@@ -16,7 +16,7 @@ const customComponent = defineComponent({
   },
 })
 
-const customComponentRef = shallowRef<InstanceType<typeof customComponent>>()
+const customComponentRef = useTemplateRef<InstanceType<typeof customComponent>>('customComponentRef')
 
 const isTargetMounted = useMounted(customComponentRef)
 

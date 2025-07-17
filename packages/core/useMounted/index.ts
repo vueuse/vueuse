@@ -1,13 +1,12 @@
-import type {
-  ComponentInstance,
-  MaybeRef,
-} from 'vue'
+import type { MaybeElementRef } from '../unrefElement'
 import {
+  computed,
   getCurrentInstance,
   // eslint-disable-next-line no-restricted-imports
   onMounted,
+  readonly,
   shallowRef,
-  watch,
+  toValue,
 } from 'vue'
 
 /**
@@ -15,26 +14,21 @@ import {
  *
  * @see https://vueuse.org/useMounted
  */
-export function useMounted(target?: MaybeRef<ComponentInstance<any> | Element>) {
+export function useMounted(target?: MaybeElementRef) {
+  // If target is provided, simply return a computed that checks if target exists
+  if (target !== undefined) {
+    return readonly(computed(() => !!toValue(target)))
+  }
+
+  // Default behavior: track current component's mount state
   const isMounted = shallowRef(false)
+  const instance = getCurrentInstance()
 
-  if (target) {
-    watch(
-      target,
-      (value) => {
-        isMounted.value = !!value
-      },
-      { immediate: true },
-    )
-  }
-  else {
-    const instance = getCurrentInstance()
-    if (instance) {
-      onMounted(() => {
-        isMounted.value = true
-      }, instance)
-    }
+  if (instance) {
+    onMounted(() => {
+      isMounted.value = true
+    })
   }
 
-  return isMounted
+  return readonly(isMounted)
 }
