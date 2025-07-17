@@ -2,10 +2,9 @@ import type { EventHookOn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { createEventHook, hasOwn } from '@vueuse/shared'
-import { ref as deepRef, readonly } from 'vue'
+import { createEventHook, hasOwn, whenever } from '@vueuse/shared'
+import { ref as deepRef, readonly, shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
-import { unrefElement } from '../unrefElement'
 
 export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
@@ -43,7 +42,7 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * The input element to use for file dialog.
    * @default document.createElement('input')
    */
-  input?: MaybeElementRef<HTMLInputElement>
+  input?: MaybeElementRef<HTMLInputElement | undefined>
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -90,9 +89,14 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
-  let input: HTMLInputElement | undefined
-  if (document) {
-    input = unrefElement(options.input) || document.createElement('input')
+  let input: Ref<HTMLInputElement | undefined> = shallowRef()
+  if (options.input) {
+    input = shallowRef(options.input)
+  }
+  else if (document) {
+    input = shallowRef(document.createElement('input'))
+  }
+  whenever(input, (input) => {
     input.type = 'file'
 
     input.onchange = (event: Event) => {
@@ -104,33 +108,33 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     input.oncancel = () => {
       cancelTrigger()
     }
-  }
+  }, { immediate: true })
 
   const reset = () => {
     files.value = null
-    if (input && input.value) {
-      input.value = ''
+    if (input && input.value && input.value.value) {
+      input.value.value = ''
       changeTrigger(null)
     }
   }
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
-    if (!input)
+    if (!input.value)
       return
     const _options = {
       ...DEFAULT_OPTIONS,
       ...options,
       ...localOptions,
     }
-    input.multiple = _options.multiple!
-    input.accept = _options.accept!
+    input.value.multiple = _options.multiple!
+    input.value.accept = _options.accept!
     // webkitdirectory key is not stabled, maybe replaced in the future.
-    input.webkitdirectory = _options.directory!
+    input.value.webkitdirectory = _options.directory!
     if (hasOwn(_options, 'capture'))
-      input.capture = _options.capture!
+      input.value.capture = _options.capture!
     if (_options.reset)
       reset()
-    input.click()
+    input.value.click()
   }
 
   return {
