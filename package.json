@@ -8,6 +8,7 @@
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
   "scripts": {
+    "up": "nlx taze && nr size",
     "build": "nr update && pnpm -r run build",
     "build:redirects": "tsx scripts/redirects.ts",
     "build:types": "vue-tsc --emitDeclarationOnly",
