@@ -40,7 +40,7 @@ export default defineConfig({
     },
 
     clearMocks: true,
-    workspace: [
+    projects: [
       'packages/*/vitest.config.ts',
       {
         // add "extends: true" to inherit the options from the root config

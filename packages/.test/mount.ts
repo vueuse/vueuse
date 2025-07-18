@@ -41,7 +41,7 @@ export function useInjectedSetup<V>(setup: () => V) {
       provide(Key, shallowRef(1))
     },
     render() {
-      return h('div', [])
+      return h(Comp)
     },
   })
 
