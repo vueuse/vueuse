@@ -119,32 +119,20 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   /**
    * Apply composable state to the element, also when element is changed
    */
-  watch([inputRef, () => toValue(options.multiple)], () => {
+  watch([
+    inputRef,
+    () => toValue(options.multiple),
+    () => toValue(options.accept),
+    () => toValue(options.directory),
+    () => toValue(options.capture),
+  ], () => {
     const el = inputRef.value
     if (!el)
       return
     el.multiple = toValue(options.multiple)!
-  }, { immediate: true })
-
-  watch([inputRef, () => toValue(options.accept)], () => {
-    const el = inputRef.value
-    if (!el)
-      return
     el.accept = toValue(options.accept)!
-  }, { immediate: true })
-
-  watch([inputRef, () => toValue(options.directory)], () => {
-    const el = inputRef.value
-    if (!el)
-      return
     // webkitdirectory key is not stabled, maybe replaced in the future.
     el.webkitdirectory = toValue(options.directory)!
-  }, { immediate: true })
-
-  watch([inputRef, () => toValue(options.capture)], () => {
-    const el = inputRef.value
-    if (!el)
-      return
     el.capture = toValue(options.capture)!
   }, { immediate: true })
 
