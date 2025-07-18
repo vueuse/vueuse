@@ -6,6 +6,19 @@ describe('useVirtualList', () => {
   it('should be defined', () => {
     expect(useVirtualList).toBeDefined()
   })
+
+  it('should accept plain arrays as input', () => {
+    const {
+      list,
+      containerProps: { ref: containerRef },
+      scrollTo,
+    } = useVirtualList(['a', 'b', 'c', 'd', 'e', 'f'], { itemHeight: () => 50 })
+    const div = { ...document.createElement('div'), clientHeight: 100 }
+
+    containerRef.value = div
+    scrollTo(0)
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
+  })
 })
 
 describe('useVirtualList, vertical', () => {
