@@ -110,7 +110,4 @@ jobs:
       - name: prepare build
         run: pnpm run update:full
 
-      - name: Build
-        run: pnpm build
-
       - run: pnpm dlx pkg-pr-new publish --compact --pnpm './packages/*'
