@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations'
-import { useTemplateRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const target = useTemplateRef<HTMLElement>('target')
 const target2 = useTemplateRef<HTMLElement>('target2')
-const { hasFocus, activate, deactivate, updateContainerElements } = useFocusTrap(target)
+const targets = shallowRef<HTMLElement | null>(null)
+
+const { hasFocus, activate, deactivate } = useFocusTrap(targets)
 
 function focusTopForm() {
-  updateContainerElements(target.value!)
+  targets.value = target.value
 }
 
 function focusBottomForm() {
-  updateContainerElements(target2.value!)
+  targets.value = target2.value
 }
 </script>
 

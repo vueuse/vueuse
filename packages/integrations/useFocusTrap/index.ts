@@ -6,7 +6,6 @@ import { notNullish } from '@vueuse/shared'
 import { createFocusTrap } from 'focus-trap'
 import { computed, shallowRef, toValue, watch } from 'vue'
 
-type ContainerElements = Parameters<FocusTrap['updateContainerElements']>[0]
 export interface UseFocusTrapOptions extends Options {
   /**
    * Immediately activate the trap
@@ -54,13 +53,6 @@ export interface UseFocusTrapReturn {
    * @see https://github.com/focus-trap/focus-trap#trapunpause
    */
   unpause: Fn
-
-  /**
-   * Update the container elements
-   *
-   * @see https://github.com/focus-trap/focus-trap?tab=readme-ov-file#trapupdatecontainerelements
-   */
-  updateContainerElements: (el: ContainerElements) => FocusTrap | undefined
 }
 
 /**
@@ -69,15 +61,14 @@ export interface UseFocusTrapReturn {
  * @see https://vueuse.org/useFocusTrap
  */
 export function useFocusTrap(
-  target: Arrayable<MaybeRefOrGetter<string> | MaybeComputedElementRef>,
+  target: MaybeRefOrGetter<Arrayable<MaybeRefOrGetter<string> | MaybeComputedElementRef>>,
   options: UseFocusTrapOptions = {},
 ): UseFocusTrapReturn {
   let trap: undefined | FocusTrap
-
   const { immediate, ...focusTrapOptions } = options
   const hasFocus = shallowRef(false)
   const isPaused = shallowRef(false)
-
+  let initial = true
   const activate = (opts?: ActivateOptions) => trap && trap.activate(opts)
   const deactivate = (opts?: DeactivateOptions) => trap && trap.deactivate(opts)
 
@@ -94,16 +85,9 @@ export function useFocusTrap(
       isPaused.value = false
     }
   }
-
-  const updateContainerElements = (el: ContainerElements) => {
-    if (trap) {
-      trap.updateContainerElements(el)
-      return trap
-    }
-  }
-
   const targets = computed(() => {
     const _targets = toValue(target)
+
     return toArray(_targets)
       .map((el) => {
         const _el = toValue(el)
@@ -111,34 +95,47 @@ export function useFocusTrap(
       })
       .filter(notNullish)
   })
-
   watch(
     targets,
     (els) => {
       if (!els.length)
         return
+      if (initial) {
+        trap = createFocusTrap(els, {
+          ...focusTrapOptions,
+          onActivate() {
+            hasFocus.value = true
 
-      trap = createFocusTrap(els, {
-        ...focusTrapOptions,
-        onActivate() {
-          hasFocus.value = true
+            // Apply if user provided onActivate option
+            if (options.onActivate)
+              options.onActivate()
+          },
+          onDeactivate() {
+            hasFocus.value = false
 
-          // Apply if user provided onActivate option
-          if (options.onActivate)
-            options.onActivate()
-        },
-        onDeactivate() {
-          hasFocus.value = false
+            // Apply if user provided onDeactivate option
+            if (options.onDeactivate)
+              options.onDeactivate()
+          },
+        })
 
-          // Apply if user provided onDeactivate option
-          if (options.onDeactivate)
-            options.onDeactivate()
-        },
-      })
+        // Focus if immediate is set to true
+        if (immediate) {
+          activate()
+        }
 
-      // Focus if immediate is set to true
-      if (immediate)
-        activate()
+        initial = false
+      }
+      else {
+        // get the active state of the trap
+        const isActive = trap?.active
+        // update the container elements
+        trap?.updateContainerElements(els)
+        // if the trap is not active and immediate is set to true, activate the trap
+        if (!isActive && immediate) {
+          activate()
+        }
+      }
     },
     { flush: 'post' },
   )
@@ -153,6 +150,5 @@ export function useFocusTrap(
     deactivate,
     pause,
     unpause,
-    updateContainerElements,
   }
 }
