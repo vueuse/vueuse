@@ -20,7 +20,7 @@ See the [Type Declarations](#type-declarations) for more options.
 
 You can define named events with the second parameter
 
-```ts
+```ts twoslash
 import { useEventSource } from '@vueuse/core'
 
 const { event, data } = useEventSource('https://event-source-url', ['notice', 'update'] as const)

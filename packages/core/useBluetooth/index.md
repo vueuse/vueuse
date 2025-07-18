@@ -16,7 +16,7 @@ N.B. This API is not available in Web Workers (not exposed via WorkerNavigator).
 
 ## Usage Default
 
-```ts
+```ts twoslash
 import { useBluetooth } from '@vueuse/core'
 
 const {

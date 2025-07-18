@@ -18,7 +18,7 @@ useEventListener(document, 'visibilitychange', (evt) => {
 
 You can also pass a ref as the event target, `useEventListener` will unregister the previous event and register the new one when you change the target.
 
-```ts
+```ts twoslash
 import { useEventListener } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
@@ -41,7 +41,7 @@ useEventListener(element, 'keydown', (e) => {
 
 You can also call the returned to unregister the listener.
 
-```ts
+```ts twoslash
 import { useEventListener } from '@vueuse/core'
 
 const cleanup = useEventListener(document, 'keydown', (e) => {
@@ -53,7 +53,9 @@ cleanup() // This will unregister the listener.
 
 Note if your components also run in SSR (Server Side Rendering), you might get errors (like `document is not defined`) because DOM APIs like `document` and `window` are not available in Node.js. To avoid that you can put the logic inside `onMounted` hook.
 
-```ts
+```ts twoslash
+import { useEventListener } from '@vueuse/core'
+import { onMounted } from 'vue'
 // onMounted will only be called in the client side, so it guarantees the DOM APIs are available.
 onMounted(() => {
   useEventListener(document, 'keydown', (e) => {

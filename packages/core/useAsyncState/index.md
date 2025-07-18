@@ -8,7 +8,7 @@ Reactive async state. Will not block your setup function and will trigger change
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useAsyncState } from '@vueuse/core'
 import axios from 'axios'
 

@@ -8,7 +8,7 @@ Reactive base64 transforming. Supports plain text, buffer, files, canvas, object
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useBase64 } from '@vueuse/core'
 import { shallowRef } from 'vue'
 

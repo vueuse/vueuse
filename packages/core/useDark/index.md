@@ -47,7 +47,9 @@ Still, you can also customize it to make it work with most CSS frameworks.
 
 For example:
 
-```ts
+```ts twoslash
+import { useDark } from '@vueuse/core'
+
 const isDark = useDark({
   selector: 'body',
   attribute: 'color-scheme',
@@ -76,7 +78,9 @@ will work like
 
 If the configuration above still does not fit your needs, you can use the`onChanged` option to take full control over how you handle updates.
 
-```ts
+```ts twoslash
+import { useDark, useToggle } from '@vueuse/core'
+
 const isDark = useDark({
   onChanged(dark: boolean) {
     // update the dom, call the API or something

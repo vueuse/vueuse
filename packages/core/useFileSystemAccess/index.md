@@ -8,7 +8,7 @@ Create and read and write local files with [FileSystemAccessAPI](https://develop
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useFileSystemAccess } from '@vueuse/core'
 
 const { isSupported, data, file, fileName, fileMIME, fileSize, fileLastModified, create, open, save, saveAs, updateData } = useFileSystemAccess()

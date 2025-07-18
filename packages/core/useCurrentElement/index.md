@@ -8,7 +8,7 @@ Get the DOM element of current component as a ref.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useCurrentElement } from '@vueuse/core'
 
 const el = useCurrentElement() // ComputedRef<Element>

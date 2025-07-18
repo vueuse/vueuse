@@ -19,8 +19,11 @@ When using with Nuxt 3, this function will **NOT** be auto imported in favor of 
 
 The `useFetch` function can be used by simply providing a url. The url can be either a string or a `ref`. The `data` object will contain the result of the request, the `error` object will contain any errors, and the `isFetching` object will indicate if the request is loading.
 
-```ts
+```ts twoslash
 import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
 
 const { isFetching, error, data } = useFetch(url)
 ```
@@ -30,8 +33,11 @@ const { isFetching, error, data } = useFetch(url)
 `useFetch` can also be awaited just like a normal fetch. Note that whenever a component is asynchronous, whatever component that uses
 it must wrap the component in a `<Suspense>` tag. You can read more about the suspense api in the [Official Vue 3 Docs](https://vuejs.org/guide/built-ins/suspense.html)
 
-```ts
+```ts twoslash
 import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
 
 const { isFetching, error, data } = await useFetch(url)
 ```
@@ -40,7 +46,10 @@ const { isFetching, error, data } = await useFetch(url)
 
 Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed.
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
 const url = ref('https://my-api.com/user/1')
 
 const { data } = useFetch(url, { refetch: true })
@@ -52,7 +61,12 @@ url.value = 'https://my-api.com/user/2' // Will trigger another request
 
 Setting the `immediate` option to false will prevent the request from firing until the `execute` function is called.
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
+
 const { execute } = useFetch(url, { immediate: false })
 
 execute()
@@ -62,7 +76,12 @@ execute()
 
 A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates if the request can be aborted.
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
+
 const { abort, canAbort } = useFetch(url)
 
 setTimeout(() => {
@@ -73,7 +92,12 @@ setTimeout(() => {
 
 A request can also be aborted automatically by using `timeout` property. It will call `abort` function when the given timeout is reached.
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
+
 const { data } = useFetch(url, { timeout: 100 })
 ```
 
@@ -103,7 +127,12 @@ const { data } = useFetch(url, {
 
 The `afterFetch` option can intercept the response data before it is updated.
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
+
 const { data } = useFetch(url, {
   afterFetch(ctx) {
     if (ctx.data.title === 'HxH')
@@ -116,7 +145,12 @@ const { data } = useFetch(url, {
 
 The `onFetchError` option can intercept the response data and error before it is updated when `updateDataOnError` is set to `true`.
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
+
 const { data } = useFetch(url, {
   updateDataOnError: true,
   onFetchError(ctx) {
@@ -136,7 +170,12 @@ console.log(data.value) // { title: 'Hunter x Hunter' }
 
 The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
+
 // Request will be sent with GET method and data will be parsed as JSON
 const { data } = useFetch(url).get().json()
 
@@ -292,7 +331,12 @@ const { isFetching, error, data } = useMyFetch('users')
 
 The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
 
-```ts
+```ts twoslash
+import { useFetch } from '@vueuse/core'
+import { ref } from 'vue'
+
+const url = ref('https://my-api.com/user/1')
+
 const { onFetchResponse, onFetchError } = useFetch(url)
 
 onFetchResponse((response) => {

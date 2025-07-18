@@ -8,7 +8,7 @@ Returns a `deepRef` or `shallowRef` depending on the `deep` param.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { createRef } from '@vueuse/core'
 import { isShallow, ref } from 'vue'
 

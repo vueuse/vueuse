@@ -8,7 +8,7 @@ Executes each asynchronous task sequentially and passes the current task result 
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useAsyncQueue } from '@vueuse/core'
 
 function p1() {

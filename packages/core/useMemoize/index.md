@@ -47,6 +47,8 @@ The key for caching is determined by the arguments given to the function and wil
 This will allow equal objects to receive the same cache key. In case you want to customize the key you can pass `getKey`
 
 ```ts
+import { useMemoize } from '@vueuse/core'
+
 const getUser = useMemoize(
   async (userId: number, headers: AxiosRequestHeaders): Promise<UserData> =>
     axios.get(`users/${userId}`, { headers }).then(({ data }) => data),
@@ -61,7 +63,7 @@ const getUser = useMemoize(
 
 By default, the results are cached within a `Map`. You can implement your own mechanism by passing `cache` as options with following structure:
 
-```ts
+```ts twoslash
 export interface MemoizeCache<Key, Value> {
   /**
    * Get value for key

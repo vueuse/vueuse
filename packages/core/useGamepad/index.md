@@ -30,7 +30,7 @@ const gamepad = computed(() => gamepads.value.find(g => g.mapping === 'standard'
 
 Currently the Gamepad API does not have event support to update the state of the gamepad. To update the gamepad state, `requestAnimationFrame` is used to poll for gamepad changes. You can control this polling by using the `pause` and `resume` functions provided by `useGamepad`
 
-```ts
+```ts twoslash
 import { useGamepad } from '@vueuse/core'
 
 const { pause, resume, gamepads } = useGamepad()
@@ -48,7 +48,9 @@ resume()
 
 The `onConnected` and `onDisconnected` events will trigger when a gamepad is connected or disconnected.
 
-```ts
+```ts twoslash
+import { useGamepad } from '@vueuse/core'
+
 const { gamepads, onConnected, onDisconnected } = useGamepad()
 
 onConnected((index) => {

@@ -45,7 +45,7 @@ This function is migrated from [vue-template-promise](https://github.com/antfu/v
 
 `createTemplatePromise` returns a **Vue Component** that you can directly use in your template with `<script setup>`
 
-```ts
+```ts twoslash
 import { createTemplatePromise } from '@vueuse/core'
 
 const TemplatePromise = createTemplatePromise()
@@ -80,7 +80,7 @@ Once `resolve` or `reject` is called in the template, the promise will be resolv
 
 You can pass arguments to the `start` with arguments.
 
-```ts
+```ts twoslash
 import { createTemplatePromise } from '@vueuse/core'
 
 const TemplatePromise = createTemplatePromise<boolean, [string, number]>()

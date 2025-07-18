@@ -8,7 +8,7 @@ Cache a ref with a custom comparator.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useCached } from '@vueuse/core'
 import { shallowRef } from 'vue'
 

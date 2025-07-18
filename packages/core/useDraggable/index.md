@@ -30,7 +30,11 @@ const { x, y, style } = useDraggable(el, {
 
 Set `preventDefault: true` to override the default drag-and-drop behavior of certain elements in the browser.
 
-```ts
+```ts twoslash
+import { useDraggable } from '@vueuse/core'
+import { ref } from 'vue'
+
+const el = ref<HTMLElement>()
 const { x, y, style } = useDraggable(el, {
   preventDefault: true,
   // with `preventDefault: true`

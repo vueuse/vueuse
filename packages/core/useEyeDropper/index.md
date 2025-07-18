@@ -8,7 +8,7 @@ Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDr
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useEyeDropper } from '@vueuse/core'
 
 const { isSupported, open, sRGBHex } = useEyeDropper()

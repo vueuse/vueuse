@@ -8,7 +8,7 @@ Reactive Memory Info.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useMemory } from '@vueuse/core'
 
 const { isSupported, memory } = useMemory()

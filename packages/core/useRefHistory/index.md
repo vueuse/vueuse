@@ -11,7 +11,7 @@ Track the change history of a ref, also provides undo and redo functionality
 
 ## Usage
 
-```ts {5}
+```ts twoslash
 import { useRefHistory } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -44,7 +44,10 @@ console.log(counter.value) // 0
 
 When working with objects or arrays, since changing their attributes does not change the reference, it will not trigger the committing. To track attribute changes, you would need to pass `deep: true`. It will create clones for each history record.
 
-```ts
+```ts twoslash
+import { useRefHistory } from '@vueuse/core'
+import { ref } from 'vue'
+
 const state = ref({
   foo: 1,
   bar: 'bar',
@@ -133,7 +136,10 @@ const refHistory = useRefHistory(target, {
 
 The default is `'pre'`, to align this composable with the default for Vue's watchers. This also helps to avoid common issues, like several history points generated as part of a multi-step update to a ref value that can break invariants of the app state. You can use `commit()` in case you need to create multiple history points in the same "tick"
 
-```ts
+```ts twoslash
+import { useRefHistory } from '@vueuse/core'
+import { shallowRef } from 'vue'
+
 const r = shallowRef(0)
 const { history, commit } = useRefHistory(r)
 

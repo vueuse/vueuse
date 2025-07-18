@@ -8,7 +8,7 @@ A basic event bus.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useEventBus } from '@vueuse/core'
 
 const bus = useEventBus<string>('news')

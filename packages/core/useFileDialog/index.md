@@ -8,7 +8,7 @@ Open file dialog with ease.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useFileDialog } from '@vueuse/core'
 
 const { files, open, reset, onCancel, onChange } = useFileDialog({

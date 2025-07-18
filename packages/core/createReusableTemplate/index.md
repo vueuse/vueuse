@@ -185,7 +185,7 @@ Passing boolean props without `v-bind` is not supported. See the [Caveats](#bool
 
 By default, all props and attributes passed to `<ReuseTemplate>` will be passed to the template. If you don't want certain props to be passed to the DOM, you need to define the runtime props:
 
-```ts
+```ts twoslash
 import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate({
@@ -198,7 +198,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate({
 
 If you don't want to pass any props to the template, you can pass the `inheritAttrs` option:
 
-```ts
+```ts twoslash
 import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate({

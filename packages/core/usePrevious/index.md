@@ -8,7 +8,7 @@ Holds the previous value of a ref.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { usePrevious } from '@vueuse/core'
 import { shallowRef } from 'vue'
 

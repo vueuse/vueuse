@@ -8,8 +8,9 @@ Reactive clone of a ref. By default, it use `JSON.parse(JSON.stringify())` to do
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useCloned } from '@vueuse/core'
+import { ref } from 'vue'
 
 const original = ref({ key: 'value' })
 
@@ -22,8 +23,9 @@ console.log(cloned.value.key) // 'value'
 
 ## Manual cloning
 
-```ts
+```ts twoslash
 import { useCloned } from '@vueuse/core'
+import { ref } from 'vue'
 
 const original = ref({ key: 'value' })
 
@@ -42,9 +44,10 @@ console.log(cloned.value.key)// 'manual'
 
 Using [`klona`](https://www.npmjs.com/package/klona) for example:
 
-```ts
+```ts twoslash
 import { useCloned } from '@vueuse/core'
 import { klona } from 'klona'
+import { ref } from 'vue'
 
 const original = ref({ key: 'value' })
 

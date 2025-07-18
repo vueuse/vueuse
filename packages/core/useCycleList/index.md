@@ -10,7 +10,7 @@ Cycle through a list of items.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useCycleList } from '@vueuse/core'
 
 const { state, next, prev, go } = useCycleList([

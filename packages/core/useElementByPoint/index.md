@@ -8,7 +8,7 @@ Reactive element by point.
 
 ## Usage
 
-```ts
+```ts twoslash
 import { useElementByPoint, useMouse } from '@vueuse/core'
 
 const { x, y } = useMouse({ type: 'client' })
