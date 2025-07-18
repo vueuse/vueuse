@@ -39,6 +39,7 @@
   ],
   "scripts": {
     "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "build:rolldown": "rolldown -c rolldown.config.ts",
     "prepack": "pnpm run build",
     "test:attw": "attw --pack --config-path ../../.attw.json ."
   },
