@@ -188,9 +188,10 @@ export function useEventSource<Events extends string[], Data = any>(
     }
 
     for (const event_name of events) {
-      useEventListener(es, event_name, (e: Event & { data?: Data }) => {
+      useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
         event.value = event_name
         data.value = e.data || null
+        lastEventId.value = e.lastEventId || null
       }, { passive: true })
     }
   }
