@@ -3,6 +3,7 @@
     "dbaeumer.vscode-eslint",
     "bierner.lit-html",
     "antfu.vite",
-    "vitest.explorer"
+    "vitest.explorer",
+    "antfu.pnpm-catalog-lens"
   ]
 }
