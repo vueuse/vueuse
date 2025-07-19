@@ -61,7 +61,7 @@ export interface UseFocusTrapReturn {
  * @see https://vueuse.org/useFocusTrap
  */
 export function useFocusTrap(
-  target: Arrayable<MaybeRefOrGetter<string> | MaybeComputedElementRef>,
+  target: MaybeRefOrGetter<Arrayable<MaybeRefOrGetter<string> | MaybeComputedElementRef>>,
   options: UseFocusTrapOptions = {},
 ): UseFocusTrapReturn {
   let trap: undefined | FocusTrap
@@ -102,28 +102,42 @@ export function useFocusTrap(
     (els) => {
       if (!els.length)
         return
+      if (!trap) {
+        // create the trap
+        trap = createFocusTrap(els, {
+          ...focusTrapOptions,
+          onActivate() {
+            hasFocus.value = true
 
-      trap = createFocusTrap(els, {
-        ...focusTrapOptions,
-        onActivate() {
-          hasFocus.value = true
+            // Apply if user provided onActivate option
+            if (options.onActivate)
+              options.onActivate()
+          },
+          onDeactivate() {
+            hasFocus.value = false
 
-          // Apply if user provided onActivate option
-          if (options.onActivate)
-            options.onActivate()
-        },
-        onDeactivate() {
-          hasFocus.value = false
+            // Apply if user provided onDeactivate option
+            if (options.onDeactivate)
+              options.onDeactivate()
+          },
+        })
 
-          // Apply if user provided onDeactivate option
-          if (options.onDeactivate)
-            options.onDeactivate()
-        },
-      })
+        // Focus if immediate is set to true
+        if (immediate)
+          activate()
+      }
+      else {
+        // get the active state of the trap
+        const isActive = trap?.active
 
-      // Focus if immediate is set to true
-      if (immediate)
-        activate()
+        // update the container elements
+        trap?.updateContainerElements(els)
+
+        // if the trap is not active and immediate is set to true, activate the trap
+        if (!isActive && immediate) {
+          activate()
+        }
+      }
     },
     { flush: 'post' },
   )
