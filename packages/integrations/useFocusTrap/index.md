@@ -88,14 +88,14 @@ const right = useTemplateRef('right')
 const currentRef = shallowRef<'left' | 'right'>('left')
 
 const target = computed(() => {
-  return activeRefName.value === 'left' ? left : activeRefName.value === 'right' ? right : null
+  return currentRef.value === 'left' ? left : currentRef.value === 'right' ? right : null
 })
 const { hasFocus, activate } = useFocusTrap(target)
 
 activate()
 
 setTimeout(() => {
-  activeRef.value = 'right'
+  currentRef.value = 'right'
 }, 3000)
 </script>
 
