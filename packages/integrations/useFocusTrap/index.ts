@@ -65,10 +65,11 @@ export function useFocusTrap(
   options: UseFocusTrapOptions = {},
 ): UseFocusTrapReturn {
   let trap: undefined | FocusTrap
+
   const { immediate, ...focusTrapOptions } = options
   const hasFocus = shallowRef(false)
   const isPaused = shallowRef(false)
-  let initial = true
+
   const activate = (opts?: ActivateOptions) => trap && trap.activate(opts)
   const deactivate = (opts?: DeactivateOptions) => trap && trap.deactivate(opts)
 
@@ -85,9 +86,9 @@ export function useFocusTrap(
       isPaused.value = false
     }
   }
+
   const targets = computed(() => {
     const _targets = toValue(target)
-
     return toArray(_targets)
       .map((el) => {
         const _el = toValue(el)
@@ -95,12 +96,14 @@ export function useFocusTrap(
       })
       .filter(notNullish)
   })
+
   watch(
     targets,
     (els) => {
       if (!els.length)
         return
-      if (initial) {
+      if (!trap) {
+        // create the trap
         trap = createFocusTrap(els, {
           ...focusTrapOptions,
           onActivate() {
@@ -120,17 +123,16 @@ export function useFocusTrap(
         })
 
         // Focus if immediate is set to true
-        if (immediate) {
+        if (immediate)
           activate()
-        }
-
-        initial = false
       }
       else {
         // get the active state of the trap
         const isActive = trap?.active
+
         // update the container elements
         trap?.updateContainerElements(els)
+
         // if the trap is not active and immediate is set to true, activate the trap
         if (!isActive && immediate) {
           activate()

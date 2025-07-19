@@ -76,6 +76,41 @@ const { hasFocus, activate, deactivate } = useFocusTrap([targetOne, targetTwo])
 </template>
 ```
 
+**Dynamic Focus Target**
+
+```vue
+<script setup lang="ts">
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { computed, shallowRef, useTemplateRef } from 'vue'
+
+const left = useTemplateRef('left')
+const right = useTemplateRef('right')
+const currentRef = shallowRef<'left' | 'right'>('left')
+
+const target = computed(() => {
+  return activeRefName.value === 'left' ? left : activeRefName.value === 'right' ? right : null
+})
+const { hasFocus, activate } = useFocusTrap(target)
+
+activate()
+
+setTimeout(() => {
+  activeRef.value = 'right'
+}, 3000)
+</script>
+
+<template>
+  <div>
+    <div ref="left" class="left">
+      ...
+    </div>
+    <div ref="right" class="right">
+      ...
+    </div>
+  </div>
+</template>
+```
+
 **Automatically Focus**
 
 ```vue
