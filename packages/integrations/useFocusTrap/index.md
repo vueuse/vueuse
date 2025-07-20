@@ -80,23 +80,22 @@ const { hasFocus, activate, deactivate } = useFocusTrap([targetOne, targetTwo])
 
 ```vue
 <script setup lang="ts">
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { computed, shallowRef, useTemplateRef } from 'vue'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 const left = useTemplateRef('left')
 const right = useTemplateRef('right')
 const currentRef = shallowRef<'left' | 'right'>('left')
 
-const target = computed(() => {
-  return currentRef.value === 'left' ? left : currentRef.value === 'right' ? right : null
-})
-const { hasFocus, activate } = useFocusTrap(target)
+const target = computed(() =>
+  currentRef.value === 'left'
+    ? left
+    : currentRef.value === 'right'
+      ? right
+      : null,
+)
 
-activate()
-
-setTimeout(() => {
-  currentRef.value = 'right'
-}, 3000)
+const { activate } = useFocusTrap(target)
 </script>
 
 <template>
