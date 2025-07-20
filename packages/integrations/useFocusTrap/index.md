@@ -80,8 +80,8 @@ const { hasFocus, activate, deactivate } = useFocusTrap([targetOne, targetTwo])
 
 ```vue
 <script setup lang="ts">
-import { computed, shallowRef, useTemplateRef } from 'vue'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { computed, shallowRef, useTemplateRef } from 'vue'
 
 const left = useTemplateRef('left')
 const right = useTemplateRef('right')
