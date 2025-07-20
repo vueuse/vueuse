@@ -2,6 +2,12 @@
 category: Component
 ---
 
+::: tip
+This function will be removed in future version.
+
+Vue 3.5 introduced the `useTemplateRef` API which can effectively replace the functionality of `templateRef`, therefore we recommend using the native approach.
+:::
+
 # templateRef
 
 Shorthand for binding ref to template element.
