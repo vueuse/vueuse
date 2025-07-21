@@ -26,9 +26,9 @@ console.log(debounced.value) // 'bar'
 
 An example with object ref.
 
-```js {5}
+```js
 import { refDebounced } from '@vueuse/core'
-import { shallowRef } from 'vue';
+import { shallowRef } from 'vue'
 
 const data = shallowRef({
   name: 'foo',

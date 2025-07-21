@@ -21,7 +21,7 @@ An example with object ref.
 
 ```js {5}
 import { refThrottled } from '@vueuse/core'
-import { shallowRef } from 'vue';
+import { shallowRef } from 'vue'
 
 const data = shallowRef({
   name: 'foo',
