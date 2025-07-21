@@ -9,7 +9,7 @@ Throttle changing of a ref value.
 
 ## Usage
 
-```js
+```js {5}
 import { refThrottled } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -19,7 +19,7 @@ const throttled = refThrottled(input, 1000)
 
 An example with object ref.
 
-```js {5}
+```js
 import { refThrottled } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
