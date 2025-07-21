@@ -97,7 +97,7 @@ export function watchDebounced(
   source: any,
   cb: any,
   options: WatchDebouncedOptions = {},
-): WatchStopHandle {
+): WatchHandle {
   return watch(
     source,
     () => { /* ... */ },

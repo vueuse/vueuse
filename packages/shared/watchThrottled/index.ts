@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter, WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { MaybeRefOrGetter, WatchCallback, WatchHandle, WatchOptions, WatchSource } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import { throttleFilter } from '../utils'
 import { watchWithFilter } from '../watchWithFilter'
@@ -10,16 +10,16 @@ export interface WatchThrottledOptions<Immediate> extends WatchOptions<Immediate
 }
 
 // overloads
-export function watchThrottled<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchThrottledOptions<Immediate>): WatchStopHandle
-export function watchThrottled<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchStopHandle
-export function watchThrottled<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchStopHandle
+export function watchThrottled<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchThrottledOptions<Immediate>): WatchHandle
+export function watchThrottled<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchHandle
+export function watchThrottled<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchHandle
 
 // implementation
 export function watchThrottled<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,
   options: WatchThrottledOptions<Immediate> = {},
-): WatchStopHandle {
+): WatchHandle {
   const {
     throttle = 0,
     trailing = true,
