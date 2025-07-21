@@ -133,7 +133,8 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     el.accept = toValue(options.accept)!
     // webkitdirectory key is not stabled, maybe replaced in the future.
     el.webkitdirectory = toValue(options.directory)!
-    el.capture = toValue(options.capture)!
+    if (hasOwn(options, 'capture'))
+      el.capture = toValue(options.capture)!
   }, { immediate: true })
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
