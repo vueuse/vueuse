@@ -17,6 +17,32 @@ const input = shallowRef('')
 const throttled = refThrottled(input, 1000)
 ```
 
+An example with object ref.
+
+```js {5}
+import { refThrottled } from '@vueuse/core'
+import { shallowRef } from 'vue';
+
+const data = shallowRef({
+  name: 'foo',
+  age: 18,
+})
+const throttled = refThrottled(data, 1000)
+
+function update() {
+  data.value = {
+    ...data.value,
+    name: 'bar',
+  }
+}
+
+console.log(throttled.value) // { name: 'foo', age: 18 }
+
+await sleep(1100)
+
+console.log(throttled.value) // { name: 'bar', age: 18 }
+```
+
 ### Trailing
 
 If you don't want to watch trailing changes, set 3rd param `false` (it's `true` by default):
