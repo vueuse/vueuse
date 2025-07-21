@@ -44,7 +44,7 @@ function update() {
 }
 
 console.log(debounced.value) // { name: 'foo', age: 18 }
-
+update()
 await sleep(1100)
 
 console.log(debounced.value) // { name: 'bar', age: 18 }
