@@ -10,6 +10,7 @@ Reactive `document.activeElement`
 
 ```js
 import { useActiveElement } from '@vueuse/core'
+import { watch } from 'vue'
 
 const activeElement = useActiveElement()
 
