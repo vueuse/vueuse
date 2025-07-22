@@ -9,6 +9,7 @@ import { useEventListener } from '../useEventListener'
  *
  * @see https://vueuse.org/useDocumentVisibility
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function useDocumentVisibility(options: ConfigurableDocument = {}): ShallowRef<DocumentVisibilityState> {
   const { document = defaultDocument } = options
   if (!document)

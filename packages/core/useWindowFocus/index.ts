@@ -9,6 +9,7 @@ import { useEventListener } from '../useEventListener'
  *
  * @see https://vueuse.org/useWindowFocus
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function useWindowFocus(options: ConfigurableWindow = {}): ShallowRef<boolean> {
   const { window = defaultWindow } = options
   if (!window)
