@@ -46,7 +46,7 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
    *
    * @default undefined
    */
-  onChanged?: (mode: T | BasicColorMode, defaultHandler:((mode: T | BasicColorMode) => void)) => void
+  onChanged?: (mode: T | BasicColorMode, defaultHandler: ((mode: T | BasicColorMode) => void)) => void
 
   /**
    * Custom storage ref
