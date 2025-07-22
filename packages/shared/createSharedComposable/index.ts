@@ -10,6 +10,7 @@ export type SharedComposableReturn<T extends AnyFn = AnyFn> = T
  *
  * @see https://vueuse.org/createSharedComposable
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function createSharedComposable<Fn extends AnyFn>(composable: Fn): SharedComposableReturn<Fn> {
   let subscribers = 0
   let state: ReturnType<Fn> | undefined

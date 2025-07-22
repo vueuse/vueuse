@@ -9,6 +9,7 @@ export type CreateGlobalStateReturn<Fn extends AnyFn = AnyFn> = Fn
  * @see https://vueuse.org/createGlobalState
  * @param stateFactory A factory function to create the state
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function createGlobalState<Fn extends AnyFn>(
   stateFactory: Fn,
 ): CreateGlobalStateReturn<Fn> {
