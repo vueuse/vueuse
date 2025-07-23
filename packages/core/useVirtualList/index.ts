@@ -40,7 +40,7 @@ export interface UseVirtualListItem<T> {
   index: number
 }
 
-interface UseVirtualListScrollToOptions { behavior?: ScrollBehavior, block?: ScrollLogicalPosition, inline?: ScrollLogicalPosition }
+export interface UseVirtualListScrollToOptions { behavior?: ScrollBehavior, block?: ScrollLogicalPosition, inline?: ScrollLogicalPosition }
 
 export interface UseVirtualListReturn<T> {
   list: Ref<UseVirtualListItem<T>[]>
