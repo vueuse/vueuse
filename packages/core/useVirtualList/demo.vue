@@ -3,7 +3,7 @@ import { computed, shallowRef } from 'vue'
 import { useVirtualList } from '../../../packages/core/useVirtualList'
 
 const index = shallowRef<number>()
-const search = shallowRef('')
+const search = shallowRef<'' | 'small' | 'large'>('')
 const smoothScroll = shallowRef(false)
 const block = shallowRef<ScrollLogicalPosition>('start')
 
