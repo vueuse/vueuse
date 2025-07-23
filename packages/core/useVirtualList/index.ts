@@ -40,9 +40,11 @@ export interface UseVirtualListItem<T> {
   index: number
 }
 
+interface UseVirtualListScrollToOptions { behavior?: ScrollBehavior, block?: ScrollLogicalPosition, inline?: ScrollLogicalPosition }
+
 export interface UseVirtualListReturn<T> {
   list: Ref<UseVirtualListItem<T>[]>
-  scrollTo: (index: number) => void
+  scrollTo: (index: number, options?: UseVirtualListScrollToOptions) => void
 
   containerProps: {
     ref: Ref<HTMLElement | null>
@@ -220,12 +222,45 @@ const scrollToDictionaryForElementScrollKey = {
   vertical: 'scrollTop',
 } as const
 
-function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () => void, getDistance: ReturnType<typeof createGetDistance>, containerRef: UseVirtualListResources<T>['containerRef']) {
-  return (index: number) => {
-    if (containerRef.value) {
-      containerRef.value[scrollToDictionaryForElementScrollKey[type]] = getDistance(index)
-      calculateRange()
+const scrollToDictionaryForElementScrollToKey = {
+  horizontal: 'left',
+  vertical: 'top',
+} as const
+
+const defaultScrollToOptions: UseVirtualListScrollToOptions = { behavior: 'auto', block: 'start', inline: 'nearest' }
+
+function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () => void, getDistance: ReturnType<typeof createGetDistance>, containerRef: UseVirtualListResources<T>['containerRef'], itemSize: UseVirtualListItemSize) {
+  return (index: number, options: UseVirtualListScrollToOptions = defaultScrollToOptions) => {
+    if (!containerRef.value)
+      return
+
+    options = Object.assign(defaultScrollToOptions, options)
+    let offset = 0
+    const axisToCheck = options[type === 'horizontal' ? 'inline' : 'block']
+    if (axisToCheck) {
+      const containerSize = type === 'horizontal' ? containerRef.value.clientWidth : containerRef.value.clientHeight
+      const fullItemSize = typeof itemSize === 'number' ? itemSize : itemSize(index)
+
+      if (axisToCheck === 'center') {
+        offset = (containerSize / 2) - (fullItemSize / 2)
+      }
+      else if (axisToCheck === 'end') {
+        offset = containerSize - fullItemSize
+      }
+      else if (axisToCheck === 'nearest') {
+        const containerScrollPosition = containerRef.value[scrollToDictionaryForElementScrollKey[type]]
+        if (getDistance(index) > containerScrollPosition + (containerSize / 2)) {
+          offset = containerSize - fullItemSize
+        }
+      }
     }
+
+    containerRef.value.scrollTo({
+      [scrollToDictionaryForElementScrollToKey[type]]: getDistance(index) - offset,
+      behavior: options.behavior,
+    })
+
+    calculateRange()
   }
 }
 
@@ -250,7 +285,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
 
   useWatchForSizes(size, list, containerRef, calculateRange)
 
-  const scrollTo = createScrollTo('horizontal', calculateRange, getDistanceLeft, containerRef)
+  const scrollTo = createScrollTo('horizontal', calculateRange, getDistanceLeft, containerRef, itemWidth)
 
   const wrapperProps = computed(() => {
     return {
@@ -296,7 +331,7 @@ function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list:
 
   useWatchForSizes(size, list, containerRef, calculateRange)
 
-  const scrollTo = createScrollTo('vertical', calculateRange, getDistanceTop, containerRef)
+  const scrollTo = createScrollTo('vertical', calculateRange, getDistanceTop, containerRef, itemHeight)
 
   const wrapperProps = computed(() => {
     return {
