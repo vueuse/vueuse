@@ -10,6 +10,7 @@ export type ColorSchemeType = 'dark' | 'light' | 'no-preference'
  * @see https://vueuse.org/usePreferredColorScheme
  * @param [options]
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function usePreferredColorScheme(options?: ConfigurableWindow) {
   const isLight = useMediaQuery('(prefers-color-scheme: light)', options)
   const isDark = useMediaQuery('(prefers-color-scheme: dark)', options)

@@ -10,6 +10,7 @@ import { useEventListener } from '../useEventListener'
  * @see https://vueuse.org/usePreferredLanguages
  * @param options
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function usePreferredLanguages(options: ConfigurableWindow = {}): Ref<readonly string[]> {
   const { window = defaultWindow } = options
   if (!window)

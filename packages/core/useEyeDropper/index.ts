@@ -29,6 +29,7 @@ export interface UseEyeDropperOptions {
  *
  * @see https://vueuse.org/useEyeDropper
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const { initialValue = '' } = options
   const isSupported = useSupported(() => typeof window !== 'undefined' && 'EyeDropper' in window)

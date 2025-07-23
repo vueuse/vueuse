@@ -59,6 +59,7 @@ export function mapGamepadToXbox360Controller(gamepad: Ref<Gamepad | undefined>)
   })
 }
 
+/* #__NO_SIDE_EFFECTS__ */
 export function useGamepad(options: UseGamepadOptions = {}) {
   const {
     navigator = defaultNavigator,

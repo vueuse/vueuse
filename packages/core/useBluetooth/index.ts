@@ -43,6 +43,7 @@ export interface UseBluetoothOptions extends UseBluetoothRequestDeviceOptions, C
   acceptAllDevices?: boolean
 }
 
+/* #__NO_SIDE_EFFECTS__ */
 export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn {
   let {
     acceptAllDevices = false,
