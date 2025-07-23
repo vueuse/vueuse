@@ -23,4 +23,10 @@ useMutationObserver(el, (mutations) => {
   attributes: true,
 })
 </script>
+
+<template>
+  <div ref="el">
+    Hello VueUse
+  </div>
+</template>
 ```
