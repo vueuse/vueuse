@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useVirtualList } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
-import { useVirtualList } from '../../../packages/core/useVirtualList'
 
 const index = shallowRef<number>()
 const search = shallowRef<'' | 'small' | 'large'>('')
