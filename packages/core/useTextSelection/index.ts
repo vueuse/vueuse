@@ -13,6 +13,7 @@ function getRangesFromSelection(selection: Selection) {
  *
  * @see https://vueuse.org/useTextSelection
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function useTextSelection(options: ConfigurableWindow = {}) {
   const {
     window = defaultWindow,

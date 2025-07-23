@@ -9,6 +9,7 @@ import { useMediaQuery } from '../useMediaQuery'
  *
  * @see https://vueuse.org/useDevicePixelRatio
  */
+/* #__NO_SIDE_EFFECTS__ */
 export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
   const {
     window = defaultWindow,
