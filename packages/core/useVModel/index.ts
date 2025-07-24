@@ -55,6 +55,8 @@ export interface UseVModelOptions<T, Passive extends boolean = false> {
  * @param props
  * @param key (default 'modelValue')
  * @param emit
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useVModel<P extends object, K extends keyof P, Name extends string>(
   props: P,
@@ -68,6 +70,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   emit?: (name: Name, ...args: any[]) => void,
   options?: UseVModelOptions<P[K], true>,
 ): Ref<UnwrapRef<P[K]>>
+/* @__NO_SIDE_EFFECTS__ */
 export function useVModel<P extends object, K extends keyof P, Name extends string, Passive extends boolean>(
   props: P,
   key?: K,
