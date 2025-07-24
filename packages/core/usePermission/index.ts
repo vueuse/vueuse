@@ -59,7 +59,14 @@ export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
   options: UsePermissionOptions<true>,
 ): UsePermissionReturnWithControls
-/* @__NO_SIDE_EFFECTS__ */
+
+/**
+ * Reactive Permissions API.
+ *
+ * @see https://vueuse.org/usePermission
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
   options: UsePermissionOptions<boolean> = {},

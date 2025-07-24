@@ -133,7 +133,14 @@ export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extend
  */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>
-/* @__NO_SIDE_EFFECTS__ */
+
+/**
+ * Reactive time ago formatter.
+ *
+ * @see https://vueuse.org/useTimeAgo
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
   const {
     controls: exposeControls = false,

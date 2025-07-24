@@ -37,7 +37,15 @@ export interface UseNowOptions<Controls extends boolean> {
  */
 export function useNow(options?: UseNowOptions<false>): Ref<Date>
 export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausable
-/* @__NO_SIDE_EFFECTS__ */
+
+/**
+ * Reactive current Date instance.
+ *
+ * @see https://vueuse.org/useNow
+ * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useNow(options: UseNowOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
