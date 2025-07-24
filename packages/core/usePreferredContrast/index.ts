@@ -9,8 +9,9 @@ export type ContrastType = 'more' | 'less' | 'custom' | 'no-preference'
  *
  * @see https://vueuse.org/usePreferredContrast
  * @param [options]
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 export function usePreferredContrast(options?: ConfigurableWindow) {
   const isMore = useMediaQuery('(prefers-contrast: more)', options)
   const isLess = useMediaQuery('(prefers-contrast: less)', options)

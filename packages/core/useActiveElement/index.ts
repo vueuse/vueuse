@@ -24,8 +24,9 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
  *
  * @see https://vueuse.org/useActiveElement
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 export function useActiveElement<T extends HTMLElement>(
   options: UseActiveElementOptions = {},
 ) {

@@ -38,8 +38,9 @@ type PerformanceMemory = Performance & {
  *
  * @see https://vueuse.org/useMemory
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 export function useMemory(options: UseMemoryOptions = {}) {
   const memory = deepRef<MemoryInfo>()
   const isSupported = useSupported(() => typeof performance !== 'undefined' && 'memory' in performance)

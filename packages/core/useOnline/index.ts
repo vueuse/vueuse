@@ -6,8 +6,9 @@ import { useNetwork } from '../useNetwork'
  *
  * @see https://vueuse.org/useOnline
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 export function useOnline(options: ConfigurableWindow = {}) {
   const { isOnline } = useNetwork(options)
   return isOnline

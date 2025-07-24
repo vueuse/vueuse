@@ -21,8 +21,9 @@ type NavigatorWithBattery = Navigator & {
  * Reactive Battery Status API.
  *
  * @see https://vueuse.org/useBattery
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 export function useBattery(options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
   const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']

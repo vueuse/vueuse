@@ -28,8 +28,9 @@ export interface UseEyeDropperOptions {
  * Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
  *
  * @see https://vueuse.org/useEyeDropper
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 export function useEyeDropper(options: UseEyeDropperOptions = {}) {
   const { initialValue = '' } = options
   const isSupported = useSupported(() => typeof window !== 'undefined' && 'EyeDropper' in window)

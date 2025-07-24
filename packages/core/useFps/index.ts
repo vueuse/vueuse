@@ -10,7 +10,7 @@ export interface UseFpsOptions {
   every?: number
 }
 
-/* #__NO_SIDE_EFFECTS__ */
+/* @__NO_SIDE_EFFECTS__ */
 export function useFps(options?: UseFpsOptions): ShallowRef<number> {
   const fps = shallowRef(0)
   if (typeof performance === 'undefined')

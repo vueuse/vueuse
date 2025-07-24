@@ -27,7 +27,7 @@ export interface UseModifierOptions<Initial> extends ConfigurableDocument {
 
 export type UseKeyModifierReturn<Initial> = ShallowRef<Initial extends boolean ? boolean : boolean | null>
 
-/* #__NO_SIDE_EFFECTS__ */
+/* @__NO_SIDE_EFFECTS__ */
 export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModifier, options: UseModifierOptions<Initial> = {}): UseKeyModifierReturn<Initial> {
   const {
     events = defaultEvents,

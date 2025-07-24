@@ -9,8 +9,9 @@ import { localProvidedStateMap } from '../provideLocal/map'
  * injectLocal('MyInjectionKey', 1)
  * const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
  * ```
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 // @ts-expect-error overloads are not compatible
 export const injectLocal: typeof inject = (...args) => {
   const key = args[0] as string | symbol

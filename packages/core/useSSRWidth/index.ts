@@ -4,7 +4,7 @@ import { hasInjectionContext } from 'vue'
 
 const ssrWidthSymbol = Symbol('vueuse-ssr-width') as InjectionKey<number | null>
 
-/* #__NO_SIDE_EFFECTS__ */
+/* @__NO_SIDE_EFFECTS__ */
 export function useSSRWidth() {
   // Avoid injection warning outside of components
   const ssrWidth = hasInjectionContext() ? injectLocal(ssrWidthSymbol, null) : null

@@ -37,8 +37,9 @@ export interface BrowserLocationState {
  * Reactive browser location.
  *
  * @see https://vueuse.org/useBrowserLocation
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-/* #__NO_SIDE_EFFECTS__ */
 export function useBrowserLocation(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options
   const refs = Object.fromEntries(
