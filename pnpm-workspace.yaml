@@ -26,6 +26,8 @@ catalogs:
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
     prettier: ^3.6.2
+    rolldown: ^1.0.0-beta.13
+    rolldown-plugin-dts: ^0.13.6
     rollup: ^4.44.1
     rollup-plugin-dts: ^6.2.1
     rollup-plugin-esbuild: ^6.2.1
