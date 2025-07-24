@@ -11,6 +11,8 @@ export type UseArrayFindIndexReturn = ComputedRef<number>
  * @param fn - a function to test each element.
  *
  * @returns the index of the first element in the array that passes the test. Otherwise, "-1".
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArrayFindIndex<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
