@@ -48,20 +48,6 @@ export interface UseVModelOptions<T, Passive extends boolean = false> {
   shouldEmit?: (v: T) => boolean
 }
 
-export function useVModel<P extends object, K extends keyof P, Name extends string>(
-  props: P,
-  key?: K,
-  emit?: (name: Name, ...args: any[]) => void,
-  options?: UseVModelOptions<P[K], false>,
-): WritableComputedRef<P[K]>
-
-export function useVModel<P extends object, K extends keyof P, Name extends string>(
-  props: P,
-  key?: K,
-  emit?: (name: Name, ...args: any[]) => void,
-  options?: UseVModelOptions<P[K], true>,
-): Ref<UnwrapRef<P[K]>>
-
 /**
  * Shorthand for v-model binding, props + emit -> ref
  *
@@ -70,6 +56,18 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
  * @param key (default 'modelValue')
  * @param emit
  */
+export function useVModel<P extends object, K extends keyof P, Name extends string>(
+  props: P,
+  key?: K,
+  emit?: (name: Name, ...args: any[]) => void,
+  options?: UseVModelOptions<P[K], false>,
+): WritableComputedRef<P[K]>
+export function useVModel<P extends object, K extends keyof P, Name extends string>(
+  props: P,
+  key?: K,
+  emit?: (name: Name, ...args: any[]) => void,
+  options?: UseVModelOptions<P[K], true>,
+): Ref<UnwrapRef<P[K]>>
 export function useVModel<P extends object, K extends keyof P, Name extends string, Passive extends boolean>(
   props: P,
   key?: K,
