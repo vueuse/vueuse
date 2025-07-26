@@ -107,7 +107,6 @@
   StorageSerializers: object
   syncRef: function
   syncRefs: function
-  templateRef: function
   throttledRef: function
   throttledWatch: function
   throttleFilter: function
