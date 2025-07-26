@@ -10,6 +10,8 @@ export type UnrefFn<T> = T extends (...args: infer A) => infer R
 /**
  * Make a plain function accepting ref and raw values as arguments.
  * Returns the same value the unconverted function returns, with proper typing.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function createUnrefFn<T extends Function>(fn: T): UnrefFn<T> {
   return function (this: any, ...args: any[]) {

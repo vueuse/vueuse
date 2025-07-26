@@ -36,6 +36,8 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
  *
  * @see https://vueuse.org/useWindowSize
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const {

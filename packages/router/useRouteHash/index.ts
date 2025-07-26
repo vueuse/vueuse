@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 let _hash: RouteHashValueRaw
 
+/* @__NO_SIDE_EFFECTS__ */
 export function useRouteHash(
   defaultValue?: MaybeRefOrGetter<RouteHashValueRaw>,
   {

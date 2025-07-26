@@ -11,6 +11,8 @@ export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, c
  * @param reducer - a "reducer" function.
  *
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArrayReduce<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
@@ -26,6 +28,8 @@ export function useArrayReduce<T>(
  * @param initialValue - a value to be initialized the first time when the callback is called.
  *
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArrayReduce<T, U>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
@@ -42,6 +46,8 @@ export function useArrayReduce<T, U>(
  * @param args
  *
  * @returns the value that results from running the "reducer" callback function to completion over the entire array.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArrayReduce<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,

@@ -12,6 +12,8 @@ import { useSupported } from '../useSupported'
  *
  * @see https://vueuse.org/useDeviceOrientation
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useDeviceOrientation(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options

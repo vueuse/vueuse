@@ -23,6 +23,8 @@ export interface UsePointerLockOptions extends ConfigurableDocument {
  * @see https://vueuse.org/usePointerLock
  * @param target
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function usePointerLock(target?: MaybeElementRef, options: UsePointerLockOptions = {}) {
   const { document = defaultDocument } = options

@@ -10,6 +10,8 @@ export function useAverage(...args: MaybeRefOrGetter<number>[]): ComputedRef<num
  * Get the average of an array reactively
  *
  * @see https://vueuse.org/useAverage
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useAverage(...args: MaybeComputedRefArgs<number>): ComputedRef<number> {
   return computed(() => {

@@ -9,6 +9,8 @@ import { useVModel } from '../useVModel'
  * @param props
  * @param emit
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useVModels<P extends object, Name extends string>(
   props: P,
@@ -20,6 +22,17 @@ export function useVModels<P extends object, Name extends string>(
   emit?: (name: Name, ...args: any[]) => void,
   options?: UseVModelOptions<any, false>,
 ): ToRefs<P>
+
+/**
+ * Shorthand for props v-model binding. Think like `toRefs(props)` but changes will also emit out.
+ *
+ * @see https://vueuse.org/useVModels
+ * @param props
+ * @param emit
+ * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useVModels<P extends object, Name extends string, Passive extends boolean>(
   props: P,
   emit?: (name: Name, ...args: any[]) => void,

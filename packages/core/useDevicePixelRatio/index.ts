@@ -8,6 +8,8 @@ import { useMediaQuery } from '../useMediaQuery'
  * Reactively track `window.devicePixelRatio`.
  *
  * @see https://vueuse.org/useDevicePixelRatio
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
   const {

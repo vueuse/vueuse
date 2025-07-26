@@ -6,6 +6,8 @@ import { useMediaQuery } from '../useMediaQuery'
  *
  * @see https://vueuse.org/usePreferredDark
  * @param [options]
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function usePreferredDark(options?: ConfigurableWindow) {
   return useMediaQuery('(prefers-color-scheme: dark)', options)

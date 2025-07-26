@@ -9,6 +9,8 @@ import {
  * Mounted state in ref.
  *
  * @see https://vueuse.org/useMounted
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useMounted() {
   const isMounted = shallowRef(false)

@@ -8,6 +8,8 @@ import { useEventListener } from '../useEventListener'
  *
  * @see https://vueuse.org/usePageLeave
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function usePageLeave(options: ConfigurableWindow = {}) {
   const { window = defaultWindow } = options

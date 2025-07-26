@@ -9,6 +9,8 @@ export type ReducedTransparencyType = 'reduce' | 'no-preference'
  *
  * @see https://vueuse.org/usePreferredReducedTransparency
  * @param [options]
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function usePreferredReducedTransparency(options?: ConfigurableWindow) {
   const isReduced = useMediaQuery('(prefers-reduced-transparency: reduce)', options)

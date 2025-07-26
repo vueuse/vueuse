@@ -39,6 +39,8 @@ export interface UseClipboardItemsReturn<Optional> {
  *
  * @see https://vueuse.org/useClipboardItems
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useClipboardItems(options?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>
 export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems>>): UseClipboardItemsReturn<true>

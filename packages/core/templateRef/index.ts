@@ -8,6 +8,8 @@ import { customRef, getCurrentInstance, onUpdated } from 'vue'
  * @see https://vueuse.org/templateRef
  * @param key
  * @param initialValue
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function templateRef<T extends HTMLElement | SVGElement | Component | null, Keys extends string = string>(
   key: Keys,

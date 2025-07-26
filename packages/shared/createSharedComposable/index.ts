@@ -9,6 +9,8 @@ export type SharedComposableReturn<T extends AnyFn = AnyFn> = T
  * Make a composable function usable with multiple Vue instances.
  *
  * @see https://vueuse.org/createSharedComposable
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function createSharedComposable<Fn extends AnyFn>(composable: Fn): SharedComposableReturn<Fn> {
   let subscribers = 0

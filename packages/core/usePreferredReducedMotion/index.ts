@@ -9,6 +9,8 @@ export type ReducedMotionType = 'reduce' | 'no-preference'
  *
  * @see https://vueuse.org/usePreferredReducedMotion
  * @param [options]
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function usePreferredReducedMotion(options?: ConfigurableWindow) {
   const isReduced = useMediaQuery('(prefers-reduced-motion: reduce)', options)

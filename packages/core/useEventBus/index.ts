@@ -39,6 +39,7 @@ export interface UseEventBusReturn<T, P> {
   reset: () => void
 }
 
+/* @__NO_SIDE_EFFECTS__ */
 export function useEventBus<T = unknown, P = any>(key: EventBusIdentifier<T>): UseEventBusReturn<T, P> {
   const scope = getCurrentScope()
   function on(listener: EventBusListener<T, P>) {

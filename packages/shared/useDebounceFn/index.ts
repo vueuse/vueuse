@@ -13,6 +13,8 @@ export type UseDebounceFnReturn<T extends FunctionArgs> = PromisifyFn<T>
  * @param  options     Options
  *
  * @return A new, debounce, function.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useDebounceFn<T extends FunctionArgs>(
   fn: T,

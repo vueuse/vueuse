@@ -33,6 +33,8 @@ export interface UseTextDirectionOptions extends ConfigurableDocument {
  * Reactive dir of the element's text.
  *
  * @see https://vueuse.org/useTextDirection
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useTextDirection(options: UseTextDirectionOptions = {}) {
   const {
