@@ -68,7 +68,7 @@ const state = useStorage(
   'my-store',
   { hello: 'hi', greeting: 'hello' },
   localStorage,
-  { mergeDefaults: (storageValue, defaults) => deepMerge(defaults, storageValue) } // <--
+  { mergeDefaults: (storageValue, defaults) => deepMerge(storageValue, defaults) } // <--
 )
 ```
 
