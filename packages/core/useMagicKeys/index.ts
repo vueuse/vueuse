@@ -121,9 +121,13 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       setRefs(key, value)
     }
     if (key === 'shift' && !value) {
-      shiftDeps.forEach((key) => {
-        current.delete(key)
-        setRefs(key, false)
+      const shiftDepsArray = Array.from(shiftDeps)
+      const shiftIndex = shiftDepsArray.indexOf('shift')
+      shiftDepsArray.forEach((key, index) => {
+        if (index >= shiftIndex) {
+          current.delete(key)
+          setRefs(key, false)
+        }
       })
       shiftDeps.clear()
     }
