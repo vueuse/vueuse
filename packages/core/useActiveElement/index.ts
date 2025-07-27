@@ -81,3 +81,5 @@ export function useActiveElement<T extends HTMLElement>(
 
   return activeElement
 }
+
+export type UseActiveElementReturn = ReturnType<typeof useActiveElement>
