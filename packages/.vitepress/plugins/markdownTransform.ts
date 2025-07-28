@@ -266,6 +266,21 @@ function replaceAsync(str: string, match: RegExp, replacer: (substring: string, 
 
 const reLineHighlightMeta = /^\{[\d\-,]*\}$/
 
+function createCounter({ min = -1, max = -1, logPer = 0 }: { min?: number, max?: number, logPer?: number } = {}) {
+  let count = 0
+  return () => {
+    count++
+    if (logPer && count % logPer === 0)
+      // eslint-disable-next-line no-console
+      console.log(`Counter: ${count}`)
+    return (min < 0 || count >= min) && (max < 0 || count <= max)
+  }
+}
+
+// XXX: only for testing purposes, remove later
+// for limiting replace twoslash (max: 1200)
+const runnable = createCounter({ min: 1, max: 600 })
+
 /**
  * Replaces the given meta string with a default "twoslash" if it is empty or modifies it based on certain conditions.
  *
@@ -280,6 +295,10 @@ const reLineHighlightMeta = /^\{[\d\-,]*\}$/
  */
 function replaceToDefaultTwoslashMeta(meta: string) {
   const trimmed = meta.trim()
+
+  if (!runnable())
+    return trimmed
+
   if (!trimmed) {
     return 'twoslash'
   }
@@ -314,8 +333,7 @@ function injectCodeToTsVue(vueContent: string, code: string): string {
   const insertPosition = scriptTagStart + scriptTagLength
   const updatedContent
     = `${vueContent.slice(0, insertPosition)
-    }\n${code}${
-      vueContent.slice(insertPosition)}`
+    }\n${code}${vueContent.slice(insertPosition)}`
 
   return updatedContent
 }
