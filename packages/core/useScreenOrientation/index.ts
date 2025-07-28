@@ -22,6 +22,8 @@ export interface ScreenOrientation extends EventTarget {
  * Reactive screen orientation
  *
  * @see https://vueuse.org/useScreenOrientation
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useScreenOrientation(options: ConfigurableWindow = {}) {
   const {
