@@ -35,6 +35,8 @@ export interface UsePrecisionOptions {
  * Reactively set the precision of a number.
  *
  * @see https://vueuse.org/usePrecision
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function usePrecision(
   value: MaybeRefOrGetter<number>,

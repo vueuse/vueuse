@@ -1,1 +1,2 @@
 import './polyfillPointerEvents'
+import './mockServer'

@@ -18,6 +18,7 @@ export interface CreateInjectionStateOptions<Return> {
  *
  * @see https://vueuse.org/createInjectionState
  *
+ * @__NO_SIDE_EFFECTS__
  */
 export function createInjectionState<Arguments extends Array<any>, Return>(
   composable: (...args: Arguments) => Return,
