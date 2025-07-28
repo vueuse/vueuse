@@ -61,6 +61,8 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
  *
  * @see https://vueuse.org/useConfirmDialog/
  * @param revealed `boolean` `ref` that handles a modal window
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useConfirmDialog<
   RevealData = any,
