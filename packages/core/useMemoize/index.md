@@ -37,6 +37,7 @@ Combine with `computed` or `asyncComputed` to achieve reactivity:
 
 ```ts
 import { asyncComputed, useMemoize } from '@vueuse/core'
+
 const getUser = useMemoize(
   async (userId: number): Promise<UserData> =>
     axios.get(`users/${userId}`).then(({ data }) => data),

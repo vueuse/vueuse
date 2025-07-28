@@ -22,6 +22,7 @@ By default, it will match with users' browser preference using `usePreferredDark
 
 ```ts
 import { useColorMode } from '@vueuse/core'
+
 const mode = useColorMode()
 // ---cut---
 mode.value // 'dark' | 'light'
