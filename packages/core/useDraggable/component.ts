@@ -36,6 +36,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'disabled',
     'buttons',
     'containerElement',
+    'capture',
   ] as unknown as undefined,
   setup(props, { slots }) {
     const target = shallowRef<HTMLElement | SVGElement | null>()

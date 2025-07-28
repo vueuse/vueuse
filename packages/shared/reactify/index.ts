@@ -26,6 +26,8 @@ export interface ReactifyOptions<T extends boolean> {
  *
  * @param fn - Source function
  * @param options - Options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function reactify<T extends AnyFn, K extends boolean = true>(fn: T, options?: ReactifyOptions<K>): ReactifyReturn<T, K> {
   const unrefFn = options?.computedGetter === false ? unref : toValue
