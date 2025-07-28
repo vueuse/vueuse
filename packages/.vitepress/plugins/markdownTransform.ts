@@ -67,10 +67,14 @@ ${snippet}
           let snippetForCompare = snippet
           if (isMetaTwoslash(meta)) {
             // remove twoslash notations
-            snippetForCompare = twoslasher(snippet, 'ts', {
+            let r = twoslasher(snippet, 'ts', {
               handbookOptions: { noErrors: true },
               customTags: ['include'],
-            }).code
+            })
+            snippetForCompare = r.code
+
+            // @ts-expect-error set null
+            r = null
 
             // add vue auto imports
             snippet = `// @include: imports\n${snippet}`
