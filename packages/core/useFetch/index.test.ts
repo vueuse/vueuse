@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
 import { createFetch, useFetch } from './index'
-import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
