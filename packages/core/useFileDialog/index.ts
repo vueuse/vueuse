@@ -1,9 +1,9 @@
 import type { EventHookOn } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { ref as deepRef, readonly } from 'vue'
+import { computed, ref as deepRef, readonly, toValue, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 
@@ -11,27 +11,27 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
    * @default true
    */
-  multiple?: boolean
+  multiple?: MaybeRef<boolean>
   /**
    * @default '*'
    */
-  accept?: string
+  accept?: MaybeRef<string>
   /**
    * Select the input source for the capture file.
    * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
    */
-  capture?: string
+  capture?: MaybeRef<string>
   /**
    * Reset when open file dialog.
    * @default false
    */
-  reset?: boolean
+  reset?: MaybeRef<boolean>
   /**
    * Select directories instead of files.
    * @see [HTMLInputElement webkitdirectory](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory)
    * @default false
    */
-  directory?: boolean
+  directory?: MaybeRef<boolean>
 
   /**
    * Initial files to set.
@@ -90,48 +90,62 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
-  let input: HTMLInputElement | undefined
-  if (document) {
-    input = unrefElement(options.input) || document.createElement('input')
-    input.type = 'file'
+  const inputRef = computed(() => {
+    const input = unrefElement(options.input) ?? (document ? document.createElement('input') : undefined)
+    if (input) {
+      input.type = 'file'
 
-    input.onchange = (event: Event) => {
-      const result = event.target as HTMLInputElement
-      files.value = result.files
-      changeTrigger(files.value)
-    }
+      input.onchange = (event: Event) => {
+        const result = event.target as HTMLInputElement
+        files.value = result.files
+        changeTrigger(files.value)
+      }
 
-    input.oncancel = () => {
-      cancelTrigger()
+      input.oncancel = () => {
+        cancelTrigger()
+      }
     }
-  }
+    return input
+  })
 
   const reset = () => {
     files.value = null
-    if (input && input.value) {
-      input.value = ''
+    if (inputRef.value && inputRef.value.value) {
+      inputRef.value.value = ''
       changeTrigger(null)
     }
   }
 
-  const open = (localOptions?: Partial<UseFileDialogOptions>) => {
-    if (!input)
+  const applyOptions = (options: UseFileDialogOptions) => {
+    const el = inputRef.value
+    if (!el)
       return
-    const _options = {
+    el.multiple = toValue(options.multiple)!
+    el.accept = toValue(options.accept)!
+    // webkitdirectory key is not stabled, maybe replaced in the future.
+    el.webkitdirectory = toValue(options.directory)!
+    if (hasOwn(options, 'capture'))
+      el.capture = toValue(options.capture)!
+  }
+
+  const open = (localOptions?: Partial<UseFileDialogOptions>) => {
+    const el = inputRef.value
+    if (!el)
+      return
+    const mergedOptions = {
       ...DEFAULT_OPTIONS,
       ...options,
       ...localOptions,
     }
-    input.multiple = _options.multiple!
-    input.accept = _options.accept!
-    // webkitdirectory key is not stabled, maybe replaced in the future.
-    input.webkitdirectory = _options.directory!
-    if (hasOwn(_options, 'capture'))
-      input.capture = _options.capture!
-    if (_options.reset)
+    applyOptions(mergedOptions)
+    if (toValue(mergedOptions.reset))
       reset()
-    input.click()
+    el.click()
   }
+
+  watchEffect(() => {
+    applyOptions(options)
+  })
 
   return {
     files: readonly(files),

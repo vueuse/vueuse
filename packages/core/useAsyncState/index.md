@@ -43,7 +43,7 @@ async function action(event) {
     Execute now
   </button>
 
-  <button class="ml-2 button" @click="event => execute(500, event.target)">
+  <button class="ml-2 button" @click="event => execute(500, event)">
     Execute with delay
   </button>
 </template>
