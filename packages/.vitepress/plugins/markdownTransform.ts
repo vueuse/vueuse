@@ -277,7 +277,7 @@ function createCounter({ min = -1, max = -1, logPer = 0 }: { min?: number, max?:
 
 // XXX: only for testing purposes, remove later
 // for limiting replace twoslash (max: 1200)
-const runnable = createCounter()
+const runnable = createCounter({ min: 1, max: 300 })
 
 /**
  * Replaces the given meta string with a default "twoslash" if it is empty or modifies it based on certain conditions.
