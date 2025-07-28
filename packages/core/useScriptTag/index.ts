@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
@@ -45,6 +45,12 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
    *
    */
   attrs?: Record<string, string>
+
+  /**
+   * Nonce value for CSP (Content Security Policy)
+   * @default undefined
+   */
+  nonce?: string
 }
 
 /**
@@ -71,6 +77,7 @@ export function useScriptTag(
     defer,
     document = defaultDocument,
     attrs = {},
+    nonce = undefined,
   } = options
   const scriptTag = shallowRef<HTMLScriptElement | null>(null)
 
@@ -117,7 +124,9 @@ export function useScriptTag(
         el.noModule = noModule
       if (referrerPolicy)
         el.referrerPolicy = referrerPolicy
-
+      if (nonce) {
+        el.nonce = nonce
+      }
       Object.entries(attrs).forEach(([name, value]) => el?.setAttribute(name, value))
 
       // Enables shouldAppend

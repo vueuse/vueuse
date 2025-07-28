@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { PointerType, Position } from '../types'
 import type { UseSwipeDirection } from '../useSwipe'
 import { toRef, tryOnMounted } from '@vueuse/shared'
@@ -157,8 +156,8 @@ export function usePointerSwipe(
   ]
 
   tryOnMounted(() => {
-    // Disable scroll on for TouchEvents
-    targetRef.value?.style?.setProperty('touch-action', 'none')
+    // Allow vertical scrolling, disable horizontal scrolling by touch
+    targetRef.value?.style?.setProperty('touch-action', 'pan-y')
 
     if (disableTextSelect) {
     // Disable text selection on swipe

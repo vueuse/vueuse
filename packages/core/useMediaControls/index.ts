@@ -1,4 +1,5 @@
-import type { Fn, MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
+import type { Fn } from '@vueuse/shared'
+import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { createEventHook, isObject, toRef, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch, watchEffect } from 'vue'

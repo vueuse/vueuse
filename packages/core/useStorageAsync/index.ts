@@ -1,4 +1,5 @@
-import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import type { RemovableRef } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { StorageLikeAsync } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
 import { watchWithFilter } from '@vueuse/shared'
@@ -14,13 +15,18 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
    * Custom data serialization
    */
   serializer?: SerializerAsync<T>
+
+  /**
+   * On first value loaded hook.
+   */
+  onReady?: (value: T) => void
 }
 
-export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string>
-export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<boolean>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<boolean>): RemovableRef<boolean>
-export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<number>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<number>): RemovableRef<number>
-export function useStorageAsync<T>(key: string, initialValue: MaybeRefOrGetter<T>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
-export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRefOrGetter<null>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T>
+export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string> & Promise<RemovableRef<string>>
+export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<boolean>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<boolean>): RemovableRef<boolean> & Promise<RemovableRef<boolean>>
+export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<number>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<number>): RemovableRef<number> & Promise<RemovableRef<number>>
+export function useStorageAsync<T>(key: string, initialValue: MaybeRefOrGetter<T>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
+export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRefOrGetter<null>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
 
 /**
  * Reactive Storage in with async support.
@@ -36,7 +42,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   initialValue: MaybeRefOrGetter<T>,
   storage: StorageLikeAsync | undefined,
   options: UseStorageAsyncOptions<T> = {},
-): RemovableRef<T> {
+): RemovableRef<T> & Promise<RemovableRef<T>> {
   const {
     flush = 'pre',
     deep = true,
@@ -49,6 +55,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     onError = (e) => {
       console.error(e)
     },
+    onReady,
   } = options
 
   const rawInit: T = toValue(initialValue)
@@ -94,7 +101,12 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     }
   }
 
-  read()
+  const promise = new Promise((resolve) => {
+    read().then(() => {
+      onReady?.(data.value)
+      resolve(data)
+    })
+  })
 
   if (window && listenToStorageChanges)
     useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)), { passive: true })
@@ -121,5 +133,10 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     )
   }
 
-  return data
+  Object.assign(data, {
+    then: promise.then.bind(promise),
+    catch: promise.catch.bind(promise),
+  })
+
+  return data as RemovableRef<T> & Promise<RemovableRef<T>>
 }

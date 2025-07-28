@@ -4,6 +4,10 @@
 import type { ShallowRef, WatchOptionsBase } from 'vue'
 import { readonly, shallowRef, watchEffect } from 'vue'
 
+export type ComputedEagerOptions = WatchOptionsBase
+
+export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
+
 /**
  * Note: If you are using Vue 3.4+, you can straight use computed instead.
  * Because in Vue 3.4+, if computed new value does not change,
@@ -14,7 +18,7 @@ import { readonly, shallowRef, watchEffect } from 'vue'
  * @param options WatchOptionsBase
  * @returns readonly shallowRef
  */
-export function computedEager<T>(fn: () => T, options?: WatchOptionsBase): Readonly<ShallowRef<T>> {
+export function computedEager<T>(fn: () => T, options?: ComputedEagerOptions): ComputedEagerReturn<T> {
   const result = shallowRef()
 
   watchEffect(() => {

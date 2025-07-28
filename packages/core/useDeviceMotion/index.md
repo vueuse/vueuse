@@ -32,7 +32,7 @@ const {
 | permissionGranted            | `boolean`       | Indicates whether the user has granted permission. The default is always false                                       |
 | trigger                      | `Promise<void>` | An async function to request user permission. The API runs automatically once permission is granted                  |
 
-You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent#Properties).
+You can find [more information about the state on the MDN](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent#instance_properties).
 
 ## Component Usage
 

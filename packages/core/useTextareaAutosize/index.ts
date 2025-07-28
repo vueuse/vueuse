@@ -1,5 +1,5 @@
-import type { Fn, MaybeRef } from '@vueuse/shared'
-import type { WatchSource } from 'vue'
+import type { Fn } from '@vueuse/shared'
+import type { MaybeRef, WatchSource } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { toRef } from '@vueuse/shared'
 import { nextTick, shallowRef, toValue, watch } from 'vue'
@@ -8,7 +8,7 @@ import { useResizeObserver } from '../useResizeObserver'
 
 export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   /** Textarea element to autosize. */
-  element?: MaybeRef<HTMLTextAreaElement | undefined>
+  element?: MaybeRef<HTMLTextAreaElement | undefined | null>
   /** Textarea content. */
   input?: MaybeRef<string>
   /** Watch sources that should trigger a textarea resize. */

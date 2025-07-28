@@ -1,0 +1,12 @@
+.:
+  addonCategoryNames: object
+  categories: object
+  categoryNames: object
+  coreCategoryNames: object
+  functionNames: object
+  functions: object
+  getCategories: function
+  getFunction: function
+  metadata: object
+  packages: object
+  uniq: function

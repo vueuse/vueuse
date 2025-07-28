@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { MaybeComputedRefArgs } from '../utils'
 import { computed } from 'vue'
 import { toValueArgsFlat } from '../utils'
@@ -11,6 +10,8 @@ export function useSum(...args: MaybeRefOrGetter<number>[]): ComputedRef<number>
  * Get the sum of a set of numbers.
  *
  * @see https://vueuse.org/useSum
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useSum(...args: MaybeComputedRefArgs<number>): ComputedRef<number> {
   return computed(() => toValueArgsFlat(args).reduce((sum, v) => sum += v, 0))

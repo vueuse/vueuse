@@ -1,5 +1,5 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
 import type { NProgressOptions } from 'nprogress'
+import type { MaybeRefOrGetter } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import nprogress from 'nprogress'
 import { computed, watchEffect } from 'vue'

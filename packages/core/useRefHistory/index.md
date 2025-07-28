@@ -200,4 +200,4 @@ Another option is to avoid mutating the original ref value using `arr.value = [.
 
 ## Recommended Readings
 
-- [History and Persistence](https://patak.dev/vue/history-and-persistence.html) - by [@matias-capeletto](https://github.com/matias-capeletto)
+- [History and Persistence](https://patak.dev/vue/history-and-persistence.html) - by [@patak-dev](https://github.com/patak-dev)

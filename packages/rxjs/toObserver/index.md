@@ -14,10 +14,10 @@ Sugar function to convert a `ref` into an RxJS [Observer](https://rxjs.dev/guide
 import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map, mapTo, startWith, takeUntil, withLatestFrom } from 'rxjs/operators'
-import { shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const count = shallowRef(0)
-const button = shallowRef<HTMLButtonElement | null>(null)
+const button = useTemplateRef('buttonRef')
 
 useSubscription(
   interval(1000)

@@ -28,12 +28,16 @@ export interface EventHook<T = any> {
   clear: () => void
 }
 
+export type EventHookReturn<T> = EventHook<T>
+
 /**
  * Utility for creating event hooks
  *
  * @see https://vueuse.org/createEventHook
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-export function createEventHook<T = any>(): EventHook<T> {
+export function createEventHook<T = any>(): EventHookReturn<T> {
   const fns: Set<Callback<T>> = new Set()
 
   const off = (fn: Callback<T>) => {

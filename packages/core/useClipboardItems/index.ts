@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue } from 'vue'
@@ -40,6 +39,8 @@ export interface UseClipboardItemsReturn<Optional> {
  *
  * @see https://vueuse.org/useClipboardItems
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useClipboardItems(options?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>
 export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems>>): UseClipboardItemsReturn<true>

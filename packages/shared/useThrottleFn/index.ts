@@ -1,4 +1,5 @@
-import type { FunctionArgs, MaybeRefOrGetter, PromisifyFn } from '../utils'
+import type { MaybeRefOrGetter } from 'vue'
+import type { FunctionArgs, PromisifyFn } from '../utils'
 import { createFilterWrapper, throttleFilter } from '../utils'
 
 /**
@@ -17,6 +18,8 @@ import { createFilterWrapper, throttleFilter } from '../utils'
  * @param [rejectOnCancel] if true, reject the last call if it's been cancel (default value: false)
  *
  * @return  A new, throttled, function.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useThrottleFn<T extends FunctionArgs>(
   fn: T,

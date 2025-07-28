@@ -1,5 +1,5 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ShallowRef } from 'vue'
+import type { TimerHandle } from '@vueuse/shared'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { computed, shallowRef } from 'vue'
@@ -23,7 +23,7 @@ export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefi
   } = options
 
   const isHovered = shallowRef(false)
-  let timer: ReturnType<typeof setTimeout> | undefined
+  let timer: TimerHandle
 
   const toggle = (entering: boolean) => {
     const delay = entering ? delayEnter : delayLeave

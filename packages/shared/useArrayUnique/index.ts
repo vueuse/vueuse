@@ -1,5 +1,4 @@
-import type { ComputedRef } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 
 function uniq<T>(array: T[]) {
@@ -17,17 +16,21 @@ function uniqueElementsBy<T>(
   }, [])
 }
 
+export type UseArrayUniqueReturn<T = any> = ComputedRef<T[]>
+
 /**
  * reactive unique array
  * @see https://vueuse.org/useArrayUnique
  * @param list - the array was called upon.
  * @param compareFn
  * @returns A computed ref that returns a unique array of items.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArrayUnique<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   compareFn?: (a: T, b: T, array: T[]) => boolean,
-): ComputedRef<T[]> {
+): UseArrayUniqueReturn<T> {
   return computed<T[]>(() => {
     const resolvedList = toValue(list).map(element => toValue(element))
     return compareFn ? uniqueElementsBy(resolvedList, compareFn) : uniq(resolvedList)

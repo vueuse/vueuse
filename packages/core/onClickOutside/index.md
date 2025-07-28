@@ -44,6 +44,19 @@ useEventListener('pointermove', (e) => {
 })
 ```
 
+If you want to ignore certain elements, you can use the `ignore` option. Provide the elements to ignore as an array of Refs or CSS Selectors.
+
+```ts
+const ignoreElRef = useTemplateRef<HTMLElement>('ignoreEl')
+const ignoreElSelector = '.ignore-el'
+
+onClickOutside(
+  target,
+  event => console.log(event),
+  { ignore: [ignoreElRef, ignoreElSelector] },
+)
+```
+
 ## Component Usage
 
 ```vue

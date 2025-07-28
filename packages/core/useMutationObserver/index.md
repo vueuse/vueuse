@@ -8,7 +8,8 @@ Watch for changes being made to the DOM tree. [MutationObserver MDN](https://dev
 
 ## Usage
 
-```ts
+```vue
+<script setup lang="ts">
 import { useMutationObserver } from '@vueuse/core'
 import { ref, useTemplateRef } from 'vue'
 
@@ -21,4 +22,11 @@ useMutationObserver(el, (mutations) => {
 }, {
   attributes: true,
 })
+</script>
+
+<template>
+  <div ref="el">
+    Hello VueUse
+  </div>
+</template>
 ```

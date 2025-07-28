@@ -1,5 +1,4 @@
-import type { ComputedRef } from 'vue'
-import type { MaybeRefOrGetter } from '../utils'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 
 export interface UseToNumberOptions {
@@ -28,6 +27,8 @@ export interface UseToNumberOptions {
 
 /**
  * Reactively convert a string ref to number.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useToNumber(
   value: MaybeRefOrGetter<number | string>,

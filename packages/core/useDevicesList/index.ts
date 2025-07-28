@@ -73,17 +73,24 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
   }
 
   async function ensurePermissions() {
+    const deviceName = constraints.video ? 'camera' : 'microphone'
+
     if (!isSupported.value)
       return false
 
     if (permissionGranted.value)
       return true
 
-    const { state, query } = usePermission('camera', { controls: true })
+    const { state, query } = usePermission(deviceName, { controls: true })
     await query()
     if (state.value !== 'granted') {
       let granted = true
       try {
+        const allDevices = await navigator!.mediaDevices.enumerateDevices()
+        const hasCamera = allDevices.some(device => device.kind === 'videoinput')
+        const hasMicrophone = allDevices.some(device => device.kind === 'audioinput' || device.kind === 'audiooutput')
+        constraints.video = hasCamera ? constraints.video : false
+        constraints.audio = hasMicrophone ? constraints.audio : false
         stream = await navigator!.mediaDevices.getUserMedia(constraints)
       }
       catch {

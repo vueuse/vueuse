@@ -1,5 +1,4 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance, MaybeRef, MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
 
 export type VueInstance = ComponentPublicInstance

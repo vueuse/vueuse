@@ -1,6 +1,5 @@
-import type { MaybeRef } from '@vueuse/shared'
-import type { ComputedRef, Ref, ShallowRef, StyleValue } from 'vue'
-import { computed, ref as deepRef, shallowRef, watch } from 'vue'
+import type { ComputedRef, MaybeRef, Ref, ShallowRef, StyleValue } from 'vue'
+import { computed, ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useElementSize } from '../useElementSize'
 
 type UseVirtualListItemSize = number | ((index: number) => number)
@@ -202,7 +201,7 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
 }
 
 function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<readonly T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
-  watch([size.width, size.height, list, containerRef], () => {
+  watch([size.width, size.height, () => toValue(list), containerRef], () => {
     calculateRange()
   })
 }

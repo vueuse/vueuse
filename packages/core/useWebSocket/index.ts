@@ -1,5 +1,5 @@
-import type { Fn, MaybeRefOrGetter } from '@vueuse/shared'
-import type { Ref, ShallowRef } from 'vue'
+import type { Fn, TimerHandle } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
@@ -61,7 +61,7 @@ export interface UseWebSocketOptions {
      *
      * @default -1
      */
-    retries?: number | (() => boolean)
+    retries?: number | ((retried: number) => boolean)
 
     /**
      * Delay for reconnect, in milliseconds
@@ -183,8 +183,8 @@ export function useWebSocket<Data = any>(
 
   let bufferedData: (string | ArrayBuffer | Blob)[] = []
 
-  let retryTimeout: ReturnType<typeof setTimeout> | undefined
-  let pongTimeoutWait: ReturnType<typeof setTimeout> | undefined
+  let retryTimeout: TimerHandle
+  let pongTimeoutWait: TimerHandle
 
   const _sendBuffer = () => {
     if (bufferedData.length && wsRef.value && status.value === 'OPEN') {
@@ -247,6 +247,8 @@ export function useWebSocket<Data = any>(
 
     ws.onclose = (ev) => {
       status.value = 'CLOSED'
+      resetHeartbeat()
+      heartbeatPause?.()
       onDisconnected?.(ws, ev)
 
       if (!explicitlyClosed && options.autoReconnect && (wsRef.value == null || ws === wsRef.value)) {
@@ -256,11 +258,12 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        if (typeof retries === 'number' && (retries < 0 || retried < retries)) {
+        const checkRetires = typeof retries === 'function'
+          ? retries
+          : () => typeof retries === 'number' && (retries < 0 || retried < retries)
+
+        if (checkRetires(retried)) {
           retried += 1
-          retryTimeout = setTimeout(_init, delay)
-        }
-        else if (typeof retries === 'function' && retries()) {
           retryTimeout = setTimeout(_init, delay)
         }
         else {

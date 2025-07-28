@@ -6,7 +6,7 @@ category: '@Integrations'
 
 Reactive wrapper for [`focus-trap`](https://github.com/focus-trap/focus-trap).
 
-For more information on what options can be passed, see [`createOptions`](https://github.com/focus-trap/focus-trap#createfocustrapelement-createoptions) in the `focus-trap` documentation.
+For more information on what options can be passed, see [`createOptions`](https://github.com/focus-trap/focus-trap#createoptions) in the `focus-trap` documentation.
 
 ## Install
 
@@ -71,6 +71,40 @@ const { hasFocus, activate, deactivate } = useFocusTrap([targetOne, targetTwo])
       <button @click="deactivate()">
         Deactivate
       </button>
+    </div>
+  </div>
+</template>
+```
+
+**Dynamic Focus Target**
+
+```vue
+<script setup lang="ts">
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { computed, shallowRef, useTemplateRef } from 'vue'
+
+const left = useTemplateRef('left')
+const right = useTemplateRef('right')
+const currentRef = shallowRef<'left' | 'right'>('left')
+
+const target = computed(() =>
+  currentRef.value === 'left'
+    ? left
+    : currentRef.value === 'right'
+      ? right
+      : null,
+)
+
+const { activate } = useFocusTrap(target)
+</script>
+
+<template>
+  <div>
+    <div ref="left" class="left">
+      ...
+    </div>
+    <div ref="right" class="right">
+      ...
     </div>
   </div>
 </template>

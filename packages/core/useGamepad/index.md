@@ -70,6 +70,7 @@ onDisconnected((index) => {
 
 ```ts
 import { useGamepad } from '@vueuse/core'
+
 const { gamepads, onConnected, onDisconnected } = useGamepad()
 const gamepad = gamepads.value[0]!
 // ---cut---
@@ -111,3 +112,11 @@ const controller = mapGamepadToXbox360Controller(gamepad)
 ```
 
 Currently there are only mappings for the Xbox 360 controller. If you have controller you want to add mappings for, feel free to open a PR for more controller mappings!
+
+### SSR Compatibility
+
+This component is designed to be used in the client side. In some cases, SSR might cause some hydration mismatches.
+
+If you are using Nuxt, you can simply rename your component file with the `.client.vue` suffix (e.g., `GamepadComponent.client.vue`) which will automatically make it render only on the client side, avoiding hydration mismatches.
+
+In other frameworks or plain Vue, you can wrap your usage component with a `<ClientOnly>` component to ensure it is only rendered on the client side.

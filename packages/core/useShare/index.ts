@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
@@ -22,6 +22,8 @@ interface NavigatorWithShare {
  * @see https://vueuse.org/useShare
  * @param shareOptions
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useShare(shareOptions: MaybeRefOrGetter<UseShareOptions> = {}, options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options

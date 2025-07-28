@@ -35,6 +35,7 @@ export interface NavigatorLanguageState {
  * Detects the currently selected user language and returns a reactive language
  * @see https://vueuse.org/useNavigatorLanguage
  *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly<NavigatorLanguageState> {
   const { window = defaultWindow } = options

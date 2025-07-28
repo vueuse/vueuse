@@ -1,6 +1,5 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
 import type { Options } from 'change-case'
-import type { ComputedRef, WritableComputedRef } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, WritableComputedRef } from 'vue'
 import * as changeCase from 'change-case'
 import { computed, ref as deepRef, toValue } from 'vue'
 
@@ -24,6 +23,8 @@ export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrG
  * Reactive wrapper for `change-case`
  *
  * @see https://vueuse.org/useChangeCase
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrGetter<ChangeCaseType>, options?: MaybeRefOrGetter<Options> | undefined) {
   const typeRef = computed(() => {

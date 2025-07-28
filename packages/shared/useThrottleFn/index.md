@@ -23,4 +23,4 @@ useEventListener(window, 'resize', throttledFn)
 
 ## Recommended Reading
 
-- [**Debounce vs Throttle**: Definitive Visual Guide](https://redd.one/blog/debounce-vs-throttle)
+- [**Debounce vs Throttle**: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)

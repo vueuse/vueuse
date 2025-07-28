@@ -1,5 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { StorageLike } from '../ssr-handlers'
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseStorageOptions } from '../useStorage'
@@ -47,7 +46,7 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
    *
    * @default undefined
    */
-  onChanged?: (mode: T | BasicColorMode, defaultHandler:((mode: T | BasicColorMode) => void)) => void
+  onChanged?: (mode: T | BasicColorMode, defaultHandler: ((mode: T | BasicColorMode) => void)) => void
 
   /**
    * Custom storage ref
@@ -93,8 +92,8 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
   disableTransition?: boolean
 }
 
-export type UseColorModeReturn<T extends string = BasicColorMode> =
-  Ref<T | BasicColorSchema> & {
+export type UseColorModeReturn<T extends string = BasicColorMode>
+  = Ref<T | BasicColorSchema> & {
     store: Ref<T | BasicColorSchema>
     system: ComputedRef<BasicColorMode>
     state: ComputedRef<T | BasicColorMode>

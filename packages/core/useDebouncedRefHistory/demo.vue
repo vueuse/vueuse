@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { formatDate, useDebouncedRefHistory } from '@vueuse/core'
-import { useCounter } from '@vueuse/shared'
+import { formatDate, useCounter, useDebouncedRefHistory } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 function format(ts: number) {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useTimeoutPoll } from '@vueuse/core'
-import { promiseTimeout } from '@vueuse/shared'
+import { promiseTimeout, useTimeoutPoll } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 const count = shallowRef(0)

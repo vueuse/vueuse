@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { increaseWithUnit, pxValue, tryOnMounted } from '@vueuse/shared'
 import { computed, shallowRef, toValue } from 'vue'
@@ -27,6 +27,8 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
  * Reactively viewport breakpoints
  *
  * @see https://vueuse.org/useBreakpoints
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useBreakpoints<K extends string>(
   breakpoints: Breakpoints<K>,

@@ -6,27 +6,27 @@ import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
-type DescriptorNamePolyfill =
-  'accelerometer' |
-  'accessibility-events' |
-  'ambient-light-sensor' |
-  'background-sync' |
-  'camera' |
-  'clipboard-read' |
-  'clipboard-write' |
-  'gyroscope' |
-  'magnetometer' |
-  'microphone' |
-  'notifications' |
-  'payment-handler' |
-  'persistent-storage' |
-  'push' |
-  'speaker' |
-  'local-fonts'
+type DescriptorNamePolyfill
+  = 'accelerometer'
+    | 'accessibility-events'
+    | 'ambient-light-sensor'
+    | 'background-sync'
+    | 'camera'
+    | 'clipboard-read'
+    | 'clipboard-write'
+    | 'gyroscope'
+    | 'magnetometer'
+    | 'microphone'
+    | 'notifications'
+    | 'payment-handler'
+    | 'persistent-storage'
+    | 'push'
+    | 'speaker'
+    | 'local-fonts'
 
-export type GeneralPermissionDescriptor =
-  | PermissionDescriptor
-  | { name: DescriptorNamePolyfill }
+export type GeneralPermissionDescriptor
+  = | PermissionDescriptor
+    | { name: DescriptorNamePolyfill }
 
 export interface UsePermissionOptions<Controls extends boolean> extends ConfigurableNavigator {
   /**
@@ -48,6 +48,8 @@ export interface UsePermissionReturnWithControls {
  * Reactive Permissions API.
  *
  * @see https://vueuse.org/usePermission
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
@@ -57,6 +59,14 @@ export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
   options: UsePermissionOptions<true>,
 ): UsePermissionReturnWithControls
+
+/**
+ * Reactive Permissions API.
+ *
+ * @see https://vueuse.org/usePermission
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
   options: UsePermissionOptions<boolean> = {},

@@ -14,10 +14,10 @@ Wrappers around RxJS's [`from()`](https://rxjs.dev/api/index/function/from) and 
 import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map, mapTo, takeUntil, withLatestFrom } from 'rxjs/operators'
-import { shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const count = shallowRef(0)
-const button = shallowRef<HTMLButtonElement | null>(null)
+const button = useTemplateRef('buttonRef')
 
 useSubscription(
   interval(1000)

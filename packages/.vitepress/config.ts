@@ -5,6 +5,7 @@ import { withPwa } from '@vite-pwa/vitepress'
 import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
+import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
 import { FILE_IMPORTS } from './twoslash'
 import viteConfig from './vite.config'
@@ -83,6 +84,7 @@ export default withPwa(defineConfig({
         typesCache: createFileSystemTypesCache(),
       }),
     ],
+    languages: ['js', 'ts'],
   },
 
   themeConfig: {
@@ -258,6 +260,14 @@ export default withPwa(defineConfig({
     injectManifest: {
       globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}', 'hashmap.json'],
       globIgnores: ['og-*.png'],
+      // vue chunk ~5.4MB: won't be precached, and won't work when offline
+      maximumFileSizeToCacheInBytes: 6_000_000,
+      // for local build + preview
+      // enableWorkboxModulesLogs: true,
+      // minify: false,
+      buildPlugins: {
+        vite: [PWAVirtual()],
+      },
     },
   },
 

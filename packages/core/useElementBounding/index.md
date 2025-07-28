@@ -14,17 +14,7 @@ import { useElementBounding } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
 const el = useTemplateRef('el')
-
-const {
-  x,
-  y,
-  top,
-  right,
-  bottom,
-  left,
-  width,
-  height
-} = useElementBounding(el)
+const { x, y, top, right, bottom, left, width, height } = useElementBounding(el)
 </script>
 
 <template>

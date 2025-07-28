@@ -1,5 +1,5 @@
-import type { MaybeRefOrGetter, Pausable } from '@vueuse/shared'
-import type { ComputedRef } from 'vue'
+import type { Pausable } from '@vueuse/shared'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
@@ -128,9 +128,19 @@ export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extend
  * Reactive time ago formatter.
  *
  * @see https://vueuse.org/useTimeAgo
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>
+
+/**
+ * Reactive time ago formatter.
+ *
+ * @see https://vueuse.org/useTimeAgo
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
   const {
     controls: exposeControls = false,

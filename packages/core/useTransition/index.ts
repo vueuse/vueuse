@@ -1,7 +1,8 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import { identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, ref as deepRef, toValue, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 
 /**
  * Cubic bezier points
@@ -16,7 +17,7 @@ export type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-export interface TransitionOptions {
+export interface TransitionOptions extends ConfigurableWindow {
 
   /**
    * Manually abort a transition
@@ -141,6 +142,9 @@ export function executeTransition<T extends number | number[]>(
   to: MaybeRefOrGetter<T>,
   options: TransitionOptions = {},
 ): PromiseLike<void> {
+  const {
+    window = defaultWindow,
+  } = options
   const fromVal = toValue(from)
   const toVal = toValue(to)
   const v1 = toVec(fromVal)
@@ -176,7 +180,7 @@ export function executeTransition<T extends number | number[]>(
         (source.value as number) = arr[0]
 
       if (now < endAt) {
-        requestAnimationFrame(tick)
+        window?.requestAnimationFrame(tick)
       }
       else {
         source.value = toVal

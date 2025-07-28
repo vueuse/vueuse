@@ -1,5 +1,4 @@
-import type { MaybeRef, MaybeRefOrGetter } from '@vueuse/shared'
-import type { ShallowRef, WritableComputedRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef, WritableComputedRef } from 'vue'
 import { toRef } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
 
