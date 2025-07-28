@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { format } from 'prettier'
-import { createTwoslasher } from 'twoslash'
+import { twoslasher } from 'twoslash'
 import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { version as currentVersion } from '../../../package.json'
@@ -15,11 +15,6 @@ export function MarkdownTransform(): Plugin {
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
-
-  const twoslasher = createTwoslasher({
-    handbookOptions: { noErrors: true },
-    customTags: ['include'],
-  })
 
   return {
     name: 'vueuse-md-transform',
@@ -72,7 +67,10 @@ ${snippet}
           let snippetForCompare = snippet
           if (isMetaTwoslash(meta)) {
             // remove twoslash notations
-            snippetForCompare = twoslasher(snippet, 'ts').code
+            snippetForCompare = twoslasher(snippet, 'ts', {
+              handbookOptions: { noErrors: true },
+              customTags: ['include'],
+            }).code
 
             // add vue auto imports
             snippet = `// @include: imports\n${snippet}`
@@ -279,7 +277,7 @@ function createCounter({ min = -1, max = -1, logPer = 0 }: { min?: number, max?:
 
 // XXX: only for testing purposes, remove later
 // for limiting replace twoslash (max: 1200)
-const runnable = createCounter({ min: 100, max: 200 })
+const runnable = createCounter()
 
 /**
  * Replaces the given meta string with a default "twoslash" if it is empty or modifies it based on certain conditions.
