@@ -3,7 +3,7 @@ import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { computed, ref as deepRef, readonly, toValue, watch } from 'vue'
+import { computed, ref as deepRef, readonly, toValue, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 
@@ -116,16 +116,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     }
   }
 
-  /**
-   * Apply composable state to the element, also when element is changed
-   */
-  watch([
-    inputRef,
-    () => toValue(options.multiple),
-    () => toValue(options.accept),
-    () => toValue(options.directory),
-    () => toValue(options.capture),
-  ], () => {
+  const applyOptions = (options: UseFileDialogOptions) => {
     const el = inputRef.value
     if (!el)
       return
@@ -135,27 +126,26 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     el.webkitdirectory = toValue(options.directory)!
     if (hasOwn(options, 'capture'))
       el.capture = toValue(options.capture)!
-  }, { immediate: true })
+  }
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
     const el = inputRef.value
     if (!el)
       return
-    const _options = {
+    const mergedOptions = {
       ...DEFAULT_OPTIONS,
       ...options,
       ...localOptions,
     }
-    el.multiple = toValue(_options.multiple)!
-    el.accept = toValue(_options.accept)!
-    // webkitdirectory key is not stabled, maybe replaced in the future.
-    el.webkitdirectory = toValue(_options.directory)!
-    if (hasOwn(_options, 'capture'))
-      el.capture = toValue(_options.capture)!
-    if (toValue(_options.reset))
+    applyOptions(mergedOptions)
+    if (toValue(mergedOptions.reset))
       reset()
     el.click()
   }
+
+  watchEffect(() => {
+    applyOptions(options)
+  })
 
   return {
     files: readonly(files),
