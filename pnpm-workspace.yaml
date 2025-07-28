@@ -39,7 +39,7 @@ catalogs:
     typescript: ^5.8.3
     unimport: ^5.2.0
     unocss: ^66.3.3
-    vite: ^7.0.6
+    vite: npm:rolldown-vite@latest
     vite-plugin-inspect: ^11.3.2
     vue: ^3.5.18
     vue-tsc: ^3.0.4

@@ -96,7 +96,8 @@ export default defineConfig({
             return 'vue'
         },
       },
-      maxParallelFileOps: 5,
+      /* TODO: unsupported options for Rolldown */
+      // maxParallelFileOps: 5,
     },
     sourcemap: false,
   },
