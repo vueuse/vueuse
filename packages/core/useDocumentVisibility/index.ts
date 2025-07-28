@@ -7,6 +7,8 @@ import { useEventListener } from '../useEventListener'
  * Reactively track `document.visibilityState`.
  *
  * @see https://vueuse.org/useDocumentVisibility
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useDocumentVisibility(options: ConfigurableDocument = {}) {
   const { document = defaultDocument } = options

@@ -19,6 +19,8 @@ export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(init
  * @see https://vueuse.org/useToggle
  * @param [initialValue]
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useToggle(
   initialValue: MaybeRef<boolean> = false,

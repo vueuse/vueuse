@@ -3,12 +3,21 @@ import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import { clamp } from '@vueuse/shared'
 import { computed, ref as deepRef, isReadonly, toValue } from 'vue'
 
+/**
+ * Reactively clamp a value between two other values.
+ *
+ * @see https://vueuse.org/useClamp
+ * @param value number
+ * @param min
+ * @param max
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useClamp(
   value: ReadonlyRefOrGetter<number>,
   min: MaybeRefOrGetter<number>,
   max: MaybeRefOrGetter<number>,
 ): ComputedRef<number>
-
 export function useClamp(
   value: MaybeRefOrGetter<number>,
   min: MaybeRefOrGetter<number>,
@@ -22,6 +31,8 @@ export function useClamp(
  * @param value number
  * @param min
  * @param max
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useClamp(value: MaybeRefOrGetter<number>, min: MaybeRefOrGetter<number>, max: MaybeRefOrGetter<number>) {
   if (typeof value === 'function' || isReadonly(value))

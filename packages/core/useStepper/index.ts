@@ -44,6 +44,7 @@ export interface UseStepperReturn<StepName, Steps, Step> {
 
 export function useStepper<T extends string | number>(steps: MaybeRef<T[]>, initialStep?: T): UseStepperReturn<T, T[], T>
 export function useStepper<T extends Record<string, any>>(steps: MaybeRef<T>, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
+/* @__NO_SIDE_EFFECTS__ */
 export function useStepper(steps: any, initialStep?: any): UseStepperReturn<any, any, any> {
   const stepsRef = deepRef<any[]>(steps)
   const stepNames = computed<any[]>(() => Array.isArray(stepsRef.value) ? stepsRef.value : Object.keys(stepsRef.value))
