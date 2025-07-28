@@ -107,7 +107,8 @@ jobs:
 
       - run: pnpm install
 
-      - name: prepare build
-        run: pnpm run update:full
+      - run: pnpm run build
+
+      - run: pnpm run update:full
 
       - run: pnpm dlx pkg-pr-new publish --compact --pnpm './packages/*'
