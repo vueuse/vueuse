@@ -1,10 +1,28 @@
 <script setup lang="ts">
 import { useMagicKeys } from '@vueuse/core'
-import { computed } from 'vue'
-import Key from './Key.vue'
+import { computed, defineComponent, h } from 'vue'
 
 const { shift, v, u, e, s, v_u_e, u_s_e, current } = useMagicKeys()
 const keys = computed(() => Array.from(current))
+
+const Key = defineComponent({
+  props: {
+    value: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  render() {
+    return h('div', {
+      class: [
+        'font-mono px-4 py-2 rounded',
+        this.value
+          ? 'opacity-100 text-primary bg-primary bg-opacity-15'
+          : 'opacity-50 bg-gray-600 bg-opacity-10 dark:(bg-gray-400 bg-opacity-10)',
+      ],
+    }, this.$slots.default?.())
+  },
+})
 </script>
 
 <template>

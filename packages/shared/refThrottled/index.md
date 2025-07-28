@@ -9,12 +9,39 @@ Throttle changing of a ref value.
 
 ## Usage
 
-```js
+```js {5}
 import { refThrottled } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 const input = shallowRef('')
 const throttled = refThrottled(input, 1000)
+```
+
+An example with object ref.
+
+```js
+import { refThrottled } from '@vueuse/core'
+import { shallowRef } from 'vue'
+
+const data = shallowRef({
+  count: 0,
+  name: 'foo',
+})
+const throttled = refThrottled(data, 1000)
+
+data.value = { count: 1, name: 'foo' }
+console.log(throttled.value) // { count: 1, name: 'foo' } (immediate)
+
+data.value = { count: 2, name: 'bar' }
+data.value = { count: 3, name: 'baz' }
+data.value = { count: 4, name: 'qux' }
+console.log(throttled.value) // { count: 1, name: 'foo' } (still first value)
+
+// After 1000ms, next change will be applied
+await sleep(1100)
+data.value = { count: 5, name: 'final' }
+await nextTick()
+console.log(throttled.value) // { count: 5, name: 'final' } (updated)
 ```
 
 ### Trailing
