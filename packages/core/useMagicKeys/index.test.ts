@@ -63,4 +63,34 @@ describe('useMagicKeys', () => {
     }))
     expect(Ctrl_Shift_Period.value).toBe(true)
   })
+  it('prevent incorrect clearing of other keys after releasing shift', async () => {
+    const { v, u, e, shift } = useMagicKeys({ target })
+
+    target.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'v',
+    }))
+    target.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'u',
+    }))
+    target.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'e',
+    }))
+    target.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'shift',
+    }))
+
+    expect(v.value).toBe(true)
+    expect(u.value).toBe(true)
+    expect(e.value).toBe(true)
+    expect(shift.value).toBe(true)
+
+    target.dispatchEvent(new KeyboardEvent('keyup', {
+      key: 'shift',
+    }))
+
+    expect(v.value).toBe(true)
+    expect(u.value).toBe(true)
+    expect(e.value).toBe(true)
+    expect(shift.value).toBe(false)
+  })
 })
