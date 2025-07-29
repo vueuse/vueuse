@@ -1,8 +1,6 @@
 import type { Plugin } from 'vite'
 import { existsSync } from 'node:fs'
-import { freemem, totalmem } from 'node:os'
 import { join, resolve } from 'node:path'
-import { getHeapStatistics } from 'node:v8'
 import { format } from 'prettier'
 import { twoslasher } from 'twoslash'
 import ts from 'typescript'
@@ -11,40 +9,12 @@ import { version as currentVersion } from '../../../package.json'
 import { functionNames, getFunction } from '../../../packages/metadata/metadata'
 import { getTypeDefinition, replacer } from '../../../scripts/utils'
 
-function toMB(bytes: number): string {
-  return (bytes / 1024 / 1024).toFixed(2)
-}
-/* eslint-disable no-console */
-function logMemoryStats() {
-  const heapStats = getHeapStatistics()
-  const memUsage = process.memoryUsage()
-
-  console.log('🧠 Node.js Memory Usage:')
-  console.log(`  heapUsed:     ${toMB(memUsage.heapUsed)} MB`)
-  console.log(`  heapTotal:    ${toMB(memUsage.heapTotal)} MB`)
-  console.log(`  rss:          ${toMB(memUsage.rss)} MB`)
-  console.log(`  external:     ${toMB(memUsage.external)} MB`)
-  console.log(`  arrayBuffers: ${toMB(memUsage.arrayBuffers)} MB`)
-  console.log(`  heapLimit:    ${toMB(heapStats.heap_size_limit)} MB`)
-
-  const total = totalmem()
-  const free = freemem()
-  const used = total - free
-  const percent = (used / total) * 100
-
-  console.log(`  System Memory: Free ${toMB(free)} MB / Total ${toMB(total)} MB (Used ${percent.toFixed(2)}%)`)
-}
-/* eslint-enable no-console */
-
 export function MarkdownTransform(): Plugin {
   const DIR_TYPES = resolve(__dirname, '../../../types/packages')
   const hasTypes = existsSync(DIR_TYPES)
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
-
-  logMemoryStats()
-  setInterval(logMemoryStats, 3000)
 
   return {
     name: 'vueuse-md-transform',
