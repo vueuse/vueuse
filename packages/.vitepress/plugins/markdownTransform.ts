@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { format } from 'prettier'
-import { twoslasher } from 'twoslash'
+import { createTwoslasher } from 'twoslash'
 import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { version as currentVersion } from '../../../package.json'
@@ -15,6 +15,11 @@ export function MarkdownTransform(): Plugin {
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
+
+  const twoslasher = createTwoslasher({
+    handbookOptions: { noErrors: true },
+    customTags: ['include'],
+  })
 
   return {
     name: 'vueuse-md-transform',
@@ -67,14 +72,7 @@ ${snippet}
           let snippetForCompare = snippet
           if (isMetaTwoslash(meta)) {
             // remove twoslash notations
-            let r = twoslasher(snippet, 'ts', {
-              handbookOptions: { noErrors: true },
-              customTags: ['include'],
-            })
-            snippetForCompare = r.code
-
-            // @ts-expect-error set null
-            r = null
+            snippetForCompare = twoslasher(snippet, 'ts').code
 
             // add vue auto imports
             snippet = `// @include: imports\n${snippet}`
@@ -268,21 +266,6 @@ function replaceAsync(str: string, match: RegExp, replacer: (substring: string, 
 
 const reLineHighlightMeta = /^\{[\d\-,]*\}$/
 
-function createCounter({ min = -1, max = -1, logPer = 0 }: { min?: number, max?: number, logPer?: number } = {}) {
-  let count = 0
-  return () => {
-    count++
-    if (logPer && count % logPer === 0)
-      // eslint-disable-next-line no-console
-      console.log(`Counter: ${count}`)
-    return (min < 0 || count >= min) && (max < 0 || count <= max)
-  }
-}
-
-// XXX: only for testing purposes, remove later
-// for limiting replace twoslash (max: 1200)
-const runnable = createCounter({ min: 1, max: 300 })
-
 /**
  * Replaces the given meta string with a default "twoslash" if it is empty or modifies it based on certain conditions.
  *
@@ -297,10 +280,6 @@ const runnable = createCounter({ min: 1, max: 300 })
  */
 function replaceToDefaultTwoslashMeta(meta: string) {
   const trimmed = meta.trim()
-
-  if (!runnable())
-    return trimmed
-
   if (!trimmed) {
     return 'twoslash'
   }
