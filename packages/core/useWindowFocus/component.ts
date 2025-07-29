@@ -1,11 +1,24 @@
+import type { ConfigurableWindow } from '@vueuse/core'
+import type { Reactive, ShallowRef, SlotsType } from 'vue'
 import { useWindowFocus } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-export const UseWindowFocus = /* #__PURE__ */ defineComponent({
-  name: 'UseWindowFocus',
-  setup(props, { slots }) {
+export interface UseWindowFocusProps extends ConfigurableWindow {}
+interface UseWindowFocusSlots {
+  default: (data: Reactive<{
+    focused: ShallowRef<boolean>
+  }>) => any
+}
+
+export const UseWindowFocus = /* #__PURE__ */ defineComponent<
+  UseWindowFocusProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseWindowFocusSlots>
+>(
+  (props, { slots }) => {
     const data = reactive({
-      focused: useWindowFocus(),
+      focused: useWindowFocus(props),
     })
 
     return () => {
@@ -13,4 +26,8 @@ export const UseWindowFocus = /* #__PURE__ */ defineComponent({
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseWindowFocus',
+    props: ['window'],
+  },
+)
