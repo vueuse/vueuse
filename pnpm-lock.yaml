@@ -328,7 +328,7 @@ importers:
         version: 7.7.0
       '@vite-pwa/vitepress':
         specifier: catalog:docs
-        version: 1.0.0(vite-plugin-pwa@0.19.0(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0))
+        version: 1.0.0(vite-plugin-pwa@1.0.2(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0))
       '@vitejs/plugin-vue':
         specifier: catalog:dev
         version: 6.0.1(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(vue@3.5.18(typescript@5.8.3))
@@ -497,6 +497,9 @@ importers:
       vite-plugin-inspect:
         specifier: catalog:dev
         version: 11.3.2(@nuxt/kit@3.17.6(magicast@0.3.5))(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))
+      vite-plugin-pwa:
+        specifier: ^1.0.2
+        version: 1.0.2(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0)
       vitepress:
         specifier: catalog:docs
         version: 2.0.0-alpha.9(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(postcss@8.5.6)(terser@5.24.0)(tsx@4.20.3)(typescript@5.8.3)(yaml@2.8.0)
@@ -8744,14 +8747,14 @@ packages:
       '@nuxt/kit':
         optional: true
 
-  vite-plugin-pwa@0.19.0:
-    resolution: {integrity: sha512-Unfb4Jk/ka4HELtpMLIPCmGcW4LFT+CL7Ri1/Of1544CVKXS2ftP91kUkNzkzeI1sGpOdVGuxprVLB9NjMoCAA==}
+  vite-plugin-pwa@1.0.2:
+    resolution: {integrity: sha512-O3UwjsCnoDclgJANoOgzzqW7SFgwXE/th2OmUP/ILxHKwzWxxKDBu+B/Xa9Cv4IgSVSnj2HgRVIJ7F15+vQFkA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
-      '@vite-pwa/assets-generator': ^0.2.4
-      vite: ^3.1.0 || ^4.0.0 || ^5.0.0
-      workbox-build: ^7.0.0
-      workbox-window: ^7.0.0
+      '@vite-pwa/assets-generator': ^1.0.0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
+      workbox-build: ^7.3.0
+      workbox-window: ^7.3.0
     peerDependenciesMeta:
       '@vite-pwa/assets-generator':
         optional: true
@@ -12461,9 +12464,9 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vite-pwa/vitepress@1.0.0(vite-plugin-pwa@0.19.0(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0))':
+  '@vite-pwa/vitepress@1.0.0(vite-plugin-pwa@1.0.2(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0))':
     dependencies:
-      vite-plugin-pwa: 0.19.0(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0)
+      vite-plugin-pwa: 1.0.2(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0)
 
   '@vitejs/plugin-vue-jsx@5.0.1(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(vue@3.5.18(typescript@5.8.3))':
     dependencies:
@@ -18326,11 +18329,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-pwa@0.19.0(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0):
+  vite-plugin-pwa@1.0.2(rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0))(workbox-build@7.0.0)(workbox-window@7.0.0):
     dependencies:
       debug: 4.4.1
-      fast-glob: 3.3.3
       pretty-bytes: 6.1.1
+      tinyglobby: 0.2.14
       vite: rolldown-vite@7.0.11(@types/node@24.1.0)(esbuild@0.25.8)(jiti@2.4.2)(terser@5.24.0)(tsx@4.20.3)(yaml@2.8.0)
       workbox-build: 7.0.0
       workbox-window: 7.0.0
