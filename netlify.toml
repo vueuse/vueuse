@@ -3,7 +3,7 @@ publish = "packages/.vitepress/dist"
 command = "pnpm run install-fonts && pnpm run docs:build"
 
 [build.environment]
-NODE_OPTIONS = "--max-old-space-size=7168"
+NODE_OPTIONS = "--max-old-space-size=6144"
 NODE_VERSION = "22"
 
 [[redirects]]
