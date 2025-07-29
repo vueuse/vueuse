@@ -1,6 +1,6 @@
+import type { OnKeyStrokeOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import type { OnKeyStrokeOptions } from './index'
-import { onKeyStroke } from './index'
+import { onKeyStroke } from '@vueuse/core'
 
 type BindingValueFunction = (event: KeyboardEvent) => void
 
