@@ -36,7 +36,6 @@ catalogs:
     taze: ^19.1.0
     tinyglobby: ^0.2.14
     tsx: ^4.20.3
-    turbo: ^2.5.5
     typescript: ^5.8.3
     unimport: ^5.2.0
     unocss: ^66.3.3

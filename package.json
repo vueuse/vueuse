@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "up": "nlx taze && nr size",
-    "build": "nr update && turbo run build",
+    "build": "nr update && pnpm -r run build",
     "build:redirects": "tsx scripts/redirects.ts",
     "build:types": "vue-tsc --emitDeclarationOnly",
     "clean": "tsx scripts/clean.ts",
@@ -32,9 +32,9 @@
     "test:unit": "vitest --project unit",
     "test:attw": "pnpm -r test:attw",
     "typecheck": "vue-tsc --noEmit",
-    "update": "turbo run update -F @vueuse/metadata && tsx scripts/update.ts",
+    "update": "nr -C packages/metadata update && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
-    "watch": "turbo watch build",
+    "watch": "pnpm -r --parallel run build --watch",
     "prepare": "simple-git-hooks"
   },
   "devDependencies": {
@@ -100,7 +100,6 @@
     "taze": "catalog:dev",
     "tinyglobby": "catalog:dev",
     "tsx": "catalog:dev",
-    "turbo": "catalog:dev",
     "typescript": "catalog:dev",
     "unocss": "catalog:dev",
     "unplugin-icons": "catalog:docs",
