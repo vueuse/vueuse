@@ -32,7 +32,7 @@
     "test:unit": "vitest --project unit",
     "test:attw": "pnpm -r test:attw",
     "typecheck": "vue-tsc --noEmit",
-    "update": "nr -C packages/metadata update && tsx scripts/update.ts",
+    "update": "turbo run update -F @vueuse/metadata && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
     "watch": "turbo watch build",
     "prepare": "simple-git-hooks"
