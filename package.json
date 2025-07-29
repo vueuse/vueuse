@@ -90,6 +90,7 @@
     "postcss-nested": "catalog:dev",
     "prettier": "catalog:dev",
     "remove-markdown": "catalog:docs",
+    "rolldown-vite": "catalog:dev",
     "rollup": "catalog:dev",
     "rollup-plugin-dts": "catalog:dev",
     "rollup-plugin-esbuild": "catalog:dev",
@@ -127,6 +128,7 @@
     "rollup": "catalog:dev",
     "vite": "catalog:dev",
     "vite-plugin-pwa": "catalog:docs",
+    "vitepress>vite": "npm:rolldown-vite@latest",
     "vue": "catalog:dev"
   },
   "simple-git-hooks": {

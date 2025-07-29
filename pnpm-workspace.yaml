@@ -26,6 +26,7 @@ catalogs:
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
     prettier: ^3.6.2
+    rolldown-vite: latest
     rollup: ^4.46.1
     rollup-plugin-dts: ^6.2.1
     rollup-plugin-esbuild: ^6.2.1
@@ -39,7 +40,7 @@ catalogs:
     typescript: ^5.8.3
     unimport: ^5.2.0
     unocss: ^66.3.3
-    vite: npm:rolldown-vite@latest
+    vite: ^7.0.6
     vite-plugin-inspect: ^11.3.2
     vue: ^3.5.18
     vue-tsc: ^3.0.4
