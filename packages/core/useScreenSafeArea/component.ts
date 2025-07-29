@@ -1,15 +1,15 @@
+import { useScreenSafeArea } from '@vueuse/core'
 import { defineComponent, h } from 'vue'
-import { useScreenSafeArea } from './index'
 
-export const UseScreenSafeArea = /* #__PURE__ */ defineComponent({
-  name: 'UseScreenSafeArea',
-  props: {
-    top: Boolean,
-    right: Boolean,
-    bottom: Boolean,
-    left: Boolean,
-  },
-  setup(props, { slots }) {
+export interface UseScreenSafeAreaProps {
+  top?: boolean
+  right?: boolean
+  bottom?: boolean
+  left?: boolean
+}
+
+export const UseScreenSafeArea = /* #__PURE__ */ defineComponent<UseScreenSafeAreaProps>(
+  (props, { slots }) => {
     const {
       top,
       right,
@@ -34,4 +34,13 @@ export const UseScreenSafeArea = /* #__PURE__ */ defineComponent({
       }
     }
   },
-})
+  {
+    name: 'UseScreenSafeArea',
+    props: [
+      'top',
+      'right',
+      'bottom',
+      'left',
+    ],
+  },
+)
