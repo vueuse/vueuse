@@ -34,3 +34,5 @@ export function usePageLeave(options: ConfigurableWindow = {}) {
 
   return isLeft
 }
+
+export type UsePageLeaveReturn = ReturnType<typeof usePageLeave>
