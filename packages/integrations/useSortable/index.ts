@@ -72,7 +72,9 @@ export function useSortable<T>(
 
   tryOnMounted(start)
 
-  tryOnScopeDispose(stop)
+  const registSuccess = tryOnScopeDispose(stop)
+  if (!registSuccess && process.env.NODE_ENV !== 'production')
+    console.warn('useSortable is not called within a EffectScope, causing failure of managing sortable.destory. You may have to call stop() manually.')
 
   return {
     stop,
