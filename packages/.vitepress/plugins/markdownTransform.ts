@@ -1,6 +1,7 @@
 import type { Plugin } from 'vite'
 import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
+import { getHeapStatistics } from 'node:v8'
 import { format } from 'prettier'
 import { twoslasher } from 'twoslash'
 import ts from 'typescript'
@@ -15,6 +16,9 @@ export function MarkdownTransform(): Plugin {
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
+
+  // eslint-disable-next-line no-console
+  console.log('heap size limit (MB):', getHeapStatistics().heap_size_limit / 1024 / 1024)
 
   return {
     name: 'vueuse-md-transform',
