@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useDeviceOrientation } from '@vueuse/core'
+import { stringify, useDeviceOrientation } from '@vueuse/core'
 import { reactive } from 'vue'
 
 const orientation = reactive(useDeviceOrientation())

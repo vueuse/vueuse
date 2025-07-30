@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useMouseInElement } from '@vueuse/core'
+import { stringify, useMouseInElement } from '@vueuse/core'
 import { reactive, useTemplateRef } from 'vue'
 import Area from './Area.vue'
 

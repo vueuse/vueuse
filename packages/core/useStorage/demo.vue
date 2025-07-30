@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useStorage } from '@vueuse/core'
+import { stringify, useStorage } from '@vueuse/core'
 
 const theDefault = {
   name: 'Banana',

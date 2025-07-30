@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useElementBounding } from '@vueuse/core'
+import { stringify, useElementBounding } from '@vueuse/core'
 import { reactive, useTemplateRef } from 'vue'
 
 const el = useTemplateRef('el')

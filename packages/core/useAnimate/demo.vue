@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { MaybeElement } from '@vueuse/core'
-import { yamlStringify as stringify, useAnimate } from '@vueuse/core'
+import { stringify, useAnimate } from '@vueuse/core'
 import { reactive, useTemplateRef } from 'vue'
 
 const el = useTemplateRef<MaybeElement>('el')

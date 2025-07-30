@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useBrowserLocation } from '@vueuse/core'
+import { stringify, useBrowserLocation } from '@vueuse/core'
 
 const location = useBrowserLocation()
 const text = stringify(location)

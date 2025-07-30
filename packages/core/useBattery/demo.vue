@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useBattery } from '@vueuse/core'
+import { stringify, useBattery } from '@vueuse/core'
 import { reactive } from 'vue'
 
 const battery = reactive(useBattery())

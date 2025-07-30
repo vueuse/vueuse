@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
-import { yamlStringify as stringify, useMediaQuery, useParallax } from '@vueuse/core'
+import { stringify, useMediaQuery, useParallax } from '@vueuse/core'
 import { computed, reactive, useTemplateRef } from 'vue'
 
 const target = useTemplateRef<HTMLElement>('target')

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useMediaQuery } from '@vueuse/core'
+import { stringify, useMediaQuery } from '@vueuse/core'
 import { computed, reactive } from 'vue'
 
 const isLargeScreen = useMediaQuery('(min-width: 1024px)')

@@ -19,4 +19,4 @@ export function createReactifyStringify(options: YamlStringifyOptions = defaultO
   )
 }
 
-export const yamlStringify = createReactifyStringify()
+export const stringify = createReactifyStringify()

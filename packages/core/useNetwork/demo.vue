@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useNetwork } from '@vueuse/core'
+import { stringify, useNetwork } from '@vueuse/core'
 import { reactive } from 'vue'
 
 const network = reactive(useNetwork())

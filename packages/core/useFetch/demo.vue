@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useFetch, useToggle } from '@vueuse/core'
+import { stringify, useFetch, useToggle } from '@vueuse/core'
 import { computed, reactive, shallowRef } from 'vue'
 
 const url = shallowRef('https://httpbin.org/get')

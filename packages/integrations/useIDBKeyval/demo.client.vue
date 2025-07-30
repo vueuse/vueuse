@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify } from '@vueuse/core'
+import { stringify } from '@vueuse/core'
 import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 const KEY = 'vue-use-idb-keyval'

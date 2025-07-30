@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, usePermission } from '@vueuse/core'
+import { stringify, usePermission } from '@vueuse/core'
 import { computed, reactive } from 'vue'
 
 const accelerometer = usePermission('accelerometer')

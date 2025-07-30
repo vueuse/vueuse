@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify } from '@vueuse/core'
+import { stringify } from '@vueuse/core'
 import { useAxios } from '@vueuse/integrations/useAxios'
 
 const { data, isLoading, isFinished, execute, abort, isAborted } = useAxios(

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useDevicePixelRatio } from '@vueuse/core'
+import { stringify, useDevicePixelRatio } from '@vueuse/core'
 import { reactive } from 'vue'
 
 const pixelRatio = reactive(useDevicePixelRatio())

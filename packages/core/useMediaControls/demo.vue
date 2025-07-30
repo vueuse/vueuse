@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useMediaControls } from '@vueuse/core'
+import { stringify, useMediaControls } from '@vueuse/core'
 import { computed, reactive, shallowRef, useTemplateRef } from 'vue'
 import Menu from './components/Menu.vue'
 import MenuItem from './components/MenuItem.vue'

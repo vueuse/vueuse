@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useAsyncState } from '@vueuse/core'
+import { stringify, useAsyncState } from '@vueuse/core'
 import axios from 'axios'
 
 const { isLoading, state, isReady, execute } = useAsyncState(

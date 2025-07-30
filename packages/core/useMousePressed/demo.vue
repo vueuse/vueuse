@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { yamlStringify as stringify, useMousePressed, useToggle } from '@vueuse/core'
+import { stringify, useMousePressed, useToggle } from '@vueuse/core'
 import { computed, reactive, useTemplateRef } from 'vue'
 
 const el = useTemplateRef<HTMLElement>('el')
