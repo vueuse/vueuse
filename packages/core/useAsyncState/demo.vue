@@ -1,19 +1,6 @@
 <script setup lang="ts">
-import { reactify, useAsyncState } from '@vueuse/core'
+import { yamlStringify as stringify, useAsyncState } from '@vueuse/core'
 import axios from 'axios'
-import YAML from 'yaml'
-
-const stringify = reactify(
-  (input: any) => YAML.stringify(input, (k, v) => {
-    if (typeof v === 'function') {
-      return undefined
-    }
-    return v
-  }, {
-    singleQuote: true,
-    flowCollectionPadding: false,
-  }),
-)
 
 const { isLoading, state, isReady, execute } = useAsyncState(
   (args) => {

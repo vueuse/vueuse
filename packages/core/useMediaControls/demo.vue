@@ -1,23 +1,10 @@
 <script setup lang="ts">
-import { reactify, useMediaControls } from '@vueuse/core'
+import { yamlStringify as stringify, useMediaControls } from '@vueuse/core'
 import { computed, reactive, shallowRef, useTemplateRef } from 'vue'
-import YAML from 'yaml'
 import Menu from './components/Menu.vue'
 import MenuItem from './components/MenuItem.vue'
 import Scrubber from './components/Scrubber.vue'
 import Spinner from './components/Spinner.vue'
-
-const stringify = reactify(
-  (input: any) => YAML.stringify(input, (k, v) => {
-    if (typeof v === 'function') {
-      return undefined
-    }
-    return v
-  }, {
-    singleQuote: true,
-    flowCollectionPadding: false,
-  }),
-)
 
 const video = useTemplateRef<HTMLVideoElement>('video')
 const loop = shallowRef(false)

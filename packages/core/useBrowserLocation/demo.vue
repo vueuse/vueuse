@@ -1,18 +1,5 @@
 <script setup lang="ts">
-import { reactify, useBrowserLocation } from '@vueuse/core'
-import YAML from 'yaml'
-
-const stringify = reactify(
-  (input: any) => YAML.stringify(input, (k, v) => {
-    if (typeof v === 'function') {
-      return undefined
-    }
-    return v
-  }, {
-    singleQuote: true,
-    flowCollectionPadding: false,
-  }),
-)
+import { yamlStringify as stringify, useBrowserLocation } from '@vueuse/core'
 
 const location = useBrowserLocation()
 const text = stringify(location)
