@@ -2,6 +2,7 @@
 .idea
 .nuxt
 .temp
+.turbo
 *.log
 *.tgz
 components.d.ts
