@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/integrations",
   "type": "module",
-  "version": "13.3.0",
+  "version": "13.6.0",
   "description": "Integration wrappers for utility libraries",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -67,7 +67,7 @@
     "nprogress": "^0.2",
     "qrcode": "^1.5",
     "sortablejs": "^1",
-    "universal-cookie": "^7",
+    "universal-cookie": "^7 || ^8",
     "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {

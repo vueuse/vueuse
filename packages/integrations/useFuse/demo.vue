@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import type { UseFuseOptions } from '@vueuse/integrations'
-import { useFuse } from '@vueuse/integrations'
+import type { UseFuseOptions } from '@vueuse/integrations/useFuse'
+import { useFuse } from '@vueuse/integrations/useFuse'
 import { computed, shallowRef, watch } from 'vue'
 
 interface DataItem {

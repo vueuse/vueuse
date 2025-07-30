@@ -25,6 +25,8 @@ export type UseWakeLockOptions = ConfigurableNavigator & ConfigurableDocument
  *
  * @see https://vueuse.org/useWakeLock
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useWakeLock(options: UseWakeLockOptions = {}) {
   const {

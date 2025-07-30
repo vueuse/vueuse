@@ -9,9 +9,9 @@ export interface UseFirestoreOptions {
   autoDispose?: boolean | number
 }
 
-export type FirebaseDocRef<T> =
-  Query<T> |
-  DocumentReference<T>
+export type FirebaseDocRef<T>
+  = Query<T>
+    | DocumentReference<T>
 
 function getData<T>(
   docRef: DocumentSnapshot<T> | QueryDocumentSnapshot<T>,
