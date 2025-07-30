@@ -1,4 +1,4 @@
-import type { WatchCallback } from 'vue'
+import type { WatchStopHandle } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, watchImmediate } from '@vueuse/shared'
 import { readonly, shallowRef } from 'vue'
@@ -19,7 +19,7 @@ export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
 
   const pixelRatio = shallowRef(1)
   const query = useMediaQuery(() => `(resolution: ${pixelRatio.value}dppx)`, options)
-  let stop: () => void | WatchCallback = noop
+  let stop: WatchStopHandle = noop
 
   if (window) {
     stop = watchImmediate(query, () => pixelRatio.value = window!.devicePixelRatio)
