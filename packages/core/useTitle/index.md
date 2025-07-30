@@ -29,7 +29,7 @@ const title = useTitle('New Title')
 Pass a `ref` and the title will be updated when the source ref changes:
 
 ```js
-import { shallowRef } from 'vue'
+import { shallowRef, computed } from 'vue'
 import { useTitle } from '@vueuse/core'
 
 const messages = shallowRef(0)

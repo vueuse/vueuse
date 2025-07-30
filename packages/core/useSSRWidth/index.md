@@ -10,6 +10,7 @@ Used to set a global viewport width which will be used when rendering SSR compon
 
 ```js
 import { provideSSRWidth } from '@vueuse/core'
+import { createApp } from 'vue'
 
 const app = createApp(App)
 

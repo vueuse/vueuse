@@ -38,6 +38,8 @@ state.value = null
 By default, `useStorage` will use the value from storage if it is present and ignores the default value. Be aware that when you are adding more properties to the default value, the key might be `undefined` if client's storage does not have that key.
 
 ```ts
+import { useStorage } from '@vueuse/core'
+
 localStorage.setItem('my-store', '{"hello": "hello"}')
 
 const state = useStorage('my-store', { hello: 'hi', greeting: 'hello' }, localStorage)
@@ -48,6 +50,8 @@ console.log(state.value.greeting) // undefined, since the value is not presented
 To solve that, you can enable `mergeDefaults` option.
 
 ```ts
+import { useStorage } from '@vueuse/core'
+
 localStorage.setItem('my-store', '{"hello": "nihao"}')
 
 const state = useStorage(
@@ -64,6 +68,8 @@ console.log(state.value.greeting) // 'hello', from merged default value
 When setting it to true, it will perform a **shallow merge** for objects. You can pass a function to perform custom merge (e.g. deep merge), for example:
 
 ```ts
+import { useStorage } from '@vueuse/core'
+
 const state = useStorage(
   'my-store',
   { hello: 'hi', greeting: 'hello' },

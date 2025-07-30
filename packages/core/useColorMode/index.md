@@ -49,6 +49,7 @@ You can also explicit access to the system preference and storaged user override
 
 ```js
 import { useColorMode } from '@vueuse/core'
+import { computed } from 'vue'
 
 const { system, store } = useColorMode()
 

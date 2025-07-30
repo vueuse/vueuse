@@ -48,6 +48,7 @@ Here, we use the characteristicvaluechanged event listener to handle reading bat
 
 ```ts
 import { pausableWatch, useBluetooth, useEventListener } from '@vueuse/core'
+import { ref } from 'vue'
 
 const {
   isSupported,

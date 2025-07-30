@@ -29,6 +29,8 @@ onClickOutside(target, event => console.log(event))
 If you need more control over triggering the handler, you can use the `controls` option.
 
 ```ts
+import { onClickOutside, useEventListener } from '@vueuse/core'
+
 const { cancel, trigger } = onClickOutside(
   modalRef,
   (event) => {
@@ -47,6 +49,9 @@ useEventListener('pointermove', (e) => {
 If you want to ignore certain elements, you can use the `ignore` option. Provide the elements to ignore as an array of Refs or CSS Selectors.
 
 ```ts
+import { onClickOutside } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
+
 const ignoreElRef = useTemplateRef<HTMLElement>('ignoreEl')
 const ignoreElSelector = '.ignore-el'
 

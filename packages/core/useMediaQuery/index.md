@@ -21,6 +21,7 @@ If you are using `useMediaQuery` with SSR enabled, then you need to specify whic
 
 ```js
 import { breakpointsTailwind, useMediaQuery } from '@vueuse/core'
+import { onMounted } from 'vue'
 
 const isLarge = useMediaQuery(
   '(min-width: 1024px)',

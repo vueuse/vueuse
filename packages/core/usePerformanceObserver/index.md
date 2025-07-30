@@ -10,6 +10,7 @@ Observe performance metrics.
 
 ```ts
 import { usePerformanceObserver } from '@vueuse/core'
+import { ref } from 'vue'
 
 const entrys = ref<PerformanceEntry[]>([])
 usePerformanceObserver({

@@ -15,6 +15,8 @@ Before an app can send a notification, the user must grant the application the r
 :::
 
 ```ts
+import { useWebNotification } from '@vueuse/core'
+
 const {
   isSupported,
   notification,

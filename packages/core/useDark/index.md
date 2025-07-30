@@ -48,6 +48,8 @@ Still, you can also customize it to make it work with most CSS frameworks.
 For example:
 
 ```ts
+import { useDark } from '@vueuse/core'
+
 const isDark = useDark({
   selector: 'body',
   attribute: 'color-scheme',

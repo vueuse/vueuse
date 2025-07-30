@@ -35,6 +35,7 @@ useResizeObserver(el, (entries) => {
 ```vue
 <script setup lang="ts">
 import { vResizeObserver } from '@vueuse/components'
+import { ref } from 'vue'
 
 const text = ref('')
 

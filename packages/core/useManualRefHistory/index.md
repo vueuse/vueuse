@@ -97,6 +97,8 @@ const refHistory = useManualRefHistory(target, {
 We will keep all the history by default (unlimited) until you explicitly clear them up, you can set the maximal amount of history to be kept by `capacity` options.
 
 ```ts
+import { useManualRefHistory } from '@vueuse/core'
+
 const refHistory = useManualRefHistory(target, {
   capacity: 15, // limit to 15 history records
 })

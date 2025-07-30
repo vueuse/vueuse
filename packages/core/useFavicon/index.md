@@ -33,6 +33,9 @@ useFavicon(favicon)
 When a source ref is passed, the return ref will be identical to the source ref
 
 ```ts
+import { useFavicon } from '@vueuse/core'
+import { shallowRef } from 'vue'
+
 const source = shallowRef('icon.png')
 const icon = useFavicon(source)
 
