@@ -15,23 +15,18 @@ const stringify = reactify(
   }),
 )
 
-async function fetchData(id: number) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        id,
-        createdAt: new Date().toISOString(),
-      })
-    }, 1000)
-  })
-}
-
 const id = shallowRef(1)
 const evaluating = shallowRef(false)
 
-const data = computedAsync(
-  async () => {
-    return await fetchData(id.value)
+const state = computedAsync(
+  async (onCancel) => {
+    const abortController = new AbortController()
+    onCancel(() => abortController.abort())
+
+    return await fetch(
+      `https://jsonplaceholder.typicode.com/todos/${id.value}`,
+      { signal: abortController.signal },
+    ).then(resp => resp.json())
   },
   null,
   {
@@ -49,7 +44,7 @@ function change() {
     <note>
       Evaluating: {{ evaluating }}
     </note>
-    <pre lang="json" class="ml-2">{{ stringify(data) }}</pre>
+    <pre lang="json" class="ml-2">{{ stringify(state) }}</pre>
     <button @click="change">
       Change
     </button>
