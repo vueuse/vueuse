@@ -51,6 +51,8 @@ export interface CreateReusableTemplateOptions<Props extends Record<string, any>
  * It also allow to pass a generic to bind with type.
  *
  * @see https://vueuse.org/createReusableTemplate
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function createReusableTemplate<
   Bindings extends Record<string, any>,

@@ -11,6 +11,8 @@ export type UseArraySomeReturn = ComputedRef<boolean>
  * @param fn - a function to test each element.
  *
  * @returns **true** if the `fn` function returns a **truthy** value for any element from the array. Otherwise, **false**.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArraySome<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,

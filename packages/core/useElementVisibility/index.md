@@ -30,6 +30,8 @@ If you wish to trigger your callback sooner before the element is fully visible,
 the `rootMargin` option (See [MDN IntersectionObserver/rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin)).
 
 ```ts
+import { useElementVisibility } from '@vueuse/core'
+// ---cut---
 const targetIsVisible = useElementVisibility(target, {
   rootMargin: '0px 0px 100px 0px',
 })

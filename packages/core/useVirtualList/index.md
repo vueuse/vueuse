@@ -14,7 +14,7 @@ Create virtual lists with ease. Virtual lists (sometimes called [_virtual scroll
 
 ### Simple list
 
-```typescript
+```ts
 import { useVirtualList } from '@vueuse/core'
 
 const { list, containerProps, wrapperProps } = useVirtualList(
@@ -38,7 +38,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 
 ### Reactive list
 
-```typescript
+```ts
 import { useToggle, useVirtualList } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -72,7 +72,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 
 ### Horizontal list
 
-```typescript
+```ts
 import { useVirtualList } from '@vueuse/core'
 
 const allItems = Array.from(Array.from({ length: 99999 }).keys())

@@ -21,7 +21,6 @@ const {
   utterance,
   error,
   stop,
-
   toggle,
   speak,
 } = useSpeechSynthesis()
@@ -32,6 +31,8 @@ const {
 The following shows the default values of the options, they will be directly passed to [SpeechSynthesis API](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis).
 
 ```ts
+import { useSpeechSynthesis } from '@vueuse/core'
+// ---cut---
 useSpeechSynthesis({
   lang: 'en-US',
   pitch: 1,
