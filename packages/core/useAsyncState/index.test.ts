@@ -96,14 +96,18 @@ describe('useAsyncState', () => {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve(num)
-        }, num * 1000)
+        }, num * 100)
       })
     }
-    const { execute, state } = useAsyncState(p, 0, { cancellable: true })
-    execute(0, 1)
-    execute(0, 3)
-    await execute(0, 2)
-    expect(state.value).toBe(2)
+    const { execute, state: num } = useAsyncState(p, 0, { cancellable: true })
+    function executeCancelable() {
+      execute(0, 1)
+      execute(0, 3)
+      execute(0, 2)
+    }
+    executeCancelable()
+    await new Promise(resolve => setTimeout(resolve, 350))
+    expect(num.value).toBe(2)
   })
 
   it('should support manual cancel()', async () => {
@@ -111,13 +115,14 @@ describe('useAsyncState', () => {
       return new Promise<number>((resolve) => {
         setTimeout(() => {
           resolve(num)
-        }, num * 1000)
+        }, num * 100)
       })
     }
     const { execute, state, cancel } = useAsyncState(p, 0, { cancellable: true })
     execute(0, 3)
     execute(0, 5)
     cancel()
+    await new Promise(resolve => setTimeout(resolve, 350))
     expect(state.value).toBe(0)
   })
 })
