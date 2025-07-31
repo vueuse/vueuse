@@ -9,6 +9,10 @@ const git = Git({
 })
 let cache: CommitInfo[] | undefined
 
+const whitelistCommits = new Set<string>([
+  'd32f80ca4e0f7600b68cbca05341b351e31563c1',
+])
+
 export async function getChangeLog(count = 200) {
   if (cache)
     return cache
@@ -18,6 +22,7 @@ export async function getChangeLog(count = 200) {
       || i.message.includes('!')
       || i.message.startsWith('feat')
       || i.message.startsWith('fix')
+      || whitelistCommits.has(i.hash)
   }) as CommitInfo[]
 
   for (const log of logs) {
