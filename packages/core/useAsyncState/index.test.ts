@@ -99,7 +99,7 @@ describe('useAsyncState', () => {
         }, num * 100)
       })
     }
-    const { execute, state: num } = useAsyncState(p, 0, { cancellable: true })
+    const { execute, state } = useAsyncState(p, 0, { cancellable: true })
     function executeCancelable() {
       execute(0, 1)
       execute(0, 3)
@@ -107,7 +107,8 @@ describe('useAsyncState', () => {
     }
     executeCancelable()
     await new Promise(resolve => setTimeout(resolve, 350))
-    expect(num.value).toBe(2)
+    // state is 2 when cancellable is true, otherwise it's 3
+    expect(state.value).toBe(2)
   })
 
   it('should support manual cancel()', async () => {
