@@ -10,6 +10,8 @@ const git = Git({
 let cache: CommitInfo[] | undefined
 
 const whitelistCommits = new Set<string>([
+  // This commit adds NO_SIDE_EFFECTS annotations to pure functions.
+  // It was labeled as `refactor`, so it was filtered out by default.
   'd32f80ca4e0f7600b68cbca05341b351e31563c1',
 ])
 
