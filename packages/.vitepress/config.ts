@@ -1,11 +1,13 @@
 import { resolve } from 'node:path'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
+import { createFileSystemTypesCache } from '@shikijs/vitepress-twoslash/cache-fs'
 import { withPwa } from '@vite-pwa/vitepress'
 import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
+import { FILE_IMPORTS } from './twoslash'
 import viteConfig from './vite.config'
 
 const Guide = [
@@ -72,7 +74,15 @@ export default withPwa(defineConfig({
       dark: 'vitesse-dark',
     },
     codeTransformers: [
-      transformerTwoslash(),
+      transformerTwoslash({
+        twoslashOptions: {
+          handbookOptions: {
+            noErrors: true,
+          },
+        },
+        includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
+        typesCache: createFileSystemTypesCache(),
+      }),
     ],
     languages: ['js', 'ts'],
   },
