@@ -8,7 +8,7 @@ Safe `onBeforeUnmount`. Call `onBeforeUnmount()` if it's inside a component life
 
 ## Usage
 
-```js
+```ts
 import { tryOnBeforeUnmount } from '@vueuse/core'
 
 tryOnBeforeUnmount(() => {

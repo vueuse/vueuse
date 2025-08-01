@@ -8,9 +8,9 @@ Create global state that can be injected into components.
 
 ## Usage
 
-```ts
-import { createInjectionState } from '@vueuse/core'
+```ts twoslash include useCounterStore
 // useCounterStore.ts
+import { createInjectionState } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
@@ -29,6 +29,7 @@ const [useProvideCounterStore, useCounterStore] = createInjectionState((initialV
 })
 
 export { useProvideCounterStore }
+
 // If you want to hide `useCounterStore` and wrap it in default value logic or throw error logic, please don't export `useCounterStore`
 export { useCounterStore }
 
@@ -51,6 +52,9 @@ export function useCounterStoreOrThrow() {
 ```vue
 <!-- RootComponent.vue -->
 <script setup lang="ts">
+// @filename: useCounterStore.ts
+// @include: useCounterStore
+// ---cut---
 import { useProvideCounterStore } from './useCounterStore'
 
 useProvideCounterStore(0)
@@ -66,6 +70,9 @@ useProvideCounterStore(0)
 ```vue
 <!-- CountComponent.vue -->
 <script setup lang="ts">
+// @filename: useCounterStore.ts
+// @include: useCounterStore
+// ---cut---
 import { useCounterStore } from './useCounterStore'
 
 // use non-null assertion operator to ignore the case that store is not provided.
@@ -93,6 +100,9 @@ const { count, double } = useCounterStore()!
 ```vue
 <!-- ButtonComponent.vue -->
 <script setup lang="ts">
+// @filename: useCounterStore.ts
+// @include: useCounterStore
+// ---cut---
 import { useCounterStore } from './useCounterStore'
 
 // use non-null assertion operator to ignore the case that store is not provided.
@@ -109,8 +119,8 @@ const { increment } = useCounterStore()!
 ## Provide a custom InjectionKey
 
 ```ts
-import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
+import { createInjectionState } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
 
 // custom injectionKey
@@ -135,8 +145,8 @@ const [useProvideCounterStore, useCounterStore] = createInjectionState((initialV
 ## Provide a custom default value
 
 ```ts
-import { createInjectionState } from '@vueuse/core'
 // useCounterStore.ts
+import { createInjectionState } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
