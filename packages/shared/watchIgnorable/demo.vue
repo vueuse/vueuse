@@ -5,7 +5,7 @@ import { shallowRef } from 'vue'
 const log = shallowRef('')
 const source = shallowRef(0)
 
-const { ignoreUpdates } = watchIgnorable(
+const { ignoreUpdates, pause, resume } = watchIgnorable(
   source,
   v => (log.value += `Changed to "${v}"\n`),
   { flush: 'sync' },
@@ -32,6 +32,12 @@ function ignoredUpdate() {
   </button>
   <button class="orange" @click="ignoredUpdate">
     Ignored Update
+  </button>
+  <button @click="pause">
+    Pause
+  </button>
+  <button @click="resume">
+    Resume
   </button>
   <button @click="clear">
     Reset
