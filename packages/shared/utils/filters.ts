@@ -140,11 +140,6 @@ export interface ThrottleFilterOptions {
 // TODO v11: refactor the params to object
 /**
  * Create an EventFilter that throttle the events
- *
- * @param ms
- * @param [trailing]
- * @param [leading]
- * @param [rejectOnCancel]
  */
 export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
 export function throttleFilter(options: ThrottleFilterOptions): EventFilter
