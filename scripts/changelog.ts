@@ -47,6 +47,13 @@ export async function getChangeLog(count = 200) {
   return result
 }
 
+const md5AliasMap: Record<string, string> = {
+  // anthony
+  '10af285c4d864f57c5baefa1bcc05ed2': '616389b9fc3c3c92d244e2639418f0c5',
+  // babu
+  'bfeb5b88946bb2d0a700f186e365efec': 'e0ab8bfa785525e00c54fa4a28fec9d2',
+}
+
 export async function getContributorsAt(path: string) {
   try {
     const list = (await git.raw(['log', '--pretty=format:"%an|%ae"', '--', path]))
@@ -57,14 +64,16 @@ export async function getContributorsAt(path: string) {
     list
       .filter(i => i[1])
       .forEach((i) => {
-        if (!map[i[1]]) {
-          map[i[1]] = {
+        const hash = md5(i[1])
+        const aliasHash = md5AliasMap[hash] ?? hash
+        if (!map[aliasHash]) {
+          map[aliasHash] = {
             name: i[0],
             count: 0,
-            hash: md5(i[1]),
+            hash: aliasHash,
           }
         }
-        map[i[1]].count++
+        map[aliasHash].count++
       })
 
     return Object.values(map).sort((a, b) => b.count - a.count)
