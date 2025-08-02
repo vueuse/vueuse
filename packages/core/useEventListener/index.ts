@@ -13,6 +13,7 @@ interface InferEventTarget<Events> {
 
 export type WindowEventName = keyof WindowEventMap
 export type DocumentEventName = keyof DocumentEventMap
+export type ShadowRootEventName = keyof ShadowRootEventMap
 
 export interface GeneralEventListener<E = Event> {
   (evt: E): void
@@ -24,9 +25,6 @@ export interface GeneralEventListener<E = Event> {
  * Overload 1: Omitted Window target
  *
  * @see https://vueuse.org/useEventListener
- * @param event
- * @param listener
- * @param options
  */
 // @ts-expect-error - TypeScript gets confused with this and can't infer the correct overload with Parameters<...>
 export function useEventListener<E extends keyof WindowEventMap>(
@@ -59,13 +57,9 @@ export function useEventListener<E extends keyof WindowEventMap>(
  * Overload 3: Explicitly Document target
  *
  * @see https://vueuse.org/useEventListener
- * @param target
- * @param event
- * @param listener
- * @param options
  */
 export function useEventListener<E extends keyof DocumentEventMap>(
-  target: DocumentOrShadowRoot,
+  target: Document,
   event: MaybeRefOrGetter<Arrayable<E>>,
   listener: MaybeRef<Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
@@ -74,31 +68,37 @@ export function useEventListener<E extends keyof DocumentEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 4: Explicitly HTMLElement target
+ * Overload 4: Explicitly ShadowRoot target
  *
  * @see https://vueuse.org/useEventListener
- * @param target
- * @param event
- * @param listener
- * @param options
+ */
+export function useEventListener<E extends keyof ShadowRootEventMap>(
+  target: MaybeRefOrGetter<Arrayable<ShadowRoot> | null | undefined>,
+  event: MaybeRefOrGetter<Arrayable<E>>,
+  listener: MaybeRef<Arrayable<(this: ShadowRoot, ev: ShadowRootEventMap[E]) => any>>,
+  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
+): Fn
+
+/**
+ * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
+ *
+ * Overload 5: Explicitly HTMLElement target
+ *
+ * @see https://vueuse.org/useEventListener
  */
 export function useEventListener<E extends keyof HTMLElementEventMap>(
   target: MaybeRefOrGetter<Arrayable<HTMLElement> | null | undefined>,
   event: MaybeRefOrGetter<Arrayable<E>>,
   listener: MaybeRef<(this: HTMLElement, ev: HTMLElementEventMap[E]) => any>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
-): () => void
+): Fn
 
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 5: Custom event target with event type infer
+ * Overload 6: Custom event target with event type infer
  *
  * @see https://vueuse.org/useEventListener
- * @param target
- * @param event
- * @param listener
- * @param options
  */
 export function useEventListener<Names extends string, EventType = Event>(
   target: MaybeRefOrGetter<Arrayable<InferEventTarget<Names>> | null | undefined>,
@@ -110,13 +110,9 @@ export function useEventListener<Names extends string, EventType = Event>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 6: Custom event target fallback
+ * Overload 7: Custom event target fallback
  *
  * @see https://vueuse.org/useEventListener
- * @param target
- * @param event
- * @param listener
- * @param options
  */
 export function useEventListener<EventType = Event>(
   target: MaybeRefOrGetter<Arrayable<EventTarget> | null | undefined>,

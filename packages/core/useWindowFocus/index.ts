@@ -8,6 +8,8 @@ import { useEventListener } from '../useEventListener'
  * Reactively track window focus with `window.onfocus` and `window.onblur`.
  *
  * @see https://vueuse.org/useWindowFocus
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useWindowFocus(options: ConfigurableWindow = {}): ShallowRef<boolean> {
   const { window = defaultWindow } = options

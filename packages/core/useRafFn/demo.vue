@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useRafFn } from '@vueuse/core'
 import { shallowRef } from 'vue'
-import { useRafFn } from './index'
 
 const fpsLimit = 60
 const count = shallowRef(0)

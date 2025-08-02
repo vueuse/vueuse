@@ -16,6 +16,8 @@
   font-size: 12px;
   font-weight: 500;
   transition: color 0.5s;
+  display: flex;
+  gap: 0.5rem;
 }
 
 @media (min-width: 720px) {
@@ -93,7 +95,7 @@
 
   textarea {
     display: block;
-    min-width: 20rem;
+    min-width: min(20rem, 100%);
     font-size: 1.05rem;
     padding: 0.5em 1em 0.4em 1em;
     border-radius: 4px;
@@ -120,7 +122,7 @@
     outline: none;
     background: var(--vp-c-bg);
     color: var(--vp-c-text);
-    min-width: 20rem;
+    min-width: min(20rem, 100%);
     margin: 0.5rem 0;
   }
 
@@ -131,6 +133,39 @@
 
   input:focus {
     border: 1px solid var(--vp-c-border);
+  }
+
+  .radio {
+    @apply inline-flex items-center my-auto cursor-pointer select-none;
+  }
+
+  .radio input {
+    appearance: none;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    display: inline-block;
+    vertical-align: middle;
+    background-origin: border-box;
+    user-select: none;
+    flex-shrink: 0;
+    height: 1rem;
+    width: 1rem;
+    @apply bg-gray-400/30;
+    @apply rounded-full h-4 w-4 select-none relative;
+    @apply mr-1;
+    --tw-ring-offset-width: 1px !important;
+    --tw-ring-color: #8885 !important;
+    --tw-ring-offset-color: transparent !important;
+  }
+
+  .radio input:checked::after {
+    content: '';
+    @apply absolute inset-[3px] rounded-full bg-primary;
+  }
+
+  .radio span {
+    @apply ml-1.5 text-13px opacity-70;
   }
 
   pre,
@@ -162,6 +197,7 @@
     white-space: pre;
     overflow-wrap: normal;
     overflow: hidden;
+    max-width: 100%;
   }
 
   .float {

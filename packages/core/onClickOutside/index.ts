@@ -10,7 +10,8 @@ import { useEventListener } from '../useEventListener'
 
 export interface OnClickOutsideOptions<Controls extends boolean = false> extends ConfigurableWindow {
   /**
-   * List of elements that should not trigger the event.
+   * List of elements that should not trigger the event,
+   * provided as Refs or CSS Selectors.
    */
   ignore?: MaybeRefOrGetter<(MaybeElementRef | string)[]>
   /**
@@ -31,17 +32,18 @@ export interface OnClickOutsideOptions<Controls extends boolean = false> extends
 }
 
 export type OnClickOutsideHandler<
-  T extends {
-    detectIframe: OnClickOutsideOptions['detectIframe']
-    controls: boolean
-  } = { detectIframe: false, controls: false },
+  T extends OnClickOutsideOptions<boolean> = OnClickOutsideOptions,
 > = (
-  event: T['controls'] extends true ? Event | (T['detectIframe'] extends true
-    ? PointerEvent | FocusEvent
-    : PointerEvent) : T['detectIframe'] extends true
-    ? PointerEvent | FocusEvent
-    : PointerEvent,
+  event: (T['detectIframe'] extends true ? FocusEvent : never)
+    | (T['controls'] extends true ? Event : never)
+    | PointerEvent,
 ) => void
+
+interface OnClickOutsideControlsReturn {
+  stop: Fn
+  cancel: Fn
+  trigger: (event: Event) => void
+}
 
 let _iOSWorkaround = false
 
@@ -53,17 +55,21 @@ let _iOSWorkaround = false
  * @param handler
  * @param options
  */
-export function onClickOutside(
+export function onClickOutside<
+  T extends OnClickOutsideOptions,
+>(
   target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: true }>,
-  options: OnClickOutsideOptions<true>,
-): { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
-
-export function onClickOutside(
-  target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: false }>,
-  options?: OnClickOutsideOptions<false>,
+  handler: OnClickOutsideHandler<T>,
+  options?: T
 ): Fn
+
+export function onClickOutside<
+  T extends OnClickOutsideOptions<true>,
+>(
+  target: MaybeElementRef,
+  handler: OnClickOutsideHandler<T>,
+  options: T
+): OnClickOutsideControlsReturn
 
 // Implementation
 export function onClickOutside(
@@ -84,9 +90,11 @@ export function onClickOutside(
   if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
     const listenerOptions = { passive: true }
+    // Not using useEventListener because these event handlers must not be disposed.
+    // See previously linked references and https://github.com/vueuse/vueuse/issues/4724
     Array.from(window.document.body.children)
-      .forEach(el => useEventListener(el, 'click', noop, listenerOptions))
-    useEventListener(window.document.documentElement, 'click', noop, listenerOptions)
+      .forEach(el => el.addEventListener('click', noop, listenerOptions))
+    window.document.documentElement.addEventListener('click', noop, listenerOptions)
   }
 
   let shouldListen = true

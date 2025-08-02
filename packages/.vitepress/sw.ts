@@ -3,6 +3,7 @@
 // eslint-disable-next-line spaced-comment
 /// <reference lib="webworker" />
 
+import { packageNames } from 'virtual:pwa'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching'
@@ -13,8 +14,50 @@ declare let self: ServiceWorkerGlobalScope
 
 const entries = self.__WB_MANIFEST
 
+const normalizedPaths = new Map(packageNames)
+
+const assetMatcher = /^\/assets\/([a-zA-Z]+)_([a-zA-Z]+)_index\.md\.[\w-]+\.(?:lean\.)?js$/
+
+const selfHostname = self.location.hostname
+
 // self.__WB_MANIFEST is the default injection point
-precacheAndRoute(entries)
+precacheAndRoute(
+  entries,
+  {
+    urlManipulation({ url }) {
+      const urls: URL[] = []
+      if (url.hostname !== selfHostname || url.pathname.includes('.html')) {
+        return urls
+      }
+      const pathname = url.pathname
+      let entry = normalizedPaths.get(pathname)
+      if (!entry) {
+        const match = pathname.match(assetMatcher)
+        if (match) {
+          const [full, pkg, name] = match
+          entry = normalizedPaths.get(`/${pkg}/${name}/`.toLowerCase())
+          if (entry) {
+            const newURL = new URL(url.href)
+            newURL.pathname = full.replace(
+              `${pkg}_${name}`,
+              `${entry.url.slice(1).replace(/\/$/, '').replace('/', '_')}`,
+            )
+            urls.push(newURL)
+          }
+        }
+        return urls
+      }
+      const newURL = new URL(url.href)
+      if (newURL.hash) {
+        newURL.hash = entry.hash
+      }
+      newURL.pathname = `${entry.url}index.html`
+      urls.push(newURL)
+
+      return urls
+    },
+  },
+)
 
 // clean old assets
 cleanupOutdatedCaches()

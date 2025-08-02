@@ -12,7 +12,6 @@ export default defineConfig({
       '@vueuse/core': resolve(import.meta.dirname, 'packages/core/index.ts'),
       '@vueuse/math': resolve(import.meta.dirname, 'packages/math/index.ts'),
       '@vueuse/components': resolve(import.meta.dirname, 'packages/components/index.ts'),
-      '@vueuse/docs-utils': resolve(import.meta.dirname, 'packages/.vitepress/plugins/utils.ts'),
     },
     dedupe: [
       'vue',
@@ -34,14 +33,14 @@ export default defineConfig({
       exclude: [
         'packages/.vitepress/**',
         'playgrounds/**',
-        '**/(unocss,taze).config.ts',
+        '**/{unocss,taze}.config.ts',
         'scripts/**',
         ...coverageConfigDefaults.exclude,
       ],
     },
 
     clearMocks: true,
-    workspace: [
+    projects: [
       'packages/*/vitest.config.ts',
       {
         // add "extends: true" to inherit the options from the root config

@@ -36,6 +36,14 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default 'replace'
    */
   writeMode?: 'replace' | 'push'
+
+  /**
+   * Custom function to serialize URL parameters
+   * When provided, this function will be used instead of the default URLSearchParams.toString()
+   * @param params The URLSearchParams object to serialize
+   * @returns The serialized query string (should not include the leading '?' or '#')
+   */
+  stringify?: (params: URLSearchParams) => string
 }
 
 /**
@@ -56,6 +64,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     write: enableWrite = true,
     writeMode = 'replace',
     window = defaultWindow!,
+    stringify = params => params.toString(),
   } = options
 
   if (!window)
@@ -78,8 +87,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function constructQuery(params: URLSearchParams) {
-    const stringified = params.toString()
-
+    const stringified = stringify(params)
     if (mode === 'history')
       return `${stringified ? `?${stringified}` : ''}${window.location.hash || ''}`
     if (mode === 'hash-params')

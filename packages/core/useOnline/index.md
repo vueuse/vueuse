@@ -8,7 +8,7 @@ Reactive online state. A wrapper of `useNetwork`.
 
 ## Usage
 
-```js
+```ts
 import { useOnline } from '@vueuse/core'
 
 const online = useOnline()
