@@ -3,7 +3,7 @@ import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
 import { watchOnce } from '@vueuse/shared'
-import { shallowRef, toValue } from 'vue'
+import { shallowRef, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
@@ -40,36 +40,51 @@ export function useElementVisibility(
     rootMargin,
     once = false,
   } = options
+
   const elementIsVisible = shallowRef(false)
 
-  const { stop } = useIntersectionObserver(
-    element,
-    (intersectionObserverEntries) => {
-      let isIntersecting = elementIsVisible.value
+  const cleanup = shallowRef<() => void>(() => {})
 
-      // Get the latest value of isIntersecting based on the entry time
-      let latestTime = 0
-      for (const entry of intersectionObserverEntries) {
-        if (entry.time >= latestTime) {
-          latestTime = entry.time
-          isIntersecting = entry.isIntersecting
+  watchEffect((onCleanup) => {
+    // Clean up previous observer
+    cleanup.value()
+
+    const currentRootMargin = toValue(rootMargin)
+    const currentThreshold = toValue(threshold)
+    const currentScrollTarget = toValue(scrollTarget)
+
+    const { stop } = useIntersectionObserver(
+      element,
+      (intersectionObserverEntries) => {
+        let isIntersecting = elementIsVisible.value
+
+        // Get the latest value of isIntersecting based on the entry time
+        let latestTime = 0
+        for (const entry of intersectionObserverEntries) {
+          if (entry.time >= latestTime) {
+            latestTime = entry.time
+            isIntersecting = entry.isIntersecting
+          }
         }
-      }
-      elementIsVisible.value = isIntersecting
+        elementIsVisible.value = isIntersecting
 
-      if (once) {
-        watchOnce(elementIsVisible, () => {
-          stop()
-        })
-      }
-    },
-    {
-      root: scrollTarget,
-      window,
-      threshold,
-      rootMargin: toValue(rootMargin),
-    },
-  )
+        if (once) {
+          watchOnce(elementIsVisible, () => {
+            stop()
+          })
+        }
+      },
+      {
+        root: currentScrollTarget,
+        window,
+        threshold: currentThreshold,
+        rootMargin: currentRootMargin,
+      },
+    )
+
+    cleanup.value = stop
+    onCleanup(() => stop())
+  })
 
   return elementIsVisible
 }
