@@ -1,9 +1,21 @@
+import type { UseBatteryReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
+import type { ConfigurableNavigator } from '../_configurable'
 import { useBattery } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-export const UseBattery = /* #__PURE__ */ defineComponent({
-  name: 'UseBattery',
-  setup(props, { slots }) {
+export interface UseBatteryProps extends ConfigurableNavigator {}
+interface UseBatterySlots {
+  default: (data: Reactive<UseBatteryReturn>) => any
+}
+
+export const UseBattery = /* #__PURE__ */ defineComponent<
+  UseBatteryProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseBatterySlots>
+>(
+  (props, { slots }) => {
     const data = reactive(useBattery(props))
 
     return () => {
@@ -11,4 +23,8 @@ export const UseBattery = /* #__PURE__ */ defineComponent({
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseBattery',
+    props: ['navigator'],
+  },
+)
