@@ -8,7 +8,7 @@ Reactive [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/B
 
 ## Usage
 
-```js
+```ts
 import { useBattery } from '@vueuse/core'
 
 const { charging, chargingTime, dischargingTime, level } = useBattery()

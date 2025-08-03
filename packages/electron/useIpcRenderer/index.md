@@ -13,7 +13,7 @@ import { useIpcRenderer } from '@vueuse/electron'
 import { computed } from 'vue'
 
 // enable nodeIntegration if you don't provide ipcRenderer explicitly
-// @see: https://www.electronjs.org/docs/api/webview-tag#nodeintegration
+// see: https://www.electronjs.org/docs/api/webview-tag#nodeintegration
 const ipcRenderer = useIpcRenderer()
 
 // Ref result will return

@@ -9,27 +9,31 @@ Reactive [`mediaDevices.getUserMedia`](https://developer.mozilla.org/en-US/docs/
 
 ## Usage
 
-```js
+```vue
+<script setup lang="ts">
 import { useUserMedia } from '@vueuse/core'
+import { useTemplateRef, watchEffect } from 'vue'
 
 const { stream, start } = useUserMedia()
-
 start()
-```
 
-```ts
-const video = document.getElementById('video')
-
+const videoRef = useTemplateRef('video')
 watchEffect(() => {
   // preview on a video element
-  video.srcObject = stream.value
+  videoRef.value.srcObject = stream.value
 })
+</script>
+
+<template>
+  <video ref="video" />
+</template>
 ```
 
 ### Devices
 
-```js
+```ts
 import { useDevicesList, useUserMedia } from '@vueuse/core'
+import { computed, reactive } from 'vue'
 
 const {
   videoInputs: cameras,

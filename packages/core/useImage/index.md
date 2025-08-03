@@ -9,7 +9,7 @@ Reactive load an image in the browser, you can wait the result to display it or 
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useImage } from '@vueuse/core'
 
 const avatarUrl = 'https://place.dog/300/200'
