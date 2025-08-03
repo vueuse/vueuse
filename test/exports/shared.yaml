@@ -39,6 +39,7 @@
   isObject: function
   isWorker: boolean
   makeDestructurable: function
+  manualResetRef: function
   noop: function
   normalizeDate: function
   notNullish: function
@@ -60,6 +61,7 @@
   refAutoReset: function
   refDebounced: function
   refDefault: function
+  refManualReset: function
   refThrottled: function
   refWithControl: function
   resolveRef: function
