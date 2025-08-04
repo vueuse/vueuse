@@ -18,7 +18,6 @@ const { state, index, next, prev, go } = useCycleList(list)
 
 <template>
   <div flex="~ col" items="center" gap="6">
-    <!-- 圆形展示区域 -->
     <div class="relative w-80 h-80">
       <div
         v-for="(item, i) in list"
@@ -48,7 +47,6 @@ const { state, index, next, prev, go } = useCycleList(list)
         {{ item }}
       </div>
 
-      <!-- 中心显示当前选中项 -->
       <div
         flex="~ items-center justify-center col"
         gap="2"
@@ -63,7 +61,6 @@ const { state, index, next, prev, go } = useCycleList(list)
       </div>
     </div>
 
-    <!-- 控制按钮 -->
     <div flex="~ gap-4">
       <button class="button" @click="prev()">
         ← Prev
