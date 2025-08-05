@@ -81,7 +81,9 @@ export default withPwa(defineConfig({
           },
         },
         includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
-        typesCache: createFileSystemTypesCache(),
+        typesCache: createFileSystemTypesCache({
+          dir: 'packages/.vitepress/cache/twoslash',
+        }),
       }),
     ],
     languages: ['js', 'ts'],
