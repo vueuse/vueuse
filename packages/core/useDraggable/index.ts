@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { PointerType, Position } from '../types'
-import { isClient, toRefs } from '@vueuse/shared'
-import { computed, ref as deepRef, toValue } from 'vue'
+import { isClient, toRefs, tryOnUnmounted } from '@vueuse/shared'
+import { computed, ref as deepRef, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -159,6 +159,11 @@ export function useDraggable(
       e.stopPropagation()
   }
 
+  const {
+    scrollTop: documentScrollTop,
+    scrollLeft: documentScrollLeft,
+  } = processDocumentScrollOffset()
+
   const start = (e: PointerEvent) => {
     if (!toValue(buttons).includes(e.button))
       return
@@ -174,6 +179,7 @@ export function useDraggable(
       x: e.clientX - (container ? targetRect.left - containerRect!.left + container.scrollLeft : targetRect.left),
       y: e.clientY - (container ? targetRect.top - containerRect!.top + container.scrollTop : targetRect.top),
     }
+
     if (onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
@@ -191,13 +197,15 @@ export function useDraggable(
     if (axis === 'x' || axis === 'both') {
       x = e.clientX - pressedDelta.value.x
       if (container)
-        x = Math.min(Math.max(0, x), container.scrollWidth - targetRect!.width)
+        x = Math.min(Math.max(0, x - documentScrollLeft.value), container.scrollWidth - targetRect!.width - documentScrollLeft.value)
     }
     if (axis === 'y' || axis === 'both') {
       y = e.clientY - pressedDelta.value.y
-      if (container)
-        y = Math.min(Math.max(0, y), container.scrollHeight - targetRect!.height)
+      if (container) {
+        y = Math.min(Math.max(0, y - documentScrollTop.value), container.scrollHeight - targetRect!.height - documentScrollTop.value)
+      }
     }
+
     position.value = {
       x,
       y,
@@ -236,3 +244,23 @@ export function useDraggable(
 }
 
 export type UseDraggableReturn = ReturnType<typeof useDraggable>
+
+function processDocumentScrollOffset() {
+  const scrollTop = shallowRef(0)
+  const scrollLeft = shallowRef(0)
+
+  const callback = () => {
+    scrollTop.value = document.scrollingElement!.scrollTop
+    scrollLeft.value = document.scrollingElement!.scrollLeft
+  }
+
+  window.addEventListener('scroll', callback)
+  tryOnUnmounted(() => {
+    window.removeEventListener('scroll', callback)
+  })
+
+  return {
+    scrollTop,
+    scrollLeft,
+  }
+}
