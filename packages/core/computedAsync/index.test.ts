@@ -55,6 +55,27 @@ describe('computedAsync', () => {
     expectTypeOf(data2).toEqualTypeOf<ComputedRef<string>>()
   })
 
+  it('default onError in computedAsync uses globalThis.reportError', async () => {
+    const originalReportError = globalThis.reportError
+    const mockReportError = vi.fn()
+    globalThis.reportError = mockReportError
+
+    const func = vi.fn(async () => {
+      throw new Error('An Error Message')
+    })
+
+    const data = computedAsync(func, undefined)
+
+    expect(func).toBeCalledTimes(1)
+
+    expect(data.value).toBeUndefined()
+
+    await nextTick()
+    expect(data.value).toBeUndefined()
+    expect(mockReportError).toHaveBeenCalledWith(new Error('An Error Message'))
+    globalThis.reportError = originalReportError
+  })
+
   it('call onError when error is thrown', async () => {
     const errorMessage = shallowRef()
     const func = vi.fn(async () => {
