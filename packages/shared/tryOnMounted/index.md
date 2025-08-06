@@ -8,7 +8,7 @@ Safe `onMounted`. Call `onMounted()` if it's inside a component lifecycle, if no
 
 ## Usage
 
-```js
+```ts
 import { tryOnMounted } from '@vueuse/core'
 
 tryOnMounted(() => {

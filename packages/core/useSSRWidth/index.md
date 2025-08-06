@@ -8,7 +8,7 @@ Used to set a global viewport width which will be used when rendering SSR compon
 
 ## Usage
 
-```js
+```ts
 import { provideSSRWidth } from '@vueuse/core'
 
 const app = createApp(App)
@@ -19,7 +19,7 @@ provideSSRWidth(500, app)
 Or in the root component
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { provideSSRWidth } from '@vueuse/core'
 
 provideSSRWidth(500)
@@ -29,7 +29,7 @@ provideSSRWidth(500)
 To retrieve the provided value if you need it in a subcomponent
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useSSRWidth } from '@vueuse/core'
 
 const width = useSSRWidth()

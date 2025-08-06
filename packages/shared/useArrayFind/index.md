@@ -8,7 +8,7 @@ Reactive `Array.find`.
 
 ## Usage
 
-```js
+```ts
 import { useArrayFind } from '@vueuse/core'
 
 const list = [ref(1), ref(-1), ref(2)]
@@ -18,7 +18,7 @@ const positive = useArrayFind(list, val => val > 0)
 
 ### Use with reactive array
 
-```js
+```ts
 import { useArrayFind } from '@vueuse/core'
 
 const list = reactive([-1, -2])
