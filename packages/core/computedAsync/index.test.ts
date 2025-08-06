@@ -60,8 +60,9 @@ describe('computedAsync', () => {
     const mockReportError = vi.fn()
     globalThis.reportError = mockReportError
 
+    const error = new Error('An Error Message')
     const func = vi.fn(async () => {
-      throw new Error('An Error Message')
+      throw error
     })
 
     const data = computedAsync(func, undefined)
@@ -72,7 +73,7 @@ describe('computedAsync', () => {
 
     await nextTick()
     expect(data.value).toBeUndefined()
-    expect(mockReportError).toHaveBeenCalledWith(new Error('An Error Message'))
+    expect(mockReportError).toHaveBeenCalledWith(error)
     globalThis.reportError = originalReportError
   })
 
