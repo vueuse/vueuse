@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs'
 import * as fs from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { spellWhiteList } from '@vueuse/metadata'
 import matter from 'gray-matter'
 import Git from 'simple-git'
 import { glob } from 'tinyglobby'
@@ -108,7 +109,10 @@ export async function readMetadata() {
       )[1] || ''
 
       description = description.trim()
-      description = description.charAt(0).toLowerCase() + description.slice(1)
+
+      const isSkipLowerCase = spellWhiteList.includes(description.split(' ')[0])
+
+      description = isSkipLowerCase ? description : description.charAt(0).toLowerCase() + description.slice(1)
 
       fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
       fn.description = description
