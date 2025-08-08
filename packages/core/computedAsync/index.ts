@@ -101,7 +101,7 @@ export function computedAsync<T>(
     flush = 'pre',
     evaluating = undefined,
     shallow = true,
-    onError = noop,
+    onError = globalThis.reportError ?? noop,
   } = options
 
   const started = shallowRef(!lazy)
