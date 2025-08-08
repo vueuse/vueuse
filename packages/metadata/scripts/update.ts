@@ -3,7 +3,6 @@ import { existsSync } from 'node:fs'
 import * as fs from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { spellWhiteList } from '@vueuse/metadata'
 import matter from 'gray-matter'
 import Git from 'simple-git'
 import { glob } from 'tinyglobby'
@@ -110,9 +109,7 @@ export async function readMetadata() {
 
       description = description.trim()
 
-      const isSkipLowerCase = spellWhiteList.includes(description.split(' ')[0])
-
-      // convert description to leading lowercase, except for abbv.  
+      // convert description to leading lowercase, except for abbv.
       if (!description.match(/^[A-Z][A-Z]/))
         description = description.charAt(0).toLowerCase() + description.slice(1)
 
