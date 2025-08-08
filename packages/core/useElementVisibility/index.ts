@@ -1,17 +1,22 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
-import { watchOnce } from '@vueuse/shared'
+import { noop, watchOnce } from '@vueuse/shared'
 import { shallowRef, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
-export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
+export interface UseElementVisibilityOptions extends ConfigurableWindow {
   /**
    * @see https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin
    */
   rootMargin?: MaybeRefOrGetter<string>
+  /**
+   * The threshold at which the element is considered visible.
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/thresholds
+   * @default 0
+   */
+  threshold?: MaybeRefOrGetter<number | number[]>
   /**
    * The element that is used as the viewport for checking visibility of the target.
    */
@@ -43,11 +48,11 @@ export function useElementVisibility(
 
   const elementIsVisible = shallowRef(false)
 
-  const cleanup = shallowRef<() => void>(() => {})
+  let cleanup = noop
 
   watchEffect((onCleanup) => {
     // Clean up previous observer
-    cleanup.value()
+    cleanup()
 
     const currentRootMargin = toValue(rootMargin)
     const currentThreshold = toValue(threshold)
@@ -82,7 +87,7 @@ export function useElementVisibility(
       },
     )
 
-    cleanup.value = stop
+    cleanup = stop
     onCleanup(() => stop())
   })
 
