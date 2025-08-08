@@ -112,7 +112,9 @@ export async function readMetadata() {
 
       const isSkipLowerCase = spellWhiteList.includes(description.split(' ')[0])
 
-      description = isSkipLowerCase ? description : description.charAt(0).toLowerCase() + description.slice(1)
+      // convert description to leading lowercase, except for abbv.  
+      if (!description.match(/^[A-Z][A-Z]/))
+        description = description.charAt(0).toLowerCase() + description.slice(1)
 
       fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
       fn.description = description
