@@ -2,6 +2,7 @@ import type { Plugin } from 'vite'
 import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { format } from 'prettier'
+import { createTwoslasher } from 'twoslash'
 import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { version as currentVersion } from '../../../package.json'
@@ -14,6 +15,11 @@ export function MarkdownTransform(): Plugin {
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
+
+  const twoslasher = createTwoslasher({
+    handbookOptions: { noErrors: true },
+    customTags: ['include'],
+  })
 
   return {
     name: 'vueuse-md-transform',
@@ -44,16 +50,46 @@ export function MarkdownTransform(): Plugin {
         const firstHeader = code.search(/\n#{2,6}\s.+/)
         const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
 
+        // Add vue code blocks to twoslash by default
+        code = await replaceAsync(code, /\n```vue( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
+          meta = replaceToDefaultTwoslashMeta(meta)
+
+          if (isMetaTwoslash(meta)) {
+            snippet = injectCodeToTsVue(snippet, '// @include: imports')
+          }
+
+          return `
+\`\`\`vue ${meta.trim()}
+${snippet}
+\`\`\`
+`
+        })
+
         // Insert JS/TS code blocks
-        code = await replaceAsync(code, /\n```ts( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
-          const formattedTS = (await format(snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
+        code = await replaceAsync(code, /\n```(?:ts|typescript)( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
+          meta = replaceToDefaultTwoslashMeta(meta)
+
+          let snippetForCompare = snippet
+          if (isMetaTwoslash(meta)) {
+            // remove twoslash notations
+            snippetForCompare = twoslasher(snippet, 'ts').code
+
+            // add vue auto imports
+            snippet = `// @include: imports\n${snippet}`
+          }
+          const formattedTS = (await format(snippetForCompare.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
           const js = ts.transpileModule(formattedTS, {
             compilerOptions: { target: 99 },
           })
           const formattedJS = (await format(js.outputText, { semi: false, singleQuote: true, parser: 'typescript' }))
             .trim()
-          if (formattedJS === formattedTS)
-            return _
+          if (formattedJS === formattedTS) {
+            return `
+\`\`\`ts ${meta}
+${snippet}
+\`\`\`
+`
+          }
           return `
 <CodeToggle>
 <div class="code-block-ts">
@@ -107,7 +143,10 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
   let typingSection = ''
 
   if (types) {
-    const code = `\`\`\`typescript\n${types.trim()}\n\`\`\``
+    const code = `\`\`\`ts twoslash
+// @include: imports
+${types.trim()}
+\`\`\``
     typingSection = types.length > 1000
       ? `
 ## Type Declarations
@@ -223,4 +262,59 @@ function replaceAsync(str: string, match: RegExp, replacer: (substring: string, 
     return ''
   })
   return Promise.all(promises).then(replacements => str.replace(match, () => replacements.shift()!))
+}
+
+const reLineHighlightMeta = /^\{[\d\-,]*\}$/
+
+/**
+ * Replaces the given meta string with a default "twoslash" if it is empty or modifies it based on certain conditions.
+ *
+ * @param meta - The meta string to be processed.
+ * @returns The processed meta string.
+ *
+ * If the meta string is empty or only contains whitespace, it returns "twoslash".
+ * If the meta string contains "no-twoslash" (case insensitive), it removes "no-twoslash" and returns the remaining string.
+ * If the remaining string is empty after removing "no-twoslash", it returns an empty string.
+ * If the meta string matches the `reLineHighlightMeta` regex, it appends "twoslash" to the meta string.
+ * Otherwise, it returns the trimmed meta string.
+ */
+function replaceToDefaultTwoslashMeta(meta: string) {
+  const trimmed = meta.trim()
+  if (!trimmed) {
+    return 'twoslash'
+  }
+  const hasNoTwoslash = /no-twoslash/i.test(trimmed)
+  if (hasNoTwoslash) {
+    const leftover = trimmed.replace(/no-twoslash/i, '').trim()
+    if (!leftover) {
+      return ''
+    }
+    return leftover
+  }
+  if (reLineHighlightMeta.test(trimmed)) {
+    return `${trimmed} twoslash`
+  }
+  return trimmed
+}
+
+function isMetaTwoslash(meta: string) {
+  return meta.includes('twoslash') && !meta.includes('no-twoslash')
+}
+
+const scriptTagRegex = /<script[^>]+\blang=["']ts["'][^>]*>/i
+
+function injectCodeToTsVue(vueContent: string, code: string): string {
+  const match = vueContent.match(scriptTagRegex)
+  if (!match) {
+    return vueContent
+  }
+
+  const scriptTagStart = match.index!
+  const scriptTagLength = match[0].length
+  const insertPosition = scriptTagStart + scriptTagLength
+  const updatedContent
+    = `${vueContent.slice(0, insertPosition)
+    }\n${code}${vueContent.slice(insertPosition)}`
+
+  return updatedContent
 }

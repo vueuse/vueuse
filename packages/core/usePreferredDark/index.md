@@ -8,7 +8,7 @@ Reactive dark theme preference.
 
 ## Usage
 
-```js
+```ts
 import { usePreferredDark } from '@vueuse/core'
 
 const isDark = usePreferredDark()
