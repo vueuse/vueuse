@@ -225,7 +225,7 @@ export function useAnimate(
 
   watch(() => unrefElement(target), (el) => {
     if (el) {
-      update()
+      update(true)
     }
     else {
       animate.value = undefined
