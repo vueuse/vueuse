@@ -87,7 +87,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   const {
     immediate = true,
     delay = 0,
-    onError = noop,
+    onError = globalThis.reportError ?? noop,
     onSuccess = noop,
     resetOnExecute = true,
     shallow = true,
