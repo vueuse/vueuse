@@ -75,6 +75,8 @@ describe('useMagicKeys', () => {
 
   it('prevent incorrect clearing of other keys after releasing shift', async () => {
     const { v, u, e, shift } = useMagicKeys({ target })
+    const allKeys = [v.value, u.value, e.value, shift.value]
+    expect(allKeys.every(val => val === false)).toBe(true)
 
     dispatchEvent({ target, key: 'v' })
     dispatchEvent({ target, key: 'u' })
@@ -96,13 +98,17 @@ describe('useMagicKeys', () => {
 
   it('current return value', async () => {
     const { v, current } = useMagicKeys({ target })
+    expect(v.value).toBe(false)
     dispatchEvent({ target, key: 'v' })
+
     expect(v.value).toBe(true)
     expect(current.has('v')).toBe(true)
   })
 
   it('alias map option', async () => {
     const { ct } = useMagicKeys({ aliasMap: { ct: 'control' }, target })
+    expect(ct.value).toBe(false)
+
     dispatchEvent({ target, key: 'Control', ctrlKey: true })
     expect(ct.value).toBe(true)
   })
@@ -112,7 +118,7 @@ describe('useMagicKeys', () => {
     expect(keys.a).toBe(false)
     dispatchEvent({ target, key: 'a' })
 
-    expect(keys.A).toBe(true)
+    expect(keys.a).toBe(true)
     expect(keys.current.has('a')).toBe(true)
   })
 
@@ -128,6 +134,7 @@ describe('useMagicKeys', () => {
     window.dispatchEvent(new Event('blur'))
     expect(alt_tab.value).toBe(false)
   })
+
   it('target focus', async () => {
     // #1350
     const { alt_tab } = useMagicKeys({ target })
