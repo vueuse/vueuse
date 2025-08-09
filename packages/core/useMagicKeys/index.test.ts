@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useMagicKeys } from './index'
 
-interface disptchEventOptions extends Partial<KeyboardEvent> {
+interface dispatchEventOptions extends Partial<KeyboardEvent> {
   key: string
   target: HTMLElement
   eventType?: 'keydown' | 'keyup'
 }
 
-function dispatchEvent(options: disptchEventOptions): void {
+function dispatchEvent(options: dispatchEventOptions): void {
   const { eventType = 'keydown', target, key, ...args } = options
   target.dispatchEvent(new KeyboardEvent(eventType, { key, ...args }))
 }
