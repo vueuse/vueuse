@@ -9,7 +9,7 @@ Retrieves the underlying DOM element from a Vue ref or component instance
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { unrefElement } from '@vueuse/core'
 import { onMounted, useTemplateRef } from 'vue'
 

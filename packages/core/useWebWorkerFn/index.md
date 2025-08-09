@@ -10,7 +10,7 @@ Run expensive functions without blocking the UI, using a simple syntax that make
 
 ### Basic example
 
-```js
+```ts
 import { useWebWorkerFn } from '@vueuse/core'
 
 const { workerFn } = useWebWorkerFn(() => {

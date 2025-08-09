@@ -35,7 +35,6 @@ export function useWebWorker<T = any>(
  * Simple Web Workers registration and communication.
  *
  * @see https://vueuse.org/useWebWorker
- * @param worker
  */
 export function useWebWorker<T = any>(
   worker: Worker | WorkerFn

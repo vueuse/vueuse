@@ -6,12 +6,12 @@ catalogs:
   dev:
     '@antfu/eslint-config': ^5.0.0
     '@antfu/ni': ^25.0.0
-    '@iconify/json': ^2.2.363
+    '@iconify/json': ^2.2.364
     '@rollup/plugin-json': ^6.1.0
     '@rollup/plugin-replace': ^6.0.2
     '@vitejs/plugin-vue': ^6.0.1
     '@vue/compiler-sfc': ^3.5.18
-    bumpp: ^10.2.0
+    bumpp: ^10.2.1
     consola: ^3.4.2
     eslint: ^9.32.0
     eslint-factory: ^0.1.2
@@ -20,23 +20,24 @@ catalogs:
     export-size: ^0.7.0
     jsdom: ^26.1.0
     lint-staged: ^16.1.2
-    nuxt: ^4.0.1
+    nuxt: ^4.0.2
     ofetch: ^1.4.1
-    pnpm: ^10.13.1
+    pnpm: ^10.14.0
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
     prettier: ^3.6.2
-    rollup: ^4.46.1
+    rolldown-vite: latest
+    rollup: ^4.46.2
     rollup-plugin-dts: ^6.2.1
     rollup-plugin-esbuild: ^6.2.1
     rollup-plugin-pure: ^0.4.0
     sharp: ^0.34.3
     simple-git: ^3.28.0
-    simple-git-hooks: ^2.13.0
+    simple-git-hooks: ^2.13.1
     taze: ^19.1.0
     tinyglobby: ^0.2.14
     tsx: ^4.20.3
-    typescript: ^5.8.3
+    typescript: ^5.9.2
     unimport: ^5.2.0
     unocss: ^66.3.3
     vite: ^7.0.6
@@ -44,7 +45,7 @@ catalogs:
     vue: ^3.5.18
     vue-tsc: ^3.0.4
   docs:
-    '@shikijs/vitepress-twoslash': ^3.8.1
+    '@shikijs/vitepress-twoslash': ^3.9.1
     '@vite-pwa/vitepress': ^1.0.0
     '@vue/repl': ^4.6.2
     google-font-installer: ^1.2.0
@@ -52,14 +53,14 @@ catalogs:
     markdown-table: ^3.0.4
     md5: ^2.3.0
     remove-markdown: ^0.6.2
-    unplugin-icons: ^22.1.0
+    unplugin-icons: ^22.2.0
     unplugin-vue-components: ^28.8.0
     vite-plugin-pwa: ^1.0.2
     vitepress: ^2.0.0-alpha.9
     yaml: ^2.8.0
   integrations:
-    '@nuxt/kit': ^4.0.1
-    '@nuxt/schema': ^4.0.1
+    '@nuxt/kit': ^4.0.2
+    '@nuxt/schema': ^4.0.2
     async-validator: ^4.2.5
     axios: ^1.11.0
     change-case: ^5.4.4

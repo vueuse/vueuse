@@ -10,7 +10,7 @@ Reactive browser location
 
 ## Usage
 
-```js
+```ts
 import { useBrowserLocation } from '@vueuse/core'
 
 const location = useBrowserLocation()
