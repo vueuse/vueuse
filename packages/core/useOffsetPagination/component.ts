@@ -1,25 +1,29 @@
-import type { UseOffsetPaginationOptions } from './index'
+import type { UseOffsetPaginationOptions, UseOffsetPaginationReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useOffsetPagination } from '@vueuse/core'
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, toValue } from 'vue'
 
-export const UseOffsetPagination = /* #__PURE__ */ defineComponent<UseOffsetPaginationOptions>({
-  name: 'UseOffsetPagination',
-  props: [
-    'total',
-    'page',
-    'pageSize',
-    'onPageChange',
-    'onPageSizeChange',
-    'onPageCountChange',
-  ] as unknown as undefined,
-  emits: [
-    'page-change',
-    'page-size-change',
-    'page-count-change',
-  ],
-  setup(props, { slots, emit }) {
+export interface UseOffsetPaginationProps extends UseOffsetPaginationOptions {}
+// eslint-disable-next-line ts/consistent-type-definitions
+export type UseOffsetPaginationEmits = {
+  'page-change': (...args: Parameters<NonNullable<UseOffsetPaginationOptions['onPageChange']>>) => void
+  'page-size-change': (...args: Parameters<NonNullable<UseOffsetPaginationOptions['onPageSizeChange']>>) => void
+  'page-count-change': (...args: Parameters<NonNullable<UseOffsetPaginationOptions['onPageCountChange']>>) => void
+}
+interface UseOffsetPaginationSlots {
+  default: (data: Reactive<UseOffsetPaginationReturn>) => any
+}
+
+export const UseOffsetPagination = /* #__PURE__ */ defineComponent<
+  UseOffsetPaginationProps,
+  UseOffsetPaginationEmits,
+  string,
+  SlotsType<UseOffsetPaginationSlots>
+>(
+  (props, { slots, emit }) => {
     const data = reactive(useOffsetPagination({
       ...props,
+      total: toValue(props.total) || undefined,
       onPageChange(...args) {
         props.onPageChange?.(...args)
         emit('page-change', ...args)
@@ -39,4 +43,15 @@ export const UseOffsetPagination = /* #__PURE__ */ defineComponent<UseOffsetPagi
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseOffsetPagination',
+    props: [
+      'onPageChange',
+      'onPageCountChange',
+      'onPageSizeChange',
+      'page',
+      'pageSize',
+      'total',
+    ],
+  },
+)
