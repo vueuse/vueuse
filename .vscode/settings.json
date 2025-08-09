@@ -7,6 +7,7 @@
     "iframes",
     "iife",
     "Pausable",
+    "Rolldown",
     "Unref",
     "Unsubscribable",
     "vitepress",
