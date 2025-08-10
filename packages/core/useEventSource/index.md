@@ -76,3 +76,38 @@ const { status, data, close } = useEventSource(
   }
 )
 ```
+
+### Data Serialization
+
+Automatically parse JSON data or apply custom transformations to incoming data.
+
+```ts
+import { useEventSource } from '@vueuse/core'
+// ---cut---
+const { data } = useEventSource(
+  'https://event-source-url',
+  [],
+  {
+    serialization: { parseJSON: true },
+  }
+)
+
+// If server sends: '{"name":"John","age":30}'
+// data.value will be: { name: 'John', age: 30 }
+```
+
+Or with custom transformation:
+
+```ts
+import { useEventSource } from '@vueuse/core'
+// ---cut---
+const { data } = useEventSource(
+  'https://event-source-url',
+  [],
+  {
+    serialization: {
+      transform: (rawData) => rawData.toUpperCase(),
+    },
+  }
+)
+```
