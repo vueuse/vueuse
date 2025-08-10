@@ -7,7 +7,7 @@ interface dispatchEventOptions extends Partial<KeyboardEvent> {
   eventType?: 'keydown' | 'keyup'
 }
 
-function dispatchEvent(options: dispatchEventOptions): void {
+function dispatchKeyboardEvent(options: dispatchEventOptions): void {
   const { eventType = 'keydown', target, key, ...args } = options
   target.dispatchEvent(new KeyboardEvent(eventType, { key, ...args }))
 }
@@ -19,7 +19,7 @@ describe('useMagicKeys', () => {
   })
   it('single key', async () => {
     const { A } = useMagicKeys({ target })
-    dispatchEvent({ target, key: 'A' })
+    dispatchKeyboardEvent({ target, key: 'A' })
     expect(A.value).toBe(true)
   })
 
@@ -27,13 +27,13 @@ describe('useMagicKeys', () => {
     const { Ctrl_Shift_Period } = useMagicKeys({ target })
     expect(Ctrl_Shift_Period.value).toBe(false)
 
-    dispatchEvent({ target, key: 'control', ctrlKey: true })
+    dispatchKeyboardEvent({ target, key: 'control', ctrlKey: true })
     expect(Ctrl_Shift_Period.value).toBe(false)
 
-    dispatchEvent({ target, key: 'shift', ctrlKey: true, shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'shift', ctrlKey: true, shiftKey: true })
     expect(Ctrl_Shift_Period.value).toBe(false)
 
-    dispatchEvent({ target, key: 'Period', ctrlKey: true, shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'Period', ctrlKey: true, shiftKey: true })
     expect(Ctrl_Shift_Period.value).toBe(true)
   })
 
@@ -42,19 +42,19 @@ describe('useMagicKeys', () => {
     expect(command.value).toBe(false)
     expect(a.value).toBe(false)
 
-    dispatchEvent({ target, key: 'a' })
+    dispatchKeyboardEvent({ target, key: 'a' })
     expect(a.value).toBe(true)
 
-    dispatchEvent({ target, key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'Meta', metaKey: true })
     expect(command.value).toBe(true)
 
-    dispatchEvent({ target, eventType: 'keyup', key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, eventType: 'keyup', key: 'Meta', metaKey: true })
     expect(command.value).toBe(false)
     expect(a.value).toBe(false)
 
     // #977
     // After solving the release Command, repeatedly pressing the Command will trigger repeatedly
-    dispatchEvent({ target, key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'Meta', metaKey: true })
     expect(command.value).toBe(true)
     expect(a.value).toBe(false)
   })
@@ -63,13 +63,13 @@ describe('useMagicKeys', () => {
     const { Ctrl_Shift_Period } = useMagicKeys({ target })
     expect(Ctrl_Shift_Period.value).toBe(false)
 
-    dispatchEvent({ target, key: 'shift', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'shift', shiftKey: true })
     expect(Ctrl_Shift_Period.value).toBe(false)
 
-    dispatchEvent({ target, key: 'control', shiftKey: true, ctrlKey: true })
+    dispatchKeyboardEvent({ target, key: 'control', shiftKey: true, ctrlKey: true })
     expect(Ctrl_Shift_Period.value).toBe(false)
 
-    dispatchEvent({ target, key: 'Period', shiftKey: true, ctrlKey: true })
+    dispatchKeyboardEvent({ target, key: 'Period', shiftKey: true, ctrlKey: true })
     expect(Ctrl_Shift_Period.value).toBe(true)
   })
 
@@ -78,10 +78,10 @@ describe('useMagicKeys', () => {
     const allKeys = [v.value, u.value, e.value, shift.value]
     expect(allKeys.every(val => val === false)).toBe(true)
 
-    dispatchEvent({ target, key: 'v' })
-    dispatchEvent({ target, key: 'u' })
-    dispatchEvent({ target, key: 'shift', shiftKey: true })
-    dispatchEvent({ target, key: 'e', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'v' })
+    dispatchKeyboardEvent({ target, key: 'u' })
+    dispatchKeyboardEvent({ target, key: 'shift', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'e', shiftKey: true })
 
     expect(v.value).toBe(true)
     expect(u.value).toBe(true)
@@ -89,7 +89,7 @@ describe('useMagicKeys', () => {
     expect(e.value).toBe(true)
 
     // Clear key pressed after shift
-    dispatchEvent({ target, eventType: 'keyup', key: 'shift', shiftKey: true })
+    dispatchKeyboardEvent({ target, eventType: 'keyup', key: 'shift', shiftKey: true })
     expect(v.value).toBe(true)
     expect(u.value).toBe(true)
     expect(e.value).toBe(false)
@@ -99,7 +99,7 @@ describe('useMagicKeys', () => {
   it('current return value', async () => {
     const { v, current } = useMagicKeys({ target })
     expect(v.value).toBe(false)
-    dispatchEvent({ target, key: 'v' })
+    dispatchKeyboardEvent({ target, key: 'v' })
 
     expect(v.value).toBe(true)
     expect(current.has('v')).toBe(true)
@@ -109,14 +109,14 @@ describe('useMagicKeys', () => {
     const { ct } = useMagicKeys({ aliasMap: { ct: 'control' }, target })
     expect(ct.value).toBe(false)
 
-    dispatchEvent({ target, key: 'Control', ctrlKey: true })
+    dispatchKeyboardEvent({ target, key: 'Control', ctrlKey: true })
     expect(ct.value).toBe(true)
   })
 
   it('use reactive mode', async () => {
     const keys = useMagicKeys({ target, reactive: true })
     expect(keys.a).toBe(false)
-    dispatchEvent({ target, key: 'a' })
+    dispatchKeyboardEvent({ target, key: 'a' })
 
     expect(keys.a).toBe(true)
     expect(keys.current.has('a')).toBe(true)
@@ -127,8 +127,8 @@ describe('useMagicKeys', () => {
     const { alt_tab } = useMagicKeys({ target })
     expect(alt_tab.value).toBe(false)
 
-    dispatchEvent({ target, key: 'Alt', altKey: true })
-    dispatchEvent({ target, key: 'Tab', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'Alt', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'Tab', altKey: true })
     expect(alt_tab.value).toBe(true)
 
     window.dispatchEvent(new Event('blur'))
@@ -140,8 +140,8 @@ describe('useMagicKeys', () => {
     const { alt_tab } = useMagicKeys({ target })
     expect(alt_tab.value).toBe(false)
 
-    dispatchEvent({ target, key: 'Alt', altKey: true })
-    dispatchEvent({ target, key: 'Tab', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'Alt', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'Tab', altKey: true })
     expect(alt_tab.value).toBe(true)
 
     window.dispatchEvent(new Event('focus'))
