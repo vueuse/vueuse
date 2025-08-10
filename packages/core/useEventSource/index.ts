@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
 
-export interface UseEventSourceOptions extends EventSourceInit {
+export interface UseEventSourceOptions<T, R = T> extends EventSourceInit {
   /**
    * Enabled auto reconnect
    *
@@ -50,30 +50,19 @@ export interface UseEventSourceOptions extends EventSourceInit {
   autoConnect?: boolean
 
   /**
-   * Data serialization options
+   * Custom data transformer function, if provided, it will be called with the raw data from EventSource
+   *
+   * @default (v) => v
    */
-  serialization?: {
-    /**
-     * Whether to automatically parse JSON data
-     * @default false
-     */
-    parseJSON?: boolean
-
-    /**
-     * Custom data transformer function
-     * @param data Raw data from EventSource
-     * @returns Transformed data
-     */
-    transform?: (data: any) => any
-  }
+  serialization?: (v: T) => R
 }
 
-export interface UseEventSourceReturn<Events extends string[], Data = any> {
+export interface UseEventSourceReturn<Events extends string[], Data = any, TransformedData = Data> {
   /**
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: ShallowRef<Data | null>
+  data: ShallowRef<Data | TransformedData | null>
 
   /**
    * The current state of the connection, can be only one of:
@@ -128,13 +117,13 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param events
  * @param options
  */
-export function useEventSource<Events extends string[], Data = any>(
+export function useEventSource<Events extends string[], Data = any, TransformedData = Data>(
   url: MaybeRefOrGetter<string | URL | undefined>,
   events: Events = [] as unknown as Events,
-  options: UseEventSourceOptions = {},
-): UseEventSourceReturn<Events, Data> {
+  options: UseEventSourceOptions<Data, TransformedData> = {},
+): UseEventSourceReturn<Events, Data, TransformedData> {
   const event: ShallowRef<string | null> = shallowRef(null)
-  const data: ShallowRef<Data | null> = shallowRef(null)
+  const data: ShallowRef<Data | TransformedData | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
   const eventSource = deepRef<EventSource | null>(null)
   const error = shallowRef<Event | null>(null)
@@ -149,23 +138,13 @@ export function useEventSource<Events extends string[], Data = any>(
     immediate = true,
     autoConnect = true,
     autoReconnect,
-    serialization = {},
+    serialization,
   } = options
 
-  const processData = (rawData: any) => {
-    if (serialization.transform)
-      return serialization.transform(rawData)
-
-    if (serialization.parseJSON && typeof rawData === 'string') {
-      try {
-        return JSON.parse(rawData)
-      }
-      catch {
-        return rawData
-      }
-    }
-
-    return rawData
+  const processData = (rawData?: Data) => {
+    if (rawData === undefined)
+      return null
+    return serialization ? serialization(rawData) : rawData
   }
 
   const close = () => {
@@ -225,7 +204,7 @@ export function useEventSource<Events extends string[], Data = any>(
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
         event.value = event_name
-        data.value = processData(e.data || null)
+        data.value = processData(e.data)
         lastEventId.value = e.lastEventId || null
       }, { passive: true })
     }
