@@ -140,4 +140,50 @@ describe('useEventSource', () => {
 
     expect(status.value).toBe('CLOSED')
   })
+
+  it('should parse JSON data when parseJSON is enabled', () => {
+    const { data, eventSource } = useEventSource('https://localhost', [], {
+      serialization: { parseJSON: true },
+    })
+
+    const source = eventSource.value!
+    const jsonString = '{"name":"test","value":123}'
+
+    source.onmessage!(new MessageEvent('message', { data: jsonString }))
+
+    expect(data.value).toEqual({ name: 'test', value: 123 })
+  })
+
+  it('should apply custom transform function', () => {
+    const transform = vi.fn((data: any) => data.toUpperCase())
+    const { data, eventSource } = useEventSource('https://localhost', [], {
+      serialization: { transform },
+    })
+
+    const source = eventSource.value!
+    const testData = 'hello world'
+
+    source.onmessage!(new MessageEvent('message', { data: testData }))
+
+    expect(transform).toHaveBeenCalledWith(testData)
+    expect(data.value).toBe('HELLO WORLD')
+  })
+
+  it('should prioritize transform function over parseJSON', () => {
+    const transform = vi.fn((data: any) => ({ transformed: data }))
+    const { data, eventSource } = useEventSource('https://localhost', [], {
+      serialization: {
+        parseJSON: true,
+        transform,
+      },
+    })
+
+    const source = eventSource.value!
+    const jsonString = '{"name":"test","value":123}'
+
+    source.onmessage!(new MessageEvent('message', { data: jsonString }))
+
+    expect(transform).toHaveBeenCalledWith(jsonString)
+    expect(data.value).toEqual({ transformed: jsonString })
+  })
 })
