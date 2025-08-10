@@ -48,6 +48,24 @@ export interface UseEventSourceOptions extends EventSourceInit {
    * @default true
    */
   autoConnect?: boolean
+
+  /**
+   * Data serialization options
+   */
+  serialization?: {
+    /**
+     * Whether to automatically parse JSON data
+     * @default false
+     */
+    parseJSON?: boolean
+
+    /**
+     * Custom data transformer function
+     * @param data Raw data from EventSource
+     * @returns Transformed data
+     */
+    transform?: (data: any) => any
+  }
 }
 
 export interface UseEventSourceReturn<Events extends string[], Data = any> {
@@ -131,7 +149,24 @@ export function useEventSource<Events extends string[], Data = any>(
     immediate = true,
     autoConnect = true,
     autoReconnect,
+    serialization = {},
   } = options
+
+  const processData = (rawData: any) => {
+    if (serialization.transform)
+      return serialization.transform(rawData)
+
+    if (serialization.parseJSON && typeof rawData === 'string') {
+      try {
+        return JSON.parse(rawData)
+      }
+      catch {
+        return rawData
+      }
+    }
+
+    return rawData
+  }
 
   const close = () => {
     if (isClient && eventSource.value) {
@@ -183,14 +218,14 @@ export function useEventSource<Events extends string[], Data = any>(
 
     es.onmessage = (e: MessageEvent) => {
       event.value = null
-      data.value = e.data
+      data.value = processData(e.data)
       lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
         event.value = event_name
-        data.value = e.data || null
+        data.value = processData(e.data || null)
         lastEventId.value = e.lastEventId || null
       }, { passive: true })
     }
