@@ -4,7 +4,7 @@ import { effect, shallowRef } from 'vue'
 
 const input = shallowRef('')
 
-const { content, isSupported, copy } = useClipboardItems()
+const { content, isSupported, copy, read } = useClipboardItems()
 const computedText = shallowRef('')
 const computedMimeType = shallowRef('')
 effect(() => {
@@ -37,11 +37,14 @@ function createClipboardItems(text: string) {
     </p>
     <input v-model="input" type="text">
     <button
-      @click="
-        copy([createClipboardItems(input)])
-      "
+      @click="() => copy([createClipboardItems(input)])"
     >
       Copy
+    </button>
+    <button
+      @click="() => read()"
+    >
+      Read
     </button>
   </div>
   <p v-else>
