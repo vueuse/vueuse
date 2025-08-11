@@ -1,4 +1,5 @@
-import type { OnLongPressOptions, RenderableComponent } from '@vueuse/core'
+import type { OnLongPressOptions, RenderableComponent, UseOnLongPressReturn } from '@vueuse/core'
+import type { SlotsType } from 'vue'
 import { onLongPress } from '@vueuse/core'
 import { defineComponent, h, shallowRef } from 'vue'
 
@@ -10,13 +11,19 @@ export type OnLongPressEmits = {
   trigger: (event: PointerEvent) => void
 }
 
+interface OnLongPressSlots {
+  default: (data: UseOnLongPressReturn) => any
+}
+
 export const OnLongPress = /* #__PURE__ */ defineComponent<
   OnLongPressProps,
-  OnLongPressEmits
+  OnLongPressEmits,
+  string,
+  SlotsType<OnLongPressSlots>
 >(
   (props, { slots, emit }) => {
     const target = shallowRef<HTMLElement>()
-    onLongPress(
+    const data = onLongPress(
       target,
       (e) => {
         emit('trigger', e)
@@ -26,7 +33,7 @@ export const OnLongPress = /* #__PURE__ */ defineComponent<
 
     return () => {
       if (slots.default)
-        return h(props.as || 'div', { ref: target }, slots.default())
+        return h(props.as || 'div', { ref: target }, slots.default(data))
     }
   },
   {
