@@ -1,36 +1,42 @@
+import type { RenderableComponent, UseScreenSafeAreaReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useScreenSafeArea } from '@vueuse/core'
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, reactive } from 'vue'
 
-export interface UseScreenSafeAreaProps {
+export interface UseScreenSafeAreaProps extends RenderableComponent {
   top?: boolean
   right?: boolean
   bottom?: boolean
   left?: boolean
 }
 
-export const UseScreenSafeArea = /* #__PURE__ */ defineComponent<UseScreenSafeAreaProps>(
+interface UseScreenSafeAreaSlots {
+  default: (data: Reactive<UseScreenSafeAreaReturn>) => any
+}
+
+export const UseScreenSafeArea = /* #__PURE__ */ defineComponent<
+  UseScreenSafeAreaProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseScreenSafeAreaSlots>
+>(
   (props, { slots }) => {
-    const {
-      top,
-      right,
-      bottom,
-      left,
-    } = useScreenSafeArea()
+    const data = reactive(useScreenSafeArea())
 
     return () => {
       if (slots.default) {
-        return h('div', {
+        return h(props.as || 'div', {
           style: {
-            paddingTop: props.top ? top.value : '',
-            paddingRight: props.right ? right.value : '',
-            paddingBottom: props.bottom ? bottom.value : '',
-            paddingLeft: props.left ? left.value : '',
+            paddingTop: props.top ? data.top : '',
+            paddingRight: props.right ? data.right : '',
+            paddingBottom: props.bottom ? data.bottom : '',
+            paddingLeft: props.left ? data.left : '',
             boxSizing: 'border-box',
             maxHeight: '100vh',
             maxWidth: '100vw',
             overflow: 'auto',
           },
-        }, slots.default())
+        }, slots.default(data))
       }
     }
   },
