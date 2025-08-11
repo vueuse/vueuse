@@ -18,7 +18,7 @@ export const UsePageLeave = /* #__PURE__ */ defineComponent<
 >(
   (props, { slots }) => {
     const data = reactive({
-      isLeft: usePageLeave(),
+      isLeft: usePageLeave(props),
     })
 
     return () => {
