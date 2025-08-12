@@ -118,7 +118,7 @@ export function useEventSource<Events extends string[], Data = any, TransformedD
   options: UseEventSourceOptions<Data, TransformedData> = {},
 ): UseEventSourceReturn<Events, Data, TransformedData> {
   const event: ShallowRef<string | null> = shallowRef(null)
-  const data: ShallowRef<Data | TransformedData | null> = shallowRef(null)
+  const data: ShallowRef<TransformedData | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
   const eventSource = deepRef<EventSource | null>(null)
   const error = shallowRef<Event | null>(null)
@@ -133,7 +133,7 @@ export function useEventSource<Events extends string[], Data = any, TransformedD
     immediate = true,
     autoConnect = true,
     autoReconnect,
-    serialization = v => v,
+    serialization = v => v as TransformedData,
   } = options
 
   const close = () => {
@@ -186,15 +186,15 @@ export function useEventSource<Events extends string[], Data = any, TransformedD
 
     es.onmessage = (e: MessageEvent) => {
       event.value = null
-      data.value = serialization(e.data) || null
+      data.value = serialization(e.data) ?? null
       lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
         event.value = event_name
-        data.value = serialization(e.data) || null
-        lastEventId.value = e.lastEventId || null
+        data.value = serialization(e.data) ?? null
+        lastEventId.value = e.lastEventId ?? null
       }, { passive: true })
     }
   }
