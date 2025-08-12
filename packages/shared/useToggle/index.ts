@@ -1,7 +1,7 @@
 import type { MaybeRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isRef, shallowRef, toValue } from 'vue'
 
-type ToggleFn = (value?: boolean) => void
+export type ToggleFn = (value?: boolean) => void
 
 export type UseToggleReturn = [ShallowRef<boolean>, ToggleFn] | ToggleFn
 
