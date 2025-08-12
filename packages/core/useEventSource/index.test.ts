@@ -140,4 +140,26 @@ describe('useEventSource', () => {
 
     expect(status.value).toBe('CLOSED')
   })
+
+  it('can auto close()', () => {
+    const { status } = useEventSource('https://localhost', [], {
+      autoClose: true,
+    })
+    expect(status.value).not.toBe('CLOSED')
+
+    window.dispatchEvent(new Event('beforeunload'))
+
+    expect(status.value).toBe('CLOSED')
+  })
+
+  it('should not close if autoClose is false', () => {
+    const { status } = useEventSource('https://localhost', [], {
+      autoClose: false,
+    })
+    expect(status.value).not.toBe('CLOSED')
+
+    window.dispatchEvent(new Event('beforeunload'))
+
+    expect(status.value).not.toBe('CLOSED')
+  })
 })
