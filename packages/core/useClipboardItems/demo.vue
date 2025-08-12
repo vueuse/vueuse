@@ -44,7 +44,7 @@ function createClipboardItems(text: string) {
     <button
       @click="() => read()"
     >
-      Read
+      Manual read
     </button>
   </div>
   <p v-else>
