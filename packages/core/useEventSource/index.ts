@@ -49,12 +49,7 @@ export interface UseEventSourceOptions<T, R = T> extends EventSourceInit {
    */
   autoConnect?: boolean
 
-  /**
-   * Custom data transformer function, if provided, it will be called with the raw data from EventSource
-   *
-   * @default (v) => v
-   */
-  serialization?: (v: T) => R
+  serialization?: (v?: T) => R
 }
 
 export interface UseEventSourceReturn<Events extends string[], Data = any, TransformedData = Data> {
@@ -138,14 +133,8 @@ export function useEventSource<Events extends string[], Data = any, TransformedD
     immediate = true,
     autoConnect = true,
     autoReconnect,
-    serialization,
+    serialization = v => v,
   } = options
-
-  const processData = (rawData?: Data) => {
-    if (rawData === undefined)
-      return null
-    return serialization ? serialization(rawData) : rawData
-  }
 
   const close = () => {
     if (isClient && eventSource.value) {
@@ -197,14 +186,14 @@ export function useEventSource<Events extends string[], Data = any, TransformedD
 
     es.onmessage = (e: MessageEvent) => {
       event.value = null
-      data.value = processData(e.data)
+      data.value = serialization(e.data) || null
       lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
         event.value = event_name
-        data.value = processData(e.data)
+        data.value = serialization(e.data) || null
         lastEventId.value = e.lastEventId || null
       }, { passive: true })
     }
