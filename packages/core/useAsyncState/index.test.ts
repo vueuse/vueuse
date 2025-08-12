@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useAsyncState } from './index'
 
 describe('useAsyncState', () => {
@@ -89,5 +90,24 @@ describe('useAsyncState', () => {
   it('should work with throwError', async () => {
     const { execute } = useAsyncState(p2, '0', { throwError: true, immediate: false })
     await expect(execute()).rejects.toThrowError('error')
+  })
+
+  it('default onError uses globalThis.reportError', async () => {
+    const originalReportError = globalThis.reportError
+    const mockReportError = vi.fn()
+    globalThis.reportError = mockReportError
+
+    const error = new Error('error message')
+    const func = vi.fn(async () => {
+      throw error
+    })
+
+    const { execute } = useAsyncState(func, '', { immediate: false })
+    await execute()
+    expect(func).toBeCalledTimes(1)
+
+    await nextTick()
+    expect(mockReportError).toHaveBeenCalledWith(error)
+    globalThis.reportError = originalReportError
   })
 })
