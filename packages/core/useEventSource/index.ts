@@ -57,7 +57,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any, Trans
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: ShallowRef<Data | TransformedData | null>
+  data: ShallowRef<TransformedData | null>
 
   /**
    * The current state of the connection, can be only one of:
