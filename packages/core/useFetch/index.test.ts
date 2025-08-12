@@ -175,6 +175,27 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     })
   })
 
+  it('should respect path in baseUrl', async () => {
+    const baseUrl = 'https://example.com/api/'
+    const targetUrl = `${baseUrl}test`
+    const useMyFetchWithBaseUrl = createFetch({ baseUrl })
+
+    useMyFetchWithBaseUrl('test')
+    useMyFetchWithBaseUrl('/api/test')
+    useMyFetchWithBaseUrl(targetUrl)
+    useMyFetchWithBaseUrl('/test')
+
+    await retry(() => {
+      expect(fetchSpy).toHaveBeenCalledTimes(4)
+
+      Array.from({ length: 3 }).fill(0).forEach((x, i) => {
+        expect(fetchSpy).toHaveBeenNthCalledWith(i + 1, 'https://example.com/api/test', expect.anything())
+      })
+
+      expect(fetchSpy).toHaveBeenNthCalledWith(4, 'https://example.com/test', expect.anything())
+    })
+  })
+
   it('should chain beforeFetch function when using a factory instance', async () => {
     const useMyFetch = createFetch({
       baseUrl: 'https://example.com',
