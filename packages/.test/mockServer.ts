@@ -8,7 +8,7 @@ import { afterAll, afterEach, beforeAll } from 'vitest'
 
 const defaultJsonMessage = { hello: 'world' }
 const defaultTextMessage = 'Hello World'
-const baseUrl = 'https://example.com'
+export const baseUrl = 'https://example.com'
 
 async function commonTransformers(req: Request) {
   const url = new URL(req.url)
