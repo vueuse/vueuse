@@ -303,7 +303,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
     try {
       const serializedData = serializer.write(data.value)
-      if (event?.newValue === undefined || event?.newValue !== serializedData) {
+      if (event === undefined || event?.newValue !== serializedData) {
         data.value = read(event)
       }
     }
