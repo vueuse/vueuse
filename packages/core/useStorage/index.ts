@@ -175,7 +175,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
   const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(
     data,
-    () => write(data.value),
+    newValue => write(newValue),
     { flush, deep, eventFilter },
   )
 
@@ -295,13 +295,17 @@ export function useStorage<T extends (string | number | boolean | object | null)
       return
     }
 
-    if (event && event.key !== keyComputed.value)
+    if (event && event.key !== keyComputed.value) {
       return
+    }
 
     pauseWatch()
+
     try {
-      if (event?.newValue !== serializer.write(data.value))
+      const serializedData = serializer.write(data.value)
+      if (event?.newValue === undefined || event?.newValue !== serializedData) {
         data.value = read(event)
+      }
     }
     catch (e) {
       onError(e)
