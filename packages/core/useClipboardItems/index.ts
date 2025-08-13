@@ -1,24 +1,18 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
-import { ref as deepRef, readonly, shallowReadonly, shallowRef, toValue, watch } from 'vue'
+import { ref as deepRef, readonly, shallowReadonly, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
-import { useWindowFocus } from '../useWindowFocus'
 
 export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator {
   /**
    * Enabled reading for clipboard
    *
-   * This will automatically update `content` when clipboard changes.
-   * - `"on-focus"`: it will additionally read clipboard content when the window is focused and when the `copy` or `cut` event is triggered.
-   * - `true`: it will only read clipboard content when the `copy` or `cut` event is triggered within the document.
-   * - `false`: it will **not** read clipboard content when the `copy` or `cut` event is triggered within the document.
-   *
    * @default false
    */
-  read?: boolean | 'on-focus'
+  read?: boolean
 
   /**
    * Copy source
@@ -59,8 +53,6 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
     copiedDuring = 1500,
   } = options
 
-  const windowFocus = useWindowFocus()
-
   const isSupported = useSupported(() => (navigator && 'clipboard' in navigator))
   const content = deepRef<ClipboardItems>([])
   const copied = shallowRef(false)
@@ -76,14 +68,6 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
 
   if (isSupported.value && read) {
     useEventListener(['copy', 'cut'], updateContent, { passive: true })
-
-    if (read === 'on-focus') {
-      watch(windowFocus, (focus) => {
-        if (!focus)
-          return
-        updateContent()
-      }, { immediate: true })
-    }
   }
 
   async function copy(value = toValue(source)) {
