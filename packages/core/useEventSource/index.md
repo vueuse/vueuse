@@ -88,7 +88,7 @@ const { data } = useEventSource(
   'https://event-source-url',
   [],
   {
-    serialization: (rawData) => JSON.parse(rawData),
+    serialization: rawData => JSON.parse(rawData),
   }
 )
 
