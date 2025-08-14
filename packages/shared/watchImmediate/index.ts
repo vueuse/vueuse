@@ -29,7 +29,7 @@ export function watchImmediate<T extends object>(
  */
 export function watchImmediate<T = any>(source: T, cb: any, options?: Omit<WatchOptions, 'immediate'>) {
   return watch(
-    source as any,
+    source as WatchSource<T>,
     cb,
     {
       ...options,
