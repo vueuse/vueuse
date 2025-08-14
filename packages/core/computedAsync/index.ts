@@ -1,4 +1,4 @@
-import type { Fn } from '@vueuse/shared'
+import type { Fn, WatchOptionFlush } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import { noop } from '@vueuse/shared'
 import {
@@ -44,7 +44,7 @@ export interface AsyncComputedOptions<Lazy = boolean> {
    * It works in the same way as the flush option in watch and watch effect in vue reactivity
    * @default 'pre'
    */
-  flush?: 'pre' | 'post' | 'sync'
+  flush?: WatchOptionFlush
 
   /**
    * Callback when error is caught.
