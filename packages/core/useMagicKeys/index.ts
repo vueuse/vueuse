@@ -70,7 +70,7 @@ export type UseMagicKeysReturn<Reactive extends boolean>
  */
 export function useMagicKeys(options?: UseMagicKeysOptions<false>): UseMagicKeysReturn<false>
 export function useMagicKeys(options: UseMagicKeysOptions<true>): UseMagicKeysReturn<true>
-export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
+export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): UseMagicKeysReturn<boolean> {
   const {
     reactive: useReactive = false,
     target = defaultWindow,
@@ -190,7 +190,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
     },
   )
 
-  return proxy as any
+  return proxy as UseMagicKeysReturn<boolean>
 }
 
 export { DefaultMagicKeysAliasMap } from './aliasMap'
