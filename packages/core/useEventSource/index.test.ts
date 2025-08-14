@@ -140,4 +140,35 @@ describe('useEventSource', () => {
 
     expect(status.value).toBe('CLOSED')
   })
+
+  it('should apply custom serializer function', () => {
+    const serializer = vi.fn((data) => {
+      return { data: data.toUpperCase() }
+    })
+
+    const { data, eventSource } = useEventSource<any, string, { data: string }>('https://localhost', [], {
+      serializer,
+    })
+
+    const source = eventSource.value!
+    const testData = 'hello world'
+
+    source.onmessage!(new MessageEvent('message', { data: testData }))
+
+    expect(serializer).toHaveBeenCalledWith(testData)
+    expect(data.value).toEqual({ data: 'HELLO WORLD' })
+  })
+
+  it('should handle undefined data correctly', () => {
+    const serializer = vi.fn((data: any) => data)
+    const { data, eventSource } = useEventSource('https://localhost', [], {
+      serializer,
+    })
+
+    const source = eventSource.value!
+
+    source.onmessage!(new MessageEvent('message', { data: undefined }))
+
+    expect(data.value).toBeNull()
+  })
 })

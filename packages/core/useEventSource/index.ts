@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
 
-export interface UseEventSourceOptions extends EventSourceInit {
+export interface UseEventSourceOptions<T, R = T> extends EventSourceInit {
   /**
    * Enabled auto reconnect
    *
@@ -48,14 +48,16 @@ export interface UseEventSourceOptions extends EventSourceInit {
    * @default true
    */
   autoConnect?: boolean
+
+  serializer?: (v?: T) => R
 }
 
-export interface UseEventSourceReturn<Events extends string[], Data = any> {
+export interface UseEventSourceReturn<Events extends string[], Data = any, TransformedData = Data> {
   /**
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: ShallowRef<Data | null>
+  data: ShallowRef<TransformedData | null>
 
   /**
    * The current state of the connection, can be only one of:
@@ -110,13 +112,13 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param events
  * @param options
  */
-export function useEventSource<Events extends string[], Data = any>(
+export function useEventSource<Events extends string[], Data = any, TransformedData = Data>(
   url: MaybeRefOrGetter<string | URL | undefined>,
   events: Events = [] as unknown as Events,
-  options: UseEventSourceOptions = {},
-): UseEventSourceReturn<Events, Data> {
+  options: UseEventSourceOptions<Data, TransformedData> = {},
+): UseEventSourceReturn<Events, Data, TransformedData> {
   const event: ShallowRef<string | null> = shallowRef(null)
-  const data: ShallowRef<Data | null> = shallowRef(null)
+  const data: ShallowRef<TransformedData | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
   const eventSource = deepRef<EventSource | null>(null)
   const error = shallowRef<Event | null>(null)
@@ -131,6 +133,7 @@ export function useEventSource<Events extends string[], Data = any>(
     immediate = true,
     autoConnect = true,
     autoReconnect,
+    serializer = v => v as TransformedData,
   } = options
 
   const close = () => {
@@ -183,15 +186,15 @@ export function useEventSource<Events extends string[], Data = any>(
 
     es.onmessage = (e: MessageEvent) => {
       event.value = null
-      data.value = e.data
+      data.value = serializer(e.data) ?? null
       lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
         event.value = event_name
-        data.value = e.data || null
-        lastEventId.value = e.lastEventId || null
+        data.value = serializer(e.data) ?? null
+        lastEventId.value = e.lastEventId ?? null
       }, { passive: true })
     }
   }
