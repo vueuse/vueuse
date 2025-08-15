@@ -181,7 +181,7 @@ export function throttleFilter(...args: any[]) {
     }
     if (elapsed > duration) {
       lastExec = Date.now()
-      if ((leading || !isLeading))
+      if (leading || !isLeading)
         invoke()
     }
     else if (trailing) {
