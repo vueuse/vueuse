@@ -20,7 +20,7 @@ export interface ManualResetRefReturn<T> extends Ref<T> {
  */
 export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>) {
   let value: T = toValue(defaultValue)
-  let trigger: () => void
+  let trigger: Fn
 
   const reset = () => {
     value = toValue(defaultValue)
