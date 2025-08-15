@@ -1,5 +1,5 @@
-import type { Fn } from '@vueuse/core'
 import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { Fn } from '../utils'
 import { customRef, toValue } from 'vue'
 
 /**
