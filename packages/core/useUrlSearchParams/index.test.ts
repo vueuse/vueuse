@@ -245,6 +245,44 @@ describe('useUrlSearchParams', () => {
             break
         }
       })
+
+      it('when the user presses the forward or backward button of the browser, the parameters should be updated', async () => {
+        const params = useUrlSearchParams(mode, { writeMode: 'push' })
+        expect(params.foo).toBeUndefined()
+        expect(params.bar).toBeUndefined()
+        params.foo = 'first'
+        await nextTick()
+        params.bar = 'second'
+        await nextTick()
+        window.history.go(-1)
+        switch (mode) {
+          case 'hash':
+            mockPopstate('', '#/test/?foo=first')
+            break
+          case 'hash-params':
+            mockPopstate('', '#foo=first')
+            break
+          case 'history':
+            mockPopstate('?foo=first', '')
+        }
+        await nextTick()
+        expect(params.foo).toBe('first')
+        expect(params.bar).toBeUndefined()
+        window.history.go(1)
+        switch (mode) {
+          case 'hash':
+            mockPopstate('', '#/test/?foo=first&bar=second')
+            break
+          case 'hash-params':
+            mockPopstate('', '#foo=first&bar=second')
+            break
+          case 'history':
+            mockPopstate('?foo=first&bar=second', '')
+        }
+        await nextTick()
+        expect(params.foo).toBe('first')
+        expect(params.bar).toBe('second')
+      })
     })
   })
 
