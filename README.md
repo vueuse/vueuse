@@ -59,6 +59,7 @@ Refer to [functions list](https://vueuse.org/functions) or [documentations](http
 ## 📦 Install
 
 > From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
+> From v13.0, VueUse no longer supports Vue < 3.3.
 
 ```bash
 npm i @vueuse/core
