@@ -1,9 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { shallowRef } from 'vue'
-import { formatTimeAgoIntl, formatTimeAgoIntlParts, useTimeAgoIntl } from './index'
+import {
+  formatTimeAgoIntl,
+  formatTimeAgoIntlParts,
+  useTimeAgoIntl,
+} from './index'
 
 describe('formatTimeAgoIntlParts', () => {
-  it('should format without spaces by default', () => {
+  it('should format with spaces by default', () => {
     const parts1: Intl.RelativeTimeFormatPart[] = [
       { type: 'integer', value: '5', unit: 'day' },
       { type: 'literal', value: ' days' },
@@ -15,23 +19,34 @@ describe('formatTimeAgoIntlParts', () => {
       { type: 'integer', value: '5', unit: 'day' },
       { type: 'literal', value: '天后' },
     ]
-    expect(formatTimeAgoIntlParts(parts2)).toEqual('5天后')
+    expect(formatTimeAgoIntlParts(parts2)).toEqual('5 天后')
   })
 
-  it('should format with spaces if insertSpace is true', () => {
+  it('should format with spaces if insertSpace is false', () => {
     const parts1: Intl.RelativeTimeFormatPart[] = [
       { type: 'integer', value: '5', unit: 'day' },
       { type: 'literal', value: ' days' },
     ]
 
-    expect(formatTimeAgoIntlParts(parts1, true)).toEqual('5 days')
+    expect(formatTimeAgoIntlParts(parts1, { insertSpace: false })).toEqual('5 days')
 
     const parts2: Intl.RelativeTimeFormatPart[] = [
       { type: 'integer', value: '5', unit: 'day' },
       { type: 'literal', value: '天后' },
     ]
 
-    expect(formatTimeAgoIntlParts(parts2, true)).toEqual('5 天后')
+    expect(formatTimeAgoIntlParts(parts2, { insertSpace: false })).toEqual('5天后')
+  })
+
+  it('should use joinParts if provided', () => {
+    const parts: Intl.RelativeTimeFormatPart[] = [
+      { type: 'integer', value: '5', unit: 'day' },
+      { type: 'literal', value: '天后' },
+    ]
+    const result = formatTimeAgoIntlParts(parts, {
+      joinParts: p => p.map(x => `[${x.value}]`).join('|'),
+    })
+    expect(result).toEqual('[5]|[天后]')
   })
 })
 
@@ -61,5 +76,17 @@ describe('useTimeAgoIntl', () => {
     const timeAgo = useTimeAgoIntl(past)
 
     expect(timeAgo.value).toMatch('5')
+  })
+
+  it('should expose parts when controls is true', () => {
+    const now = Date.now()
+    const past = shallowRef(now - 1000 * 60 * 5)
+
+    const { timeAgoIntl, parts } = useTimeAgoIntl(past, { controls: true })
+
+    expect(timeAgoIntl.value).toMatch('5')
+    expect(parts.value).toBeInstanceOf(Array)
+    expect(parts.value[0]).toHaveProperty('type')
+    expect(parts.value[0]).toHaveProperty('value')
   })
 })

@@ -49,9 +49,9 @@
   executeTransition: function
   extendRef: function
   formatDate: function
-  formatParts: function
   formatTimeAgo: function
   formatTimeAgoIntl: function
+  formatTimeAgoIntlParts: function
   get: function
   getLifeCycleTarget: function
   getSSRHandler: function

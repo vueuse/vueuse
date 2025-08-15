@@ -3,6 +3,8 @@ import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
+type Locale = Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale
+
 export interface FormatTimeAgoIntlOptions {
   /**
    * The locale to format with
@@ -10,7 +12,7 @@ export interface FormatTimeAgoIntlOptions {
    * @default undefined
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#locales
    */
-  locale?: Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale
+  locale?: Locale
 
   /**
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#options
@@ -18,14 +20,25 @@ export interface FormatTimeAgoIntlOptions {
   relativeTimeFormatOptions?: Intl.RelativeTimeFormatOptions
 
   /**
-   * Whether to insert spaces between parts
+   * Whether to insert spaces between parts.
+   *
+   * Ignored if `joinParts` is provided.
+   *
+   * @default true
    */
   insertSpace?: boolean
+
+  /**
+   * Custom function to join the parts returned by `Intl.RelativeTimeFormat.formatToParts`.
+   *
+   * If provided, it will be used instead of the default join logic.
+   */
+  joinParts?: (parts: Intl.RelativeTimeFormatPart[], locale?: Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale) => string
 }
 
 export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatTimeAgoIntlOptions {
   /**
-   * Expose more controls
+   * Expose more controls and the raw `parts` result.
    *
    * @default false
    */
@@ -39,7 +52,10 @@ export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatT
   updateInterval?: number
 }
 
-type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgoIntl: ComputedRef<string> } & Pausable : ComputedRef<string>
+type UseTimeAgoReturn<Controls extends boolean = false>
+  = Controls extends true
+    ? { timeAgoIntl: ComputedRef<string>, parts: ComputedRef<Intl.RelativeTimeFormatPart[]> } & Pausable
+    : ComputedRef<string>
 
 export interface TimeAgoUnit {
   name: Intl.RelativeTimeFormatUnit
@@ -47,13 +63,13 @@ export interface TimeAgoUnit {
 }
 
 const UNITS: TimeAgoUnit[] = [
-  { name: 'year', ms: 31536000000 },
-  { name: 'month', ms: 2592000000 },
-  { name: 'week', ms: 604800000 },
-  { name: 'day', ms: 86400000 },
-  { name: 'hour', ms: 3600000 },
-  { name: 'minute', ms: 60000 },
-  { name: 'second', ms: 1000 },
+  { name: 'year', ms: 31_536_000_000 },
+  { name: 'month', ms: 2_592_000_000 },
+  { name: 'week', ms: 604_800_000 },
+  { name: 'day', ms: 86_400_000 },
+  { name: 'hour', ms: 3_600_000 },
+  { name: 'minute', ms: 60_000 },
+  { name: 'second', ms: 1_000 },
 ]
 
 /**
@@ -68,48 +84,89 @@ export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, o
   } = options
 
   const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
-  const timeAgoIntl = computed(() => formatTimeAgoIntl(new Date(toValue(time)), options, toValue(now)))
+
+  const result = computed(() =>
+    getTimeAgoIntlResult(new Date(toValue(time)), options, toValue(now)),
+  )
+
+  const parts = computed(() => result.value.parts)
+  const timeAgoIntl = computed(() =>
+    formatTimeAgoIntlParts(parts.value, {
+      ...options,
+      locale: result.value.resolvedLocale,
+    }),
+  )
 
   return exposeControls
-    ? { timeAgoIntl, ...controls }
+    ? { timeAgoIntl, parts, ...controls }
     : timeAgoIntl
 }
 
 /**
- * Format time ago with `Intl.RelativeTimeFormat`.
+ * Non-reactive version of useTimeAgoIntl
  */
 export function formatTimeAgoIntl(
   from: Date,
   options: FormatTimeAgoIntlOptions = {},
   now: Date | number = Date.now(),
 ): string {
+  const { parts, resolvedLocale } = getTimeAgoIntlResult(from, options, now)
+  return formatTimeAgoIntlParts(parts, {
+    ...options,
+    locale: resolvedLocale,
+  })
+}
+
+/**
+ * Get parts from `Intl.RelativeTimeFormat.formatToParts`.
+ */
+function getTimeAgoIntlResult(
+  from: Date,
+  options: FormatTimeAgoIntlOptions = {},
+  now: Date | number = Date.now(),
+): { parts: Intl.RelativeTimeFormatPart[], resolvedLocale: Locale } {
   const {
-    locale = undefined,
-    relativeTimeFormatOptions = {
-      numeric: 'auto',
-    },
-    insertSpace = true,
+    locale,
+    relativeTimeFormatOptions = { numeric: 'auto' },
   } = options
+
   const rtf = new Intl.RelativeTimeFormat(locale, relativeTimeFormatOptions)
+  const { locale: resolvedLocale } = rtf.resolvedOptions()
 
   const diff = +from - +now
   const absDiff = Math.abs(diff)
 
-  let parts: Intl.RelativeTimeFormatPart[] = []
   for (const { name, ms } of UNITS) {
     if (absDiff >= ms) {
-      parts = rtf.formatToParts(Math.round(diff / ms), name)
-      break
+      return {
+        resolvedLocale,
+        parts: rtf.formatToParts(Math.round(diff / ms), name),
+      }
     }
   }
 
-  if (parts.length === 0)
-    parts = rtf.formatToParts(0, 'second')
-
-  return formatTimeAgoIntlParts(parts, insertSpace)
+  return {
+    resolvedLocale,
+    parts: rtf.formatToParts(0, 'second'),
+  }
 }
 
-export function formatTimeAgoIntlParts(parts: Intl.RelativeTimeFormatPart[], insertSpace = false): string {
+/**
+ * Format parts into a string
+ */
+export function formatTimeAgoIntlParts(
+  parts: Intl.RelativeTimeFormatPart[],
+  options: FormatTimeAgoIntlOptions = {},
+): string {
+  const {
+    insertSpace = true,
+    joinParts,
+    locale,
+  } = options
+
+  if (typeof joinParts === 'function')
+    return joinParts(parts, locale)
+
   if (!insertSpace)
     return parts.map(part => part.value).join('')
 
