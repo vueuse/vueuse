@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { timestamp } from '@vueuse/core'
+import { timestamp, useTimeAgoIntl } from '@vueuse/core'
 import { computed, shallowRef } from 'vue'
-import { useTimeAgoIntl } from './index'
 
 const slider = shallowRef(0)
 const value = computed(() => timestamp() + slider.value ** 3)
