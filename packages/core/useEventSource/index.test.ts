@@ -142,12 +142,14 @@ describe('useEventSource', () => {
   })
 
   it('should apply custom serializer function', () => {
-    const serializer = vi.fn((data) => {
+    const deserialize = vi.fn((data) => {
       return { data: data.toUpperCase() }
     })
 
     const { data, eventSource } = useEventSource<any, string, { data: string }>('https://localhost', [], {
-      serializer,
+      serializer: {
+        read: deserialize,
+      },
     })
 
     const source = eventSource.value!
@@ -155,14 +157,16 @@ describe('useEventSource', () => {
 
     source.onmessage!(new MessageEvent('message', { data: testData }))
 
-    expect(serializer).toHaveBeenCalledWith(testData)
+    expect(deserialize).toHaveBeenCalledWith(testData)
     expect(data.value).toEqual({ data: 'HELLO WORLD' })
   })
 
   it('should handle undefined data correctly', () => {
-    const serializer = vi.fn((data: any) => data)
+    const deserialize = vi.fn((data: any) => data)
     const { data, eventSource } = useEventSource('https://localhost', [], {
-      serializer,
+      serializer: {
+        read: deserialize,
+      },
     })
 
     const source = eventSource.value!

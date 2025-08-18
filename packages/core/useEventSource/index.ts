@@ -49,7 +49,12 @@ export interface UseEventSourceOptions<T, R = T> extends EventSourceInit {
    */
   autoConnect?: boolean
 
-  serializer?: (v?: T) => R
+  /**
+   * Custom data serialization
+   */
+  serializer?: {
+    read: (v?: T) => R
+  }
 }
 
 export interface UseEventSourceReturn<Events extends string[], Data = any, TransformedData = Data> {
@@ -133,7 +138,9 @@ export function useEventSource<Events extends string[], Data = any, TransformedD
     immediate = true,
     autoConnect = true,
     autoReconnect,
-    serializer = v => v as TransformedData,
+    serializer = {
+      read: v => v as TransformedData,
+    },
   } = options
 
   const close = () => {
@@ -186,14 +193,14 @@ export function useEventSource<Events extends string[], Data = any, TransformedD
 
     es.onmessage = (e: MessageEvent) => {
       event.value = null
-      data.value = serializer(e.data) ?? null
+      data.value = serializer.read(e.data) ?? null
       lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
         event.value = event_name
-        data.value = serializer(e.data) ?? null
+        data.value = serializer.read(e.data) ?? null
         lastEventId.value = e.lastEventId ?? null
       }, { passive: true })
     }
