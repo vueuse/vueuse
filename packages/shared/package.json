@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/shared",
   "type": "module",
-  "version": "13.6.0",
+  "version": "13.7.0",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
