@@ -41,6 +41,12 @@ Enable by default.
 
 If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
 
+### autoClose
+
+Enable by default.
+
+This will call close() automatically when the beforeunload event is triggered or the associated effect scope is stopped.
+
 ### Auto Reconnection on Errors
 
 Reconnect on errors automatically (disabled by default).
