@@ -146,7 +146,7 @@ describe('useEventSource', () => {
       return { data: data.toUpperCase() }
     })
 
-    const { data, eventSource } = useEventSource<any, string, { data: string }>('https://localhost', [], {
+    const { data, eventSource } = useEventSource<any>('https://localhost', [], {
       serializer: {
         read: deserialize,
       },
