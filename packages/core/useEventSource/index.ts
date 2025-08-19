@@ -50,12 +50,12 @@ export interface UseEventSourceOptions extends EventSourceInit {
   autoConnect?: boolean
 }
 
-export interface UseEventSourceReturn<Events extends string[], Data = any> {
+export interface UseEventSourceReturn<Events extends string[]> {
   /**
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: ShallowRef<Data | null>
+  data: ShallowRef<string | null>
 
   /**
    * The current state of the connection, can be only one of:
@@ -110,13 +110,13 @@ function resolveNestedOptions<T>(options: T | true): T {
  * @param events
  * @param options
  */
-export function useEventSource<Events extends string[], Data = any>(
+export function useEventSource<Events extends string[]>(
   url: MaybeRefOrGetter<string | URL | undefined>,
   events: Events = [] as unknown as Events,
   options: UseEventSourceOptions = {},
-): UseEventSourceReturn<Events, Data> {
+): UseEventSourceReturn<Events> {
   const event: ShallowRef<string | null> = shallowRef(null)
-  const data: ShallowRef<Data | null> = shallowRef(null)
+  const data: ShallowRef<string | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
   const eventSource = deepRef<EventSource | null>(null)
   const error = shallowRef<Event | null>(null)
@@ -181,14 +181,14 @@ export function useEventSource<Events extends string[], Data = any>(
       }
     }
 
-    es.onmessage = (e: MessageEvent) => {
+    es.onmessage = (e: MessageEvent<string>) => {
       event.value = null
       data.value = e.data
       lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
-      useEventListener(es, event_name, (e: Event & { data?: Data, lastEventId?: string }) => {
+      useEventListener(es, event_name, (e: Event & { data?: string, lastEventId?: string }) => {
         event.value = event_name
         data.value = e.data || null
         lastEventId.value = e.lastEventId || null
