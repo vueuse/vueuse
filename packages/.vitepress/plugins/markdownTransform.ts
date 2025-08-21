@@ -267,32 +267,26 @@ async function maybeTranspileJs(snippet: string): Promise<string | null> {
   return formattedTS === formattedJS ? null : formattedJS
 }
 
+const MARKER_CUT = '// ---cut---\n'
+const MARKER_CUT_AFTER = '// ---cut-after---\n'
+const TWOSLASH_NOTATION_REGEX = /^\s*\/\/\s*@.*(?:\n|$)/gm
+
+function cutAboveMarker(input: string): string {
+  const lastIndex = input.lastIndexOf(MARKER_CUT)
+  return lastIndex === -1 ? input : input.slice(lastIndex + MARKER_CUT.length)
+}
+
+function cutAfterMarker(input: string): string {
+  const index = input.indexOf(MARKER_CUT_AFTER)
+  return index === -1 ? input : input.slice(0, index)
+}
+
 function removeTwoslashNotations(snippet: string): string {
-  function cutAboveMarker(input: string): string {
-    const marker = '// ---cut---\n'
-    const lastIndex = input.lastIndexOf(marker)
-
-    if (lastIndex === -1)
-      return input
-
-    return input.slice(lastIndex + marker.length)
-  }
-
-  function cutAfterMarker(input: string): string {
-    const marker = '// ---cut-after---\n'
-    const index = input.indexOf(marker)
-
-    if (index === -1)
-      return input
-
-    return input.slice(0, index)
-  }
-
   snippet = cutAboveMarker(snippet)
   snippet = cutAfterMarker(snippet)
 
   // remove twoslash notations
-  snippet = snippet.replaceAll(/^\s*\/\/\s*@.*(?:\n|$)/gm, '')
+  snippet = snippet.replaceAll(TWOSLASH_NOTATION_REGEX, '')
 
   return snippet
 }
