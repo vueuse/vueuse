@@ -179,10 +179,10 @@ export function throttleFilter(...args: any[]) {
       lastExec = Date.now()
       return invoke()
     }
-
-    if (elapsed > duration && (leading || !isLeading)) {
+    if (elapsed > duration) {
       lastExec = Date.now()
-      invoke()
+      if (leading || !isLeading)
+        invoke()
     }
     else if (trailing) {
       lastValue = new Promise((resolve, reject) => {
