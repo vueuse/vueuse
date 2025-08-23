@@ -284,7 +284,7 @@ describe('useUrlSearchParams', () => {
         }
       })
 
-      it('when the user presses the forward or backward button of the browser, the parameters should be updated', async () => {
+      it('should push history state when value is updated', async () => {
         const params = useUrlSearchParams(mode, { writeMode: 'push' })
         expect(params.foo).toBeUndefined()
         expect(params.bar).toBeUndefined()
