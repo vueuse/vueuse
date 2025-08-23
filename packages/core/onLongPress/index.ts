@@ -14,8 +14,7 @@ export interface OnLongPressOptions {
    *
    * @default 500
    */
-  delay?: number
-
+  delay?: number | ((event: PointerEvent) => number)
   modifiers?: OnLongPressModifiers
 
   /**
@@ -103,12 +102,17 @@ export function onLongPress(
       y: ev.y,
     }
     startTimestamp = ev.timeStamp
+    // Определение значения задержки
+    const resolvedDelay = typeof options?.delay === 'function'
+      ? options.delay(ev)
+      : options?.delay ?? DEFAULT_DELAY
+
     timeout = setTimeout(
       () => {
         hasLongPressed = true
         handler(ev)
       },
-      options?.delay ?? DEFAULT_DELAY,
+      resolvedDelay,
     )
   }
 

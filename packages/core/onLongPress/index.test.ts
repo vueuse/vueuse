@@ -186,6 +186,30 @@ describe('onLongPress', () => {
     expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500 - 2)
   }
 
+  // --- Новый тест, который проверяет вашу реализацию ---
+  async function triggerWithFunctionDelay(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, {
+      delay: event => event.pointerType === 'mouse' ? 0 : 500,
+    })
+
+    // Test with mouse
+    element.value.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse' }))
+    // For mouse, delay is 0, so the handler should be called immediately
+    vi.runAllTimers()
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+
+    // Reset and test with touch
+    onLongPressCallback.mockClear()
+    element.value.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'touch' }))
+    // For touch, delay is 500ms, handler should not be called yet
+    await vi.advanceTimersByTimeAsync(499)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+    // After 500ms, handler should be called
+    await vi.advanceTimersByTimeAsync(1)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+  }
+
   function suites(isRef: boolean) {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', () => triggerCallback(isRef))
@@ -199,6 +223,7 @@ describe('onLongPress', () => {
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
       it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
+      it('should respect delay as a function based on pointer type', () => triggerWithFunctionDelay(isRef))
     })
   }
 
