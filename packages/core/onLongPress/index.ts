@@ -147,3 +147,5 @@ export function onLongPress(
 
   return stop
 }
+
+export type UseOnLongPressReturn = ReturnType<typeof onLongPress>
