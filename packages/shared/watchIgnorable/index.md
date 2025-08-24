@@ -41,7 +41,7 @@ source.value = 'logged'
 await nextTick() // logs: Changed to logged!
 ```
 
-## Flush timing
+## WatchOptionFlush timing
 
 `watchIgnorable` accepts the same options as `watch` and uses the same defaults.
 So, by default the composable works using `flush: 'pre'`.
