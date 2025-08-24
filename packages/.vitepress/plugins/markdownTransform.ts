@@ -2,7 +2,6 @@ import type { Plugin } from 'vite'
 import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { format } from 'prettier'
-import { createTwoslasher } from 'twoslash'
 import ts from 'typescript'
 import { packages } from '../../../meta/packages'
 import { version as currentVersion } from '../../../package.json'
@@ -15,11 +14,6 @@ export function MarkdownTransform(): Plugin {
 
   if (!hasTypes)
     console.warn('No types dist found, run `npm run build:types` first.')
-
-  const twoslasher = createTwoslasher({
-    handbookOptions: { noErrors: true },
-    customTags: ['include'],
-  })
 
   return {
     name: 'vueuse-md-transform',
@@ -67,30 +61,23 @@ ${snippet}
 
         // Insert JS/TS code blocks
         code = await replaceAsync(code, /\n```(?:ts|typescript)( [^\n]+)?\n(.+?)\n```\n/gs, async (_, meta = '', snippet = '') => {
+          const jsSnippet = await maybeTranspileJs(removeTwoslashNotations(snippet))
+
           meta = replaceToDefaultTwoslashMeta(meta)
-
-          let snippetForCompare = snippet
           if (isMetaTwoslash(meta)) {
-            // remove twoslash notations
-            snippetForCompare = twoslasher(snippet, 'ts').code
-
             // add vue auto imports
             snippet = `// @include: imports\n${snippet}`
           }
-          const formattedTS = (await format(snippetForCompare.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
-          const js = ts.transpileModule(formattedTS, {
-            compilerOptions: { target: 99 },
-          })
-          const formattedJS = (await format(js.outputText, { semi: false, singleQuote: true, parser: 'typescript' }))
-            .trim()
-          if (formattedJS === formattedTS) {
+
+          if (jsSnippet === null) {
             return `
 \`\`\`ts ${meta}
 ${snippet}
 \`\`\`
 `
           }
-          return `
+          else {
+            return `
 <CodeToggle>
 <div class="code-block-ts">
 
@@ -102,11 +89,12 @@ ${snippet}
 <div class="code-block-js">
 
 \`\`\`js
-${formattedJS}
+${jsSnippet}
 \`\`\`
 
 </div>
 </CodeToggle>\n`
+          }
         })
 
         const { footer, header } = await getFunctionMarkdown(pkg, name)
@@ -262,6 +250,45 @@ function replaceAsync(str: string, match: RegExp, replacer: (substring: string, 
     return ''
   })
   return Promise.all(promises).then(replacements => str.replace(match, () => replacements.shift()!))
+}
+
+/**
+ * Transpiles a TypeScript snippet to JavaScript .
+ *
+ * @param snippet The TypeScript code snippet to transpile.
+ * @returns The transpiled JavaScript code or null if no changes were made.
+ */
+async function maybeTranspileJs(snippet: string): Promise<string | null> {
+  const formattedTS = (await format(snippet.replace(/\n+/g, '\n'), { semi: false, singleQuote: true, parser: 'typescript' })).trim()
+  const js = ts.transpileModule(formattedTS, {
+    compilerOptions: { target: 99 },
+  })
+  const formattedJS = (await format(js.outputText, { semi: false, singleQuote: true, parser: 'typescript' })).trim()
+  return formattedTS === formattedJS ? null : formattedJS
+}
+
+const MARKER_CUT = '// ---cut---\n'
+const MARKER_CUT_AFTER = '// ---cut-after---\n'
+const TWOSLASH_NOTATION_REGEX = /^\s*\/\/\s*@.*(?:\n|$)/gm
+
+function cutAboveMarker(input: string): string {
+  const lastIndex = input.lastIndexOf(MARKER_CUT)
+  return lastIndex === -1 ? input : input.slice(lastIndex + MARKER_CUT.length)
+}
+
+function cutAfterMarker(input: string): string {
+  const index = input.indexOf(MARKER_CUT_AFTER)
+  return index === -1 ? input : input.slice(0, index)
+}
+
+function removeTwoslashNotations(snippet: string): string {
+  snippet = cutAboveMarker(snippet)
+  snippet = cutAfterMarker(snippet)
+
+  // remove twoslash notations
+  snippet = snippet.replaceAll(TWOSLASH_NOTATION_REGEX, '')
+
+  return snippet
 }
 
 const reLineHighlightMeta = /^\{[\d\-,]*\}$/

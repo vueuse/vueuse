@@ -2,7 +2,7 @@ import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { PointerType, Position } from '../types'
 import { objectPick, toRefs } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -62,7 +62,7 @@ export function usePointer(options: UsePointerOptions = {}) {
   } = options
 
   const isInside = shallowRef(false)
-  const state = deepRef(options.initialValue || {}) as unknown as Ref<UsePointerState>
+  const state = shallowRef(options.initialValue || {}) as unknown as Ref<UsePointerState>
   Object.assign(state.value, defaultState, state.value)
 
   const handler = (event: PointerEvent) => {
