@@ -5,7 +5,7 @@ import { shallowRef } from 'vue'
 const log = shallowRef('')
 const source = shallowRef(0)
 
-const { trigger, ignoreUpdates } = watchTriggerable(
+const { trigger, ignoreUpdates, pause, resume } = watchTriggerable(
   source,
   async (v, _, onCleanup) => {
     let canceled = false
@@ -36,6 +36,12 @@ function update() {
   </button>
   <button class="orange" @click="trigger">
     Manual Trigger
+  </button>
+  <button @click="pause">
+    Pause
+  </button>
+  <button @click="resume">
+    Resume
   </button>
   <button @click="clear">
     Reset
