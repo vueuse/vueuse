@@ -31,6 +31,13 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
    * @default 0
    */
   threshold?: number | number[]
+
+  /**
+   * Only trigger the callback once when element becomes visible (intersecting = true)
+   *
+   * @default false
+   */
+  once?: boolean
 }
 
 export interface UseIntersectionObserverReturn extends Pausable {
@@ -57,6 +64,7 @@ export function useIntersectionObserver(
     threshold = 0,
     window = defaultWindow,
     immediate = true,
+    once = false,
   } = options
 
   const isSupported = useSupported(() => window && 'IntersectionObserver' in window)
@@ -80,7 +88,17 @@ export function useIntersectionObserver(
             return
 
           const observer = new IntersectionObserver(
-            callback,
+            once
+              ? (entries, observer) => {
+                  callback(entries, observer)
+                  // Only stop observing when element is intersecting (entering viewport)
+                  if (entries.some(entry => entry.isIntersecting)) {
+                    cleanup()
+                    stopWatch()
+                    isActive.value = false
+                  }
+                }
+              : callback,
             {
               root: unrefElement(root),
               rootMargin,
