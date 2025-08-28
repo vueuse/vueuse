@@ -1,7 +1,7 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs, tryOnUnmounted } from '@vueuse/shared'
-import { computed, ref as deepRef, shallowRef, toValue } from 'vue'
+import { computed, ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { defaultDocument, defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -159,10 +159,21 @@ export function useDraggable(
       e.stopPropagation()
   }
 
-  const {
-    scrollTop: documentScrollTop = shallowRef(0),
-    scrollLeft: documentScrollLeft = shallowRef(0),
-  } = processDocumentScrollOffset() ?? {}
+  const documentScrollTop = shallowRef(0)
+  const documentScrollLeft = shallowRef(0)
+  let eventCanceller: (() => void) | undefined
+
+  watch(() => toValue(containerElement), (elem) => {
+    if (elem === document.body) {
+      eventCanceller = processDocumentScrollOffset(documentScrollTop, documentScrollLeft)
+    }
+    else {
+      eventCanceller?.()
+      documentScrollLeft.value = documentScrollTop.value = 0
+    }
+  }, {
+    immediate: true,
+  })
 
   const start = (e: PointerEvent) => {
     if (!toValue(buttons).includes(e.button))
@@ -245,14 +256,11 @@ export function useDraggable(
 
 export type UseDraggableReturn = ReturnType<typeof useDraggable>
 
-function processDocumentScrollOffset() {
+function processDocumentScrollOffset(scrollTop: ShallowRef<number>, scrollLeft: ShallowRef<number>) {
   const window = defaultWindow
   const document = defaultDocument
   if (!window || !document)
     return
-
-  const scrollTop = shallowRef(0)
-  const scrollLeft = shallowRef(0)
 
   const callback = () => {
     scrollTop.value = document.scrollingElement!.scrollTop
@@ -263,9 +271,5 @@ function processDocumentScrollOffset() {
   tryOnUnmounted(() => {
     window.removeEventListener('scroll', callback)
   })
-
-  return {
-    scrollTop,
-    scrollLeft,
-  }
+  return () => window.removeEventListener('scroll', callback)
 }
