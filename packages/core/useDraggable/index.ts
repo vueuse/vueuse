@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs, tryOnUnmounted } from '@vueuse/shared'
 import { computed, ref as deepRef, shallowRef, toValue } from 'vue'
-import { defaultWindow } from '../_configurable'
+import { defaultDocument, defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
 export interface UseDraggableOptions {
@@ -160,9 +160,9 @@ export function useDraggable(
   }
 
   const {
-    scrollTop: documentScrollTop,
-    scrollLeft: documentScrollLeft,
-  } = processDocumentScrollOffset()
+    scrollTop: documentScrollTop = shallowRef(0),
+    scrollLeft: documentScrollLeft = shallowRef(0),
+  } = processDocumentScrollOffset() ?? {}
 
   const start = (e: PointerEvent) => {
     if (!toValue(buttons).includes(e.button))
@@ -246,6 +246,11 @@ export function useDraggable(
 export type UseDraggableReturn = ReturnType<typeof useDraggable>
 
 function processDocumentScrollOffset() {
+  const window = defaultWindow
+  const document = defaultDocument
+  if (!window || !document)
+    return
+
   const scrollTop = shallowRef(0)
   const scrollLeft = shallowRef(0)
 
