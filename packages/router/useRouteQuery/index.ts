@@ -4,6 +4,7 @@ import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { parseArgs } from '../_utils'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
@@ -21,13 +22,20 @@ export function useRouteQuery<
 ): Ref<K>
 
 export function useRouteQuery<
+  T extends Record<string, RouteQueryValueRaw> = Record<string, RouteQueryValueRaw>,
+  K = T,
+>(
+  defaultValue?: MaybeRefOrGetter<T>,
+  options?: ReactiveRouteOptionsWithTransform<T, K>
+): Ref<K>
+
+export function useRouteQuery<
   T extends RouteQueryValueRaw = RouteQueryValueRaw,
   K = T,
 >(
-  name: string,
-  defaultValue?: MaybeRefOrGetter<T>,
-  options: ReactiveRouteOptionsWithTransform<T, K> = {},
+  ...args: any[]
 ): Ref<K> {
+  const { name, defaultValue, options } = parseArgs<T, K>(args)
   const {
     mode = 'replace',
     route = useRoute(),
@@ -53,7 +61,7 @@ export function useRouteQuery<
 
   const _queriesQueue = _queue.get(router)!
 
-  let query = route.query[name] as any
+  let query = (name ? route.query[name] : route.query) as any
 
   tryOnScopeDispose(() => {
     query = undefined
@@ -77,7 +85,14 @@ export function useRouteQuery<
           return
 
         query = (v === toValue(defaultValue)) ? undefined : v
-        _queriesQueue.set(name, (v === toValue(defaultValue)) ? undefined : v)
+        if (name) {
+          _queriesQueue.set(name, query)
+        }
+        else {
+          Object.entries(query).forEach(([key, value]) => {
+            _queriesQueue.set(key, value)
+          })
+        }
 
         trigger()
 
@@ -101,7 +116,7 @@ export function useRouteQuery<
   })
 
   watch(
-    () => route.query[name],
+    () => name ? route.query[name] : route.query,
     (v) => {
       if (query === transformGet(v as T))
         return

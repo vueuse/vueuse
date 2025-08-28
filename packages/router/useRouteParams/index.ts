@@ -4,40 +4,23 @@ import type { ReactiveRouteOptionsWithTransform } from '../_types'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { parseArgs } from '../_utils'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
-function parseArgs<T extends RouteParamValueRaw | Record<string, RouteParamValueRaw>, K = T>(args: any[]) {
-  const maybeName = args[0]
-  let name: string | undefined
-  let defaultValue: MaybeRefOrGetter<T> | undefined
-  let options: ReactiveRouteOptionsWithTransform<T, K>
-  if (typeof maybeName === 'string') {
-    name = args[0]
-    defaultValue = args[1]
-    options = args[2] ?? {}
-  }
-  else {
-    defaultValue = args[0]
-    options = args[1] ?? {}
-  }
-  return {
-    name,
-    defaultValue,
-    options,
-  }
-}
+
 export function useRouteParams(
-  name?: string
+  name: string
 ): Ref<null | string | string[]>
 
 export function useRouteParams<
   T extends RouteParamValueRaw = RouteParamValueRaw,
   K = T,
 >(
-  name?: string,
+  name: string,
   defaultValue?: MaybeRefOrGetter<T>,
   options?: ReactiveRouteOptionsWithTransform<T, K>
 ): Ref<K>
+
 export function useRouteParams<
   T extends Record<string, RouteParamValueRaw> = Record<string, RouteParamValueRaw>,
   K = T,

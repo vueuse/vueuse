@@ -389,7 +389,43 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(2)
     expect(lang.value).toBe('en-US')
   })
+  it('should handle entire query object', async () => {
+    let route = getRoute({ id: '1', name: 'test' })
+    const router = { replace: (r: any) => route = r } as any
 
+    const query = useRouteQuery({ id: 'default', name: 'default' }, { route, router })
+
+    expect(query.value).toEqual({ id: '1', name: 'test' })
+
+    query.value = { id: '2', name: 'vue' }
+    await nextTick()
+
+    expect(route.query).toEqual({ id: '2', name: 'vue' })
+  })
+
+  it('should handle transform for entire query object', async () => {
+    let route = getRoute({ count: '5' })
+    const router = { replace: (r: any) => route = r } as any
+
+    const query = useRouteQuery<{ count: string }, { count: number }>(
+      { count: '0' },
+      {
+        transform: {
+          get: v => ({ count: Number(v.count) }),
+          set: v => ({ count: String(v.count) }),
+        },
+        route,
+        router,
+      },
+    )
+
+    expect(query.value).toEqual({ count: 5 })
+
+    query.value = { count: 10 }
+    await nextTick()
+
+    expect(route.query.count).toBe('10')
+  })
   it.each([{ value: 'default' }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
