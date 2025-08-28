@@ -90,5 +90,25 @@ const { x, y, style } = useDraggable(el, {
         I am at {{ Math.round(x) }}, {{ Math.round(y) }}
       </div>
     </Draggable>
+
+    <Draggable
+      v-slot="{ x, y }"
+      p="x-4 y-2"
+      border="~ gray-400/30 rounded"
+      shadow="~ hover:lg"
+      class="fixed bg-$vp-c-bg select-none cursor-move z-31"
+      :initial-value="{ x: innerWidth / 3.3, y: 330 }"
+      prevent-default
+      :disabled="disabled"
+      :capture="false"
+    >
+      Not Use Captured Element
+      <div class="text-xs opacity-50 cursor-default" @pointerdown.stop>
+        Dragging here will not work
+      </div>
+      <div class="text-sm opacity-50">
+        {{ Math.round(x) }}, {{ Math.round(y) }}
+      </div>
+    </Draggable>
   </div>
 </template>

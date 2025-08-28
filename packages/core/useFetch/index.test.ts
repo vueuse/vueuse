@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
 import { createFetch, useFetch } from './index'
-import '../../.test/mockServer'
 
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `https://example.com?json=${encodeURI(JSON.stringify(jsonMessage))}`
@@ -833,6 +832,21 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     await vi.waitFor(() => {
       expect(fetchSpyHeaders()).toMatchObject({ before: 'Local' })
       expect(data.value).toEqual(expect.objectContaining({ after: 'Global' }))
+    })
+  })
+
+  it('should abort with given reason', async () => {
+    const { aborted, abort, execute, onFetchError } = useFetch('https://example.com', { immediate: false })
+    const reason = 'custom abort reason'
+    let error: unknown
+    onFetchError((err) => {
+      error = err
+    })
+    execute()
+    abort(reason)
+    await vi.waitFor(() => {
+      expect(aborted.value).toBe(true)
+      expect(error).toBe(reason)
     })
   })
 })

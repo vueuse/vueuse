@@ -1,10 +1,13 @@
 import { resolve } from 'node:path'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
+import { createFileSystemTypesCache } from '@shikijs/vitepress-twoslash/cache-fs'
 import { withPwa } from '@vite-pwa/vitepress'
 import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
+import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
+import { FILE_IMPORTS } from './twoslash'
 import viteConfig from './vite.config'
 
 const Guide = [
@@ -71,8 +74,19 @@ export default withPwa(defineConfig({
       dark: 'vitesse-dark',
     },
     codeTransformers: [
-      transformerTwoslash(),
+      transformerTwoslash({
+        twoslashOptions: {
+          handbookOptions: {
+            noErrors: true,
+          },
+        },
+        includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
+        typesCache: createFileSystemTypesCache({
+          dir: resolve(__dirname, 'cache', 'twoslash'),
+        }),
+      }),
     ],
+    languages: ['js', 'ts'],
   },
 
   themeConfig: {
@@ -248,6 +262,14 @@ export default withPwa(defineConfig({
     injectManifest: {
       globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}', 'hashmap.json'],
       globIgnores: ['og-*.png'],
+      // vue chunk ~5.4MB: won't be precached, and won't work when offline
+      maximumFileSizeToCacheInBytes: 6_000_000,
+      // for local build + preview
+      // enableWorkboxModulesLogs: true,
+      // minify: false,
+      buildPlugins: {
+        vite: [PWAVirtual()],
+      },
     },
   },
 

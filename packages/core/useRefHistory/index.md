@@ -11,7 +11,7 @@ Track the change history of a ref, also provides undo and redo functionality
 
 ## Usage
 
-```ts {5}
+```ts {5} twoslash include usage
 import { useRefHistory } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -22,6 +22,8 @@ const { history, undo, redo } = useRefHistory(counter)
 Internally, `watch` is used to trigger a history point when the ref value is modified. This means that history points are triggered asynchronously batching modifications in the same "tick".
 
 ```ts
+// @include: usage
+// ---cut---
 counter.value += 1
 
 await nextTick()
@@ -35,6 +37,8 @@ console.log(history.value)
 You can use `undo` to reset the ref value to the last history point.
 
 ```ts
+// @include: usage
+// ---cut---
 console.log(counter.value) // 1
 undo()
 console.log(counter.value) // 0
@@ -45,6 +49,8 @@ console.log(counter.value) // 0
 When working with objects or arrays, since changing their attributes does not change the reference, it will not trigger the committing. To track attribute changes, you would need to pass `deep: true`. It will create clones for each history record.
 
 ```ts
+import { useRefHistory } from '@vueuse/core'
+// ---cut---
 const state = ref({
   foo: 1,
   bar: 'bar',
@@ -112,6 +118,8 @@ const refHistory = useRefHistory(target, {
 We will keep all the history by default (unlimited) until you explicitly clear them up, you can set the maximal amount of history to be kept by `capacity` options.
 
 ```ts
+import { useRefHistory } from '@vueuse/core'
+// ---cut---
 const refHistory = useRefHistory(target, {
   capacity: 15, // limit to 15 history records
 })
@@ -126,6 +134,8 @@ From [Vue's documentation](https://vuejs.org/guide/essentials/watchers.html#call
 In the same way as `watch`, you can modify the flush timing using the `flush` option.
 
 ```ts
+import { useRefHistory } from '@vueuse/core'
+// ---cut---
 const refHistory = useRefHistory(target, {
   flush: 'sync', // options 'pre' (default), 'post' and 'sync'
 })
@@ -134,6 +144,8 @@ const refHistory = useRefHistory(target, {
 The default is `'pre'`, to align this composable with the default for Vue's watchers. This also helps to avoid common issues, like several history points generated as part of a multi-step update to a ref value that can break invariants of the app state. You can use `commit()` in case you need to create multiple history points in the same "tick"
 
 ```ts
+import { useRefHistory } from '@vueuse/core'
+// ---cut---
 const r = shallowRef(0)
 const { history, commit } = useRefHistory(r)
 
@@ -154,6 +166,8 @@ console.log(history.value)
 On the other hand, when using flush `'sync'`, you can use `batch(fn)` to generate a single history point for several sync operations
 
 ```ts
+import { useRefHistory } from '@vueuse/core'
+// ---cut---
 const r = ref({ names: [], version: 1 })
 const { history, batch } = useRefHistory(r, { flush: 'sync' })
 
@@ -172,6 +186,8 @@ console.log(history.value)
 If `{ flush: 'sync', deep: true }` is used, `batch` is also useful when doing a mutable `splice` in an array. `splice` can generate up to three atomic operations that will be pushed to the ref history.
 
 ```ts
+import { useRefHistory } from '@vueuse/core'
+// ---cut---
 const arr = ref([1, 2, 3])
 const { history, batch } = useRefHistory(arr, { deep: true, flush: 'sync' })
 
@@ -184,4 +200,4 @@ Another option is to avoid mutating the original ref value using `arr.value = [.
 
 ## Recommended Readings
 
-- [History and Persistence](https://patak.dev/vue/history-and-persistence.html) - by [@matias-capeletto](https://github.com/matias-capeletto)
+- [History and Persistence](https://patak.dev/vue/history-and-persistence.html) - by [@patak-dev](https://github.com/patak-dev)

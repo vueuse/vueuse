@@ -37,6 +37,8 @@ export interface UseVibrateOptions extends ConfigurableNavigator {
  * @see https://vueuse.org/useVibrate
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useVibrate(options?: UseVibrateOptions) {
   const {

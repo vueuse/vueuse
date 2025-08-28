@@ -55,8 +55,8 @@ export interface MagicKeysInternal {
   current: Set<string>
 }
 
-export type UseMagicKeysReturn<Reactive extends boolean> =
-  Readonly<
+export type UseMagicKeysReturn<Reactive extends boolean>
+  = Readonly<
     Omit<Reactive extends true
       ? Record<string, boolean>
       : Record<string, ComputedRef<boolean>>, keyof MagicKeysInternal>
@@ -121,9 +121,13 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): any {
       setRefs(key, value)
     }
     if (key === 'shift' && !value) {
-      shiftDeps.forEach((key) => {
-        current.delete(key)
-        setRefs(key, false)
+      const shiftDepsArray = Array.from(shiftDeps)
+      const shiftIndex = shiftDepsArray.indexOf('shift')
+      shiftDepsArray.forEach((key, index) => {
+        if (index >= shiftIndex) {
+          current.delete(key)
+          setRefs(key, false)
+        }
       })
       shiftDeps.clear()
     }

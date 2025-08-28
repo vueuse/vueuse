@@ -11,6 +11,8 @@ export interface UseFirebaseAuthOptions {
  * Reactive Firebase Auth binding
  *
  * @see https://vueuse.org/useAuth
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useAuth(auth: Auth) {
   const user = deepRef<User | null>(auth.currentUser)

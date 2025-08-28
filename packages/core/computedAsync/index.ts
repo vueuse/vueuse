@@ -16,13 +16,13 @@ import {
  */
 export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 
-export interface AsyncComputedOptions {
+export interface AsyncComputedOptions<Lazy = boolean> {
   /**
    * Should value be evaluated lazily
    *
    * @default false
    */
-  lazy?: boolean
+  lazy?: Lazy
 
   /**
    * Ref passed to receive the updated of async evaluation
@@ -63,22 +63,22 @@ export interface AsyncComputedOptions {
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState: T,
-  optionsOrRef: AsyncComputedOptions & { lazy: true },
+  optionsOrRef: AsyncComputedOptions<true>,
 ): ComputedRef<T>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState: undefined,
-  optionsOrRef: AsyncComputedOptions & { lazy: true },
+  optionsOrRef: AsyncComputedOptions<true>,
 ): ComputedRef<T | undefined>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState: T,
-  optionsOrRef?: Ref<boolean> | (AsyncComputedOptions & { lazy?: false | undefined }),
+  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
 ): Ref<T>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState?: undefined,
-  optionsOrRef?: Ref<boolean> | (AsyncComputedOptions & { lazy?: false | undefined }),
+  optionsOrRef?: Ref<boolean> | AsyncComputedOptions,
 ): Ref<T | undefined>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
@@ -101,7 +101,7 @@ export function computedAsync<T>(
     flush = 'pre',
     evaluating = undefined,
     shallow = true,
-    onError = noop,
+    onError = globalThis.reportError ?? noop,
   } = options
 
   const started = shallowRef(!lazy)

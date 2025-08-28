@@ -1,7 +1,7 @@
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { useTimeoutFn } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, toValue } from 'vue'
+import { ref as deepRef, readonly, shallowReadonly, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -29,9 +29,10 @@ export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator 
 
 export interface UseClipboardItemsReturn<Optional> {
   isSupported: ComputedRef<boolean>
-  content: ComputedRef<ClipboardItems>
-  copied: ComputedRef<boolean>
+  content: Readonly<Ref<ClipboardItems>>
+  copied: Readonly<ShallowRef<boolean>>
   copy: Optional extends true ? (content?: ClipboardItems) => Promise<void> : (text: ClipboardItems) => Promise<void>
+  read: () => void
 }
 
 /**
@@ -39,6 +40,8 @@ export interface UseClipboardItemsReturn<Optional> {
  *
  * @see https://vueuse.org/useClipboardItems
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useClipboardItems(options?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>
 export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems>>): UseClipboardItemsReturn<true>
@@ -63,8 +66,9 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
     }
   }
 
-  if (isSupported.value && read)
+  if (isSupported.value && read) {
     useEventListener(['copy', 'cut'], updateContent, { passive: true })
+  }
 
   async function copy(value = toValue(source)) {
     if (isSupported.value && value != null) {
@@ -78,8 +82,9 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
 
   return {
     isSupported,
-    content: content as ComputedRef<ClipboardItems>,
-    copied: copied as ComputedRef<boolean>,
+    content: shallowReadonly(content),
+    copied: readonly(copied),
     copy,
+    read: updateContent,
   }
 }

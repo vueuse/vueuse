@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
-import { templateRef, unrefElement } from '@vueuse/core'
+import { unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, shallowRef } from 'vue'
+import { defineComponent, shallowRef, useTemplateRef } from 'vue'
 import { useSortable } from './index'
 
 describe('useSortable', () => {
@@ -10,7 +10,7 @@ describe('useSortable', () => {
     const wrapper = mount(defineComponent({
       template: '<div ref="el"></div>',
       setup() {
-        const el = templateRef<HTMLElement>('el')
+        const el = useTemplateRef<HTMLElement>('el')
         const list = shallowRef<string[]>([])
         const result = useSortable(el, list, {
         })
@@ -20,7 +20,7 @@ describe('useSortable', () => {
     }))
     const vm = wrapper.vm
     try {
-      const sortable = Sortable.get(vm.el)
+      const sortable = Sortable.get(vm.el!)
       expect(sortable).toBeDefined()
     }
     finally {
@@ -32,7 +32,7 @@ describe('useSortable', () => {
     const wrapper = mount(defineComponent({
       template: '<div ref="el" id="el"></div>',
       setup() {
-        const el = templateRef<HTMLElement>('el')
+        const el = useTemplateRef<HTMLElement>('el')
         const list = shallowRef<string[]>([])
         const result = useSortable('#el', list, {
         })
@@ -44,7 +44,7 @@ describe('useSortable', () => {
     })
     const vm = wrapper.vm
     try {
-      const sortable = Sortable.get(vm.el)
+      const sortable = Sortable.get(vm.el!)
       expect(sortable).toBeDefined()
     }
     finally {
@@ -57,7 +57,7 @@ describe('useSortable', () => {
       const wrapper = mount(defineComponent({
         template: '<div ref="el"></div>',
         setup() {
-          const el = templateRef<HTMLElement>('el')
+          const el = useTemplateRef<HTMLElement>('el')
           const list = shallowRef<string[]>([])
           const result = useSortable(el, list, {
           })
@@ -67,10 +67,10 @@ describe('useSortable', () => {
       }))
       const vm = wrapper.vm
       try {
-        const sortable = Sortable.get(vm.el)
+        const sortable = Sortable.get(vm.el!)
         expect(sortable).toBeDefined()
         vm.stop()
-        expect(Sortable.get(vm.el)).toEqual(null)
+        expect(Sortable.get(vm.el!)).toEqual(null)
       }
       finally {
         wrapper.unmount()
@@ -83,7 +83,7 @@ describe('useSortable', () => {
       const wrapper = mount(defineComponent({
         template: '<div ref="el"></div>',
         setup() {
-          const el = templateRef<HTMLElement>('el')
+          const el = useTemplateRef<HTMLElement>('el')
           const list = shallowRef<string[]>([])
           const result = useSortable(el, list, {
           })
@@ -93,12 +93,12 @@ describe('useSortable', () => {
       }))
       const vm = wrapper.vm
       try {
-        const sortable = Sortable.get(vm.el)
+        const sortable = Sortable.get(vm.el!)
         expect(sortable).toBeDefined()
         vm.stop()
-        expect(Sortable.get(vm.el)).toEqual(null)
+        expect(Sortable.get(vm.el!)).toEqual(null)
         vm.start()
-        expect(Sortable.get(vm.el)).toBeDefined()
+        expect(Sortable.get(vm.el!)).toBeDefined()
       }
       finally {
         wrapper.unmount()
@@ -111,7 +111,7 @@ describe('useSortable', () => {
       const wrapper = mount(defineComponent({
         template: '<div ref="el"></div>',
         setup() {
-          const el = templateRef<HTMLElement>('el')
+          const el = useTemplateRef<HTMLElement>('el')
           const list = shallowRef<string[]>([])
           const result = useSortable(el, list, {
           })
@@ -121,7 +121,7 @@ describe('useSortable', () => {
       }))
       const vm = wrapper.vm
       try {
-        const sortable = Sortable.get(vm.el)
+        const sortable = Sortable.get(vm.el!)
         expect(sortable?.option('disabled')).toEqual(false)
         vm.option('disabled', true)
         expect(sortable?.option('disabled')).toEqual(true)
@@ -135,7 +135,7 @@ describe('useSortable', () => {
       const wrapper = mount(defineComponent({
         template: '<div ref="el"></div>',
         setup() {
-          const el = templateRef<HTMLElement>('el')
+          const el = useTemplateRef<HTMLElement>('el')
           const list = shallowRef<string[]>([])
           const result = useSortable(el, list, {
           })
@@ -161,7 +161,7 @@ describe('useSortable', () => {
       components: { SubComponent },
       template: '<SubComponent ref="el"></SubComponent>',
       setup() {
-        const el = templateRef<InstanceType<typeof SubComponent>>('el')
+        const el = useTemplateRef<InstanceType<typeof SubComponent>>('el')
         const list = shallowRef<string[]>([])
         const result = useSortable(el, list, {
         })
