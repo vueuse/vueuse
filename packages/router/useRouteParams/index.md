@@ -17,6 +17,11 @@ const userId = useRouteParams('userId', '-1') // or with a default value
 
 const userId = useRouteParams('page', '1', { transform: Number }) // or transforming value
 
+const params = useRouteParams({
+  userId: 'default',
+  page: '1'
+}) // Get all parameters as object
+
 console.log(userId.value) // route.params.userId
 userId.value = '100' // router.replace({ params: { userId: '100' } })
 ```

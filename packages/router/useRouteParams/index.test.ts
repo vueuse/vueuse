@@ -359,4 +359,41 @@ describe('useRouteParams', () => {
     expect(page.value).toBe(2)
     expect(lang.value).toBe('en-US')
   })
+  it('should handle entire params object', async () => {
+    let route = getRoute({ id: '1', name: 'test' })
+    const router = { replace: (r: any) => route = r } as any
+
+    const params = useRouteParams({ id: 'default', name: 'default' }, { route, router })
+
+    expect(params.value).toEqual({ id: '1', name: 'test' })
+
+    params.value = { id: '2', name: 'vue' }
+    await nextTick()
+
+    expect(route.params).toEqual({ id: '2', name: 'vue' })
+  })
+
+  it('should handle transform for entire params object', async () => {
+    let route = getRoute({ count: '5' })
+    const router = { replace: (r: any) => route = r } as any
+
+    const params = useRouteParams<{ count: string }, { count: number }>(
+      { count: '0' },
+      {
+        transform: {
+          get: v => ({ count: Number(v.count) }),
+          set: v => ({ count: String(v.count) }),
+        },
+        route,
+        router,
+      },
+    )
+
+    expect(params.value).toEqual({ count: 5 })
+
+    params.value = { count: 10 }
+    await nextTick()
+
+    expect(route.params.count).toBe('10')
+  })
 })
