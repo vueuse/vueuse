@@ -7,9 +7,7 @@ describe('createSharedComposable', () => {
     const useShared = createSharedComposable(() => shallowRef('data'))
     const data1 = useShared()
     const data2 = useShared()
-    data2.value = 'data2'
 
-    expect(data1.value).toBe('data2')
     expect(data1).toBe(data2)
   })
 })
