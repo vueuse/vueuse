@@ -96,7 +96,7 @@ export function createReusableTemplate<
   return makeDestructurable(
     { define, reuse },
     [define, reuse],
-  ) as any
+  ) as ReusableTemplatePair<Bindings, MapSlotNameToSlotProps>
 }
 
 function keysToCamelKebabCase(obj: Record<string, any>) {
