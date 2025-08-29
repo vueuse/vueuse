@@ -7,8 +7,6 @@ catalogs:
     '@antfu/eslint-config': ^5.2.1
     '@antfu/ni': ^25.0.0
     '@iconify/json': ^2.2.378
-    '@rollup/plugin-json': ^6.1.0
-    '@rollup/plugin-replace': ^6.0.2
     '@vitejs/plugin-vue': ^6.0.1
     '@vue/compiler-sfc': ^3.5.20
     bumpp: ^10.2.3
@@ -27,15 +25,12 @@ catalogs:
     postcss-nested: ^7.0.2
     prettier: ^3.6.2
     rolldown-vite: ^7.1.5
-    rollup: ^4.49.0
-    rollup-plugin-dts: ^6.2.3
-    rollup-plugin-esbuild: ^6.2.1
-    rollup-plugin-pure: ^0.4.0
     sharp: ^0.34.3
     simple-git: ^3.28.0
     simple-git-hooks: ^2.13.1
     taze: ^19.3.0
     tinyglobby: ^0.2.14
+    tsdown: ^0.14.2
     tsx: ^4.20.5
     typescript: ^5.9.2
     unimport: ^5.2.0

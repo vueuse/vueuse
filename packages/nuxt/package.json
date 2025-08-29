@@ -24,19 +24,18 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./index.mjs",
-    "./*": "./*"
+    ".": "./dist/index.js",
+    "./*": "./dist/*"
   },
-  "main": "./index.mjs",
-  "module": "./index.mjs",
-  "types": "./index.d.mts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "files": [
-    "*.d.mts",
-    "*.js",
-    "*.mjs"
+    "dist",
+    "ssr-plugin.mjs"
   ],
   "scripts": {
-    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "build": "tsdown",
     "prepack": "pnpm run build",
     "test:attw": "attw --pack --config-path ../../.attw.json ."
   },

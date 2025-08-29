@@ -21,21 +21,21 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./index.mjs",
+    ".": "./index.js",
     "./*": "./*"
   },
-  "main": "./index.mjs",
-  "module": "./index.mjs",
+  "main": "./index.js",
+  "module": "./index.js",
   "unpkg": "./index.iife.min.js",
   "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.mts",
+  "types": "./index.d.ts",
   "files": [
-    "*.d.mts",
+    "*.d.ts",
     "*.js",
     "*.mjs"
   ],
   "scripts": {
-    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
+    "build": "tsdown",
     "prepack": "pnpm run build",
     "test:attw": "attw --pack --config-path ../../.attw.json ."
   },

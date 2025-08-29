@@ -1,6 +1,6 @@
 import { packages } from '../../meta/packages'
-import { createRollupConfig } from '../../rollup.config'
+import { createTsDownConfig } from '../../tsdown.config'
 
-export default createRollupConfig(
+export default createTsDownConfig(
   packages.find(pkg => pkg.name === 'rxjs')!,
 )
