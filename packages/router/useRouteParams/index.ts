@@ -1,3 +1,4 @@
+import type { Maybe } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
@@ -22,7 +23,7 @@ export function useRouteParams<
 ): Ref<K>
 
 export function useRouteParams<
-  T extends Record<string, RouteParamValueRaw> = Record<string, RouteParamValueRaw>,
+  T extends Maybe<Record<string, RouteParamValueRaw>> = Maybe<Record<string, RouteParamValueRaw>>,
   K = T,
 >(
   defaultValue?: MaybeRefOrGetter<T>,
@@ -31,7 +32,7 @@ export function useRouteParams<
 export function useRouteParams<
   T extends RouteParamValueRaw | Record<string, RouteParamValueRaw>,
   K = T,
->(...args: any[]): Ref<K> {
+>(...args: unknown[]): Ref<K> {
   const { name, defaultValue, options } = parseArgs<T, K>(args)
   const {
     mode = 'replace',
@@ -86,7 +87,7 @@ export function useRouteParams<
           _paramsQueue.set(name, param)
         }
         else {
-          Object.entries(param).forEach(([key, value]) => {
+          Object.entries(param || {}).forEach(([key, value]) => {
             _paramsQueue.set(key, value)
           })
         }

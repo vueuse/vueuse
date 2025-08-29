@@ -1,3 +1,4 @@
+import type { Maybe } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
@@ -22,7 +23,7 @@ export function useRouteQuery<
 ): Ref<K>
 
 export function useRouteQuery<
-  T extends Record<string, RouteQueryValueRaw> = Record<string, RouteQueryValueRaw>,
+  T extends Maybe<Record<string, RouteQueryValueRaw>> = Maybe<Record<string, RouteQueryValueRaw>>,
   K = T,
 >(
   defaultValue?: MaybeRefOrGetter<T>,
@@ -30,10 +31,10 @@ export function useRouteQuery<
 ): Ref<K>
 
 export function useRouteQuery<
-  T extends RouteQueryValueRaw = RouteQueryValueRaw,
+  T extends RouteQueryValueRaw | Record<string, RouteQueryValueRaw>,
   K = T,
 >(
-  ...args: any[]
+  ...args: unknown[]
 ): Ref<K> {
   const { name, defaultValue, options } = parseArgs<T, K>(args)
   const {
@@ -89,7 +90,7 @@ export function useRouteQuery<
           _queriesQueue.set(name, query)
         }
         else {
-          Object.entries(query).forEach(([key, value]) => {
+          Object.entries(query || {}).forEach(([key, value]) => {
             _queriesQueue.set(key, value)
           })
         }

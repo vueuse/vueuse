@@ -9,11 +9,11 @@ export function parseArgs<T, K = T>(args: any[]) {
   if (typeof maybeName === 'string') {
     name = args[0]
     defaultValue = args[1]
-    options = args[2] ?? {}
+    options = args[2] || {}
   }
   else {
-    defaultValue = args[0]
-    options = args[1] ?? {}
+    defaultValue = args[0] || {}
+    options = args[1] || {}
   }
   return {
     name,

@@ -153,3 +153,8 @@ export type IsAny<T> = IfAny<T, true, false>
  * Universal timer handle that works in both browser and Node.js environments
  */
 export type TimerHandle = ReturnType<typeof setTimeout> | undefined
+
+/**
+ * maybe null and undefined
+ */
+export type Maybe<T> = T | null | undefined
