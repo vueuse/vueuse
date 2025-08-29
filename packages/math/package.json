@@ -23,18 +23,16 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./index.js",
-    "./*": "./*"
+    ".": "./dist/index.js",
+    "./*": "./dist/*"
   },
-  "main": "./index.js",
-  "module": "./index.js",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "unpkg": "./dist/index.iife.min.js",
+  "jsdelivr": "./dist/index.iife.min.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "*.d.ts",
-    "*.js",
-    "*.mjs"
+    "dist"
   ],
   "scripts": {
     "build": "tsdown",

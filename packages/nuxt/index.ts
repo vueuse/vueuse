@@ -87,7 +87,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     nuxt.options.build.transpile.push(...fullPackages)
 
     if (options.ssrHandlers) {
-      const pluginPath = resolve(_dirname, '../ssr-plugin.mjs')
+      const pluginPath = resolve(_dirname, './ssr-plugin.mjs')
       nuxt.options.plugins = nuxt.options.plugins || []
       nuxt.options.plugins.push(pluginPath)
       nuxt.options.build.transpile.push(pluginPath)

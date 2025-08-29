@@ -21,17 +21,14 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./index.js",
-    "./*": "./*"
+    ".": "./dist/index.js",
+    "./*": "./dist/*"
   },
-  "main": "./index.js",
-  "module": "./index.js",
-  "types": "./index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "*.d.ts",
-    "*.js",
-    "*.mjs",
-    "index.json"
+    "dist"
   ],
   "scripts": {
     "update": "tsx scripts/update.ts",
