@@ -27,6 +27,7 @@
     "size": "tsx scripts/export-size.ts",
     "test": "nr test:unit",
     "test:cov": "vitest run --coverage --project=\"browser (chromium)\" --project=unit",
+    "test:server": "vitest --project=\"server*\"",
     "test:browser": "vitest --project=\"browser*\"",
     "test:firefox": "vitest --project=\"browser (firefox)\"",
     "test:chromium": "vitest --project=\"browser (chromium)\"",
