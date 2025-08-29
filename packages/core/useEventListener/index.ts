@@ -122,11 +122,7 @@ export function useEventListener<EventType = Event>(
 ): Fn
 
 export function useEventListener(...args: Parameters<typeof useEventListener>) {
-  const cleanups: Function[] = []
-  const cleanup = () => {
-    cleanups.forEach(fn => fn())
-    cleanups.length = 0
-  }
+  let controller = new AbortController()
 
   const register = (
     el: EventTarget,
@@ -134,8 +130,8 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
     listener: any,
     options: boolean | AddEventListenerOptions | undefined,
   ) => {
-    el.addEventListener(event, listener, options)
-    return () => el.removeEventListener(event, listener, options)
+    const normalizedOptions = typeof options == 'boolean' ? (options ? { capture: true } : { capture: false }) : options
+    el.addEventListener(event, listener, { ...normalizedOptions, signal: normalizedOptions?.signal !== undefined ? AbortSignal.any([normalizedOptions.signal, controller.signal]) : controller.signal })
   }
 
   const firstParamTargets = computed(() => {
@@ -152,30 +148,30 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
       toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
     ] as const,
     ([raw_targets, raw_events, raw_listeners, raw_options]) => {
-      cleanup()
-
+      controller.abort()
       if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
         return
 
+      controller = new AbortController()
       // create a clone of options, to avoid it being changed reactively on removal
       const optionsClone = isObject(raw_options) ? { ...raw_options } : raw_options
-      cleanups.push(
-        ...raw_targets.flatMap(el =>
-          raw_events.flatMap(event =>
-            raw_listeners.map(listener => register(el, event, listener, optionsClone)),
-          ),
-        ),
-      )
+      for (const el of raw_targets) {
+        for (const ev of raw_events) {
+          for (const listener of raw_listeners) {
+            register(el, ev, listener, optionsClone)
+          }
+        }
+      }
     },
     { flush: 'post' },
   )
 
   const stop = () => {
     stopWatch()
-    cleanup()
+    controller.abort()
   }
 
-  tryOnScopeDispose(cleanup)
+  tryOnScopeDispose(() => controller.abort())
 
   return stop
 }
