@@ -1,10 +1,6 @@
-import type { PackageIndexes, PackageManifest } from '@vueuse/metadata'
-import type { Format, UserConfig } from 'tsdown'
-import { readFileSync } from 'node:fs'
+import type { PackageManifest } from '@vueuse/metadata'
+import type { Format, Options, UserConfig } from 'tsdown'
 import { globSync } from 'tinyglobby'
-
-const metadata = JSON.parse(readFileSync(new URL('./packages/metadata/index.json', import.meta.url), 'utf-8'))
-const functions = metadata.functions as PackageIndexes['functions']
 
 const externals = [
   'vue',
@@ -13,6 +9,7 @@ const externals = [
 
 export function createTsDownConfig(
   pkg: PackageManifest,
+  copy?: Options['copy'],
   cwd = process.cwd(),
 ) {
   const { globals, external, submodules, iife, build, mjs, dts, target = 'es2018' } = pkg
@@ -29,6 +26,9 @@ export function createTsDownConfig(
     ...(globals || {}),
   }
 
+  const entry = ['index.ts']
+  const format: Format[] = []
+
   const iifeName = 'VueUse'
   const functionNames = ['index']
 
@@ -39,58 +39,39 @@ export function createTsDownConfig(
     ).map(i => i.split('/')[0]))
   }
 
-  for (const fn of functionNames) {
-    const entry = fn === 'index'
-      ? `index.ts`
-      : `${fn}/index.ts`
+  if (mjs !== false) {
+    format.push('es')
+  }
 
-    const info = functions.find(i => i.name === fn)
+  configs.push({
+    entry,
+    target,
+    format,
+    dts,
+    copy,
+    external: [
+      ...externals,
+      ...(external || []),
+    ],
+  })
 
-    const format: Format[] = []
-
-    if (mjs !== false) {
-      format.push('es')
-    }
-
-    configs.push({
+  if (iife !== false) {
+    const baseIIFEConfig: UserConfig = {
       entry,
-      target,
-      format,
-      dts,
-      external: [
-        ...externals,
-        ...(external || []),
-      ],
-    })
-
-    if (iife !== false) {
-      const baseIIFEConfig: UserConfig = {
-        entry,
-        format: 'iife',
-        name: iifeName,
-        alias: iifeGlobals,
-      }
-      configs.push(
-        baseIIFEConfig,
-        {
-          ...baseIIFEConfig,
-          minify: true,
-          outExtensions: () => ({
-            js: '.min.js',
-          }),
-        },
-      )
+      format: 'iife',
+      name: iifeName,
+      alias: iifeGlobals,
     }
-
-    if (info?.component) {
-      configs.push({
-        entry: `${fn}/component.ts`,
-        external: [
-          ...externals,
-          ...(external || []),
-        ],
-      })
-    }
+    configs.push(
+      baseIIFEConfig,
+      {
+        ...baseIIFEConfig,
+        minify: true,
+        outExtensions: () => ({
+          js: '.min.js',
+        }),
+      },
+    )
   }
 
   return configs
