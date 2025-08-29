@@ -34,9 +34,9 @@ export function useRouteParams<
 ): Ref<K>
 
 export function useRouteParams<
-  R extends Maybe<Record<string, RouteParamValue>> = Maybe<Record<string, RouteParamValue>>,
+  R extends Record<string, RouteParamValue> = Record<string, RouteParamValue>,
   D extends Maybe<Record<string, RouteParamValueRaw>> = R,
-  T = WithDefault<R, ToPrimitive<D>>,
+  T = WithDefault<R, NonNullable<ToPrimitive<D>>>,
   K = T,
 >(
   defaultValue?: MaybeRefOrGetter<D>,
@@ -44,8 +44,8 @@ export function useRouteParams<
 ): Ref<K>
 
 export function useRouteParams<
-  M extends keyof RouteMap,
-  N extends keyof RouteParams<M> = keyof RouteParams<M>,
+  M extends keyof RouteMap = keyof RouteMap,
+  N extends string | number | symbol = keyof RouteParams<M>,
   R extends GetRouteParams<M, N> = GetRouteParams<M, N>,
   D extends GetRouteParams<M, N> | RouteParamValueRaw = R,
   T = WithDefault<R, ToPrimitive<D>>,
@@ -57,10 +57,10 @@ export function useRouteParams<
 ): Ref<K>
 
 export function useRouteParams<
-  M extends keyof RouteMap,
+  M extends keyof RouteMap = keyof RouteMap,
   R extends GetRouteParams<M> = GetRouteParams<M>,
   D extends GetRouteParams<M> | Maybe<Record<string, RouteParamValueRaw>> = R,
-  T = WithDefault<R, ToPrimitive<D>>,
+  T = WithDefault<R, NonNullable<ToPrimitive<D>>>,
   K = T,
 >(
   defaultValue: MaybeRefOrGetter<D | R>,

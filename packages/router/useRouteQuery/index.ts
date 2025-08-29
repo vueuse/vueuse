@@ -2,7 +2,7 @@ import type { Maybe } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { Router } from 'vue-router'
 import type {
-  ReactiveRouteOptionsWithTransform,
+  ReactiveRouteOptionsWithName,
   RouteQueryValue,
   RouteQueryValueRaw,
   RouteType,
@@ -28,17 +28,17 @@ export function useRouteQuery<
 >(
   name: string,
   defaultValue?: MaybeRefOrGetter<D>,
-  options?: ReactiveRouteOptionsWithTransform<T, K>
+  options?: ReactiveRouteOptionsWithName<T, K>
 ): Ref<K>
 
 export function useRouteQuery<
-  R extends Maybe<Record<string, RouteQueryValue>> = Maybe<Record<string, RouteQueryValue>>,
+  R extends Record<string, RouteQueryValue> = Record<string, RouteQueryValue>,
   D extends Maybe<Record<string, RouteQueryValueRaw>> = R,
-  T = WithDefault<R, ToPrimitive<D>>,
+  T = WithDefault<R, NonNullable<ToPrimitive<D>>>,
   K = T,
 >(
   defaultValue?: MaybeRefOrGetter<D>,
-  options?: ReactiveRouteOptionsWithTransform<T, K>
+  options?: ReactiveRouteOptionsWithName<T, K>
 ): Ref<K>
 
 export function useRouteQuery<

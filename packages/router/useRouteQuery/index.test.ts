@@ -398,11 +398,14 @@ describe('useRouteQuery', () => {
   })
   it('should handle entire query object', async () => {
     let route = getRoute({ id: '1', name: 'test' })
+    const route2 = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
     const query = useRouteQuery({ id: 'default', name: 'default' }, { route, router })
+    const query2 = useRouteQuery(null, { route: route2, router })
 
     expect(query.value).toEqual({ id: '1', name: 'test' })
+    expect(query2.value).toEqual({})
 
     query.value = { id: '2', name: 'vue' }
     await nextTick()
