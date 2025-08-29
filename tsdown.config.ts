@@ -1,6 +1,10 @@
-import type { PackageManifest } from '@vueuse/metadata'
+import type { PackageIndexes, PackageManifest } from '@vueuse/metadata'
 import type { Format, Options, UserConfig } from 'tsdown'
+import { readFileSync } from 'node:fs'
 import { globSync } from 'tinyglobby'
+
+const metadata = JSON.parse(readFileSync(new URL('./packages/metadata/index.json', import.meta.url), 'utf-8'))
+const functions = metadata.functions as PackageIndexes['functions']
 
 const externals = [
   'vue',
@@ -82,6 +86,17 @@ export function createTsDownConfig(
           }),
         },
       )
+    }
+
+    const info = functions.find(i => i.name === fn)
+
+    if (info?.component) {
+      configs.push({
+        ...baseConfig,
+        entry: {
+          [`${fn}/component`]: `${fn}/component.ts`,
+        },
+      })
     }
   }
 
