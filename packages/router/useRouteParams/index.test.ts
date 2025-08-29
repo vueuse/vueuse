@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
 import { useRouteParams } from './index'
@@ -46,10 +45,10 @@ describe('useRouteParams', () => {
     })
     const router = { replace: (r: any) => route = r } as any
 
-    const object = useRouteParams('serialized', undefined, {
+    const object = useRouteParams('serialized', '{}', {
       transform: {
-        get: (value: string) => JSON.parse(value),
-        set: (value: any) => JSON.stringify(value),
+        get: value => JSON.parse(value) as { foo?: string },
+        set: value => JSON.stringify(value),
       },
       router,
       route,
@@ -71,9 +70,9 @@ describe('useRouteParams', () => {
     })
     const router = { replace: (r: any) => route = r } as any
 
-    const search = useRouteParams('search', undefined, {
+    const search = useRouteParams('search', '', {
       transform: {
-        get: (value: string) => value.toLowerCase(),
+        get: value => value.toLowerCase(),
       },
       router,
       route,
@@ -87,9 +86,9 @@ describe('useRouteParams', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const search = useRouteParams('search', undefined, {
+    const search = useRouteParams('search', '', {
       transform: {
-        set: (value: string) => value.toLowerCase(),
+        set: value => value.toLowerCase(),
       },
       router,
       route,
@@ -107,9 +106,9 @@ describe('useRouteParams', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const slug: Ref<any> = useRouteParams('slug', 'foo', { route, router })
-    const id: Ref<any> = useRouteParams('id', '123', { route, router })
-    const page: Ref<any> = useRouteParams('page', null, { route, router })
+    const slug = useRouteParams('slug', 'foo', { route, router })
+    const id = useRouteParams('id', '123', { route, router })
+    const page = useRouteParams('page', null, { route, router })
 
     slug.value = 'bar'
     id.value = '456'
@@ -124,9 +123,9 @@ describe('useRouteParams', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const code: Ref<any> = useRouteParams('code', null, { route, router })
-    const page: Ref<any> = useRouteParams('page', null, { route, router })
-    const lang: Ref<any> = useRouteParams('lang', null, { route, router })
+    const code = useRouteParams('code', null, { route, router })
+    const page = useRouteParams('page', null, { route, router })
+    const lang = useRouteParams('lang', null, { route, router })
 
     code.value = 'bar'
     page.value = '1'
@@ -146,8 +145,8 @@ describe('useRouteParams', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const page: Ref<any> = useRouteParams('page', 10, { route, router })
-    const lang: Ref<any> = useRouteParams('lang', 'pt-BR', { route, router })
+    const page = useRouteParams('page', 10, { route, router })
+    const lang = useRouteParams('lang', 'pt-BR', { route, router })
 
     expect(page.value).toBe(10)
     expect(lang.value).toBe('pt-BR')
@@ -158,7 +157,7 @@ describe('useRouteParams', () => {
     let route = getRoute({ page: '' })
     const router = { replace: (r: any) => route = r } as any
 
-    const page: Ref<any> = useRouteParams('page', 'default', { route, router })
+    const page = useRouteParams('page', 'default', { route, router })
 
     expect(page.value).toBe('default')
   })
@@ -169,10 +168,10 @@ describe('useRouteParams', () => {
     const scopeA = effectScope()
     const scopeB = effectScope()
 
-    let page: Ref<any> = deepRef(null)
-    let lang: Ref<any> = deepRef(null)
-    let code: Ref<any> = deepRef(null)
-    let slug: Ref<any> = deepRef(null)
+    let page = deepRef<number | null>(null)
+    let lang = deepRef<string | null>(null)
+    let code = deepRef<string | null>(null)
+    let slug = deepRef<string | null>(null)
 
     await scopeA.run(async () => {
       page = useRouteParams('page', null, { route, router })
@@ -228,12 +227,12 @@ describe('useRouteParams', () => {
     route.params.page = 2
 
     const defaultPage = 'DEFAULT_PAGE'
-    let page1: Ref<any> = deepRef(null)
+    let page1 = deepRef(null)
     await scopeA.run(async () => {
       page1 = useRouteParams('page', defaultPage, { route, router })
     })
 
-    let page2: Ref<any> = deepRef(null)
+    let page2 = deepRef(null)
     await scopeB.run(async () => {
       page2 = useRouteParams('page', defaultPage, { route, router })
     })
@@ -252,7 +251,7 @@ describe('useRouteParams', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const lang: Ref<any> = useRouteParams('lang', null, { route, router })
+    const lang = useRouteParams('lang', null, { route, router })
 
     expect(lang.value).toBeNull()
 
@@ -329,7 +328,7 @@ describe('useRouteParams', () => {
     route.query = { foo: 'bar' }
     route.hash = '#hash'
 
-    const id: Ref<any> = useRouteParams('id', null, { route, router })
+    const id = useRouteParams('id', null, { route, router })
 
     id.value = '2'
 
@@ -347,8 +346,8 @@ describe('useRouteParams', () => {
     const defaultPage = shallowRef(1)
     const defaultLang = () => 'pt-BR'
 
-    const page: Ref<any> = useRouteParams('page', defaultPage, { route, router })
-    const lang: Ref<any> = useRouteParams('lang', defaultLang, { route, router })
+    const page = useRouteParams('page', defaultPage, { route, router })
+    const lang = useRouteParams('lang', defaultLang, { route, router })
 
     expect(page.value).toBe(1)
     expect(lang.value).toBe('pt-BR')
@@ -377,7 +376,7 @@ describe('useRouteParams', () => {
     let route = getRoute({ count: '5' })
     const router = { replace: (r: any) => route = r } as any
 
-    const params = useRouteParams<{ count: string }, { count: number }>(
+    const params = useRouteParams(
       { count: '0' },
       {
         transform: {
