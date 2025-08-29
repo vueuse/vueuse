@@ -1,9 +1,9 @@
-import type { MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
+import type { DeepReadonly, MaybeRef, Ref, ShallowRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, toValue } from 'vue'
+import { readonly, shallowRef, toValue } from 'vue'
 
-export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
-  state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
+export interface UseAsyncStateReturnBase<Data, Params extends any[]> {
+  state: DeepReadonly<ShallowRef<Data>>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<unknown>
@@ -11,11 +11,11 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
   executeImmediate: (...args: Params) => Promise<Data>
 }
 
-export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean>
-  = UseAsyncStateReturnBase<Data, Params, Shallow>
-    & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
+export type UseAsyncStateReturn<Data, Params extends any[]>
+  = UseAsyncStateReturnBase<Data, Params>
+    & PromiseLike<UseAsyncStateReturnBase<Data, Params>>
 
-export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
+export interface UseAsyncStateOptions<D = any> {
   /**
    * Delay for the first execution of the promise when "immediate" is true. In milliseconds.
    *
@@ -56,12 +56,6 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
   resetOnExecute?: boolean
 
   /**
-   * Use shallowRef.
-   *
-   * @default true
-   */
-  shallow?: Shallow
-  /**
    *
    * An error is thrown when executing the execute function
    *
@@ -79,21 +73,20 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
  * @param initialState    The initial state, used until the first evaluation finishes
  * @param options
  */
-export function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(
+export function useAsyncState<Data, Params extends any[] = any[]>(
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: MaybeRef<Data>,
-  options?: UseAsyncStateOptions<Shallow, Data>,
-): UseAsyncStateReturn<Data, Params, Shallow> {
+  options?: UseAsyncStateOptions<Data>,
+): UseAsyncStateReturn<Data, Params> {
   const {
     immediate = true,
     delay = 0,
     onError = globalThis.reportError ?? noop,
     onSuccess = noop,
     resetOnExecute = true,
-    shallow = true,
     throwError,
   } = options ?? {}
-  const state = shallow ? shallowRef(initialState) : deepRef(initialState)
+  const state = shallowRef(initialState)
   const isReady = shallowRef(false)
   const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
@@ -135,8 +128,8 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     execute(delay)
   }
 
-  const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
-    state: state as Shallow extends true ? ShallowRef<Data> : Ref<UnwrapRef<Data>>,
+  const shell: UseAsyncStateReturnBase<Data, Params> = {
+    state: readonly(state) as DeepReadonly<ShallowRef<Data>>,
     isReady,
     isLoading,
     error,
@@ -145,7 +138,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   }
 
   function waitUntilIsLoaded() {
-    return new Promise<UseAsyncStateReturnBase<Data, Params, Shallow>>((resolve, reject) => {
+    return new Promise<UseAsyncStateReturnBase<Data, Params>>((resolve, reject) => {
       until(isLoading).toBe(false).then(() => resolve(shell)).catch(reject)
     })
   }
