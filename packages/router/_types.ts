@@ -53,6 +53,25 @@ export interface ReactiveRouteOptionsWithName<V, R, N extends string | symbol = 
   name?: N
 }
 
+export type ExtractStringLiteral<T>
+    = T extends string
+      ? string extends T
+        ? never
+        : T
+      : never
+
+export type Merge<T, U> = [ExtractStringLiteral<keyof T>] extends [never]
+  ? [keyof T] extends [never]
+      ? U : T | U
+  : {
+      [K in ExtractStringLiteral<keyof T> | ExtractStringLiteral<keyof U>]:
+      K extends keyof U
+        ? U[K]
+        : K extends keyof T
+          ? T[K]
+          : never;
+    }
+
 export type GetRouteParams<R extends keyof RouteMap, N = unknown>
   = N extends string
     ? N extends keyof RouteParams<R>
@@ -60,7 +79,14 @@ export type GetRouteParams<R extends keyof RouteMap, N = unknown>
       : RouteParamValue
     : RouteParams<R>
 
-export type WithDefault<T, D = T> = NonNullable<T> | D
+export type WithDefault<T, D = T>
+= [D] extends [never]
+  ? NonNullable<T>
+  : NonNullable<T> extends Record<string, any>
+    ? D extends Record<string, any>
+      ? Merge<NonNullable<T>, D>
+      : NonNullable<T> | D
+    : NonNullable<T> | D
 
 export type ToPrimitive<T>
     = T extends string ? string

@@ -49,3 +49,26 @@ export function isEmpty(value: any, options?: {
   }
   return false
 }
+
+export function mergeDefault(value: any, options?: {
+  defaultValue?: unknown
+  exclude?: unknown[]
+}) {
+  const { defaultValue } = options ?? {}
+  if (isEmpty(value, options)) {
+    return defaultValue
+  }
+  if (!value || !defaultValue || typeof value !== 'object' || Array.isArray(value)) {
+    return value
+  }
+  const result: Record<string, any> = {
+    ...value,
+  }
+  Object.entries(defaultValue).forEach(([key, defaultValue]) => {
+    result[key] = mergeDefault(value[key], {
+      ...options,
+      defaultValue,
+    })
+  })
+  return result
+}

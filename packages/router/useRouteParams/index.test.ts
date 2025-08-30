@@ -1,4 +1,5 @@
 import type { ParamValue } from 'vue-router'
+import type { Merge } from '../_types'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
 import { useRouteParams } from './index'
@@ -443,15 +444,15 @@ describe('useRouteParams', () => {
     const params8 = useRouteParams({ foo: 'test' }, { route: route3, router })
     const params9 = useRouteParams({ count: '10', foo: 'test' }, { route: route3, router })
 
-    expectTypeOf(params.value).toEqualTypeOf<Record<string, string | undefined> | { id: string, name: string }>()
+    expectTypeOf(params.value).toEqualTypeOf<Merge<Record<string, string | undefined>, { id: string, name: string }>>()
     expectTypeOf(params2.value).toEqualTypeOf<Record<string, string | undefined>>()
     expectTypeOf(params3.value).toEqualTypeOf<Record<string, string | undefined>>()
-    expectTypeOf(params4.value).toEqualTypeOf<Record<string, string | undefined> | { foo: string }>()
+    expectTypeOf(params4.value).toEqualTypeOf<Merge<Record<string, string | undefined>, { foo: string }>>()
     expectTypeOf(params5.value).toEqualTypeOf<Record<string, string | undefined>>()
     expectTypeOf(params6.value).toEqualTypeOf<Record<string, string | undefined>>()
-    expectTypeOf(params7.value).toEqualTypeOf<Record<string, string | undefined> | { count: string }>()
-    expectTypeOf(params8.value).toEqualTypeOf<Record<string, string | undefined> | { foo: string }>()
-    expectTypeOf(params9.value).toEqualTypeOf<Record<string, string | undefined> | { count: string, foo: string }>()
+    expectTypeOf(params7.value).toEqualTypeOf<Merge<Record<string, string | undefined>, { count: string }>>()
+    expectTypeOf(params8.value).toEqualTypeOf<Merge<Record<string, string | undefined>, { foo: string }>>()
+    expectTypeOf(params9.value).toEqualTypeOf<Merge<Record<string, string | undefined>, { count: string, foo: string }>>()
 
     expect(params.value).toEqual({ id: '1', name: 'test' })
     expect(params2.value).toEqual({})
@@ -460,8 +461,8 @@ describe('useRouteParams', () => {
     expect(params5.value).toEqual({ count: '5' })
     expect(params6.value).toEqual({ count: '5' })
     expect(params7.value).toEqual({ count: '5' })
-    expect(params8.value).toEqual({ count: '5' })
-    expect(params9.value).toEqual({ count: '5' })
+    expect(params8.value).toEqual({ count: '5', foo: 'test' })
+    expect(params9.value).toEqual({ count: '5', foo: 'test' })
 
     params.value = { id: '2', name: 'vue' }
 
@@ -514,12 +515,12 @@ describe('useRouteParams', () => {
     expectTypeOf(params.value).toEqualTypeOf<{ id: string, name: string }>()
     expectTypeOf(params2.value).toEqualTypeOf<Record<never, never>>()
     expectTypeOf(params3.value).toEqualTypeOf<Record<never, never>>()
-    expectTypeOf(params4.value).toEqualTypeOf<Record<never, never> | { foo: string }>()
+    expectTypeOf(params4.value).toEqualTypeOf<{ foo: string }>()
     expectTypeOf(params5.value).toEqualTypeOf<{ count: string }>()
     expectTypeOf(params6.value).toEqualTypeOf<{ count: string }>()
     expectTypeOf(params7.value).toEqualTypeOf<{ count: string }>()
-    expectTypeOf(params8.value).toEqualTypeOf<{ count: string } | { foo: string }>()
-    expectTypeOf(params9.value).toEqualTypeOf<{ count: string } | { count: string, foo: string }>()
+    expectTypeOf(params8.value).toEqualTypeOf<{ count: string, foo: string }>()
+    expectTypeOf(params9.value).toEqualTypeOf<{ count: string, foo: string }>()
 
     expect(params.value).toEqual({ id: '1', name: 'test' })
     expect(params2.value).toEqual({})
@@ -528,8 +529,8 @@ describe('useRouteParams', () => {
     expect(params5.value).toEqual({ count: '5' })
     expect(params6.value).toEqual({ count: '5' })
     expect(params7.value).toEqual({ count: '5' })
-    expect(params8.value).toEqual({ count: '5' })
-    expect(params9.value).toEqual({ count: '5' })
+    expect(params8.value).toEqual({ count: '5', foo: 'test' })
+    expect(params9.value).toEqual({ count: '5', foo: 'test' })
 
     params.value = { id: '2', name: 'vue' }
 

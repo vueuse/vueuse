@@ -1,5 +1,6 @@
 import type { Maybe } from '@vueuse/shared'
 import type { Ref } from 'vue'
+import type { Merge } from '../_types'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { useRouteQuery } from './index'
@@ -443,13 +444,13 @@ describe('useRouteQuery', () => {
     const router = { replace: (r: any) => route = r } as any
     const router2 = { replace: (r: any) => route2 = r } as any
 
-    const query = useRouteQuery({ id: 'default', name: 'default' }, { route, router })
+    const query = useRouteQuery({ id: 'default', name: 'default', foo: 'default' }, { route, router })
     const query2 = useRouteQuery(null, { name: '/foo/[count]', route: route2, router: router2 })
 
-    expectTypeOf(query.value).toEqualTypeOf<Record<string, Maybe<string | string[]>> | { id: string, name: string }>()
+    expectTypeOf(query.value).toEqualTypeOf<Merge<Record<string, Maybe<string | string[]>>, { id: string, name: string, foo: string }>>()
     expectTypeOf(query2.value).toEqualTypeOf<Record<string, Maybe<string | string[]>>>()
 
-    expect(query.value).toEqual({ id: '1', name: 'test' })
+    expect(query.value).toEqual({ id: '1', name: 'test', foo: 'default' })
     expect(query2.value).toEqual({})
 
     query.value = { id: '2', name: 'vue' }

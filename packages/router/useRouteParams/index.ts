@@ -14,7 +14,7 @@ import type {
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { isEmpty, parseArgs } from '../_utils'
+import { isEmpty, mergeDefault, parseArgs } from '../_utils'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
@@ -114,8 +114,11 @@ export function useRouteParams<
     return {
       get() {
         track()
-
-        return transformGet(isEmpty(param) ? toValue(defaultValue) : param)
+        return transformGet(
+          mergeDefault(param, {
+            defaultValue: toValue(defaultValue),
+          }),
+        )
       },
       set(v) {
         v = transformSet(v)
