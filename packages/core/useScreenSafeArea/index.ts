@@ -56,3 +56,5 @@ type VarName = '--vueuse-safe-area-top' | '--vueuse-safe-area-right' | '--vueuse
 function getValue(position: VarName) {
   return getComputedStyle(document.documentElement).getPropertyValue(position)
 }
+
+export type UseScreenSafeAreaReturn = ReturnType<typeof useScreenSafeArea>
