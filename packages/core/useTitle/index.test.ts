@@ -173,7 +173,7 @@ describe('options params', () => {
       expect(title.value).toBe('old title')
     })
 
-    it('should be update if doucument.title changes', async () => {
+    it('should be update if document.title changes', async () => {
       const title = useTitle('old title', { observe: true })
 
       document.title = 'new title'
