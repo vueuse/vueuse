@@ -47,23 +47,25 @@ export function useRouteParams<
   M extends keyof RouteMap = keyof RouteMap,
   N extends string | number | symbol = keyof RouteParams<M>,
   R extends GetRouteParams<M, N> = GetRouteParams<M, N>,
+  E extends GetRouteParams<M, N> = R,
   D extends GetRouteParams<M, N> | RouteParamValueRaw = R,
   T = WithDefault<R, ToPrimitive<D>>,
   K = T,
 >(
   name: N,
-  defaultValue: MaybeRefOrGetter<D | R>,
+  defaultValue: MaybeRefOrGetter<D | E>,
   options: ReactiveRouteOptionsWithName<T, K, M>
 ): Ref<K>
 
 export function useRouteParams<
   M extends keyof RouteMap = keyof RouteMap,
   R extends GetRouteParams<M> = GetRouteParams<M>,
+  E extends GetRouteParams<M> = R,
   D extends GetRouteParams<M> | Maybe<Record<string, RouteParamValueRaw>> = R,
   T = WithDefault<R, NonNullable<ToPrimitive<D>>>,
   K = T,
 >(
-  defaultValue: MaybeRefOrGetter<D | R>,
+  defaultValue: MaybeRefOrGetter<D | E>,
   options: ReactiveRouteOptionsWithName<T, K, M>
 ): Ref<K>
 

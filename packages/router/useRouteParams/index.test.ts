@@ -38,7 +38,6 @@ describe('useRouteParams', () => {
     path: '',
     redirectedFrom: undefined,
   })
-
   it('should export', () => {
     expect(useRouteParams).toBeDefined()
   })
@@ -50,10 +49,22 @@ describe('useRouteParams', () => {
     })
 
     const id = useRouteParams('id', null, { route, router })
-
-    expect(id.value).toBe('1')
+    const id2 = useRouteParams('id', '5', { route, router })
+    const name = useRouteParams('name', 'defaultValue', { route, router })
+    const name2 = useRouteParams('name', 100, { name: '/ueser/[id]/[name]', route, router })
+    const foo = useRouteParams('foo', undefined, { route, router })
 
     expectTypeOf(id.value).toEqualTypeOf<string | null>()
+    expectTypeOf(id2.value).toEqualTypeOf<string>()
+    expectTypeOf(name.value).toEqualTypeOf<string>()
+    expectTypeOf(name2.value).toEqualTypeOf<string | number>()
+    expectTypeOf(foo.value).toEqualTypeOf<string | undefined>()
+
+    expect(id.value).toBe('1')
+    expect(id2.value).toBe('1')
+    expect(name.value).toBe('defaultValue')
+    expect(name2.value).toBe(100)
+    expect(foo.value).toBe(undefined)
   })
 
   it('should return transformed value', () => {
@@ -417,19 +428,43 @@ describe('useRouteParams', () => {
   })
   it('should handle entire params object', async () => {
     let route = getRoute({ id: '1', name: 'test' })
-    const route2 = getRoute({ test: 'foo' })
+    const route2 = getRoute()
+    const route3 = getRoute({ count: '5' })
+
     const router = { replace: (r: any) => route = r } as any
 
     const params = useRouteParams({ id: 'default', name: 'default' }, { route, router })
     const params2 = useRouteParams(null, { route: route2, router })
+    const params3 = useRouteParams(undefined, { route: route2, router })
+    const params4 = useRouteParams({ foo: 'test' }, { route: route2, router })
+    const params5 = useRouteParams(null, { route: route3, router })
+    const params6 = useRouteParams(undefined, { route: route3, router })
+    const params7 = useRouteParams({ count: '10' }, { route: route3, router })
+    const params8 = useRouteParams({ foo: 'test' }, { route: route3, router })
+    const params9 = useRouteParams({ count: '10', foo: 'test' }, { route: route3, router })
 
     expectTypeOf(params.value).toEqualTypeOf<Record<string, string | undefined> | { id: string, name: string }>()
     expectTypeOf(params2.value).toEqualTypeOf<Record<string, string | undefined>>()
+    expectTypeOf(params3.value).toEqualTypeOf<Record<string, string | undefined>>()
+    expectTypeOf(params4.value).toEqualTypeOf<Record<string, string | undefined> | { foo: string }>()
+    expectTypeOf(params5.value).toEqualTypeOf<Record<string, string | undefined>>()
+    expectTypeOf(params6.value).toEqualTypeOf<Record<string, string | undefined>>()
+    expectTypeOf(params7.value).toEqualTypeOf<Record<string, string | undefined> | { count: string }>()
+    expectTypeOf(params8.value).toEqualTypeOf<Record<string, string | undefined> | { foo: string }>()
+    expectTypeOf(params9.value).toEqualTypeOf<Record<string, string | undefined> | { count: string, foo: string }>()
 
     expect(params.value).toEqual({ id: '1', name: 'test' })
-    expect(params2.value).toEqual({ test: 'foo' })
+    expect(params2.value).toEqual({})
+    expect(params3.value).toEqual({})
+    expect(params4.value).toEqual({ foo: 'test' })
+    expect(params5.value).toEqual({ count: '5' })
+    expect(params6.value).toEqual({ count: '5' })
+    expect(params7.value).toEqual({ count: '5' })
+    expect(params8.value).toEqual({ count: '5' })
+    expect(params9.value).toEqual({ count: '5' })
 
     params.value = { id: '2', name: 'vue' }
+
     await nextTick()
 
     expect(route.params).toEqual({ id: '2', name: 'vue' })
@@ -459,20 +494,42 @@ describe('useRouteParams', () => {
 
     expect(route.params.count).toBe('10')
   })
-
   it('should handle entire params object with name', async () => {
     let route = getRoute({ id: '1', name: 'test' })
-    const rootRoute = getRoute()
+    const route2 = getRoute()
+    const route3 = getRoute({ count: '5' })
+
     const router = { replace: (r: any) => route = r } as any
 
     const params = useRouteParams({ id: 'default', name: 'default' }, { name: '/ueser/[id]/[name]', route, router })
-    const params2 = useRouteParams(null, { name: '/', route: rootRoute, router })
+    const params2 = useRouteParams(null, { name: '/', route: route2, router })
+    const params3 = useRouteParams(undefined, { name: '/', route: route2, router })
+    const params4 = useRouteParams({ foo: 'test' }, { name: '/', route: route2, router })
+    const params5 = useRouteParams(null, { name: '/foo/[count]', route: route3, router })
+    const params6 = useRouteParams(undefined, { name: '/foo/[count]', route: route3, router })
+    const params7 = useRouteParams({ count: '10' }, { name: '/foo/[count]', route: route3, router })
+    const params8 = useRouteParams({ foo: 'test' }, { name: '/foo/[count]', route: route3, router })
+    const params9 = useRouteParams({ count: '10', foo: 'test' }, { name: '/foo/[count]', route: route3, router })
 
     expectTypeOf(params.value).toEqualTypeOf<{ id: string, name: string }>()
     expectTypeOf(params2.value).toEqualTypeOf<Record<never, never>>()
+    expectTypeOf(params3.value).toEqualTypeOf<Record<never, never>>()
+    expectTypeOf(params4.value).toEqualTypeOf<Record<never, never> | { foo: string }>()
+    expectTypeOf(params5.value).toEqualTypeOf<{ count: string }>()
+    expectTypeOf(params6.value).toEqualTypeOf<{ count: string }>()
+    expectTypeOf(params7.value).toEqualTypeOf<{ count: string }>()
+    expectTypeOf(params8.value).toEqualTypeOf<{ count: string } | { foo: string }>()
+    expectTypeOf(params9.value).toEqualTypeOf<{ count: string } | { count: string, foo: string }>()
 
     expect(params.value).toEqual({ id: '1', name: 'test' })
     expect(params2.value).toEqual({})
+    expect(params3.value).toEqual({})
+    expect(params4.value).toEqual({ foo: 'test' })
+    expect(params5.value).toEqual({ count: '5' })
+    expect(params6.value).toEqual({ count: '5' })
+    expect(params7.value).toEqual({ count: '5' })
+    expect(params8.value).toEqual({ count: '5' })
+    expect(params9.value).toEqual({ count: '5' })
 
     params.value = { id: '2', name: 'vue' }
 
@@ -514,12 +571,21 @@ describe('useRouteParams', () => {
     })
 
     const id = useRouteParams('id', null, { name: '/ueser/[id]/[name]', route, router })
+    const id2 = useRouteParams('id', '5', { name: '/ueser/[id]/[name]', route, router })
     const name = useRouteParams('name', 'defaultValue', { name: '/ueser/[id]/[name]', route, router })
+    const name2 = useRouteParams('name', 100, { name: '/ueser/[id]/[name]', route, router })
+    const foo = useRouteParams('foo', undefined, { name: '/ueser/[id]/[name]', route, router })
 
     expectTypeOf(id.value).toEqualTypeOf<string | null>()
+    expectTypeOf(id2.value).toEqualTypeOf<string>()
     expectTypeOf(name.value).toEqualTypeOf<string>()
+    expectTypeOf(name2.value).toEqualTypeOf<string | number>()
+    expectTypeOf(foo.value).toEqualTypeOf<string | undefined>()
 
     expect(id.value).toBe('1')
+    expect(id2.value).toBe('1')
     expect(name.value).toBe('defaultValue')
+    expect(name2.value).toBe(100)
+    expect(foo.value).toBe(undefined)
   })
 })
