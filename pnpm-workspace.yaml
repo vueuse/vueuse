@@ -65,7 +65,7 @@ catalogs:
     axios: ^1.11.0
     change-case: ^5.4.4
     drauu: ^0.4.3
-    electron: ^13.1.0
+    electron: ^28.3.2
     firebase: ^10.14.1
     focus-trap: ^7.6.5
     fuse.js: ^7.1.0
