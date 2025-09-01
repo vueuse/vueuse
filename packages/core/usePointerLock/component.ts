@@ -2,7 +2,7 @@ import type { RenderableComponent } from '../types'
 import { usePointerLock } from '@vueuse/core'
 import { defineComponent, h, reactive, shallowRef } from 'vue'
 
-export const UsePointerLock = defineComponent<RenderableComponent>({
+export const UsePointerLock = /* #__PURE__ */ defineComponent<RenderableComponent>({
   name: 'UsePointerLock',
   props: ['as'] as unknown as undefined,
   setup(props, { slots }) {
