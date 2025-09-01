@@ -24,7 +24,7 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": "./dist/index.js",
     "./*": "./dist/*",
     "./useAuth": "./dist/useAuth.js",
     "./useFirestore": "./dist/useFirestore.js",
@@ -36,7 +36,7 @@
   "jsdelivr": "./dist/index.iife.min.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "**/dist"
+    "dist"
   ],
   "scripts": {
     "build": "tsdown",

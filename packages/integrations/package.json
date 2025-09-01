@@ -46,7 +46,7 @@
   "jsdelivr": "./dist/index.iife.min.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "**/dist"
+    "dist"
   ],
   "scripts": {
     "build": "tsdown",

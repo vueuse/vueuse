@@ -263,10 +263,6 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       'dist',
     ]
 
-    if (submodules) {
-      packageJSON.files = packageJSON.files.map((i: string) => `**/${i}`)
-    }
-
     packageJSON.exports = {
       '.': './dist/index.js',
       ...packageJSON.exports,
