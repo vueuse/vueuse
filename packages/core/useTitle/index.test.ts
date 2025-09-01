@@ -129,6 +129,7 @@ describe('useTitle', () => {
       expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
     })
   })
+
   describe('options params', () => {
     describe('titleTemplate', () => {
       it('string', () => {
