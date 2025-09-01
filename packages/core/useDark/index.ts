@@ -69,3 +69,5 @@ export function useDark(options: UseDarkOptions = {}) {
 
   return isDark
 }
+
+export type UseDarkReturn = ReturnType<typeof useDark>

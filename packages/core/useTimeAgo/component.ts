@@ -1,16 +1,22 @@
-import type { UseTimeAgoOptions } from '@vueuse/core'
-import type { MaybeRef } from 'vue'
+import type { UseTimeAgoOptions, UseTimeAgoReturn } from '@vueuse/core'
+import type { MaybeRef, Reactive, SlotsType } from 'vue'
 import { useTimeAgo } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-interface UseTimeAgoComponentOptions extends Omit<UseTimeAgoOptions<true>, 'controls'> {
+export interface UseTimeAgoProps extends Omit<UseTimeAgoOptions<true>, 'controls'> {
   time: MaybeRef<Date | number | string>
 }
+interface UseTimeAgoSlots {
+  default: (data: Reactive<UseTimeAgoReturn<true>>) => any
+}
 
-export const UseTimeAgo = /* #__PURE__ */ defineComponent<UseTimeAgoComponentOptions>({
-  name: 'UseTimeAgo',
-  props: ['time', 'updateInterval', 'max', 'fullDateFormatter', 'messages', 'showSecond'] as unknown as undefined,
-  setup(props, { slots }) {
+export const UseTimeAgo = /* #__PURE__ */ defineComponent<
+  UseTimeAgoProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseTimeAgoSlots>
+>(
+  (props, { slots }) => {
     const data = reactive(useTimeAgo(() => props.time as number, { ...props, controls: true }))
 
     return () => {
@@ -18,4 +24,17 @@ export const UseTimeAgo = /* #__PURE__ */ defineComponent<UseTimeAgoComponentOpt
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseTimeAgo',
+    props: [
+      'fullDateFormatter',
+      'max',
+      'messages',
+      'rounding',
+      'showSecond',
+      'time',
+      'units',
+      'updateInterval',
+    ],
+  },
+)
