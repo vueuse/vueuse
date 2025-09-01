@@ -28,7 +28,7 @@ export function watchOnce<T extends object>(
  */
 export function watchOnce<T = any>(source: T, cb: any, options?: Omit<WatchOptions, 'once'>) {
   return watch(
-    source as any,
+    source as WatchSource<T>,
     cb,
     {
       ...options,

@@ -1,6 +1,6 @@
 import type { FunctionDirective } from 'vue'
+import { useScrollLock } from '@vueuse/core'
 import { shallowRef, watch } from 'vue'
-import { useScrollLock } from './index'
 
 function onScrollLock(): FunctionDirective<
   HTMLElement,

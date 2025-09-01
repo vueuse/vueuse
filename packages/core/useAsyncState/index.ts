@@ -1,6 +1,6 @@
-import type { Ref, ShallowRef, UnwrapRef } from 'vue'
+import type { MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef, toValue } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
@@ -81,7 +81,7 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
  */
 export function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
-  initialState: Data,
+  initialState: MaybeRef<Data>,
   options?: UseAsyncStateOptions<Shallow, Data>,
 ): UseAsyncStateReturn<Data, Params, Shallow> {
   const {
@@ -100,7 +100,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
 
   async function execute(delay = 0, ...args: any[]) {
     if (resetOnExecute)
-      state.value = initialState
+      state.value = toValue(initialState)
     error.value = undefined
     isReady.value = false
     isLoading.value = true

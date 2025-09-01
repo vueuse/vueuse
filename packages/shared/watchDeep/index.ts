@@ -35,7 +35,7 @@ export function watchDeep<
  */
 export function watchDeep<T = any, Immediate extends Readonly<boolean> = false>(source: T | WatchSource<T>, cb: any, options?: Omit<WatchOptions<Immediate>, 'deep'>) {
   return watch(
-    source as any,
+    source as WatchSource<T>,
     cb,
     {
       ...options,
