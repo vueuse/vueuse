@@ -72,8 +72,11 @@ export function createTsDownConfig(
       const BASE_IIFE_CONFIG: UserConfig = {
         ...baseConfig,
         format: 'iife',
-        name: iifeName,
-        alias: iifeGlobals,
+        globalName: iifeName,
+        outputOptions: {
+          extend: true,
+          globals: iifeGlobals,
+        },
       }
 
       configs.push(
