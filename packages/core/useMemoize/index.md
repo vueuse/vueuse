@@ -36,6 +36,13 @@ getUser.clear() // Clear full cache
 Combine with `computed` or `asyncComputed` to achieve reactivity:
 
 ```ts
+import { asyncComputed, useMemoize } from '@vueuse/core'
+
+const getUser = useMemoize(
+  async (userId: number): Promise<UserData> =>
+    axios.get(`users/${userId}`).then(({ data }) => data),
+)
+// ---cut---
 const user1 = asyncComputed(() => getUser(1))
 // ...
 await getUser.load(1) // Will also update user1
@@ -47,6 +54,8 @@ The key for caching is determined by the arguments given to the function and wil
 This will allow equal objects to receive the same cache key. In case you want to customize the key you can pass `getKey`
 
 ```ts
+import { useMemoize } from '@vueuse/core'
+// ---cut---
 const getUser = useMemoize(
   async (userId: number, headers: AxiosRequestHeaders): Promise<UserData> =>
     axios.get(`users/${userId}`, { headers }).then(({ data }) => data),

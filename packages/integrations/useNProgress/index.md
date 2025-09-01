@@ -14,7 +14,7 @@ npm i nprogress@^0
 
 ## Usage
 
-```js {6}
+```ts {6}
 import { useNProgress } from '@vueuse/integrations/useNProgress'
 
 const { isLoading } = useNProgress()
@@ -28,7 +28,7 @@ function toggle() {
 
 You can pass a percentage to indicate where the bar should start from.
 
-```js {3}
+```ts {3}
 import { useNProgress } from '@vueuse/integrations/useNProgress'
 
 const { progress } = useNProgress(0.5)
@@ -46,7 +46,7 @@ Just edit [nprogress.css](https://github.com/rstacruz/nprogress/blob/master/npro
 
 You can [configure](https://github.com/rstacruz/nprogress#configuration) it by passing an object as a second parameter.
 
-```js {4}
+```ts {4}
 import { useNProgress } from '@vueuse/integrations/useNProgress'
 
 useNProgress(null, {
