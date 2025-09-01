@@ -1,9 +1,8 @@
 import type { PackageIndexes, PackageManifest } from '@vueuse/metadata'
 import type { Format, Options, UserConfig } from 'tsdown'
-import { readFileSync } from 'node:fs'
 import { globSync } from 'tinyglobby'
+import metadata from './packages/metadata/index.json' with { type: 'json' }
 
-const metadata = JSON.parse(readFileSync(new URL('./packages/metadata/index.json', import.meta.url), 'utf-8'))
 const functions = metadata.functions as PackageIndexes['functions']
 
 const externals = [
