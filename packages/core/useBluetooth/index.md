@@ -48,7 +48,7 @@ Here, we use the characteristicvaluechanged event listener to handle reading bat
 
 ```vue
 <script setup lang="ts">
-import { pausableWatch, useBluetooth, useEventListener } from '@vueuse/core'
+import { useBluetooth, useEventListener, watchPausable } from '@vueuse/core'
 
 const {
   isSupported,
@@ -89,7 +89,7 @@ async function getBatteryLevels() {
   batteryPercent.value = await batteryLevel.getUint8(0)
 }
 
-const { stop } = pausableWatch(isConnected, (newIsConnected) => {
+const { stop } = watchPausable(isConnected, (newIsConnected) => {
   if (!newIsConnected || !server.value || isGettingBatteryLevels.value)
     return
   // Attempt to get the battery levels of the device:
