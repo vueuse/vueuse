@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { useAsyncState } from './index'
 
 describe('useAsyncState', () => {
@@ -109,5 +109,14 @@ describe('useAsyncState', () => {
     await nextTick()
     expect(mockReportError).toHaveBeenCalledWith(error)
     globalThis.reportError = originalReportError
+  })
+
+  it('supports initialState as shallow ref', async () => {
+    const initialState = shallowRef(200)
+    const asyncValue = Promise.resolve(100)
+    const { state } = useAsyncState(asyncValue, initialState)
+    await asyncValue
+    expect(state.value).toBe(100)
+    expect(initialState).toBe(state)
   })
 })
