@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, shallowRef } from 'vue'
 import { isBelowNode18 } from '../../.test'
 import { baseUrl } from '../../.test/mockServer'
-import { createFetch, useFetch } from './index'
+import { createFetch as _createFetch_, useFetch } from './index'
 
 const jsonMessage = { hello: 'world' }
 const jsonUrl = `${baseUrl}?json=${encodeURI(JSON.stringify(jsonMessage))}`
@@ -16,6 +16,13 @@ const onFetchFinallySpy = vi.fn()
 
 function fetchSpyHeaders(idx = 0) {
   return (fetchSpy.mock.calls[idx][1]! as any).headers
+}
+
+function createFetch(options: Parameters<typeof _createFetch_>[0] = {}) {
+  return _createFetch_({
+    baseUrl,
+    ...options,
+  })
 }
 
 // The tests does not run properly below node 18
@@ -158,7 +165,7 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
     const requestHeaders = { 'Accept-Language': 'en-US' }
     const allHeaders = { ...fetchHeaders, ...requestHeaders }
     const requestOptions = { headers: requestHeaders }
-    const useMyFetchWithBaseUrl = createFetch({ baseUrl, fetchOptions: { headers: fetchHeaders } })
+    const useMyFetchWithBaseUrl = createFetch({ fetchOptions: { headers: fetchHeaders } })
     const useMyFetchWithoutBaseUrl = createFetch({ fetchOptions: { headers: fetchHeaders } })
 
     useMyFetchWithBaseUrl('test', requestOptions)
@@ -512,7 +519,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('async chained beforeFetch and afterFetch should be executed in order', async () => {
     const useMyFetch = createFetch({
-      baseUrl,
       options: {
         async beforeFetch({ options }) {
           await nextTick()
@@ -797,7 +803,6 @@ describe.skipIf(isBelowNode18)('useFetch', () => {
 
   it('should partial overwrite when combination is overwrite', async () => {
     const useMyFetch = createFetch({
-      baseUrl,
       combination: 'overwrite',
       options: {
         beforeFetch({ options }) {
