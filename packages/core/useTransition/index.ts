@@ -29,6 +29,8 @@ export interface TransitionOptions extends ConfigurableWindow {
    */
   duration?: MaybeRef<number>
 
+  interpolator?: (a: any, b: any, t: any) => any
+
   /**
    * Easing function or cubic bezier points for calculating transition values
    */
@@ -124,10 +126,6 @@ function lerp(a: number, b: number, alpha: number) {
   return a + alpha * (b - a)
 }
 
-function toVec(t: number | number[] | undefined) {
-  return (typeof t === 'number' ? [t] : t) || []
-}
-
 /**
  * Transition from one value to another.
  *
@@ -136,7 +134,7 @@ function toVec(t: number | number[] | undefined) {
  * @param to
  * @param options
  */
-export function executeTransition<T extends number | number[]>(
+export function executeTransition<T = number>(
   source: Ref<T>,
   from: MaybeRefOrGetter<T>,
   to: MaybeRefOrGetter<T>,
@@ -147,11 +145,12 @@ export function executeTransition<T extends number | number[]>(
   } = options
   const fromVal = toValue(from)
   const toVal = toValue(to)
-  const v1 = toVec(fromVal)
-  const v2 = toVec(toVal)
   const duration = toValue(options.duration) ?? 1000
   const startedAt = Date.now()
   const endAt = Date.now() + duration
+
+  const interpolator = options.interpolator ?? lerp
+
   const trans = typeof options.transition === 'function'
     ? options.transition
     : (toValue(options.transition) ?? linear)
@@ -172,12 +171,15 @@ export function executeTransition<T extends number | number[]>(
 
       const now = Date.now()
       const alpha = ease((now - startedAt) / duration)
-      const arr = toVec(source.value).map((n, i) => lerp(v1[i], v2[i], alpha))
 
-      if (Array.isArray(source.value))
-        (source.value as number[]) = arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha))
-      else if (typeof source.value === 'number')
-        (source.value as number) = arr[0]
+      // @ts-expect-error work in progress
+      source.value = interpolator(fromVal, toVal, alpha)
+      // const arr = toVec(source.value).map((n, i) => lerp(v1[i], v2[i], alpha))
+
+      // if (Array.isArray(source.value))
+      //   (source.value as number[]) = arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha))
+      // else if (typeof source.value === 'number')
+      //   (source.value as number) = arr[0]
 
       if (now < endAt) {
         window?.requestAnimationFrame(tick)
