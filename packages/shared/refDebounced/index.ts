@@ -22,8 +22,7 @@ export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 20
   return shallowReadonly(debounced)
 }
 
-// alias
-export {
-  refDebounced as debouncedRef,
-  refDebounced as useDebounce,
-}
+/** @deprecated use `refDebounced` instead */
+export const debouncedRef = refDebounced
+/** @deprecated use `refDebounced` instead */
+export const useDebounce = refDebounced

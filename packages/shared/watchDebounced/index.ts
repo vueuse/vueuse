@@ -34,5 +34,5 @@ export function watchDebounced<Immediate extends Readonly<boolean> = false>(
   )
 }
 
-// alias
-export { watchDebounced as debouncedWatch }
+/** @deprecated use `watchDebounced` instead */
+export const debouncedWatch = watchDebounced

@@ -104,7 +104,5 @@ export function refWithControl<T>(
   )
 }
 
-/**
- * Alias for `refWithControl`
- */
+/** @deprecated use `refWithControl` instead */
 export const controlledRef = refWithControl

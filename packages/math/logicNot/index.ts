@@ -12,5 +12,5 @@ export function logicNot(v: MaybeRefOrGetter<any>): ComputedRef<boolean> {
   return computed(() => !toValue(v))
 }
 
-// alias
-export { logicNot as not }
+/** @deprecated use `logicNot` instead */
+export const not = logicNot

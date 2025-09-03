@@ -35,5 +35,5 @@ export const vOnClickOutside: ObjectDirective<
   },
 }
 
-// alias
-export { vOnClickOutside as VOnClickOutside }
+/** @deprecated use `vOnClickOutside` instead */
+export const VOnClickOutside = vOnClickOutside

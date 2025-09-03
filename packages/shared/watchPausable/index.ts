@@ -37,5 +37,5 @@ export function watchPausable<Immediate extends Readonly<boolean> = false>(
   return { stop, pause, resume, isActive }
 }
 
-// alias
-export { watchPausable as pausableWatch }
+/** @deprecated use `watchPausable` instead */
+export const pausableWatch = watchPausable

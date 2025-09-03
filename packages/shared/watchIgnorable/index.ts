@@ -129,5 +129,5 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   return { stop, ignoreUpdates, ignorePrevAsyncUpdates }
 }
 
-// alias
-export { watchIgnorable as ignorableWatch }
+/** @deprecated use `watchIgnorable` instead */
+export const ignorableWatch = watchIgnorable

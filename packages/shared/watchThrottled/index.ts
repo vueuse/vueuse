@@ -37,5 +37,5 @@ export function watchThrottled<Immediate extends Readonly<boolean> = false>(
   )
 }
 
-// alias
-export { watchThrottled as throttledWatch }
+/** @deprecated use `watchThrottled` instead */
+export const throttledWatch = watchThrottled
