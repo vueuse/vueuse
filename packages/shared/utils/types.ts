@@ -1,15 +1,4 @@
-import type { ComputedRef, getCurrentInstance, MaybeRef, MaybeRefOrGetter, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
-
-export type {
-  /**
-   * @deprecated use `MaybeRef` from `vue` instead
-   */
-  MaybeRef,
-  /**
-   * @deprecated use `MaybeRefOrGetter` from `vue` instead
-   */
-  MaybeRefOrGetter,
-}
+import type { ComputedRef, getCurrentInstance, MaybeRef, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
 
 /**
  * Void function
