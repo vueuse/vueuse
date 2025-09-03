@@ -2,21 +2,13 @@
 import { rand, TransitionPresets, useTransition } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
-const duration = 1500
+const duration = 2000
 
 const baseNumber = shallowRef(0)
 
 const baseVector = shallowRef([0, 100])
 
 const baseWord = shallowRef('Hello')
-
-function easeOutElastic(n: number) {
-  return n === 0
-    ? 0
-    : n === 1
-      ? 1
-      : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
-}
 
 const cubicBezierNumber = useTransition(baseNumber, {
   duration,
@@ -39,14 +31,41 @@ const word = useTransition(baseWord, {
   transition: TransitionPresets.easeOutCubic,
 })
 
-function toggle() {
-  baseNumber.value = baseNumber.value === 100 ? 0 : 100
-  baseVector.value = [rand(0, 100), rand(0, 100)]
-  baseWord.value = baseWord.value === 'Hello' ? 'World' : 'Hello'
+// Custom easing functions can control the progress of a transition
+function easeOutElastic(n: number) {
+  return n === 0
+    ? 0
+    : n === 1
+      ? 1
+      : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
 }
 
-// this function demonstrates transitioning non-numeric values, any type
-// can be transitioned if an interpolator is provided
+// And custom interpolators control the transition value at that progress level.
+// notice, this doesn't have to be a number or array of numbers. any value can
+// be used if an interpolator is provided. To demonstrate, let's say hello!
+const greetings = [
+  'Ahoj',
+  'Bok',
+  'Ciao',
+  'Czesc',
+  'Hallo',
+  'Hei',
+  'Hej',
+  'Hello',
+  'Hola',
+  'Merhaba',
+  'Moi',
+  'Namaste',
+  'Ola',
+  'Privet',
+  'Salam',
+  'Salut',
+  'Sawasdee',
+  'Shalom',
+  'Yia',
+  'Zdravo',
+]
+
 function wordlerp(from: string, target: string, alpha: number) {
   from = from.padEnd(target.length)
   target = target.padEnd(from.length)
@@ -76,6 +95,13 @@ function wordlerp(from: string, target: string, alpha: number) {
   if (alpha >= 1)
     return steps[steps.length - 1]
   return steps[Math.round(alpha * (steps.length - 1))]
+}
+
+function toggle() {
+  baseNumber.value = baseNumber.value === 100 ? 0 : 100
+  baseVector.value = [rand(0, 100), rand(0, 100)]
+  const arr = greetings.filter(word => word !== baseWord.value)
+  baseWord.value = arr[rand(0, arr.length - 1)]
 }
 </script>
 
@@ -115,7 +141,9 @@ function wordlerp(from: string, target: string, alpha: number) {
       </div>
     </div>
 
-    <div>{{ { word } }}</div>
+    <p class="mt-2">
+      Non-numeric value: <b>{{ word }}</b>
+    </p>
   </div>
 </template>
 
@@ -146,7 +174,6 @@ function wordlerp(from: string, target: string, alpha: number) {
 }
 
 .vector.track {
-  aspect-ratio: 1;
   padding: 0.5rem;
 }
 

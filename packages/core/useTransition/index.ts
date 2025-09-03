@@ -17,7 +17,7 @@ export type EasingFunction = (n: number) => number
 /**
  * Transition options
  */
-export interface TransitionOptions extends ConfigurableWindow {
+export interface TransitionOptions<T> extends ConfigurableWindow {
 
   /**
    * Manually abort a transition
@@ -29,7 +29,7 @@ export interface TransitionOptions extends ConfigurableWindow {
    */
   duration?: MaybeRef<number>
 
-  interpolator?: (a: any, b: any, t: any) => any
+  interpolator?: (a: T, b: T, t: number) => T
 
   /**
    * Easing function or cubic bezier points for calculating transition values
@@ -37,7 +37,7 @@ export interface TransitionOptions extends ConfigurableWindow {
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 
-export interface UseTransitionOptions extends TransitionOptions {
+export interface UseTransitionOptions<T> extends TransitionOptions<T> {
   /**
    * Milliseconds to wait before starting transition
    */
@@ -143,11 +143,11 @@ function defaultInterpolator(a: unknown, b: unknown, t: number) {
  * @param to
  * @param options
  */
-export function executeTransition<T = number>(
+export function executeTransition<T>(
   source: Ref<T>,
   from: MaybeRefOrGetter<T>,
   to: MaybeRefOrGetter<T>,
-  options: TransitionOptions = {},
+  options: TransitionOptions<T> = {},
 ): PromiseLike<void> {
   const {
     window = defaultWindow,
@@ -180,7 +180,7 @@ export function executeTransition<T = number>(
       const now = Date.now()
       const alpha = ease((now - startedAt) / duration)
 
-      source.value = interpolator(fromVal, toVal, alpha)
+      source.value = interpolator(fromVal, toVal, alpha) as T
 
       if (now < endAt) {
         window?.requestAnimationFrame(tick)
@@ -196,15 +196,6 @@ export function executeTransition<T = number>(
   })
 }
 
-// // option 1: reactive number
-// export function useTransition(source: MaybeRefOrGetter<number>, options?: UseTransitionOptions): ComputedRef<number>
-
-// // option 2: static array of possibly reactive numbers
-// export function useTransition<T extends MaybeRefOrGetter<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
-
-// // option 3: reactive array of numbers
-// export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
-
 /**
  * Follow value with a transition.
  *
@@ -214,13 +205,13 @@ export function executeTransition<T = number>(
  */
 export function useTransition<T>(
   source: MaybeRefOrGetter<T>,
-  options: UseTransitionOptions = {},
-): Ref<any> {
+  options: UseTransitionOptions<T> = {},
+): Ref<T> {
   let currentId = 0
 
   const sourceVal = () => toValue(source)
 
-  const outputRef = deepRef(sourceVal())
+  const outputRef = deepRef(sourceVal()) as Ref<T>
 
   watch(sourceVal, async (to) => {
     if (toValue(options.disabled))
@@ -234,11 +225,9 @@ export function useTransition<T>(
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(toValue<number>) : toValue(to)
-
     options.onStarted?.()
 
-    await executeTransition(outputRef, outputRef.value, toVal, {
+    await executeTransition(outputRef, outputRef.value, to, {
       ...options,
       abort: () => id !== currentId || options.abort?.(),
     })
