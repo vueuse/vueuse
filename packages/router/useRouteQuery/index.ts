@@ -113,5 +113,5 @@ export function useRouteQuery<
     { flush: 'sync' },
   )
 
-  return proxy as any as Ref<K>
+  return proxy as Ref<K>
 }
