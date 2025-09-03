@@ -180,14 +180,7 @@ export function executeTransition<T = number>(
       const now = Date.now()
       const alpha = ease((now - startedAt) / duration)
 
-      // @ts-expect-error work in progress
       source.value = interpolator(fromVal, toVal, alpha)
-      // const arr = toVec(source.value).map((n, i) => lerp(v1[i], v2[i], alpha))
-
-      // if (Array.isArray(source.value))
-      //   (source.value as number[]) = arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha))
-      // else if (typeof source.value === 'number')
-      //   (source.value as number) = arr[0]
 
       if (now < endAt) {
         window?.requestAnimationFrame(tick)
