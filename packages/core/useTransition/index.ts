@@ -130,14 +130,15 @@ function lerp(a: number, b: number, alpha: number) {
 }
 
 function defaultInterpolator<T>(a: T, b: T, t: number) {
-  const _a = toValue(a)
-  const _b = toValue(b)
+  const aVal = toValue(a)
+  const bVal = toValue(b)
 
-  if (typeof _a === 'number' && typeof _b === 'number') {
-    return lerp(_a, _b, t)
+  if (typeof aVal === 'number' && typeof bVal === 'number') {
+    return lerp(aVal, bVal, t)
   }
-  else if (Array.isArray(_a) && Array.isArray(_b)) {
-    return _a.map((v, i) => lerp(v, toValue(_b[i]), t))
+
+  if (Array.isArray(aVal) && Array.isArray(bVal)) {
+    return aVal.map((v, i) => lerp(v, toValue(bVal[i]), t))
   }
 
   throw new TypeError('Unknown transition type, specify an interpolator function.')
