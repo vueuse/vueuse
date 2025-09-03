@@ -59,6 +59,7 @@ export function mapGamepadToXbox360Controller(gamepad: Ref<Gamepad | undefined>)
   })
 }
 
+/* @__NO_SIDE_EFFECTS__ */
 export function useGamepad(options: UseGamepadOptions = {}) {
   const {
     navigator = defaultNavigator,
@@ -71,7 +72,7 @@ export function useGamepad(options: UseGamepadOptions = {}) {
 
   const stateFromGamepad = (gamepad: Gamepad) => {
     const hapticActuators = []
-    const vibrationActuator = 'vibrationActuator' in gamepad ? (gamepad as any).vibrationActuator : null
+    const vibrationActuator = 'vibrationActuator' in gamepad ? (gamepad as Gamepad).vibrationActuator : null
 
     if (vibrationActuator)
       hapticActuators.push(vibrationActuator)

@@ -19,7 +19,7 @@ Learn more at [Vue: When a computed property can be the wrong tool](https://dev.
 
 ## Usage
 
-```js
+```ts
 import { computedEager } from '@vueuse/core'
 
 const todos = ref([])

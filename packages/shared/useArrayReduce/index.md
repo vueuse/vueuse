@@ -8,7 +8,7 @@ Reactive `Array.reduce`.
 
 ## Usage
 
-```js
+```ts
 import { useArrayReduce } from '@vueuse/core'
 
 const sum = useArrayReduce([ref(1), ref(2), ref(3)], (sum, val) => sum + val)
@@ -17,7 +17,7 @@ const sum = useArrayReduce([ref(1), ref(2), ref(3)], (sum, val) => sum + val)
 
 ### Use with reactive array
 
-```js
+```ts
 import { useArrayReduce } from '@vueuse/core'
 
 const list = reactive([1, 2])
@@ -29,7 +29,7 @@ list.push(3)
 
 ### Use with initialValue
 
-```js
+```ts
 import { useArrayReduce } from '@vueuse/core'
 
 const list = reactive([{ num: 1 }, { num: 2 }])

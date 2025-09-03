@@ -10,19 +10,10 @@ Reactive [navigator.language](https://developer.mozilla.org/en-US/docs/Web/API/N
 
 ```ts
 import { useNavigatorLanguage } from '@vueuse/core'
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  setup() {
-    const { language } = useNavigatorLanguage()
+const { language } = useNavigatorLanguage()
 
-    watch(language, () => {
-      // Listen to the value changing
-    })
-
-    return {
-      language,
-    }
-  },
+watch(language, () => {
+  // Listen to the value changing
 })
 ```

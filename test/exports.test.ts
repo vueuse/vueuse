@@ -13,7 +13,7 @@ describe('exports-snapshot', async () => {
       continue
     it(`${pkg.name}`, async () => {
       const manifest = await getPackageExportsManifest({
-        importMode: 'src',
+        importMode: 'dist',
         cwd: pkg.path,
       })
       await expect(yaml.stringify(manifest.exports, { sortMapEntries: (a, b) => String(a.key).localeCompare(String(b.key)) }))
