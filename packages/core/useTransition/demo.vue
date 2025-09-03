@@ -6,7 +6,7 @@ const duration = 2000
 
 const baseNumber = shallowRef(0)
 
-const baseVector = shallowRef([0, 100])
+const baseVector = shallowRef([0, 0])
 
 const baseWord = shallowRef('Hello')
 
