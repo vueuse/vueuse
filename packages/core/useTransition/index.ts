@@ -242,7 +242,7 @@ export function useTransition<T>(
       : val as SourceVal
   }
 
-  const outputRef = shallowRef(sourceVal()) as Ref<T>
+  const outputRef = shallowRef(sourceVal())
 
   watch(sourceVal, async (to) => {
     if (toValue(options.disabled))
