@@ -28,7 +28,7 @@ const vector = useTransition(baseVector, {
 const word = useTransition(baseWord, {
   duration,
   interpolator: wordlerp,
-  transition: TransitionPresets.easeOutCubic,
+  transition: TransitionPresets.easeInOutExpo,
 })
 
 // Custom easing functions can control the progress of a transition

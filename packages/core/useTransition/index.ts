@@ -1,7 +1,7 @@
-import type { MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, UnwrapNestedRefs } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref as deepRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 /**
@@ -29,6 +29,9 @@ export interface TransitionOptions<T> extends ConfigurableWindow {
    */
   duration?: MaybeRef<number>
 
+  /**
+   * Custom interpolator function
+   */
   interpolator?: (a: T, b: T, t: number) => T
 
   /**
@@ -126,11 +129,16 @@ function lerp(a: number, b: number, alpha: number) {
   return a + alpha * (b - a)
 }
 
-function defaultInterpolator(a: unknown, b: unknown, t: number) {
-  if (typeof a === 'number' && typeof b === 'number')
-    return lerp(a, b, t)
-  else if (Array.isArray(a) && Array.isArray(b))
-    return a.map((v, i) => lerp(v, b[i], t))
+function defaultInterpolator<T>(a: T, b: T, t: number) {
+  const _a = toValue(a)
+  const _b = toValue(b)
+
+  if (typeof _a === 'number' && typeof _b === 'number') {
+    return lerp(_a, _b, t)
+  }
+  else if (Array.isArray(_a) && Array.isArray(_b)) {
+    return _a.map((v, i) => lerp(v, toValue(_b[i]), t))
+  }
 
   throw new TypeError('Unknown transition type, specify an interpolator function.')
 }
@@ -157,7 +165,10 @@ export function executeTransition<T>(
   const duration = toValue(options.duration) ?? 1000
   const startedAt = Date.now()
   const endAt = Date.now() + duration
-  const interpolator = options.interpolator ?? defaultInterpolator
+
+  const interpolator = typeof options.interpolator === 'function'
+    ? options.interpolator
+    : defaultInterpolator
 
   const trans = typeof options.transition === 'function'
     ? options.transition
@@ -196,6 +207,15 @@ export function executeTransition<T>(
   })
 }
 
+// static array of possibly reactive numbers
+export function useTransition<T extends MaybeRefOrGetter<number>[]>(source: [...T], options?: UseTransitionOptions<T>): ComputedRef<{ [K in keyof T]: number }>
+
+// reactive array of numbers
+export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, options?: UseTransitionOptions<T>): ComputedRef<number[]>
+
+// custom type
+export function useTransition<T>(source: MaybeRefOrGetter<T>, options?: UseTransitionOptions<T>): ComputedRef<T>
+
 /**
  * Follow value with a transition.
  *
@@ -204,14 +224,25 @@ export function executeTransition<T>(
  * @param options
  */
 export function useTransition<T>(
-  source: MaybeRefOrGetter<T>,
+  source: MaybeRefOrGetter<UnwrapNestedRefs<T>>,
   options: UseTransitionOptions<T> = {},
-): Ref<T> {
+): ComputedRef<T> {
   let currentId = 0
 
-  const sourceVal = () => toValue(source)
+  type SourceVal = typeof options.interpolator extends undefined
+    ? T extends Array<infer U>
+      ? U[]
+      : T
+    : T
 
-  const outputRef = deepRef(sourceVal()) as Ref<T>
+  const sourceVal = (): SourceVal => {
+    const val = toValue(source)
+    return typeof options.interpolator === 'undefined' && Array.isArray(val)
+      ? val.map(toValue) as SourceVal
+      : val as SourceVal
+  }
+
+  const outputRef = shallowRef(sourceVal()) as Ref<T>
 
   watch(sourceVal, async (to) => {
     if (toValue(options.disabled))
