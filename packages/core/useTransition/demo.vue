@@ -40,9 +40,9 @@ function easeOutElastic(n: number) {
       : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
 }
 
-// And custom interpolators control the transition value at that progress level.
-// notice, this doesn't have to be a number or array of numbers. any value can
-// be used if an interpolator is provided. To demonstrate, let's say hello!
+// Custom interpolation functions control the value of a transition, at that
+// progress. this doesn't have to be a number or array of numbers.
+// To demonstrate, let's say hello in a bunch of languages!
 const greetings = [
   'Ahoj',
   'Bok',
