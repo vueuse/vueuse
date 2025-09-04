@@ -30,9 +30,9 @@ export interface TransitionOptions<T> extends ConfigurableWindow {
   duration?: MaybeRef<number>
 
   /**
-   * Custom interpolator function
+   * Custom interpolation function
    */
-  interpolator?: (a: T, b: T, t: number) => T
+  interpolation?: (a: T, b: T, t: number) => T
 
   /**
    * Easing function or cubic bezier points for calculating transition values
@@ -129,7 +129,7 @@ function lerp(a: number, b: number, alpha: number) {
   return a + alpha * (b - a)
 }
 
-function defaultInterpolator<T>(a: T, b: T, t: number) {
+function defaultInterpolation<T>(a: T, b: T, t: number) {
   const aVal = toValue(a)
   const bVal = toValue(b)
 
@@ -141,7 +141,7 @@ function defaultInterpolator<T>(a: T, b: T, t: number) {
     return aVal.map((v, i) => lerp(v, toValue(bVal[i]), t))
   }
 
-  throw new TypeError('Unknown transition type, specify an interpolator function.')
+  throw new TypeError('Unknown transition type, specify an interpolation function.')
 }
 
 /**
@@ -167,9 +167,9 @@ export function executeTransition<T>(
   const startedAt = Date.now()
   const endAt = Date.now() + duration
 
-  const interpolator = typeof options.interpolator === 'function'
-    ? options.interpolator
-    : defaultInterpolator
+  const interpolation = typeof options.interpolation === 'function'
+    ? options.interpolation
+    : defaultInterpolation
 
   const trans = typeof options.transition === 'function'
     ? options.transition
@@ -192,7 +192,7 @@ export function executeTransition<T>(
       const now = Date.now()
       const alpha = ease((now - startedAt) / duration)
 
-      source.value = interpolator(fromVal, toVal, alpha) as T
+      source.value = interpolation(fromVal, toVal, alpha) as T
 
       if (now < endAt) {
         window?.requestAnimationFrame(tick)
@@ -230,7 +230,7 @@ export function useTransition<T>(
 ): ComputedRef<T> {
   let currentId = 0
 
-  type SourceVal = typeof options.interpolator extends undefined
+  type SourceVal = typeof options.interpolation extends undefined
     ? T extends Array<infer U>
       ? U[]
       : T
@@ -238,7 +238,7 @@ export function useTransition<T>(
 
   const sourceVal = (): SourceVal => {
     const val = toValue(source)
-    return typeof options.interpolator === 'undefined' && Array.isArray(val)
+    return typeof options.interpolation === 'undefined' && Array.isArray(val)
       ? val.map(toValue) as SourceVal
       : val as SourceVal
   }

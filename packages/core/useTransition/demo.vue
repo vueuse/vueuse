@@ -27,7 +27,7 @@ const vector = useTransition(baseVector, {
 
 const word = useTransition(baseWord, {
   duration,
-  interpolator: wordlerp,
+  interpolation: wordlerp,
   transition: TransitionPresets.easeInOutExpo,
 })
 
@@ -40,7 +40,7 @@ function easeOutElastic(n: number) {
       : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
 }
 
-// and custom interpolator functions control the value of the transition, at
+// and custom interpolation functions control the value of the transition, at
 // that progress. To demonstrate, let's say hello in a bunch of languages!
 const greetings = [
   'Ahoj',

@@ -78,7 +78,7 @@ useTransition(source, {
 })
 ```
 
-By default the `source` must be a number, or array of numbers. For more complex values, define a custom `interpolator` function. For example, the following would transition a Three.js rotation.
+By default the `source` must be a number, or array of numbers. For more complex values, define a custom `interpolation` function. For example, the following would transition a Three.js rotation.
 
 ```ts
 import { useTransition } from '@vueuse/core'
@@ -88,7 +88,7 @@ import { Quaternion } from 'three'
 const source = ref(new Quaternion())
 
 const output = useTransition(source, {
-  interpolator: (q1, q2, t) => new Quaternion().slerpQuaternions(q1, q2, t)
+  interpolation: (q1, q2, t) => new Quaternion().slerpQuaternions(q1, q2, t)
 })
 ```
 

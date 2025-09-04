@@ -339,18 +339,18 @@ describe('useTransition', () => {
     expectBetween(transition.value, 0, 0.5)
   })
 
-  it('supports custom interpolator functions', async () => {
+  it('supports custom interpolation functions', async () => {
     const source = shallowRef('')
-    const interpolator = vi.fn((_a, _b, n) => n < 1 / 2 ? 'foo' : 'bar')
+    const interpolation = vi.fn((_a, _b, n) => n < 1 / 2 ? 'foo' : 'bar')
     const transition = useTransition(source, {
       duration: 100,
-      interpolator,
+      interpolation,
     })
 
     source.value = 'test'
 
     await promiseTimeout(25)
-    expect(interpolator).toBeCalled()
+    expect(interpolation).toBeCalled()
     expect(transition.value).toBe('foo')
 
     await promiseTimeout(50)
