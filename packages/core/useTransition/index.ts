@@ -230,11 +230,12 @@ export function useTransition<T>(
 ): ComputedRef<T> {
   let currentId = 0
 
-  const sourceVal = () => {
-    const val = toValue(source)
-    return typeof options.interpolation === 'undefined' && Array.isArray(val)
-      ? val.map(toValue) as T
-      : val
+  const sourceVal = (): T => {
+    const v = toValue(source)
+
+    return typeof options.interpolation === 'undefined' && Array.isArray(v)
+      ? (v as any).map(toValue)
+      : v
   }
 
   const outputRef = shallowRef(sourceVal())
