@@ -1,4 +1,4 @@
-import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, UnwrapNestedRefs } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
@@ -134,11 +134,11 @@ function defaultInterpolation<T>(a: T, b: T, t: number) {
   const bVal = toValue(b)
 
   if (typeof aVal === 'number' && typeof bVal === 'number') {
-    return lerp(aVal, bVal, t)
+    return lerp(aVal, bVal, t) as T
   }
 
   if (Array.isArray(aVal) && Array.isArray(bVal)) {
-    return aVal.map((v, i) => lerp(v, toValue(bVal[i]), t))
+    return aVal.map((v, i) => lerp(v, toValue(bVal[i]), t)) as T
   }
 
   throw new TypeError('Unknown transition type, specify an interpolation function.')
@@ -225,22 +225,16 @@ export function useTransition<T>(source: MaybeRefOrGetter<T>, options?: UseTrans
  * @param options
  */
 export function useTransition<T>(
-  source: MaybeRefOrGetter<UnwrapNestedRefs<T>>,
+  source: MaybeRefOrGetter<T>,
   options: UseTransitionOptions<T> = {},
 ): ComputedRef<T> {
   let currentId = 0
 
-  type SourceVal = typeof options.interpolation extends undefined
-    ? T extends Array<infer U>
-      ? U[]
-      : T
-    : T
-
-  const sourceVal = (): SourceVal => {
+  const sourceVal = () => {
     const val = toValue(source)
     return typeof options.interpolation === 'undefined' && Array.isArray(val)
-      ? val.map(toValue) as SourceVal
-      : val as SourceVal
+      ? val.map(toValue) as T
+      : val
   }
 
   const outputRef = shallowRef(sourceVal())
