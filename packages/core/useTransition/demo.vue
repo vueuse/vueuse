@@ -2,7 +2,7 @@
 import { rand, TransitionPresets, useTransition } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
-const duration = 2000
+const duration = 1500
 
 const baseNumber = shallowRef(0)
 
@@ -31,7 +31,7 @@ const word = useTransition(baseWord, {
   transition: TransitionPresets.easeInOutExpo,
 })
 
-// Custom easing functions can control the progress of a transition
+// Custom easing functions can control the progress of a transition,
 function easeOutElastic(n: number) {
   return n === 0
     ? 0
@@ -40,9 +40,8 @@ function easeOutElastic(n: number) {
       : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
 }
 
-// Custom interpolation functions control the value of a transition, at that
-// progress. this doesn't have to be a number or array of numbers.
-// To demonstrate, let's say hello in a bunch of languages!
+// and custom interpolator functions control the value of the transition, at
+// that progress. To demonstrate, let's say hello in a bunch of languages!
 const greetings = [
   'Ahoj',
   'Bok',
