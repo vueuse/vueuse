@@ -1,22 +1,35 @@
-import type { UseClipboardOptions } from '@vueuse/core'
+import type { UseClipboardOptions, UseClipboardReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-interface UseClipboardProps<Source = string> extends UseClipboardOptions<Source> {}
+export interface UseClipboardProps<Source = string> extends UseClipboardOptions<Source> {}
+interface UseClipboardSlots {
+  default: (data: Reactive<UseClipboardReturn<true>>) => any
+}
 
-export const UseClipboard = /* #__PURE__ */ defineComponent<UseClipboardProps>({
-  name: 'UseClipboard',
-  props: [
-    'source',
-    'read',
-    'navigator',
-    'copiedDuring',
-    'legacy',
-  ] as unknown as undefined,
-
-  setup(props, { slots }) {
+export const UseClipboard = /* #__PURE__ */ defineComponent<
+  UseClipboardProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseClipboardSlots>
+>(
+  (props, { slots }) => {
     const data = reactive(useClipboard(props))
 
-    return () => slots.default?.(data)
+    return () => {
+      if (slots.default)
+        return slots.default(data)
+    }
   },
-})
+  {
+    name: 'UseClipboard',
+    props: [
+      'source',
+      'read',
+      'navigator',
+      'copiedDuring',
+      'legacy',
+    ],
+  },
+)

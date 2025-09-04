@@ -50,6 +50,8 @@
   extendRef: function
   formatDate: function
   formatTimeAgo: function
+  formatTimeAgoIntl: function
+  formatTimeAgoIntlParts: function
   get: function
   getLifeCycleTarget: function
   getSSRHandler: function
@@ -100,8 +102,6 @@
   refDefault: function
   refThrottled: function
   refWithControl: function
-  resolveRef: function
-  resolveUnref: function
   set: function
   setSSRHandler: function
   StorageSerializers: object
@@ -116,7 +116,6 @@
   toReactive: function
   toRef: function
   toRefs: function
-  toValue: function
   TransitionPresets: object
   tryOnBeforeMount: function
   tryOnBeforeUnmount: function
@@ -259,6 +258,7 @@
   useThrottledRefHistory: function
   useThrottleFn: function
   useTimeAgo: function
+  useTimeAgoIntl: function
   useTimeout: function
   useTimeoutFn: function
   useTimeoutPoll: function

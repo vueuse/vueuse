@@ -81,7 +81,9 @@ export default withPwa(defineConfig({
           },
         },
         includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
-        typesCache: createFileSystemTypesCache(),
+        typesCache: createFileSystemTypesCache({
+          dir: resolve(__dirname, 'cache', 'twoslash'),
+        }),
       }),
     ],
     languages: ['js', 'ts'],
@@ -139,7 +141,7 @@ export default withPwa(defineConfig({
       },
       {
         text: 'Playground',
-        link: 'https://play.vueuse.org',
+        link: `https://playground.vueuse.org?vueuse=${currentVersion.replace('v', '')}`,
       },
       {
         text: currentVersion,

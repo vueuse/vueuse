@@ -99,7 +99,7 @@ export function watchExtractedObservable<T = any, E = unknown, Immediate extends
     subscription = undefined
   })
 
-  return watch(source as any, (value, oldValue, onCleanup) => {
+  return watch(source as WatchSource<T>, (value, oldValue, onCleanup) => {
     subscription?.unsubscribe()
 
     if (typeof value !== 'undefined' && value !== null) {

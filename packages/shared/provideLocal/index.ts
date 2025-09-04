@@ -1,4 +1,5 @@
 import type { InjectionKey } from 'vue'
+import type { LocalProvidedKey } from './map'
 import { getCurrentInstance, provide } from 'vue'
 import { localProvidedStateMap } from './map'
 
@@ -13,7 +14,7 @@ export type ProvideLocalReturn = void
  * const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
  * ```
  */
-export function provideLocal<T, K = InjectionKey<T> | string | number>(key: K, value: K extends InjectionKey<infer V> ? V : T): ProvideLocalReturn {
+export function provideLocal<T, K = LocalProvidedKey<T>>(key: K, value: K extends InjectionKey<infer V> ? V : T): ProvideLocalReturn {
   const instance = getCurrentInstance()?.proxy
   if (instance == null)
     throw new Error('provideLocal must be called in setup')
