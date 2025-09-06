@@ -236,6 +236,17 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     }
     resetData()
 
+    const pathParams = (typeof executeUrl === 'object' && executeUrl.pathParams)
+      || (typeof config === 'object' && config.pathParams)
+
+    const finalUrl = (pathParams && typeof _url === 'string')
+      ? Object.entries(pathParams).reduce(
+          (acc, [key, value]) =>
+            acc.replace(new RegExp(`:${key}(?=/|$)`, 'g'), encodeURIComponent(String(value))),
+          _url,
+        )
+      : _url
+
     if (options.abortPrevious !== false)
       abort()
 
@@ -245,7 +256,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     const currentExecuteCounter = executeCounter
     isAborted.value = false
 
-    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
+    instance(finalUrl, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
       .then((r: any) => {
         if (isAborted.value)
           return
