@@ -257,7 +257,7 @@ const useMyFetch = createFetch({
             if (newToken.value) {
               isRefreshing = false
               setMyToken(newToken.value)
-              onRrefreshed()
+              onRefreshed()
             }
             else {
               refreshSubscribers.length = 0
@@ -298,7 +298,7 @@ async function refreshToken() {
   return data
 }
 
-function onRrefreshed() {
+function onRefreshed() {
   refreshSubscribers.forEach(callback => callback())
   refreshSubscribers.length = 0
 }
