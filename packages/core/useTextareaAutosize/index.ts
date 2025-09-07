@@ -44,7 +44,7 @@ export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
   const textarea = toRef(options?.element)
   const input = toRef(options?.input ?? '')
   const styleProp = options?.styleProp ?? 'height'
-  const textareaScrollHeight = shallowRef(1)
+  const textareaHeight = shallowRef(1)
   const textareaOldWidth = shallowRef(0)
 
   function triggerResize() {
@@ -54,21 +54,33 @@ export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
     let height = ''
 
     textarea.value.style[styleProp] = '1px'
-    textareaScrollHeight.value = textarea.value?.scrollHeight
+
+    const style = getComputedStyle(textarea.value)
+    if (style.boxSizing === 'content-box') {
+      textareaHeight.value
+        = textarea.value.scrollHeight
+          - Number.parseFloat(style.paddingTop)
+          - Number.parseFloat(style.paddingBottom)
+    }
+    else {
+      textareaHeight.value
+        = textarea.value.scrollHeight + textarea.value.offsetHeight - textarea.value.clientHeight
+    }
+
     const _styleTarget = toValue(options?.styleTarget)
     // If style target is provided update its height
     if (_styleTarget)
-      _styleTarget.style[styleProp] = `${textareaScrollHeight.value}px`
+      _styleTarget.style[styleProp] = `${textareaHeight.value}px`
     // else update textarea's height by updating height variable
     else
-      height = `${textareaScrollHeight.value}px`
+      height = `${textareaHeight.value}px`
 
     textarea.value.style[styleProp] = height
   }
 
   watch([input, textarea], () => nextTick(triggerResize), { immediate: true })
 
-  watch(textareaScrollHeight, () => options?.onResize?.())
+  watch(textareaHeight, () => options?.onResize?.())
 
   useResizeObserver(textarea, ([{ contentRect }]) => {
     if (textareaOldWidth.value === contentRect.width)
