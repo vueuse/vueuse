@@ -60,14 +60,6 @@ export function createTsDownConfig(
       [fn]: fn === 'index' ? 'index.ts' : `${fn}/index.ts`,
     }
 
-    Object.assign(entry, fnEntry)
-
-    const info = functions.find(i => i.name === fn)
-
-    if (info?.component) {
-      Object.assign(entry, { [`${fn}/component`]: `${fn}/component.ts` })
-    }
-
     if (iife !== false) {
       const BASE_IIFE_CONFIG: UserConfig = {
         ...baseConfig,
@@ -90,6 +82,14 @@ export function createTsDownConfig(
           }),
         },
       )
+    }
+
+    Object.assign(entry, fnEntry)
+
+    const info = functions.find(i => i.name === fn)
+
+    if (info?.component) {
+      Object.assign(entry, { [`${fn}/component`]: `${fn}/component.ts` })
     }
   }
 
