@@ -33,7 +33,7 @@ export function createTsDownConfig(
     format.push('es')
   }
 
-  let baseConfig: UserConfig = {
+  const baseConfig: UserConfig = {
     target,
     dts,
     platform: 'browser',
@@ -53,23 +53,25 @@ export function createTsDownConfig(
     ).map(i => i.split('/')[0]))
   }
 
+  const entry: Record<string, string> = {}
+
   for (const fn of functionNames) {
-    baseConfig = {
-      ...baseConfig,
-      entry: {
-        [fn]: fn === 'index' ? 'index.ts' : `${fn}/index.ts`,
-      },
+    const fnEntry = {
+      [fn]: fn === 'index' ? 'index.ts' : `${fn}/index.ts`,
     }
 
-    configs.push({
-      ...baseConfig,
-      format,
-      copy,
-    })
+    Object.assign(entry, fnEntry)
+
+    const info = functions.find(i => i.name === fn)
+
+    if (info?.component) {
+      Object.assign(entry, { [`${fn}/component`]: `${fn}/component.ts` })
+    }
 
     if (iife !== false) {
       const BASE_IIFE_CONFIG: UserConfig = {
         ...baseConfig,
+        entry: fnEntry,
         format: 'iife',
         globalName: iifeName,
         outputOptions: {
@@ -89,18 +91,14 @@ export function createTsDownConfig(
         },
       )
     }
-
-    const info = functions.find(i => i.name === fn)
-
-    if (info?.component) {
-      configs.push({
-        ...baseConfig,
-        entry: {
-          [`${fn}/component`]: `${fn}/component.ts`,
-        },
-      })
-    }
   }
+
+  configs.push({
+    ...baseConfig,
+    entry,
+    format,
+    copy,
+  })
 
   return configs
 }
