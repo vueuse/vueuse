@@ -45,6 +45,3 @@ export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>) {
 
   return refValue
 }
-
-// alias
-export { refManualReset as manualResetRef }
