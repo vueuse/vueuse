@@ -147,5 +147,5 @@ export type TimerHandle = ReturnType<typeof setTimeout> | undefined
  * maybe null and undefined
  */
 export type Maybe<T> = T | null | undefined
-                                     
+
 export type InstanceProxy = NonNullable<NonNullable<ReturnType<typeof getCurrentInstance>>['proxy']>
