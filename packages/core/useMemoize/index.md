@@ -33,17 +33,17 @@ getUser.delete(1) // Delete cache from user 1
 getUser.clear() // Clear full cache
 ```
 
-Combine with `computed` or `asyncComputed` to achieve reactivity:
+Combine with `computed` or `computedAsync` to achieve reactivity:
 
 ```ts
-import { asyncComputed, useMemoize } from '@vueuse/core'
+import { computedAsync, useMemoize } from '@vueuse/core'
 
 const getUser = useMemoize(
   async (userId: number): Promise<UserData> =>
     axios.get(`users/${userId}`).then(({ data }) => data),
 )
 // ---cut---
-const user1 = asyncComputed(() => getUser(1))
+const user1 = computedAsync(() => getUser(1))
 // ...
 await getUser.load(1) // Will also update user1
 ```

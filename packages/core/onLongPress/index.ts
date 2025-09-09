@@ -14,7 +14,7 @@ export interface OnLongPressOptions {
    *
    * @default 500
    */
-  delay?: number
+  delay?: number | ((ev: PointerEvent) => number)
 
   modifiers?: OnLongPressModifiers
 
@@ -64,6 +64,14 @@ export function onLongPress(
     hasLongPressed = false
   }
 
+  function getDelay(ev: PointerEvent): number {
+    const delay = options?.delay
+    if (typeof delay === 'function') {
+      return delay(ev)
+    }
+    return delay ?? DEFAULT_DELAY
+  }
+
   function onRelease(ev: PointerEvent) {
     const [_startTimestamp, _posStart, _hasLongPressed] = [startTimestamp, posStart, hasLongPressed]
     clear()
@@ -108,7 +116,7 @@ export function onLongPress(
         hasLongPressed = true
         handler(ev)
       },
-      options?.delay ?? DEFAULT_DELAY,
+      getDelay(ev),
     )
   }
 
@@ -147,3 +155,5 @@ export function onLongPress(
 
   return stop
 }
+
+export type UseOnLongPressReturn = ReturnType<typeof onLongPress>
