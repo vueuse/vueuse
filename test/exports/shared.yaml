@@ -39,7 +39,6 @@
   isObject: function
   isWorker: boolean
   makeDestructurable: function
-  manualResetRef: function
   noop: function
   normalizeDate: function
   notNullish: function

@@ -67,7 +67,6 @@
   isObject: function
   isWorker: boolean
   makeDestructurable: function
-  manualResetRef: function
   mapGamepadToXbox360Controller: function
   noop: function
   normalizeDate: function
