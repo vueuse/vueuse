@@ -29,12 +29,14 @@
       "vitest",
       "vitest-browser-vue"
     ],
+    "allowImportingTsExtensions": true,
     "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "declaration": true,
     "declarationDir": "./types",
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true

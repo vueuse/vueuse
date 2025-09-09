@@ -102,8 +102,6 @@
   refDefault: function
   refThrottled: function
   refWithControl: function
-  resolveRef: function
-  resolveUnref: function
   set: function
   setSSRHandler: function
   StorageSerializers: object
@@ -118,7 +116,6 @@
   toReactive: function
   toRef: function
   toRefs: function
-  toValue: function
   TransitionPresets: object
   tryOnBeforeMount: function
   tryOnBeforeUnmount: function

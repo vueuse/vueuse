@@ -1,15 +1,4 @@
-import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
-
-export type {
-  /**
-   * @deprecated use `MaybeRef` from `vue` instead
-   */
-  MaybeRef,
-  /**
-   * @deprecated use `MaybeRefOrGetter` from `vue` instead
-   */
-  MaybeRefOrGetter,
-}
+import type { ComputedRef, getCurrentInstance, MaybeRef, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
 
 /**
  * Void function
@@ -158,3 +147,5 @@ export type TimerHandle = ReturnType<typeof setTimeout> | undefined
  * maybe null and undefined
  */
 export type Maybe<T> = T | null | undefined
+                                     
+export type InstanceProxy = NonNullable<NonNullable<ReturnType<typeof getCurrentInstance>>['proxy']>

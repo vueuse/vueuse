@@ -19,7 +19,7 @@ const { isSupported, open, sRGBHex } = useEyeDropper()
 ```vue
 <template>
   <UseEyeDropper v-slot="{ isSupported, sRGBHex, open }">
-    <button :disabled="!isSupported" @click="open">
+    <button :disabled="!isSupported" @click="() => open()">
       sRGBHex: {{ sRGBHex }}
     </button>
   </UseEyeDropper>
