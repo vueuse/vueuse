@@ -98,3 +98,8 @@ catalogs:
 
 neverBuiltDependencies:
   - electron
+
+shamefullyHoist: true
+shellEmulator: true
+sideEffectsCache: false
+strictPeerDependencies: false
