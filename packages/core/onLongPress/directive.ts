@@ -21,5 +21,5 @@ export const vOnLongPress: ObjectDirective<
   },
 }
 
-// alias
-export { vOnLongPress as VOnLongPress }
+/** @deprecated use `vOnLongPress` instead */
+export const VOnLongPress = vOnLongPress
