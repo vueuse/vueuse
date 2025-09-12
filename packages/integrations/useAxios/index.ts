@@ -50,17 +50,23 @@ export interface UseAxiosReturn<T, R = AxiosResponse<T>, _D = any, O extends Use
    */
   isCanceled: Ref<boolean>
 }
+
+/**
+ * Extended AxiosRequestConfig with pathParams to replace in the URL
+ */
+export type UseAxiosRequestConfig<D> = AxiosRequestConfig<D> & { pathParams?: Record<string, string | number> }
+
 export interface StrictUseAxiosReturn<T, R, D, O extends UseAxiosOptions = UseAxiosOptions<T>> extends UseAxiosReturn<T, R, D, O> {
   /**
    * Manually call the axios request
    */
-  execute: (url?: string | AxiosRequestConfig<D>, config?: AxiosRequestConfig<D>) => Promise<StrictUseAxiosReturn<T, R, D, O>>
+  execute: (url?: string | UseAxiosRequestConfig<D>, config?: UseAxiosRequestConfig<D>) => Promise<StrictUseAxiosReturn<T, R, D, O>>
 }
 export interface EasyUseAxiosReturn<T, R, D> extends UseAxiosReturn<T, R, D> {
   /**
    * Manually call the axios request
    */
-  execute: (url: string, config?: AxiosRequestConfig<D>) => Promise<EasyUseAxiosReturn<T, R, D>>
+  execute: (url: string, config?: UseAxiosRequestConfig<D>) => Promise<EasyUseAxiosReturn<T, R, D>>
 }
 export interface UseAxiosOptionsBase<T = any> {
   /**
@@ -115,15 +121,15 @@ export type UseAxiosOptions<T = any> = UseAxiosOptionsBase<T> | UseAxiosOptionsW
 
 type OverallUseAxiosReturn<T, R, D> = StrictUseAxiosReturn<T, R, D> | EasyUseAxiosReturn<T, R, D>
 
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, config?: UseAxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config?: AxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsWithInitialData<T> = UseAxiosOptionsWithInitialData<T>>(url: string, config: UseAxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config?: UseAxiosRequestConfig<D>, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, instance?: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config: AxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any, O extends UseAxiosOptionsBase<T> = UseAxiosOptionsBase<T>>(url: string, config: UseAxiosRequestConfig<D>, instance: AxiosInstance, options?: O): StrictUseAxiosReturn<T, R, D, O> & Promise<StrictUseAxiosReturn<T, R, D, O>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: UseAxiosRequestConfig<D>): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
 export function useAxios<T = any, R = AxiosResponse<T>, D = any>(instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
-export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: AxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
+export function useAxios<T = any, R = AxiosResponse<T>, D = any>(config?: UseAxiosRequestConfig<D>, instance?: AxiosInstance): EasyUseAxiosReturn<T, R, D> & Promise<EasyUseAxiosReturn<T, R, D>>
 
 /**
  * Wrapper for axios.
@@ -138,7 +144,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     shallow: true,
     abortPrevious: true,
   }
-  let defaultConfig: AxiosRequestConfig<D> = {}
+  let defaultConfig: UseAxiosRequestConfig<D> = {}
   let instance: AxiosInstance = axios
   let options: UseAxiosOptions<T> = defaultOptions
 
@@ -223,7 +229,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
   } as Promise<OverallUseAxiosReturn<T, R, D>>
 
   let executeCounter = 0
-  const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | AxiosRequestConfig<D> | undefined = url, config: AxiosRequestConfig<D> = {}) => {
+  const execute: OverallUseAxiosReturn<T, R, D>['execute'] = (executeUrl: string | UseAxiosRequestConfig<D> | undefined = url, config: UseAxiosRequestConfig<D> = {}) => {
     error.value = undefined
     const _url = typeof executeUrl === 'string'
       ? executeUrl
@@ -236,6 +242,17 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     }
     resetData()
 
+    const pathParams = (typeof executeUrl === 'object' && executeUrl.pathParams)
+      || (typeof config === 'object' && config.pathParams)
+
+    const finalUrl = (pathParams && typeof _url === 'string')
+      ? Object.entries(pathParams).reduce(
+          (acc, [key, value]) =>
+            acc.replace(new RegExp(`:${key}(?=/|$)`, 'g'), encodeURIComponent(String(value))),
+          _url,
+        )
+      : _url
+
     if (options.abortPrevious !== false)
       abort()
 
@@ -245,7 +262,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
     const currentExecuteCounter = executeCounter
     isAborted.value = false
 
-    instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
+    instance(finalUrl, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
       .then((r: any) => {
         if (isAborted.value)
           return

@@ -298,15 +298,15 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const onError = vi.fn()
     const { isLoading, execute } = useAxios(url, config, { ...options, onError })
 
-    execute().catch(() => {})
+    execute().catch(() => { })
     await nextTick()
     expect(isLoading.value).toBeTruthy()
 
-    execute().catch(() => {})
+    execute().catch(() => { })
     await nextTick()
     expect(isLoading.value).toBeTruthy()
 
-    await execute().catch(() => {})
+    await execute().catch(() => { })
     expect(isLoading.value).toBeFalsy()
     expect(onError).toBeCalledTimes(2)
   })
@@ -337,7 +337,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const { execute, error, isLoading, isFinished } = useAxios(url, config, { ...options, onError })
     expect(isLoading.value).toBeFalsy()
     await execute('https://jsonplaceholder.typicode.com/todos/2/3')
-      .catch(() => {})
+      .catch(() => { })
     expect(onError).toHaveBeenCalledWith(error.value)
     expect(isFinished.value).toBeTruthy()
     expect(isLoading.value).toBeFalsy()
@@ -367,9 +367,9 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     }
     const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData, resetOnExecute: true })
     expect(data.value).toEqual(initialData)
-    await execute().catch(() => {})
+    await execute().catch(() => { })
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312').catch(() => {})
+    await execute('/todos/312').catch(() => { })
     expect(data.value).toEqual(initialData)
   })
 
@@ -388,9 +388,9 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     }
     const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData })
     expect(data.value).toEqual(initialData)
-    await execute().catch(() => {})
+    await execute().catch(() => { })
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
-    await execute('/todos/312').catch(() => {})
+    await execute('/todos/312').catch(() => { })
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
   })
 
@@ -418,5 +418,13 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
     const d = useAxios<number>(url, config, { ...options })
 
     expectTypeOf(d.data.value).toEqualTypeOf<number | undefined>()
+  })
+
+  it('should replace pathParams in url when executing', async () => {
+    const urlWithParams = 'https://jsonplaceholder.typicode.com/todos/:id'
+    const { data, isLoading, execute } = useAxios(urlWithParams, config, options)
+    expect(isLoading.value).toBeFalsy()
+    await execute({ pathParams: { id: 1 } })
+    expect(data.value.id).toBe(1)
   })
 })
