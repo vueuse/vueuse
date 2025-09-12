@@ -1,6 +1,6 @@
 import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/shared'
 import type { Observable, Subscription } from 'rxjs'
-import type { WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { WatchHandle, WatchOptions, WatchSource } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue'
 
@@ -27,7 +27,7 @@ export function watchExtractedObservable<
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
   watchOptions?: WatchOptions<Immediate>
-): WatchStopHandle
+): WatchHandle
 
 // overload: multiple sources w/ `as const`
 // watch([foo, bar] as const, () => {})
@@ -46,7 +46,7 @@ export function watchExtractedObservable<
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
   watchOptions?: WatchOptions<Immediate>
-): WatchStopHandle
+): WatchHandle
 
 // overload: single source + cb
 export function watchExtractedObservable<
@@ -63,7 +63,7 @@ export function watchExtractedObservable<
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
   watchOptions?: WatchOptions<Immediate>
-): WatchStopHandle
+): WatchHandle
 
 // overload: watching reactive object w/ cb
 export function watchExtractedObservable<
@@ -80,7 +80,7 @@ export function watchExtractedObservable<
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
   watchOptions?: WatchOptions<Immediate>
-): WatchStopHandle
+): WatchHandle
 
 // implementation
 export function watchExtractedObservable<T = any, E = unknown, Immediate extends Readonly<boolean> = false>(
@@ -89,7 +89,7 @@ export function watchExtractedObservable<T = any, E = unknown, Immediate extends
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
   watchOptions?: WatchOptions<Immediate>,
-): WatchStopHandle {
+): WatchHandle {
   let subscription: Subscription | undefined
 
   tryOnScopeDispose(() => {
