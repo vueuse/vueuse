@@ -1,8 +1,8 @@
-import type { UseAsyncValidatorOptions, UseAsyncValidatorReturn } from '@vueuse/integrations/useAsyncValidator'
 import type { Rules } from 'async-validator'
 import type { Reactive, SlotsType } from 'vue'
-import { useAsyncValidator } from '@vueuse/integrations/useAsyncValidator'
+import type { UseAsyncValidatorOptions, UseAsyncValidatorReturn } from './index'
 import { defineComponent, reactive } from 'vue'
+import { useAsyncValidator } from './index'
 
 export interface UseAsyncValidatorProps {
   form: Record<string, any>

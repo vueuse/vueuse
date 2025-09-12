@@ -1,8 +1,8 @@
 import type { RenderableComponent } from '@vueuse/core'
-import type { UseFocusTrapOptions, UseFocusTrapReturn } from '@vueuse/integrations/useFocusTrap'
 import type { Reactive, SlotsType } from 'vue'
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import type { UseFocusTrapOptions, UseFocusTrapReturn } from './index'
 import { defineComponent, h, reactive, shallowRef } from 'vue'
+import { useFocusTrap } from './index'
 
 export interface UseFocusTrapProps extends RenderableComponent {
   options?: UseFocusTrapOptions

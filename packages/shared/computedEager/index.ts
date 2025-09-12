@@ -31,5 +31,5 @@ export function computedEager<T>(fn: () => T, options?: ComputedEagerOptions): C
   return readonly(result)
 }
 
-// alias
-export { computedEager as eagerComputed }
+/** @deprecated use `computedEager` instead */
+export const eagerComputed = computedEager
