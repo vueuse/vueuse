@@ -27,5 +27,5 @@ export function reactivePick<T extends object, K extends keyof T>(
 ): { [S in K]: UnwrapRef<T[S]> } {
   const flatKeys = keys.flat() as K[]
   const predicate = flatKeys[0] as unknown as ReactivePickPredicate<T>
-  return reactiveComputed(() => typeof predicate === 'function' ? Object.fromEntries(Object.entries(toRefs(obj)).filter(([k, v]) => predicate(toValue(v) as T[K], k as K))) : Object.fromEntries(flatKeys.map(k => [k, toRef(obj, k)]))) as any
+  return reactiveComputed(() => typeof predicate === 'function' ? Object.fromEntries(Object.entries(toRefs(obj)).filter(([k, v]) => predicate(toValue(v) as T[K], k as K))) : Object.fromEntries(flatKeys.map(k => [k, toRef(obj, k)]))) as ReactivePickReturn<T, keyof T | K>
 }
