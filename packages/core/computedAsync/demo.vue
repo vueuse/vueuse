@@ -17,16 +17,30 @@ const stringify = reactify(
 
 const id = shallowRef(1)
 const evaluating = shallowRef(false)
+const last = shallowRef(null)
 
 const state = computedAsync(
   async (onCancel) => {
     const abortController = new AbortController()
     onCancel(() => abortController.abort())
 
-    return await fetch(
-      `https://jsonplaceholder.typicode.com/todos/${id.value}`,
-      { signal: abortController.signal },
-    ).then(resp => resp.json())
+    try {
+      const resp = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${id.value}`,
+        { signal: abortController.signal },
+      )
+      if (!resp.ok)
+        throw new Error(`HTTP ${resp.status}`)
+
+      const data = await resp.json()
+      last.value = data
+      return data
+    }
+    catch (e: any) {
+      if (e?.name === 'AbortError')
+        return last.value
+      throw e
+    }
   },
   null,
   {
