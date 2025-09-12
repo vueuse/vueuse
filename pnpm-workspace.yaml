@@ -61,7 +61,7 @@ catalogs:
     change-case: ^5.4.4
     drauu: ^0.4.3
     electron: ^13.1.0
-    firebase: ^10.14.1
+    firebase: ^12.2.1
     focus-trap: ^7.6.5
     fuse.js: ^7.1.0
     idb-keyval: ^6.2.2
