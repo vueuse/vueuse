@@ -1,5 +1,5 @@
 import type { UseMousePressedReturn } from './index'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { useMousePressed } from './index'
 
 type expectSourceType = 'mouse' | 'touch' | null
@@ -25,11 +25,6 @@ function pressAndReleaseByEvent(options: { triggerEvent: keyof WindowEventMap, c
 }
 
 describe('useMousePressed', () => {
-  let targetEle: HTMLButtonElement
-  beforeEach(() => {
-    targetEle = document.createElement('button')
-  })
-
   it('should be defined', () => {
     expect(useMousePressed).toBeDefined()
   })
@@ -55,6 +50,7 @@ describe('useMousePressed', () => {
       })
 
       it('has a target element', () => {
+        const targetEle = document.createElement('button')
         const returnValue = useMousePressed({ target: targetEle })
         targetEle.dispatchEvent(new Event('dragstart'))
         assertReturnValue({ returnValue, expect: { pressed: true, sourceType: 'mouse' } })
