@@ -35,12 +35,18 @@ export interface TransitionOptions<T> extends ConfigurableWindow {
   duration?: MaybeRef<number>
 
   /**
+   * Easing function or cubic bezier points to calculate transition progress
+   */
+  easing?: MaybeRef<EasingFunction | CubicBezierPoints>
+
+  /**
    * Custom interpolation function
    */
   interpolation?: InterpolationFunction<T>
 
   /**
-   * Easing function or cubic bezier points for calculating transition values
+   * Easing function or cubic bezier points to calculate transition progress
+   * @deprecated The `transition` option is deprecated, use `easing` instead.
    */
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
@@ -157,7 +163,7 @@ function defaultInterpolation<T>(a: T, b: T, t: number) {
  * @param to
  * @param options
  */
-export function executeTransition<T>(
+export function transition<T>(
   source: Ref<T>,
   from: MaybeRefOrGetter<T>,
   to: MaybeRefOrGetter<T>,
@@ -176,9 +182,13 @@ export function executeTransition<T>(
     ? options.interpolation
     : defaultInterpolation
 
-  const trans = typeof options.transition === 'function'
-    ? options.transition
-    : (toValue(options.transition) ?? linear)
+  const trans = typeof options.easing !== 'undefined'
+    ? typeof options.easing === 'function'
+      ? options.easing
+      : (toValue(options.easing) ?? linear)
+    : typeof options.transition === 'function'
+      ? options.transition
+      : (toValue(options.transition) ?? linear)
 
   const ease = typeof trans === 'function'
     ? trans
@@ -211,6 +221,24 @@ export function executeTransition<T>(
 
     tick()
   })
+}
+
+/**
+ * Transition from one value to another.
+ * @deprecated The `executeTransition` function is deprecated, use `transition` instead.
+ *
+ * @param source
+ * @param from
+ * @param to
+ * @param options
+ */
+export function executeTransition<T>(
+  source: Ref<T>,
+  from: MaybeRefOrGetter<T>,
+  to: MaybeRefOrGetter<T>,
+  options: TransitionOptions<T> = {},
+) {
+  return transition(source, from, to, options)
 }
 
 // static array of possibly reactive numbers
@@ -259,7 +287,7 @@ export function useTransition<T>(
 
     options.onStarted?.()
 
-    await executeTransition(outputRef, outputRef.value, to, {
+    await transition(outputRef, outputRef.value, to, {
       ...options,
       abort: () => id !== currentId || options.abort?.(),
     })
