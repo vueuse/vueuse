@@ -15,6 +15,11 @@ export type CubicBezierPoints = [number, number, number, number]
 export type EasingFunction = (n: number) => number
 
 /**
+ * Interpolation function
+ */
+export type InterpolationFunction<T> = (from: T, to: T, t: number) => T
+
+/**
  * Transition options
  */
 export interface TransitionOptions<T> extends ConfigurableWindow {
@@ -32,7 +37,7 @@ export interface TransitionOptions<T> extends ConfigurableWindow {
   /**
    * Custom interpolation function
    */
-  interpolation?: (a: T, b: T, t: number) => T
+  interpolation?: InterpolationFunction<T>
 
   /**
    * Easing function or cubic bezier points for calculating transition values
