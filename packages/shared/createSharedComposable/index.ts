@@ -2,6 +2,7 @@ import type { EffectScope } from 'vue'
 import type { AnyFn } from '../utils'
 import { effectScope } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
+import { isClient } from '../utils'
 
 export type SharedComposableReturn<T extends AnyFn = AnyFn> = T
 
@@ -13,6 +14,9 @@ export type SharedComposableReturn<T extends AnyFn = AnyFn> = T
  * @__NO_SIDE_EFFECTS__
  */
 export function createSharedComposable<Fn extends AnyFn>(composable: Fn): SharedComposableReturn<Fn> {
+  if (!isClient)
+    return composable
+
   let subscribers = 0
   let state: ReturnType<Fn> | undefined
   let scope: EffectScope | undefined
