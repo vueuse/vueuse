@@ -18,7 +18,7 @@ const source = shallowRef(0)
 
 const output = useTransition(source, {
   duration: 1000,
-  transition: TransitionPresets.easeInOutCubic,
+  easing: TransitionPresets.easeInOutCubic,
 })
 ```
 
@@ -28,7 +28,7 @@ Transition easing can be customized using [cubic bezier curves](https://develope
 import { useTransition } from '@vueuse/core'
 // ---cut---
 useTransition(source, {
-  transition: [0.75, 0, 0.25, 1],
+  easing: [0.75, 0, 0.25, 1],
 })
 ```
 
@@ -60,7 +60,7 @@ The following transitions are available via the `TransitionPresets` constant.
 - [`easeOutBack`](https://cubic-bezier.com/#.34,1.56,.64,1)
 - [`easeInOutBack`](https://cubic-bezier.com/#.68,-.6,.32,1.6)
 
-For more complex easing functions, define a `transition` option.
+For more complex easing, a custom function can be provided.
 
 ```ts
 import { useTransition } from '@vueuse/core'
@@ -74,7 +74,7 @@ function easeOutElastic(n) {
 }
 
 useTransition(source, {
-  transition: easeOutElastic,
+  easing: easeOutElastic,
 })
 ```
 
@@ -110,12 +110,15 @@ useTransition(source, {
 
 To stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
 
-For more control, transitions can be executed manually by using `executeTransition`. This function returns a promise that resolves when the transition ends. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
+For even more control, transitions can be executed manually via the `transition` function. This function returns a promise that resolves when the transition is complete. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
 
 ```ts
-import { executeTransition } from '@vueuse/core'
+import { transition } from '@vueuse/core'
 
-await executeTransition(source, from, to, {
-  duration: 1000,
+await transition(source, from, to, {
+  abort() {
+    if (shouldAbort)
+      return true
+  }
 })
 ```
