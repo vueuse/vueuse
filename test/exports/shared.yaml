@@ -106,6 +106,7 @@
   useToggle: function
   useToNumber: function
   useToString: function
+  useWebWorkerIntervalFn: function
   watchArray: function
   watchAtMost: function
   watchDebounced: function
