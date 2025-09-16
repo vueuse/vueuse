@@ -30,5 +30,5 @@ export function reactiveOmit<T extends object, K extends keyof T>(
   return reactiveComputed<any>(() =>
     typeof predicate === 'function'
       ? Object.fromEntries(Object.entries(toRefs(obj)).filter(([k, v]) => !predicate(toValue(v) as T[K], k as K)))
-      : Object.fromEntries(Object.entries(toRefs(obj)).filter(e => !flatKeys.includes(e[0] as any))))
+      : Object.fromEntries(Object.entries(toRefs(obj)).filter(e => !flatKeys.includes(e[0] as K))))
 }

@@ -9,6 +9,9 @@ export type ComputedEagerOptions = WatchOptionsBase
 export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
 
 /**
+ *
+ * @deprecated This function will be removed in future version.
+ *
  * Note: If you are using Vue 3.4+, you can straight use computed instead.
  * Because in Vue 3.4+, if computed new value does not change,
  * computed, effect, watch, watchEffect, render dependencies will not be triggered.
