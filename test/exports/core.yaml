@@ -290,7 +290,6 @@
   watchIgnorable: function
   watchImmediate: function
   watchOnce: function
-  watchPausable: function
   watchThrottled: function
   watchTriggerable: function
   watchWithFilter: function

@@ -133,7 +133,6 @@
   "useParentElement": "467 B",
   "reactivePick": "464 B",
   "pausableWatch": "463 B",
-  "watchPausable": "463 B",
   "useInterval": "461 B",
   "debouncedWatch": "455 B",
   "watchDebounced": "455 B",
