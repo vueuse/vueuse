@@ -47,7 +47,6 @@
   objectOmit: function
   objectPick: function
   pausableFilter: function
-  pausableWatch: function
   promiseTimeout: function
   provideLocal: function
   pxValue: function
