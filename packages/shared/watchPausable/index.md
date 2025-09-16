@@ -7,6 +7,10 @@ alias: pausableWatch
 
 Pausable watch
 
+::: info
+This function will be removed in future version.
+:::
+
 ::: tip
 
 [Pausable Watcher](https://vuejs.org/api/reactivity-core.html#watch) has been added to Vue [since 3.5](https://github.com/vuejs/core/pull/9651), use `const { stop, pause, resume } = watch(watchSource, callback)` instead.
