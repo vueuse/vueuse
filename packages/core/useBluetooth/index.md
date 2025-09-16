@@ -16,7 +16,8 @@ N.B. This API is not available in Web Workers (not exposed via WorkerNavigator).
 
 ## Usage Default
 
-```ts
+```vue
+<script setup lang="ts">
 import { useBluetooth } from '@vueuse/core'
 
 const {
@@ -28,9 +29,8 @@ const {
 } = useBluetooth({
   acceptAllDevices: true,
 })
-```
+</script>
 
-```vue
 <template>
   <button @click="requestDevice()">
     Request Bluetooth Device
@@ -46,8 +46,9 @@ This sample illustrates the use of the Web Bluetooth API to read battery level a
 
 Here, we use the characteristicvaluechanged event listener to handle reading battery level characteristic value. This event listener will optionally handle upcoming notifications as well.
 
-```ts
-import { pausableWatch, useBluetooth, useEventListener } from '@vueuse/core'
+```vue
+<script setup lang="ts">
+import { useBluetooth, useEventListener, watchPausable } from '@vueuse/core'
 
 const {
   isSupported,
@@ -88,7 +89,7 @@ async function getBatteryLevels() {
   batteryPercent.value = await batteryLevel.getUint8(0)
 }
 
-const { stop } = pausableWatch(isConnected, (newIsConnected) => {
+const { stop } = watchPausable(isConnected, (newIsConnected) => {
   if (!newIsConnected || !server.value || isGettingBatteryLevels.value)
     return
   // Attempt to get the battery levels of the device:
@@ -96,9 +97,8 @@ const { stop } = pausableWatch(isConnected, (newIsConnected) => {
   // We only want to run this on the initial connection, as we will use an event listener to handle updates:
   stop()
 })
-```
+</script>
 
-```vue
 <template>
   <button @click="requestDevice()">
     Request Bluetooth Device

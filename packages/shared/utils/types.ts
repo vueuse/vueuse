@@ -1,15 +1,4 @@
-import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
-
-export type {
-  /**
-   * @deprecated use `MaybeRef` from `vue` instead
-   */
-  MaybeRef,
-  /**
-   * @deprecated use `MaybeRefOrGetter` from `vue` instead
-   */
-  MaybeRefOrGetter,
-}
+import type { ComputedRef, getCurrentInstance, MaybeRef, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
 
 /**
  * Void function
@@ -111,13 +100,15 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   start: (...args: StartFnArgs) => void
 }
 
+export type WatchOptionFlush = WatchOptions['flush']
+
 export interface ConfigurableFlush {
   /**
    * Timing for monitoring changes, refer to WatchOptions for more details
    *
    * @default 'pre'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
 }
 
 export interface ConfigurableFlushSync {
@@ -127,7 +118,7 @@ export interface ConfigurableFlushSync {
    *
    * @default 'sync'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
 }
 
 // Internal Types
@@ -153,3 +144,5 @@ export type IsAny<T> = IfAny<T, true, false>
  * Universal timer handle that works in both browser and Node.js environments
  */
 export type TimerHandle = ReturnType<typeof setTimeout> | undefined
+
+export type InstanceProxy = NonNullable<NonNullable<ReturnType<typeof getCurrentInstance>>['proxy']>

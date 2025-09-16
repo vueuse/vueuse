@@ -8,7 +8,7 @@ Reactive [prefers-contrast](https://developer.mozilla.org/en-US/docs/Web/CSS/@me
 
 ## Usage
 
-```js
+```ts
 import { usePreferredContrast } from '@vueuse/core'
 
 const preferredContrast = usePreferredContrast()

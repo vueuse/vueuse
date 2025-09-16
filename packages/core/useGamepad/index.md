@@ -11,7 +11,7 @@ Provides reactive bindings for the [Gamepad API](https://developer.mozilla.org/e
 > Due to how the Gamepad API works, you must interact with the page using the gamepad before it will be detected.
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useGamepad } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -49,6 +49,8 @@ resume()
 The `onConnected` and `onDisconnected` events will trigger when a gamepad is connected or disconnected.
 
 ```ts
+import { useGamepad } from '@vueuse/core'
+// ---cut---
 const { gamepads, onConnected, onDisconnected } = useGamepad()
 
 onConnected((index) => {
@@ -64,7 +66,14 @@ onDisconnected((index) => {
 
 > The Gamepad Haptics API is sparse, so check the [compatibility table](https://developer.mozilla.org/en-US/docs/Web/API/GamepadHapticActuator#browser_compatibility) before using.
 
+<!-- eslint-disable import/first -->
+
 ```ts
+import { useGamepad } from '@vueuse/core'
+
+const { gamepads, onConnected, onDisconnected } = useGamepad()
+const gamepad = gamepads.value[0]!
+// ---cut---
 import { computed } from 'vue'
 
 const supportsVibration = computed(() => gamepad.hapticActuators.length > 0)
