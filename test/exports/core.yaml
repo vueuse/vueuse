@@ -280,6 +280,7 @@
   useWebSocket: function
   useWebWorker: function
   useWebWorkerFn: function
+  useWebWorkerIntervalFn: function
   useWindowFocus: function
   useWindowScroll: function
   useWindowSize: function
