@@ -98,7 +98,6 @@
   useDebounceFn: function
   useInterval: function
   useIntervalFn: function
-  useWebWorkerIntervalFn: function
   useLastChanged: function
   useThrottle: function
   useThrottleFn: function
@@ -107,6 +106,7 @@
   useToggle: function
   useToNumber: function
   useToString: function
+  useWebWorkerIntervalFn: function
   watchArray: function
   watchAtMost: function
   watchDebounced: function
