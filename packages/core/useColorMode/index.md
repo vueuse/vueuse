@@ -66,9 +66,9 @@ const myColorMode = computed(() => store.value === 'auto' ? system.value : store
 
 ```vue
 <template>
-  <UseColorMode v-slot="{ mode }">
-    <button @click="mode = mode === 'dark' ? 'light' : 'dark'">
-      Mode {{ mode }}
+  <UseColorMode v-slot="color">
+    <button @click="color.mode = color.mode === 'dark' ? 'light' : 'dark'">
+      Mode {{ color.mode }}
     </button>
   </UseColorMode>
 </template>
