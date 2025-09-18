@@ -155,6 +155,12 @@ function defaultInterpolation<T>(a: T, b: T, t: number) {
   throw new TypeError('Unknown transition type, specify an interpolation function.')
 }
 
+function normalizeEasing(easing: MaybeRef<EasingFunction | CubicBezierPoints> | undefined) {
+  return typeof easing === 'function'
+    ? easing
+    : (toValue(easing) ?? linear)
+}
+
 /**
  * Transition from one value to another.
  *
@@ -183,12 +189,8 @@ export function transition<T>(
     : defaultInterpolation
 
   const trans = typeof options.easing !== 'undefined'
-    ? typeof options.easing === 'function'
-      ? options.easing
-      : (toValue(options.easing) ?? linear)
-    : typeof options.transition === 'function'
-      ? options.transition
-      : (toValue(options.transition) ?? linear)
+    ? normalizeEasing(options.easing)
+    : normalizeEasing(options.transition)
 
   const ease = typeof trans === 'function'
     ? trans
