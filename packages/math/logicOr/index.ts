@@ -12,5 +12,5 @@ export function logicOr(...args: MaybeRefOrGetter<any>[]): ComputedRef<boolean> 
   return computed(() => args.some(i => toValue(i)))
 }
 
-// alias
-export { logicOr as or }
+/** @deprecated use `logicOr` instead */
+export const or = logicOr

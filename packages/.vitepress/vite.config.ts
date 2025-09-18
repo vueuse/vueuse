@@ -85,6 +85,7 @@ export default defineConfig({
       'fuse.js',
       'universal-cookie',
     ],
+    disabled: 'dev',
   },
   build: {
     rollupOptions: {

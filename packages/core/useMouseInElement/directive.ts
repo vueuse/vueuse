@@ -1,8 +1,8 @@
+import type { MouseInElementOptions, UseMouseInElementReturn } from '@vueuse/core'
 import type { ObjectDirective, Reactive } from 'vue'
-import type { MouseInElementOptions, UseMouseInElementReturn } from './index'
+import { useMouseInElement } from '@vueuse/core'
 import { reactiveOmit } from '@vueuse/shared'
 import { reactive, watch } from 'vue'
-import { useMouseInElement } from './index'
 
 type MouseInElement = Omit<UseMouseInElementReturn, 'stop'>
 type BindingValueFunction = (mouse: Reactive<MouseInElement>) => void

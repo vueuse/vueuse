@@ -76,3 +76,24 @@ const { status, data, close } = useEventSource(
   }
 )
 ```
+
+### Data Serialization
+
+Apply custom transformations to incoming data using a serialization function.
+
+```ts
+import { useEventSource } from '@vueuse/core'
+// ---cut---
+const { data } = useEventSource(
+  'https://event-source-url',
+  [],
+  {
+    serializer: {
+      read: rawData => JSON.parse(rawData),
+    },
+  }
+)
+
+// If server sends: '{"name":"John","age":30}'
+// data.value will be: { name: 'John', age: 30 }
+```

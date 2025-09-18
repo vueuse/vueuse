@@ -1,4 +1,4 @@
-import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import type { WatchCallback, WatchHandle, WatchOptions, WatchSource } from 'vue'
 import type { MapOldSources, MapSources } from '../utils/types'
 
 import { watch } from 'vue'
@@ -11,13 +11,13 @@ export function watchDeep<
   source: [...T],
   cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
   options?: Omit<WatchOptions<Immediate>, 'deep'>
-): WatchStopHandle
+): WatchHandle
 
 export function watchDeep<T, Immediate extends Readonly<boolean> = false>(
   source: WatchSource<T>,
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
   options?: Omit<WatchOptions<Immediate>, 'deep'>
-): WatchStopHandle
+): WatchHandle
 
 export function watchDeep<
   T extends object,
@@ -26,7 +26,7 @@ export function watchDeep<
   source: T,
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
   options?: Omit<WatchOptions<Immediate>, 'deep'>
-): WatchStopHandle
+): WatchHandle
 
 /**
  * Shorthand for watching value with {deep: true}
@@ -35,7 +35,7 @@ export function watchDeep<
  */
 export function watchDeep<T = any, Immediate extends Readonly<boolean> = false>(source: T | WatchSource<T>, cb: any, options?: Omit<WatchOptions<Immediate>, 'deep'>) {
   return watch(
-    source as any,
+    source as WatchSource<T>,
     cb,
     {
       ...options,
