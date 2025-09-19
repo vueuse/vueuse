@@ -85,6 +85,30 @@ export default antfu(
     },
   },
   {
+    files: ['packages/core/**/component.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        paths: restricted,
+        patterns: [{
+          group: ['./*'],
+          message: 'Please use `@vueuse/core` instead.',
+        }],
+      }],
+    },
+  },
+  {
+    files: ['packages/**/component.ts'],
+    ignores: ['packages/core/**/component.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        paths: restricted,
+        patterns: [{
+          group: ['@vueuse/*', '!@vueuse/shared', '!@vueuse/core'],
+        }],
+      }],
+    },
+  },
+  {
     files: [
       'packages/*/index.ts',
     ],

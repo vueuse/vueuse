@@ -96,6 +96,21 @@ describe('useMagicKeys', () => {
     expect(shift.value).toBe(false)
   })
 
+  it('prevent incorrect clearing of other keys after releasing alt', () => {
+    // #5035
+    const { current } = useMagicKeys({ target })
+
+    dispatchKeyboardEvent({ target, key: 'v' })
+    dispatchKeyboardEvent({ target, key: 'Alt', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'u', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'e', altKey: true })
+    expect(current).toStrictEqual(new Set(['v', 'alt', 'u', 'e']))
+
+    // Clear key pressed after alt
+    dispatchKeyboardEvent({ target, key: 'Alt', altKey: true, eventType: 'keyup' })
+    expect(current).toStrictEqual(new Set(['v']))
+  })
+
   it('current return value', async () => {
     const { v, current } = useMagicKeys({ target })
     expect(v.value).toBe(false)

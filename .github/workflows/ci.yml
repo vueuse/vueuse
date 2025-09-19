@@ -79,6 +79,9 @@ jobs:
       - name: browser tests
         run: pnpm run test:browser
 
+      - name: server tests
+        run: pnpm run test:server
+
       - if: matrix.node == '20.x'
         name: attw tests
         run: pnpm test:attw

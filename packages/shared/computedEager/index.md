@@ -7,6 +7,10 @@ alias: eagerComputed
 
 Eager computed without lazy evaluation.
 
+::: info
+This function will be removed in future version.
+:::
+
 ::: tip
 Note💡: If you are using Vue 3.4+, you can use `computed` right away, you no longer need this function.
 In Vue 3.4+, if the computed new value does not change, `computed`, `effect`, `watch`, `watchEffect`, `render` dependencies will not be triggered.

@@ -8,7 +8,7 @@ Transition between values
 
 ## Usage
 
-Define a numeric source value to follow, and when changed the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
+Define a source value to follow, and when changed the output will transition to the new value. If the source changes while a transition is in progress, a new transition will begin from where the previous one was interrupted.
 
 ```ts
 import { TransitionPresets, useTransition } from '@vueuse/core'
@@ -18,32 +18,17 @@ const source = shallowRef(0)
 
 const output = useTransition(source, {
   duration: 1000,
-  transition: TransitionPresets.easeInOutCubic,
+  easing: TransitionPresets.easeInOutCubic,
 })
 ```
 
-To synchronize transitions, use an array of numbers. As an example, here is how we could transition between colors.
-
-```ts
-import { useTransition } from '@vueuse/core'
-// ---cut---
-const source = shallowRef([0, 0, 0])
-
-const output = useTransition(source)
-
-const color = computed(() => {
-  const [r, g, b] = output.value
-  return `rgb(${r}, ${g}, ${b})`
-})
-```
-
-Transition easing can be customized using cubic bezier curves. Transitions defined this way work the same as [CSS easing functions](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function#easing_functions).
+Transition easing can be customized using [cubic bezier curves](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier#description).
 
 ```ts
 import { useTransition } from '@vueuse/core'
 // ---cut---
 useTransition(source, {
-  transition: [0.75, 0, 0.25, 1],
+  easing: [0.75, 0, 0.25, 1],
 })
 ```
 
@@ -75,7 +60,7 @@ The following transitions are available via the `TransitionPresets` constant.
 - [`easeOutBack`](https://cubic-bezier.com/#.34,1.56,.64,1)
 - [`easeInOutBack`](https://cubic-bezier.com/#.68,-.6,.32,1.6)
 
-For more complex transitions, a custom function can be provided.
+For more complex easing, a custom function can be provided.
 
 ```ts
 import { useTransition } from '@vueuse/core'
@@ -89,7 +74,21 @@ function easeOutElastic(n) {
 }
 
 useTransition(source, {
-  transition: easeOutElastic,
+  easing: easeOutElastic,
+})
+```
+
+By default the `source` must be a number, or array of numbers. For more complex values, define a custom `interpolation` function. For example, the following would transition a Three.js rotation.
+
+```ts
+import { useTransition } from '@vueuse/core'
+// ---cut---
+import { Quaternion } from 'three'
+
+const source = ref(new Quaternion())
+
+const output = useTransition(source, {
+  interpolation: (q1, q2, t) => new Quaternion().slerpQuaternions(q1, q2, t)
 })
 ```
 
@@ -109,14 +108,17 @@ useTransition(source, {
 })
 ```
 
-To temporarily stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
+To stop transitioning, define a boolean `disabled` property. Be aware, this is not the same a `duration` of `0`. Disabled transitions track the source value **_synchronously_**. They do not respect a `delay`, and do not fire `onStarted` or `onFinished` callbacks.
 
-For more control, transitions can be executed manually by using `executeTransition`. This function returns a promise that resolves upon completion. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
+For even more control, transitions can be executed manually via the `transition` function. This function returns a promise that resolves when the transition is complete. Manual transitions can be cancelled by defining an `abort` function that returns a truthy value.
 
 ```ts
-import { executeTransition } from '@vueuse/core'
+import { transition } from '@vueuse/core'
 
-await executeTransition(source, from, to, {
-  duration: 1000,
+await transition(source, from, to, {
+  abort() {
+    if (shouldAbort)
+      return true
+  }
 })
 ```
