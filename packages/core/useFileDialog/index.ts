@@ -2,10 +2,9 @@ import type { EventHookOn } from '@vueuse/shared'
 import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { createEventHook, hasOwn } from '@vueuse/shared'
-import { computed, ref as deepRef, readonly, toValue, watchEffect } from 'vue'
+import { createEventHook, hasOwn, whenever } from '@vueuse/shared'
+import { ref as deepRef, readonly, shallowRef, toValue, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
-import { unrefElement } from '../unrefElement'
 
 export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
@@ -43,7 +42,7 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * The input element to use for file dialog.
    * @default document.createElement('input')
    */
-  input?: MaybeElementRef<HTMLInputElement>
+  input?: MaybeElementRef<HTMLInputElement | undefined>
 }
 
 const DEFAULT_OPTIONS: UseFileDialogOptions = {
@@ -90,23 +89,26 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
-  const inputRef = computed(() => {
-    const input = unrefElement(options.input) ?? (document ? document.createElement('input') : undefined)
-    if (input) {
-      input.type = 'file'
+  let inputRef: Ref<HTMLInputElement | undefined> = shallowRef()
+  if (options.input) {
+    inputRef = shallowRef(options.input)
+  }
+  else if (document) {
+    inputRef = shallowRef(document.createElement('input'))
+  }
 
-      input.onchange = (event: Event) => {
-        const result = event.target as HTMLInputElement
-        files.value = result.files
-        changeTrigger(files.value)
-      }
+  whenever(inputRef, (input) => {
+    input.type = 'file'
 
-      input.oncancel = () => {
-        cancelTrigger()
-      }
+    input.onchange = (event: Event) => {
+      const result = event.target as HTMLInputElement
+      files.value = result.files
+      changeTrigger(files.value)
     }
-    return input
-  })
+    input.oncancel = () => {
+      cancelTrigger()
+    }
+  }, { immediate: true })
 
   const reset = () => {
     files.value = null
