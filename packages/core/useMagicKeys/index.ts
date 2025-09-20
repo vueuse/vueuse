@@ -91,6 +91,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): UseMag
     ['Alt', new Set<string>()],
   ])
   const usedKeys = new Set<string>()
+  let isNotKeyUp = true
 
   function setRefs(key: string, value: boolean) {
     if (key in refs) {
@@ -103,6 +104,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): UseMag
 
   function reset() {
     current.clear()
+    isNotKeyUp = false
     for (const key of usedKeys)
       setRefs(key, false)
   }
@@ -138,6 +140,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): UseMag
   }
 
   function updateRefs(e: KeyboardEvent, value: boolean) {
+    isNotKeyUp = value
     const key = e.key?.toLowerCase()
     const code = e.code?.toLowerCase()
     const values = [code, key].filter(Boolean)
@@ -183,6 +186,14 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): UseMag
   // #1350
   useEventListener('blur', reset, { passive })
   useEventListener('focus', reset, { passive })
+
+  // #5014
+  function resetOnDrag() {
+    if (isNotKeyUp) {
+      reset()
+    }
+  }
+  useEventListener(target, 'dragend', resetOnDrag, { passive })
 
   const proxy = new Proxy(
     refs,
