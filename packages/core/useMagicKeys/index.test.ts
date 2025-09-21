@@ -14,9 +14,11 @@ function dispatchKeyboardEvent(options: dispatchKeyboardEventOptions): void {
 
 describe('useMagicKeys', () => {
   let target: HTMLInputElement
+
   beforeEach(() => {
     target = document.createElement('input')
   })
+
   it('single key', async () => {
     const { A } = useMagicKeys({ target })
     dispatchKeyboardEvent({ target, key: 'A' })

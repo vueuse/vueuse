@@ -4,6 +4,7 @@ import { useTimestamp } from './index'
 
 describe('useTimestamp', () => {
   vi.useFakeTimers()
+
   it('starts immediately by default', async () => {
     const timestamp = useTimestamp()
     const initial = timestamp.value

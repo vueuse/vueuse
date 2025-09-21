@@ -3,6 +3,7 @@ import { useNow } from './index'
 
 describe('useNow', () => {
   vi.useFakeTimers()
+
   it('should get now timestamp by default', async () => {
     const now = useNow()
 

@@ -37,6 +37,7 @@ describe('useArrayReduce', () => {
     list.push({ num: 3 })
     expect(sum.value).toBe(6)
   })
+
   it('should work with initialValue being a function', () => {
     const list = reactive([{ num: 1 }, { num: 2 }])
     const sum = useArrayReduce(list, (prev, val) => {
