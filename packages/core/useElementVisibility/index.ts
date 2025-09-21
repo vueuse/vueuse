@@ -1,8 +1,8 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import { noop, watchOnce } from '@vueuse/shared'
-import { shallowRef, toValue, watchEffect } from 'vue'
+import { watchOnce } from '@vueuse/shared'
+import { onWatcherCleanup, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
@@ -48,48 +48,46 @@ export function useElementVisibility(
 
   const elementIsVisible = shallowRef(false)
 
-  let cleanup = noop
+  watch(
+    () => ({
+      rootMargin: toValue(rootMargin),
+      threshold: toValue(threshold),
+      scrollTarget: toValue(scrollTarget),
+    }),
+    (options) => {
+      const { stop } = useIntersectionObserver(
+        element,
+        (intersectionObserverEntries) => {
+          let isIntersecting = elementIsVisible.value
 
-  watchEffect((onCleanup) => {
-    // Clean up previous observer
-    cleanup()
-
-    const currentRootMargin = toValue(rootMargin)
-    const currentThreshold = toValue(threshold)
-    const currentScrollTarget = toValue(scrollTarget)
-
-    const { stop } = useIntersectionObserver(
-      element,
-      (intersectionObserverEntries) => {
-        let isIntersecting = elementIsVisible.value
-
-        // Get the latest value of isIntersecting based on the entry time
-        let latestTime = 0
-        for (const entry of intersectionObserverEntries) {
-          if (entry.time >= latestTime) {
-            latestTime = entry.time
-            isIntersecting = entry.isIntersecting
+          // Get the latest value of isIntersecting based on the entry time
+          let latestTime = 0
+          for (const entry of intersectionObserverEntries) {
+            if (entry.time >= latestTime) {
+              latestTime = entry.time
+              isIntersecting = entry.isIntersecting
+            }
           }
-        }
-        elementIsVisible.value = isIntersecting
+          elementIsVisible.value = isIntersecting
 
-        if (once) {
-          watchOnce(elementIsVisible, () => {
-            stop()
-          })
-        }
-      },
-      {
-        root: currentScrollTarget,
-        window,
-        threshold: currentThreshold,
-        rootMargin: currentRootMargin,
-      },
-    )
+          if (once) {
+            watchOnce(elementIsVisible, () => {
+              stop()
+            })
+          }
+        },
+        {
+          root: options.scrollTarget,
+          window,
+          threshold: options.threshold,
+          rootMargin: options.rootMargin,
+        },
+      )
 
-    cleanup = stop
-    onCleanup(() => stop())
-  })
+      onWatcherCleanup(stop)
+    },
+    { immediate: true },
+  )
 
   return elementIsVisible
 }

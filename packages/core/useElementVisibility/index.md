@@ -4,7 +4,7 @@ category: Elements
 
 # useElementVisibility
 
-Tracks the visibility of an element within the viewport.
+Tracks the visibility of an element within the viewport11.
 
 ## Usage
 
@@ -46,6 +46,14 @@ const targetIsVisible = useElementVisibility(target, {
   threshold: 1.0, // 100% visible
 })
 ```
+
+### Reactive Options
+
+- `rootMargin`
+- `threshold`
+- `scrollTarget`
+
+Support reactive, when these options change, useElementVisibility will recreating a new observer, and cleaning last observer's effect.
 
 ## Component Usage
 
