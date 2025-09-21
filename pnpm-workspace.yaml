@@ -96,8 +96,6 @@ catalogs:
     '@types/semver': ^7.7.1
     '@types/sortablejs': ^1.15.8
     '@types/web-bluetooth': ^0.0.21
-  conflicts_test_avitest/eslintmplugin:
-    '@vitest/eslint-plugin': '@vitest/eslint-plugin'
 
 neverBuiltDependencies:
   - electron
