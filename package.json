@@ -54,6 +54,7 @@
     "@vitejs/plugin-vue": "catalog:dev",
     "@vitest/browser": "catalog:test",
     "@vitest/coverage-v8": "catalog:test",
+    "@vitest/eslint-plugin": "catalog:test",
     "@vitest/ui": "catalog:test",
     "@vue/compiler-sfc": "catalog:dev",
     "@vue/repl": "catalog:docs",

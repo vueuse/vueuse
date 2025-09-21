@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import antfu from '@antfu/eslint-config'
+import vitest from '@vitest/eslint-plugin'
 import { createSimplePlugin } from 'eslint-factory'
 import { createAutoInsert } from 'eslint-plugin-unimport'
 
@@ -114,6 +115,18 @@ export default antfu(
     ],
     rules: {
       'perfectionist/sort-exports': 'off',
+    },
+  },
+  {
+    files: ['packages/**/*.test.ts'],
+    plugins: [vitest],
+    rules: {
+      'vitest/padding-around-after-all-blocks': 'error',
+      'vitest/padding-around-after-each-blocks': 'error',
+      'vitest/padding-around-before-all-blocks': 'error',
+      'vitest/padding-around-before-each-blocks': 'error',
+      'vitest/padding-around-describe-blocks': 'error',
+      'vitest/padding-around-test-blocks': 'error',
     },
   },
   {
