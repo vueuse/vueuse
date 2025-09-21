@@ -3,12 +3,26 @@ import { describe, expect, it } from 'vitest'
 import { dispatchKeyboardEvent } from '../../.test'
 import { useKeyModifier } from './index'
 
+/**
+ * Assert useKeyModifier state
+ */
+function assertModifierState(key: KeyModifier, options: KeyboardEventInit) {
+  const state = useKeyModifier(key)
+  expect(state.value).toBe(null)
+
+  dispatchKeyboardEvent({ key, ...options })
+  expect(state.value).toBeTruthy()
+
+  dispatchKeyboardEvent({ key, type: 'keyup' })
+  expect(state.value).toBeFalsy()
+}
+
 describe('useKeyModifier', () => {
   it('should be defined', () => {
     expect(useKeyModifier).toBeDefined()
   })
 
-  it('all events', () => {
+  describe('all events', () => {
     const cases: Array<{ key: KeyModifier, options: KeyboardEventInit }> = [
       { key: 'Alt', options: { altKey: true } },
       { key: 'AltGraph', options: { modifierAltGraph: true } },
@@ -23,18 +37,8 @@ describe('useKeyModifier', () => {
       { key: 'Symbol', options: { modifierSymbol: true } },
       { key: 'SymbolLock', options: { modifierSymbolLock: true } },
     ]
-    function assertModifierState(key: KeyModifier, options: KeyboardEventInit) {
-      const state = useKeyModifier(key)
-      expect(state.value).toBe(null)
 
-      dispatchKeyboardEvent({ key, ...options })
-      expect(state.value).toBeTruthy()
-
-      dispatchKeyboardEvent({ key, type: 'keyup' })
-      expect(state.value).toBeFalsy()
-    }
-
-    cases.forEach(({ key, options }) => {
+    it.for(cases)('should track state for %s', ({ key, options }) => {
       assertModifierState(key, options)
     })
   })
