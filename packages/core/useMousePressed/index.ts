@@ -22,7 +22,7 @@ export interface MousePressedOptions extends ConfigurableWindow {
   drag?: boolean
 
   /**
-   * Add event listerners with the `capture` option set to `true`
+   * Add event listeners with the `capture` option set to `true`
    * (see [MDN](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#capture))
    *
    * @default false
