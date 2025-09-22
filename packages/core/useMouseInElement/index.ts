@@ -89,7 +89,7 @@ export function useMouseInElement(
       || elX < 0 || elY < 0
       || elX > width || elY > height
 
-    if (handleOutside) {
+    if (handleOutside || !isOutside.value) {
       elementX.value = elX
       elementY.value = elY
     }

@@ -69,11 +69,19 @@ export default defineConfig({
       {
         extends: './vitest.config.ts',
         test: {
+          include: ['packages/**/*.server.{test,spec}.ts'],
+          name: 'server',
+          environment: 'node',
+        },
+      },
+      {
+        extends: './vitest.config.ts',
+        test: {
           name: 'unit',
           environment: 'jsdom',
           setupFiles: [resolve(import.meta.dirname, 'packages/.test/setup.ts')],
           include: [
-            '!packages/**/*.browser.{test,spec}.ts',
+            '!packages/**/*.{browser,server}.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
             'test/*.{test,spec}.ts',
           ],

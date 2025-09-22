@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, WatchOptions, WatchSource } from 'vue'
-import type { ElementOf, ShallowUnwrapRef } from '../utils'
+import type { ElementOf, ShallowUnwrapRef, WatchOptionFlush } from '../utils'
 import { isRef, nextTick, toValue, watch } from 'vue'
 import { promiseTimeout } from '../utils'
 
@@ -24,7 +24,7 @@ export interface UntilToMatchOptions {
    *
    * @default 'sync'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
 
   /**
    * `deep` option for internal watch
