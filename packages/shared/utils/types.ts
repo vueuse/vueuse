@@ -100,13 +100,15 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   start: (...args: StartFnArgs) => void
 }
 
+export type WatchOptionFlush = WatchOptions['flush']
+
 export interface ConfigurableFlush {
   /**
    * Timing for monitoring changes, refer to WatchOptions for more details
    *
    * @default 'pre'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
 }
 
 export interface ConfigurableFlushSync {
@@ -116,7 +118,7 @@ export interface ConfigurableFlushSync {
    *
    * @default 'sync'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
 }
 
 // Internal Types

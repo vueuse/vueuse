@@ -10,6 +10,8 @@ export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Im
 
 export interface WatchAtMostReturn {
   stop: WatchStopHandle
+  pause: () => void
+  resume: () => void
   count: ShallowRef<number>
 }
 
@@ -31,7 +33,7 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
 
   const current = shallowRef(0)
 
-  const stop = watchWithFilter(
+  const { stop, resume, pause } = watchWithFilter(
     source,
     (...args) => {
       current.value += 1
@@ -43,5 +45,5 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
     watchOptions,
   )
 
-  return { count: current, stop }
+  return { count: current, stop, resume, pause }
 }
