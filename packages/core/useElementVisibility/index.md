@@ -4,7 +4,7 @@ category: Elements
 
 # useElementVisibility
 
-Tracks the visibility of an element within the viewport11.
+Tracks the visibility of an element within the viewport.
 
 ## Usage
 
