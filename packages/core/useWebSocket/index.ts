@@ -1,8 +1,9 @@
 import type { Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
-import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn, useWebWorkerIntervalFn } from '@vueuse/shared'
+import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
+import { useWebWorkerIntervalFn } from '../useWebWorkerIntervalFn'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
 export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
@@ -307,8 +308,7 @@ export function useWebSocket<Data = any>(
       type = 'setInterval',
     } = resolveNestedOptions(options.heartbeat)
 
-    const useCommonIntervalFn = type === 'worker' && isClient && typeof Worker !== 'undefined' ? useWebWorkerIntervalFn : useIntervalFn
-
+    const useCommonIntervalFn = type === 'worker' && isClient ? useWebWorkerIntervalFn : useIntervalFn
     const { pause, resume } = useCommonIntervalFn(
       () => {
         send(toValue(message), false)
