@@ -10,6 +10,7 @@ describe('useToggle', () => {
   it('default result', () => {
     const result = useToggle()
     const [value, toggle] = result
+    const { value: value2, toggle: toggle2 } = result
 
     expect(Array.isArray(result)).toBe(true)
     expect(result.length).toBe(2)
@@ -17,11 +18,18 @@ describe('useToggle', () => {
     expect(typeof toggle).toBe('function')
     expect(isRef(value)).toBe(true)
     expect(toValue(value)).toBe(false)
+
+    expect(value2).toBe(value)
+    expect(toggle2).toBe(toggle)
+
+    expect(isRef(value2)).toBe(true)
+    expect(toValue(value2)).toBe(false)
   })
 
   it('default result with initialValue', () => {
     const result = useToggle(true)
     const [value, toggle] = result
+    const { value: value2, toggle: toggle2 } = result
 
     expect(Array.isArray(result)).toBe(true)
     expect(result.length).toBe(2)
@@ -29,6 +37,12 @@ describe('useToggle', () => {
     expect(typeof toggle).toBe('function')
     expect(isRef(value)).toBe(true)
     expect(toValue(value)).toBe(true)
+
+    expect(toggle2).toBe(toggle)
+    expect(value2).toBe(value)
+
+    expect(isRef(value2)).toBe(true)
+    expect(toValue(value2)).toBe(true)
   })
 
   it('should toggle', () => {
@@ -93,5 +107,21 @@ describe('useToggle', () => {
 
     expect(toggle('ON')).toBe('ON')
     expect(toValue(status)).toBe('ON')
+  })
+
+  it('should allow setting value via .value', () => {
+    const result = useToggle()
+    const [value] = result
+    const { value: value2 } = result
+
+    expect(toValue(value2)).toBe(false)
+
+    value2.value = true
+    expect(toValue(value2)).toBe(true)
+    expect(toValue(value)).toBe(true)
+
+    value2.value = false
+    expect(toValue(value2)).toBe(false)
+    expect(toValue(value)).toBe(false)
   })
 })
