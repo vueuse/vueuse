@@ -1,9 +1,14 @@
 import type { MaybeRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isRef, shallowRef, toValue } from 'vue'
 
-export type ToggleFn = (value?: boolean) => void
+export type ToggleFn = (value?: boolean) => boolean
 
-export type UseToggleReturn = [ShallowRef<boolean>, ToggleFn] | ToggleFn
+export type UseToggleReturnBase = [ShallowRef<boolean>, ToggleFn] & {
+  value: ShallowRef<boolean>
+  toggle: ToggleFn
+}
+
+export type UseToggleReturn = UseToggleReturnBase | ToggleFn
 
 export interface UseToggleOptions<Truthy, Falsy> {
   truthyValue?: MaybeRefOrGetter<Truthy>
@@ -11,7 +16,7 @@ export interface UseToggleOptions<Truthy, Falsy> {
 }
 
 export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
-export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): [ShallowRef<T>, (value?: T) => T]
+export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): UseToggleReturnBase
 
 /**
  * A boolean ref with a toggler
@@ -49,8 +54,15 @@ export function useToggle(
     }
   }
 
-  if (valueIsRef)
+  if (valueIsRef) {
     return toggle
-  else
-    return [_value, toggle] as const
+  }
+  else {
+    const result = [_value, toggle] as UseToggleReturnBase
+
+    result.value = _value
+    result.toggle = toggle
+
+    return result as UseToggleReturnBase
+  }
 }
