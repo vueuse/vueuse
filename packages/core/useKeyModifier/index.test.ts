@@ -45,7 +45,7 @@ describe('useKeyModifier', () => {
 
   describe('params', () => {
     describe('events', () => {
-      it('should be work with custom events', () => {
+      it('should allow event to be specified', () => {
         const state = useKeyModifier('Alt', { events: ['mousedown'] })
         expect(state.value).toBe(null)
 
@@ -56,7 +56,7 @@ describe('useKeyModifier', () => {
         expect(state.value).toBeFalsy()
       })
 
-      it('should be work with non-default event', () => {
+      it('should be work with custom event', () => {
         const state = useKeyModifier('Alt', { events: ['click'] })
         expect(state.value).toBe(null)
 
