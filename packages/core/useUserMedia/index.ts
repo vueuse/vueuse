@@ -106,7 +106,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
       if (autoSwitch.value && stream.value)
         restart()
     },
-    { immediate: true },
+    { immediate: true, deep: true },
   )
 
   tryOnScopeDispose(() => {
