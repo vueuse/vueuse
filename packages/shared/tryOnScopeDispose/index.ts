@@ -6,9 +6,9 @@ import { getCurrentScope, onScopeDispose } from 'vue'
  *
  * @param fn
  */
-export function tryOnScopeDispose(fn: Fn) {
+export function tryOnScopeDispose(fn: Fn, failSilently?: boolean): boolean {
   if (getCurrentScope()) {
-    onScopeDispose(fn)
+    onScopeDispose(fn, failSilently)
     return true
   }
   return false
