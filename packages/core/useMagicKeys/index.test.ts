@@ -4,9 +4,11 @@ import { useMagicKeys } from './index'
 
 describe('useMagicKeys', () => {
   let target: HTMLInputElement
+
   beforeEach(() => {
     target = document.createElement('input')
   })
+
   it('single key', async () => {
     const { A } = useMagicKeys({ target })
     dispatchKeyboardEvent({ target, key: 'A' })

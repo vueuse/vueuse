@@ -17,6 +17,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
   })
   const options = { immediate: false }
   const path = '/todos/1'
+
   it('params: url', async () => {
     const { isFinished, data, then } = useAxios(url)
     expect(isFinished.value).toBeFalsy()
