@@ -90,6 +90,12 @@ jobs:
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh
 
+      - if: matrix.node == '22.x'
+        name: Report coverage
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   release-pr:
     timeout-minutes: 20
     runs-on: ubuntu-latest
