@@ -79,6 +79,7 @@ describe('useTimeAgo', () => {
     function testSecond(isFuture: boolean) {
       const text = isFuture ? 'future' : 'past'
       const nextTime = getNeededTimeChange('minute', 1, -1) * (isFuture ? 1 : -1)
+
       it(`${text}: less than 1 minute`, () => {
         changeValue.value = nextTime
         expect(useTimeAgo(changeTime).value).toBe('just now')
