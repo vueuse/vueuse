@@ -43,7 +43,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [20.x, lts]
+        node: [20.x, lts/*]
       fail-fast: false
 
     steps:
@@ -86,11 +86,11 @@ jobs:
         name: attw tests
         run: pnpm test:attw
 
-      - if: matrix.node == 'lts'
+      - if: matrix.node == 'lts/*'
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh
 
-      - if: matrix.node == 'lts'
+      - if: matrix.node == 'lts/*'
         name: Report coverage
         uses: codecov/codecov-action@v5
         with:
