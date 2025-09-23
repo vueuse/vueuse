@@ -55,6 +55,17 @@ describe('useKeyModifier', () => {
         document.dispatchEvent(new MouseEvent('mousedown', { altKey: false }))
         expect(state.value).toBeFalsy()
       })
+
+      it('should be work with non-default event', () => {
+        const state = useKeyModifier('Alt', { events: ['click'] })
+        expect(state.value).toBe(null)
+
+        document.dispatchEvent(new MouseEvent('click', { altKey: true }))
+        expect(state.value).toBeTruthy()
+
+        document.dispatchEvent(new MouseEvent('click', { altKey: false }))
+        expect(state.value).toBeFalsy()
+      })
     })
 
     describe('initial', () => {
