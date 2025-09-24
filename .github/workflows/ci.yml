@@ -81,7 +81,7 @@ jobs:
         run: pnpm run test:unit --coverage
 
       - name: browser tests
-        run: pnpm run test:browser --coverage
+        run: pnpm run test:browser
 
       - name: server tests
         run: pnpm run test:server --coverage
