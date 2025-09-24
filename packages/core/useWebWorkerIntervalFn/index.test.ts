@@ -1,86 +1,163 @@
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
-import { useWebWorkerIntervalFn } from './index.ts'
+import type { useWebWorkerIntervalFnReturn } from '../index'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { effectScope, nextTick, shallowRef } from 'vue'
+import { useWebWorkerIntervalFn } from './index'
 
-// ---- Mock Web APIs ----
 class MockWorker {
-  onmessage: ((ev: MessageEvent) => void) | null = null
-  constructor(public url: string) {}
-  postMessage = vi.fn()
+  interval = 0
+  timerId = null as ReturnType<typeof setTimeout> | null
+  onmessage: ((e: MessageEvent) => void) | null = null
+
+  postMessage = vi.fn((data: [string, number]) => {
+    const [status, delay] = data
+    if (status === 'STARTED') {
+      this.interval = delay
+      if (this.timerId)
+        clearTimeout(this.timerId!)
+      this.start()
+    }
+    if (status === 'ENDED') {
+      if (this.timerId!)
+        clearTimeout(this.timerId!)
+      this.timerId = null
+    }
+  })
+
+  start() {
+    const tick = () => {
+      this.onmessage?.({ data: ['TICK'] } as MessageEvent)
+      this.timerId = setTimeout(tick, this.interval)
+    }
+    this.timerId = setTimeout(tick, this.interval)
+  }
+
   terminate = vi.fn()
 }
 
-beforeAll(() => {
-  // mock Worker
-  globalThis.Worker = vi.fn().mockImplementation((url: string) => new MockWorker(url))
-
-  // mock URL API
-  globalThis.URL.createObjectURL = vi.fn(() => 'blob:mock-url')
-  globalThis.URL.revokeObjectURL = vi.fn()
-})
-
-afterEach(() => {
-  vi.clearAllMocks()
-})
-
 describe('useWebWorkerIntervalFn', () => {
-  it('should call cb immediately when immediateCallback=true', () => {
-    const cb = vi.fn()
-    useWebWorkerIntervalFn(cb, 1000, { immediate: false, immediateCallback: true }).resume()
-    expect(cb).toHaveBeenCalledTimes(1)
+  let callback = vi.fn()
+  vi.useFakeTimers()
+
+  beforeEach(() => {
+    callback = vi.fn()
+    vi.stubGlobal('Worker', MockWorker)
+
+    vi.stubGlobal('URL', {
+      createObjectURL: vi.fn(() => 'blob:http://localhost/80'),
+      revokeObjectURL: vi.fn(),
+    })
   })
 
-  it('should not start when interval <= 0', () => {
-    const cb = vi.fn()
-    const { resume, isActive } = useWebWorkerIntervalFn(cb, 0, { immediate: false })
-    resume()
-    expect(isActive.value).toBe(false)
-    expect(cb).not.toHaveBeenCalled()
+  afterEach(() => {
+    vi.unstubAllGlobals()
   })
 
-  it('should pause after resume', () => {
-    const cb = vi.fn()
-    const { resume, pause, isActive } = useWebWorkerIntervalFn(cb, 1000, { immediate: false })
-    resume()
-    expect(isActive.value).toBe(true)
+  async function exec({ isActive, pause, resume }: useWebWorkerIntervalFnReturn) {
+    expect(isActive.value).toBeTruthy()
+    expect(callback).toHaveBeenCalledTimes(0)
+
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(1)
+
     pause()
-    expect(isActive.value).toBe(false)
-  })
+    expect(isActive.value).toBeFalsy()
 
-  it('should auto resume when immediate=true', () => {
-    const cb = vi.fn()
-    const { isActive } = useWebWorkerIntervalFn(cb, 1000, { immediate: true })
-    expect(isActive.value).toBe(true)
-  })
-
-  it('should restart when interval ref changes', async () => {
-    const cb = vi.fn()
-    // eslint-disable-next-line no-ref/no-ref
-    const interval = ref(1000)
-    const { isActive } = useWebWorkerIntervalFn(cb, interval, { immediate: true })
-    expect(isActive.value).toBe(true)
-
-    interval.value = 2000
-    await nextTick()
-
-    expect(isActive.value).toBe(true) // 说明 resume 被触发
-  })
-
-  it('should handle worker messages correctly', () => {
-    const cb = vi.fn()
-    const { resume } = useWebWorkerIntervalFn(cb, 1000, { immediate: false })
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(1)
 
     resume()
+    expect(isActive.value).toBeTruthy()
 
-    // 模拟 worker.onmessage
-    ;(globalThis as any).postMessage = vi.fn()
-    const worker = (window as any).Worker?.mock?.instances?.[0]
-    if (worker?.onmessage) {
-      worker.onmessage({ data: ['TICK'] } as MessageEvent)
-      expect(cb).toHaveBeenCalled()
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(2)
+  }
 
-      worker.onmessage({ data: ['ENDED'] } as MessageEvent)
-      expect(cb).toHaveBeenCalledTimes(1) // 不会再调用
-    }
+  async function execImmediateCallback({ isActive, pause, resume }: useWebWorkerIntervalFnReturn) {
+    expect(isActive.value).toBeTruthy()
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(2)
+
+    pause()
+    expect(isActive.value).toBeFalsy()
+
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(2)
+
+    resume()
+    expect(isActive.value).toBeTruthy()
+    expect(callback).toHaveBeenCalledTimes(3)
+
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(4)
+  }
+
+  it('basic pause/resume', async () => {
+    await exec(useWebWorkerIntervalFn(callback, 50))
+
+    callback = vi.fn()
+
+    const interval = shallowRef(50)
+    await exec(useWebWorkerIntervalFn(callback, interval))
+
+    callback.mockClear()
+    interval.value = 20
+    await vi.advanceTimersByTimeAsync(30)
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it('pause/resume with immediateCallback', async () => {
+    await execImmediateCallback(useWebWorkerIntervalFn(callback, 50, { immediateCallback: true }))
+
+    callback = vi.fn()
+
+    const interval = shallowRef(50)
+    await execImmediateCallback(useWebWorkerIntervalFn(callback, interval, { immediateCallback: true }))
+
+    callback.mockClear()
+    interval.value = 20
+    await nextTick()
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it('pause/resume in scope', async () => {
+    const scope = effectScope()
+    await scope.run(async () => {
+      await exec(useWebWorkerIntervalFn(callback, 50))
+    })
+    callback.mockClear()
+    await scope.stop()
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(0)
+  })
+
+  it('pause in callback', async () => {
+    const pausable = useWebWorkerIntervalFn(() => {
+      callback()
+      pausable.pause()
+    }, 50, { immediateCallback: true, immediate: false })
+
+    pausable.resume()
+    expect(pausable.isActive.value).toBeFalsy()
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    pausable.resume()
+    expect(pausable.isActive.value).toBeFalsy()
+    expect(callback).toHaveBeenCalledTimes(2)
+
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('cant work when interval is negative', async () => {
+    const { isActive } = useWebWorkerIntervalFn(callback, -1)
+
+    expect(isActive.value).toBeFalsy()
+    await vi.advanceTimersByTimeAsync(60)
+    expect(callback).toHaveBeenCalledTimes(0)
   })
 })
