@@ -3,9 +3,7 @@
   "tasks": {
     "build": {
       "outputs": [
-        "*.d.mts",
-        "*.js",
-        "*.mjs"
+        "dist/**"
       ]
     },
     "//#docs:build:vitepress": {
