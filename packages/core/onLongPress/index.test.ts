@@ -193,12 +193,19 @@ describe('onLongPress', () => {
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', () => triggerCallbackWithDelay(isRef))
+
       it('should not trigger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
+
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
+
       it('should stop propagation', () => stopPropagation(isRef))
+
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
+
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
+
       it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
+
       it('should trigger longpress after options.delay ms when options.delay is a function', () => triggerCallbackWithDelay(isRef, () => 2000))
     })
   }
