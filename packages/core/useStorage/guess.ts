@@ -1,4 +1,8 @@
-export function guessSerializerType<T extends (string | number | boolean | object | null)>(rawInit: T) {
+export type SerializerType = 'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date'
+
+export function guessSerializerType<T extends (string | number | boolean | object | null)>(
+  rawInit: T,
+): SerializerType {
   if (rawInit == null)
     return 'any'
 
@@ -14,11 +18,11 @@ export function guessSerializerType<T extends (string | number | boolean | objec
     return Number.isNaN(rawInit) ? 'any' : 'number'
   }
 
-  const map: Record<string, string> = {
+  const map: Record<'boolean' | 'string' | 'object', SerializerType> = {
     boolean: 'boolean',
     string: 'string',
     object: 'object',
   }
 
-  return map[type] ?? 'any'
+  return map[type as keyof typeof map] ?? 'any'
 }

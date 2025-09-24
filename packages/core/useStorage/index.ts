@@ -2,6 +2,7 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRe
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
+import type { SerializerType } from './guess'
 import { pausableWatch, tryOnMounted } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -19,7 +20,7 @@ export interface SerializerAsync<T> {
   write: (value: T) => Awaitable<string>
 }
 
-export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>> = {
+export const StorageSerializers: Record<SerializerType, Serializer<any>> = {
   boolean: {
     read: (v: any) => v === 'true',
     write: (v: any) => String(v),
