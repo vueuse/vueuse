@@ -13,6 +13,10 @@ on:
 
   merge_group: {}
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -95,6 +99,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           use_oidc: true
+
 
   release-pr:
     timeout-minutes: 20
