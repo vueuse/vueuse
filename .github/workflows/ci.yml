@@ -78,13 +78,13 @@ jobs:
         run: nr typecheck
 
       - name: unit tests
-        run: pnpm run test:unit
+        run: pnpm run test:unit --coverage
 
       - name: browser tests
-        run: pnpm run test:browser
+        run: pnpm run test:browser --coverage
 
       - name: server tests
-        run: pnpm run test:server
+        run: pnpm run test:server --coverage
 
       - if: matrix.node == '20.x'
         name: attw tests
@@ -99,7 +99,6 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           use_oidc: true
-
 
   release-pr:
     timeout-minutes: 20
