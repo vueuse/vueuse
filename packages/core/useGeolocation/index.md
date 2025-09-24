@@ -8,7 +8,7 @@ Reactive [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geol
 
 ## Usage
 
-```js
+```ts
 import { useGeolocation } from '@vueuse/core'
 
 const { coords, locatedAt, error, resume, pause } = useGeolocation()

@@ -36,12 +36,6 @@ export interface UseSwipeOptions extends ConfigurableWindow {
 }
 
 export interface UseSwipeReturn {
-  /**
-   * @deprecated No longer need this Vue 3's browser targets all supporting passive event listeners.
-   *
-   * This flag will always return `true` and be removed in the next major version.
-   */
-  isPassiveEventSupported: boolean
   isSwiping: ShallowRef<boolean>
   direction: ComputedRef<UseSwipeDirection>
   coordsStart: Readonly<Position>
@@ -154,8 +148,5 @@ export function useSwipe(
     lengthX: diffX,
     lengthY: diffY,
     stop,
-
-    // TODO: Remove in the next major version
-    isPassiveEventSupported: true,
   }
 }

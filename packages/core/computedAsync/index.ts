@@ -1,4 +1,4 @@
-import type { Fn } from '@vueuse/shared'
+import type { Fn, WatchOptionFlush } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import { noop } from '@vueuse/shared'
 import {
@@ -42,9 +42,9 @@ export interface AsyncComputedOptions<Lazy = boolean> {
    * Possible values: `pre`, `post`, `sync`
    *
    * It works in the same way as the flush option in watch and watch effect in vue reactivity
-   * @default 'pre'
+   * @default 'sync'
    */
-  flush?: 'pre' | 'post' | 'sync'
+  flush?: WatchOptionFlush
 
   /**
    * Callback when error is caught.
@@ -98,10 +98,10 @@ export function computedAsync<T>(
 
   const {
     lazy = false,
-    flush = 'pre',
+    flush = 'sync',
     evaluating = undefined,
     shallow = true,
-    onError = noop,
+    onError = globalThis.reportError ?? noop,
   } = options
 
   const started = shallowRef(!lazy)
@@ -160,5 +160,5 @@ export function computedAsync<T>(
   }
 }
 
-// alias
-export { computedAsync as asyncComputed }
+/** @deprecated use `computedAsync` instead */
+export const asyncComputed = computedAsync

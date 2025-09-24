@@ -9,21 +9,24 @@ Reactive [`mediaDevices.getDisplayMedia`](https://developer.mozilla.org/en-US/do
 
 ## Usage
 
-```ts
+```vue
+<script setup lang="ts">
 import { useDisplayMedia } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
 const { stream, start } = useDisplayMedia()
 
 // start streaming
-
 start()
-```
 
-```ts
-const video = document.getElementById('video')
-
+const videoRef = useTemplateRef('video')
 watchEffect(() => {
   // preview on a video element
-  video.srcObject = stream.value
+  videoRef.value.srcObject = stream.value
 })
+</script>
+
+<template>
+  <video ref="video" />
+</template>
 ```

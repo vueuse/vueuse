@@ -8,7 +8,7 @@ Reactive keys pressed state, with magical keys combination support.
 
 ## Usage
 
-```js
+```ts
 import { useMagicKeys } from '@vueuse/core'
 
 const { shift, space, a /* keys you want to monitor */ } = useMagicKeys()
@@ -141,6 +141,8 @@ whenever(ctrl_s, () => console.log('Ctrl+S have been pressed'))
 By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to use the object in the template, you can set it to reactive mode.
 
 ```ts
+import { useMagicKeys } from '@vueuse/core'
+// ---cut---
 const keys = useMagicKeys({ reactive: true })
 ```
 

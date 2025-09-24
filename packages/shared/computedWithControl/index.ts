@@ -75,5 +75,5 @@ export function computedWithControl<T, S>(
   return result
 }
 
-// alias
-export { computedWithControl as controlledComputed }
+/** @deprecated use `computedWithControl` instead */
+export const controlledComputed = computedWithControl

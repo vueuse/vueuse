@@ -6,6 +6,7 @@ describe('useRound', () => {
   it('should be defined', () => {
     expect(useRound).toBeDefined()
   })
+
   it('should work', () => {
     const base = shallowRef(20.49)
     const result = useRound(base)

@@ -9,7 +9,7 @@ Debounce execution of a ref value.
 
 ## Usage
 
-```js {5}
+```ts {5}
 import { refDebounced } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
@@ -22,6 +22,10 @@ console.log(debounced.value) // 'foo'
 await sleep(1100)
 
 console.log(debounced.value) // 'bar'
+// ---cut-after---
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 ```
 
 An example with object ref.

@@ -1,6 +1,6 @@
-import type { Ref, ShallowRef, UnwrapRef } from 'vue'
+import type { MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { ref as deepRef, shallowRef, toValue } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
@@ -81,13 +81,13 @@ export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
  */
 export function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
-  initialState: Data,
+  initialState: MaybeRef<Data>,
   options?: UseAsyncStateOptions<Shallow, Data>,
 ): UseAsyncStateReturn<Data, Params, Shallow> {
   const {
     immediate = true,
     delay = 0,
-    onError = noop,
+    onError = globalThis.reportError ?? noop,
     onSuccess = noop,
     resetOnExecute = true,
     shallow = true,
@@ -98,9 +98,12 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
 
+  let executionsCount = 0
   async function execute(delay = 0, ...args: any[]) {
+    const executionId = (executionsCount += 1)
+
     if (resetOnExecute)
-      state.value = initialState
+      state.value = toValue(initialState)
     error.value = undefined
     isReady.value = false
     isLoading.value = true
@@ -114,18 +117,22 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
 
     try {
       const data = await _promise
-      state.value = data
-      isReady.value = true
+      if (executionId === executionsCount) {
+        state.value = data
+        isReady.value = true
+      }
       onSuccess(data)
     }
     catch (e) {
-      error.value = e
+      if (executionId === executionsCount)
+        error.value = e
       onError(e)
       if (throwError)
         throw e
     }
     finally {
-      isLoading.value = false
+      if (executionId === executionsCount)
+        isLoading.value = false
     }
 
     return state.value as Data
