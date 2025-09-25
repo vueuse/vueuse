@@ -4,7 +4,7 @@ category: Animation
 
 # useWebWorkerIntervalFn
 
-Wrapper for `webworker-setInterval` with controls
+Wrapper for Web Worker based `setInterval` with controls
 
 ## Usage
 
