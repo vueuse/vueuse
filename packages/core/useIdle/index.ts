@@ -1,4 +1,4 @@
-import type { ConfigurableEventFilter, TimerHandle } from '@vueuse/shared'
+import type { ConfigurableEventFilter, Fn, TimerHandle } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
@@ -35,6 +35,8 @@ export interface UseIdleReturn {
   idle: ShallowRef<boolean>
   lastActive: ShallowRef<number>
   reset: () => void
+  stop: () => void
+  reuse: () => void
 }
 
 /**
@@ -59,6 +61,7 @@ export function useIdle(
   const lastActive = shallowRef(timestamp())
 
   let timer: TimerHandle
+  const stops: Array<Fn> = []
 
   const reset = () => {
     idle.value = false
@@ -74,27 +77,40 @@ export function useIdle(
     },
   )
 
-  if (window) {
-    const document = window.document
-    const listenerOptions = { passive: true }
+  function init() {
+    if (window) {
+      const document = window.document
+      const listenerOptions = { passive: true }
 
-    for (const event of events)
-      useEventListener(window, event, onEvent, listenerOptions)
+      for (const event of events)
+        stops.push(useEventListener(window, event, onEvent, listenerOptions))
 
-    if (listenForVisibilityChange) {
-      useEventListener(document, 'visibilitychange', () => {
-        if (!document.hidden)
-          onEvent()
-      }, listenerOptions)
+      if (listenForVisibilityChange) {
+        stops.push(useEventListener(document, 'visibilitychange', () => {
+          if (!document.hidden)
+            onEvent()
+        }, listenerOptions))
+      }
+
+      if (!initialState)
+        reset()
     }
-
-    if (!initialState)
-      reset()
   }
 
+  init()
+  function stop() {
+    clearTimeout(timer)
+    stops.forEach(fn => fn())
+    stops.length = 0
+  }
+  function reuse() {
+    init()
+  }
   return {
     idle,
     lastActive,
     reset,
+    stop,
+    reuse,
   }
 }
