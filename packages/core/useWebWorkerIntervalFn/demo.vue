@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { rand, useIntervalFn } from '@vueuse/core'
+import { rand, useWebWorkerIntervalFn } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好', 'Привет']
