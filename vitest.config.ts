@@ -32,8 +32,14 @@ export default defineConfig({
     coverage: {
       exclude: [
         'packages/.vitepress/**',
+        'packages/metadata/**',
         'playgrounds/**',
-        '**/{unocss,taze}.config.ts',
+        '**/dist/**',
+        '**/*.test.ts',
+        '**/*.vue',
+        '**/*.mjs',
+        '**/types.ts',
+        '**/*.config.ts',
         'scripts/**',
         ...coverageConfigDefaults.exclude,
       ],
