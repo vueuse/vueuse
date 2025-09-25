@@ -33,8 +33,9 @@ export default defineConfig({
       exclude: [
         'packages/.vitepress/**',
         'packages/metadata/**',
+        'packages/components/**',
+        'packages/nuxt/**',
         'packages/contributors.ts',
-        'packages/components/index.ts',
         'playgrounds/**',
         'meta/**',
         '**/dist/**',
