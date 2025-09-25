@@ -78,13 +78,13 @@ jobs:
         run: nr typecheck
 
       - name: unit tests
-        run: pnpm run test:unit --coverage
+        run: pnpm run test:cov
 
       - name: browser tests
         run: pnpm run test:browser
 
       - name: server tests
-        run: pnpm run test:server --coverage
+        run: pnpm run test:server
 
       - if: matrix.node == '20.x'
         name: attw tests

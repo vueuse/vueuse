@@ -32,6 +32,7 @@ catalogs:
     tinyglobby: ^0.2.15
     tsdown: ^0.15.4
     tsx: ^4.20.5
+    turbo: ^2.5.8
     typescript: ^5.9.2
     unimport: ^5.3.0
     unocss: ^66.5.2
