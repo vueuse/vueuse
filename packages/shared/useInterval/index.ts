@@ -1,22 +1,15 @@
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
-import type { Pausable } from '../utils'
+import type { ConfigurableSchedulerImmediate, Pausable } from '../utils'
 import { shallowReadonly, shallowRef } from 'vue'
 import { useIntervalFn } from '../useIntervalFn'
 
-export interface UseIntervalOptions<Controls extends boolean> {
+export interface UseIntervalOptions<Controls extends boolean> extends Omit<ConfigurableSchedulerImmediate, 'interval'> {
   /**
    * Expose more controls
    *
    * @default false
    */
   controls?: Controls
-
-  /**
-   * Execute the update immediately on calling
-   *
-   * @default true
-   */
-  immediate?: boolean
 
   /**
    * Callback on every interval
@@ -43,7 +36,9 @@ export function useInterval(interval: MaybeRefOrGetter<number>, options: UseInte
 export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalOptions<boolean> = {}): UseIntervalReturn {
   const {
     controls: exposeControls = false,
+    scheduler = useIntervalFn,
     immediate = true,
+    immediateCallback,
     callback,
   } = options
 
@@ -52,7 +47,7 @@ export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: 
   const reset = () => {
     counter.value = 0
   }
-  const controls = useIntervalFn(
+  const controls = scheduler(
     callback
       ? () => {
           update()
@@ -60,7 +55,7 @@ export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: 
         }
       : update,
     interval,
-    { immediate },
+    { immediate, immediateCallback },
   )
 
   if (exposeControls) {
