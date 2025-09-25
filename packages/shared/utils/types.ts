@@ -1,4 +1,5 @@
-import type { ComputedRef, getCurrentInstance, MaybeRef, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
+import type { ComputedRef, getCurrentInstance, MaybeRef, MaybeRefOrGetter, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
+import type { useIntervalFn, UseIntervalFnOptions } from '../useIntervalFn'
 
 /**
  * Void function
@@ -146,3 +147,28 @@ export type IsAny<T> = IfAny<T, true, false>
 export type TimerHandle = ReturnType<typeof setTimeout> | undefined
 
 export type InstanceProxy = NonNullable<NonNullable<ReturnType<typeof getCurrentInstance>>['proxy']>
+
+export type IntervalScheduler = (cb: Fn, interval?: MaybeRefOrGetter<number>, options?: { immediate?: boolean }) => Pausable
+
+export interface ConfigurableSchedulerImmediate extends UseIntervalFnOptions {
+  /**
+   *
+   * @default useIntervalFn
+   */
+  scheduler?: typeof useIntervalFn
+  /**
+   *  Interval, in milliseconds.
+   *
+   * @default 1000
+   */
+  interval?: MaybeRefOrGetter<number>
+}
+
+export interface ConfigurableScheduler extends ConfigurableSchedulerImmediate {
+  /**
+   * Start the interval immediately
+   *
+   * @default false
+   */
+  immediate?: boolean
+}

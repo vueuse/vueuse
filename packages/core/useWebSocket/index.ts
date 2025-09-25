@@ -1,4 +1,4 @@
-import type { Fn, TimerHandle } from '@vueuse/shared'
+import type { ConfigurableScheduler, Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
@@ -34,19 +34,12 @@ export interface UseWebSocketOptions {
     responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
-     * Interval, in milliseconds
-     *
-     * @default 1000
-     */
-    interval?: number
-
-    /**
      * Heartbeat response timeout, in milliseconds
      *
      * @default 1000
      */
     pongTimeout?: number
-  }
+  } & Omit<ConfigurableScheduler, 'immediate'>
 
   /**
    * Enabled auto reconnect
@@ -294,12 +287,14 @@ export function useWebSocket<Data = any>(
 
   if (options.heartbeat) {
     const {
+      scheduler = useIntervalFn,
       message = DEFAULT_PING_MESSAGE,
       interval = 1000,
       pongTimeout = 1000,
+      immediateCallback,
     } = resolveNestedOptions(options.heartbeat)
 
-    const { pause, resume } = useIntervalFn(
+    const { pause, resume } = scheduler(
       () => {
         send(toValue(message), false)
         if (pongTimeoutWait != null)
@@ -311,7 +306,7 @@ export function useWebSocket<Data = any>(
         }, pongTimeout)
       },
       interval,
-      { immediate: false },
+      { immediate: false, immediateCallback },
     )
 
     heartbeatPause = pause

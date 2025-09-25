@@ -1,13 +1,9 @@
-import type { Pausable } from '@vueuse/shared'
+import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
-export interface UseCountdownOptions {
-  /**
-   *  Interval for the countdown in milliseconds. Default is 1000ms.
-   */
-  interval?: MaybeRefOrGetter<number>
+export interface UseCountdownOptions extends ConfigurableScheduler {
   /**
    * Callback function called when the countdown reaches 0.
    */
@@ -16,12 +12,6 @@ export interface UseCountdownOptions {
    * Callback function called on each tick of the countdown.
    */
   onTick?: () => void
-  /**
-   * Start the countdown immediately
-   *
-   * @default false
-   */
-  immediate?: boolean
 }
 
 export interface UseCountdownReturn extends Pausable {
@@ -51,18 +41,27 @@ export interface UseCountdownReturn extends Pausable {
  *
  * @see https://vueuse.org/useCountdown
  */
-export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options?: UseCountdownOptions): UseCountdownReturn {
+export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options: UseCountdownOptions = {}): UseCountdownReturn {
   const remaining = shallowRef(toValue(initialCountdown))
 
-  const intervalController = useIntervalFn(() => {
+  const {
+    scheduler = useIntervalFn,
+    interval = 1000,
+    immediate = false,
+    immediateCallback,
+    onTick,
+    onComplete,
+  } = options
+
+  const intervalController = scheduler(() => {
     const value = remaining.value - 1
     remaining.value = value < 0 ? 0 : value
-    options?.onTick?.()
+    onTick?.()
     if (remaining.value <= 0) {
       intervalController.pause()
-      options?.onComplete?.()
+      onComplete?.()
     }
-  }, options?.interval ?? 1000, { immediate: options?.immediate ?? false })
+  }, interval, { immediate, immediateCallback })
 
   const reset = (countdown?: MaybeRefOrGetter<number>) => {
     remaining.value = toValue(countdown) ?? toValue(initialCountdown)
