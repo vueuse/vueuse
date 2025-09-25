@@ -98,7 +98,10 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
 
+  let executionsCount = 0
   async function execute(delay = 0, ...args: any[]) {
+    const executionId = (executionsCount += 1)
+
     if (resetOnExecute)
       state.value = toValue(initialState)
     error.value = undefined
@@ -114,18 +117,22 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
 
     try {
       const data = await _promise
-      state.value = data
-      isReady.value = true
+      if (executionId === executionsCount) {
+        state.value = data
+        isReady.value = true
+      }
       onSuccess(data)
     }
     catch (e) {
-      error.value = e
+      if (executionId === executionsCount)
+        error.value = e
       onError(e)
       if (throwError)
         throw e
     }
     finally {
-      isLoading.value = false
+      if (executionId === executionsCount)
+        isLoading.value = false
     }
 
     return state.value as Data

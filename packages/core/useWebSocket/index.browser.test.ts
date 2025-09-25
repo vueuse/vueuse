@@ -5,6 +5,7 @@ describe('useWebSocket', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
+
   afterEach(() => {
     vi.restoreAllMocks()
   })

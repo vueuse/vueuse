@@ -5,6 +5,7 @@ import { useElementVisibility } from '../useElementVisibility'
 import { useInfiniteScroll } from './index'
 
 vi.mock('../useElementVisibility')
+
 describe('useInfiniteScroll', () => {
   it('should be defined', () => {
     expect(useInfiniteScroll).toBeDefined()

@@ -1,22 +1,14 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import { dispatchKeyboardEvent } from '../../.test'
 import { useMagicKeys } from './index'
-
-interface dispatchKeyboardEventOptions extends Partial<KeyboardEvent> {
-  key: string
-  target: HTMLElement
-  eventType?: 'keydown' | 'keyup'
-}
-
-function dispatchKeyboardEvent(options: dispatchKeyboardEventOptions): void {
-  const { eventType = 'keydown', target, key, ...args } = options
-  target.dispatchEvent(new KeyboardEvent(eventType, { key, ...args }))
-}
 
 describe('useMagicKeys', () => {
   let target: HTMLInputElement
+
   beforeEach(() => {
     target = document.createElement('input')
   })
+
   it('single key', async () => {
     const { A } = useMagicKeys({ target })
     dispatchKeyboardEvent({ target, key: 'A' })
