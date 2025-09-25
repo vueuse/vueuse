@@ -16,7 +16,10 @@ export type CreateInjectionStateReturn<Arguments extends Array<any>, Return> = R
    * @returns The injected state, or `undefined` if not provided and no default value was set.
    */
   useInjectedState: () => Return | undefined,
-]>
+]> & {
+  useProvidingState: (...args: Arguments) => Return
+  useInjectedState: () => Return | undefined
+}
 
 export interface CreateInjectionStateOptions<Return> {
   /**
@@ -48,5 +51,11 @@ export function createInjectionState<Arguments extends Array<any>, Return>(
     return state
   }
   const useInjectedState = () => injectLocal(key, defaultValue)
-  return [useProvidingState, useInjectedState]
+
+  const result = [useProvidingState, useInjectedState] as unknown as CreateInjectionStateReturn<Arguments, Return>
+
+  result.useProvidingState = useProvidingState
+  result.useInjectedState = useInjectedState
+
+  return result
 }
