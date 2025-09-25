@@ -86,7 +86,6 @@
   onLongPress: function
   onStartTyping: function
   pausableFilter: function
-  pausableWatch: function
   promiseTimeout: function
   provideLocal: function
   provideSSRWidth: function
@@ -291,7 +290,6 @@
   watchIgnorable: function
   watchImmediate: function
   watchOnce: function
-  watchPausable: function
   watchThrottled: function
   watchTriggerable: function
   watchWithFilter: function
