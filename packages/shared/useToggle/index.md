@@ -10,8 +10,22 @@ A boolean switcher with utility functions.
 
 ```ts
 import { useToggle } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
 const [value, toggle] = useToggle()
+
+// or destructure the return value
+const { value, toggle } = useToggle()
+
+// or with initial value
+const [value, toggle] = useToggle(true)
+
+// or with custom true/false values
+const status = shallowRef('ON')
+const toggle = useToggle(status, {
+  truthyValue: 'ON',
+  falsyValue: 'OFF',
+})
 ```
 
 When you pass a ref, `useToggle` will return a simple toggle function instead:
