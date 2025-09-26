@@ -3,7 +3,6 @@ import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
-import { useWebWorkerIntervalFn } from '../useWebWorkerIntervalFn'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
 export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
@@ -22,13 +21,6 @@ export interface UseWebSocketOptions {
    * @default false
    */
   heartbeat?: boolean | {
-    /**
-     * Message for the heartbeat
-     *
-     * @default 'setInterval'
-     */
-    type?: 'setInterval' | 'worker'
-
     /**
      * Message for the heartbeat
      *
@@ -305,11 +297,9 @@ export function useWebSocket<Data = any>(
       message = DEFAULT_PING_MESSAGE,
       interval = 1000,
       pongTimeout = 1000,
-      type = 'setInterval',
     } = resolveNestedOptions(options.heartbeat)
 
-    const useCommonIntervalFn = type === 'worker' && isClient ? useWebWorkerIntervalFn : useIntervalFn
-    const { pause, resume } = useCommonIntervalFn(
+    const { pause, resume } = useIntervalFn(
       () => {
         send(toValue(message), false)
         if (pongTimeoutWait != null)
