@@ -1,6 +1,6 @@
 import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
-import { runScheduler, useIntervalFn } from '@vueuse/shared'
+import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
 export interface UseCountdownOptions extends ConfigurableScheduler {
@@ -53,8 +53,7 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     onComplete,
   } = options
 
-  const intervalController = runScheduler(
-    scheduler,
+  const intervalController = scheduler(
     () => {
       const value = remaining.value - 1
       remaining.value = value < 0 ? 0 : value

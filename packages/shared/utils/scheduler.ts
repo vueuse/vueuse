@@ -23,18 +23,13 @@ export type IntervalScheduler = (
   options?: SchedulerOptions
 ) => Pausable
 
-export type Scheduler = (
-  cb: AnyFn,
-  options?: SchedulerOptions
-) => Pausable
-
 export type ConfigurableSchedulerImmediate = SchedulerOptions & ({
   /**
    * Custom scheduler to use for interval execution.
    *
    * @default useIntervalFn
    */
-  scheduler?: IntervalScheduler | Scheduler
+  scheduler?: IntervalScheduler
   /**
    * Interval duration in milliseconds.
    *
@@ -50,18 +45,4 @@ export type ConfigurableScheduler = ConfigurableSchedulerImmediate & {
    * @default false
    */
   immediate?: boolean
-}
-
-export function runScheduler(
-  scheduler: IntervalScheduler | Scheduler,
-  cb: AnyFn,
-  interval?: MaybeRefOrGetter<number>,
-  options?: SchedulerOptions,
-): Pausable {
-  if (scheduler.length > 2) {
-    return (scheduler as IntervalScheduler)(cb, interval, options)
-  }
-  else {
-    return (scheduler as Scheduler)(cb, options)
-  }
 }

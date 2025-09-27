@@ -1,6 +1,6 @@
 import type { ConfigurableScheduler, Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
-import { isClient, isWorker, runScheduler, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
@@ -294,8 +294,7 @@ export function useWebSocket<Data = any>(
       immediateCallback,
     } = resolveNestedOptions(options.heartbeat)
 
-    const { pause, resume } = runScheduler(
-      scheduler,
+    const { pause, resume } = scheduler(
       () => {
         send(toValue(message), false)
         if (pongTimeoutWait != null)

@@ -2,7 +2,6 @@ import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableSchedulerImmediate, Pausable } from '../utils'
 import { shallowReadonly, shallowRef } from 'vue'
 import { useIntervalFn } from '../useIntervalFn'
-import { runScheduler } from '../utils'
 
 export interface UseIntervalOptions<Controls extends boolean> extends Omit<ConfigurableSchedulerImmediate, 'interval'> {
   /**
@@ -48,8 +47,7 @@ export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: 
   const reset = () => {
     counter.value = 0
   }
-  const controls = runScheduler(
-    scheduler,
+  const controls = scheduler(
     callback
       ? () => {
           update()

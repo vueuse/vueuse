@@ -1,5 +1,5 @@
 import type { ConfigurableSchedulerImmediate } from '@vueuse/shared'
-import { runScheduler, useIntervalFn } from '@vueuse/shared'
+import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
 
@@ -52,7 +52,7 @@ export function useMemory(options: UseMemoryOptions = {}) {
       immediateCallback,
     } = options
 
-    runScheduler(scheduler, () => {
+    scheduler(() => {
       memory.value = (performance as PerformanceMemory).memory
     }, interval, { immediate, immediateCallback })
   }
