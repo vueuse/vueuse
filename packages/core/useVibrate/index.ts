@@ -1,11 +1,11 @@
-import type { Pausable } from '@vueuse/shared'
+import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
-export interface UseVibrateOptions extends ConfigurableNavigator {
+export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableScheduler {
   /**
    *
    * Vibration Pattern
@@ -43,6 +43,9 @@ export interface UseVibrateOptions extends ConfigurableNavigator {
 export function useVibrate(options?: UseVibrateOptions) {
   const {
     pattern = [],
+    scheduler = useIntervalFn,
+    immediate = false,
+    immediateCallback = false,
     interval = 0,
     navigator = defaultNavigator,
   } = options || {}
@@ -66,12 +69,12 @@ export function useVibrate(options?: UseVibrateOptions) {
   }
 
   if (interval > 0) {
-    intervalControls = useIntervalFn(
+    intervalControls = scheduler(
       vibrate,
       interval,
       {
-        immediate: false,
-        immediateCallback: false,
+        immediate,
+        immediateCallback,
       },
     )
   }
