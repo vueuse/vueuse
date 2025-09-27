@@ -1,9 +1,9 @@
-import type { ConfigurableEventFilter, TimerHandle } from '@vueuse/shared'
+import type { ConfigurableEventFilter, Fn, Stoppable, TimerHandle } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
 import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
-import { shallowRef } from 'vue'
+import { shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -31,7 +31,7 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
   initialState?: boolean
 }
 
-export interface UseIdleReturn {
+export interface UseIdleReturn extends Stoppable {
   idle: ShallowRef<boolean>
   lastActive: ShallowRef<number>
   reset: () => void
@@ -57,8 +57,10 @@ export function useIdle(
   } = options
   const idle = shallowRef(initialState)
   const lastActive = shallowRef(timestamp())
+  const isPending = shallowRef(false)
 
   let timer: TimerHandle
+  const stops: Array<Fn> = []
 
   const reset = () => {
     idle.value = false
@@ -74,27 +76,44 @@ export function useIdle(
     },
   )
 
-  if (window) {
-    const document = window.document
-    const listenerOptions = { passive: true }
+  function start() {
+    if (window) {
+      const document = window.document
+      const listenerOptions = { passive: true }
 
-    for (const event of events)
-      useEventListener(window, event, onEvent, listenerOptions)
+      isPending.value = true
 
-    if (listenForVisibilityChange) {
-      useEventListener(document, 'visibilitychange', () => {
-        if (!document.hidden)
-          onEvent()
-      }, listenerOptions)
+      for (const event of events)
+        stops.push(useEventListener(window, event, onEvent, listenerOptions))
+
+      if (listenForVisibilityChange) {
+        stops.push(useEventListener(document, 'visibilitychange', () => {
+          if (!document.hidden)
+            onEvent()
+        }, listenerOptions))
+      }
+
+      if (!initialState)
+        reset()
     }
-
-    if (!initialState)
-      reset()
   }
+
+  function stop() {
+    idle.value = initialState
+    clearTimeout(timer)
+    stops.forEach(fn => fn())
+    stops.length = 0
+    isPending.value = false
+  }
+
+  start()
 
   return {
     idle,
     lastActive,
     reset,
+    stop,
+    start,
+    isPending: shallowReadonly(isPending),
   }
 }
