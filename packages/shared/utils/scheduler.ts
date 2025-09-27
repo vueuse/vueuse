@@ -58,7 +58,7 @@ export function runScheduler(
   interval?: MaybeRefOrGetter<number>,
   options?: SchedulerOptions,
 ): Pausable {
-  if (scheduler.length >= 2) {
+  if (scheduler.length > 2) {
     return (scheduler as IntervalScheduler)(cb, interval, options)
   }
   else {

@@ -53,15 +53,20 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     onComplete,
   } = options
 
-  const intervalController = runScheduler(scheduler, () => {
-    const value = remaining.value - 1
-    remaining.value = value < 0 ? 0 : value
-    onTick?.()
-    if (remaining.value <= 0) {
-      intervalController.pause()
-      onComplete?.()
-    }
-  }, interval, { immediate, immediateCallback })
+  const intervalController = runScheduler(
+    scheduler,
+    () => {
+      const value = remaining.value - 1
+      remaining.value = value < 0 ? 0 : value
+      onTick?.()
+      if (remaining.value <= 0) {
+        intervalController.pause()
+        onComplete?.()
+      }
+    },
+    interval,
+    { immediate, immediateCallback },
+  )
 
   const reset = (countdown?: MaybeRefOrGetter<number>) => {
     remaining.value = toValue(countdown) ?? toValue(initialCountdown)
