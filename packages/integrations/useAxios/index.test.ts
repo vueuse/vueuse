@@ -366,7 +366,7 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
       body: 'body',
       userId: 2,
     }
-    const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData, resetOnExecute: true })
+    const { data, execute } = useAxios<ResType>(url, config, instance, { ...options, initialData, resetOnExecute: true })
     expect(data.value).toEqual(initialData)
     await execute().catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
@@ -387,7 +387,10 @@ describe.skipIf(isBelowNode18)('useAxios', () => {
       body: 'body',
       userId: 2,
     }
-    const { data, execute } = useAxios<ResType>(url, config, { ...options, initialData })
+    const { data, execute } = useAxios<ResType>(url, config, instance, {
+      ...options,
+      initialData,
+    })
     expect(data.value).toEqual(initialData)
     await execute().catch(() => {})
     expect(data.value).toEqual({ completed: false, id: 1, title: 'delectus aut autem', userId: 1 })
