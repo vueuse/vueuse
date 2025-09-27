@@ -1,4 +1,5 @@
 import type { MockInstance } from 'vitest'
+import type { IntervalScheduler, Scheduler } from './index'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
 import {
@@ -21,6 +22,7 @@ import {
   noop,
   now,
   rand,
+  runScheduler,
   throttleFilter,
   timestamp,
 } from './index'
@@ -506,5 +508,33 @@ describe('optionsFilters', () => {
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
     await expect(result).resolves.toBe(8 + 9)
+  })
+})
+
+describe('scheduler', () => {
+  it('should call Scheduler without interval', () => {
+    const cb1 = vi.fn()
+
+    const mockScheduler: Scheduler = (cb, options) => {
+      cb()
+      return { isActive: shallowRef(true), pause() {}, resume() {} }
+    }
+
+    runScheduler(mockScheduler, cb1, 1000, { immediate: true })
+
+    expect(cb1).toBeCalledTimes(1)
+  })
+
+  it('should call IntervalScheduler with interval', () => {
+    const cb = vi.fn()
+
+    const mockScheduler: IntervalScheduler = (cb, interval, options) => {
+      cb()
+      return { isActive: shallowRef(true), pause() {}, resume() {} }
+    }
+
+    runScheduler(mockScheduler, cb, 1000, { immediate: true })
+
+    expect(cb).toHaveBeenCalled()
   })
 })

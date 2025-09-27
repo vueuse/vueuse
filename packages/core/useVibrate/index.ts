@@ -1,7 +1,7 @@
 import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
-import { toRef, useIntervalFn } from '@vueuse/shared'
+import { runScheduler, toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -69,7 +69,8 @@ export function useVibrate(options?: UseVibrateOptions) {
   }
 
   if (interval > 0) {
-    intervalControls = scheduler(
+    intervalControls = runScheduler(
+      scheduler,
       vibrate,
       interval,
       {
