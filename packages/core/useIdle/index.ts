@@ -71,8 +71,10 @@ export function useIdle(
   const onEvent = createFilterWrapper(
     eventFilter,
     () => {
-      lastActive.value = timestamp()
-      reset()
+      if (isPending.value) {
+        lastActive.value = timestamp()
+        reset()
+      }
     },
   )
 
@@ -99,6 +101,7 @@ export function useIdle(
   }
 
   function stop() {
+    idle.value = initialState
     clearTimeout(timer)
     stops.forEach(fn => fn())
     stops.length = 0
