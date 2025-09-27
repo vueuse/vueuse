@@ -6,6 +6,7 @@ describe('useFloor', () => {
   it('should be defined', () => {
     expect(useFloor).toBeDefined()
   })
+
   it('should work', () => {
     const base = deepRef(45.95)
     const result = useFloor(base)
