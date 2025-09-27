@@ -1,9 +1,9 @@
-import type { ConfigurableEventFilter, Fn, TimerHandle } from '@vueuse/shared'
+import type { ConfigurableEventFilter, Fn, Stoppable, TimerHandle } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
 import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
-import { shallowRef } from 'vue'
+import { shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -31,12 +31,10 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
   initialState?: boolean
 }
 
-export interface UseIdleReturn {
+export interface UseIdleReturn extends Stoppable {
   idle: ShallowRef<boolean>
   lastActive: ShallowRef<number>
   reset: () => void
-  stop: () => void
-  reuse: () => void
 }
 
 /**
@@ -59,6 +57,7 @@ export function useIdle(
   } = options
   const idle = shallowRef(initialState)
   const lastActive = shallowRef(timestamp())
+  const isPending = shallowRef(false)
 
   let timer: TimerHandle
   const stops: Array<Fn> = []
@@ -77,10 +76,12 @@ export function useIdle(
     },
   )
 
-  function init() {
+  function start() {
     if (window) {
       const document = window.document
       const listenerOptions = { passive: true }
+
+      isPending.value = true
 
       for (const event of events)
         stops.push(useEventListener(window, event, onEvent, listenerOptions))
@@ -97,20 +98,21 @@ export function useIdle(
     }
   }
 
-  init()
   function stop() {
     clearTimeout(timer)
     stops.forEach(fn => fn())
     stops.length = 0
+    isPending.value = false
   }
-  function reuse() {
-    init()
-  }
+
+  start()
+
   return {
     idle,
     lastActive,
     reset,
     stop,
-    reuse,
+    start,
+    isPending: shallowReadonly(isPending),
   }
 }
