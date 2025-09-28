@@ -1,4 +1,4 @@
-import type { ConfigurableEventFilter, Fn, Stoppable, TimerHandle } from '@vueuse/shared'
+import type { ConfigurableEventFilter, Stoppable, TimerHandle } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
@@ -60,7 +60,6 @@ export function useIdle(
   const isPending = shallowRef(false)
 
   let timer: TimerHandle
-  const stops: Array<Fn> = []
 
   const reset = () => {
     idle.value = false
@@ -76,37 +75,45 @@ export function useIdle(
     },
   )
 
-  function start() {
-    if (window) {
-      const document = window.document
-      const listenerOptions = { passive: true }
-
-      isPending.value = true
-
-      for (const event of events)
-        stops.push(useEventListener(window, event, onEvent, listenerOptions))
-
-      if (listenForVisibilityChange) {
-        stops.push(useEventListener(document, 'visibilitychange', () => {
-          if (!document.hidden)
-            onEvent()
-        }, listenerOptions))
-      }
-
-      if (!initialState)
-        reset()
-    }
+  const activeEvent = () => {
+    if (!document.hidden)
+      onEvent()
   }
 
+  const inactiveEvent = () => {}
+
+  const exeEvent = shallowRef(activeEvent)
+
+  if (window) {
+    const document = window.document
+    const listenerOptions = { passive: true }
+
+    for (const event of events)
+      useEventListener(window, event, exeEvent, listenerOptions)
+
+    if (listenForVisibilityChange) {
+      useEventListener(document, 'visibilitychange', exeEvent, listenerOptions)
+    }
+
+    start()
+  }
+
+  function start() {
+    if (isPending.value) {
+      console.warn('[useIdle] idle is already pending')
+      return
+    }
+    isPending.value = true
+    exeEvent.value = activeEvent
+    if (!initialState)
+      reset()
+  }
   function stop() {
     idle.value = initialState
     clearTimeout(timer)
-    stops.forEach(fn => fn())
-    stops.length = 0
+    exeEvent.value = inactiveEvent
     isPending.value = false
   }
-
-  start()
 
   return {
     idle,
