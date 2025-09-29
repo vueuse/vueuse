@@ -1,17 +1,27 @@
 import type { MaybeRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isRef, shallowRef, toValue } from 'vue'
+import { makeDestructurable } from '../makeDestructurable'
 
-export type ToggleFn = (value?: boolean) => void
+export type ToggleFn<T = boolean> = (value?: T) => T
 
-export type UseToggleReturn = [ShallowRef<boolean>, ToggleFn] | ToggleFn
+export type UseToggleDestructurableReturn<T> = readonly [ShallowRef<T>, ToggleFn<T>] & {
+  /** current state */
+  state: ShallowRef<T>
+  /** alias of state for backward naming familiarity */
+  value: ShallowRef<T>
+  /** toggle function */
+  toggle: ToggleFn<T>
+}
+
+export type UseToggleReturn<T = boolean> = UseToggleDestructurableReturn<T> | ToggleFn<T>
 
 export interface UseToggleOptions<Truthy, Falsy> {
   truthyValue?: MaybeRefOrGetter<Truthy>
   falsyValue?: MaybeRefOrGetter<Falsy>
 }
 
-export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): (value?: T) => T
-export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): [ShallowRef<T>, (value?: T) => T]
+export function useToggle<Truthy, Falsy, T = Truthy | Falsy>(initialValue: Ref<T>, options?: UseToggleOptions<Truthy, Falsy>): ToggleFn<T>
+export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(initialValue?: T, options?: UseToggleOptions<Truthy, Falsy>): UseToggleDestructurableReturn<T>
 
 /**
  * A boolean ref with a toggler
@@ -25,7 +35,7 @@ export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(init
 export function useToggle(
   initialValue: MaybeRef<boolean> = false,
   options: UseToggleOptions<true, false> = {},
-): UseToggleReturn {
+): UseToggleReturn<boolean> {
   const {
     truthyValue = true,
     falsyValue = false,
@@ -49,8 +59,13 @@ export function useToggle(
     }
   }
 
-  if (valueIsRef)
+  if (valueIsRef) {
     return toggle
-  else
-    return [_value, toggle] as const
+  }
+  else {
+    return makeDestructurable(
+      { state: _value, value: _value, toggle },
+      [_value, toggle] as const,
+    ) as UseToggleDestructurableReturn<boolean>
+  }
 }
