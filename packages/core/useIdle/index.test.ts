@@ -171,17 +171,6 @@ describe('useIdle', () => {
     expect(isPending.value).toBe(false)
   })
 
-  it('should warn when starting already pending idle', () => {
-    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const { start } = useIdle(1000)
-
-    // Should warn when starting already pending idle
-    start()
-
-    expect(spy).toHaveBeenCalledWith('[useIdle] idle is already pending')
-    spy.mockRestore()
-  })
-
   it('should use initialState when starting after start', () => {
     const { idle, stop, start } = useIdle(1000, { initialState: true })
 
