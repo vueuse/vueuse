@@ -102,4 +102,65 @@ describe('createInjectionState', () => {
     expect(vm.count).toBe(114514)
     vm.unmount()
   })
+
+  it('supports object destructuring with provide/inject aliases', async () => {
+    const { provide, inject } = createInjectionState((n: number) => {
+      const count = shallowRef(n)
+      return count
+    })
+
+    let injected: Ref<number> | undefined
+
+    const Child = defineComponent({
+      setup() {
+        injected = inject()
+        return () => h('div')
+      },
+    })
+
+    const Root = defineComponent({
+      setup() {
+        provide(7)
+        return () => h(Child)
+      },
+    })
+
+    const vm = mount(Root)
+    await nextTick()
+    expect(injected?.value).toBe(7)
+    vm.unmount()
+  })
+
+  it('aliases are the same functions as original names', () => {
+    const result = createInjectionState((n: number) => shallowRef(n))
+    const [useProvidingState, useInjectedState] = result
+    expect(result.provide).toBe(useProvidingState)
+    expect(result.inject).toBe(useInjectedState)
+    expect(result.useProvidingState).toBe(useProvidingState)
+    expect(result.useInjectedState).toBe(useInjectedState)
+  })
+
+  it('mixed usage: tuple then object properties', () => {
+    const pair = createInjectionState((n: number) => shallowRef(n))
+    const [provide] = pair
+    let injectedValue: number | undefined
+    const vm = useSetup(() => {
+      provide(3)
+      injectedValue = pair.inject()!.value
+      return {}
+    })
+    expect(injectedValue).toBe(3)
+    vm.unmount()
+  })
+
+  it('returns defaultValue when not provided but defaultValue set', () => {
+    const { inject } = createInjectionState((n: number) => shallowRef(n), { defaultValue: shallowRef(99) })
+    let val: number | undefined
+    const vm = useSetup(() => {
+      val = inject()!.value
+      return {}
+    })
+    expect(val).toBe(99)
+    vm.unmount()
+  })
 })
