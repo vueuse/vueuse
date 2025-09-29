@@ -75,24 +75,24 @@ export function useIdle(
     },
   )
 
-  const activeEvent = () => {
-    if (!document.hidden)
-      onEvent()
-  }
-
-  const inactiveEvent = () => {}
-
-  const exeEvent = shallowRef(activeEvent)
-
   if (window) {
     const document = window.document
     const listenerOptions = { passive: true }
 
-    for (const event of events)
-      useEventListener(window, event, exeEvent, listenerOptions)
+    for (const event of events) {
+      useEventListener(window, event, () => {
+        if (!isPending.value)
+          return
+        onEvent()
+      }, listenerOptions)
+    }
 
     if (listenForVisibilityChange) {
-      useEventListener(document, 'visibilitychange', exeEvent, listenerOptions)
+      useEventListener(document, 'visibilitychange', () => {
+        if (document.hidden || !isPending.value)
+          return
+        onEvent()
+      }, listenerOptions)
     }
 
     start()
@@ -100,18 +100,15 @@ export function useIdle(
 
   function start() {
     if (isPending.value) {
-      console.warn('[useIdle] idle is already pending')
       return
     }
     isPending.value = true
-    exeEvent.value = activeEvent
     if (!initialState)
       reset()
   }
   function stop() {
     idle.value = initialState
     clearTimeout(timer)
-    exeEvent.value = inactiveEvent
     isPending.value = false
   }
 
