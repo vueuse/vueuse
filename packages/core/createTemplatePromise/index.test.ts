@@ -13,9 +13,9 @@ describe('createTemplatePromise', () => {
         const TemplatePromise = createTemplatePromise<number, [string]>()
 
         const onClick = async () => {
-          const actual = await TemplatePromise.start(str)
+          const result = await TemplatePromise.start(str)
 
-          expect(actual).toBe(val)
+          expect(result).toBe(val)
         }
 
         return () => [
