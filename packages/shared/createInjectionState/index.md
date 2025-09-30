@@ -49,6 +49,22 @@ export function useCounterStoreOrThrow() {
 }
 ```
 
+### Destructurable return (object form)
+
+```ts
+const pair = createInjectionState(fn)
+// legacy tuple style
+const [useProvide, useInject] = pair
+// new object properties & aliases
+const { useProvidingState, useInjectedState, provide, inject } = pair
+
+// provide === useProvidingState; inject === useInjectedState
+provide(/* args */)
+const state = inject()
+```
+
+Use the object form when you prefer clearer semantics, while the tuple form continues to work without breaking changes.
+
 ```vue
 <!-- RootComponent.vue -->
 <script setup lang="ts">
