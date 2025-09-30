@@ -1,10 +1,12 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useDark } from './index'
 
 describe('useDark', () => {
   beforeEach(() => {
     localStorage.clear()
+    document.documentElement.classList = ''
+    document.documentElement.classList = ''
   })
 
   it('updates html element by default', async () => {
@@ -70,5 +72,31 @@ describe('useDark', () => {
 
     expect(document.documentElement.classList.contains('custom-dark')).toBe(true)
     expect(document.documentElement.classList.contains('custom-light')).toBe(false)
+  })
+
+  it('calls custom change handler', async () => {
+    let ready = false
+
+    const onChanged = vi.fn((val, defaultHandler, mode) => {
+      if (!ready)
+        return // <- ignore immediate watch calls, only assert our changes
+
+      expect(val).toBe(true)
+      expect(defaultHandler).toBeInstanceOf(Function)
+      expect(mode).toBe('dark')
+      defaultHandler(mode)
+    })
+
+    const toggle = useDark({
+      initialValue: 'light',
+      onChanged,
+    })
+
+    ready = true
+    toggle.value = true
+
+    await nextTick()
+
+    expect(onChanged).toHaveBeenCalled()
   })
 })
