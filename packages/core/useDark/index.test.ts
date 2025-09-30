@@ -102,7 +102,7 @@ describe('useDark', () => {
 
   it('component', async () => {
     const wrapper = mount({
-      render: () => h(UseDark, null, {
+      render: () => h(UseDark, { initialValue: 'light' }, {
         default: ({ toggleDark }: any) => h('button', { onClick: toggleDark }),
       }),
     })
