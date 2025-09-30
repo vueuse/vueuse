@@ -1,5 +1,7 @@
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { h, nextTick } from 'vue'
+import { UseDark } from './component'
 import { useDark } from './index'
 
 describe('useDark', () => {
@@ -98,5 +100,21 @@ describe('useDark', () => {
     await nextTick()
 
     expect(onChanged).toHaveBeenCalled()
+  })
+
+  it('component', async () => {
+    const wrapper = mount({
+      render: () => h(UseDark, null, {
+        default: ({ toggleDark }: any) => h('button', { onClick: toggleDark }),
+      }),
+    })
+
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
+
+    wrapper.find('button').trigger('click')
+
+    await nextTick()
+
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
   })
 })
