@@ -1,6 +1,6 @@
 import type { Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
-import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
+import { createRetryChecker, isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
@@ -258,11 +258,9 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        const checkRetires = typeof retries === 'function'
-          ? retries
-          : () => typeof retries === 'number' && (retries < 0 || retried < retries)
+        const shouldRetry = createRetryChecker(retries)
 
-        if (checkRetires(retried)) {
+        if (shouldRetry(retried)) {
           retried += 1
           retryTimeout = setTimeout(_init, delay)
         }
