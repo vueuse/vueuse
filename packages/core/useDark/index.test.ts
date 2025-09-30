@@ -7,8 +7,6 @@ import { useDark } from './index'
 describe('useDark', () => {
   beforeEach(() => {
     localStorage.clear()
-    document.documentElement.classList = ''
-    document.documentElement.classList = ''
   })
 
   it('updates html element by default', async () => {
