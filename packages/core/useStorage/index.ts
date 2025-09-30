@@ -2,7 +2,7 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRe
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
-import { pausableWatch, tryOnMounted } from '@vueuse/shared'
+import { tryOnMounted, watchWithFilter } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
@@ -173,7 +173,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
-  const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(
+  const { pause: pauseWatch, resume: resumeWatch } = watchWithFilter(
     data,
     newValue => write(newValue),
     { flush, deep, eventFilter },
