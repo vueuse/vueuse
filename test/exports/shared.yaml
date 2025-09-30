@@ -15,6 +15,7 @@
   createInjectionState: function
   createReactiveFn: function
   createRef: function
+  createRetryChecker: function
   createSharedComposable: function
   createSingletonPromise: function
   debouncedRef: function
