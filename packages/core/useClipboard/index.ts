@@ -130,8 +130,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   return {
     isSupported,
-    text: text as ComputedRef<string>,
-    copied: copied as ComputedRef<boolean>,
+    text: computed(() => text.value),
+    copied: computed(() => copied.value),
     copy,
   }
 }
