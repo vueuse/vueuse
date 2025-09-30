@@ -113,7 +113,7 @@ describe('useToggle', () => {
   })
 
   it('should respect custom truthy/falsy values', () => {
-    const { state, toggle } = useToggle<'ON' | 'OFF', 'OFF' | 'ON', string>('OFF' as any, { truthyValue: 'ON', falsyValue: 'OFF' }) as any
+    const { state, toggle } = useToggle<'ON' | 'OFF', 'OFF' | 'ON', string>('OFF', { truthyValue: 'ON', falsyValue: 'OFF' })
     expect(state.value).toBe('OFF')
     toggle()
     expect(state.value).toBe('ON')
