@@ -26,30 +26,23 @@ const inlineText = stringify(inlineMouse)
 </script>
 
 <template>
-  <div flex="~" gap="4">
-    <Area ref="target" />
+  <div flex="~" items="center" gap="4">
+    <Area ref="target">
+      Hover me
+    </Area>
     <pre lang="yaml">{{ text }}</pre>
   </div>
 
-  <div flex="~" gap="4">
-    <div
-      class="el"
-      w="40"
-      h="40"
-      bg="gray-400/20"
-      border="rounded"
-      flex="~"
-      place="content-center"
-      select="none"
-      style="text-align: center"
-    >
-      <div m="auto">
-        <span>
-          Hover <span ref="inline-target" style="background: rgb(36, 146, 82, 0.5)">
-            the highlighted text to see the</span> tracking.
-        </span>
-      </div>
-    </div>
+  <div flex="~" items="center" gap="4">
+    <Area>
+      <span
+        ref="inline-target"
+        leading="loose"
+        bg="primary/30"
+      >
+        Hover me, I'm an inline element
+      </span>
+    </Area>
     <pre lang="yaml">{{ inlineText }}</pre>
   </div>
 </template>
