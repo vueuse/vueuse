@@ -1,23 +1,16 @@
-import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ConfigurableScheduler, DEPRECATE_SCHEDULER_INTERVAL, Pausable } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-export interface UseNowOptions<Controls extends boolean> extends Omit<ConfigurableScheduler, 'interval'> {
+export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
   /**
    * Expose more controls
    *
    * @default false
    */
   controls?: Controls
-
-  /**
-   * Update interval in milliseconds, or use requestAnimationFrame
-   *
-   * @default requestAnimationFrame
-   */
-  interval?: 'requestAnimationFrame' | number
 }
 
 /**
@@ -30,6 +23,8 @@ export interface UseNowOptions<Controls extends boolean> extends Omit<Configurab
  */
 export function useNow(options?: UseNowOptions<false>): Ref<Date>
 export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausable
+/** @deprecated The option `interval: 'requestAnimationFrame'` has been deprecated. Please use the `scheduler` option with`useRafFn` instead */
+export function useNow(options: DEPRECATE_SCHEDULER_INTERVAL<UseNowOptions<boolean>>): Ref<Date> | ({ now: Ref<Date> } & Pausable)
 
 /**
  * Reactive current Date instance.
@@ -39,11 +34,11 @@ export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausa
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNow(options: UseNowOptions<boolean> = {}) {
+export function useNow(options: UseNowOptions<boolean> | DEPRECATE_SCHEDULER_INTERVAL<UseNowOptions<boolean>> = {}) {
   const {
     controls: exposeControls = false,
-    scheduler = useIntervalFn,
-    interval = 'requestAnimationFrame',
+    scheduler = (options.interval === undefined || options.interval === 'requestAnimationFrame') ? useRafFn : useIntervalFn,
+    interval,
     immediate = true,
     immediateCallback,
   } = options
@@ -52,13 +47,11 @@ export function useNow(options: UseNowOptions<boolean> = {}) {
 
   const update = () => now.value = new Date()
 
-  const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(update, { immediate })
-    : scheduler(update, {
-        interval: typeof interval === 'number' ? interval : undefined,
-        immediate,
-        immediateCallback,
-      })
+  const controls: Pausable = scheduler(update, {
+    interval: interval as MaybeRefOrGetter<number>,
+    immediate,
+    immediateCallback,
+  })
 
   if (exposeControls) {
     return {

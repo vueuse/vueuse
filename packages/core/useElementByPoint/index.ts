@@ -1,4 +1,4 @@
-import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
+import type { ConfigurableScheduler, DEPRECATE_SCHEDULER_INTERVAL, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
@@ -7,11 +7,10 @@ import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
-export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, Omit<ConfigurableScheduler, 'interval'> {
+export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, ConfigurableScheduler {
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>
-  interval?: 'requestAnimationFrame' | number
 }
 
 export interface UseElementByPointReturn<Multiple extends boolean = false> extends Pausable {
@@ -25,14 +24,18 @@ export interface UseElementByPointReturn<Multiple extends boolean = false> exten
  * @see https://vueuse.org/useElementByPoint
  * @param options - UseElementByPointOptions
  */
-export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M>): UseElementByPointReturn<M> {
+export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M>): UseElementByPointReturn<M>
+/** @deprecated The option `interval: 'requestAnimationFrame'` has been deprecated. Please use the `scheduler` option with`useRafFn` instead */
+export function useElementByPoint<M extends boolean = false>(options: DEPRECATE_SCHEDULER_INTERVAL<UseElementByPointOptions<M>>): UseElementByPointReturn<M>
+
+export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M> | DEPRECATE_SCHEDULER_INTERVAL<UseElementByPointOptions<M>>): UseElementByPointReturn<M> {
   const {
     x,
     y,
     document = defaultDocument,
     multiple,
-    interval = 'requestAnimationFrame',
-    scheduler = useIntervalFn,
+    scheduler = (options.interval === undefined || options.interval === 'requestAnimationFrame') ? useRafFn : useIntervalFn,
+    interval,
     immediate = true,
     immediateCallback,
   } = options
@@ -52,13 +55,11 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
       : document?.elementFromPoint(toValue(x), toValue(y)) ?? null
   }
 
-  const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(cb, { immediate })
-    : scheduler(cb, {
-        interval: typeof interval === 'number' ? interval : undefined,
-        immediate,
-        immediateCallback,
-      })
+  const controls: Pausable = scheduler(cb, {
+    interval: interval as MaybeRefOrGetter<number>,
+    immediate,
+    immediateCallback,
+  })
 
   return {
     isSupported,

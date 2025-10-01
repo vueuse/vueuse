@@ -29,14 +29,14 @@ export type Scheduler = (
   options?: SchedulerOptions
 ) => Pausable
 
-export type ConfigurableScheduler = SchedulerOptions & ({
+export interface ConfigurableScheduler extends SchedulerOptions {
   /**
    * Custom scheduler to use for interval execution.
    *
    * @default useIntervalFn
    */
   scheduler?: Scheduler
-})
+}
 
 export type ConfigurableSchedulerLazy = ConfigurableScheduler & {
   /**
@@ -45,4 +45,14 @@ export type ConfigurableSchedulerLazy = ConfigurableScheduler & {
    * @default false
    */
   immediate?: boolean
+}
+
+/**
+ * DO NOT USE
+ * @internal
+ * @deprecated
+ */
+export type DEPRECATE_SCHEDULER_INTERVAL<T extends ConfigurableScheduler> = Omit<T, 'interval'> & {
+  /** @deprecated The option `interval: 'requestAnimationFrame'` has been deprecated. Please use the `scheduler` option with`useRafFn` instead */
+  interval: 'requestAnimationFrame'
 }
