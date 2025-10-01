@@ -71,8 +71,12 @@ describe('useDraggable', () => {
   })
 
   it('component', async () => {
+    const onStart = vi.fn()
+    const onMove = vi.fn()
+    const onEnd = vi.fn()
+
     const wrapper = mount({
-      render: () => h(UseDraggable, {}, {
+      render: () => h(UseDraggable, { onStart, onMove, onEnd }, {
         default: ({ isDragging, x, y }: any) => h('div', {
           'id': 'content',
           'data-is-dragging': isDragging,
@@ -108,5 +112,8 @@ describe('useDraggable', () => {
     window.dispatchEvent(new PointerEvent('pointerup'))
     await nextTick()
     expect(wrapper.get('#content').element.getAttribute('data-is-dragging')).toBe('false')
+    expect(onStart).toHaveBeenCalledOnce()
+    expect(onMove).toHaveBeenCalledOnce()
+    expect(onEnd).toHaveBeenCalledOnce()
   })
 })
