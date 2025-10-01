@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { h, nextTick, useTemplateRef } from 'vue'
+import { UseDraggable } from './component'
 import { useDraggable } from './index'
 
 describe('useDraggable', () => {
@@ -67,5 +68,45 @@ describe('useDraggable', () => {
     expect(wrapper.get('div').element.style.left).toBe('10px')
     expect(wrapper.get('div').element.style.top).toBe('20px')
     expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
+  })
+
+  it('component', async () => {
+    const wrapper = mount({
+      render: () => h(UseDraggable, {}, {
+        default: ({ isDragging, x, y }: any) => h('div', {
+          'id': 'content',
+          'data-is-dragging': isDragging,
+          'data-x': x,
+          'data-y': y,
+        }),
+      }),
+    })
+
+    await nextTick()
+    expect(wrapper.get('#content').element.getAttribute('data-x')).toBe('0')
+    expect(wrapper.get('#content').element.getAttribute('data-y')).toBe('0')
+    expect(wrapper.get('#content').element.getAttribute('data-is-dragging')).toBe('false')
+
+    wrapper.get('div').element.dispatchEvent(new PointerEvent('pointerdown', {
+      clientX: 0,
+      clientY: 0,
+    }))
+    await nextTick()
+    expect(wrapper.get('#content').element.getAttribute('data-is-dragging')).toBe('true')
+    expect(wrapper.get('#content').element.getAttribute('data-x')).toBe('0')
+    expect(wrapper.get('#content').element.getAttribute('data-y')).toBe('0')
+
+    window.dispatchEvent(new PointerEvent('pointermove', {
+      clientX: 10,
+      clientY: 20,
+    }))
+    await nextTick()
+    expect(wrapper.get('#content').element.getAttribute('data-is-dragging')).toBe('true')
+    expect(wrapper.get('#content').element.getAttribute('data-x')).toBe('10')
+    expect(wrapper.get('#content').element.getAttribute('data-y')).toBe('20')
+
+    window.dispatchEvent(new PointerEvent('pointerup'))
+    await nextTick()
+    expect(wrapper.get('#content').element.getAttribute('data-is-dragging')).toBe('false')
   })
 })
