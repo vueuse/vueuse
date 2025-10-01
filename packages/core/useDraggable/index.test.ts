@@ -4,7 +4,7 @@ import { h, nextTick, useTemplateRef } from 'vue'
 import { useDraggable } from './index'
 
 describe('useDraggable', () => {
-  it('should be defined', async () => {
+  it('basic functionality', async () => {
     const onStart = vi.fn()
     const onMove = vi.fn()
     const onEnd = vi.fn()
@@ -22,12 +22,13 @@ describe('useDraggable', () => {
 
         expect(x.value).toBe(0)
         expect(y.value).toBe(0)
+        expect(isDragging.value).toBe(false)
 
         return () => h('div', {
           'data-is-dragging': isDragging.value,
           'ref': 'el',
           'style': style.value,
-        }, 'Drag me!')
+        })
       },
     })
 
