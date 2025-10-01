@@ -89,28 +89,36 @@ const { x, y } = useMouse({ window: mockWindow })
 
 ### Configurable Scheduler
 
-From v14.0, composables that rely on timed scheduling (based-on `useIntervalFn`) provide an option field to specify a custom scheduler.
+From v14.0, composables that rely on timed scheduling provide an `option` field named `scheduler` to specify a custom scheduler.
 
-A custom scheduler must implement the `IntervalScheduler` interface:
+A custom scheduler must implement the `Scheduler` interface:
 
 ```ts
-export type IntervalScheduler = (
+interface SchedulerOptions {
+  /** Interval duration in milliseconds. */
+  interval?: MaybeRefOrGetter<number>
+  /** Start the scheduler immediately */
+  immediate?: boolean
+  /** Execute the callback immediately after calling `resume` */
+  immediateCallback?: boolean
+}
+
+type Scheduler = (
   cb: AnyFn,
-  interval?: MaybeRefOrGetter<number>,
   options?: SchedulerOptions
 ) => Pausable
 ```
 
+> [!TIP]
+>
+> We provide `useIntervalFn` and `useRafFn`, both implement this interface.
+
 #### Example
 
 ```ts twoslash
-import { useCountdown } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { useMemory, useRafFn } from '@vueuse/core'
 
-const initialValue = shallowRef(10)
-
-// run in a Web Worker instead of the main thread
-const countdown = useCountdown(initialValue, {
-  scheduler: useWebWorkerIntervalFn,
+const { memory } = useMemory({
+  scheduler: useRafFn,
 })
 ```
