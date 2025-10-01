@@ -1,9 +1,9 @@
-import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
+import type { ConfigurableSchedulerLazy, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
-export interface UseCountdownOptions extends ConfigurableScheduler {
+export interface UseCountdownOptions extends ConfigurableSchedulerLazy {
   /**
    * Callback function called when the countdown reaches 0.
    */

@@ -1,4 +1,4 @@
-import type { ConfigurableScheduler, Fn, TimerHandle } from '@vueuse/shared'
+import type { ConfigurableSchedulerLazy, Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
@@ -39,7 +39,7 @@ export interface UseWebSocketOptions {
      * @default 1000
      */
     pongTimeout?: number
-  } & Omit<ConfigurableScheduler, 'immediate'>
+  } & Omit<ConfigurableSchedulerLazy, 'immediate'>
 
   /**
    * Enabled auto reconnect

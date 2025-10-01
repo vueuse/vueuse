@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
-import type { ConfigurableSchedulerImmediate, Pausable } from '../utils'
+import type { ConfigurableScheduler, Pausable } from '../utils'
 import { shallowReadonly, shallowRef } from 'vue'
 import { useIntervalFn } from '../useIntervalFn'
 
-export interface UseIntervalOptions<Controls extends boolean> extends Omit<ConfigurableSchedulerImmediate, 'interval'> {
+export interface UseIntervalOptions<Controls extends boolean> extends Omit<ConfigurableScheduler, 'interval'> {
   /**
    * Expose more controls
    *

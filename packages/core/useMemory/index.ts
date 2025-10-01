@@ -1,4 +1,4 @@
-import type { ConfigurableSchedulerImmediate } from '@vueuse/shared'
+import type { ConfigurableScheduler } from '@vueuse/shared'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
@@ -25,7 +25,7 @@ export interface MemoryInfo {
   [Symbol.toStringTag]: 'MemoryInfo'
 }
 
-export interface UseMemoryOptions extends ConfigurableSchedulerImmediate {
+export interface UseMemoryOptions extends ConfigurableScheduler {
 }
 
 type PerformanceMemory = Performance & {

@@ -29,7 +29,7 @@ export type Scheduler = (
   options?: SchedulerOptions
 ) => Pausable
 
-export type ConfigurableSchedulerImmediate = SchedulerOptions & ({
+export type ConfigurableScheduler = SchedulerOptions & ({
   /**
    * Custom scheduler to use for interval execution.
    *
@@ -38,7 +38,7 @@ export type ConfigurableSchedulerImmediate = SchedulerOptions & ({
   scheduler?: Scheduler
 })
 
-export type ConfigurableScheduler = ConfigurableSchedulerImmediate & {
+export type ConfigurableSchedulerLazy = ConfigurableScheduler & {
   /**
    * Start the interval immediately
    *

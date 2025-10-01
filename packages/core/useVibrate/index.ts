@@ -1,11 +1,11 @@
-import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
+import type { ConfigurableSchedulerLazy, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
-export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableScheduler {
+export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableSchedulerLazy {
   /**
    *
    * Vibration Pattern
