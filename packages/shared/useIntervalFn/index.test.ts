@@ -119,4 +119,18 @@ describe('useIntervalFn', () => {
     await vi.advanceTimersByTimeAsync(60)
     expect(callback).toHaveBeenCalledTimes(0)
   })
+
+  it('basic pause/resume with SchedulerOptions', async () => {
+    await exec(useIntervalFn(callback, { interval: 50 }))
+
+    callback = vi.fn()
+
+    const interval = shallowRef(50)
+    await exec(useIntervalFn(callback, { interval }))
+
+    callback.mockClear()
+    interval.value = 20
+    await vi.advanceTimersByTimeAsync(30)
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
 })

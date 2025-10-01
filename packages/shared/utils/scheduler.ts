@@ -3,6 +3,13 @@ import type { AnyFn, Pausable } from './types'
 
 export interface SchedulerOptions {
   /**
+   * Interval duration in milliseconds.
+   *
+   * @default 1000
+   */
+  interval?: MaybeRefOrGetter<number>
+
+  /**
    * Start the scheduler immediately
    *
    * @default true
@@ -17,9 +24,8 @@ export interface SchedulerOptions {
   immediateCallback?: boolean
 }
 
-export type IntervalScheduler = (
+export type Scheduler = (
   cb: AnyFn,
-  interval?: MaybeRefOrGetter<number>,
   options?: SchedulerOptions
 ) => Pausable
 
@@ -29,13 +35,7 @@ export type ConfigurableSchedulerImmediate = SchedulerOptions & ({
    *
    * @default useIntervalFn
    */
-  scheduler?: IntervalScheduler
-  /**
-   * Interval duration in milliseconds.
-   *
-   * @default 1000
-   */
-  interval?: MaybeRefOrGetter<number>
+  scheduler?: Scheduler
 })
 
 export type ConfigurableScheduler = ConfigurableSchedulerImmediate & {
