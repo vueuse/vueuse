@@ -54,8 +54,11 @@ export function useInterval(interval: MaybeRefOrGetter<number> = 1000, options: 
           callback(counter.value)
         }
       : update,
-    interval,
-    { immediate, immediateCallback },
+    {
+      interval,
+      immediate,
+      immediateCallback,
+    },
   )
 
   if (exposeControls) {

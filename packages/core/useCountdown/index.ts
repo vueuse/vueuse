@@ -63,8 +63,11 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
         onComplete?.()
       }
     },
-    interval,
-    { immediate, immediateCallback },
+    {
+      interval,
+      immediate,
+      immediateCallback,
+    },
   )
 
   const reset = (countdown?: MaybeRefOrGetter<number>) => {

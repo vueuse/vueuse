@@ -71,8 +71,8 @@ export function useVibrate(options?: UseVibrateOptions) {
   if (interval > 0) {
     intervalControls = scheduler(
       vibrate,
-      interval,
       {
+        interval,
         immediate,
         immediateCallback,
       },

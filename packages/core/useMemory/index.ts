@@ -52,9 +52,16 @@ export function useMemory(options: UseMemoryOptions = {}) {
       immediateCallback,
     } = options
 
-    scheduler(() => {
-      memory.value = (performance as PerformanceMemory).memory
-    }, interval, { immediate, immediateCallback })
+    scheduler(
+      () => {
+        memory.value = (performance as PerformanceMemory).memory
+      },
+      {
+        interval,
+        immediate,
+        immediateCallback,
+      },
+    )
   }
 
   return { isSupported, memory }

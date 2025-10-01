@@ -305,8 +305,11 @@ export function useWebSocket<Data = any>(
           explicitlyClosed = false
         }, pongTimeout)
       },
-      interval,
-      { immediate: false, immediateCallback },
+      {
+        interval,
+        immediate: false,
+        immediateCallback,
+      },
     )
 
     heartbeatPause = pause
