@@ -1,4 +1,4 @@
-import type { ConfigurableScheduler, DEPRECATE_SCHEDULER_INTERVAL, Pausable } from '@vueuse/shared'
+import type { ConfigurableRafScheduler, DEPRECATE_SCHEDULER_INTERVAL, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
@@ -7,7 +7,7 @@ import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
-export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, ConfigurableScheduler {
+export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, ConfigurableRafScheduler {
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>

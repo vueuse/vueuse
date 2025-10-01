@@ -1,10 +1,10 @@
-import type { ConfigurableScheduler, DEPRECATE_SCHEDULER_INTERVAL, Pausable } from '@vueuse/shared'
+import type { ConfigurableRafScheduler, DEPRECATE_SCHEDULER_INTERVAL, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
+export interface UseNowOptions<Controls extends boolean> extends ConfigurableRafScheduler {
   /**
    * Expose more controls
    *

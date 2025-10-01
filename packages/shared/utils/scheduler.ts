@@ -38,6 +38,15 @@ export interface ConfigurableScheduler extends SchedulerOptions {
   scheduler?: Scheduler
 }
 
+export type ConfigurableRafScheduler = ConfigurableScheduler & {
+  /**
+   * Custom scheduler to use for interval execution.
+   *
+   * @default useRafFn
+   */
+  scheduler?: Scheduler
+}
+
 export type ConfigurableSchedulerLazy = ConfigurableScheduler & {
   /**
    * Start the interval immediately
@@ -52,7 +61,7 @@ export type ConfigurableSchedulerLazy = ConfigurableScheduler & {
  * @internal
  * @deprecated
  */
-export type DEPRECATE_SCHEDULER_INTERVAL<T extends ConfigurableScheduler> = Omit<T, 'interval'> & {
+export type DEPRECATE_SCHEDULER_INTERVAL<T extends ConfigurableRafScheduler> = Omit<T, 'interval'> & {
   /** @deprecated The option `interval: 'requestAnimationFrame'` has been deprecated. Please use the `scheduler` option with`useRafFn` instead */
   interval: 'requestAnimationFrame'
 }
