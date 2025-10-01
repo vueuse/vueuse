@@ -1,4 +1,4 @@
-import type { Pausable } from '@vueuse/shared'
+import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
@@ -7,11 +7,10 @@ import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
-export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument {
+export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, Omit<ConfigurableScheduler, 'interval'> {
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>
-  immediate?: boolean
   interval?: 'requestAnimationFrame' | number
 }
 
@@ -33,7 +32,9 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
     document = defaultDocument,
     multiple,
     interval = 'requestAnimationFrame',
+    scheduler = useIntervalFn,
     immediate = true,
+    immediateCallback,
   } = options
 
   const isSupported = useSupported(() => {
@@ -53,7 +54,11 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
 
   const controls: Pausable = interval === 'requestAnimationFrame'
     ? useRafFn(cb, { immediate })
-    : useIntervalFn(cb, interval, { immediate })
+    : scheduler(cb, {
+        interval: typeof interval === 'number' ? interval : undefined,
+        immediate,
+        immediateCallback,
+      })
 
   return {
     isSupported,

@@ -1,23 +1,16 @@
-import type { Pausable } from '@vueuse/shared'
+import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-export interface UseNowOptions<Controls extends boolean> {
+export interface UseNowOptions<Controls extends boolean> extends Omit<ConfigurableScheduler, 'interval'> {
   /**
    * Expose more controls
    *
    * @default false
    */
   controls?: Controls
-
-  /**
-   * Start the clock immediately
-   *
-   * @default true
-   */
-  immediate?: boolean
 
   /**
    * Update interval in milliseconds, or use requestAnimationFrame
@@ -49,8 +42,10 @@ export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausa
 export function useNow(options: UseNowOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
+    scheduler = useIntervalFn,
     interval = 'requestAnimationFrame',
     immediate = true,
+    immediateCallback,
   } = options
 
   const now = deepRef(new Date())
@@ -59,7 +54,11 @@ export function useNow(options: UseNowOptions<boolean> = {}) {
 
   const controls: Pausable = interval === 'requestAnimationFrame'
     ? useRafFn(update, { immediate })
-    : useIntervalFn(update, interval, { immediate })
+    : scheduler(update, {
+        interval: typeof interval === 'number' ? interval : undefined,
+        immediate,
+        immediateCallback,
+      })
 
   if (exposeControls) {
     return {

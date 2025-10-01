@@ -1,10 +1,10 @@
-import type { Pausable } from '@vueuse/shared'
+import type { ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import { timestamp, useIntervalFn } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-export interface UseTimestampOptions<Controls extends boolean> {
+export interface UseTimestampOptions<Controls extends boolean> extends Omit<ConfigurableScheduler, 'interval'> {
   /**
    * Expose more controls
    *
@@ -18,13 +18,6 @@ export interface UseTimestampOptions<Controls extends boolean> {
    * @default 0
    */
   offset?: number
-
-  /**
-   * Update the timestamp immediately
-   *
-   * @default true
-   */
-  immediate?: boolean
 
   /**
    * Update interval, or use requestAnimationFrame
@@ -50,9 +43,11 @@ export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     offset = 0,
-    immediate = true,
-    interval = 'requestAnimationFrame',
     callback,
+    scheduler = useIntervalFn,
+    interval = 'requestAnimationFrame',
+    immediate = true,
+    immediateCallback,
   } = options
 
   const ts = shallowRef(timestamp() + offset)
@@ -67,7 +62,11 @@ export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
 
   const controls: Pausable = interval === 'requestAnimationFrame'
     ? useRafFn(cb, { immediate })
-    : useIntervalFn(cb, interval, { immediate })
+    : scheduler(cb, {
+        interval: typeof interval === 'number' ? interval : undefined,
+        immediate,
+        immediateCallback,
+      })
 
   if (exposeControls) {
     return {
