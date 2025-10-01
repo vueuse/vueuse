@@ -11,6 +11,14 @@ describe('useIntervalFn', () => {
     callback = vi.fn()
   })
 
+  it('work with default value', async () => {
+    useIntervalFn(callback)
+    expect(callback).toHaveBeenCalledTimes(0)
+
+    await vi.advanceTimersByTimeAsync(1000)
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
   async function exec({ isActive, pause, resume }: Pausable) {
     expect(isActive.value).toBeTruthy()
     expect(callback).toHaveBeenCalledTimes(0)
