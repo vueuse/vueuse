@@ -53,6 +53,12 @@ await getUser.load(1) // Will also update user1
 The key for caching is determined by the arguments given to the function and will be serialized by default with `JSON.stringify`.
 This will allow equal objects to receive the same cache key. In case you want to customize the key you can pass `getKey`
 
+::: warning Performance Consideration
+Using `JSON.stringify` as the default key generator can be **slow for large or complex objects**. For better performance with complex arguments, it's highly recommended to provide a custom `getKey` function that generates keys based on primitive values or unique identifiers.
+:::
+
+#### Basic Example
+
 ```ts
 import { useMemoize } from '@vueuse/core'
 // ---cut---
