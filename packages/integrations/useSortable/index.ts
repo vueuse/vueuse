@@ -3,7 +3,7 @@ import type { Options } from 'sortablejs'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import { isRef, nextTick, toValue } from 'vue'
+import { isRef, nextTick, toValue, watch } from 'vue'
 
 export interface UseSortableReturn {
   /**
@@ -73,6 +73,14 @@ export function useSortable<T>(
   tryOnMounted(start)
 
   tryOnScopeDispose(stop)
+
+  watch(
+    () => (typeof el === 'string' ? el : unrefElement(el)),
+    (_) => {
+      stop()
+      start()
+    },
+  )
 
   return {
     stop,
