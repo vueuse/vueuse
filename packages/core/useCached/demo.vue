@@ -34,11 +34,11 @@ function onSyncClick() {
 
       <div>
         <label for="localValue">Temp Value: </label>
-        <input id="localValue" v-model.number="inputValue">
+        <input id="localValue" v-model.number="inputValue" type="number">
       </div>
       <div>
         <label for="localExtra">Local Extra: </label>
-        <input id="localExtra" v-model.number="inputExtra">
+        <input id="localExtra" v-model.number="inputExtra" type="number">
       </div>
       <div>
         <button @click="onSyncClick">

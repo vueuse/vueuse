@@ -61,6 +61,8 @@ export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<o
  * Creates a template promise component.
  *
  * @see https://vueuse.org/createTemplatePromise
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function createTemplatePromise<Return, Args extends any[] = []>(
   options: TemplatePromiseOptions = {},
@@ -114,5 +116,5 @@ export function createTemplatePromise<Return, Args extends any[] = []>(
   // @ts-expect-error There's a breaking type change in Vue 3.3 <https://github.com/vuejs/core/pull/7963>
   component.start = start
 
-  return component as any
+  return component as TemplatePromise<Return, Args>
 }

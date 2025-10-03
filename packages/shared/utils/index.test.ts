@@ -371,6 +371,7 @@ describe('optionsFilters', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
+
   it('optionsThrottleFilter should throttle', () => {
     const throttledFilterSpy = vi.fn()
     const filter = createFilterWrapper(throttleFilter({

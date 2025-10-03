@@ -1,6 +1,6 @@
+import type { ResizeObserverCallback, UseResizeObserverOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import type { ResizeObserverCallback, UseResizeObserverOptions } from './index'
-import { useResizeObserver } from './index'
+import { useResizeObserver } from '@vueuse/core'
 
 type BindingValueFunction = ResizeObserverCallback
 

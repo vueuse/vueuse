@@ -13,6 +13,10 @@ on:
 
   merge_group: {}
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -43,7 +47,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [20.x, 22.x]
+        node: [20.x, lts/*]
       fail-fast: false
 
     steps:
@@ -74,15 +78,50 @@ jobs:
         run: nr typecheck
 
       - name: unit tests
-        run: pnpm run test:unit
+        run: pnpm run test:cov
 
       - name: browser tests
         run: pnpm run test:browser
+
+      - name: server tests
+        run: pnpm run test:server
 
       - if: matrix.node == '20.x'
         name: attw tests
         run: pnpm test:attw
 
-      - if: matrix.node == '22.x'
+      - if: matrix.node == 'lts/*'
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh
+
+      - if: matrix.node == 'lts/*'
+        name: Report coverage
+        uses: codecov/codecov-action@v5
+        with:
+          use_oidc: true
+
+  release-pr:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
+
+      - run: pnpm install
+
+      - run: pnpm run build
+
+      - run: pnpm run update:full
+
+      - run: pnpm dlx pkg-pr-new publish --compact --pnpm './packages/*'

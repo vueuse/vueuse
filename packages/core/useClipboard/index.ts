@@ -49,6 +49,8 @@ export interface UseClipboardReturn<Optional> {
  *
  * @see https://vueuse.org/useClipboard
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useClipboard(options?: UseClipboardOptions<undefined>): UseClipboardReturn<false>
 export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<string>>): UseClipboardReturn<true>
@@ -109,7 +111,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   function legacyCopy(value: string) {
     const ta = document.createElement('textarea')
-    ta.value = value ?? ''
+    ta.value = value
     ta.style.position = 'absolute'
     ta.style.opacity = '0'
     document.body.appendChild(ta)

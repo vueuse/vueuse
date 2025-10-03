@@ -1,11 +1,24 @@
+import type { ConfigurableWindow, UseNetworkReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useOnline } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-export const UseOnline = /* #__PURE__ */ defineComponent({
-  name: 'UseOnline',
-  setup(props, { slots }) {
+export interface UseOnlineProps extends ConfigurableWindow {}
+interface UseOnlineSlots {
+  default: (data: Reactive<{
+    isOnline: UseNetworkReturn['isOnline']
+  }>) => any
+}
+
+export const UseOnline = /* #__PURE__ */ defineComponent<
+  UseOnlineProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseOnlineSlots>
+>(
+  (props, { slots }) => {
     const data = reactive({
-      isOnline: useOnline(),
+      isOnline: useOnline(props),
     })
 
     return () => {
@@ -13,4 +26,8 @@ export const UseOnline = /* #__PURE__ */ defineComponent({
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseOnline',
+    props: ['window'],
+  },
+)

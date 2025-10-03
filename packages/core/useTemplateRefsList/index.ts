@@ -5,6 +5,7 @@ export type TemplateRefsList<T> = T[] & {
   set: (el: object | null) => void
 }
 
+/* @__NO_SIDE_EFFECTS__ */
 export function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>> {
   const refs = deepRef<unknown>([]) as Ref<TemplateRefsList<T>>
   refs.value.set = (el: object | null) => {

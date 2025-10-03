@@ -52,7 +52,7 @@ export function useFullscreen(
       'webkitRequestFullScreen',
       'mozRequestFullScreen',
       'msRequestFullscreen',
-    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
+    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as 'requestFullscreen' | undefined
   })
 
   const exitMethod = computed<'exitFullscreen' | undefined>(() => {
@@ -63,7 +63,7 @@ export function useFullscreen(
       'webkitCancelFullScreen',
       'mozCancelFullScreen',
       'msExitFullscreen',
-    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
+    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as 'exitFullscreen' | undefined
   })
 
   const fullscreenEnabled = computed<'fullscreenEnabled' | undefined>(() => {
@@ -73,7 +73,7 @@ export function useFullscreen(
       'webkitDisplayingFullscreen',
       'mozFullScreen',
       'msFullscreenElement',
-    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as any
+    ].find(m => (document && m in document) || (targetRef.value && m in targetRef.value)) as 'fullscreenEnabled' | undefined
   })
 
   const fullscreenElementMethod = [

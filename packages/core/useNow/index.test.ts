@@ -3,10 +3,24 @@ import { useNow } from './index'
 
 describe('useNow', () => {
   vi.useFakeTimers()
+
   it('should get now timestamp by default', async () => {
     const now = useNow()
 
     expect(+now.value).toBeLessThanOrEqual(+new Date())
+  })
+
+  it('starts lazily if immediate is false', () => {
+    const initial = +new Date()
+    const { now, resume } = useNow({ controls: true, immediate: false })
+
+    expect(+now.value).toBe(initial)
+    vi.advanceTimersByTime(50)
+    expect(+now.value).toBe(initial)
+
+    resume()
+    vi.advanceTimersByTime(50)
+    expect(+now.value).toBeGreaterThan(initial)
   })
 
   function testControl(interval: any) {
