@@ -571,7 +571,8 @@ describe('useStorage', () => {
     key.value = KEY
     data.value = 3
     await nextTick()
-    expect(storage.getItem(KEY)).toBe('2')
+    expect(data.value).toBe(3)
+    expect(storage.getItem(KEY)).toBe('3')
     expect(storage.getItem(ANOTHER_KEY)).toBe('1')
   })
 
@@ -591,6 +592,19 @@ describe('useStorage', () => {
     key.value = KEY
     await nextTick()
     expect(data.value).toBe(0)
+    expect(storage.getItem(KEY)).toBe('0')
+    expect(storage.getItem(ANOTHER_KEY)).toBe('2')
+  })
+
+  it('keeps the new value when key and value change in the same tick', async () => {
+    const key = deepRef(KEY)
+    const data = useStorage(key, 0, storage)
+
+    key.value = ANOTHER_KEY
+    data.value = 2
+    await nextTick()
+
+    expect(data.value).toBe(2)
     expect(storage.getItem(KEY)).toBe('0')
     expect(storage.getItem(ANOTHER_KEY)).toBe('2')
   })
