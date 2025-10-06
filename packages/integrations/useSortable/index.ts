@@ -74,13 +74,15 @@ export function useSortable<T>(
 
   tryOnScopeDispose(stop)
 
-  watch(
-    () => (typeof el === 'string' ? el : unrefElement(el)),
-    (_) => {
-      stop()
-      start()
-    },
-  )
+  if (isRef(el)) {
+    watch(
+      () => (typeof el === 'string' ? el : unrefElement(el)),
+      (_) => {
+        stop()
+        start()
+      },
+    )
+  }
 
   return {
     stop,
