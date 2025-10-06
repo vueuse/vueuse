@@ -70,8 +70,14 @@ export function useElementSize(
   const stop2 = watch(
     () => unrefElement(target),
     (ele) => {
-      width.value = ele ? initialSize.width : 0
-      height.value = ele ? initialSize.height : 0
+      width.value =
+                ele && "offsetWidth" in ele
+                    ? ele.offsetWidth
+                    : initialSize.width;
+      height.value =
+          ele && "offsetHeight" in ele
+              ? ele.offsetHeight
+              : initialSize.height;
     },
   )
 
