@@ -20,7 +20,7 @@ export function useTextSelection(options: ConfigurableWindow = {}) {
     window = defaultWindow,
   } = options
 
-  const selection = deepRef<Selection | null>(null)
+  const selection = deepRef<Selection | null>(window?.getSelection() ?? null)
   const text = computed(() => selection.value?.toString() ?? '')
   const ranges = computed<Range[]>(() => selection.value ? getRangesFromSelection(selection.value) : [])
   const rects = computed(() => ranges.value.map(range => range.getBoundingClientRect()))
