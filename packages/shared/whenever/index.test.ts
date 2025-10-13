@@ -102,4 +102,43 @@ describe('whenever', () => {
 
     vm.unmount()
   })
+
+  it('immediate', async () => {
+    const vm = useSetup(() => {
+      const number = shallowRef<number | null>(null)
+      const lazyWatchCount = shallowRef(0)
+      const eagerWatchCount = shallowRef(0)
+
+      whenever(number, (value, prevValue) => {
+        lazyWatchCount.value++
+        expectType<number>(value)
+        expectType<number | null>(prevValue)
+      }, { immediate: false })
+
+      whenever(number, (value, prevValue) => {
+        eagerWatchCount.value++
+        expectType<number>(value)
+        expectType<number | null | undefined>(prevValue)
+      }, { immediate: true })
+
+      const changeNumber = (v: number) => number.value = v
+
+      return { number, lazyWatchCount, eagerWatchCount, changeNumber }
+    })
+
+    expect(toValue(vm.lazyWatchCount)).toBe(0)
+    expect(toValue(vm.eagerWatchCount)).toBe(0)
+
+    vm.changeNumber(1)
+    await nextTick()
+    expect(toValue(vm.lazyWatchCount)).toBe(1)
+    expect(toValue(vm.eagerWatchCount)).toBe(1)
+
+    vm.changeNumber(2)
+    await nextTick()
+    expect(toValue(vm.lazyWatchCount)).toBe(2)
+    expect(toValue(vm.eagerWatchCount)).toBe(2)
+
+    vm.unmount()
+  })
 })
