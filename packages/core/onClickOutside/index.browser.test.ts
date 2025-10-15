@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { defineComponent, useTemplateRef } from 'vue'
 import { onClickOutside } from './index'
 
-function complexComponent(useGetter = false) {
+function getComplexComponent(useGetter = false) {
   return defineComponent({
     template: `
     <div>
@@ -48,7 +48,7 @@ function complexComponent(useGetter = false) {
 describe('onClickOutside', () => {
   it('should work with ignored element', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const screen = page.render(complexComponent())
+    const screen = page.render(getComplexComponent())
     const target = screen.getByText('Inside')
     const outside = screen.getByText('Outside')
     const label = screen.getByText('Label')
@@ -67,7 +67,7 @@ describe('onClickOutside', () => {
 
   it('allow the value of target to be a getter', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const screen = page.render(complexComponent(true))
+    const screen = page.render(getComplexComponent(true))
     const target = screen.getByText('Inside')
     const other = screen.getByText('Other')
 
