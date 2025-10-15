@@ -27,6 +27,9 @@ describe('useStorage', () => {
   beforeEach(() => {
     localStorage.clear()
     storageState.clear()
+    storageMock.setItem.mockClear()
+    storageMock.getItem.mockClear()
+    storageMock.removeItem.mockClear()
   })
 
   it('export module', () => {
@@ -606,5 +609,93 @@ describe('useStorage', () => {
     window.dispatchEvent(new StorageEvent('storage', { storageArea: localStorage, key: ANOTHER_KEY, newValue: '1' }))
     window.dispatchEvent(new StorageEvent('storage', { storageArea: localStorage, key: KEY, newValue: '2' }))
     expect(data.value).toBe(1)
+  })
+
+  it('noSerialization option should skip serialization', async () => {
+    const testObject = { count: 1, name: 'test' }
+
+    const vm = useSetup(() => {
+      const ref = useStorage(KEY, testObject, storage, {
+        noSerialization: true,
+      })
+
+      return {
+        ref,
+      }
+    })
+
+    expect(vm.ref).toEqual(testObject)
+    // 验证直接存储对象，没有序列化
+    expect(storage.setItem).toHaveBeenCalledWith(KEY, testObject)
+
+    vm.ref = { count: 2, name: 'updated' }
+    await nextTwoTick()
+
+    expect(vm.ref).toEqual({ count: 2, name: 'updated' })
+    // 验证直接存储新对象，没有序列化
+    expect(storage.setItem).toHaveBeenCalledWith(KEY, { count: 2, name: 'updated' })
+  })
+
+  it('noSerialization with null values', async () => {
+    const vm = useSetup(() => {
+      const ref = useStorage(KEY, null, storage, {
+        noSerialization: true,
+      })
+
+      return {
+        ref,
+      }
+    })
+
+    expect(vm.ref).toBe(null)
+    // 当默认值为 null 时，不会调用 setItem，因为 null 值会被 removeItem 处理
+    expect(storage.setItem).not.toHaveBeenCalled()
+
+    // 先设置一个非 null 值，然后再设置为 null，这样才能触发 write 函数
+    vm.ref = 'some value' as any
+    await nextTwoTick()
+    expect(storage.setItem).toHaveBeenCalledWith(KEY, 'some value')
+
+    vm.ref = null
+    await nextTwoTick()
+
+    expect(vm.ref).toBe(null)
+    expect(storage.removeItem).toHaveBeenCalledWith(KEY)
+  })
+
+  it('noSerialization with primitive values', async () => {
+    const vm = useSetup(() => {
+      const ref = useStorage(KEY, 42, storage, {
+        noSerialization: true,
+      })
+
+      return {
+        ref,
+      }
+    })
+
+    expect(vm.ref).toBe(42)
+    expect(storage.setItem).toHaveBeenCalledWith(KEY, 42)
+
+    vm.ref = 100
+    await nextTwoTick()
+
+    expect(vm.ref).toBe(100)
+    expect(storage.setItem).toHaveBeenCalledWith(KEY, 100)
+  })
+
+  it('mergeDefaults with noSerialization', async () => {
+    // 测试 noSerialization 与 mergeDefaults 的组合
+    // 当 noSerialization: true 时，rawValue 直接使用，不进行序列化
+    storage.setItem(KEY, '{"a": 1}') // 存储的是字符串
+    const ref = useStorage(KEY, { a: 2, b: 3 }, storage, {
+      mergeDefaults: true,
+      noSerialization: true,
+    })
+
+    // 由于 noSerialization: true，rawValue 是字符串 '{"a": 1}'
+    // mergeDefaults 会尝试合并字符串和对象，结果是字符串的每个字符作为属性
+    // 这覆盖了 noSerialization ? rawValue : serializer.read(rawValue) 语句
+    expect(ref.value).toEqual(expect.objectContaining({ a: 2, b: 3 }))
   })
 })
