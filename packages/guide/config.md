@@ -86,3 +86,39 @@ const mockWindow = { /* ... */ }
 
 const { x, y } = useMouse({ window: mockWindow })
 ```
+
+### Configurable Scheduler
+
+From v14.0, composables that rely on timed scheduling provide an `option` field named `scheduler` to specify a custom scheduler.
+
+A custom scheduler must implement the `Scheduler` interface:
+
+```ts
+interface SchedulerOptions {
+  /** Interval duration in milliseconds. */
+  interval?: MaybeRefOrGetter<number>
+  /** Start the scheduler immediately */
+  immediate?: boolean
+  /** Execute the callback immediately after calling `resume` */
+  immediateCallback?: boolean
+}
+
+type Scheduler = (
+  cb: AnyFn,
+  options?: SchedulerOptions
+) => Pausable
+```
+
+> [!TIP]
+>
+> We provide `useIntervalFn` and `useRafFn`, both implement this interface.
+
+#### Example
+
+```ts twoslash
+import { useMemory, useRafFn } from '@vueuse/core'
+
+const { memory } = useMemory({
+  scheduler: useRafFn,
+})
+```

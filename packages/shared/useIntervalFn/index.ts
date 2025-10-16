@@ -1,40 +1,35 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { Fn, Pausable } from '../utils'
+import type { Fn, Pausable, SchedulerOptions } from '../utils'
 import { isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
 
-export interface UseIntervalFnOptions {
-  /**
-   * Start the timer immediately
-   *
-   * @default true
-   */
-  immediate?: boolean
+export type UseIntervalFnOptions = Omit<SchedulerOptions, 'interval'>
 
-  /**
-   * Execute the callback immediately after calling `resume`
-   *
-   * @default false
-   */
-  immediateCallback?: boolean
+export interface UseIntervalFnReturn extends Pausable {
 }
-
-export type UseIntervalFnReturn = Pausable
 
 /**
  * Wrapper for `setInterval` with controls
  *
  * @see https://vueuse.org/useIntervalFn
- * @param cb
- * @param interval
- * @param options
  */
-export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalFnOptions = {}): UseIntervalFnReturn {
+export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number>, options?: UseIntervalFnOptions): UseIntervalFnReturn
+export function useIntervalFn(cb: Fn, options?: SchedulerOptions): UseIntervalFnReturn
+
+export function useIntervalFn(cb: Fn, intervalOrOptions?: MaybeRefOrGetter<number> | SchedulerOptions, options?: UseIntervalFnOptions): UseIntervalFnReturn {
+  if (typeof toValue(intervalOrOptions) === 'number') {
+    intervalOrOptions = {
+      ...options,
+      interval: intervalOrOptions,
+    } as SchedulerOptions
+  }
+
   const {
+    interval = 1000,
     immediate = true,
     immediateCallback = false,
-  } = options
+  } = (intervalOrOptions ?? {}) as SchedulerOptions
 
   let timer: ReturnType<typeof setInterval> | null = null
   const isActive = shallowRef(false)
