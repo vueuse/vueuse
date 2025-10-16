@@ -89,5 +89,84 @@ describe('useWebSocket', () => {
 
       expect(status.value).toBe('CONNECTING')
     })
+
+    it('should support delay as a function', () => {
+      const delayFn = vi.fn((retries: number) => retries * 1000)
+      const { ws, status } = useWebSocket('ws://localhost', {
+        autoReconnect: {
+          retries: 3,
+          delay: delayFn,
+        },
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // First reconnection: delay should be 1000ms (retries = 1)
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      expect(delayFn).not.toHaveBeenCalled()
+      vi.advanceTimersByTime(999)
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1)
+      expect(delayFn).toHaveBeenCalledWith(1)
+      expect(status.value).toBe('CONNECTING')
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // Second reconnection: delay should be 2000ms (retries = 2)
+      delayFn.mockClear()
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1999)
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1)
+      expect(delayFn).toHaveBeenCalledWith(2)
+      expect(status.value).toBe('CONNECTING')
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // Third reconnection: delay should be 3000ms (retries = 3)
+      delayFn.mockClear()
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(2999)
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1)
+      expect(delayFn).toHaveBeenCalledWith(3)
+      expect(status.value).toBe('CONNECTING')
+    })
+
+    it('should support exponential backoff', () => {
+      const { ws, status } = useWebSocket('ws://localhost', {
+        autoReconnect: {
+          retries: 3,
+          delay: retries => 1000 * 2 ** (retries - 1), // 1s, 2s, 4s
+        },
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // First reconnection: 1000ms
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1000)
+      expect(status.value).toBe('CONNECTING')
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // Second reconnection: 2000ms
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(2000)
+      expect(status.value).toBe('CONNECTING')
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // Third reconnection: 4000ms
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(4000)
+      expect(status.value).toBe('CONNECTING')
+    })
   })
 })
