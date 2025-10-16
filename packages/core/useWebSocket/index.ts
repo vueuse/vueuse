@@ -258,11 +258,11 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        const checkRetires = typeof retries === 'function'
+        const checkRetries = typeof retries === 'function'
           ? retries
           : () => typeof retries === 'number' && (retries < 0 || retried < retries)
 
-        if (checkRetires(retried)) {
+        if (checkRetries(retried)) {
           const retryDelay = typeof delay === 'function'
             ? delay(retried)
             : delay
