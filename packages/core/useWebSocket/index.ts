@@ -68,7 +68,7 @@ export interface UseWebSocketOptions {
      *
      * @default 1000
      */
-    delay?: number
+    delay?: number | ((retried: number) => number)
 
     /**
      * On maximum retry times reached.
@@ -263,8 +263,11 @@ export function useWebSocket<Data = any>(
           : () => typeof retries === 'number' && (retries < 0 || retried < retries)
 
         if (checkRetires(retried)) {
+          const retryDelay = typeof delay === 'function'
+            ? delay(retried)
+            : delay
           retried += 1
-          retryTimeout = setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, retryDelay)
         }
         else {
           onFailed?.()
