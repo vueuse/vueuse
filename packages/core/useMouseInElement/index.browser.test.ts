@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import { useMouseInElement } from './index'
 
@@ -19,6 +19,10 @@ function mockMouseMoveEvent(x: number, y: number) {
 }
 
 describe('useMouseInElement', () => {
+  beforeEach(() => {
+    document.body.innerHTML = ''
+  })
+
   it('basic usage - block element', async () => {
     const x = 10
     const y = 10
