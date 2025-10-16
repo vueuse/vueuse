@@ -19,7 +19,7 @@ function mockMouseMoveEvent(x: number, y: number) {
 }
 
 describe('useMouseInElement', () => {
-  it('basic usage', async () => {
+  it('basic usage - block element', async () => {
     const x = 10
     const y = 10
     const width = 100
@@ -40,6 +40,14 @@ describe('useMouseInElement', () => {
     const moveX = 20
     const moveY = 20
     dispatchEvent(mockMouseMoveEvent(moveX, moveY))
+    await nextTick()
+
+    expect(result.elementX.value).toBe(moveX - x)
+    expect(result.elementY.value).toBe(moveY - y)
+    expect(result.isOutside.value).toBe(false)
+
+    result.stop()
+    dispatchEvent(mockMouseMoveEvent(0, 0))
     await nextTick()
 
     expect(result.elementX.value).toBe(moveX - x)
