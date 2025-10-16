@@ -38,7 +38,7 @@ export interface UseWebSocketOptions {
      *
      * @default 1000
      */
-    interval?: number
+    interval?: MaybeRefOrGetter<number>
 
     /**
      * Heartbeat response timeout, in milliseconds
