@@ -1,3 +1,4 @@
+import { page, userEvent } from '@vitest/browser/context'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { useTextSelection } from './index'
 
@@ -16,51 +17,66 @@ describe('useTextSelection', () => {
     window.getSelection()?.removeAllRanges()
   })
 
-  const addNodeContentToRange = (node: HTMLElement) => {
-    const range = document.createRange()
-    range.selectNodeContents(node)
-    const selection = window.getSelection()!
-    selection.removeAllRanges()
-    selection.addRange(range)
-
-    document.dispatchEvent(new Event('selectionchange'))
+  const selectHelloWorldNode = async () => {
+    // triple click to select the whole text node
+    await page.getByText('Hello World').tripleClick()
   }
+  const clickOutside = async () => {
+    await userEvent.click(document.body)
+  }
+
+  it('selection should always return the singleton Selection object no matter how the selection changes', async () => {
+    const windowSelection = window.getSelection()
+    expect(windowSelection).not.toBeNull()
+
+    const result = useTextSelection()
+    expect(result.selection.value).toBe(windowSelection)
+
+    await selectHelloWorldNode()
+    expect(result.selection.value).toBe(windowSelection)
+
+    await clickOutside()
+    expect(result.selection.value).toBe(windowSelection)
+  })
 
   it('should initialize with window.getSelection(), which is always present in browsers', async () => {
     const result = useTextSelection()
     expect(result.text.value).toBe('')
     expect(result.rects.value).toEqual([])
     expect(result.ranges.value).toEqual([])
-    expect(result.selection.value).toBe(window.getSelection())
+    expect(result.selection.value!.anchorNode).toBe(null)
+    expect(result.selection.value!.focusNode).toBe(null)
   })
 
   it('should initialize with an existing range', async () => {
-    addNodeContentToRange(node)
+    await selectHelloWorldNode()
 
     const result = useTextSelection()
 
     expect(result.text.value).toBe('Hello World')
     expect(result.ranges.value.length).toBe(1)
     expect(result.rects.value.length).toBe(1)
-    expect(result.selection.value).toBe(window.getSelection())
+    expect(result.selection.value!.anchorNode).toBe(node.firstChild)
+    expect(result.selection.value!.focusNode).toBe(node.firstChild)
   })
 
   it('should update on selectionchange', async () => {
     const result = useTextSelection()
 
-    addNodeContentToRange(node)
+    await selectHelloWorldNode()
 
     expect(result.text.value).toBe('Hello World')
     expect(result.ranges.value.length).toBe(1)
     expect(result.rects.value.length).toBe(1)
-    expect(result.selection.value).toBe(window.getSelection())
+    expect(result.selection.value!.anchorNode).toBe(node.firstChild)
+    expect(result.selection.value!.focusNode).toBe(node.firstChild)
 
-    window.getSelection()?.removeAllRanges()
-    document.dispatchEvent(new Event('selectionchange'))
+    await clickOutside()
 
     expect(result.text.value).toBe('')
     expect(result.ranges.value.length).toBe(0)
     expect(result.rects.value.length).toBe(0)
-    expect(result.selection.value).toBe(window.getSelection())
+    expect(result.selection.value!.anchorNode).toBe(null)
+    expect(result.selection.value!.focusNode).toBe(null)
   })
 })
