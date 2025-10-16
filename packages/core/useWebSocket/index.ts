@@ -64,7 +64,8 @@ export interface UseWebSocketOptions {
     retries?: number | ((retried: number) => boolean)
 
     /**
-     * Delay for reconnect, in milliseconds
+     * Delay before each reconnect attempt, in milliseconds,
+     * or a function which returns the delay before the next attempt
      *
      * @default 1000
      */
