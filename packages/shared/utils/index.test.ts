@@ -2,6 +2,7 @@ import type { MockInstance } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
 import {
+  createRetryChecker,
   createSingletonPromise,
   increaseWithUnit,
   objectOmit,
@@ -506,5 +507,26 @@ describe('optionsFilters', () => {
 
     expect(sumSpy).toHaveBeenCalledTimes(2)
     await expect(result).resolves.toBe(8 + 9)
+  })
+})
+
+describe('createRetryChecker', () => {
+  it('should work with number (positive limit)', () => {
+    const shouldRetry = createRetryChecker(3)
+
+    expect(shouldRetry(0)).toBe(true)
+    expect(shouldRetry(1)).toBe(true)
+    expect(shouldRetry(2)).toBe(true)
+    expect(shouldRetry(3)).toBe(false)
+    expect(shouldRetry(4)).toBe(false)
+  })
+
+  it('should work with function', () => {
+    const shouldRetry = createRetryChecker((retried: number) => retried < 5)
+
+    expect(shouldRetry(0)).toBe(true)
+    expect(shouldRetry(4)).toBe(true)
+    expect(shouldRetry(5)).toBe(false)
+    expect(shouldRetry(10)).toBe(false)
   })
 })
