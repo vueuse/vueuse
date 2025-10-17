@@ -60,8 +60,7 @@ export type UseMagicKeysReturn<Reactive extends boolean>
     Record<
       string,
       Reactive extends true ? boolean : ComputedRef<boolean>
-    >
-    & MagicKeysInternal
+    > & MagicKeysInternal
   >
 
 /**
