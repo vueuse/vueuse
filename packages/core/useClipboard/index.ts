@@ -111,7 +111,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   function legacyCopy(value: string) {
     const ta = document.createElement('textarea')
-    ta.value = value ?? ''
+    ta.value = value
     ta.style.position = 'absolute'
     ta.style.opacity = '0'
     document.body.appendChild(ta)

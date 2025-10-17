@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import type { ComponentPublicInstance, MaybeRefOrGetter, VNode } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef, MaybeElementRef } from '../unrefElement'
 import { isIOS, noop } from '@vueuse/shared'
 import { toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -58,7 +58,7 @@ let _iOSWorkaround = false
 export function onClickOutside<
   T extends OnClickOutsideOptions,
 >(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
   options?: T
 ): Fn
@@ -66,14 +66,14 @@ export function onClickOutside<
 export function onClickOutside<
   T extends OnClickOutsideOptions<true>,
 >(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
   options: T
 ): OnClickOutsideControlsReturn
 
 // Implementation
 export function onClickOutside(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler,
   options: OnClickOutsideOptions<boolean> = {},
 ) {
@@ -116,12 +116,12 @@ export function onClickOutside(
    * Determines if the given target has multiple root elements.
    * Referenced from: https://github.com/vuejs/test-utils/blob/ccb460be55f9f6be05ab708500a41ec8adf6f4bc/src/vue-wrapper.ts#L21
    */
-  function hasMultipleRoots(target: MaybeElementRef): boolean {
+  function hasMultipleRoots(target: MaybeComputedElementRef): boolean {
     const vm = toValue(target) as ComponentPublicInstance
     return vm && vm.$.subTree.shapeFlag === 16
   }
 
-  function checkMultipleRoots(target: MaybeElementRef, event: Event): boolean {
+  function checkMultipleRoots(target: MaybeComputedElementRef, event: Event): boolean {
     const vm = toValue(target) as ComponentPublicInstance
     const children = vm.$.subTree && vm.$.subTree.children
 
