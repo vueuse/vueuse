@@ -57,10 +57,11 @@ export interface MagicKeysInternal {
 
 export type UseMagicKeysReturn<Reactive extends boolean>
   = Readonly<
-    Omit<Reactive extends true
-      ? Record<string, boolean>
-      : Record<string, ComputedRef<boolean>>, keyof MagicKeysInternal>
-      & MagicKeysInternal
+    Record<
+      string,
+      Reactive extends true ? boolean : ComputedRef<boolean>
+    >
+    & MagicKeysInternal
   >
 
 /**
@@ -68,9 +69,7 @@ export type UseMagicKeysReturn<Reactive extends boolean>
  *
  * @see https://vueuse.org/useMagicKeys
  */
-export function useMagicKeys(options?: UseMagicKeysOptions<false>): UseMagicKeysReturn<false>
-export function useMagicKeys(options: UseMagicKeysOptions<true>): UseMagicKeysReturn<true>
-export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): UseMagicKeysReturn<boolean> {
+export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOptions<T> = {}): UseMagicKeysReturn<T> {
   const {
     reactive: useReactive = false,
     target = defaultWindow,
@@ -211,7 +210,7 @@ export function useMagicKeys(options: UseMagicKeysOptions<boolean> = {}): UseMag
     },
   )
 
-  return proxy as UseMagicKeysReturn<boolean>
+  return proxy as UseMagicKeysReturn<T>
 }
 
 export { DefaultMagicKeysAliasMap } from './aliasMap'
