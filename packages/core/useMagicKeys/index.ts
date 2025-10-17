@@ -59,7 +59,7 @@ export type UseMagicKeysReturn<Reactive extends boolean>
   = Readonly<
     Record<
       string,
-      Reactive extends true ? boolean : ComputedRef<boolean>
+      Reactive extends true ? ComputedRef<boolean> : boolean
     > & MagicKeysInternal
   >
 
