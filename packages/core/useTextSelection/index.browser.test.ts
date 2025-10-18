@@ -1,4 +1,3 @@
-import { page, userEvent } from '@vitest/browser/context'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { useTextSelection } from './index'
 
@@ -17,12 +16,15 @@ describe('useTextSelection', () => {
     window.getSelection()?.removeAllRanges()
   })
 
-  const selectHelloWorldNode = async () => {
-    // triple click to select the whole text node
-    await page.getByText('Hello World').tripleClick()
+  const selectHelloWorldNode = () => {
+    window.getSelection()?.selectAllChildren(node)
+    const event = new Event('selectionchange')
+    document.dispatchEvent(event)
   }
-  const clickOutside = async () => {
-    await userEvent.click(document.body)
+  const removeSelection = () => {
+    window.getSelection()?.removeAllRanges()
+    const event = new Event('selectionchange')
+    document.dispatchEvent(event)
   }
 
   it('selection should always return the singleton Selection object no matter how the selection changes', async () => {
@@ -32,10 +34,10 @@ describe('useTextSelection', () => {
     const result = useTextSelection()
     expect(result.selection.value).toBe(windowSelection)
 
-    await selectHelloWorldNode()
+    selectHelloWorldNode()
     expect(result.selection.value).toBe(windowSelection)
 
-    await clickOutside()
+    removeSelection()
     expect(result.selection.value).toBe(windowSelection)
   })
 
@@ -49,29 +51,29 @@ describe('useTextSelection', () => {
   })
 
   it('should initialize with an existing range', async () => {
-    await selectHelloWorldNode()
+    selectHelloWorldNode()
 
     const result = useTextSelection()
 
     expect(result.text.value).toBe('Hello World')
     expect(result.ranges.value.length).toBe(1)
     expect(result.rects.value.length).toBe(1)
-    expect(result.selection.value!.anchorNode).toBe(node.firstChild)
-    expect(result.selection.value!.focusNode).toBe(node.firstChild)
+    expect(result.selection.value!.anchorNode).toBe(node)
+    expect(result.selection.value!.focusNode).toBe(node)
   })
 
   it('should update on selectionchange', async () => {
     const result = useTextSelection()
 
-    await selectHelloWorldNode()
+    selectHelloWorldNode()
 
     expect(result.text.value).toBe('Hello World')
     expect(result.ranges.value.length).toBe(1)
     expect(result.rects.value.length).toBe(1)
-    expect(result.selection.value!.anchorNode).toBe(node.firstChild)
-    expect(result.selection.value!.focusNode).toBe(node.firstChild)
+    expect(result.selection.value!.anchorNode).toBe(node)
+    expect(result.selection.value!.focusNode).toBe(node)
 
-    await clickOutside()
+    removeSelection()
 
     expect(result.text.value).toBe('')
     expect(result.ranges.value.length).toBe(0)
