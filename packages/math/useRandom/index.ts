@@ -6,7 +6,7 @@ import { isClient, tryOnMounted } from '@vueuse/shared'
 import { shallowRef, watchEffect } from 'vue'
 import { toValueArgsFlat } from '../utils'
 
-export function useMathRandom(...args: (MaybeRefOrGetter<number | string> | MaybeRefOrGetter<MaybeRefOrGetter<number | string>[]> | MaybeRefOrGetter<number>)[]): Ref<number | string | Array<number | string>>
+export function useRandom(...args: (MaybeRefOrGetter<number | string> | MaybeRefOrGetter<MaybeRefOrGetter<number | string>[]> | MaybeRefOrGetter<number>)[]): Ref<number | string | Array<number | string>>
 
 /**
  * Get a random integer from a set of numbers or pick randomly from strings.
@@ -16,11 +16,11 @@ export function useMathRandom(...args: (MaybeRefOrGetter<number | string> | Mayb
  *   - If two numbers are provided, returns a random integer between them (inclusive)
  *   - If more than two numbers are provided, randomly picks one from the array
  *
- * @see https://vueuse.org/useMathRandom
+ * @see https://vueuse.org/useRandom
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useMathRandom(...args: any[]): Ref<number | string | Array<number | string> | undefined> {
+export function useRandom(...args: any[]): Ref<number | string | Array<number | string> | undefined> {
   const current = shallowRef<number | string | Array<number | string> | undefined>(undefined)
   let mounted = false
 

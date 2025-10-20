@@ -2,7 +2,7 @@
 category: '@Math'
 ---
 
-# useMathRandom
+# useRandom
 
 Reactively pick random values (numbers or strings) with SSR-safe seeded defaults
 
@@ -13,11 +13,11 @@ Reactively pick random values (numbers or strings) with SSR-safe seeded defaults
 When you provide exactly two numbers, it returns a random integer between them (inclusive):
 
 ```ts
-import { useMathRandom } from '@vueuse/math'
+import { useRandom } from '@vueuse/math'
 
 const min = ref(1)
 const max = ref(10)
-const randomInt = useMathRandom(min, max) // Ref<random number between 1 and 10>
+const randomInt = useRandom(min, max) // Ref<random number between 1 and 10>
 
 // SSR and the client initial render use a seeded pseudo-random generator to avoid hydration mismatch;
 // the client may randomize again after mount.
@@ -31,10 +31,10 @@ console.log(randomInt.value) // e.g., 1
 When you provide more than two numbers, it randomly picks one from the array:
 
 ```ts
-import { useMathRandom } from '@vueuse/math'
+import { useRandom } from '@vueuse/math'
 
 const numbers = ref([5, 10, 15, 20, 25])
-const randomInt = useMathRandom(numbers) // Randomly picks one: 5, 10, 15, 20, or 25
+const randomInt = useRandom(numbers) // Randomly picks one: 5, 10, 15, 20, or 25
 
 console.log(randomInt.value) // e.g., 15
 console.log(randomInt.value) // e.g., 5
@@ -46,11 +46,11 @@ Note: when the value list contains strings, string-picking mode is used (see bel
 ### Using multiple arguments
 
 ```ts
-import { useMathRandom } from '@vueuse/math'
+import { useRandom } from '@vueuse/math'
 
 const a = ref(1)
 const b = ref(5)
-const randomInt = useMathRandom(a, b, 10, 15) // Randomly picks from: 1, 5, 10, 15
+const randomInt = useRandom(a, b, 10, 15) // Randomly picks from: 1, 5, 10, 15
 
 console.log(randomInt.value) // e.g., 10
 ```
@@ -60,10 +60,10 @@ console.log(randomInt.value) // e.g., 10
 You can pass an array as the first argument and an optional second numeric argument `count` to pick multiple unique items.
 
 ```ts
-import { useMathRandom } from '@vueuse/math'
+import { useRandom } from '@vueuse/math'
 
 const items = ref([1, 2, 3, 4, 5])
-const picks = useMathRandom(items, 3) // Ref<number[] | undefined>
+const picks = useRandom(items, 3) // Ref<number[] | undefined>
 
 console.log(picks.value) // e.g., [4,1,3]
 ```
@@ -72,10 +72,10 @@ On SSR / before mount the returned array is deterministic (first n items). On cl
 
 ### Strings
 
-If any of the provided values are strings, `useMathRandom` operates in string mode. If fewer than two strings are available, it returns `undefined` to avoid ambiguous randomness.
+If any of the provided values are strings, `useRandom` operates in string mode. If fewer than two strings are available, it returns `undefined` to avoid ambiguous randomness.
 
 ```ts
-const s = useMathRandom('a', 'b', 'c') // Ref<string | undefined>
+const s = useRandom('a', 'b', 'c') // Ref<string | undefined>
 ```
 
 ### No valid input
@@ -83,19 +83,19 @@ const s = useMathRandom('a', 'b', 'c') // Ref<string | undefined>
 If no valid input is provided (empty array, single string, or no args), the hook returns `undefined`.
 
 ```ts
-const none = useMathRandom()
+const none = useRandom()
 console.log(none.value) // undefined
 ```
 
 ## Type Declarations
 
 ```typescript
-export function useMathRandom(
+export function useRandom(
   array: MaybeRefOrGetter<MaybeRefOrGetter<number | string>[]>,
   count?: MaybeRefOrGetter<number>
 ): Ref<number | string | Array<number | string> | undefined>
 
-export function useMathRandom(
+export function useRandom(
   ...args: MaybeRefOrGetter<number | string>[]
 ): Ref<number | string | Array<number | string> | undefined>
 ```
