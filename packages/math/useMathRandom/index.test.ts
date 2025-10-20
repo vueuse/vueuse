@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import { ref as deepRef, shallowRef } from 'vue'
-import { useRandomInt } from './index'
+import { useMathRandom } from './index'
 
-describe('useRandomInt', () => {
+describe('useMathRandom', () => {
   it('should be defined', () => {
-    expect(useRandomInt).toBeDefined()
+    expect(useMathRandom).toBeDefined()
   })
 
   it('should return random int between two numbers', () => {
     const min = shallowRef(1)
     const max = shallowRef(10)
-    const randomInt = useRandomInt(min, max)
+    const randomInt = useMathRandom(min, max)
 
     // Test multiple times to ensure it's within range
     for (let i = 0; i < 100; i++) {
@@ -22,7 +22,7 @@ describe('useRandomInt', () => {
   })
 
   it('should handle reversed min/max', () => {
-    const randomInt = useRandomInt(10, 1)
+    const randomInt = useMathRandom(10, 1)
 
     for (let i = 0; i < 50; i++) {
       const value = randomInt.value
@@ -33,7 +33,7 @@ describe('useRandomInt', () => {
 
   it('should randomly pick from multiple values', () => {
     const array = deepRef([5, 10, 15, 20, 25])
-    const randomInt = useRandomInt(array)
+    const randomInt = useMathRandom(array)
 
     // Collect results to verify randomness
     const results = new Set()
@@ -50,7 +50,7 @@ describe('useRandomInt', () => {
   it('rest usage - multiple values', () => {
     const a = shallowRef(1)
     const b = shallowRef(5)
-    const randomInt = useRandomInt(a, () => b.value, 10, 15)
+    const randomInt = useMathRandom(a, () => b.value, 10, 15)
 
     for (let i = 0; i < 50; i++) {
       const value = randomInt.value
@@ -67,7 +67,7 @@ describe('useRandomInt', () => {
   it('should update when refs change', () => {
     const min = shallowRef(1)
     const max = shallowRef(5)
-    const randomInt = useRandomInt(min, max)
+    const randomInt = useMathRandom(min, max)
 
     // First range
     for (let i = 0; i < 20; i++) {
@@ -88,13 +88,13 @@ describe('useRandomInt', () => {
   })
 
   it('should handle single value', () => {
-    const randomInt = useRandomInt(42)
+    const randomInt = useMathRandom(42)
     expect(randomInt.value).toBe(42)
   })
 
   it('should handle empty array', () => {
     const array = deepRef([])
-    const randomInt = useRandomInt(array)
+    const randomInt = useMathRandom(array)
     expect(randomInt.value).toBe(0)
   })
 })

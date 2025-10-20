@@ -2,7 +2,7 @@
 category: '@Math'
 ---
 
-# useRandomInt
+# useMathRandom
 
 Reactively get a random integer from a set of numbers
 
@@ -13,11 +13,11 @@ Reactively get a random integer from a set of numbers
 When you provide exactly two numbers, it returns a random integer between them (inclusive):
 
 ```ts
-import { useRandomInt } from '@vueuse/math'
+import { useMathRandom } from '@vueuse/math'
 
 const min = ref(1)
 const max = ref(10)
-const randomInt = useRandomInt(min, max) // Ref<random number between 1 and 10>
+const randomInt = useMathRandom(min, max) // Ref<random number between 1 and 10>
 
 // Each time you access randomInt.value, it generates a new random number
 console.log(randomInt.value) // e.g., 3
@@ -30,10 +30,10 @@ console.log(randomInt.value) // e.g., 1
 When you provide more than two numbers, it randomly picks one from the array:
 
 ```ts
-import { useRandomInt } from '@vueuse/math'
+import { useMathRandom } from '@vueuse/math'
 
 const numbers = ref([5, 10, 15, 20, 25])
-const randomInt = useRandomInt(numbers) // Randomly picks one: 5, 10, 15, 20, or 25
+const randomInt = useMathRandom(numbers) // Randomly picks one: 5, 10, 15, 20, or 25
 
 console.log(randomInt.value) // e.g., 15
 console.log(randomInt.value) // e.g., 5
@@ -43,11 +43,11 @@ console.log(randomInt.value) // e.g., 20
 ### Using multiple arguments
 
 ```ts
-import { useRandomInt } from '@vueuse/math'
+import { useMathRandom } from '@vueuse/math'
 
 const a = ref(1)
 const b = ref(5)
-const randomInt = useRandomInt(a, b, 10, 15) // Randomly picks from: 1, 5, 10, 15
+const randomInt = useMathRandom(a, b, 10, 15) // Randomly picks from: 1, 5, 10, 15
 
 console.log(randomInt.value) // e.g., 10
 ```
@@ -55,11 +55,11 @@ console.log(randomInt.value) // e.g., 10
 ## Type Declarations
 
 ```typescript
-export function useRandomInt(
+export function useMathRandom(
   array: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>
 ): ComputedRef<number>
 
-export function useRandomInt(
+export function useMathRandom(
   ...args: MaybeRefOrGetter<number>[]
 ): ComputedRef<number>
 ```
