@@ -1,5 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
+import { isFunction } from '../utils'
 
 export interface UseToNumberOptions {
   /**
@@ -42,7 +43,7 @@ export function useToNumber(
 
   return computed(() => {
     let resolved = toValue(value)
-    if (typeof method === 'function')
+    if (isFunction(method))
       resolved = method(resolved)
     else if (typeof resolved === 'string')
       resolved = Number[method](resolved, radix)

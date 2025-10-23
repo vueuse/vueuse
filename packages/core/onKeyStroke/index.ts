@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
+import { isFunction } from '@vueuse/shared'
 import { toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -19,7 +20,7 @@ export interface OnKeyStrokeOptions {
 }
 
 function createKeyPredicate(keyFilter: KeyFilter): KeyPredicate {
-  if (typeof keyFilter === 'function')
+  if (isFunction(keyFilter))
     return keyFilter
 
   else if (typeof keyFilter === 'string')

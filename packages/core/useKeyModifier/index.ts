@@ -1,6 +1,7 @@
 import type { ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
+import { isFunction } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -40,7 +41,7 @@ export function useKeyModifier<Initial extends boolean | null>(modifier: KeyModi
   if (document) {
     events.forEach((listenerEvent) => {
       useEventListener(document, listenerEvent, (evt: KeyboardEvent | MouseEvent) => {
-        if (typeof evt.getModifierState === 'function')
+        if (isFunction(evt.getModifierState))
           state.value = evt.getModifierState(modifier)
       }, { passive: true })
     })

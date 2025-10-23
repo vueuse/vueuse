@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter, Ref, WatchOptions } from 'vue'
+import { isFunction } from '@vueuse/shared'
 import { ref as deepRef, isRef, shallowRef, toValue, watch } from 'vue'
 
 export interface UseClonedOptions<T = any> extends WatchOptions {
@@ -72,7 +73,7 @@ export function useCloned<T>(
     cloned.value = clone(toValue(source))
   }
 
-  if (!manual && (isRef(source) || typeof source === 'function')) {
+  if (!manual && (isRef(source) || isFunction(source))) {
     watch(source, sync, {
       ...options,
       deep,

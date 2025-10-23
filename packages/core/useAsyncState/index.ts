@@ -1,5 +1,5 @@
 import type { MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
-import { noop, promiseTimeout, until } from '@vueuse/shared'
+import { isFunction, noop, promiseTimeout, until } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
@@ -111,7 +111,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     if (delay > 0)
       await promiseTimeout(delay)
 
-    const _promise = typeof promise === 'function'
+    const _promise = isFunction(promise)
       ? promise(...args as Params)
       : promise
 

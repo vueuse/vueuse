@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import type { MaybeRef, WatchSource } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { toRef } from '@vueuse/shared'
+import { isFunction, toRef } from '@vueuse/shared'
 import { nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useResizeObserver } from '../useResizeObserver'
@@ -31,7 +31,7 @@ function tryRequestAnimationFrame(
   window: Window | undefined = defaultWindow,
   fn: Fn,
 ) {
-  if (window && typeof window.requestAnimationFrame === 'function') {
+  if (isFunction(window?.requestAnimationFrame)) {
     window.requestAnimationFrame(fn)
   }
   else {

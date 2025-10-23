@@ -1,6 +1,7 @@
 import type { Reactified, ReactifyOptions } from '../reactify'
 import type { AnyFn } from '../utils'
 import { reactify } from '../reactify'
+import { isFunction } from '../utils'
 
 export type ReactifyNested<T, Keys extends keyof T = keyof T, S extends boolean = true> = { [K in Keys]: T[K] extends AnyFn ? Reactified<T[K], S> : T[K] }
 
@@ -49,7 +50,7 @@ export function reactifyObject<T extends object, S extends boolean = true>(obj: 
         const value = obj[key as keyof T]
         return [
           key,
-          typeof value === 'function'
+          isFunction(value)
             ? reactify((value as any).bind(obj), options)
             : value,
         ]

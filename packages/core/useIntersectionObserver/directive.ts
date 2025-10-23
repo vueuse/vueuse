@@ -1,6 +1,6 @@
 import type { UseIntersectionObserverOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
+import { isFunction, useIntersectionObserver } from '@vueuse/core'
 
 type BindingValueFunction = IntersectionObserverCallback
 
@@ -11,7 +11,7 @@ export const vIntersectionObserver: ObjectDirective<
 BindingValueFunction | BindingValueArray
 > = {
   mounted(el, binding) {
-    if (typeof binding.value === 'function')
+    if (isFunction(binding.value))
       useIntersectionObserver(el, binding.value)
     else
       useIntersectionObserver(el, ...binding.value)

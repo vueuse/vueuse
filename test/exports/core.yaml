@@ -65,6 +65,7 @@
   isClient: boolean
   isDef: function
   isDefined: function
+  isFunction: function
   isIOS: boolean
   isObject: function
   isWorker: boolean
@@ -117,7 +118,6 @@
   toReactive: function
   toRef: function
   toRefs: function
-  transition: function
   TransitionPresets: object
   tryOnBeforeMount: function
   tryOnBeforeUnmount: function

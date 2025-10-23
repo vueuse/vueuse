@@ -3,7 +3,7 @@
 import type { ConfigurableEventFilter } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { bypassFilter, createFilterWrapper } from '@vueuse/shared'
+import { bypassFilter, createFilterWrapper, isFunction } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -37,7 +37,7 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
   } = options
 
   const isSupported = useSupported(() => typeof DeviceMotionEvent !== 'undefined')
-  const requirePermissions = useSupported(() => isSupported.value && 'requestPermission' in DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function')
+  const requirePermissions = useSupported(() => isSupported.value && 'requestPermission' in DeviceMotionEvent && isFunction(DeviceMotionEvent.requestPermission))
   const permissionGranted = shallowRef(false)
   const acceleration: Ref<DeviceMotionEvent['acceleration']> = deepRef({ x: null, y: null, z: null })
   const rotationRate: Ref<DeviceMotionEvent['rotationRate']> = deepRef({ alpha: null, beta: null, gamma: null })

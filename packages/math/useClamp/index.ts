@@ -1,6 +1,6 @@
 import type { ReadonlyRefOrGetter } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
-import { clamp } from '@vueuse/shared'
+import { clamp, isFunction } from '@vueuse/shared'
 import { computed, ref as deepRef, isReadonly, toValue } from 'vue'
 
 /**
@@ -35,7 +35,7 @@ export function useClamp(
  * @__NO_SIDE_EFFECTS__
  */
 export function useClamp(value: MaybeRefOrGetter<number>, min: MaybeRefOrGetter<number>, max: MaybeRefOrGetter<number>) {
-  if (typeof value === 'function' || isReadonly(value))
+  if (isFunction(value) || isReadonly(value))
     return computed(() => clamp(toValue(value), toValue(min), toValue(max)))
 
   const _value = deepRef(value)

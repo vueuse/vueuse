@@ -2,6 +2,7 @@ import type { ConfigurableEventFilter } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
+import { isFunction } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -88,7 +89,7 @@ export function useMouse(options: UseMouseOptions = {}) {
   const y = shallowRef(initialValue.y)
   const sourceType = shallowRef<UseMouseSourceType>(null)
 
-  const extractor = typeof type === 'function'
+  const extractor = isFunction(type)
     ? type
     : UseMouseBuiltinExtractors[type]
 

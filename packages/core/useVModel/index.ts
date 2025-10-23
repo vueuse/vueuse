@@ -1,6 +1,6 @@
 import type { Ref, UnwrapRef, WritableComputedRef } from 'vue'
 import type { CloneFn } from '../useCloned'
-import { isDef } from '@vueuse/shared'
+import { isDef, isFunction } from '@vueuse/shared'
 import { computed, ref as deepRef, getCurrentInstance, nextTick, watch } from 'vue'
 import { cloneFnJSON } from '../useCloned'
 
@@ -111,7 +111,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
 
   const cloneFn = (val: P[K]) => !clone
     ? val
-    : typeof clone === 'function'
+    : isFunction(clone)
       ? clone(val)
       : cloneFnJSON(val)
 

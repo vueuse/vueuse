@@ -1,6 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { ConfigurableNavigator } from '../_configurable'
+import { isFunction } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -28,7 +29,7 @@ export function useBattery(options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
   const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
 
-  const isSupported = useSupported(() => navigator && 'getBattery' in navigator && typeof navigator.getBattery === 'function')
+  const isSupported = useSupported(() => navigator && 'getBattery' in navigator && isFunction(navigator.getBattery))
 
   const charging = shallowRef(false)
   const chargingTime = shallowRef(0)

@@ -2,7 +2,7 @@ import type { RemovableRef } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
 import type { StorageLikeAsync } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
-import { watchWithFilter } from '@vueuse/shared'
+import { isFunction, watchWithFilter } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
@@ -86,7 +86,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       }
       else if (mergeDefaults) {
         const value = await serializer.read(rawValue)
-        if (typeof mergeDefaults === 'function')
+        if (isFunction(mergeDefaults))
           data.value = mergeDefaults(value, rawInit)
         else if (type === 'object' && !Array.isArray(value))
           data.value = { ...(rawInit as any), ...value }

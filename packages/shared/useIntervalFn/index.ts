@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { Fn, Pausable } from '../utils'
 import { isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
-import { isClient } from '../utils'
+import { isClient, isFunction } from '../utils'
 
 export interface UseIntervalFnOptions {
   /**
@@ -66,7 +66,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
   if (immediate && isClient)
     resume()
 
-  if (isRef(interval) || typeof interval === 'function') {
+  if (isRef(interval) || isFunction(interval)) {
     const stopWatch = watch(interval, () => {
       if (isActive.value && isClient)
         resume()

@@ -1,6 +1,6 @@
 import type { UseScrollOptions, UseScrollReturn } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { useScroll } from '@vueuse/core'
+import { isFunction, useScroll } from '@vueuse/core'
 
 type BindingValueFunction = (state: UseScrollReturn) => void
 
@@ -11,7 +11,7 @@ export const vScroll: ObjectDirective<
 BindingValueFunction | BindingValueArray
 > = {
   mounted(el, binding) {
-    if (typeof binding.value === 'function') {
+    if (isFunction(binding.value)) {
       const handler = binding.value
       const state = useScroll(el, {
         onScroll() {

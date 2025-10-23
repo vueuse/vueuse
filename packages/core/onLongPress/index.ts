@@ -1,6 +1,7 @@
 import type { TimerHandle } from '@vueuse/shared'
 import type { Position } from '../types'
 import type { MaybeElementRef } from '../unrefElement'
+import { isFunction } from '@vueuse/shared'
 import { computed } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -66,7 +67,7 @@ export function onLongPress(
 
   function getDelay(ev: PointerEvent): number {
     const delay = options?.delay
-    if (typeof delay === 'function') {
+    if (isFunction(delay)) {
       return delay(ev)
     }
     return delay ?? DEFAULT_DELAY

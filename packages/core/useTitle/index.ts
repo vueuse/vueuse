@@ -1,7 +1,7 @@
 import type { ReadonlyRefOrGetter } from '@vueuse/shared'
 import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { toValue, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
@@ -63,13 +63,13 @@ export function useTitle(
   const originalTitle = document?.title ?? ''
 
   const title = toRef(newTitle ?? document?.title ?? null)
-  const isReadonly = !!(newTitle && typeof newTitle === 'function')
+  const isReadonly = !!(newTitle && isFunction(newTitle))
 
   function format(t: string) {
     if (!('titleTemplate' in options))
       return t
     const template = options.titleTemplate || '%s'
-    return typeof template === 'function'
+    return isFunction(template)
       ? template(t)
       : toValue(template).replace(/%s/g, t)
   }

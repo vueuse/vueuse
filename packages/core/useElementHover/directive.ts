@@ -1,6 +1,6 @@
 import type { UseElementHoverOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { useElementHover } from '@vueuse/core'
+import { isFunction, useElementHover } from '@vueuse/core'
 import { watch } from 'vue'
 
 type BindingValueFunction = (state: boolean) => void
@@ -11,7 +11,7 @@ export const vElementHover: ObjectDirective<
 > = {
   mounted(el, binding) {
     const value = binding.value
-    if (typeof value === 'function') {
+    if (isFunction(value)) {
       const isHovered = useElementHover(el)
       watch(isHovered, v => value(v))
     }

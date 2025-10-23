@@ -1,6 +1,6 @@
 import type { EventHookOn, Fn, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
-import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
+import { containsProp, createEventHook, isFunction, toRef, until, useTimeoutFn } from '@vueuse/shared'
 import { computed, isRef, readonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
@@ -335,7 +335,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, useFetchOptions: UseF
 export function useFetch<T>(url: MaybeRefOrGetter<string>, options: RequestInit, useFetchOptions?: UseFetchOptions): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
 export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>> {
-  const supportsAbort = typeof AbortController === 'function'
+  const supportsAbort = isFunction(AbortController)
 
   let fetchOptions: RequestInit = {}
   let options: UseFetchOptions = {

@@ -1,5 +1,6 @@
 import type { Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import { isFunction } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
@@ -164,7 +165,7 @@ export function formatTimeAgoIntlParts(
     locale,
   } = options
 
-  if (typeof joinParts === 'function')
+  if (isFunction(joinParts))
     return joinParts(parts, locale)
 
   if (!insertSpace)

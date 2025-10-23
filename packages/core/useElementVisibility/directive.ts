@@ -1,6 +1,6 @@
 import type { UseElementVisibilityOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { useElementVisibility } from '@vueuse/core'
+import { isFunction, useElementVisibility } from '@vueuse/core'
 import { watch } from 'vue'
 
 type BindingValueFunction = (state: boolean) => void
@@ -12,7 +12,7 @@ export const vElementVisibility: ObjectDirective<
   BindingValueFunction | BindingValueArray
 > = {
   mounted(el, binding) {
-    if (typeof binding.value === 'function') {
+    if (isFunction(binding.value)) {
       const handler = binding.value
       const isVisible = useElementVisibility(el)
       watch(isVisible, v => handler(v), { immediate: true })

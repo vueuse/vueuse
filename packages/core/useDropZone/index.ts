@@ -1,5 +1,5 @@
 import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
-import { isClient } from '@vueuse/shared'
+import { isClient, isFunction } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports
 import { shallowRef, unref } from 'vue'
 
@@ -40,7 +40,7 @@ export function useDropZone(
   let isValid = true
 
   if (isClient) {
-    const _options = typeof options === 'function' ? { onDrop: options } : options
+    const _options = isFunction(options) ? { onDrop: options } : options
     const multiple = _options.multiple ?? true
     const preventDefaultForUnhandled = _options.preventDefaultForUnhandled ?? false
 
@@ -52,7 +52,7 @@ export function useDropZone(
     const checkDataTypes = (types: string[]) => {
       const dataTypes = unref(_options.dataTypes)
 
-      if (typeof dataTypes === 'function')
+      if (isFunction(dataTypes))
         return dataTypes(types)
 
       if (!dataTypes?.length)

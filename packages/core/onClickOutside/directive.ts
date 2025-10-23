@@ -1,7 +1,7 @@
 import type { OnClickOutsideHandler, OnClickOutsideOptions } from '@vueuse/core'
 import type { Fn } from '@vueuse/shared'
 import type { ObjectDirective } from 'vue'
-import { onClickOutside } from '@vueuse/core'
+import { isFunction, onClickOutside } from '@vueuse/core'
 
 type StopHandle = Fn | { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
 
@@ -14,7 +14,7 @@ export const vOnClickOutside: ObjectDirective<
   mounted(el, binding) {
     const capture = !binding.modifiers.bubble
     let stop: StopHandle
-    if (typeof binding.value === 'function') {
+    if (isFunction(binding.value)) {
       stop = onClickOutside(el, binding.value, { capture })
     }
     else {
@@ -25,7 +25,7 @@ export const vOnClickOutside: ObjectDirective<
   },
   unmounted(el) {
     const stop = stopClickOutsideMap.get(el)
-    if (stop && typeof stop === 'function') {
+    if (stop && isFunction(stop)) {
       stop()
     }
     else {

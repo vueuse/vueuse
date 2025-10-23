@@ -1,6 +1,6 @@
 import type { UseElementBoundingOptions, UseElementBoundingReturn } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { useElementBounding } from '@vueuse/core'
+import { isFunction, useElementBounding } from '@vueuse/core'
 import { watch } from 'vue'
 
 type ElementBounding = Omit<UseElementBoundingReturn, 'update'>
@@ -12,7 +12,7 @@ export const vElementBounding: ObjectDirective<
   BindingValueFunction | BindingValueArray
 > = {
   mounted(el, binding) {
-    const [handler, options] = (typeof binding.value === 'function' ? [binding.value, {}] : binding.value) as BindingValueArray
+    const [handler, options] = (isFunction(binding.value) ? [binding.value, {}] : binding.value) as BindingValueArray
 
     const {
       height,

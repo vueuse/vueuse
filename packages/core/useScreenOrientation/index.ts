@@ -1,4 +1,5 @@
 import type { ConfigurableWindow } from '../_configurable'
+import { isFunction } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -45,14 +46,14 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
   }
 
   const lockOrientation = (type: OrientationLockType) => {
-    if (isSupported.value && typeof screenOrientation.lock === 'function')
+    if (isSupported.value && isFunction(screenOrientation.lock))
       return screenOrientation.lock(type)
 
     return Promise.reject(new Error('Not supported'))
   }
 
   const unlockOrientation = () => {
-    if (isSupported.value && typeof screenOrientation.unlock === 'function')
+    if (isSupported.value && isFunction(screenOrientation.unlock))
       screenOrientation.unlock()
   }
 

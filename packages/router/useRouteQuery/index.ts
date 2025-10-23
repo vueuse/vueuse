@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { Router } from 'vue-router'
 import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -38,7 +38,7 @@ export function useRouteQuery<
   let transformGet = (value: T) => value as unknown as K
   let transformSet = (value: K) => value as unknown as T
 
-  if (typeof transform === 'function') {
+  if (isFunction(transform)) {
     transformGet = transform
   }
   else if (transform) {

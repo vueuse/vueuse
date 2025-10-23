@@ -1,6 +1,6 @@
 import type { Fn } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
-import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
+import { isClient, isFunction, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
@@ -184,7 +184,7 @@ export function useEventSource<Events extends string[], Data = any>(
 
         if (typeof retries === 'number' && (retries < 0 || retried < retries))
           setTimeout(_init, delay)
-        else if (typeof retries === 'function' && retries())
+        else if (isFunction(retries) && retries())
           setTimeout(_init, delay)
         else
           onFailed?.()

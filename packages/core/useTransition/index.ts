@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
@@ -156,7 +156,7 @@ function defaultInterpolation<T>(a: T, b: T, t: number) {
 }
 
 function normalizeEasing(easing: MaybeRef<EasingFunction | CubicBezierPoints> | undefined) {
-  return typeof easing === 'function'
+  return isFunction(easing)
     ? easing
     : (toValue(easing) ?? linear)
 }
@@ -184,7 +184,7 @@ export function transition<T>(
   const startedAt = Date.now()
   const endAt = Date.now() + duration
 
-  const interpolation = typeof options.interpolation === 'function'
+  const interpolation = isFunction(options.interpolation)
     ? options.interpolation
     : defaultInterpolation
 
@@ -192,7 +192,7 @@ export function transition<T>(
     ? normalizeEasing(options.easing)
     : normalizeEasing(options.transition)
 
-  const ease = typeof trans === 'function'
+  const ease = isFunction(trans)
     ? trans
     : createEasingFunction(trans)
 

@@ -1,5 +1,6 @@
 import type { Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import { isFunction } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
@@ -192,7 +193,7 @@ export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefa
 
   function applyFormat(name: UnitNames | keyof UseTimeAgoMessagesBuiltIn, val: number | string, isPast: boolean) {
     const formatter = messages[name]
-    if (typeof formatter === 'function')
+    if (isFunction(formatter))
       return formatter(val as never, isPast)
     return formatter.replace('{0}', val.toString())
   }

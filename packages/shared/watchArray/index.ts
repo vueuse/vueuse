@@ -1,5 +1,6 @@
 import type { WatchOptions, WatchSource } from 'vue'
 import { toValue, watch } from 'vue'
+import { isFunction } from '../utils'
 
 export declare type WatchArrayCallback<V = any, OV = any> = (value: V, oldValue: OV, added: V, removed: OV, onCleanup: (cleanupFn: () => void) => void) => any
 
@@ -15,7 +16,7 @@ export function watchArray<T, Immediate extends Readonly<boolean> = false>(
 ) {
   let oldList: T[] = options?.immediate
     ? []
-    : [...(typeof source === 'function'
+    : [...(isFunction(source)
         ? source()
         : Array.isArray(source)
           ? source

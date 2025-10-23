@@ -1,3 +1,5 @@
+import { isFunction } from '@vueuse/shared'
+
 /**
  *
  * Concatenates the dependencies into a comma separated string.
@@ -16,7 +18,7 @@ function depsParser(deps: string[], localDeps: Function[]) {
     return ''
 
   const depsString = deps.map(dep => `'${dep}'`).toString()
-  const depsFunctionString = localDeps.filter(dep => typeof dep === 'function').map((fn) => {
+  const depsFunctionString = localDeps.filter(dep => isFunction(dep)).map((fn) => {
     const str = fn.toString()
     if (str.trim().startsWith('function')) {
       return str

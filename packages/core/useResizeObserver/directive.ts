@@ -1,6 +1,6 @@
 import type { ResizeObserverCallback, UseResizeObserverOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { useResizeObserver } from '@vueuse/core'
+import { isFunction, useResizeObserver } from '@vueuse/core'
 
 type BindingValueFunction = ResizeObserverCallback
 
@@ -11,7 +11,7 @@ export const vResizeObserver: ObjectDirective<
   BindingValueFunction | BindingValueArray
 > = {
   mounted(el, binding) {
-    if (typeof binding.value === 'function')
+    if (isFunction(binding.value))
       useResizeObserver(el, binding.value)
     else
       useResizeObserver(el, ...binding.value)

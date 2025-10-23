@@ -1,6 +1,6 @@
 import type { OnKeyStrokeOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { onKeyStroke } from '@vueuse/core'
+import { isFunction, onKeyStroke } from '@vueuse/core'
 
 type BindingValueFunction = (event: KeyboardEvent) => void
 
@@ -12,7 +12,7 @@ export const vOnKeyStroke: ObjectDirective<
 > = {
   mounted(el, binding) {
     const keys = binding.arg?.split(',') ?? true
-    if (typeof binding.value === 'function') {
+    if (isFunction(binding.value)) {
       onKeyStroke(keys, binding.value, {
         target: el,
       })

@@ -1,4 +1,5 @@
 import type { ComputedRef, InjectionKey } from 'vue'
+import { isFunction } from '@vueuse/shared'
 import { computed, inject } from 'vue'
 
 export type ComputedInjectGetter<T, K> = (source: T | undefined, oldValue?: K) => K
@@ -47,7 +48,7 @@ export function computedInject<T, K = any>(
   if (treatDefaultAsFactory)
     source = inject(key, defaultSource, treatDefaultAsFactory) as T
 
-  if (typeof options === 'function') {
+  if (isFunction(options)) {
     return computed(oldValue => options(source, oldValue as K | undefined))
   }
   else {

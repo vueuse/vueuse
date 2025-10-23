@@ -1,7 +1,7 @@
 import type { MouseInElementOptions, UseMouseInElementReturn } from '@vueuse/core'
 import type { ObjectDirective, Reactive } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
-import { reactiveOmit } from '@vueuse/shared'
+import { isFunction, reactiveOmit } from '@vueuse/shared'
 import { reactive, watch } from 'vue'
 
 type MouseInElement = Omit<UseMouseInElementReturn, 'stop'>
@@ -13,7 +13,7 @@ export const vMouseInElement: ObjectDirective<
   BindingValueFunction | BindingValueArray
 > = {
   mounted(el, binding) {
-    const [handler, options] = (typeof binding.value === 'function' ? [binding.value, {}] : binding.value) as BindingValueArray
+    const [handler, options] = (isFunction(binding.value) ? [binding.value, {}] : binding.value) as BindingValueArray
 
     const state = reactiveOmit(reactive(useMouseInElement(el, options)), 'stop')
     watch(state, val => handler(val))

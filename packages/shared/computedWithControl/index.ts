@@ -1,6 +1,7 @@
 import type { ComputedGetter, ComputedRef, WatchOptions, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
 import type { Fn } from '../utils'
 import { customRef, watch } from 'vue'
+import { isFunction } from '../utils'
 
 export interface ComputedWithControlRefExtra {
   /**
@@ -49,8 +50,8 @@ export function computedWithControl<T, S>(
 
   watch(source, update, { flush: 'sync', ...options })
 
-  const get = typeof fn === 'function' ? fn : fn.get
-  const set = typeof fn === 'function' ? undefined : fn.set
+  const get = isFunction(fn) ? fn : fn.get
+  const set = isFunction(fn) ? undefined : fn.set
 
   const result = customRef<T>((_track, _trigger) => {
     track = _track

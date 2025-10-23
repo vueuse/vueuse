@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { CloneFn } from '../useCloned'
-import { timestamp } from '@vueuse/shared'
+import { isFunction, timestamp } from '@vueuse/shared'
 import { computed, ref as deepRef, markRaw } from 'vue'
 import { cloneFnJSON } from '../useCloned'
 
@@ -109,7 +109,7 @@ type FnCloneOrBypass<F, T> = (v: F) => T
 
 function defaultDump<R, S>(clone?: boolean | CloneFn<R>) {
   return (clone
-    ? typeof clone === 'function'
+    ? isFunction(clone)
       ? clone
       : cloneFnJSON
     : fnBypass
@@ -118,7 +118,7 @@ function defaultDump<R, S>(clone?: boolean | CloneFn<R>) {
 
 function defaultParse<R, S>(clone?: boolean | CloneFn<R>) {
   return (clone
-    ? typeof clone === 'function'
+    ? isFunction(clone)
       ? clone
       : cloneFnJSON
     : fnBypass

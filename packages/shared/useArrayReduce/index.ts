@@ -1,5 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
+import { isFunction } from '../utils'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R
 
@@ -61,7 +62,7 @@ export function useArrayReduce<T>(
     // Depending on the behavior of reduce, undefined is also a valid initialization value,
     // and this code will distinguish the behavior between them.
     return args.length
-      ? resolved.reduce(reduceCallback, typeof args[0] === 'function' ? toValue(args[0]()) : toValue(args[0]))
+      ? resolved.reduce(reduceCallback, isFunction(args[0]) ? toValue(args[0]()) : toValue(args[0]))
       : resolved.reduce(reduceCallback)
   })
 }

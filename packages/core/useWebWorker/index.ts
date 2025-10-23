@@ -2,7 +2,7 @@
 
 import type { Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { isFunction, tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 
@@ -69,7 +69,7 @@ export function useWebWorker<Data = any>(
   if (window) {
     if (typeof arg0 === 'string')
       worker.value = new Worker(arg0, workerOptions)
-    else if (typeof arg0 === 'function')
+    else if (isFunction(arg0))
       worker.value = (arg0 as any)()
     else
       worker.value = arg0

@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
-import { isClient } from '@vueuse/shared'
+import { isClient, isFunction } from '@vueuse/shared'
 import { isRef, shallowRef, toValue, watch } from 'vue'
 import { getDefaultSerialization } from './serialization'
 
@@ -107,7 +107,7 @@ export function useBase64(
     return promise.value
   }
 
-  if (isRef(target) || typeof target === 'function')
+  if (isRef(target) || isFunction(target))
     watch(target, execute, { immediate: true })
   else
     execute()

@@ -1,6 +1,6 @@
 import type { ElementSize } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import { useElementSize } from '@vueuse/core'
+import { isFunction, useElementSize } from '@vueuse/core'
 import { watch } from 'vue'
 
 type RemoveFirstFromTuple<T extends any[]>
@@ -16,8 +16,8 @@ export const vElementSize: ObjectDirective<
   BindingValueFunction | BindingValueArray
 > = {
   mounted(el, binding) {
-    const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]
-    const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
+    const handler = isFunction(binding.value) ? binding.value : binding.value?.[0]
+    const options = (isFunction(binding.value) ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
 
     const { width, height } = useElementSize(el, ...options)
     watch([width, height], ([width, height]) => handler({ width, height }))

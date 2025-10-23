@@ -1,5 +1,6 @@
 import type { Options } from 'change-case'
 import type { ComputedRef, MaybeRef, MaybeRefOrGetter, WritableComputedRef } from 'vue'
+import { isFunction } from '@vueuse/shared'
 import * as changeCase from 'change-case'
 import { computed, ref as deepRef, toValue } from 'vue'
 
@@ -10,7 +11,7 @@ type ChangeCaseKeys = FilterKeys<typeof changeCase>
 export type ChangeCaseType = ChangeCaseKeys[keyof ChangeCaseKeys]
 
 const changeCaseTransforms: any = /* @__PURE__ */ Object.entries(changeCase)
-  .filter(([name, fn]) => typeof fn === 'function' && name.endsWith('Case'))
+  .filter(([name, fn]) => isFunction(fn) && name.endsWith('Case'))
   .reduce((acc, [name, fn]) => {
     acc[name] = fn
     return acc
@@ -34,7 +35,7 @@ export function useChangeCase(input: MaybeRefOrGetter<string>, type: MaybeRefOrG
     return t
   })
 
-  if (typeof input === 'function')
+  if (isFunction(input))
     return computed(() => changeCaseTransforms[typeRef.value](toValue(input), toValue(options)))
 
   const text = deepRef(input)
