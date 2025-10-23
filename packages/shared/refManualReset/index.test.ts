@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { isReactive } from 'vue'
 import { refManualReset } from './index'
 
 describe('refManualReset', () => {
@@ -24,5 +25,24 @@ describe('refManualReset', () => {
 
     val.reset()
     expect(val.value).toBe('default')
+  })
+
+  it('object should be reset', async () => {
+    const a = refManualReset({ foo: 1 })
+    a.value.foo++
+    a.reset()
+    expect(a.value).toStrictEqual({ foo: 1 })
+
+    const b = refManualReset({ foo: 1 }, true)
+    b.value.foo++
+    b.reset()
+    expect(b.value).toStrictEqual({ foo: 1 })
+  })
+
+  it('shallow parameter', async () => {
+    const a = refManualReset({ foo: { bar: 1 } })
+    const b = refManualReset({ foo: { bar: 1 } }, true)
+    expect(isReactive(a.value.foo)).toBe(true)
+    expect(isReactive(b.value.foo)).toBe(false)
   })
 })

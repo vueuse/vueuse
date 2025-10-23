@@ -1,6 +1,17 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { Fn } from '../utils'
-import { customRef, toValue } from 'vue'
+import { cloneFnJSON, isObject } from '@vueuse/core'
+import { customRef, reactive, toValue } from 'vue'
+
+/**
+ * Converts a given value to a reactive object
+ *
+ * @param value - The value to be converted, can be of any type
+ * @returns If the input value is an object, returns its reactive proxy; otherwise returns the original value
+ */
+export function toReactive<T>(value: T): T {
+  return isObject(value) ? reactive(value as any) : value
+}
 
 /**
  * Define the shape of a ref that supports manual reset functionality.
@@ -17,13 +28,22 @@ export interface ManualResetRefReturn<T> extends Ref<T> {
  *
  * @see https://vueuse.org/refManualReset
  * @param defaultValue The value which will be set.
+ * @param shallow - Whether to use shallow ref.
  */
-export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>) {
-  let value: T = toValue(defaultValue)
+export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>, shallow = false) {
+  const createValue = () => {
+    let value: T = toValue(cloneFnJSON(defaultValue))
+    if (!shallow) {
+      value = toReactive(value)
+    }
+    return value
+  }
+
+  let value = createValue()
   let trigger: Fn
 
   const reset = () => {
-    value = toValue(defaultValue)
+    value = createValue()
     trigger()
   }
 
@@ -35,7 +55,7 @@ export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>) {
         return value
       },
       set(newValue) {
-        value = newValue
+        value = shallow ? newValue : toReactive(newValue)
         trigger()
       },
     }
