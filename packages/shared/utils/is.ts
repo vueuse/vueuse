@@ -1,3 +1,5 @@
+import type { AnyFn } from './types'
+
 /* eslint-disable antfu/top-level-function */
 export const isClient = typeof window !== 'undefined' && typeof document !== 'undefined'
 export const isWorker = typeof WorkerGlobalScope !== 'undefined' && globalThis instanceof WorkerGlobalScope
@@ -10,7 +12,7 @@ export const assert = (condition: boolean, ...infos: any[]) => {
 const toString = Object.prototype.toString
 export const isObject = (val: any): val is object =>
   toString.call(val) === '[object Object]'
-export const isFunction = (val: any): val is Function => typeof val === 'function'
+export const isFunction = (val: any): val is AnyFn => typeof val === 'function'
 export const now = () => Date.now()
 export const timestamp = () => +Date.now()
 export const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n))
