@@ -9,7 +9,7 @@ import { customRef, reactive, toValue } from 'vue'
  * @param value - The value to be converted, can be of any type
  * @returns If the input value is an object, returns its reactive proxy; otherwise returns the original value
  */
-export function toReactive<T>(value: T): T {
+export function ensureReactive<T>(value: T): T {
   return isObject(value) ? reactive(value as any) : value
 }
 
@@ -34,7 +34,7 @@ export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>, shallow = f
   const createValue = () => {
     let value: T = toValue(cloneFnJSON(defaultValue))
     if (!shallow) {
-      value = toReactive(value)
+      value = ensureReactive(value)
     }
     return value
   }
@@ -55,7 +55,7 @@ export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>, shallow = f
         return value
       },
       set(newValue) {
-        value = shallow ? newValue : toReactive(newValue)
+        value = shallow ? newValue : ensureReactive(newValue)
         trigger()
       },
     }
