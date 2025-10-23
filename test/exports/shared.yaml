@@ -35,6 +35,7 @@
   isClient: boolean
   isDef: function
   isDefined: function
+  isFunction: function
   isIOS: boolean
   isObject: function
   isWorker: boolean
@@ -60,6 +61,7 @@
   refAutoReset: function
   refDebounced: function
   refDefault: function
+  refManualReset: function
   refThrottled: function
   refWithControl: function
   set: function

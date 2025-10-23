@@ -118,6 +118,7 @@
   toReactive: function
   toRef: function
   toRefs: function
+  transition: function
   TransitionPresets: object
   tryOnBeforeMount: function
   tryOnBeforeUnmount: function
