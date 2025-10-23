@@ -1,51 +1,103 @@
-import { page } from '@vitest/browser/context'
-import { describe, expect, it, vi } from 'vitest'
-import { defineComponent, shallowRef, useTemplateRef } from 'vue'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
-  const component = defineComponent({
-    template: `
-      <h1 style="margin-bottom: 100vh;">The target is {{ targetVisible ? 'visible' : 'hidden' }}</h1>
-      <div
-        ref="observed-target"
-        style="width: 200px; height: 200px;"
-      >
-        Target Element
-      </div>
-    `,
-    setup() {
-      const target = useTemplateRef<HTMLElement>('observed-target')
-      const targetVisible = shallowRef(false)
+  describe('send IntersectionObserver messages', () => {
+    const createNodeWithId = (id: string) => {
+      const node = document.createElement('div')
+      node.id = id
+      document.body.appendChild(node)
+      return node
+    }
+
+    const callbackMock = vi.fn()
+    const disconnectMock = vi.fn()
+    const observeMock = vi.fn()
+    const IntersectionObserverMock = vi.fn(() => ({
+      disconnect: disconnectMock,
+      observe: observeMock,
+    }))
+
+    beforeAll(() => {
+      vi.stubGlobal('IntersectionObserver', IntersectionObserverMock)
+    })
+
+    afterAll(() => {
+      vi.unstubAllGlobals()
+    })
+
+    it('pass IntersectionObserver correct parameters', async () => {
+      const targetNode = createNodeWithId('target-node')
+
       useIntersectionObserver(
-        target,
-        ([entry]) => {
-          targetVisible.value = entry.isIntersecting
+        targetNode,
+        callbackMock,
+      )
+
+      await vi.waitFor(() => {
+        expect(IntersectionObserverMock).toHaveBeenCalledTimes(1)
+        expect(IntersectionObserverMock).toHaveBeenCalledWith(
+          callbackMock,
+          {
+            root: undefined,
+            rootMargin: '0px',
+            threshold: 0,
+          },
+        )
+
+        expect(observeMock).toHaveBeenCalledTimes(1)
+        expect(observeMock.mock.calls[0][0]).toBe(targetNode)
+
+        targetNode.remove()
+      })
+    })
+
+    it('provided options will be passed to IntersectionObserver', async () => {
+      const targetNode = createNodeWithId('target-node')
+      const rootNode = createNodeWithId('root-node')
+      document.body.appendChild(rootNode)
+
+      useIntersectionObserver(
+        targetNode,
+        callbackMock,
+        {
+          root: rootNode,
+          rootMargin: '10px 20px 30px 40px',
+          threshold: [0, 0.5, 1],
         },
       )
 
-      return { targetVisible }
-    },
-  })
-
-  describe('when target is a single element', () => {
-    it('should observe the given target Element', async () => {
-      page.render(component)
-      const heading = page.getByRole('heading', { level: 1 })
-
-      expect(heading).toHaveTextContent('The target is hidden')
-
-      // the default threshold is 0, so scrolling by 1px is enough to trigger the intersection
-      window.scrollTo(0, 1)
-
-      vi.waitFor(() => {
-        expect(heading).toHaveTextContent('The target is visible')
+      await vi.waitFor(() => {
+        expect(IntersectionObserverMock).toHaveBeenCalledTimes(1)
+        expect(IntersectionObserverMock).toHaveBeenCalledWith(
+          callbackMock,
+          {
+            root: rootNode,
+            rootMargin: '10px 20px 30px 40px',
+            threshold: [0, 0.5, 1],
+          },
+        )
       })
 
-      window.scrollTo(0, 0)
+      targetNode.remove()
+      rootNode.remove()
+    })
 
-      vi.waitFor(() => {
-        expect(heading).toHaveTextContent('The target is hidden')
+    it('each target will be observed when the target is an array of elements', async () => {
+      const targetNode = createNodeWithId('target-node-1')
+      const targetNode_2 = createNodeWithId('target-node-2')
+
+      useIntersectionObserver(
+        [targetNode, targetNode_2],
+        callbackMock,
+      )
+
+      await vi.waitFor(() => {
+        expect(IntersectionObserverMock).toHaveBeenCalledTimes(1)
+
+        expect(observeMock).toHaveBeenCalledTimes(2)
+        expect(observeMock.mock.calls[0][0]).toBe(targetNode)
+        expect(observeMock.mock.calls[1][0]).toBe(targetNode_2)
       })
     })
   })
