@@ -1,4 +1,7 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
+import { page } from '@vitest/browser/context'
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { cleanup } from 'vitest-browser-vue'
+import { computed, defineComponent, onMounted, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
@@ -10,9 +13,9 @@ describe('useIntersectionObserver', () => {
       return node
     }
 
-    const callbackMock = vi.fn()
-    const disconnectMock = vi.fn()
+    const callbackMock = () => {}
     const observeMock = vi.fn()
+    const disconnectMock = vi.fn()
     const IntersectionObserverMock = vi.fn(() => ({
       disconnect: disconnectMock,
       observe: observeMock,
@@ -20,6 +23,10 @@ describe('useIntersectionObserver', () => {
 
     beforeAll(() => {
       vi.stubGlobal('IntersectionObserver', IntersectionObserverMock)
+    })
+
+    beforeEach(() => {
+      vi.clearAllMocks()
     })
 
     afterAll(() => {
@@ -98,6 +105,73 @@ describe('useIntersectionObserver', () => {
         expect(observeMock).toHaveBeenCalledTimes(2)
         expect(observeMock.mock.calls[0][0]).toBe(targetNode)
         expect(observeMock.mock.calls[1][0]).toBe(targetNode_2)
+      })
+    })
+
+    describe('when using in a component', () => {
+      const ChildComponent = defineComponent({
+        template: '<div id="child-component" />',
+      })
+      const component = defineComponent({
+        template: `
+        <div>
+          <div ref="template-ref-el" id="template-ref-el" />
+          <ChildComponent ref="child-component-ref" />
+          <div id="target-node-1" />
+          <div id="target-node-2" />
+        </div>
+        `,
+        components: {
+          ChildComponent,
+        },
+        setup() {
+          const templateRefEl = useTemplateRef<HTMLElement>('template-ref-el')
+          const childComponentRef = useTemplateRef<HTMLElement>('child-component-ref')
+          const computedTarget = computed(() => document.getElementById('target-node-2'))
+
+          onMounted(() => {
+            useIntersectionObserver(
+              [templateRefEl, childComponentRef, document.getElementById('target-node-1'), computedTarget],
+              callbackMock,
+            )
+          })
+        },
+      })
+
+      it('initialize IntersectionObserver and observe targets correctly', async () => {
+        page.render(component)
+
+        await vi.waitFor(() => {
+          expect(IntersectionObserverMock).toHaveBeenCalledTimes(1)
+          expect(IntersectionObserverMock).toHaveBeenCalledWith(
+            callbackMock,
+            {
+              root: undefined,
+              rootMargin: '0px',
+              threshold: 0,
+            },
+          )
+
+          expect(observeMock).toHaveBeenCalledTimes(4)
+          expect(observeMock.mock.calls[0][0]).toHaveProperty('id', 'template-ref-el')
+          expect(observeMock.mock.calls[1][0]).toHaveProperty('id', 'child-component')
+          expect(observeMock.mock.calls[2][0]).toHaveProperty('id', 'target-node-1')
+          expect(observeMock.mock.calls[3][0]).toHaveProperty('id', 'target-node-2')
+        })
+      })
+
+      it('disconnect IntersectionObserver on unmount', async () => {
+        page.render(component)
+
+        await vi.waitFor(() => {
+          expect(IntersectionObserverMock).toHaveBeenCalledTimes(1)
+        })
+
+        cleanup()
+
+        await vi.waitFor(() => {
+          expect(disconnectMock).toHaveBeenCalledTimes(1)
+        })
       })
     })
   })
