@@ -27,6 +27,12 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   rootMargin?: string
 
   /**
+   * A string which specifies a set of offsets to add to the clipping rectangle of 
+   * nested scrollable containers when calculating intersections.
+   */
+  scrollMargin?: string
+
+  /**
    * Either a single number or an array of numbers between 0.0 and 1.
    * @default 0
    */
@@ -54,6 +60,7 @@ export function useIntersectionObserver(
   const {
     root,
     rootMargin = '0px',
+    scrollMargin,
     threshold = 0,
     window = defaultWindow,
     immediate = true,
@@ -84,6 +91,7 @@ export function useIntersectionObserver(
             {
               root: unrefElement(root),
               rootMargin,
+              scrollMargin,
               threshold,
             },
           )
