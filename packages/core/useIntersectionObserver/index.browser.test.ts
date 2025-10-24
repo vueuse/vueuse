@@ -5,14 +5,14 @@ import { computed, defineComponent, onMounted, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
-  describe('send IntersectionObserver messages', () => {
-    const createNodeWithId = (id: string) => {
-      const node = document.createElement('div')
-      node.id = id
-      document.body.appendChild(node)
-      return node
-    }
+  const createNodeWithId = (id: string) => {
+    const node = document.createElement('div')
+    node.id = id
+    document.body.appendChild(node)
+    return node
+  }
 
+  describe('send IntersectionObserver messages', () => {
     const callbackMock = () => {}
     const observeMock = vi.fn()
     const disconnectMock = vi.fn()
@@ -173,6 +173,61 @@ describe('useIntersectionObserver', () => {
           expect(disconnectMock).toHaveBeenCalledTimes(1)
         })
       })
+    })
+  })
+
+  it('can pause and resume observing', async () => {
+    const targetNode = createNodeWithId('target-node')
+    targetNode.textContent = 'Target Node'
+    // use margin-top to push it out of the viewport
+    targetNode.style.marginTop = 'calc(100vh + 10px)'
+
+    const callbackMock = vi.fn()
+    const { isActive, pause, resume } = useIntersectionObserver(
+      targetNode,
+      callbackMock,
+    )
+
+    // clear the immediate call
+    callbackMock.mockClear()
+
+    // scroll 10px down, should touch the targetNode
+    window.scrollTo(0, 10)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(1)
+    })
+
+    // scroll back to top
+    window.scrollTo(0, 0)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(2)
+    })
+
+    callbackMock.mockClear()
+
+    pause()
+    expect(isActive.value).toBe(false)
+
+    // scroll 10px down, should NOT trigger callback since it's paused
+    window.scrollTo(0, 10)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(0)
+    })
+
+    callbackMock.mockClear()
+
+    resume()
+    expect(isActive.value).toBe(true)
+
+    // immediate call after resume
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(1)
+    })
+
+    // scroll back to top, should trigger callback since it's resumed
+    window.scrollTo(0, 0)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(2)
     })
   })
 })
