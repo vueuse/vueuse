@@ -85,7 +85,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
   function checkAndLoad() {
     state.measure()
 
-    if (!observedElement.value || !isElementVisible.value || !canLoad.value)
+    if (!observedElement.value || !isElementVisible.value || !canLoad.value || promise.value)
       return
 
     const { scrollHeight, clientHeight, scrollWidth, clientWidth } = observedElement.value as HTMLElement
@@ -94,23 +94,21 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
       : scrollWidth <= clientWidth
 
     if (state.arrivedState[direction] || isNarrower) {
-      if (!promise.value) {
-        promise.value = Promise.all([
-          onLoadMore(state),
-          new Promise(resolve => setTimeout(resolve, interval)),
-        ])
-          .finally(() => {
-            promise.value = null
-            nextTick(() => checkAndLoad())
-          })
-      }
+      promise.value = Promise.all([
+        onLoadMore(state),
+        new Promise(resolve => setTimeout(resolve, interval)),
+      ])
+        .finally(() => {
+          promise.value = null
+          nextTick(() => checkAndLoad())
+        })
     }
   }
 
   const stop = watch(
     () => [state.arrivedState[direction], isElementVisible.value, canLoad.value],
     checkAndLoad,
-    { immediate: true },
+    { immediate: true, flush: 'post' },
   )
 
   tryOnUnmounted(stop)
