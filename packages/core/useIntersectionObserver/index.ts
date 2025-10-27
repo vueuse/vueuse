@@ -27,7 +27,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   rootMargin?: string
 
   /**
-   * A string which specifies a set of offsets to add to the clipping rectangle of 
+   * A string which specifies a set of offsets to add to the clipping rectangle of
    * nested scrollable containers when calculating intersections.
    */
   scrollMargin?: string
