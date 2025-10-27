@@ -56,6 +56,74 @@ describe('useInfiniteScroll', () => {
     expect(mockHandler).toHaveBeenCalledTimes(1)
   })
 
+  it('should not call loadMore when canLoadMore returns false', async () => {
+    const mockHandler = vi.fn()
+    const mockElement = givenMockElement()
+    givenElementVisibilityRefMock(true)
+
+    useInfiniteScroll(mockElement, mockHandler, {
+      canLoadMore: () => false,
+    })
+
+    expect(mockHandler).not.toHaveBeenCalled()
+  })
+
+  it('should call loadMore when canLoadMore returns true', async () => {
+    const mockHandler = vi.fn()
+    const mockElement = givenMockElement()
+    givenElementVisibilityRefMock(true)
+
+    useInfiniteScroll(mockElement, mockHandler, {
+      canLoadMore: () => true,
+    })
+
+    expect(mockHandler).toHaveBeenCalledTimes(1)
+  })
+
+  it('should stop calling loadMore when canLoadMore changes from true to false', async () => {
+    const mockHandler = vi.fn()
+    const mockElement = givenMockElement()
+    givenElementVisibilityRefMock(true)
+
+    const canLoad = deepRef(true)
+    const canLoadMoreSpy = vi.fn(() => canLoad.value)
+    useInfiniteScroll(mockElement, mockHandler, {
+      canLoadMore: canLoadMoreSpy,
+    })
+
+    await flushPromises()
+    expect(mockHandler).toHaveBeenCalledTimes(1)
+
+    canLoad.value = false
+
+    mockElement.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    expect(mockHandler).toHaveBeenCalledTimes(1)
+  })
+
+  it('should call loadMore when canLoadMore changes from false to true', async () => {
+    const mockHandler = vi.fn()
+    const mockElement = givenMockElement()
+    givenElementVisibilityRefMock(true)
+
+    const canLoad = deepRef(false)
+    const canLoadMoreSpy = vi.fn(() => canLoad.value)
+    useInfiniteScroll(mockElement, mockHandler, {
+      canLoadMore: canLoadMoreSpy,
+    })
+
+    await flushPromises()
+    expect(mockHandler).not.toHaveBeenCalled()
+
+    canLoad.value = true
+
+    mockElement.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+
+    expect(mockHandler).toHaveBeenCalledTimes(1)
+  })
+
   function givenMockElement({
     scrollHeight = 0,
   } = {}): HTMLDivElement {
