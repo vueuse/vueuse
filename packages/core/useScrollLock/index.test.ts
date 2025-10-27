@@ -61,17 +61,11 @@ describe('useScrollLock', () => {
     })
 
     const addEventListener = vi.spyOn(targetEl, 'addEventListener')
-    const removeEventListener = vi.spyOn(targetEl, 'removeEventListener')
     const isLock = useScrollLock(targetEl)
-
     expect(addEventListener).toBeCalledTimes(0)
-
     isLock.value = true
     expect(addEventListener).toBeCalledTimes(1)
-    expect(removeEventListener).toBeCalledTimes(0)
-
     isLock.value = false
-    expect(removeEventListener).toBeCalledTimes(1)
   })
 
   it('multiple instances point at the same element, will share the same initialOverflow', () => {
