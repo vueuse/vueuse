@@ -18,10 +18,10 @@ const inputVal = shallowRef('')
 
 ```vue
 <template>
-  <input v-model="inputVal" type="text" placeholder="Enter birth date" @input="(e) => inputVal = useBirthFormatter('/', e)">
+  <input v-model="inputVal" type="text" placeholder="Enter birth date" @input="(e: Event) => inputVal = useBirthFormatter('/', e)">
 </template>
 ```
 
-## Use-cases
+## Use cases
 
 Call it with a separator and the JavaScript input event when the user types a birth date; it returns the formatted birth date string.
