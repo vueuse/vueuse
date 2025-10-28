@@ -9,7 +9,6 @@ A sample birth date formatter. Use it to format user-entered birth dates in year
 ## Usage
 
 ```ts
-import type { Ref } from 'vue'
 import { useBirthFormatter } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
