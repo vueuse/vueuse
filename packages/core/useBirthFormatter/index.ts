@@ -4,7 +4,7 @@
  * @param e - The input event containing the raw birth date value.
  * @returns The formatted birth date string.
  */
-export function birthFormatter(division: string, e: Event) {
+export function useBirthFormatter(division: string, e: Event) {
   const raw = (e.target as HTMLInputElement).value.replace(/\D/g, '')
   let formatted = ''
 
