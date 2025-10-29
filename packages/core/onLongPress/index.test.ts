@@ -24,9 +24,9 @@ describe('onLongPress', () => {
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
-  async function triggerCallbackWithDelay(isRef: boolean) {
+  async function triggerCallbackWithDelay(isRef: boolean, delayFunc?: (ev: PointerEvent) => number) {
     const onLongPressCallback = vi.fn()
-    onLongPress(isRef ? element : element.value, onLongPressCallback, { delay: 1000 })
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { delay: delayFunc ?? 1000 })
     // first pointer down
     element.value.dispatchEvent(pointerdownEvent)
 
@@ -45,7 +45,7 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerdownEvent)
 
     // wait for 1000ms after pointer down
-    await vi.advanceTimersByTimeAsync(1000)
+    await vi.advanceTimersByTimeAsync(delayFunc ? delayFunc(pointerdownEvent) : 1000)
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
@@ -193,12 +193,20 @@ describe('onLongPress', () => {
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', () => triggerCallbackWithDelay(isRef))
+
       it('should not trigger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
+
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
+
       it('should stop propagation', () => stopPropagation(isRef))
+
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
+
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
+
       it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
+
+      it('should trigger longpress after options.delay ms when options.delay is a function', () => triggerCallbackWithDelay(isRef, () => 2000))
     })
   }
 

@@ -1,5 +1,5 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { computed, ref as deepRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -12,13 +12,15 @@ function getRangesFromSelection(selection: Selection) {
  * Reactively track user text selection based on [`Window.getSelection`](https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection).
  *
  * @see https://vueuse.org/useTextSelection
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useTextSelection(options: ConfigurableWindow = {}) {
   const {
     window = defaultWindow,
   } = options
 
-  const selection = deepRef<Selection | null>(null)
+  const selection = shallowRef<Selection | null>(window?.getSelection() ?? null)
   const text = computed(() => selection.value?.toString() ?? '')
   const ranges = computed<Range[]>(() => selection.value ? getRangesFromSelection(selection.value) : [])
   const rects = computed(() => ranges.value.map(range => range.getBoundingClientRect()))

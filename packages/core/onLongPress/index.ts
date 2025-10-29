@@ -1,3 +1,4 @@
+import type { TimerHandle } from '@vueuse/shared'
 import type { Position } from '../types'
 import type { MaybeElementRef } from '../unrefElement'
 import { computed } from 'vue'
@@ -13,7 +14,7 @@ export interface OnLongPressOptions {
    *
    * @default 500
    */
-  delay?: number
+  delay?: number | ((ev: PointerEvent) => number)
 
   modifiers?: OnLongPressModifiers
 
@@ -48,7 +49,7 @@ export function onLongPress(
 ) {
   const elementRef = computed(() => unrefElement(target))
 
-  let timeout: ReturnType<typeof setTimeout> | undefined
+  let timeout: TimerHandle
   let posStart: Position | undefined
   let startTimestamp: number | undefined
   let hasLongPressed = false
@@ -61,6 +62,14 @@ export function onLongPress(
     posStart = undefined
     startTimestamp = undefined
     hasLongPressed = false
+  }
+
+  function getDelay(ev: PointerEvent): number {
+    const delay = options?.delay
+    if (typeof delay === 'function') {
+      return delay(ev)
+    }
+    return delay ?? DEFAULT_DELAY
   }
 
   function onRelease(ev: PointerEvent) {
@@ -107,7 +116,7 @@ export function onLongPress(
         hasLongPressed = true
         handler(ev)
       },
-      options?.delay ?? DEFAULT_DELAY,
+      getDelay(ev),
     )
   }
 
@@ -146,3 +155,5 @@ export function onLongPress(
 
   return stop
 }
+
+export type UseOnLongPressReturn = ReturnType<typeof onLongPress>

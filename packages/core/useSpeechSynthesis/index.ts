@@ -35,7 +35,11 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
    *
    * @default 1
    */
-  volume?: SpeechSynthesisUtterance['volume']
+  volume?: MaybeRefOrGetter<SpeechSynthesisUtterance['volume']>
+  /**
+   * Callback function that is called when the boundary event is triggered.
+   */
+  onBoundary?: (event: SpeechSynthesisEvent) => void
 }
 
 /**
@@ -53,6 +57,7 @@ export function useSpeechSynthesis(
     rate = 1,
     volume = 1,
     window = defaultWindow,
+    onBoundary,
   } = options
 
   const synth = window && (window as any).speechSynthesis as SpeechSynthesis
@@ -74,7 +79,7 @@ export function useSpeechSynthesis(
     utterance.voice = toValue(options.voice) || null
     utterance.pitch = toValue(pitch)
     utterance.rate = toValue(rate)
-    utterance.volume = volume
+    utterance.volume = toValue(volume)
 
     utterance.onstart = () => {
       isPlaying.value = true
@@ -98,6 +103,10 @@ export function useSpeechSynthesis(
 
     utterance.onerror = (event) => {
       error.value = event
+    }
+
+    utterance.onboundary = (event) => {
+      onBoundary?.(event)
     }
   }
 

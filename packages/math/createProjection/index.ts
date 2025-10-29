@@ -6,6 +6,7 @@ function defaultNumericProjector(input: number, from: readonly [number, number],
   return (input - from[0]) / (from[1] - from[0]) * (to[1] - to[0]) + to[0]
 }
 
+/* @__NO_SIDE_EFFECTS__ */
 export function createProjection(
   fromDomain: MaybeRefOrGetter<readonly [number, number]>,
   toDomain: MaybeRefOrGetter<readonly [number, number]>,

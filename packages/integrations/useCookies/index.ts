@@ -27,6 +27,8 @@ export function createCookies(req?: IncomingMessage) {
  * @param options.doNotParse - don't try parse value as JSON
  * @param options.autoUpdateDependencies - automatically update watching dependencies
  * @param cookies - universal-cookie instance
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useCookies(
   dependencies?: string[] | null,

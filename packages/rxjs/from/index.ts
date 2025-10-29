@@ -3,6 +3,7 @@ import type { MaybeRef, Ref, WatchOptions } from 'vue'
 import { fromEvent as fromEventRx, from as fromRxjs, Observable } from 'rxjs'
 import { isRef, watch } from 'vue'
 
+/* @__NO_SIDE_EFFECTS__ */
 export function from<T>(value: ObservableInput<T> | Ref<T>, watchOptions?: WatchOptions): Observable<T> {
   if (isRef<T>(value))
     return new Observable(subscriber => watch(value, val => subscriber.next(val), watchOptions))

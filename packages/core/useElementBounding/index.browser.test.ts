@@ -169,5 +169,6 @@ describe('useElementBounding', () => {
   })
 
   it.todo('should update when scolling')
+
   it.todo('should not update when scolling with options.windowScroll set to false')
 })

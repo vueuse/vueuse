@@ -9,7 +9,7 @@ Explicitly define the dependencies of computed.
 
 ## Usage
 
-```ts
+```ts twoslash include main
 import { computedWithControl } from '@vueuse/core'
 
 const source = ref('foo')
@@ -24,6 +24,8 @@ const computedRef = computedWithControl(
 With this, the changes of `counter` won't trigger `computedRef` to update but the `source` ref does.
 
 ```ts
+// @include: main
+// ---cut---
 console.log(computedRef.value) // 0
 
 counter.value += 1
@@ -40,6 +42,8 @@ console.log(computedRef.value) // 1
 You can also manually trigger the update of the computed by:
 
 ```ts
+// @include: main
+// ---cut---
 const computedRef = computedWithControl(
   () => source.value,
   () => counter.value,
@@ -48,6 +52,17 @@ const computedRef = computedWithControl(
 computedRef.trigger()
 ```
 
-::: warning
-Manual triggering only works for Vue 3
-:::
+### Deep Watch
+
+Unlike `computed`, `computedWithControl` is shallow by default.
+You can specify the same options as `watch` to control the behavior:
+
+```ts
+const source = ref({ name: 'foo' })
+
+const computedRef = computedWithControl(
+  source,
+  () => counter.value,
+  { deep: true },
+)
+```

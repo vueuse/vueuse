@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import type { ComponentPublicInstance, MaybeRefOrGetter, VNode } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import type { MaybeElementRef } from '../unrefElement'
+import type { MaybeComputedElementRef, MaybeElementRef } from '../unrefElement'
 import { isIOS, noop } from '@vueuse/shared'
 import { toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -10,7 +10,8 @@ import { useEventListener } from '../useEventListener'
 
 export interface OnClickOutsideOptions<Controls extends boolean = false> extends ConfigurableWindow {
   /**
-   * List of elements that should not trigger the event.
+   * List of elements that should not trigger the event,
+   * provided as Refs or CSS Selectors.
    */
   ignore?: MaybeRefOrGetter<(MaybeElementRef | string)[]>
   /**
@@ -31,17 +32,18 @@ export interface OnClickOutsideOptions<Controls extends boolean = false> extends
 }
 
 export type OnClickOutsideHandler<
-  T extends {
-    detectIframe: OnClickOutsideOptions['detectIframe']
-    controls: boolean
-  } = { detectIframe: false, controls: false },
+  T extends OnClickOutsideOptions<boolean> = OnClickOutsideOptions,
 > = (
-  event: T['controls'] extends true ? Event | (T['detectIframe'] extends true
-    ? PointerEvent | FocusEvent
-    : PointerEvent) : T['detectIframe'] extends true
-    ? PointerEvent | FocusEvent
-    : PointerEvent,
+  event: (T['detectIframe'] extends true ? FocusEvent : never)
+    | (T['controls'] extends true ? Event : never)
+    | PointerEvent,
 ) => void
+
+interface OnClickOutsideControlsReturn {
+  stop: Fn
+  cancel: Fn
+  trigger: (event: Event) => void
+}
 
 let _iOSWorkaround = false
 
@@ -53,21 +55,25 @@ let _iOSWorkaround = false
  * @param handler
  * @param options
  */
-export function onClickOutside(
-  target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: true }>,
-  options: OnClickOutsideOptions<true>,
-): { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
-
-export function onClickOutside(
-  target: MaybeElementRef,
-  handler: OnClickOutsideHandler<{ detectIframe: OnClickOutsideOptions['detectIframe'], controls: false }>,
-  options?: OnClickOutsideOptions<false>,
+export function onClickOutside<
+  T extends OnClickOutsideOptions,
+>(
+  target: MaybeComputedElementRef,
+  handler: OnClickOutsideHandler<T>,
+  options?: T
 ): Fn
+
+export function onClickOutside<
+  T extends OnClickOutsideOptions<true>,
+>(
+  target: MaybeComputedElementRef,
+  handler: OnClickOutsideHandler<T>,
+  options: T
+): OnClickOutsideControlsReturn
 
 // Implementation
 export function onClickOutside(
-  target: MaybeElementRef,
+  target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler,
   options: OnClickOutsideOptions<boolean> = {},
 ) {
@@ -84,8 +90,8 @@ export function onClickOutside(
   if (isIOS && !_iOSWorkaround) {
     _iOSWorkaround = true
     const listenerOptions = { passive: true }
-    // Not using useEventListener because this event handlers must not be disposed.
-    // See previusly linked references and https://github.com/vueuse/vueuse/issues/4724
+    // Not using useEventListener because these event handlers must not be disposed.
+    // See previously linked references and https://github.com/vueuse/vueuse/issues/4724
     Array.from(window.document.body.children)
       .forEach(el => el.addEventListener('click', noop, listenerOptions))
     window.document.documentElement.addEventListener('click', noop, listenerOptions)
@@ -110,12 +116,12 @@ export function onClickOutside(
    * Determines if the given target has multiple root elements.
    * Referenced from: https://github.com/vuejs/test-utils/blob/ccb460be55f9f6be05ab708500a41ec8adf6f4bc/src/vue-wrapper.ts#L21
    */
-  function hasMultipleRoots(target: MaybeElementRef): boolean {
+  function hasMultipleRoots(target: MaybeComputedElementRef): boolean {
     const vm = toValue(target) as ComponentPublicInstance
     return vm && vm.$.subTree.shapeFlag === 16
   }
 
-  function checkMultipleRoots(target: MaybeElementRef, event: Event): boolean {
+  function checkMultipleRoots(target: MaybeComputedElementRef, event: Event): boolean {
     const vm = toValue(target) as ComponentPublicInstance
     const children = vm.$.subTree && vm.$.subTree.children
 

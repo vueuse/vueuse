@@ -11,6 +11,8 @@ export type UseArrayEveryReturn = ComputedRef<boolean>
  * @param fn - a function to test each element.
  *
  * @returns **true** if the `fn` function returns a **truthy** value for every element from the array. Otherwise, **false**.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArrayEvery<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,

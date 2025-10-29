@@ -1,8 +1,8 @@
 import { toRefs, toValue } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 
-export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined = undefined> =
-  [K] extends [undefined]
+export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined = undefined>
+  = [K] extends [undefined]
     ? Partial<T>
     : Omit<T, Extract<K, keyof T>>
 
@@ -30,5 +30,5 @@ export function reactiveOmit<T extends object, K extends keyof T>(
   return reactiveComputed<any>(() =>
     typeof predicate === 'function'
       ? Object.fromEntries(Object.entries(toRefs(obj)).filter(([k, v]) => !predicate(toValue(v) as T[K], k as K)))
-      : Object.fromEntries(Object.entries(toRefs(obj)).filter(e => !flatKeys.includes(e[0] as any))))
+      : Object.fromEntries(Object.entries(toRefs(obj)).filter(e => !flatKeys.includes(e[0] as K))))
 }

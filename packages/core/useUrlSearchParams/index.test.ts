@@ -10,11 +10,18 @@ describe('useUrlSearchParams', () => {
     writable: true,
   })
 
+  let mockHistory: string[] = ['']
+  let mockCurrentHistoryIndex = 0
   const mockReplaceState = vi.fn()
-  const mockPushState = vi.fn()
+  const mockPushState = vi.fn((_state, _title, url: string) => {
+    mockHistory.push(url)
+    mockCurrentHistoryIndex++
+  })
 
   beforeEach(() => {
     vi.clearAllMocks()
+    mockHistory = ['']
+    mockCurrentHistoryIndex = 0
     window.location.search = ''
     window.location.hash = ''
     window.history.replaceState = mockReplaceState
@@ -31,6 +38,37 @@ describe('useUrlSearchParams', () => {
         hash,
       },
     }))
+  }
+
+  const mockBack = async (search: string, hash: string) => {
+    window.location.search = search
+    window.location.hash = hash
+    window.dispatchEvent(new PopStateEvent('popstate', {
+      state: {
+        ...window.location,
+        search,
+        hash,
+      },
+    }))
+
+    await nextTick()
+    mockHistory.pop()
+    mockCurrentHistoryIndex -= 2
+  }
+
+  const mockForward = async (search: string, hash: string) => {
+    window.location.search = search
+    window.location.hash = hash
+    window.dispatchEvent(new PopStateEvent('popstate', {
+      state: {
+        ...window.location,
+        search,
+        hash,
+      },
+    }))
+
+    await nextTick()
+    mockHistory.pop()
   }
 
   ([
@@ -226,6 +264,113 @@ describe('useUrlSearchParams', () => {
         params.bar = false
         await nextTick()
         expect(params).toEqual({ foo: null, bar: false })
+      })
+
+      it('strips equal sign for empty params use customer stringify function', async () => {
+        const params = useUrlSearchParams(mode, { stringify: params => params.toString().replace(/=(&|$)/g, '$1') })
+        params.foo = ''
+        params.bar = ''
+        await nextTick()
+        switch (mode) {
+          case 'history':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/?foo&bar')
+            break
+          case 'hash':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/#?foo&bar')
+            break
+          case 'hash-params':
+            expect(window.history.replaceState).toBeCalledWith(null, '', '/#foo&bar')
+            break
+        }
+      })
+
+      it('should push history state when value is updated', async () => {
+        const params = useUrlSearchParams(mode, { writeMode: 'push' })
+        expect(params.foo).toBeUndefined()
+        expect(params.bar).toBeUndefined()
+
+        params.foo = 'first'
+        await nextTick()
+        params.bar = 'second'
+        await nextTick()
+        switch (mode) {
+          case 'history':
+            expect(mockHistory).toEqual(['', '/?foo=first', '/?foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(2)
+            break
+          case 'hash':
+            expect(mockHistory).toEqual(['', '/#?foo=first', '/#?foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(2)
+            break
+          case 'hash-params':
+            expect(mockHistory).toEqual(['', '/#foo=first', '/#foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(2)
+            break
+        }
+
+        switch (mode) {
+          case 'hash':
+            mockBack('', '#/test/?foo=first')
+            break
+          case 'hash-params':
+            mockBack('', '#foo=first')
+            break
+          case 'history':
+            mockBack('?foo=first', '')
+        }
+        await nextTick()
+        switch (mode) {
+          case 'history':
+            expect(mockHistory).toEqual(['', '/?foo=first', '/?foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(1)
+            expect(params.foo).toBe('first')
+            expect(params.bar).toBeUndefined()
+            break
+          case 'hash':
+            expect(mockHistory).toEqual(['', '/#?foo=first', '/#?foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(1)
+            expect(params.foo).toBe('first')
+            expect(params.bar).toBeUndefined()
+            break
+          case 'hash-params':
+            expect(mockHistory).toEqual(['', '/#foo=first', '/#foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(1)
+            expect(params.foo).toBe('first')
+            expect(params.bar).toBeUndefined()
+            break
+        }
+
+        switch (mode) {
+          case 'hash':
+            mockForward('', '#/test/?foo=first&bar=second')
+            break
+          case 'hash-params':
+            mockForward('', '#foo=first&bar=second')
+            break
+          case 'history':
+            mockForward('?foo=first&bar=second', '')
+        }
+        await nextTick()
+        switch (mode) {
+          case 'history':
+            expect(mockHistory).toEqual(['', '/?foo=first', '/?foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(2)
+            expect(params.foo).toBe('first')
+            expect(params.bar).toBe('second')
+            break
+          case 'hash':
+            expect(mockHistory).toEqual(['', '/#?foo=first', '/#?foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(2)
+            expect(params.foo).toBe('first')
+            expect(params.bar).toBe('second')
+            break
+          case 'hash-params':
+            expect(mockHistory).toEqual(['', '/#foo=first', '/#foo=first&bar=second'])
+            expect(mockCurrentHistoryIndex).toBe(2)
+            expect(params.foo).toBe('first')
+            expect(params.bar).toBe('second')
+            break
+        }
       })
     })
   })
