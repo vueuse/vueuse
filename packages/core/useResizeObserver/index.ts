@@ -7,6 +7,33 @@ import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
+/**
+ * @deprecated This interface is now available in the DOM lib.
+ * Use the global {@link globalThis.ResizeObserverSize} instead.
+ */
+export interface ResizeObserverSize {
+  readonly inlineSize: number
+  readonly blockSize: number
+}
+
+/**
+ * @deprecated This interface is now available in the DOM lib.
+ * Use the global {@link globalThis.ResizeObserverEntry} instead.
+ */
+export interface ResizeObserverEntry {
+  readonly target: Element
+  readonly contentRect: DOMRectReadOnly
+  readonly borderBoxSize: ReadonlyArray<ResizeObserverSize>
+  readonly contentBoxSize: ReadonlyArray<ResizeObserverSize>
+  readonly devicePixelContentBoxSize: ReadonlyArray<ResizeObserverSize>
+}
+
+/**
+ * @deprecated This interface is now available in the DOM lib.
+ * Use the global {@link globalThis.ResizeObserverCallback} instead.
+ */
+export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void
+
 export interface UseResizeObserverOptions extends ResizeObserverOptions, ConfigurableWindow {
 }
 
@@ -20,7 +47,7 @@ export interface UseResizeObserverOptions extends ResizeObserverOptions, Configu
  */
 export function useResizeObserver(
   target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
-  callback: ResizeObserverCallback,
+  callback: globalThis.ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
 ) {
   const { window = defaultWindow, ...observerOptions } = options
