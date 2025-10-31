@@ -1,7 +1,0 @@
-tasks:
-  play:
-    name: Start playground
-    command: nr play
-    triggeredBy:
-      - postDevcontainerStart
-      - manual
