@@ -1,4 +1,4 @@
-import type { UseIntervalFnOptions } from '@vueuse/shared'
+import type { ConfigurableScheduler } from '@vueuse/shared'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
@@ -25,8 +25,7 @@ export interface MemoryInfo {
   [Symbol.toStringTag]: 'MemoryInfo'
 }
 
-export interface UseMemoryOptions extends UseIntervalFnOptions {
-  interval?: number
+export interface UseMemoryOptions extends ConfigurableScheduler {
 }
 
 type PerformanceMemory = Performance & {
@@ -46,10 +45,23 @@ export function useMemory(options: UseMemoryOptions = {}) {
   const isSupported = useSupported(() => typeof performance !== 'undefined' && 'memory' in performance)
 
   if (isSupported.value) {
-    const { interval = 1000 } = options
-    useIntervalFn(() => {
-      memory.value = (performance as PerformanceMemory).memory
-    }, interval, { immediate: options.immediate, immediateCallback: options.immediateCallback })
+    const {
+      scheduler = useIntervalFn,
+      interval = 1000,
+      immediate,
+      immediateCallback,
+    } = options
+
+    scheduler(
+      () => {
+        memory.value = (performance as PerformanceMemory).memory
+      },
+      {
+        interval,
+        immediate,
+        immediateCallback,
+      },
+    )
   }
 
   return { isSupported, memory }
