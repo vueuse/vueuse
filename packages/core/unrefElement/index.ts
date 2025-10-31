@@ -1,7 +1,10 @@
 import type { ComponentPublicInstance, MaybeRef, MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
 
-export type VueInstance = ComponentPublicInstance
+type EmitFuncs<T> = T extends (event: infer J, ...args: any[]) => void & infer K ? (event: J extends string ? any : J, ...args: any[]) => void & EmitFuncs<K> : void
+export type VueInstance = {
+  [key in keyof ComponentPublicInstance]: key extends '$emit' ? EmitFuncs<ComponentPublicInstance[key]> : ComponentPublicInstance[key]
+}
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>
 export type MaybeComputedElementRef<T extends MaybeElement = MaybeElement> = MaybeRefOrGetter<T>
 export type MaybeElement = HTMLElement | SVGElement | VueInstance | undefined | null
