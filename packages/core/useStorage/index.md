@@ -109,3 +109,23 @@ import { StorageSerializers, useStorage } from '@vueuse/core'
 const objectLike = useStorage('key', null, undefined, { serializer: StorageSerializers.object })
 objectLike.value = { foo: 'bar' }
 ```
+
+## Skip Serialization
+
+For storage backends that support native object storage (e.g., `chrome.storage.local`, IndexedDB), you can skip serialization entirely:
+
+```ts
+import { useStorage } from '@vueuse/core'
+
+// For chrome.storage.local
+const data = useStorage('key', { count: 0 }, chromeStorage, {
+  noSerialization: true // Skip serialization for native object storage
+})
+
+// For IndexedDB
+const data = useStorage('key', { count: 0 }, indexedDBStorage, {
+  noSerialization: true
+})
+```
+
+When `noSerialization` is set to `true`, the data will be stored directly without any serialization/deserialization process, which is more efficient for storage backends that support native object storage.
