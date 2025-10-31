@@ -120,3 +120,14 @@ export function toArray<T>(value: T | T[]): T[]
 export function toArray<T>(value: T | T[]): T[] {
   return Array.isArray(value) ? value : [value]
 }
+
+/**
+ * Create a retry checker function from retry configuration
+ */
+export function createRetryChecker(
+  retries: number | ((retried: number) => boolean),
+): (retried: number) => boolean {
+  return typeof retries === 'function'
+    ? retries
+    : (retried: number) => typeof retries === 'number' && (retries < 0 || retried < retries)
+}
