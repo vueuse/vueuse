@@ -121,6 +121,13 @@ export interface ConfigurableFlushSync {
   flush?: WatchOptionFlush
 }
 
+export interface ConfigurableScheduler {
+  /**
+   * Custom scheduler to use for interval execution.
+   */
+  scheduler?: (cb: Fn) => Pausable
+}
+
 // Internal Types
 export type MultiWatchSources = (WatchSource<unknown> | object)[]
 
