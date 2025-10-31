@@ -9,19 +9,12 @@ Reactive element's overflow state.
 ## Usage
 
 ```vue
-<script>
+<script setup>
 import { useElementOverflow } from '@vueuse/core'
 import { ref } from 'vue'
 
-export default {
-  setup() {
-    const el = ref()
-    const { isXOverflowed } = useElementOverflow(el)
-    return {
-      isXOverflowed
-    }
-  },
-}
+const el = ref()
+const { isXOverflowed } = useElementOverflow(el)
 </script>
 
 <template>
