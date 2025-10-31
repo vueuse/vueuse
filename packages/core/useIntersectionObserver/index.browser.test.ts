@@ -61,6 +61,15 @@ describe('useIntersectionObserver', () => {
     })
   })
 
+  it('isSupport is always true when in the browser mode', () => {
+    const { isSupported } = useIntersectionObserver(
+      document.createElement('div'),
+      () => {},
+    )
+
+    expect(isSupported.value).toBe(true)
+  })
+
   it('can pause and resume observing', async () => {
     document.body.innerHTML = `
       <div class="spacer" style="height: calc(100vh + 10px);"></div>
@@ -115,6 +124,50 @@ describe('useIntersectionObserver', () => {
     window.scrollTo(0, 0)
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  it('stop observing when calling stop, not be able to resume', async () => {
+    document.body.innerHTML = `
+      <div class="spacer" style="height: calc(100vh + 10px);"></div>
+      <div id="target-node" style="height: 100px;">Target Node</div>
+    `
+    const targetNode = document.getElementById('target-node')
+    const callbackMock = vi.fn()
+
+    const { stop, resume, isActive } = useIntersectionObserver(
+      targetNode,
+      callbackMock,
+    )
+
+    // clear the immediate call
+    callbackMock.mockClear()
+
+    // scroll to intersect
+    window.scrollTo(0, 100)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(1)
+      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
+    })
+
+    stop()
+    expect(isActive.value).toBe(false)
+
+    callbackMock.mockClear()
+
+    // scroll back, should not trigger callback
+    window.scrollTo(0, 0)
+    await vi.waitFor(() => {
+      expect(callbackMock).not.toHaveBeenCalled()
+    })
+
+    // resume won't work after stop
+    resume()
+
+    // scroll again, should not trigger callback
+    window.scrollTo(0, 100)
+    await vi.waitFor(() => {
+      expect(callbackMock).not.toHaveBeenCalled()
     })
   })
 })

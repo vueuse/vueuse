@@ -4,6 +4,17 @@ import { computed, defineComponent, nextTick, onMounted, shallowRef, useTemplate
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
+  it('isSupported is always false when IntersectionObserver is not supported', () => {
+    expect(window.IntersectionObserver).toBeUndefined()
+
+    const { isSupported } = useIntersectionObserver(
+      document.createElement('div'),
+      () => {},
+    )
+
+    expect(isSupported.value).toBe(false)
+  })
+
   describe('send correct IntersectionObserver messages', () => {
     const IntersectionObserverMock = vi.fn(() => ({
       disconnect: vi.fn(),
