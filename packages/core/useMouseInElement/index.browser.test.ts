@@ -14,6 +14,19 @@ function createElement(x: number, y: number, width: number, height: number) {
   return div
 }
 
+function createInlineElement(x: number, y: number) {
+  const parent = createElement(0, 0, 50, 50)
+  const span = document.createElement('span')
+  span.style.position = 'relative'
+  span.style.left = `${x}px`
+  span.style.top = `${y}px`
+  span.style.lineHeight = '2'
+  span.textContent = 'Hello World'
+
+  parent.appendChild(span)
+  return span
+}
+
 function mockMouseMoveEvent(x: number, y: number) {
   return new MouseEvent('mousemove', { clientX: x, clientY: y })
 }
@@ -57,5 +70,31 @@ describe('useMouseInElement', () => {
     expect(result.elementX.value).toBe(moveX - x)
     expect(result.elementY.value).toBe(moveY - y)
     expect(result.isOutside.value).toBe(false)
+  })
+
+  it('basic usage - inline element', async () => {
+    const target = createInlineElement(5, 0)
+    const result = useMouseInElement(target)
+    expect(result.isOutside.value).toBe(true)
+
+    // move to first line - `Hello`
+    dispatchEvent(mockMouseMoveEvent(10, 10))
+    await nextTick()
+    expect(result.isOutside.value).toBe(false)
+
+    // move to gap
+    dispatchEvent(mockMouseMoveEvent(10, 30))
+    await nextTick()
+    expect(result.isOutside.value).toBe(true)
+
+    // move to second line - `World`
+    dispatchEvent(mockMouseMoveEvent(10, 40))
+    await nextTick()
+    expect(result.isOutside.value).toBe(false)
+
+    // move out
+    dispatchEvent(mockMouseMoveEvent(10, 80))
+    await nextTick()
+    expect(result.isOutside.value).toBe(true)
   })
 })
