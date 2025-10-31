@@ -4,7 +4,7 @@ import { isRef, readonly, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'
 
-export type FunctionArgs<Args extends any[] = any[], Return = any> = (...args: Args) => Return
+export type FunctionArgs<Args extends any[] = any[], Return = unknown> = (...args: Args) => Return
 
 export interface FunctionWrapperOptions<Args extends any[] = any[], This = any> {
   fn: FunctionArgs<Args, This>
