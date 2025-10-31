@@ -1,23 +1,20 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
-  const createNodeWithId = (id: string) => {
-    const node = document.createElement('div')
-    node.id = id
-    document.body.appendChild(node)
-    return node
-  }
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
 
   it('can change targets reactively', async () => {
-    const targetNode_1 = createNodeWithId('target-node-1')
-    targetNode_1.textContent = 'Target Node 1'
-    targetNode_1.style.height = '100px'
-    targetNode_1.style.marginTop = 'calc(100vh + 10px)'
-    const targetNode_2 = createNodeWithId('target-node-2')
-    targetNode_2.textContent = 'Target Node 2'
-    targetNode_2.style.height = '100px'
+    document.body.innerHTML = `
+      <div class="spacer" style="height: calc(100vh + 10px);"></div>
+      <div id="target-node-1" style="height: 100px;">Target Node 1</div>
+      <div id="target-node-2" style="height: 100px;">Target Node 2</div>
+    `
+    const targetNode_1 = document.getElementById('target-node-1')
+    const targetNode_2 = document.getElementById('target-node-2')
     const targetRef = shallowRef<HTMLElement | null>(null)
 
     const callbackMock = vi.fn()
@@ -62,16 +59,15 @@ describe('useIntersectionObserver', () => {
       expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(false)
       expect(callbackMock.mock.calls[1][0][0].target.id).toBe('target-node-2')
     })
-
-    targetNode_1.remove()
-    targetNode_2.remove()
   })
 
   it('can pause and resume observing', async () => {
-    const targetNode = createNodeWithId('target-node')
-    targetNode.textContent = 'Target Node'
-    // use margin-top to push it out of the viewport
-    targetNode.style.marginTop = 'calc(100vh + 10px)'
+    document.body.innerHTML = `
+      <div class="spacer" style="height: calc(100vh + 10px);"></div>
+      <div id="target-node" style="height: 100px;">Target Node</div>
+    `
+
+    const targetNode = document.getElementById('target-node')
 
     const callbackMock = vi.fn()
     const { isActive, pause, resume } = useIntersectionObserver(
@@ -120,7 +116,5 @@ describe('useIntersectionObserver', () => {
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(2)
     })
-
-    targetNode.remove()
   })
 })
