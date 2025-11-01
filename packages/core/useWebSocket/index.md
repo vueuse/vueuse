@@ -62,6 +62,32 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 })
 ```
 
+You can also pass a function to `delay` to calculate the delay based on the number of retries. This is useful for implementing exponential backoff:
+
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
+const { status, data, close } = useWebSocket('ws://websocketurl', {
+  autoReconnect: {
+    retries: 5,
+    // Exponential backoff: 1s, 2s, 4s, 8s, 16s
+    delay: retries => Math.min(1000 * 2 ** (retries - 1), 30000),
+  },
+})
+```
+
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
+const { status, data, close } = useWebSocket('ws://websocketurl', {
+  autoReconnect: {
+    retries: 5,
+    // Linear backoff: 1s, 2s, 3s, 4s, 5s
+    delay: retries => retries * 1000,
+  },
+})
+```
+
 Explicitly calling `close()` won't trigger the auto reconnection.
 
 ### heartbeat
