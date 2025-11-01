@@ -30,3 +30,28 @@ index 64464bd2e6b61412cad99fe561ea5e7e53278bec..8c8974465206ef2bc95499f3d7cf7d41
  		variants.forEach(function(theVariant){
  			var normalizedVariant = self._normalizeVariant(theVariant);
  			files[normalizedVariant] = fileList.hasOwnProperty(normalizedVariant) ? fileList[normalizedVariant] : false;
+diff --git a/lib/system-font.js b/lib/system-font.js
+index f5928eeb46e291a00e47ef0ea467de218776e098..7ab7a81f6646d101266646311fe388eace881364 100644
+--- a/lib/system-font.js
++++ b/lib/system-font.js
+@@ -73,9 +73,9 @@ SystemFont.prototype._move = function(oldPath, destFolder, callback) {
+ 
+ SystemFont.prototype._checkDestFolder = function(destFolder, callback){
+ 	var self = this;
+-	if (util.isNullOrUndefined(destFolder) || !destFolder) {
++	if (!destFolder) {
+ 		destFolder = process.cwd() || os.homedir();
+-	} else if (!util.isString(destFolder)) {
++	} else if (typeof destFolder !== 'string') {
+ 		throw new Error('Destination folder for font must be a string');
+ 	}
+ 	var absFolder = path.resolve(destFolder);
+@@ -159,7 +159,7 @@ SystemFont.prototype.install = function(remoteFile, fileName, callback) {
+ 						callback(err, 'Font System Folder with cscript.');
+ 					})
+ 				}
+-			})	
++			})
+ 			break;
+ 		default:
+ 			callback(new Error('Platform not supported.'));
