@@ -44,7 +44,6 @@ catalogs:
     '@shikijs/vitepress-twoslash': ^3.13.0
     '@vite-pwa/vitepress': ^1.0.1
     '@vue/repl': ^4.7.0
-    google-font-installer: ^1.2.0
     gray-matter: ^4.0.3
     markdown-table: ^3.0.4
     md5: ^2.3.0
