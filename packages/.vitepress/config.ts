@@ -274,7 +274,6 @@ export default withPwa(defineConfig({
   },
 
   vite: viteConfig,
-  // vite: { configFile: resolve(root, 'vite.config.ts') },
 }))
 
 function getFunctionsSideBar() {
