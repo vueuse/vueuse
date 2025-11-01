@@ -27,7 +27,7 @@ catalogs:
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
     prettier: ^3.6.2
-    rolldown-vite: ^7.1.19
+    rolldown-vite: ^7.1.20
     sharp: ^0.34.4
     simple-git: ^3.28.0
     simple-git-hooks: ^2.13.1
