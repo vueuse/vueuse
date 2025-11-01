@@ -1,0 +1,32 @@
+diff --git a/lib/google-font-list.js b/lib/google-font-list.js
+index f96bd8424bd7608d4ccbeb6897263f64a6c033c6..7571fc163bdcfb713e74e8ab099c38a216ad95cc 100644
+--- a/lib/google-font-list.js
++++ b/lib/google-font-list.js
+@@ -9,7 +9,7 @@ var googleFont = require('./google-font');
+ const googleFontApiUrl = 'https://www.googleapis.com/webfonts/v1/webfonts?key=';
+ 
+ function isValidString(val) {
+-	return util.isString(val) && val.trim() !== '';
++	return typeof val === 'string' && val.trim() !== '';
+ }
+ 
+ function GoogleFontList(apiKey) {
+diff --git a/lib/google-font.js b/lib/google-font.js
+index 64464bd2e6b61412cad99fe561ea5e7e53278bec..8c8974465206ef2bc95499f3d7cf7d414298af0c 100644
+--- a/lib/google-font.js
++++ b/lib/google-font.js
+@@ -60,11 +60,11 @@ googleFont.prototype.getFiles = function(variants){
+ 	var self = this;
+ 	var fileList = self.getFileList();
+ 	var files = {};
+-	if ( util.isString(variants) ) {
++	if ( typeof variants === 'string' ) {
+ 		return self.getFiles([variants]);
+-	} else if ( util.isNullOrUndefined(variants) || !variants ){
++	} else if ( !variants ){
+ 		return fileList;
+-	} else if ( util.isArray(variants) ) {
++	} else if ( Array.isArray(variants) ) {
+ 		variants.forEach(function(theVariant){
+ 			var normalizedVariant = self._normalizeVariant(theVariant);
+ 			files[normalizedVariant] = fileList.hasOwnProperty(normalizedVariant) ? fileList[normalizedVariant] : false;
