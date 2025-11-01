@@ -4,7 +4,7 @@ command = "pnpm run docs:build"
 
 [build.environment]
 NODE_OPTIONS = "--max-old-space-size=5120"
-NODE_VERSION = "lts"
+NODE_VERSION = "lts/*"
 
 [[redirects]]
 from = "https://vueuse.js.org/*"
