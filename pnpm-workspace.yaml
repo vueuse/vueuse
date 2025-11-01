@@ -2,6 +2,9 @@ packages:
   - packages/*
   - '!playgrounds'
 
+patchedDependencies:
+  google-font-installer: patches/google-font-installer.patch
+
 catalogs:
   dev:
     '@antfu/eslint-config': ^6.0.0
