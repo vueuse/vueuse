@@ -1,4 +1,5 @@
 import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { createFileSystemTypesCache } from '@shikijs/vitepress-twoslash/cache-fs'
 import { withPwa } from '@vite-pwa/vitepress'
@@ -8,7 +9,6 @@ import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '
 import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
 import { FILE_IMPORTS } from './twoslash'
-import viteConfig from './vite.config'
 
 const Guide = [
   { text: 'Get Started', link: '/guide/' },
@@ -273,7 +273,9 @@ export default withPwa(defineConfig({
     },
   },
 
-  vite: viteConfig,
+  vite: {
+    configFile: fileURLToPath(new URL('./vite.config.ts', import.meta.url)),
+  },
 }))
 
 function getFunctionsSideBar() {
