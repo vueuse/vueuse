@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { shallowRef } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
@@ -7,7 +7,7 @@ describe('useIntersectionObserver', () => {
     document.body.innerHTML = ''
   })
 
-  it('can change targets reactively', async () => {
+  it('target is reactive', async () => {
     document.body.innerHTML = `
       <div class="spacer" style="height: calc(100vh + 10px);"></div>
       <div id="target-node-1" style="height: 100px;">Target Node 1</div>
@@ -58,6 +58,92 @@ describe('useIntersectionObserver', () => {
       expect(callbackMock).toHaveBeenCalledTimes(2)
       expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(false)
       expect(callbackMock.mock.calls[1][0][0].target.id).toBe('target-node-2')
+    })
+  })
+
+  it('root is reactive', async () => {
+    document.body.innerHTML = `
+      <div class="spacer" style="height: calc(100vh + 10px);"></div>
+      <div id="root-node" style="height: 200px; overflow: scroll; border: 1px solid red;">
+        <div id="target-node" style="height: 100px;">Target Node</div>
+        <div class="spacer" style="height: 400px;"></div>
+      </div>
+    `
+    const rootNode = document.getElementById('root-node')!
+    const targetNode = document.getElementById('target-node')!
+    const rootRef = shallowRef<HTMLElement | null>(null)
+
+    const callbackMock = vi.fn()
+
+    useIntersectionObserver(
+      targetNode,
+      callbackMock,
+      { root: rootRef },
+    )
+
+    // root is viewport by default
+    // immediate call
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(1)
+      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
+    })
+
+    // scroll viewport and show the targetNode
+    window.scrollTo(0, 100)
+
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(2)
+      expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
+    })
+
+    // change root to the rootNode, which updates the observer
+    rootRef.value = rootNode
+    callbackMock.mockClear()
+
+    // viewport's intersection isn't observed any more
+    window.scrollTo(0, 0)
+    await nextTick()
+    expect(callbackMock).toHaveBeenCalledTimes(0)
+
+    rootNode.scrollTo(0, 300)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(1)
+      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
+      // verify if the root changes to the 200px height rootNode
+      expect(callbackMock.mock.calls[0][0][0].rootBounds.height).toBe(200)
+    })
+  })
+
+  it('the observer will not start in the beginning if immediate: false', async () => {
+    document.body.innerHTML = `
+      <div class="spacer" style="height: calc(100vh + 10px);"></div>
+      <div id="target-node" style="height: 100px;">Target Node</div>
+    `
+    const targetNode = document.getElementById('target-node')
+    const callbackMock = vi.fn()
+
+    const { isActive, resume } = useIntersectionObserver(
+      targetNode,
+      callbackMock,
+      { immediate: false },
+    )
+
+    expect(isActive.value).toBe(false)
+
+    window.scrollTo(0, 100)
+
+    await expect(
+      vi.waitUntil(() => {
+        expect(callbackMock).toHaveBeenCalled()
+      }, { timeout: 100 }),
+    ).rejects.toThrow()
+
+    resume()
+
+    expect(isActive.value).toBe(true)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(1)
+      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
     })
   })
 
