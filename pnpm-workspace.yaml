@@ -24,7 +24,6 @@ catalogs:
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
     prettier: ^3.6.2
-    rolldown-vite: ^7.1.19
     sharp: ^0.34.4
     simple-git: ^3.28.0
     simple-git-hooks: ^2.13.1
@@ -36,7 +35,7 @@ catalogs:
     typescript: ^5.9.3
     unimport: ^5.5.0
     unocss: ^66.5.4
-    vite: ^7.1.11
+    vite: npm:rolldown-vite@latest
     vite-plugin-inspect: ^11.3.3
     vue: ^3.5.22
     vue-tsc: ^3.1.1
