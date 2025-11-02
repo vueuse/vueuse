@@ -17,7 +17,7 @@
     "dev": "nr update && nr docs",
     "docs": "vitepress dev packages --open",
     "docs:build": "nr update:full && nr build:packages && turbo run docs:build:vitepress && nr build:redirects",
-    "docs:build:vitepress": "vitepress build packages",
+    "docs:build:vitepress": "NODE_OPTIONS=\"--max-old-space-size=5120\" vitepress build packages",
     "docs:serve": "vitepress serve packages",
     "lint": "eslint --cache .",
     "lint:fix": "nr lint --fix",
