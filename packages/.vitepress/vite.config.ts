@@ -70,22 +70,13 @@ export default defineConfig({
     ],
   },
   optimizeDeps: {
+    noDiscovery: true,
     exclude: [
       '@vueuse/shared',
       '@vueuse/core',
       'body-scroll-lock',
       '@vue/repl',
     ],
-    include: [
-      'axios',
-      'yaml',
-      'nprogress',
-      'qrcode',
-      'tslib',
-      'fuse.js',
-      'universal-cookie',
-    ],
-    disabled: 'dev',
   },
   build: {
     rollupOptions: {
