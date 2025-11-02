@@ -90,11 +90,17 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          if (id.includes('@vueuse/'))
-            return 'vueuse'
-          if (id.includes('@vue/') || id.includes('/vue/'))
-            return 'vue'
+        advancedChunks: {
+          groups: [
+            {
+              name(id) {
+                if (id.includes('@vueuse/'))
+                  return 'vueuse'
+                if (id.includes('@vue/') || id.includes('/vue/'))
+                  return 'vue'
+              },
+            },
+          ],
         },
       },
       /* TODO: unsupported options for Rolldown */
