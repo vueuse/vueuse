@@ -71,12 +71,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     noDiscovery: true,
-    exclude: [
-      '@vueuse/shared',
-      '@vueuse/core',
-      'body-scroll-lock',
-      '@vue/repl',
-    ],
   },
   build: {
     rollupOptions: {
