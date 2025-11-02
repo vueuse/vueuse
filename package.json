@@ -123,6 +123,7 @@
     "@vueuse/rxjs": "workspace:*",
     "@vueuse/shared": "workspace:*",
     "eslint": "catalog:dev",
+    "vite": "catalog:dev",
     "vite-plugin-pwa": "catalog:docs",
     "vue": "catalog:dev"
   },

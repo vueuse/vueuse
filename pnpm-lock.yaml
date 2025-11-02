@@ -96,9 +96,6 @@ catalogs:
     unocss:
       specifier: ^66.5.4
       version: 66.5.4
-    vite:
-      specifier: npm:rolldown-vite@latest
-      version: 7.1.20
     vite-plugin-inspect:
       specifier: ^11.3.3
       version: 11.3.3
@@ -272,6 +269,7 @@ overrides:
   '@vueuse/rxjs': workspace:*
   '@vueuse/shared': workspace:*
   eslint: ^9.38.0
+  vite: npm:rolldown-vite@latest
   vite-plugin-pwa: ^1.1.0
   vue: ^3.5.22
 
@@ -466,7 +464,7 @@ importers:
         specifier: catalog:docs
         version: 30.0.0(@babel/parser@7.28.4)(@nuxt/kit@3.19.3(magicast@0.3.5))(vue@3.5.22(typescript@5.9.3))
       vite:
-        specifier: catalog:dev
+        specifier: npm:rolldown-vite@latest
         version: rolldown-vite@7.1.20(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
       vite-plugin-inspect:
         specifier: catalog:dev
