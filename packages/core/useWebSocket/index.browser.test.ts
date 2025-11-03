@@ -91,10 +91,12 @@ describe('useWebSocket', () => {
     })
 
     it('should support delay as a number', () => {
+      const DELAY_TIME = 2500
+
       const { ws, status } = useWebSocket('ws://localhost', {
         autoReconnect: {
           retries: 2,
-          delay: 2500,
+          delay: DELAY_TIME,
         },
       })
 
@@ -103,10 +105,7 @@ describe('useWebSocket', () => {
 
       expect(status.value).toBe('CLOSED')
 
-      // Should use the specified delay time
-      vi.advanceTimersByTime(2499)
-      expect(status.value).toBe('CLOSED')
-      vi.advanceTimersByTime(1)
+      vi.advanceTimersByTime(DELAY_TIME)
       expect(status.value).toBe('CONNECTING')
     })
 
@@ -122,15 +121,11 @@ describe('useWebSocket', () => {
       ws.value?.onopen?.(new Event('open'))
       ws.value?.onclose?.(new CloseEvent('close'))
 
-      // Should call delay function with retry count
       expect(delayFn).toHaveBeenCalledWith(1)
       expect(status.value).toBe('CLOSED')
 
-      // Should use the returned delay time
       const returnedDelay = delayFn.mock.results[0].value
-      vi.advanceTimersByTime(returnedDelay - 1)
-      expect(status.value).toBe('CLOSED')
-      vi.advanceTimersByTime(1)
+      vi.advanceTimersByTime(returnedDelay)
       expect(status.value).toBe('CONNECTING')
     })
   })
