@@ -1,37 +1,59 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, shallowRef } from 'vue'
+import type { UseIntersectionObserverReturn } from '.'
+import { page } from '@vitest/browser/context'
+import { describe, expect, it, vi } from 'vitest'
+import { nextTick, shallowRef, toValue, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
-  afterEach(() => {
-    document.body.innerHTML = ''
-  })
+  const expectFunctionHasNotBeenCalled = async (callbackMock: any) => {
+    await expect(
+      vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalled()
+      }, { timeout: 100 }),
+    ).rejects.toThrow()
+  }
 
   it('target is reactive', async () => {
-    document.body.innerHTML = `
-      <div class="spacer" style="height: calc(100vh + 10px);"></div>
-      <div id="target-node-1" style="height: 100px;">Target Node 1</div>
-      <div id="target-node-2" style="height: 100px;">Target Node 2</div>
-    `
-    const targetNode_1 = document.getElementById('target-node-1')
-    const targetNode_2 = document.getElementById('target-node-2')
-    const targetRef = shallowRef<HTMLElement | null>(null)
-
     const callbackMock = vi.fn()
+    const target = shallowRef<HTMLElement | null>(null)
 
-    useIntersectionObserver(
-      targetRef,
-      callbackMock,
-    )
+    let targetNode1
+    let targetNode2
 
-    callbackMock.mockClear()
+    const Component = defineComponent({
+      template: `
+        <div>
+          <div class="spacer" style="height: calc(100vh + 10px);"></div>
+          <div ref="target-node-1" style="height: 100px;">Target Node 1</div>
+          <div ref="target-node-2" style="height: 100px;">Target Node 2</div>
+        </div>
+      `,
+      props: {
+        target: {
+          type: Object,
+          required: true,
+        },
+      },
+      setup() {
+        targetNode1 = useTemplateRef<HTMLElement>('target-node-1')
+        targetNode2 = useTemplateRef<HTMLElement>('target-node-2')
 
-    targetRef.value = targetNode_1
+        useIntersectionObserver(target, callbackMock)
+      },
+    })
+
+    page.render(Component, {
+      props: {
+        target,
+      },
+    })
+
+    target.value = targetNode1!
 
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(1)
       expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
-      expect(callbackMock.mock.calls[0][0][0].target.id).toBe('target-node-1')
+      expect(callbackMock.mock.calls[0][0][0].target.textContent).toBe('Target Node 1')
     })
 
     window.scrollTo(0, 200)
@@ -39,17 +61,17 @@ describe('useIntersectionObserver', () => {
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(2)
       expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
-      expect(callbackMock.mock.calls[1][0][0].target.id).toBe('target-node-1')
+      expect(callbackMock.mock.calls[1][0][0].target.textContent).toBe('Target Node 1')
     })
 
     callbackMock.mockClear()
 
-    targetRef.value = targetNode_2
+    target.value = targetNode2!
 
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(1)
       expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
-      expect(callbackMock.mock.calls[0][0][0].target.id).toBe('target-node-2')
+      expect(callbackMock.mock.calls[0][0][0].target.textContent).toBe('Target Node 2')
     })
 
     window.scrollTo(0, 0)
@@ -57,7 +79,7 @@ describe('useIntersectionObserver', () => {
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(2)
       expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(false)
-      expect(callbackMock.mock.calls[1][0][0].target.id).toBe('target-node-2')
+      expect(callbackMock.mock.calls[1][0][0].target.textContent).toBe('Target Node 2')
     })
   })
 
@@ -214,17 +236,29 @@ describe('useIntersectionObserver', () => {
   })
 
   it('stop observing when calling stop, not be able to resume', async () => {
-    document.body.innerHTML = `
-      <div class="spacer" style="height: calc(100vh + 10px);"></div>
-      <div id="target-node" style="height: 100px;">Target Node</div>
-    `
-    const targetNode = document.getElementById('target-node')
     const callbackMock = vi.fn()
 
-    const { stop, resume, isActive } = useIntersectionObserver(
-      targetNode,
-      callbackMock,
-    )
+    let observerReturn: UseIntersectionObserverReturn
+
+    const Component = {
+      template: `
+        <div class="spacer" style="height: calc(100vh + 10px);"></div>
+        <div ref="targetNode" id="target-node" style="height: 100px;">Target Node</div>
+      `,
+      setup() {
+        const targetNode = shallowRef<HTMLElement | null>(null)
+        observerReturn = useIntersectionObserver(
+          targetNode,
+          callbackMock,
+        )
+
+        return {
+          targetNode,
+        }
+      },
+    }
+
+    page.render(Component)
 
     // clear the immediate call
     callbackMock.mockClear()
@@ -236,24 +270,20 @@ describe('useIntersectionObserver', () => {
       expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
     })
 
-    stop()
-    expect(isActive.value).toBe(false)
+    observerReturn!.stop()
+    expect(toValue(observerReturn!.isActive)).toBe(false)
 
     callbackMock.mockClear()
 
     // scroll back, should not trigger callback
     window.scrollTo(0, 0)
-    await vi.waitFor(() => {
-      expect(callbackMock).not.toHaveBeenCalled()
-    })
+    await expectFunctionHasNotBeenCalled(callbackMock)
 
     // resume won't work after stop
-    resume()
+    observerReturn!.resume()
 
     // scroll again, should not trigger callback
     window.scrollTo(0, 100)
-    await vi.waitFor(() => {
-      expect(callbackMock).not.toHaveBeenCalled()
-    })
+    await expectFunctionHasNotBeenCalled(callbackMock)
   })
 })
