@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
+import { playwright } from '@vitest/browser-playwright'
 import { coverageConfigDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -70,7 +71,7 @@ export default defineConfig({
           setupFiles: ['vitest-browser-vue'],
           browser: {
             enabled: true,
-            provider: 'playwright',
+            provider: playwright(),
             headless: true,
             instances: [
               { browser: 'chromium' },

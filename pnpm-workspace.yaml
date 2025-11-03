@@ -76,15 +76,15 @@ catalogs:
     vue-router: ^4.6.3
   test:
     '@arethetypeswrong/cli': ^0.18.2
-    '@vitest/browser': ^4.0.1
-    '@vitest/coverage-v8': ^4.0.1
-    '@vitest/ui': ^4.0.1
+    '@vitest/browser-playwright': ^4.0.6
+    '@vitest/coverage-v8': ^4.0.6
+    '@vitest/ui': ^4.0.6
     '@vue/test-utils': ^2.4.6
     fake-indexeddb: ^6.2.4
-    msw: ^2.3.0
+    msw: ^2.11.6
     playwright: 1.49.0
-    vitest: ^4.0.1
-    vitest-browser-vue: ^2.0.0
+    vitest: ^4.0.6
+    vitest-browser-vue: ^2.0.1
     vitest-package-exports: ^0.1.1
   types:
     '@type-challenges/utils': ^0.1.1

@@ -24,7 +24,7 @@
     "resolveJsonModule": true,
     "types": [
       "@types/web-bluetooth",
-      "@vitest/browser/providers/playwright",
+      "@vitest/browser-playwright",
       "vite-plugin-pwa/vue",
       "vitest",
       "vitest-browser-vue"
