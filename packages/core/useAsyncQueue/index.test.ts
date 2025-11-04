@@ -149,7 +149,7 @@ describe('useAsyncQueue', () => {
       onFinished: onFinishedSpy,
     })
     await vi.waitFor(() => {
-      expect(onFinishedSpy).toHaveBeenCalled()
+      expect(onFinishedSpy).toHaveBeenCalledOnce()
     })
   })
 })
