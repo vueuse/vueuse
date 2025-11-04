@@ -155,32 +155,39 @@ describe('useIntersectionObserver', () => {
   })
 
   it('the observer will not start in the beginning if immediate: false', async () => {
-    document.body.innerHTML = `
-      <div class="spacer" style="height: calc(100vh + 10px);"></div>
-      <div id="target-node" style="height: 100px;">Target Node</div>
-    `
-    const targetNode = document.getElementById('target-node')
     const callbackMock = vi.fn()
+    let observerReturn: UseIntersectionObserverReturn
 
-    const { isActive, resume } = useIntersectionObserver(
-      targetNode,
-      callbackMock,
-      { immediate: false },
-    )
+    const Component = defineComponent({
+      template: `
+        <div>
+          <div class="spacer" style="height: calc(100vh + 10px);"></div>
+          <div ref="target-node" style="height: 100px;">Target Node</div>
+        </div>
+      `,
+      setup() {
+        const target = useTemplateRef<HTMLElement>('target-node')
+        observerReturn = useIntersectionObserver(
+          target,
+          callbackMock,
+          { immediate: false },
+        )
+      },
+    })
 
+    page.render(Component)
+
+    await expectFunctionHasNotBeenCalled(callbackMock)
+
+    const { isActive, resume } = observerReturn!
     expect(isActive.value).toBe(false)
 
     window.scrollTo(0, 100)
-
-    await expect(
-      vi.waitUntil(() => {
-        expect(callbackMock).toHaveBeenCalled()
-      }, { timeout: 100 }),
-    ).rejects.toThrow()
+    await expectFunctionHasNotBeenCalled(callbackMock)
 
     resume()
-
     expect(isActive.value).toBe(true)
+
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(1)
       expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
