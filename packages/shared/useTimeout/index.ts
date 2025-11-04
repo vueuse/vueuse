@@ -19,6 +19,10 @@ export interface UseTimeoutOptions<Controls extends boolean> extends UseTimeoutF
 }
 
 export type UseTimeoutReturn = ComputedRef<boolean> | { readonly ready: ComputedRef<boolean> } & Stoppable
+/**
+ * @deprecated use UseTimeoutReturn instead
+ */
+export type UseTimoutReturn = UseTimeoutReturn
 
 /**
  * Update value after a given time with controls.
