@@ -64,8 +64,8 @@ catalogs:
       specifier: ^3.6.2
       version: 3.6.2
     rolldown-vite:
-      specifier: ^7.1.19
-      version: 7.1.19
+      specifier: ^7.1.20
+      version: 7.1.20
     sharp:
       specifier: ^0.34.4
       version: 0.34.4
@@ -277,6 +277,11 @@ overrides:
   vitepress>vite: npm:rolldown-vite@latest
   vue: ^3.5.22
 
+patchedDependencies:
+  google-font-installer@1.2.0:
+    hash: 52aed741593cb643cd078988e5d1e41ac38c1c0076f4660d855543e3ebb60537
+    path: patches/google-font-installer@1.2.0.patch
+
 importers:
 
   .:
@@ -391,7 +396,7 @@ importers:
         version: 7.1.0
       google-font-installer:
         specifier: catalog:docs
-        version: 1.2.0
+        version: 1.2.0(patch_hash=52aed741593cb643cd078988e5d1e41ac38c1c0076f4660d855543e3ebb60537)
       gray-matter:
         specifier: catalog:docs
         version: 4.0.3
@@ -433,7 +438,7 @@ importers:
         version: 0.6.2
       rolldown-vite:
         specifier: catalog:dev
-        version: 7.1.19(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
+        version: 7.1.20(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
       sharp:
         specifier: catalog:dev
         version: 0.34.4
@@ -3344,9 +3349,6 @@ packages:
 
   '@rolldown/pluginutils@1.0.0-beta.29':
     resolution: {integrity: sha512-NIJgOsMjbxAXvoGq/X0gD7VPMQ8j9g0BiDaNjVNVjvl+iKXxL3Jre0v31RmBYeLEmkbj2s02v8vFTbUXi5XS2Q==}
-
-  '@rolldown/pluginutils@1.0.0-beta.39':
-    resolution: {integrity: sha512-GkTtNCV8ObWbq3LrJStPBv9jkRPct8WlwotVjx3aU0RwfH3LyheixWK9Zhaj22C4EQj/TJxYyetoX+uOn/MWKw==}
 
   '@rolldown/pluginutils@1.0.0-beta.44':
     resolution: {integrity: sha512-g6eW7Zwnr2c5RADIoqziHoVs6b3W5QTQ4+qbpfjbkMJ9x+8Og211VW/oot2dj9dVwaK/UyC6Yo+02gV+wWQVNg==}
@@ -7756,8 +7758,8 @@ packages:
       vue-tsc:
         optional: true
 
-  rolldown-vite@7.1.19:
-    resolution: {integrity: sha512-4TRFlbv0F8zE0EbaSAuzHEGlBRRTSaMd3QP8Qz0VTeSb6Z+kpCXSAw2k2QimTuDCJSxdYItcjZjWXtn0j6ksTg==}
+  rolldown-vite@7.1.20:
+    resolution: {integrity: sha512-iXo6JzhBnNl+MY5Wky2Qr4RnB1gLJ3798YUMC3uBXSjCDM/bV+ALcnm5M23eOy9Nldi18aUioLpTB/PtqvwSZQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -12188,8 +12190,6 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.0-beta.29': {}
 
-  '@rolldown/pluginutils@1.0.0-beta.39': {}
-
   '@rolldown/pluginutils@1.0.0-beta.44': {}
 
   '@rolldown/pluginutils@1.0.0-beta.45': {}
@@ -12996,7 +12996,7 @@ snapshots:
       '@babel/core': 7.28.4
       '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.28.4)
       '@babel/plugin-transform-typescript': 7.28.0(@babel/core@7.28.4)
-      '@rolldown/pluginutils': 1.0.0-beta.39
+      '@rolldown/pluginutils': 1.0.0-beta.45
       '@vue/babel-plugin-jsx': 1.5.0(@babel/core@7.28.4)
       vite: 7.1.11(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
       vue: 3.5.22(typescript@5.9.3)
@@ -15213,7 +15213,7 @@ snapshots:
 
   globrex@0.1.2: {}
 
-  google-font-installer@1.2.0:
+  google-font-installer@1.2.0(patch_hash=52aed741593cb643cd078988e5d1e41ac38c1c0076f4660d855543e3ebb60537):
     dependencies:
       async: 1.5.2
       colors: 1.4.0
@@ -17554,14 +17554,14 @@ snapshots:
       - oxc-resolver
       - supports-color
 
-  rolldown-vite@7.1.19(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1):
+  rolldown-vite@7.1.20(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1):
     dependencies:
       '@oxc-project/runtime': 0.95.0
       fdir: 6.5.0(picomatch@4.0.3)
       lightningcss: 1.30.2
       picomatch: 4.0.3
       postcss: 8.5.6
-      rolldown: 1.0.0-beta.44
+      rolldown: 1.0.0-beta.45
       tinyglobby: 0.2.15
     optionalDependencies:
       '@types/node': 24.9.1
