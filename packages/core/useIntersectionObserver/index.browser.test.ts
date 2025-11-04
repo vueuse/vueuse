@@ -195,110 +195,128 @@ describe('useIntersectionObserver', () => {
   })
 
   it('isSupport is always true when in the browser mode', () => {
-    const { isSupported } = useIntersectionObserver(
-      document.createElement('div'),
-      () => {},
-    )
+    let observerReturn: UseIntersectionObserverReturn
 
-    expect(isSupported.value).toBe(true)
+    const Component = defineComponent({
+      template: `
+        <div ref="target-node">
+          Target Node
+        </div>
+      `,
+      setup() {
+        const target = useTemplateRef<HTMLElement>('target-node')
+        observerReturn = useIntersectionObserver(target, () => {})
+      },
+    })
+
+    page.render(Component)
+    expect(observerReturn!.isSupported.value).toBe(true)
   })
 
-  it('can pause and resume observing', async () => {
-    document.body.innerHTML = `
-      <div class="spacer" style="height: calc(100vh + 10px);"></div>
-      <div id="target-node" style="height: 100px;">Target Node</div>
-    `
-
-    const targetNode = document.getElementById('target-node')
-
+  it('supports Pausable, can pause and resume', async () => {
     const callbackMock = vi.fn()
-    const { isActive, pause, resume } = useIntersectionObserver(
-      targetNode,
-      callbackMock,
-    )
+    let observerReturn: UseIntersectionObserverReturn
 
-    // clear the immediate call
-    callbackMock.mockClear()
+    const Component = defineComponent({
+      template: `
+        <div>
+          <div class="spacer" style="height: calc(100vh + 10px);"></div>
+          <div ref="target-node" style="height: 100px;">Target Node</div>
+        </div>
+      `,
+      setup() {
+        const target = useTemplateRef<HTMLElement>('target-node')
+        observerReturn = useIntersectionObserver(
+          target,
+          callbackMock,
+        )
+      },
+    })
 
-    // scroll 10px down, should touch the targetNode
-    window.scrollTo(0, 100)
+    page.render(Component)
+    expect(observerReturn!.isActive.value).toBe(true)
+
+    // immediate call
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(1)
+      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
+    })
+
+    window.scrollTo(0, 100)
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(2)
+      expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
     })
 
     // scroll back to top
     window.scrollTo(0, 0)
     await vi.waitFor(() => {
-      expect(callbackMock).toHaveBeenCalledTimes(2)
+      expect(callbackMock).toHaveBeenCalledTimes(3)
+      expect(callbackMock.mock.calls[2][0][0].isIntersecting).toBe(false)
     })
 
     callbackMock.mockClear()
 
-    pause()
-    expect(isActive.value).toBe(false)
+    observerReturn!.pause()
+    expect(observerReturn!.isActive.value).toBe(false)
 
-    // scroll 10px down, should NOT trigger callback since it's paused
-    window.scrollTo(0, 10)
-    await vi.waitFor(() => {
-      expect(callbackMock).toHaveBeenCalledTimes(0)
-    })
+    // scroll 100px down again, should NOT trigger callback since it's paused
+    window.scrollTo(0, 100)
+    await expectFunctionHasNotBeenCalled(callbackMock)
 
-    callbackMock.mockClear()
-
-    resume()
-    expect(isActive.value).toBe(true)
+    observerReturn!.resume()
+    expect(observerReturn!.isActive.value).toBe(true)
 
     // immediate call after resume
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(1)
+      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
     })
 
     // scroll back to top, should trigger callback since it's resumed
     window.scrollTo(0, 0)
     await vi.waitFor(() => {
       expect(callbackMock).toHaveBeenCalledTimes(2)
+      expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(false)
     })
   })
 
   it('stop observing when calling stop, not be able to resume', async () => {
     const callbackMock = vi.fn()
-
     let observerReturn: UseIntersectionObserverReturn
 
-    const Component = {
+    const Component = defineComponent({
       template: `
         <div class="spacer" style="height: calc(100vh + 10px);"></div>
-        <div ref="targetNode" id="target-node" style="height: 100px;">Target Node</div>
+        <div ref="target-node" style="height: 100px;">Target Node</div>
       `,
       setup() {
-        const targetNode = shallowRef<HTMLElement | null>(null)
+        const target = useTemplateRef<HTMLElement>('target-node')
         observerReturn = useIntersectionObserver(
-          targetNode,
+          target,
           callbackMock,
         )
-
-        return {
-          targetNode,
-        }
       },
-    }
+    })
 
     page.render(Component)
 
-    // clear the immediate call
-    callbackMock.mockClear()
+    // immediate call
+    await vi.waitFor(() => {
+      expect(callbackMock).toHaveBeenCalledTimes(1)
+      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
+    })
 
     // scroll to intersect
     window.scrollTo(0, 100)
     await vi.waitFor(() => {
-      expect(callbackMock).toHaveBeenCalledTimes(1)
-      expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
+      expect(callbackMock).toHaveBeenCalledTimes(2)
+      expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
     })
+    callbackMock.mockClear()
 
     observerReturn!.stop()
     expect(toValue(observerReturn!.isActive)).toBe(false)
-
-    callbackMock.mockClear()
 
     // scroll back, should not trigger callback
     window.scrollTo(0, 0)
