@@ -120,10 +120,17 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
       if (newValue === oldValue)
         return
 
-      if (newValue)
-        recognition!.start()
-      else
-        recognition!.stop()
+      try {
+        if (newValue) {
+          recognition!.start()
+        }
+        else {
+          recognition!.stop()
+        }
+      }
+      catch (err: unknown) {
+        error.value = err as unknown as SpeechRecognitionErrorEvent
+      }
     })
   }
 
