@@ -329,4 +329,26 @@ describe('useIntersectionObserver', () => {
     window.scrollTo(0, 100)
     await expectFunctionHasNotBeenCalled(callbackMock)
   })
+
+  it('observer will stop when unmounted', async () => {
+    let observerReturn: UseIntersectionObserverReturn
+
+    const Component = defineComponent({
+      template: `
+        <div ref="target-node">
+          Target Node
+        </div>
+      `,
+      setup() {
+        const target = useTemplateRef<HTMLElement>('target-node')
+        observerReturn = useIntersectionObserver(target, () => {})
+      },
+    })
+
+    page.render(Component)
+
+    cleanup()
+
+    expect(observerReturn!.isActive.value).toBe(false)
+  })
 })
