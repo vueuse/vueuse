@@ -45,6 +45,27 @@ whenever(height, (current, lastHeight) => {
 })
 ```
 
+### Sources Array
+
+Same as `watch`, multiple sources can be passed to check if any of them are true.
+
+```ts
+import { whenever } from '@vueuse/core'
+// ---cut---
+// this
+whenever([result, error], () => {
+  loading.value = false
+})
+
+// is equivalent to:
+whenever(result, () => {
+  loading.value = false
+})
+whenever(error, () => {
+  loading.value = false
+})
+```
+
 ### Computed
 
 Same as `watch`, you can pass a getter function to calculate on each change.
