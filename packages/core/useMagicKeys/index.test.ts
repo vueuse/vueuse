@@ -154,4 +154,14 @@ describe('useMagicKeys', () => {
     window.dispatchEvent(new Event('focus'))
     expect(alt_tab.value).toBe(false)
   })
+
+  it('should handle empty key events without errors', async () => {
+    const { a } = useMagicKeys({ target })
+
+    expect(() => {
+      target.dispatchEvent(new KeyboardEvent('keyup', {}))
+    }).not.toThrow()
+
+    expect(a.value).toBe(false)
+  })
 })
