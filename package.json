@@ -79,7 +79,7 @@
     "fuse.js": "catalog:integrations",
     "google-font-installer": "catalog:docs",
     "gray-matter": "catalog:docs",
-    "jsdom": "catalog:dev",
+    "jsdom": "catalog:test",
     "lint-staged": "catalog:dev",
     "markdown-table": "catalog:docs",
     "md5": "catalog:docs",
