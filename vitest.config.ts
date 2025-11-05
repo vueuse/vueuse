@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import { playwright } from '@vitest/browser-playwright'
-import { coverageConfigDefaults, defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [
@@ -31,26 +31,24 @@ export default defineConfig({
       TZ: 'UTC-1', // to have some actual results with timezone offset
     },
     coverage: {
+      include: [
+        'packages/**/*.ts',
+      ],
       exclude: [
         'packages/.vitepress/**',
         'packages/metadata/**',
         'packages/components/**',
         'packages/nuxt/**',
         'packages/contributors.ts',
-        'playgrounds/**',
-        'meta/**',
-        '**/dist/**',
         '**/_template/**',
+        '**/.turbo/**',
+        '**/dist/**',
+        '**/node_modules/**',
         '**/*.test.ts',
         '**/*.*.test.ts',
-        '**/*.vue',
-        '**/*.mjs',
         '**/types.ts',
         '**/_types.ts',
         '**/*.config.ts',
-        '**/*.d.mts',
-        'scripts/**',
-        ...coverageConfigDefaults.exclude,
       ],
     },
 
