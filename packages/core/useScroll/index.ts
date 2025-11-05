@@ -210,7 +210,7 @@ export function useScroll(
       || unrefElement(target as HTMLElement | SVGElement)
     ) as Element
 
-    const { display, flexDirection, direction } = window.getComputedStyle(el)
+    const { display, flexDirection, direction } = getComputedStyle(el)
     const directionMultipler = direction === 'rtl' ? -1 : 1
 
     const scrollLeft = el.scrollLeft
