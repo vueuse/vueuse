@@ -56,7 +56,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   const isListening = shallowRef(false)
   const isFinal = shallowRef(false)
   const result = shallowRef('')
-  const error = shallowRef<SpeechRecognitionErrorEvent | undefined>(undefined)
+  const error = shallowRef<SpeechRecognitionErrorEvent | Error | undefined>(undefined)
 
   let recognition: SpeechRecognition | undefined
 
@@ -128,8 +128,8 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
           recognition!.stop()
         }
       }
-      catch (err: unknown) {
-        error.value = err as unknown as SpeechRecognitionErrorEvent
+      catch (err) {
+        error.value = err as unknown as Error
       }
     })
   }
