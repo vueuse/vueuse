@@ -94,9 +94,11 @@ export default defineConfig({
           environment: 'jsdom',
           setupFiles: [resolve(import.meta.dirname, 'packages/.test/setup.ts')],
           include: [
-            '!packages/**/*.{browser,server}.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
             'test/*.{test,spec}.ts',
+          ],
+          exclude: [
+            'packages/**/*.{browser,server}.{test,spec}.ts',
           ],
           server: {
             deps: {
