@@ -84,7 +84,7 @@ catalogs:
     '@vitest/ui': ^4.0.7
     '@vue/test-utils': ^2.4.6
     fake-indexeddb: ^6.2.4
-    msw: ^2.11.6
+    msw: ^2.4.9
     playwright: 1.49.0
     vitest: ^4.0.7
     vitest-browser-vue: ^2.0.1
