@@ -1,10 +1,15 @@
 import type { UseIntersectionObserverReturn } from '.'
 import { page } from '@vitest/browser/context'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { cleanup } from 'vitest-browser-vue'
 import { defineComponent, shallowRef, toValue, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '.'
 
 describe('useIntersectionObserver', () => {
+  beforeEach(() => {
+    window.scrollTo(0, 0)
+  })
+
   const expectFunctionHasNotBeenCalled = async (callbackMock: any) => {
     await expect(
       vi.waitFor(() => {
@@ -12,6 +17,192 @@ describe('useIntersectionObserver', () => {
       }, { timeout: 100 }),
     ).rejects.toThrow()
   }
+
+  describe('observe the intersection of the target and the root', () => {
+    it('root is viewport by default', async () => {
+      const callbackMock = vi.fn()
+
+      const Component = defineComponent({
+        template: `
+          <div>
+            <div class="spacer" style="height: calc(100vh + 10px);"></div>
+            <div ref="target-node" style="height: 100px;">Target Node</div>
+          </div>
+        `,
+        setup() {
+          const targetNodeRef = useTemplateRef<HTMLElement>('target-node')
+
+          useIntersectionObserver(
+            targetNodeRef,
+            callbackMock,
+          )
+        },
+      })
+
+      page.render(Component)
+
+      // immediate call
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
+      })
+
+      window.scrollTo(0, 100)
+
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(2)
+        expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
+      })
+    })
+
+    it('can specify different root', async () => {
+      const callbackMock = vi.fn()
+
+      const Component = defineComponent({
+        template: `
+          <div>
+            <div ref="root-node" id="root-node" style="height: 200px; overflow: scroll;">
+              <div ref="target-node" style="height: 100px;">Target Node</div>
+              <div class="spacer" style="height: 400px;"></div>
+            </div>
+            <div class="spacer" style="height: calc(100vh + 10px);"></div>
+          </div>
+        `,
+        setup() {
+          const targetNodeRef = useTemplateRef<HTMLElement>('target-node')
+          const rootNodeRef = useTemplateRef<HTMLElement>('root-node')
+
+          useIntersectionObserver(
+            targetNodeRef,
+            callbackMock,
+            { root: rootNodeRef }, // specify the root
+          )
+        },
+      })
+
+      page.render(Component)
+
+      // immediate call
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
+        // rootBounds.height == 200px shows that it is the specified root-node
+        expect(callbackMock.mock.calls[0][0][0].rootBounds!.height).toBe(200)
+      })
+
+      callbackMock.mockClear()
+
+      // scroll window should not trigger the observer
+      window.scrollTo(0, 200)
+      await expectFunctionHasNotBeenCalled(callbackMock)
+
+      const rootNode = document.getElementById('root-node')!
+
+      rootNode.scrollTo(0, 200)
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
+        expect(callbackMock.mock.calls[0][0][0].rootBounds!.height).toBe(200)
+      })
+
+      rootNode.scrollTo(0, 0)
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(2)
+        expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
+        expect(callbackMock.mock.calls[0][0][0].rootBounds!.height).toBe(200)
+      })
+    })
+
+    it('rootMargin can extend the root as intersection region', async () => {
+      const callbackMock = vi.fn()
+
+      const Component = defineComponent({
+        template: `
+          <div ref="root-node" id="root-node" style="height: 200px; overflow: scroll;">
+            <div class="spacer" style="height: 210px;"></div>
+            <div ref="target-node" style="height: 100px;">Target Node</div>
+          </div>
+        `,
+        setup() {
+          const targetNodeRef = useTemplateRef<HTMLElement>('target-node')
+          const rootNodeRef = useTemplateRef<HTMLElement>('root-node')
+
+          useIntersectionObserver(
+            targetNodeRef,
+            callbackMock,
+            {
+              root: rootNodeRef,
+              rootMargin: '10px',
+            },
+          )
+        },
+      })
+
+      page.render(Component)
+
+      // The target is 10px below the rootNode, but the rootMargin is 10px, so it should be intersecting
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
+      })
+    })
+
+    it('threshold controls at what visibility percentage the intersection callback is fired', async () => {
+      const callbackMock = vi.fn()
+
+      const Component = defineComponent({
+        template: `
+          <div class="spacer" style="height: calc(100vh + 10px);"></div>
+          <div ref="target-node" style="height: 100px;">Target Node</div>
+          <div class="spacer" style="height: 500px;"></div>
+        `,
+        setup() {
+          const targetNodeRef = useTemplateRef<HTMLElement>('target-node')
+
+          useIntersectionObserver(
+            targetNodeRef,
+            callbackMock,
+            { threshold: [0, 0.5, 1] },
+          )
+        },
+      })
+
+      page.render(Component)
+
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBe(0)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(false)
+      })
+      callbackMock.mockClear()
+
+      // scroll 10px down to "touch" the target
+      window.scrollTo(0, 10)
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBe(0)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
+      })
+      callbackMock.mockClear()
+
+      // scroll to show 50% of the target
+      window.scrollTo(0, 60)
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBeCloseTo(0.5)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
+      })
+      callbackMock.mockClear()
+
+      // scroll far beyond the target
+      window.scrollTo(0, 200)
+      await vi.waitFor(() => {
+        expect(callbackMock).toHaveBeenCalledTimes(1)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBe(1)
+        expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
+      })
+    })
+  })
 
   it('target is reactive', async () => {
     const callbackMock = vi.fn()
