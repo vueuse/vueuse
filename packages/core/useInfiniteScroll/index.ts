@@ -2,7 +2,7 @@ import type { Awaitable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
 import type { UseScrollOptions } from '../useScroll'
 import { tryOnUnmounted } from '@vueuse/shared'
-import { computed, ref as deepRef, nextTick, reactive, toValue, watch } from 'vue'
+import { computed, ref as deepRef, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { resolveElement } from '../_resolve-element'
 import { useElementVisibility } from '../useElementVisibility'
 import { useScroll } from '../useScroll'
@@ -67,6 +67,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
   ))
 
   const promise = deepRef<any>()
+  const unmounted = shallowRef(false)
   const isLoading = computed(() => !!promise.value)
 
   // Document and Window cannot be observed by IntersectionObserver
@@ -100,11 +101,11 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
           new Promise(resolve => setTimeout(resolve, interval)),
         ])
           .finally(() => {
-            if (!promise.value)
-              return
-
             promise.value = null
-            nextTick(() => checkAndLoad())
+            nextTick(() => {
+              if (!unmounted.value)
+                checkAndLoad()
+            })
           })
       }
     }
@@ -118,7 +119,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
 
   tryOnUnmounted(() => {
     stop()
-    promise.value = null
+    unmounted.value = true
   })
 
   return {
