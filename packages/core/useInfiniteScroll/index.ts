@@ -84,6 +84,10 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
   })
 
   function checkAndLoad() {
+    // might be triggered asynchronously
+    if (unmounted.value)
+      return
+
     state.measure()
 
     if (!observedElement.value || !isElementVisible.value || !canLoad.value)
@@ -102,10 +106,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
         ])
           .finally(() => {
             promise.value = null
-            nextTick(() => {
-              if (!unmounted.value)
-                checkAndLoad()
-            })
+            nextTick(() => checkAndLoad())
           })
       }
     }
