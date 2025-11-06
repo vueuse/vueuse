@@ -100,6 +100,9 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
           new Promise(resolve => setTimeout(resolve, interval)),
         ])
           .finally(() => {
+            if (!promise.value)
+              return
+
             promise.value = null
             nextTick(() => checkAndLoad())
           })
@@ -113,7 +116,10 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
     { immediate: true },
   )
 
-  tryOnUnmounted(stop)
+  tryOnUnmounted(() => {
+    stop()
+    promise.value = null
+  })
 
   return {
     isLoading,
