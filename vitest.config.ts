@@ -43,6 +43,7 @@ export default defineConfig({
         '**/_template/**',
         '**/.test/**',
         '**/.turbo/**',
+        '**/demo/**',
         '**/dist/**',
         '**/node_modules/**',
         '**/*.test.ts',
