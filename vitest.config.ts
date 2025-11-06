@@ -41,6 +41,7 @@ export default defineConfig({
         'packages/nuxt/**',
         'packages/contributors.ts',
         '**/_template/**',
+        '**/.test/**',
         '**/.turbo/**',
         '**/dist/**',
         '**/node_modules/**',
