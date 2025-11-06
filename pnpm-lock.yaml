@@ -62,7 +62,7 @@ catalogs:
       version: 3.6.2
     rolldown-vite:
       specifier: ^7.1.20
-      version: 7.2.0
+      version: 7.2.1
     sharp:
       specifier: ^0.34.4
       version: 0.34.4
@@ -220,7 +220,7 @@ catalogs:
       specifier: ^27.1.0
       version: 27.1.0
     msw:
-      specifier: ^2.4.9
+      specifier: ^2.3.0
       version: 2.4.9
     playwright:
       specifier: 1.49.0
@@ -438,7 +438,7 @@ importers:
         version: 0.6.2
       rolldown-vite:
         specifier: catalog:dev
-        version: 7.2.0(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
+        version: 7.2.1(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
       sharp:
         specifier: catalog:dev
         version: 0.34.4
@@ -7267,8 +7267,8 @@ packages:
       vue-tsc:
         optional: true
 
-  rolldown-vite@7.2.0:
-    resolution: {integrity: sha512-Xc1zN+Jd5Gv7U6Slculz9IomyIMp/X+dS7NTrGFxfkBqjIF5flKrE0bLBu/TAIve0AGabVI2IxEQsCujypF6mA==}
+  rolldown-vite@7.2.1:
+    resolution: {integrity: sha512-J1QRxf8zlYNvjAY1fB6zW+FLr0K26/IpKFrGM+Za0Ko6meJUMlHBk+LV19gAb8sfSluH4/6dyWKVS2dvNU4RLQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -11866,10 +11866,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@6.0.1(rolldown-vite@7.2.0(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))':
+  '@vitejs/plugin-vue@6.0.1(rolldown-vite@7.2.1(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.29
-      vite: rolldown-vite@7.2.0(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
+      vite: rolldown-vite@7.2.1(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
       vue: 3.5.22(typescript@5.9.3)
 
   '@vitejs/plugin-vue@6.0.1(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))':
@@ -16250,7 +16250,7 @@ snapshots:
       - oxc-resolver
       - supports-color
 
-  rolldown-vite@7.2.0(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1):
+  rolldown-vite@7.2.1(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1):
     dependencies:
       '@oxc-project/runtime': 0.96.0
       fdir: 6.5.0(picomatch@4.0.3)
@@ -17476,7 +17476,7 @@ snapshots:
       '@shikijs/transformers': 3.9.2
       '@shikijs/types': 3.13.0
       '@types/markdown-it': 14.1.2
-      '@vitejs/plugin-vue': 6.0.1(rolldown-vite@7.2.0(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))
+      '@vitejs/plugin-vue': 6.0.1(rolldown-vite@7.2.1(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.3))
       '@vue/devtools-api': 8.0.0
       '@vue/shared': 3.5.22
       '@vueuse/core': link:packages/core
@@ -17485,7 +17485,7 @@ snapshots:
       mark.js: 8.11.1
       minisearch: 7.1.2
       shiki: 3.13.0
-      vite: rolldown-vite@7.2.0(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
+      vite: rolldown-vite@7.2.1(@types/node@24.9.1)(esbuild@0.25.11)(jiti@2.6.1)(terser@5.24.0)(tsx@4.20.6)(yaml@2.8.1)
       vue: 3.5.22(typescript@5.9.3)
     optionalDependencies:
       postcss: 8.5.6
