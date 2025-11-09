@@ -36,11 +36,11 @@ describe('useWindowSize', () => {
 
     await nextTick()
 
-    expect(addEventListenerSpy).toHaveBeenCalledOnce()
-
-    const call = addEventListenerSpy.mock.calls[0] as any
-    expect(call[0]).toEqual('resize')
-    expect(call[2]).toEqual({ passive: true })
+    expect(addEventListenerSpy).toHaveBeenCalledExactlyOnceWith(
+      'resize',
+      expect.any(Function),
+      { passive: true },
+    )
   })
 
   it('sets handler for window.matchMedia("(orientation: portrait)") change event', async () => {
@@ -50,8 +50,6 @@ describe('useWindowSize', () => {
 
     expect(addEventListenerSpy).toHaveBeenCalledTimes(1)
 
-    expect(matchMediaSpy).toHaveBeenCalledTimes(1)
-    const call = matchMediaSpy.mock.calls[0] as any
-    expect(call[0]).toEqual('(orientation: portrait)')
+    expect(matchMediaSpy).toHaveBeenCalledExactlyOnceWith('(orientation: portrait)')
   })
 })
