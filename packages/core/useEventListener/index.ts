@@ -137,8 +137,6 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
     return test.every(e => typeof e !== 'string') ? test : undefined
   })
 
-  tryOnScopeDispose(cleanup)
-
   return watchImmediate(
     () => [
       firstParamTargets.value?.map(e => unrefElement(e as never)) ?? [defaultWindow].filter(e => e != null),
