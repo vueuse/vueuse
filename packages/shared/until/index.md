@@ -10,7 +10,7 @@ Promised one-time watch for changes
 
 #### Wait for some async data to be ready
 
-```js
+```ts
 import { until, useAsyncState } from '@vueuse/core'
 
 const { state, isReady } = useAsyncState(
@@ -29,7 +29,7 @@ const { state, isReady } = useAsyncState(
 
 > You can use `invoke` to call the async function.
 
-```js
+```ts
 import { invoke, until, useCounter } from '@vueuse/core'
 
 const { count } = useCounter()
@@ -44,6 +44,8 @@ invoke(async () => {
 #### Timeout
 
 ```ts
+import { until } from '@vueuse/core'
+// ---cut---
 // will be resolve until ref.value === true or 1000ms passed
 await until(ref).toBe(true, { timeout: 1000 })
 
@@ -60,6 +62,8 @@ catch (e) {
 #### More Examples
 
 ```ts
+import { until } from '@vueuse/core'
+// ---cut---
 await until(ref).toBe(true)
 await until(ref).toMatch(v => v > 10 && v < 100)
 await until(ref).changed()

@@ -7,10 +7,6 @@ outline: deep
 
 Template as Promise. Useful for constructing custom Dialogs, Modals, Toasts, etc.
 
-::: warning
-This function only works for Vue 3
-:::
-
 ## Usage
 
 ```vue
@@ -49,7 +45,7 @@ This function is migrated from [vue-template-promise](https://github.com/antfu/v
 
 `createTemplatePromise` returns a **Vue Component** that you can directly use in your template with `<script setup>`
 
-```ts
+```ts twoslash include main
 import { createTemplatePromise } from '@vueuse/core'
 
 const TemplatePromise = createTemplatePromise()
@@ -75,6 +71,8 @@ In template, use `v-slot` to access the promise and resolve functions.
 The slot will not be rendered initially (similar to `v-if="false"`), until you call the `start` method from the component.
 
 ```ts
+// @include: main
+// ---cut---
 const result = await TemplatePromise.start()
 ```
 
@@ -84,13 +82,15 @@ Once `resolve` or `reject` is called in the template, the promise will be resolv
 
 You can pass arguments to the `start` with arguments.
 
-```ts
+```ts twoslash include passing-arguments
 import { createTemplatePromise } from '@vueuse/core'
 
 const TemplatePromise = createTemplatePromise<boolean, [string, number]>()
 ```
 
 ```ts
+// @include: passing-arguments
+// ---cut---
 const result = await TemplatePromise.start('hello', 123) // Pr
 ```
 

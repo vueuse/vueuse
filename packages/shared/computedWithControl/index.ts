@@ -1,6 +1,6 @@
-import type { ComputedGetter, ComputedRef, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
+import type { ComputedGetter, ComputedRef, WatchOptions, WatchSource, WritableComputedOptions, WritableComputedRef } from 'vue'
 import type { Fn } from '../utils'
-import { customRef, shallowRef, watch } from 'vue'
+import { customRef, watch } from 'vue'
 
 export interface ComputedWithControlRefExtra {
   /**
@@ -16,12 +16,14 @@ export type ComputedWithControlRef<T = any> = ComputedRefWithControl<T> | Writab
 
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
-  fn: ComputedGetter<T>
+  fn: ComputedGetter<T>,
+  options?: WatchOptions
 ): ComputedRefWithControl<T>
 
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
-  fn: WritableComputedOptions<T>
+  fn: WritableComputedOptions<T>,
+  options?: WatchOptions
 ): WritableComputedRefWithControl<T>
 
 /**
@@ -33,18 +35,19 @@ export function computedWithControl<T, S>(
 export function computedWithControl<T, S>(
   source: WatchSource<S> | WatchSource<S>[],
   fn: ComputedGetter<T> | WritableComputedOptions<T>,
+  options: WatchOptions = {},
 ): ComputedWithControlRef<T> {
   let v: T = undefined!
   let track: Fn
   let trigger: Fn
-  const dirty = shallowRef(true)
+  let dirty = true
 
   const update = () => {
-    dirty.value = true
+    dirty = true
     trigger()
   }
 
-  watch(source, update, { flush: 'sync' })
+  watch(source, update, { flush: 'sync', ...options })
 
   const get = typeof fn === 'function' ? fn : fn.get
   const set = typeof fn === 'function' ? undefined : fn.set
@@ -55,9 +58,9 @@ export function computedWithControl<T, S>(
 
     return {
       get() {
-        if (dirty.value) {
+        if (dirty) {
           v = get(v)
-          dirty.value = false
+          dirty = false
         }
         track()
         return v
@@ -68,11 +71,9 @@ export function computedWithControl<T, S>(
     }
   }) as ComputedRefWithControl<T>
 
-  if (Object.isExtensible(result))
-    result.trigger = update
-
+  result.trigger = update
   return result
 }
 
-// alias
-export { computedWithControl as controlledComputed }
+/** @deprecated use `computedWithControl` instead */
+export const controlledComputed = computedWithControl

@@ -11,7 +11,7 @@ Provides reactive bindings for the [Gamepad API](https://developer.mozilla.org/e
 > Due to how the Gamepad API works, you must interact with the page using the gamepad before it will be detected.
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useGamepad } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -49,6 +49,8 @@ resume()
 The `onConnected` and `onDisconnected` events will trigger when a gamepad is connected or disconnected.
 
 ```ts
+import { useGamepad } from '@vueuse/core'
+// ---cut---
 const { gamepads, onConnected, onDisconnected } = useGamepad()
 
 onConnected((index) => {
@@ -64,7 +66,14 @@ onDisconnected((index) => {
 
 > The Gamepad Haptics API is sparse, so check the [compatibility table](https://developer.mozilla.org/en-US/docs/Web/API/GamepadHapticActuator#browser_compatibility) before using.
 
+<!-- eslint-disable import/first -->
+
 ```ts
+import { useGamepad } from '@vueuse/core'
+
+const { gamepads, onConnected, onDisconnected } = useGamepad()
+const gamepad = gamepads.value[0]!
+// ---cut---
 import { computed } from 'vue'
 
 const supportsVibration = computed(() => gamepad.hapticActuators.length > 0)
@@ -103,3 +112,11 @@ const controller = mapGamepadToXbox360Controller(gamepad)
 ```
 
 Currently there are only mappings for the Xbox 360 controller. If you have controller you want to add mappings for, feel free to open a PR for more controller mappings!
+
+### SSR Compatibility
+
+This component is designed to be used in the client side. In some cases, SSR might cause some hydration mismatches.
+
+If you are using Nuxt, you can simply rename your component file with the `.client.vue` suffix (e.g., `GamepadComponent.client.vue`) which will automatically make it render only on the client side, avoiding hydration mismatches.
+
+In other frameworks or plain Vue, you can wrap your usage component with a `<ClientOnly>` component to ensure it is only rendered on the client side.

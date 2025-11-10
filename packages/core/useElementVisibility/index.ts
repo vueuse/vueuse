@@ -80,3 +80,5 @@ export function useElementVisibility(
 
   return elementIsVisible
 }
+
+export type UseElementVisibilityReturn = ReturnType<typeof useElementVisibility>

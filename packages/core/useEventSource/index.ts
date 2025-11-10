@@ -6,7 +6,7 @@ import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
 
-export interface UseEventSourceOptions extends EventSourceInit {
+export interface UseEventSourceOptions<Data> extends EventSourceInit {
   /**
    * Enabled auto reconnect
    *
@@ -48,6 +48,13 @@ export interface UseEventSourceOptions extends EventSourceInit {
    * @default true
    */
   autoConnect?: boolean
+
+  /**
+   * Custom data serialization
+   */
+  serializer?: {
+    read: (v?: string) => Data
+  }
 }
 
 export interface UseEventSourceReturn<Events extends string[], Data = any> {
@@ -55,7 +62,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
    * Reference to the latest data received via the EventSource,
    * can be watched to respond to incoming messages
    */
-  data: ShallowRef<Data>
+  data: ShallowRef<Data | null>
 
   /**
    * The current state of the connection, can be only one of:
@@ -113,8 +120,8 @@ function resolveNestedOptions<T>(options: T | true): T {
 export function useEventSource<Events extends string[], Data = any>(
   url: MaybeRefOrGetter<string | URL | undefined>,
   events: Events = [] as unknown as Events,
-  options: UseEventSourceOptions = {},
-): UseEventSourceReturn<Events> {
+  options: UseEventSourceOptions<Data> = {},
+): UseEventSourceReturn<Events, Data> {
   const event: ShallowRef<string | null> = shallowRef(null)
   const data: ShallowRef<Data | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
@@ -131,6 +138,9 @@ export function useEventSource<Events extends string[], Data = any>(
     immediate = true,
     autoConnect = true,
     autoReconnect,
+    serializer = {
+      read: (v?: string) => v as Data,
+    },
   } = options
 
   const close = () => {
@@ -183,14 +193,15 @@ export function useEventSource<Events extends string[], Data = any>(
 
     es.onmessage = (e: MessageEvent) => {
       event.value = null
-      data.value = e.data
+      data.value = serializer.read(e.data) ?? null
       lastEventId.value = e.lastEventId
     }
 
     for (const event_name of events) {
-      useEventListener(es, event_name, (e: Event & { data?: Data }) => {
+      useEventListener(es, event_name, (e: Event & { data?: string, lastEventId?: string }) => {
         event.value = event_name
-        data.value = e.data || null
+        data.value = serializer.read(e.data) ?? null
+        lastEventId.value = e.lastEventId ?? null
       }, { passive: true })
     }
   }

@@ -1,7 +1,7 @@
+import type { UseElementBoundingOptions, UseElementBoundingReturn } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import type { UseElementBoundingOptions, UseElementBoundingReturn } from './index'
+import { useElementBounding } from '@vueuse/core'
 import { watch } from 'vue'
-import { useElementBounding } from './index'
 
 type ElementBounding = Omit<UseElementBoundingReturn, 'update'>
 type BindingValueFunction = (bounding: ElementBounding) => void

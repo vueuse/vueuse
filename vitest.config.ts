@@ -12,7 +12,6 @@ export default defineConfig({
       '@vueuse/core': resolve(import.meta.dirname, 'packages/core/index.ts'),
       '@vueuse/math': resolve(import.meta.dirname, 'packages/math/index.ts'),
       '@vueuse/components': resolve(import.meta.dirname, 'packages/components/index.ts'),
-      '@vueuse/docs-utils': resolve(import.meta.dirname, 'packages/.vitepress/plugins/utils.ts'),
     },
     dedupe: [
       'vue',
@@ -33,15 +32,29 @@ export default defineConfig({
     coverage: {
       exclude: [
         'packages/.vitepress/**',
+        'packages/metadata/**',
+        'packages/components/**',
+        'packages/nuxt/**',
+        'packages/contributors.ts',
         'playgrounds/**',
-        '**/(unocss,taze).config.ts',
+        'meta/**',
+        '**/dist/**',
+        '**/_template/**',
+        '**/*.test.ts',
+        '**/*.*.test.ts',
+        '**/*.vue',
+        '**/*.mjs',
+        '**/types.ts',
+        '**/_types.ts',
+        '**/*.config.ts',
+        '**/*.d.mts',
         'scripts/**',
         ...coverageConfigDefaults.exclude,
       ],
     },
 
     clearMocks: true,
-    workspace: [
+    projects: [
       'packages/*/vitest.config.ts',
       {
         // add "extends: true" to inherit the options from the root config
@@ -70,11 +83,19 @@ export default defineConfig({
       {
         extends: './vitest.config.ts',
         test: {
+          include: ['packages/**/*.server.{test,spec}.ts'],
+          name: 'server',
+          environment: 'node',
+        },
+      },
+      {
+        extends: './vitest.config.ts',
+        test: {
           name: 'unit',
           environment: 'jsdom',
           setupFiles: [resolve(import.meta.dirname, 'packages/.test/setup.ts')],
           include: [
-            '!packages/**/*.browser.{test,spec}.ts',
+            '!packages/**/*.{browser,server}.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
             'test/*.{test,spec}.ts',
           ],

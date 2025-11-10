@@ -17,6 +17,7 @@ describe('useCountdown', () => {
     onTick: tickCallback,
     immediate,
   }
+
   beforeEach(() => {
     tickCallback = vi.fn()
     completeCallback = vi.fn()

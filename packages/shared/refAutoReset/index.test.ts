@@ -5,6 +5,7 @@ import { autoResetRef, refAutoReset } from './index'
 
 describe('refAutoReset', () => {
   vi.useFakeTimers()
+
   it('should be defined', () => {
     expect(refAutoReset).toBeDefined()
     expect(autoResetRef).toBeDefined()

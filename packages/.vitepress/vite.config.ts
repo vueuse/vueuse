@@ -2,16 +2,17 @@ import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { defineConfig } from 'rolldown-vite'
 import UnoCSS from 'unocss/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
-import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
 import { getChangeLog, getFunctionContributors } from '../../scripts/changelog'
 import { ChangeLog } from './plugins/changelog'
 import { Contributors } from './plugins/contributors'
 import { MarkdownTransform } from './plugins/markdownTransform'
+import { PWAVirtual } from './plugins/pwa-virtual'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const require = createRequire(import.meta.url)
@@ -40,7 +41,7 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         IconsResolver({
-          componentPrefix: '',
+          prefix: '',
         }),
       ],
       dts: resolve(__dirname, 'components.d.mts'),
@@ -51,6 +52,7 @@ export default defineConfig({
       defaultStyle: 'display: inline-block',
     }),
     UnoCSS(),
+    PWAVirtual(),
     Inspect(),
   ],
   resolve: {
@@ -58,11 +60,9 @@ export default defineConfig({
       '@vueuse/shared': resolve(__dirname, '../shared/index.ts'),
       '@vueuse/core': resolve(__dirname, '../core/index.ts'),
       '@vueuse/math': resolve(__dirname, '../math/index.ts'),
-      '@vueuse/integrations/useFocusTrap': resolve(__dirname, '../integrations/useFocusTrap/index.ts'),
-      '@vueuse/integrations': resolve(__dirname, '../integrations/index.ts'),
+      '@vueuse/integrations': resolve(__dirname, '../integrations'),
       '@vueuse/components': resolve(__dirname, '../components/index.ts'),
       '@vueuse/metadata': resolve(__dirname, '../metadata/index.ts'),
-      '@vueuse/docs-utils': resolve(__dirname, 'plugins/utils.ts'),
     },
     dedupe: [
       'vue',
@@ -74,6 +74,7 @@ export default defineConfig({
       '@vueuse/shared',
       '@vueuse/core',
       'body-scroll-lock',
+      '@vue/repl',
     ],
     include: [
       'axios',
@@ -84,6 +85,7 @@ export default defineConfig({
       'fuse.js',
       'universal-cookie',
     ],
+    disabled: 'dev',
   },
   build: {
     rollupOptions: {
@@ -95,7 +97,10 @@ export default defineConfig({
             return 'vue'
         },
       },
+      /* TODO: unsupported options for Rolldown */
+      // maxParallelFileOps: 5,
     },
+    sourcemap: false,
   },
   css: {
     postcss: {
@@ -103,5 +108,10 @@ export default defineConfig({
         require('postcss-nested'),
       ],
     },
+  },
+  ssr: {
+    noExternal: [
+      '@vue/repl',
+    ],
   },
 })

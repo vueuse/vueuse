@@ -13,6 +13,13 @@ export interface UseNowOptions<Controls extends boolean> {
   controls?: Controls
 
   /**
+   * Start the clock immediately
+   *
+   * @default true
+   */
+  immediate?: boolean
+
+  /**
    * Update interval in milliseconds, or use requestAnimationFrame
    *
    * @default requestAnimationFrame
@@ -25,13 +32,25 @@ export interface UseNowOptions<Controls extends boolean> {
  *
  * @see https://vueuse.org/useNow
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useNow(options?: UseNowOptions<false>): Ref<Date>
 export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausable
+
+/**
+ * Reactive current Date instance.
+ *
+ * @see https://vueuse.org/useNow
+ * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useNow(options: UseNowOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     interval = 'requestAnimationFrame',
+    immediate = true,
   } = options
 
   const now = deepRef(new Date())
@@ -39,8 +58,8 @@ export function useNow(options: UseNowOptions<boolean> = {}) {
   const update = () => now.value = new Date()
 
   const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(update, { immediate: true })
-    : useIntervalFn(update, interval, { immediate: true })
+    ? useRafFn(update, { immediate })
+    : useIntervalFn(update, interval, { immediate })
 
   if (exposeControls) {
     return {

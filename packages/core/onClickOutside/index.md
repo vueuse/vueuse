@@ -9,7 +9,7 @@ Listen for clicks outside of an element. Useful for modal or dropdown.
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
@@ -42,6 +42,19 @@ useEventListener('pointermove', (e) => {
   // or
   trigger(e)
 })
+```
+
+If you want to ignore certain elements, you can use the `ignore` option. Provide the elements to ignore as an array of Refs or CSS Selectors.
+
+```ts
+const ignoreElRef = useTemplateRef<HTMLElement>('ignoreEl')
+const ignoreElSelector = '.ignore-el'
+
+onClickOutside(
+  target,
+  event => console.log(event),
+  { ignore: [ignoreElRef, ignoreElSelector] },
+)
 ```
 
 ## Component Usage
@@ -82,7 +95,7 @@ function closeModal() {
 You can also set the handler as an array to set the configuration items of the instruction.
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { vOnClickOutside } from '@vueuse/components'
 import { shallowRef, useTemplateRef } from 'vue'
 

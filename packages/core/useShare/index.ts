@@ -22,6 +22,8 @@ interface NavigatorWithShare {
  * @see https://vueuse.org/useShare
  * @param shareOptions
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useShare(shareOptions: MaybeRefOrGetter<UseShareOptions> = {}, options: ConfigurableNavigator = {}) {
   const { navigator = defaultNavigator } = options
@@ -35,10 +37,10 @@ export function useShare(shareOptions: MaybeRefOrGetter<UseShareOptions> = {}, o
         ...toValue(shareOptions),
         ...toValue(overrideOptions),
       }
-      let granted = true
+      let granted = false
 
-      if (data.files && _navigator.canShare)
-        granted = _navigator.canShare({ files: data.files })
+      if (_navigator.canShare)
+        granted = _navigator.canShare(data)
 
       if (granted)
         return _navigator.share!(data)
