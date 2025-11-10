@@ -122,6 +122,7 @@ export function useEventListener<EventType = Event>(
 ): Fn
 
 export function useEventListener(...args: Parameters<typeof useEventListener>) {
+  const cleanups: Function[] = []
   const register = (
     el: EventTarget,
     event: string,
