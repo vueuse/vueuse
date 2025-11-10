@@ -159,7 +159,7 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
         ),
       )
       onCleanup(() => {
-        removes.forEach(fn => fn())
+        cleanups.forEach(fn => fn())
       })
     },
     { flush: 'post' },
