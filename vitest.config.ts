@@ -30,6 +30,9 @@ export default defineConfig({
     env: {
       TZ: 'UTC-1', // to have some actual results with timezone offset
     },
+    exclude: [
+      '**/node_modules/**',
+    ],
     coverage: {
       include: [
         'packages/**/*.ts',
