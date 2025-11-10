@@ -147,7 +147,7 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
       // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
       toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
     ] as const,
-    ([raw_targets, raw_events, raw_listeners, raw_options], oldValue, onCleanup) => {
+    ([raw_targets, raw_events, raw_listeners, raw_options], _, onCleanup) => {
       if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
         return
 
