@@ -151,6 +151,7 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
 
       // create a clone of options, to avoid it being changed reactively on removal
       const optionsClone = isObject(raw_options) ? { ...raw_options } : raw_options
+      const cleanups: Function[] = []
       cleanups.push(
         ...raw_targets.flatMap(el =>
           raw_events.flatMap(event =>
