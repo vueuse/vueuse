@@ -122,48 +122,62 @@ export function useEventListener<EventType = Event>(
 ): Fn
 
 export function useEventListener(...args: Parameters<typeof useEventListener>) {
-  const cleanups: Function[] = []
+  let cleanupFunctions: Function[] = []
+
+  // Helper function to cleanup all event listeners
   const cleanup = () => {
-    cleanups.forEach(fn => fn())
-    cleanups.length = 0
+    cleanupFunctions.forEach(fn => fn())
+    cleanupFunctions = []
   }
 
+  // Helper function to register a single event listener
   const register = (
     el: EventTarget,
     event: string,
     listener: any,
     options: boolean | AddEventListenerOptions | undefined,
   ) => {
-    el.addEventListener(event, listener, options)
-    return () => el.removeEventListener(event, listener, options)
+    // Clone options to prevent reactive changes affecting the listener removal
+    const safeOptions = isObject(options) ? { ...options } : options
+    el.addEventListener(event, listener, safeOptions)
+    return () => el.removeEventListener(event, listener, safeOptions)
   }
 
+  // Detect if the first argument is a target or an event name
   const firstParamTargets = computed(() => {
-    const test = toArray(toValue(args[0])).filter(e => e != null)
-    return test.every(e => typeof e !== 'string') ? test : undefined
+    const possibleTargets = toArray(toValue(args[0])).filter(Boolean)
+    return possibleTargets.every(e => typeof e !== 'string') ? possibleTargets : undefined
   })
 
+  // Watch for changes in targets, events, listeners, and options
   const stopWatch = watchImmediate(
-    () => [
-      firstParamTargets.value?.map(e => unrefElement(e as never)) ?? [defaultWindow].filter(e => e != null),
-      toArray(toValue(firstParamTargets.value ? args[1] : args[0]) as string[]),
-      toArray(unref(firstParamTargets.value ? args[2] : args[1]) as Function[]),
-      // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
-      toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
-    ] as const,
-    ([raw_targets, raw_events, raw_listeners, raw_options]) => {
+    () => {
+      const hasTargets = firstParamTargets.value
+      return [
+        // Resolve targets (fallback to defaultWindow if no explicit target)
+        hasTargets
+          ? firstParamTargets.value.map((target: any) => unrefElement(target))
+          : [defaultWindow].filter(Boolean),
+        // Resolve events
+        toArray(toValue(hasTargets ? args[1] : args[0])) as string[],
+        // Resolve listeners
+        toArray(unref(hasTargets ? args[2] : args[1])) as Function[],
+        // Resolve options
+        toValue(hasTargets ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
+      ] as const
+    },
+    ([targets, events, listeners, options]: [EventTarget[], string[], Function[], boolean | AddEventListenerOptions | undefined]) => {
+      // Clean up existing listeners before setting up new ones
       cleanup()
 
-      if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
+      // Early return if any required parameter is empty
+      if (!targets?.length || !events?.length || !listeners?.length)
         return
 
-      // create a clone of options, to avoid it being changed reactively on removal
-      const optionsClone = isObject(raw_options) ? { ...raw_options } : raw_options
-      cleanups.push(
-        ...raw_targets.flatMap(el =>
-          raw_events.flatMap(event =>
-            raw_listeners.map(listener => register(el, event, listener, optionsClone)),
-          ),
+      // Register all combinations of targets, events, and listeners
+      cleanupFunctions = targets.flatMap((target: EventTarget) =>
+        events.flatMap((event: string) =>
+          listeners.map((listener: Function) => register(target, event, listener, options)),
         ),
       )
     },
