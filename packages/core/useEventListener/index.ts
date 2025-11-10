@@ -137,7 +137,9 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
     return test.every(e => typeof e !== 'string') ? test : undefined
   })
 
-  const stopWatch = watchImmediate(
+  tryOnScopeDispose(cleanup)
+
+  return watchImmediate(
     () => [
       firstParamTargets.value?.map(e => unrefElement(e as never)) ?? [defaultWindow].filter(e => e != null),
       toArray(toValue(firstParamTargets.value ? args[1] : args[0]) as string[]),
@@ -165,12 +167,4 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
     },
     { flush: 'post' },
   )
-
-  const stop = () => {
-    stopWatch()
-  }
-
-  tryOnScopeDispose(cleanup)
-
-  return stop
 }
