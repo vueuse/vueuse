@@ -1,11 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import { ref as deepRef, defineComponent, shallowRef, useTemplateRef } from 'vue'
+import { ref as deepRef, defineComponent, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from './index'
-
-vi.mock('../useElementVisibility', () => ({
-  useElementVisibility: () => shallowRef(true),
-}))
 
 describe('useInfiniteScroll', () => {
   it('should be defined', () => {
