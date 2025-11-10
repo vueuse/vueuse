@@ -9,6 +9,12 @@ import { useIntersectionObserver } from '../useIntersectionObserver'
 
 export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
   /**
+   * Initial value.
+   *
+   * @default false
+   */
+  initialValue?: boolean
+  /**
    * @see https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin
    */
   rootMargin?: MaybeRefOrGetter<string>
@@ -39,8 +45,9 @@ export function useElementVisibility(
     threshold = 0,
     rootMargin,
     once = false,
+    initialValue = false,
   } = options
-  const elementIsVisible = shallowRef(false)
+  const elementIsVisible = shallowRef(initialValue)
 
   const { stop } = useIntersectionObserver(
     element,
