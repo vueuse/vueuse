@@ -1,0 +1,57 @@
+diff --git a/lib/google-font-list.js b/lib/google-font-list.js
+index f96bd8424bd7608d4ccbeb6897263f64a6c033c6..f0b42b1ca263c9f267cb1daeb8866c08ab3e0d18 100644
+--- a/lib/google-font-list.js
++++ b/lib/google-font-list.js
+@@ -9,7 +9,7 @@ var googleFont = require('./google-font');
+ const googleFontApiUrl = 'https://www.googleapis.com/webfonts/v1/webfonts?key=';
+ 
+ function isValidString(val) {
+-	return util.isString(val) && val.trim() !== '';
++	return typeof val === "string" && val.trim() !== '';
+ }
+ 
+ function GoogleFontList(apiKey) {
+diff --git a/lib/google-font.js b/lib/google-font.js
+index 64464bd2e6b61412cad99fe561ea5e7e53278bec..2a17cb2c5dd1ea81a98a8d46f352947a80db209e 100644
+--- a/lib/google-font.js
++++ b/lib/google-font.js
+@@ -60,11 +60,11 @@ googleFont.prototype.getFiles = function(variants){
+ 	var self = this;
+ 	var fileList = self.getFileList();
+ 	var files = {};
+-	if ( util.isString(variants) ) {
++	if ( typeof variants === "string") {
+ 		return self.getFiles([variants]);
+-	} else if ( util.isNullOrUndefined(variants) || !variants ){
++	} else if ( !variants ){
+ 		return fileList;
+-	} else if ( util.isArray(variants) ) {
++	} else if ( Array.isArray(variants) ) {
+ 		variants.forEach(function(theVariant){
+ 			var normalizedVariant = self._normalizeVariant(theVariant);
+ 			files[normalizedVariant] = fileList.hasOwnProperty(normalizedVariant) ? fileList[normalizedVariant] : false;
+diff --git a/lib/system-font.js b/lib/system-font.js
+index f5928eeb46e291a00e47ef0ea467de218776e098..6bde2368ac8c8cfaa4a53d226d9ea16f5a98d533 100644
+--- a/lib/system-font.js
++++ b/lib/system-font.js
+@@ -73,9 +73,9 @@ SystemFont.prototype._move = function(oldPath, destFolder, callback) {
+ 
+ SystemFont.prototype._checkDestFolder = function(destFolder, callback){
+ 	var self = this;
+-	if (util.isNullOrUndefined(destFolder) || !destFolder) {
++	if (!destFolder) {
+ 		destFolder = process.cwd() || os.homedir();
+-	} else if (!util.isString(destFolder)) {
++	} else if (typeof destFolder !== "string") {
+ 		throw new Error('Destination folder for font must be a string');
+ 	}
+ 	var absFolder = path.resolve(destFolder);
+@@ -159,7 +159,7 @@ SystemFont.prototype.install = function(remoteFile, fileName, callback) {
+ 						callback(err, 'Font System Folder with cscript.');
+ 					})
+ 				}
+-			})	
++			})
+ 			break;
+ 		default:
+ 			callback(new Error('Platform not supported.'));
