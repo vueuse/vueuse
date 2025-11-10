@@ -122,12 +122,6 @@ export function useEventListener<EventType = Event>(
 ): Fn
 
 export function useEventListener(...args: Parameters<typeof useEventListener>) {
-  const cleanups: Function[] = []
-  const cleanup = () => {
-    cleanups.forEach(fn => fn())
-    cleanups.length = 0
-  }
-
   const register = (
     el: EventTarget,
     event: string,
@@ -151,9 +145,7 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
       // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
       toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
     ] as const,
-    ([raw_targets, raw_events, raw_listeners, raw_options]) => {
-      cleanup()
-
+    ([raw_targets, raw_events, raw_listeners, raw_options], oldValue, onCleanup) => {
       if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
         return
 
@@ -166,13 +158,15 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
           ),
         ),
       )
+      onCleanup(() => {
+        removes.forEach(fn => fn())
+      })
     },
     { flush: 'post' },
   )
 
   const stop = () => {
     stopWatch()
-    cleanup()
   }
 
   tryOnScopeDispose(cleanup)
