@@ -43,7 +43,7 @@ export interface UseVibrateOptions<Legacy = false> extends ConfigurableNavigator
    * @default 0
    *
    */
-  interval: Legacy extends false ? never : number | undefined
+  interval: Legacy extends false ? never : number
 }
 
 export interface UseVibrateReturn {
