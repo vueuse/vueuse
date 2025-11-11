@@ -92,7 +92,7 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 
 ### Sub-protocols
 
-List of one or more subprotocols to use, in this case soap and wamp.
+List of one or more subprotocols to use, in this case SOAP and WAMP.
 
 ```ts
 import { useWebSocket } from '@vueuse/core'
