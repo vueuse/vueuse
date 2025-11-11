@@ -169,7 +169,7 @@ function getDefaultScheduler(options: Extract<UseWebSocketOptions<true>['heartbe
  * @param url
  */
 export function useWebSocket<Data = any>(url: MaybeRefOrGetter<string | URL | undefined>, options?: UseWebSocketOptions): UseWebSocketReturn<Data>
-/** @deprecated Please use with `scheduler` */
+/** @deprecated Please use with `scheduler` option */
 export function useWebSocket<Data = any>(url: MaybeRefOrGetter<string | URL | undefined>, options: UseWebSocketOptions<true>): UseWebSocketReturn<Data>
 
 export function useWebSocket<Data = any>(
