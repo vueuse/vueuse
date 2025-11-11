@@ -1,5 +1,6 @@
 import type { Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import { useIntervalFn } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
@@ -147,7 +148,11 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
     updateInterval = 30_000,
   } = options
 
-  const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
+  const { now, ...controls } = useNow({
+    scheduler: cb => useIntervalFn(cb, updateInterval),
+    controls: true,
+  })
+
   const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, toValue(now)))
 
   if (exposeControls) {

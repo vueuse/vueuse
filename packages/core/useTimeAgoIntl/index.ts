@@ -1,5 +1,6 @@
 import type { Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import { useIntervalFn } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
@@ -83,7 +84,10 @@ export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, o
     updateInterval = 30_000,
   } = options
 
-  const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
+  const { now, ...controls } = useNow({
+    scheduler: cb => useIntervalFn(cb, updateInterval),
+    controls: true,
+  })
 
   const result = computed(() =>
     getTimeAgoIntlResult(new Date(toValue(time)), options, toValue(now)),
