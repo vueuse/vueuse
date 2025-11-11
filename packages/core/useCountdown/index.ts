@@ -4,12 +4,16 @@ import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
 function getDefaultScheduler(options: UseCountdownOptions<true>) {
-  const {
-    interval = 1000,
-    immediate = false,
-  } = options
+  if ('interval' in options || 'immediate' in options) {
+    const {
+      interval = 1000,
+      immediate = false,
+    } = options
 
-  return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
+    return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
+  }
+
+  return (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false })
 }
 
 export interface UseCountdownOptions<Legacy = false> extends ConfigurableScheduler {

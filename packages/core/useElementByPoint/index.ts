@@ -40,7 +40,7 @@ export interface UseElementByPointReturn<Multiple extends boolean = false> exten
  * @param options - UseElementByPointOptions
  */
 export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M>): UseElementByPointReturn<M>
-/** @deprecated */
+/** @deprecated Please use with `scheduler` option */
 export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M, true>): UseElementByPointReturn<M>
 
 export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M, boolean>): UseElementByPointReturn<M> {
