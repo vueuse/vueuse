@@ -1,28 +1,25 @@
-import type { AnyFn, ConfigurableScheduler, Pausable, UseIntervalFnOptions } from '@vueuse/shared'
-import type { MaybeRefOrGetter, Ref } from 'vue'
-import type { UseRafFnOptions } from '../useRafFn'
+import type { AnyFn, ConfigurableScheduler, Pausable } from '@vueuse/shared'
+import type { Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-function createRafScheduler(options: UseRafFnOptions) {
-  return (fn: AnyFn) => useRafFn(fn, options)
+function getDefaultScheduler(options: UseNowOptions<boolean, boolean>) {
+  if ('interval' in options || 'immediate' in options) {
+    const {
+      interval = 'requestAnimationFrame',
+      immediate = true,
+    } = options
+
+    return interval === 'requestAnimationFrame'
+      ? (fn: AnyFn) => useRafFn(fn, { immediate })
+      : (fn: AnyFn) => useIntervalFn(fn, interval, options)
+  }
+
+  return useRafFn
 }
 
-function createIntervalScheduler(options: { interval?: MaybeRefOrGetter<number> } & UseIntervalFnOptions) {
-  return (fn: AnyFn) => useIntervalFn(fn, options.interval, options)
-}
-
-export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
-  /**
-   * Expose more controls
-   *
-   * @default false
-   */
-  controls?: Controls
-}
-
-interface LegacyUseNowOptions<Controls extends boolean> {
+export interface UseNowOptions<Controls extends boolean, Legacy = false> extends ConfigurableScheduler {
   /**
    * Expose more controls
    *
@@ -36,7 +33,7 @@ interface LegacyUseNowOptions<Controls extends boolean> {
    * @deprecated
    * @default true
    */
-  immediate?: boolean
+  immediate?: Legacy extends false ? never : boolean
 
   /**
    * Update interval in milliseconds, or use requestAnimationFrame
@@ -44,7 +41,7 @@ interface LegacyUseNowOptions<Controls extends boolean> {
    * @deprecated
    * @default requestAnimationFrame
    */
-  interval?: 'requestAnimationFrame' | number
+  interval?: Legacy extends false ? never : 'requestAnimationFrame' | number
 }
 
 /**
@@ -58,9 +55,7 @@ interface LegacyUseNowOptions<Controls extends boolean> {
 export function useNow(options?: UseNowOptions<false>): Ref<Date>
 export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausable
 /** @deprecated Please use with `scheduler` option */
-export function useNow(options?: LegacyUseNowOptions<false>): Ref<Date>
-/** @deprecated Please use with `scheduler` option */
-export function useNow(options?: LegacyUseNowOptions<true>): { now: Ref<Date> } & Pausable
+export function useNow(options?: UseNowOptions<boolean, true>): Ref<Date> | { now: Ref<Date> } & Pausable
 
 /**
  * Reactive current Date instance.
@@ -70,33 +65,15 @@ export function useNow(options?: LegacyUseNowOptions<true>): { now: Ref<Date> } 
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNow(options: UseNowOptions<boolean> | LegacyUseNowOptions<boolean> = {}) {
+export function useNow(options: UseNowOptions<boolean, boolean> = {}) {
   const {
     controls: exposeControls = false,
+    scheduler = getDefaultScheduler(options),
   } = options
 
   const now = deepRef(new Date())
 
   const update = () => now.value = new Date()
-
-  let scheduler: (fn: AnyFn) => Pausable
-
-  if ('scheduler' in options && options?.scheduler) {
-    scheduler = options.scheduler
-  }
-  else if ('interval' in options || 'immediate' in options) {
-    const {
-      interval = 'requestAnimationFrame',
-      immediate = true,
-    } = options
-
-    scheduler = interval === 'requestAnimationFrame'
-      ? createRafScheduler({ immediate })
-      : createIntervalScheduler({ interval, immediate })
-  }
-  else {
-    scheduler = useRafFn
-  }
 
   const controls = scheduler(update)
 
