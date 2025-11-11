@@ -26,7 +26,7 @@ Establish the connection immediately when the composable is called.
 
 Enable by default.
 
-If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
+If a URL is provided as a ref, when the URL changes, it will automatically reconnect to the new URL.
 
 ### autoClose
 
