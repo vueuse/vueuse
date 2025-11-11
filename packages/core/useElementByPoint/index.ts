@@ -8,14 +8,18 @@ import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
 function getDefaultScheduler(options: UseElementByPointOptions<boolean, true>) {
-  const {
-    interval = 'requestAnimationFrame',
-    immediate = true,
-  } = options
+  if ('interval' in options || 'immediate' in options) {
+    const {
+      interval = 'requestAnimationFrame',
+      immediate = true,
+    } = options
 
-  return interval === 'requestAnimationFrame'
-    ? (cb: AnyFn) => useRafFn(cb, { immediate })
-    : (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
+    return interval === 'requestAnimationFrame'
+      ? (cb: AnyFn) => useRafFn(cb, { immediate })
+      : (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
+  }
+
+  return useRafFn
 }
 
 export interface UseElementByPointOptions<Multiple extends boolean = false, Legacy = false> extends ConfigurableDocument, ConfigurableScheduler {
