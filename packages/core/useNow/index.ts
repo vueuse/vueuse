@@ -1,8 +1,17 @@
-import type { AnyFn, ConfigurableScheduler, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { AnyFn, ConfigurableScheduler, Pausable, UseIntervalFnOptions } from '@vueuse/shared'
+import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { UseRafFnOptions } from '../useRafFn'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
+
+function createRafScheduler(options: UseRafFnOptions) {
+  return (fn: AnyFn) => useRafFn(fn, options)
+}
+
+function createIntervalScheduler(options: { interval?: MaybeRefOrGetter<number> } & UseIntervalFnOptions) {
+  return (fn: AnyFn) => useIntervalFn(fn, options.interval, options)
+}
 
 export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
   /**
@@ -70,20 +79,23 @@ export function useNow(options: UseNowOptions<boolean> | LegacyUseNowOptions<boo
 
   const update = () => now.value = new Date()
 
-  const scheduler = (fn: AnyFn) => {
-    if ('interval' in options || 'immediate' in options) {
-      const {
-        interval = 'requestAnimationFrame',
-        immediate = true,
-      } = options
+  let scheduler: (fn: AnyFn) => Pausable
 
-      return interval === 'requestAnimationFrame'
-        ? useRafFn(fn, { immediate })
-        : useIntervalFn(fn, interval, { immediate })
-    }
-    else {
-      return useRafFn(fn)
-    }
+  if ('scheduler' in options && options?.scheduler) {
+    scheduler = options.scheduler
+  }
+  else if ('interval' in options || 'immediate' in options) {
+    const {
+      interval = 'requestAnimationFrame',
+      immediate = true,
+    } = options
+
+    scheduler = interval === 'requestAnimationFrame'
+      ? createRafScheduler({ immediate })
+      : createIntervalScheduler({ interval, immediate })
+  }
+  else {
+    scheduler = useRafFn
   }
 
   const controls = scheduler(update)
