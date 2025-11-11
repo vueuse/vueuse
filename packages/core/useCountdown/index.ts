@@ -1,13 +1,24 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, ConfigurableScheduler, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
-export interface UseCountdownOptions {
+function getDefaultScheduler(options: UseCountdownOptions<true>) {
+  const {
+    interval = 1000,
+    immediate = false,
+  } = options
+
+  return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
+}
+
+export interface UseCountdownOptions<Legacy = false> extends ConfigurableScheduler {
   /**
    *  Interval for the countdown in milliseconds. Default is 1000ms.
+   *
+   * @deprecated
    */
-  interval?: MaybeRefOrGetter<number>
+  interval?: Legacy extends false ? never : MaybeRefOrGetter<number>
   /**
    * Callback function called when the countdown reaches 0.
    */
@@ -19,9 +30,10 @@ export interface UseCountdownOptions {
   /**
    * Start the countdown immediately
    *
+   * @deprecated
    * @default false
    */
-  immediate?: boolean
+  immediate?: Legacy extends false ? never : boolean
 }
 
 export interface UseCountdownReturn extends Pausable {
@@ -44,46 +56,56 @@ export interface UseCountdownReturn extends Pausable {
 }
 
 /**
- * Wrapper for `useIntervalFn` that provides a countdown timer in seconds.
+ * Reactive countdown timer in seconds.
  *
  * @param initialCountdown
  * @param options
  *
  * @see https://vueuse.org/useCountdown
  */
-export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options?: UseCountdownOptions): UseCountdownReturn {
+export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options?: UseCountdownOptions): UseCountdownReturn
+/** @deprecated Please use with `scheduler` option */
+export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options: UseCountdownOptions<true>): UseCountdownReturn
+
+export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options: UseCountdownOptions<boolean> = {}): UseCountdownReturn {
   const remaining = shallowRef(toValue(initialCountdown))
 
-  const intervalController = useIntervalFn(() => {
+  const {
+    scheduler = getDefaultScheduler(options),
+    onTick,
+    onComplete,
+  } = options
+
+  const controls = scheduler(() => {
     const value = remaining.value - 1
     remaining.value = value < 0 ? 0 : value
-    options?.onTick?.()
+    onTick?.()
     if (remaining.value <= 0) {
-      intervalController.pause()
-      options?.onComplete?.()
+      controls.pause()
+      onComplete?.()
     }
-  }, options?.interval ?? 1000, { immediate: options?.immediate ?? false })
+  })
 
   const reset = (countdown?: MaybeRefOrGetter<number>) => {
     remaining.value = toValue(countdown) ?? toValue(initialCountdown)
   }
 
   const stop = () => {
-    intervalController.pause()
+    controls.pause()
     reset()
   }
 
   const resume = () => {
-    if (!intervalController.isActive.value) {
+    if (!controls.isActive.value) {
       if (remaining.value > 0) {
-        intervalController.resume()
+        controls.resume()
       }
     }
   }
 
   const start = (countdown?: MaybeRefOrGetter<number>) => {
     reset(countdown)
-    intervalController.resume()
+    controls.resume()
   }
 
   return {
@@ -91,8 +113,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     reset,
     stop,
     start,
-    pause: intervalController.pause,
+    pause: controls.pause,
     resume,
-    isActive: intervalController.isActive,
+    isActive: controls.isActive,
   }
 }
