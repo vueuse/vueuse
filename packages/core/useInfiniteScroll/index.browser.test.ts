@@ -49,8 +49,6 @@ describe('useInfiniteScroll', () => {
 
     await flushPromises()
     expect(vm.el!.scrollHeight).toBe(200)
-
-    wrapper.unmount()
   })
 
   it('should not call loadMore when canLoadMore returns false', async () => {
@@ -73,7 +71,5 @@ describe('useInfiniteScroll', () => {
     await flushPromises()
     expect(canLoadMoreSpy).toHaveBeenCalledOnce()
     expect(handlerSpy).not.toBeCalled()
-
-    wrapper.unmount()
   })
 })
