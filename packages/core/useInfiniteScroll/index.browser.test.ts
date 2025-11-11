@@ -1,13 +1,11 @@
-import { flushPromises, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { ref as deepRef, defineComponent, shallowRef, useTemplateRef } from 'vue'
+import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { ref as deepRef, defineComponent, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from './index'
 
-vi.mock('../useElementVisibility', () => ({
-  useElementVisibility: () => shallowRef(true),
-}))
-
 describe('useInfiniteScroll', () => {
+  enableAutoUnmount(afterEach)
+
   it('should be defined', () => {
     expect(useInfiniteScroll).toBeDefined()
   })
@@ -51,14 +49,12 @@ describe('useInfiniteScroll', () => {
 
     await flushPromises()
     expect(vm.el!.scrollHeight).toBe(200)
-
-    wrapper.unmount()
   })
 
   it('should not call loadMore when canLoadMore returns false', async () => {
     const handlerSpy = vi.fn()
     const canLoadMoreSpy = vi.fn(() => false)
-    const wrapper = mount(defineComponent({
+    mount(defineComponent({
       template: `
         <div ref="el" style="height: 50px; overflow: auto;">
           <div style="height: 50px;"></div>
@@ -75,7 +71,5 @@ describe('useInfiniteScroll', () => {
     await flushPromises()
     expect(canLoadMoreSpy).toHaveBeenCalledOnce()
     expect(handlerSpy).not.toBeCalled()
-
-    wrapper.unmount()
   })
 })
