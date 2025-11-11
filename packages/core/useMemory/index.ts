@@ -1,7 +1,25 @@
-import type { UseIntervalFnOptions } from '@vueuse/shared'
+import type { AnyFn, ConfigurableScheduler } from '@vueuse/shared'
+import type { ComputedRef, Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
+
+function getDefaultScheduler(options: UseMemoryOptions<true>) {
+  if ('interval' in options || 'immediate' in options || 'immediateCallback' in options) {
+    const {
+      interval = 1000,
+      immediate,
+      immediateCallback,
+    } = options
+
+    return (cb: AnyFn) => useIntervalFn(cb, interval, {
+      immediate,
+      immediateCallback,
+    })
+  }
+
+  return useIntervalFn
+}
 
 /**
  * Performance.memory
@@ -25,8 +43,30 @@ export interface MemoryInfo {
   [Symbol.toStringTag]: 'MemoryInfo'
 }
 
-export interface UseMemoryOptions extends UseIntervalFnOptions {
-  interval?: number
+export interface UseMemoryOptions<Legacy = false> extends ConfigurableScheduler {
+  /**
+   * Start the timer immediately
+   *
+   * @deprecated
+   * @default true
+   */
+  immediate?: Legacy extends false ? never : boolean
+
+  /**
+   * Execute the callback immediately after calling `resume`
+   *
+   * @deprecated
+   * @default false
+   */
+  immediateCallback?: Legacy extends false ? never : boolean
+
+  /** @deprecated */
+  interval?: Legacy extends false ? never : number
+}
+
+export interface UseMemoryReturn {
+  isSupported: ComputedRef<boolean>
+  memory: Ref<MemoryInfo | undefined>
 }
 
 type PerformanceMemory = Performance & {
@@ -41,18 +81,23 @@ type PerformanceMemory = Performance & {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useMemory(options: UseMemoryOptions = {}) {
+export function useMemory(options?: UseMemoryOptions): UseMemoryReturn
+/** @deprecated Please use with `scheduler` option */
+export function useMemory(options: UseMemoryOptions<true>): UseMemoryReturn
+
+export function useMemory(options: UseMemoryOptions<boolean> = {}): UseMemoryReturn {
   const memory = deepRef<MemoryInfo>()
   const isSupported = useSupported(() => typeof performance !== 'undefined' && 'memory' in performance)
 
   if (isSupported.value) {
-    const { interval = 1000 } = options
-    useIntervalFn(() => {
+    const {
+      scheduler = getDefaultScheduler,
+    } = options
+
+    scheduler(() => {
       memory.value = (performance as PerformanceMemory).memory
-    }, interval, { immediate: options.immediate, immediateCallback: options.immediateCallback })
+    })
   }
 
   return { isSupported, memory }
 }
-
-export type UseMemoryReturn = ReturnType<typeof useMemory>
