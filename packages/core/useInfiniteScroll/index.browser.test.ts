@@ -1,9 +1,11 @@
-import { flushPromises, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, defineComponent, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from './index'
 
 describe('useInfiniteScroll', () => {
+  enableAutoUnmount(afterEach)
+
   it('should be defined', () => {
     expect(useInfiniteScroll).toBeDefined()
   })
