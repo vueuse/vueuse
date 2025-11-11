@@ -54,7 +54,7 @@ describe('useInfiniteScroll', () => {
   it('should not call loadMore when canLoadMore returns false', async () => {
     const handlerSpy = vi.fn()
     const canLoadMoreSpy = vi.fn(() => false)
-    const wrapper = mount(defineComponent({
+    mount(defineComponent({
       template: `
         <div ref="el" style="height: 50px; overflow: auto;">
           <div style="height: 50px;"></div>
