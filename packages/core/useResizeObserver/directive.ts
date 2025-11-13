@@ -1,4 +1,4 @@
-import type { ResizeObserverCallback, UseResizeObserverOptions } from '@vueuse/core'
+import type { UseResizeObserverOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 
