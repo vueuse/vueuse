@@ -1,6 +1,6 @@
-import type { AnyFn, ConfigurableScheduler, Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
-import type { ConfigurableDocument } from '../_configurable'
+import type { ConfigurableDocument, ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'

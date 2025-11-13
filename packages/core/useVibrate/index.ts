@@ -1,6 +1,6 @@
-import type { AnyFn, Arrayable, ConfigurableScheduler, Pausable } from '@vueuse/shared'
+import type { AnyFn, Arrayable, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
-import type { ConfigurableNavigator } from '../_configurable'
+import type { ConfigurableNavigator, ConfigurableScheduler } from '../_configurable'
 import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'

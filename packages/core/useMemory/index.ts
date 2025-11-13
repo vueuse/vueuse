@@ -1,5 +1,6 @@
-import type { AnyFn, ConfigurableScheduler } from '@vueuse/shared'
+import type { AnyFn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'

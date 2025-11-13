@@ -1,5 +1,6 @@
-import type { AnyFn, ConfigurableScheduler, Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
