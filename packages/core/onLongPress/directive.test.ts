@@ -60,6 +60,14 @@ describe('vOnLongPress', () => {
       await promiseTimeout(500)
       expect(onLongPress).toHaveBeenCalledTimes(1)
     })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.get('[data-test=element]')
+      wrapper.unmount()
+      await element.trigger('pointerdown')
+      await promiseTimeout(500)
+      expect(onLongPress).toHaveBeenCalledTimes(0)
+    })
   })
 
   describe('given options', () => {
@@ -92,6 +100,14 @@ describe('vOnLongPress', () => {
       expect(onLongPress).toHaveBeenCalledTimes(0)
       await promiseTimeout(500)
       expect(onLongPress).toHaveBeenCalledTimes(1)
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.get('[data-test=element]')
+      wrapper.unmount()
+      await element.trigger('pointerdown')
+      await promiseTimeout(500)
+      expect(onLongPress).toHaveBeenCalledTimes(0)
     })
   })
 })
