@@ -85,7 +85,7 @@ catalogs:
     fake-indexeddb: ^6.2.4
     jsdom: ^27.1.0
     msw: ^2.3.0
-    playwright: 1.49.0
+    playwright: 1.55.1
     vitest: ^4.0.8
     vitest-browser-vue: ^2.0.1
     vitest-package-exports: ^0.1.1
