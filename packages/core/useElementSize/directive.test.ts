@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, nextTick } from 'vue'
 import { vElementSize } from './directive'
 
 const App = defineComponent({
@@ -27,8 +27,24 @@ describe('vElementSize', () => {
   let onResize = vi.fn()
   let wrapper: VueWrapper<any>
 
+  let originalResizeObserver: any
+  let resizeObserverCallback: Function | null = null
+  let mockResizeObserver: any
+
   describe('given no options', () => {
     beforeEach(() => {
+      originalResizeObserver = globalThis.ResizeObserver
+      resizeObserverCallback = null
+      mockResizeObserver = vi.fn().mockImplementation((callback: Function) => {
+        resizeObserverCallback = callback
+        return {
+          observe: vi.fn(),
+          unobserve: vi.fn(),
+          disconnect: vi.fn(),
+        }
+      })
+      globalThis.ResizeObserver = mockResizeObserver
+
       onResize = vi.fn()
       wrapper = mount(App, {
         props: {
@@ -42,13 +58,61 @@ describe('vElementSize', () => {
       })
     })
 
+    afterEach(() => {
+      globalThis.ResizeObserver = originalResizeObserver
+    })
+
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.element.querySelector('div')
+
+      if (element && resizeObserverCallback) {
+        resizeObserverCallback([{
+          target: element,
+          contentRect: {
+            width: 200,
+            height: 100,
+          },
+        }])
+
+        await nextTick()
+        expect(onResize).toBeCalledTimes(1)
+
+        onResize.mockClear()
+        wrapper.unmount()
+        await nextTick()
+
+        resizeObserverCallback([{
+          target: element,
+          contentRect: {
+            width: 300,
+            height: 100,
+          },
+        }])
+
+        await nextTick()
+
+        expect(onResize).toBeCalledTimes(0)
+      }
     })
   })
 
   describe('given options', () => {
     beforeEach(() => {
+      originalResizeObserver = globalThis.ResizeObserver
+      resizeObserverCallback = null
+      mockResizeObserver = vi.fn().mockImplementation((callback: Function) => {
+        resizeObserverCallback = callback
+        return {
+          observe: vi.fn(),
+          unobserve: vi.fn(),
+          disconnect: vi.fn(),
+        }
+      })
+      globalThis.ResizeObserver = mockResizeObserver
       onResize = vi.fn()
       const options = [{ width: 100, height: 100 }, { box: 'content-box' }]
 
@@ -65,8 +129,45 @@ describe('vElementSize', () => {
       })
     })
 
+    afterEach(() => {
+      globalThis.ResizeObserver = originalResizeObserver
+    })
+
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.element.querySelector('div')
+
+      if (element && resizeObserverCallback) {
+        resizeObserverCallback([{
+          target: element,
+          contentRect: {
+            width: 200,
+            height: 100,
+          },
+        }])
+
+        await nextTick()
+        expect(onResize).toBeCalledTimes(1)
+
+        onResize.mockClear()
+        wrapper.unmount()
+        await nextTick()
+
+        resizeObserverCallback([{
+          target: element,
+          contentRect: {
+            width: 300,
+            height: 100,
+          },
+        }])
+
+        await nextTick()
+
+        expect(onResize).toBeCalledTimes(0)
+      }
     })
   })
 })
