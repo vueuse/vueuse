@@ -1,7 +1,7 @@
 import type { UseIntersectionObserverReturn } from '.'
-import { page } from '@vitest/browser/context'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup } from 'vitest-browser-vue'
+import { page } from 'vitest/browser'
 import { defineComponent, shallowRef, toValue, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '.'
 
