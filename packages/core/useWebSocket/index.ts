@@ -74,6 +74,11 @@ export interface UseWebSocketOptions {
      * On maximum retry times reached.
      */
     onFailed?: Fn
+
+    /**
+     * Exponential backoff
+     */
+    backoff?: boolean
   }
 
   /**
@@ -256,6 +261,7 @@ export function useWebSocket<Data = any>(
           retries = -1,
           delay = 1000,
           onFailed,
+          backoff = false,
         } = resolveNestedOptions(options.autoReconnect)
 
         const checkRetires = typeof retries === 'function'
@@ -264,7 +270,8 @@ export function useWebSocket<Data = any>(
 
         if (checkRetires(retried)) {
           retried += 1
-          retryTimeout = setTimeout(_init, delay)
+          const currentDelay = backoff ? delay * 2 ** (retried - 1) : delay
+          retryTimeout = setTimeout(_init, currentDelay)
         }
         else {
           onFailed?.()
