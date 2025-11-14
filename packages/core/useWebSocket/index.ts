@@ -38,7 +38,7 @@ export interface UseWebSocketOptions {
      *
      * @default 1000
      */
-    interval?: number
+    interval?: MaybeRefOrGetter<number>
 
     /**
      * Heartbeat response timeout, in milliseconds
@@ -64,11 +64,12 @@ export interface UseWebSocketOptions {
     retries?: number | ((retried: number) => boolean)
 
     /**
-     * Delay for reconnect, in milliseconds
+     * Delay before each reconnect attempt, in milliseconds,
+     * or a function which returns the delay before the next attempt
      *
      * @default 1000
      */
-    delay?: number
+    delay?: number | ((retried: number) => number)
 
     /**
      * On maximum retry times reached.
@@ -258,13 +259,16 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        const checkRetires = typeof retries === 'function'
+        const checkRetries = typeof retries === 'function'
           ? retries
           : () => typeof retries === 'number' && (retries < 0 || retried < retries)
 
-        if (checkRetires(retried)) {
+        if (checkRetries(retried)) {
+          const retryDelay = typeof delay === 'function'
+            ? delay(retried)
+            : delay
           retried += 1
-          retryTimeout = setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, retryDelay)
         }
         else {
           onFailed?.()
