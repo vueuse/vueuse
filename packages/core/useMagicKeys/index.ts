@@ -140,6 +140,9 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     const code = e.code?.toLowerCase()
     const values = [code, key].filter(Boolean)
 
+    if (key === '')
+      return
+
     // current set
     if (key) {
       if (value)
