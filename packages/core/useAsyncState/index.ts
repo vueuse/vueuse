@@ -7,8 +7,8 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<unknown>
-  execute: (delay?: number, ...args: Params) => Promise<Data>
-  executeImmediate: (...args: Params) => Promise<Data>
+  execute: (delay?: number, ...args: Params) => Promise<Data | undefined>
+  executeImmediate: (...args: Params) => Promise<Data | undefined>
 }
 
 export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean>
@@ -122,6 +122,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
         isReady.value = true
       }
       onSuccess(data)
+      return data
     }
     catch (e) {
       if (executionId === executionsCount)
@@ -134,8 +135,6 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
       if (executionId === executionsCount)
         isLoading.value = false
     }
-
-    return state.value as Data
   }
 
   if (immediate) {
