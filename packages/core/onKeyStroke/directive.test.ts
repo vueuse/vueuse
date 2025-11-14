@@ -2,7 +2,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import type { OnKeyStrokeOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import { vOnKeyStroke } from './directive'
 
 const App = defineComponent({
@@ -46,6 +46,23 @@ describe('vOnKeyStroke', () => {
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
     })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.element.querySelector('div')
+      if (element) {
+        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+        await nextTick()
+        expect(onUpdate).toBeCalledTimes(1)
+        wrapper.unmount()
+        onUpdate.mockClear()
+        await nextTick()
+
+        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+        await nextTick()
+
+        expect(onUpdate).toBeCalledTimes(0)
+      }
+    })
   })
 
   describe('given options', () => {
@@ -69,6 +86,23 @@ describe('vOnKeyStroke', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.element.querySelector('div')
+      if (element) {
+        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+        await nextTick()
+        expect(onUpdate).toBeCalledTimes(1)
+        wrapper.unmount()
+        onUpdate.mockClear()
+        await nextTick()
+
+        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+        await nextTick()
+
+        expect(onUpdate).toBeCalledTimes(0)
+      }
     })
   })
 })
