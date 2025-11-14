@@ -2,7 +2,6 @@ import type { AfterFetchContext, OnFetchErrorContext } from './index'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, shallowRef } from 'vue'
-import { isBelowNode18 } from '../../.test'
 import { baseUrl } from '../../.test/mockServer'
 import { createFetch as _createFetch_, useFetch } from './index'
 
@@ -26,7 +25,7 @@ function createFetch(options: Parameters<typeof _createFetch_>[0] = {}) {
 }
 
 // The tests does not run properly below node 18
-describe.skipIf(isBelowNode18)('useFetch', () => {
+describe('useFetch', () => {
   beforeEach(() => {
     fetchSpy = vi.spyOn(window, 'fetch')
   })

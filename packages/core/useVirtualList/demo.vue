@@ -42,7 +42,7 @@ function handleScrollTo() {
     <div>
       <div class="inline-block mr-4">
         Filter list by size
-        <input v-model="search" placeholder="e.g. small, medium, large" type="search">
+        <input v-model="search" placeholder="e.g. small, large" type="search">
       </div>
     </div>
     <div v-bind="containerProps" class="h-300px overflow-auto p-2 bg-gray-500/5 rounded">
