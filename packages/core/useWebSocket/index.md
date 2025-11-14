@@ -84,7 +84,7 @@ import { useWebSocket } from '@vueuse/core'
 const { status, data, close } = useWebSocket('ws://websocketurl', {
   heartbeat: {
     message: 'ping',
-    interval: 1000,
+    scheduler: cb => useIntervalFn(cb, 2000),
     pongTimeout: 1000,
   },
 })
