@@ -69,6 +69,15 @@ New add-ons are greatly welcome!
 - Add functions as you would do to the core package.
 - Commit and submit as a PR.
 
+### Documentation & LLM exports
+
+Our documentation site uses [`vitepress-plugin-llms`](https://github.com/okineadev/vitepress-plugin-llms) to emit `llms.txt` and `llms-full.txt` so language models can consume the docs. When you edit Markdown files:
+
+- Always add a concise `description` to a page's frontmatter so the generated index contains useful context.
+- Use `<llm-only>` to add guidance that is only visible in the LLM exports, or `<llm-exclude>` to hide human-only notes from them.
+
+No additional build steps are needed; the files are produced automatically during `pnpm docs:build`.
+
 ## Project Structure
 
 ### Monorepo
