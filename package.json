@@ -108,6 +108,7 @@
     "vite-plugin-inspect": "catalog:dev",
     "vite-plugin-pwa": "catalog:docs",
     "vitepress": "catalog:docs",
+    "vitepress-plugin-llms": "catalog:docs",
     "vitest": "catalog:test",
     "vitest-browser-vue": "catalog:test",
     "vitest-package-exports": "catalog:test",

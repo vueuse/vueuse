@@ -8,6 +8,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import Inspect from 'vite-plugin-inspect'
+import llmstxt from 'vitepress-plugin-llms'
 import { getChangeLog, getFunctionContributors } from '../../scripts/changelog'
 import { ChangeLog } from './plugins/changelog'
 import { Contributors } from './plugins/contributors'
@@ -53,6 +54,7 @@ export default defineConfig({
     }),
     UnoCSS(),
     PWAVirtual(),
+    llmstxt(),
     Inspect(),
   ],
   resolve: {

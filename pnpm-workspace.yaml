@@ -26,7 +26,7 @@ catalogs:
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
     prettier: ^3.6.2
-    rolldown-vite: ^7.1.20
+    rolldown-vite: ^7.2.5
     sharp: ^0.34.4
     simple-git: ^3.28.0
     simple-git-hooks: ^2.13.1
@@ -55,6 +55,7 @@ catalogs:
     unplugin-vue-components: ^30.0.0
     vite-plugin-pwa: ^1.1.0
     vitepress: ^2.0.0-alpha.12
+    vitepress-plugin-llms: ^1.9.1
     yaml: ^2.8.1
   integrations:
     '@nuxt/kit': ^4.1.3
