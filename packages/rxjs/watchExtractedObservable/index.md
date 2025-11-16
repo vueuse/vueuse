@@ -22,7 +22,7 @@ import { AudioPlayer } from '../my/libs/AudioPlayer'
 // setup()
 
 const audio = shallowRef<HTMLAudioElement>()
-const player = computed(() => (audio.value ? new AudioPlayer(audio) : null))
+const player = computed(() => (audio.value ? new AudioPlayer(audio.value) : null))
 const state = reactive({
   progress: 0,
 })
@@ -44,7 +44,7 @@ import { AudioPlayer } from '../my/libs/AudioPlayer'
 // setup()
 
 const audio = shallowRef<HTMLAudioElement>()
-const player = computed(() => (audio.value ? new AudioPlayer(audio) : null))
+const player = computed(() => (audio.value ? new AudioPlayer(audio.value) : null))
 const state = reactive({
   progress: 0,
 })
@@ -71,7 +71,7 @@ import { AudioPlayer } from '../my/libs/AudioPlayer'
 // setup()
 
 const audio = shallowRef<HTMLAudioElement>()
-const player = computed(() => (audio.value ? new AudioPlayer(audio) : null))
+const player = computed(() => (audio.value ? new AudioPlayer(audio.value) : null))
 const state = reactive({
   progress: 0,
 })
