@@ -41,8 +41,10 @@ describe('vitepress-plugin-llms integration', () => {
     const llmsTxtPath = path.join(distDir, 'llms.txt')
     const content = await readFile(llmsTxtPath, 'utf-8')
     expect(content).toContain('# VueUse LLM Fixture')
-    expect(content).toMatch(/Getting Started/i)
-    expect(content).toMatch(/guide\/getting-started\.md/)
+
+    expect(content).toContain('### Guide')
+    expect(content).toContain('- [Getting Started](/guide/getting-started.md): Walk through the minimal steps required to read the fixture docs.')
+    expect(content).toContain('- [Key Concepts](/guide/concepts.md): Explains why the llms fixture exists.')
   })
 
   it('emits llms-full.txt with merged markdown', async () => {
@@ -50,12 +52,14 @@ describe('vitepress-plugin-llms integration', () => {
     const content = await readFile(llmsFullPath, 'utf-8')
     expect(content).toContain('# Getting Started')
     expect(content).toContain('# Key Concepts')
+    expect(content).toContain('Included in LLM exports.')
+    expect(content).not.toContain('Excluded from LLM exports.')
   })
 
   it('creates markdown versions for each page', async () => {
     const markdownCopy = path.join(distDir, 'guide/getting-started.md')
     const content = await readFile(markdownCopy, 'utf-8')
     expect(content).toContain('Getting Started')
-    expect(content).toMatch(/description: Walk through the minimal steps/)
+    expect(content).toContain('description: Walk through the minimal steps')
   })
 })

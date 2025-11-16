@@ -19,6 +19,7 @@ export default defineConfig({
     plugins: [
       llmstxt({
         injectLLMHint: false,
+        stripHTML: false,
       }),
     ],
   },
