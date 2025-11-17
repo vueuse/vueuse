@@ -51,8 +51,9 @@ Either an array of keyframe objects, or a keyframe object, or a `ref`. See [Keyf
 
 ```ts
 import { useAnimate } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 // ---cut---
 const keyframes = { transform: 'rotate(360deg)' }
 // Or

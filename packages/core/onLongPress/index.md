@@ -21,7 +21,7 @@ Function provides modifiers in options
 import { onLongPress } from '@vueuse/core'
 import { shallowRef, useTemplateRef } from 'vue'
 
-const htmlRefHook = useTemplateRef<HTMLElement>('htmlRefHook')
+const htmlRefHook = useTemplateRef('htmlRefHook')
 const longPressedHook = shallowRef(false)
 
 function onLongPressCallbackHook(e: PointerEvent) {

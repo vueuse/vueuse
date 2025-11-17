@@ -2,7 +2,7 @@
 import { useInfiniteScroll } from '@vueuse/core'
 import { ref as deepRef, useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const data = deepRef<number[]>([])
 
 const { reset } = useInfiniteScroll(
