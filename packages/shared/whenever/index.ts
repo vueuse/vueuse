@@ -23,11 +23,7 @@ export function whenever<T extends object>(source: T, cb: WatchCallback<T>, opti
  *
  * @see https://vueuse.org/whenever
  */
-export function whenever(
-  source: Readonly<WatchSource<unknown>[]> | WatchSource<unknown> | object,
-  cb: WatchCallback,
-  options?: WheneverOptions,
-) {
+export function whenever(source: object, cb: WatchCallback, options?: WheneverOptions) {
   const stop = watch(
     source,
     (v, ov, onInvalidate) => {
