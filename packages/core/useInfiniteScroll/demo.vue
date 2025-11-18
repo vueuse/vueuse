@@ -14,7 +14,7 @@ const { reset } = useInfiniteScroll(
   {
     distance: 10,
     canLoadMore: () => {
-      // inidicate when there is no more content to load so onLoadMore stops triggering
+      // indicate when there is no more content to load so onLoadMore stops triggering
       // if (noMoreContent) return false
       return true // for demo purposes
     },
