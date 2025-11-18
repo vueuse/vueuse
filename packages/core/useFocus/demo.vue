@@ -2,9 +2,9 @@
 import { useFocus } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const text = useTemplateRef<HTMLElement>('text')
-const input = useTemplateRef<HTMLInputElement>('input')
-const button = useTemplateRef<HTMLButtonElement>('button')
+const text = useTemplateRef('text')
+const input = useTemplateRef('input')
+const button = useTemplateRef('button')
 
 const { focused: paragraphFocus } = useFocus(text)
 const { focused: inputFocus } = useFocus(input, { initialValue: true })

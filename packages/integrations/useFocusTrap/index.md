@@ -23,7 +23,7 @@ npm i focus-trap@^7
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useTemplateRef } from 'vue'
 
-const target = useTemplateRef<HTMLDivElement>('target')
+const target = useTemplateRef('target')
 const { hasFocus, activate, deactivate } = useFocusTrap(target)
 </script>
 
@@ -50,8 +50,8 @@ const { hasFocus, activate, deactivate } = useFocusTrap(target)
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useTemplateRef } from 'vue'
 
-const targetOne = useTemplateRef<HTMLDivElement>('targetOne')
-const targetTwo = useTemplateRef<HTMLDivElement>('targetTwo')
+const targetOne = useTemplateRef('targetOne')
+const targetTwo = useTemplateRef('targetTwo')
 const { hasFocus, activate, deactivate } = useFocusTrap([targetOne, targetTwo])
 </script>
 
@@ -117,7 +117,7 @@ const { activate } = useFocusTrap(target)
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useTemplateRef } from 'vue'
 
-const target = useTemplateRef<HTMLDivElement>('target')
+const target = useTemplateRef('target')
 const { hasFocus, activate, deactivate } = useFocusTrap(target, { immediate: true })
 </script>
 
@@ -139,7 +139,7 @@ This function can't properly activate focus on elements with conditional renderi
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { nextTick, useTemplateRef } from 'vue'
 
-const target = useTemplateRef<HTMLDivElement>('target')
+const target = useTemplateRef('target')
 const { activate, deactivate } = useFocusTrap(target, { immediate: true })
 
 const show = ref(false)
