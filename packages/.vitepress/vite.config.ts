@@ -1,3 +1,4 @@
+import type { DefaultTheme } from 'vitepress'
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import process from 'node:process'
@@ -8,6 +9,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import Inspect from 'vite-plugin-inspect'
+import llmstxt from 'vitepress-plugin-llms'
 import { getChangeLog, getFunctionContributors } from '../../scripts/changelog'
 import { ChangeLog } from './plugins/changelog'
 import { Contributors } from './plugins/contributors'
@@ -20,6 +22,23 @@ const [changeLog, contributions] = await Promise.all([
   getChangeLog(process.env.CI ? 1000 : 100),
   getFunctionContributors(),
 ])
+
+// Avoid repeating identical sidebar groups (llms.txt would otherwise duplicate entries for each route alias).
+function filterSidebarForLLMs(sidebar: DefaultTheme.Sidebar | undefined) {
+  if (!sidebar || Array.isArray(sidebar))
+    return sidebar
+
+  const seen = new WeakSet<DefaultTheme.SidebarItem[]>()
+  return Object.fromEntries(
+    Object.entries(sidebar).filter(([, entry]) => {
+      const items = Array.isArray(entry) ? entry : entry.items
+      if (seen.has(items as DefaultTheme.SidebarItem[]))
+        return false
+      seen.add(items as DefaultTheme.SidebarItem[])
+      return true
+    }),
+  )
+}
 
 export default defineConfig({
   server: {
@@ -53,6 +72,9 @@ export default defineConfig({
     }),
     UnoCSS(),
     PWAVirtual(),
+    llmstxt({
+      sidebar: configSidebar => filterSidebarForLLMs(configSidebar),
+    }),
     Inspect(),
   ],
   resolve: {
