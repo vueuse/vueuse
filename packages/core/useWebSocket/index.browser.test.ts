@@ -89,5 +89,95 @@ describe('useWebSocket', () => {
 
       expect(status.value).toBe('CONNECTING')
     })
+
+    it('should use fixed delay when backoff is false', () => {
+      const { ws, status } = useWebSocket('ws://localhost', {
+        autoReconnect: {
+          retries: 3,
+          delay: 1000,
+          backoff: false,
+        },
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // First reconnect - should use fixed delay of 1000ms
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1000)
+      expect(status.value).toBe('CONNECTING')
+
+      // Second reconnect - should still use fixed delay of 1000ms
+      ws.value?.onopen?.(new Event('open'))
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1000)
+      expect(status.value).toBe('CONNECTING')
+    })
+
+    it('should use exponential backoff when backoff is true', () => {
+      const { ws, status } = useWebSocket('ws://localhost', {
+        autoReconnect: {
+          retries: 3,
+          delay: 1000,
+          backoff: true,
+        },
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // First reconnect - delay should be 1000ms (1000 * 2^0)
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1000)
+      expect(status.value).toBe('CONNECTING')
+
+      // Second reconnect - delay should be 2000ms (1000 * 2^1)
+      ws.value?.onopen?.(new Event('open'))
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(2000)
+      expect(status.value).toBe('CONNECTING')
+
+      // Third reconnect - delay should be 4000ms (1000 * 2^2)
+      ws.value?.onopen?.(new Event('open'))
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(4000)
+      expect(status.value).toBe('CONNECTING')
+    })
+
+    it('should reset retry count on successful connection with backoff', () => {
+      const { ws, status } = useWebSocket('ws://localhost', {
+        autoReconnect: {
+          retries: 3,
+          delay: 1000,
+          backoff: true,
+        },
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+
+      // First reconnect - delay should be 1000ms
+      ws.value?.onclose?.(new CloseEvent('close'))
+      vi.advanceTimersByTime(1000)
+      expect(status.value).toBe('CONNECTING')
+
+      // Second reconnect - delay should be 2000ms
+      ws.value?.onopen?.(new Event('open'))
+      ws.value?.onclose?.(new CloseEvent('close'))
+      vi.advanceTimersByTime(2000)
+      expect(status.value).toBe('CONNECTING')
+
+      // Successful connection should reset retry count
+      ws.value?.onopen?.(new Event('open'))
+      expect(status.value).toBe('OPEN')
+
+      // Next reconnect should start from base delay again (1000ms)
+      ws.value?.onclose?.(new CloseEvent('close'))
+      expect(status.value).toBe('CLOSED')
+      vi.advanceTimersByTime(1000)
+      expect(status.value).toBe('CONNECTING')
+    })
   })
 })
