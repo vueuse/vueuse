@@ -47,6 +47,14 @@ const targetIsVisible = useElementVisibility(target, {
 })
 ```
 
+### Reactive Options
+
+- `rootMargin`
+- `threshold`
+- `scrollTarget`
+
+Support reactive, when these options change, useElementVisibility will recreating a new observer, and cleaning last observer's effect.
+
 ## Component Usage
 
 ```vue
