@@ -16,7 +16,7 @@ const stringify = reactify(
   }),
 )
 
-const target = useTemplateRef<HTMLElement>('target')
+const target = useTemplateRef('target')
 const mouse = reactive(useMouseInElement(target))
 const text = stringify(mouse)
 

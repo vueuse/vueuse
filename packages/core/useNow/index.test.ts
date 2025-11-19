@@ -1,4 +1,6 @@
+import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
+import { UseNow } from './component'
 import { useNow } from './index'
 
 describe('useNow', () => {
@@ -21,6 +23,14 @@ describe('useNow', () => {
     resume()
     vi.advanceTimersByTime(50)
     expect(+now.value).toBeGreaterThan(initial)
+  })
+
+  it('should work with component', () => {
+    const wrapper = mount({
+      components: { UseNow },
+      template: '<UseNow v-slot="{ now }">{{ +now }}</UseNow>',
+    })
+    expect(Number.parseInt(wrapper.text(), 10)).toBeLessThanOrEqual(+new Date())
   })
 
   function testControl(interval: any) {
