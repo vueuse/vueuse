@@ -1,5 +1,6 @@
-import type { Fn, TimerHandle } from '@vueuse/shared'
+import type { AnyFn, Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
@@ -9,7 +10,7 @@ export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
 
 const DEFAULT_PING_MESSAGE = 'ping'
 
-export interface UseWebSocketOptions {
+export interface UseWebSocketOptions<Legacy = false> {
   onConnected?: (ws: WebSocket) => void
   onDisconnected?: (ws: WebSocket, event: CloseEvent) => void
   onError?: (ws: WebSocket, event: Event) => void
@@ -20,7 +21,7 @@ export interface UseWebSocketOptions {
    *
    * @default false
    */
-  heartbeat?: boolean | {
+  heartbeat?: boolean | ConfigurableScheduler & {
     /**
      * Message for the heartbeat
      *
@@ -36,9 +37,10 @@ export interface UseWebSocketOptions {
     /**
      * Interval, in milliseconds
      *
+     * @deprecated
      * @default 1000
      */
-    interval?: number
+    interval?: Legacy extends false ? never : number
 
     /**
      * Heartbeat response timeout, in milliseconds
@@ -149,15 +151,31 @@ function resolveNestedOptions<T>(options: T | true): T {
   return options
 }
 
+function getDefaultScheduler(options: Extract<UseWebSocketOptions<true>['heartbeat'], { interval?: number }>) {
+  if ('interval' in options) {
+    const {
+      interval = 1000,
+    } = options
+
+    return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate: false })
+  }
+
+  return (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false })
+}
+
 /**
  * Reactive WebSocket client.
  *
  * @see https://vueuse.org/useWebSocket
  * @param url
  */
+export function useWebSocket<Data = any>(url: MaybeRefOrGetter<string | URL | undefined>, options?: UseWebSocketOptions): UseWebSocketReturn<Data>
+/** @deprecated Please use with `scheduler` option */
+export function useWebSocket<Data = any>(url: MaybeRefOrGetter<string | URL | undefined>, options: UseWebSocketOptions<true>): UseWebSocketReturn<Data>
+
 export function useWebSocket<Data = any>(
   url: MaybeRefOrGetter<string | URL | undefined>,
-  options: UseWebSocketOptions = {},
+  options: UseWebSocketOptions<boolean> = {},
 ): UseWebSocketReturn<Data> {
   const {
     onConnected,
@@ -295,24 +313,20 @@ export function useWebSocket<Data = any>(
   if (options.heartbeat) {
     const {
       message = DEFAULT_PING_MESSAGE,
-      interval = 1000,
+      scheduler = getDefaultScheduler(resolveNestedOptions(options.heartbeat)),
       pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
-    const { pause, resume } = useIntervalFn(
-      () => {
-        send(toValue(message), false)
-        if (pongTimeoutWait != null)
-          return
-        pongTimeoutWait = setTimeout(() => {
-          // auto-reconnect will be trigger with ws.onclose()
-          close()
-          explicitlyClosed = false
-        }, pongTimeout)
-      },
-      interval,
-      { immediate: false },
-    )
+    const { pause, resume } = scheduler(() => {
+      send(toValue(message), false)
+      if (pongTimeoutWait != null)
+        return
+      pongTimeoutWait = setTimeout(() => {
+        // auto-reconnect will be trigger with ws.onclose()
+        close()
+        explicitlyClosed = false
+      }, pongTimeout)
+    })
 
     heartbeatPause = pause
     heartbeatResume = resume
