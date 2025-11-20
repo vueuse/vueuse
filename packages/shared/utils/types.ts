@@ -13,10 +13,7 @@ export type AnyFn = (...args: any[]) => any
 /**
  * A ref that allow to set null or undefined
  */
-export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
-  get value(): T
-  set value(value: T | null | undefined)
-}
+export type RemovableRef<T> = Ref<T, T | null | undefined>
 
 /**
  * Maybe it's a computed ref, or a readonly value, or a getter function
