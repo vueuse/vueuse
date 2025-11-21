@@ -9,6 +9,7 @@ describe('until', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
+
   it('should toBe', () => {
     return new Promise<void>((resolve, reject) => {
       const r1 = shallowRef(0)

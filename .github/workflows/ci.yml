@@ -13,6 +13,10 @@ on:
 
   merge_group: {}
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -43,7 +47,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [20.x, 22.x]
+        node: [20.x, lts/*]
       fail-fast: false
 
     steps:
@@ -74,7 +78,7 @@ jobs:
         run: nr typecheck
 
       - name: unit tests
-        run: pnpm run test:unit
+        run: pnpm run test:cov
 
       - name: browser tests
         run: pnpm run test:browser
@@ -86,9 +90,15 @@ jobs:
         name: attw tests
         run: pnpm test:attw
 
-      - if: matrix.node == '22.x'
+      - if: matrix.node == 'lts/*'
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh
+
+      - if: matrix.node == 'lts/*'
+        name: Report coverage
+        uses: codecov/codecov-action@v5
+        with:
+          use_oidc: true
 
   release-pr:
     timeout-minutes: 20
