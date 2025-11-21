@@ -114,6 +114,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     ta.value = value
     ta.style.position = 'absolute'
     ta.style.opacity = '0'
+    ta.setAttribute('readonly', '')
     document.body.appendChild(ta)
     ta.select()
     document.execCommand('copy')
