@@ -14,14 +14,14 @@ export interface WritableComputedRefWithControl<T> extends WritableComputedRef<T
 
 export type ComputedWithControlRef<T = any> = ComputedRefWithControl<T> | WritableComputedRefWithControl<T>
 
-export function computedWithControl<T, S>(
-  source: WatchSource<S> | WatchSource<S>[],
+export function computedWithControl<T>(
+  source: WatchSource | WatchSource[],
   fn: ComputedGetter<T>,
   options?: WatchOptions
 ): ComputedRefWithControl<T>
 
-export function computedWithControl<T, S>(
-  source: WatchSource<S> | WatchSource<S>[],
+export function computedWithControl<T>(
+  source: WatchSource | WatchSource[],
   fn: WritableComputedOptions<T>,
   options?: WatchOptions
 ): WritableComputedRefWithControl<T>
@@ -32,8 +32,8 @@ export function computedWithControl<T, S>(
  * @param source
  * @param fn
  */
-export function computedWithControl<T, S>(
-  source: WatchSource<S> | WatchSource<S>[],
+export function computedWithControl<T>(
+  source: WatchSource | WatchSource[],
   fn: ComputedGetter<T> | WritableComputedOptions<T>,
   options: WatchOptions = {},
 ): ComputedWithControlRef<T> {
