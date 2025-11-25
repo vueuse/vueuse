@@ -2,7 +2,7 @@ import type { ComputedRef, getCurrentInstance, MaybeRef, Ref, ShallowRef, WatchO
 
 /**
  * Keep export for compatibility
- * @deprecated Use `import { MultiWatchSources } from 'vue'` instead
+ * @deprecated Use `import type { MultiWatchSources } from 'vue'` instead
  */
 export type { MultiWatchSources } from 'vue'
 
