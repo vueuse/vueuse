@@ -1,6 +1,12 @@
 import type { ComputedRef, getCurrentInstance, MaybeRef, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
 
 /**
+ * Keep export for compatibility
+ * @deprecated Use `import { MultiWatchSources } from 'vue'` instead
+ */
+export type { MultiWatchSources } from 'vue'
+
+/**
  * Void function
  */
 export type Fn = () => void
@@ -117,9 +123,6 @@ export interface ConfigurableFlushSync {
    */
   flush?: WatchOptionFlush
 }
-
-// Internal Types
-export type MultiWatchSources = (WatchSource<unknown> | object)[]
 
 export type MapSources<T> = {
   [K in keyof T]: T[K] extends WatchSource<infer V> ? V : never;
