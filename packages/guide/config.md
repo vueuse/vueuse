@@ -89,7 +89,7 @@ const { x, y } = useMouse({ window: mockWindow })
 
 ## Custom Scheduler
 
-From v15.0, VueUse introduces a custom scheduler system that allows you to control how time-based functions update internally. For example, to align with `useRafFn`, slow down updates, or run inside a Web Worker.
+From v14.1.0, VueUse introduces a custom scheduler system that allows you to control how time-based functions update internally. For example, to align with `useRafFn`, slow down updates, or run inside a Web Worker.
 
 When a composable supports timing (such as `useNow`, `useCountdown`, etc.), you can pass a `scheduler` function in its options. The `scheduler` receives a callback and is responsible for scheduling its repeated execution.
 
