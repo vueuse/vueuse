@@ -141,7 +141,8 @@ function getTimeAgoIntlResult(
   const diff = +from - +now
   const absDiff = Math.abs(diff)
 
-  for (const { name, ms } of options.unit ?? UNIT) {
+  const units = options.units ?? UNITS
+  for (const { name, ms } of units) {
     if (absDiff >= ms) {
       return {
         resolvedLocale,
@@ -152,7 +153,7 @@ function getTimeAgoIntlResult(
 
   return {
     resolvedLocale,
-    parts: rtf.formatToParts(0, 'second'),
+    parts: rtf.formatToParts(0, units[units.length - 1].name),
   }
 }
 
