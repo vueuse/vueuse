@@ -1,4 +1,4 @@
-import type { WatchSource } from 'vue'
+import type { MultiWatchSources, WatchSource } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchIgnorableReturn } from '../watchIgnorable'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
@@ -17,7 +17,7 @@ type OnCleanup = (cleanupFn: () => void) => void
 
 export type WatchTriggerableCallback<V = any, OV = any, R = void> = (value: V, oldValue: OV, onCleanup: OnCleanup) => R
 
-export function watchTriggerable<T extends Readonly<WatchSource<unknown>[]>, FnReturnT>(sources: [...T], cb: WatchTriggerableCallback<MapSources<T>, MapOldSources<T, true>, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
+export function watchTriggerable<T extends Readonly<MultiWatchSources>, FnReturnT>(sources: [...T], cb: WatchTriggerableCallback<MapSources<T>, MapOldSources<T, true>, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
 export function watchTriggerable<T, FnReturnT>(source: WatchSource<T>, cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
 export function watchTriggerable<T extends object, FnReturnT>(source: T, cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
 
