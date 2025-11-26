@@ -34,6 +34,11 @@ export interface FormatTimeAgoIntlOptions {
    * If provided, it will be used instead of the default join logic.
    */
   joinParts?: (parts: Intl.RelativeTimeFormatPart[], locale?: Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale) => string
+
+  /**
+   * Custom units
+   */
+  units?: TimeAgoUnit[]
 }
 
 export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatTimeAgoIntlOptions {
@@ -136,7 +141,7 @@ function getTimeAgoIntlResult(
   const diff = +from - +now
   const absDiff = Math.abs(diff)
 
-  for (const { name, ms } of UNITS) {
+  for (const { name, ms } of options.unit ?? UNIT) {
     if (absDiff >= ms) {
       return {
         resolvedLocale,
