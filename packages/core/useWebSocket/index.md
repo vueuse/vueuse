@@ -26,7 +26,7 @@ Establish the connection immediately when the composable is called.
 
 Enable by default.
 
-If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
+If a URL is provided as a ref, when the URL changes, it will automatically reconnect to the new URL.
 
 ### autoClose
 
@@ -118,7 +118,7 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 
 ### Sub-protocols
 
-List of one or more subprotocols to use, in this case soap and wamp.
+List of one or more subprotocols to use, in this case SOAP and WAMP.
 
 ```ts
 import { useWebSocket } from '@vueuse/core'
