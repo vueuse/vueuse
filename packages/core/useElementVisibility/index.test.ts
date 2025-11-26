@@ -25,6 +25,11 @@ describe('useElementVisibility', () => {
     expect(visible.value).toBeFalsy()
   })
 
+  it('should allow set initial value', () => {
+    const visible = useElementVisibility(el, { initialValue: true })
+    expect(visible.value).toBeTruthy()
+  })
+
   describe('when internally using useIntersectionObserver', async () => {
     beforeAll(() => {
       vi.resetAllMocks()

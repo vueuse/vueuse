@@ -17,7 +17,7 @@
     "dev": "nr update && nr docs",
     "docs": "vitepress dev packages --open",
     "docs:build": "nr update:full && nr build:packages && turbo run docs:build:vitepress && nr build:redirects",
-    "docs:build:vitepress": "NODE_OPTIONS=\"--max-old-space-size=5120\" ROLLDOWN_OPTIONS_VALIDATION=loose vitepress build packages",
+    "docs:build:vitepress": "NODE_OPTIONS=\"--max-old-space-size=5120\" vitepress build packages",
     "docs:serve": "vitepress serve packages",
     "lint": "eslint --cache .",
     "lint:fix": "nr lint --fix",
@@ -91,7 +91,6 @@
     "postcss-nested": "catalog:dev",
     "prettier": "catalog:dev",
     "remove-markdown": "catalog:docs",
-    "rolldown-vite": "catalog:dev",
     "sharp": "catalog:dev",
     "simple-git": "catalog:dev",
     "simple-git-hooks": "catalog:dev",
@@ -126,7 +125,6 @@
     "eslint": "catalog:dev",
     "vite": "catalog:dev",
     "vite-plugin-pwa": "catalog:docs",
-    "vitepress>vite": "npm:rolldown-vite@latest",
     "vue": "catalog:dev"
   },
   "simple-git-hooks": {

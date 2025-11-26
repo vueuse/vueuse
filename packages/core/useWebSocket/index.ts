@@ -68,9 +68,11 @@ export interface UseWebSocketOptions<Legacy = false> {
     /**
      * Delay for reconnect, in milliseconds
      *
+     * Or you can pass a function to calculate the delay based on the number of retries.
+     *
      * @default 1000
      */
-    delay?: number
+    delay?: number | ((retries: number) => number)
 
     /**
      * On maximum retry times reached.
@@ -282,7 +284,8 @@ export function useWebSocket<Data = any>(
 
         if (checkRetires(retried)) {
           retried += 1
-          retryTimeout = setTimeout(_init, delay)
+          const delayTime = typeof delay === 'function' ? delay(retried) : delay
+          retryTimeout = setTimeout(_init, delayTime)
         }
         else {
           onFailed?.()

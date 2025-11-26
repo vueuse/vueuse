@@ -26,7 +26,7 @@ Establish the connection immediately when the composable is called.
 
 Enable by default.
 
-If url is provided as a ref, when the url changes, it will automatically reconnect to the new url.
+If a URL is provided as a ref, when the URL changes, it will automatically reconnect to the new URL.
 
 ### autoClose
 
@@ -62,6 +62,32 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 })
 ```
 
+You can also pass a function to `delay` to calculate the delay based on the number of retries. This is useful for implementing exponential backoff:
+
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
+const { status, data, close } = useWebSocket('ws://websocketurl', {
+  autoReconnect: {
+    retries: 5,
+    // Exponential backoff: 1s, 2s, 4s, 8s, 16s
+    delay: retries => Math.min(1000 * 2 ** (retries - 1), 30000),
+  },
+})
+```
+
+```ts
+import { useWebSocket } from '@vueuse/core'
+// ---cut---
+const { status, data, close } = useWebSocket('ws://websocketurl', {
+  autoReconnect: {
+    retries: 5,
+    // Linear backoff: 1s, 2s, 3s, 4s, 5s
+    delay: retries => retries * 1000,
+  },
+})
+```
+
 Explicitly calling `close()` won't trigger the auto reconnection.
 
 ### heartbeat
@@ -92,7 +118,7 @@ const { status, data, close } = useWebSocket('ws://websocketurl', {
 
 ### Sub-protocols
 
-List of one or more subprotocols to use, in this case soap and wamp.
+List of one or more subprotocols to use, in this case SOAP and WAMP.
 
 ```ts
 import { useWebSocket } from '@vueuse/core'

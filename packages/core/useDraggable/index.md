@@ -13,7 +13,7 @@ Make elements draggable.
 import { useDraggable } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 
 // `style` will be a helper computed for `left: ?px; top: ?px;`
 const { x, y, style } = useDraggable(el, {
