@@ -1,5 +1,6 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
@@ -37,7 +38,7 @@ export interface FormatTimeAgoIntlOptions {
   joinParts?: (parts: Intl.RelativeTimeFormatPart[], locale?: Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale) => string
 }
 
-export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatTimeAgoIntlOptions {
+export interface UseTimeAgoIntlOptions<Controls extends boolean, Legacy = false> extends FormatTimeAgoIntlOptions, ConfigurableScheduler {
   /**
    * Expose more controls and the raw `parts` result.
    *
@@ -50,7 +51,7 @@ export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatT
    *
    * @default 30_000
    */
-  updateInterval?: number
+  updateInterval?: Legacy extends false ? never : number
 }
 
 type UseTimeAgoReturn<Controls extends boolean = false>
@@ -73,19 +74,32 @@ const UNITS: TimeAgoUnit[] = [
   { name: 'second', ms: 1_000 },
 ]
 
+function getDefaultScheduler(options: UseTimeAgoIntlOptions<boolean, boolean>) {
+  if ('updateInterval' in options) {
+    const { updateInterval = 30_000 } = options
+    return (cb: AnyFn) => useIntervalFn(cb, updateInterval)
+  }
+
+  return (cb: AnyFn) => useIntervalFn(cb, 30_000)
+}
+
 /**
  * A reactive wrapper for `Intl.RelativeTimeFormat`.
  */
 export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoIntlOptions<false>): UseTimeAgoReturn<false>
 export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoIntlOptions<true>): UseTimeAgoReturn<true>
-export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoIntlOptions<boolean> = {}) {
+/** @deprecated Please use with `scheduler` */
+export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoIntlOptions<false, true>): UseTimeAgoReturn<false>
+/** @deprecated Please use with `scheduler` */
+export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoIntlOptions<true, true>): UseTimeAgoReturn<true>
+export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoIntlOptions<boolean, boolean> = {}) {
   const {
     controls: exposeControls = false,
-    updateInterval = 30_000,
+    scheduler = getDefaultScheduler(options),
   } = options
 
   const { now, ...controls } = useNow({
-    scheduler: cb => useIntervalFn(cb, updateInterval),
+    scheduler,
     controls: true,
   })
 
