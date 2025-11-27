@@ -56,7 +56,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   const isListening = shallowRef(false)
   const isFinal = shallowRef(false)
   const result = shallowRef('')
-  const error = shallowRef<SpeechRecognitionErrorEvent | undefined>(undefined)
+  const error = shallowRef<SpeechRecognitionErrorEvent | Error | undefined>(undefined)
 
   let recognition: SpeechRecognition | undefined
 
@@ -120,10 +120,17 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
       if (newValue === oldValue)
         return
 
-      if (newValue)
-        recognition!.start()
-      else
-        recognition!.stop()
+      try {
+        if (newValue) {
+          recognition!.start()
+        }
+        else {
+          recognition!.stop()
+        }
+      }
+      catch (err) {
+        error.value = err as unknown as Error
+      }
     })
   }
 

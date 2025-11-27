@@ -1,6 +1,6 @@
-import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/shared'
+import type { MapOldSources, MapSources } from '@vueuse/shared'
 import type { Observable, Subscription } from 'rxjs'
-import type { WatchHandle, WatchOptions, WatchSource } from 'vue'
+import type { MultiWatchSources, WatchHandle, WatchOptions, WatchSource } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue'
 
