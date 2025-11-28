@@ -1,6 +1,6 @@
 import { debounceFilter } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref as deepRef, defineComponent, nextTick, toRaw } from 'vue'
+import { ref as deepRef, defineComponent, nextTick, toRaw, toValue } from 'vue'
 import { mount, nextTwoTick, useSetup } from '../../.test'
 import { customStorageEventName, StorageSerializers, useStorage } from './index'
 
@@ -262,12 +262,76 @@ describe('useStorage', () => {
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
 
-    expect(state).toBe(init)
+    expect(state.value).toEqual(init.value)
 
     init.value.name = 'b'
     await nextTwoTick()
 
     expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+  })
+
+  it('pass ref as defaults and storage is updated either when storage changes or the defaults change', async () => {
+    expect(storage.getItem(KEY)).toEqual(undefined)
+
+    const defaults = deepRef({
+      name: 'a',
+      data: 123,
+    })
+    const state = useStorage(KEY, defaults, storage)
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+
+    expect(state.value).toEqual(defaults.value)
+
+    defaults.value.name = 'b'
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":123}')
+
+    state.value.name = 'c'
+    state.value.data = 124
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"c","data":124}')
+
+    defaults.value.name = 'd'
+    defaults.value.data = 125
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"d","data":125}')
+
+    defaults.value.data = 126
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"d","data":126}')
+  })
+
+  it.each([
+    [deepRef({ name: 'a', data: 123 })],
+    [{ name: 'a', data: 123 }],
+    [() => ({ name: 'a', data: 123 })],
+  ])('does not update defaults internally', async (defaults) => {
+    expect(storage.getItem(KEY)).toEqual(undefined)
+
+    const state = useStorage(KEY, defaults, storage)
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"a","data":123}')
+
+    expect(state.value).toEqual(toValue(defaults))
+
+    state.value.name = 'b'
+    state.value.data = 124
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":124}')
+    expect(toValue(defaults)).toEqual({ name: 'a', data: 123 })
+
+    state.value.data = 125
+    await nextTwoTick()
+
+    expect(storage.setItem).toBeCalledWith(KEY, '{"name":"b","data":125}')
+
+    expect(toValue(defaults)).toEqual({ name: 'a', data: 123 })
   })
 
   it('eventFilter', async () => {
