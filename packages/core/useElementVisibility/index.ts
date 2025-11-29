@@ -44,15 +44,15 @@ export interface UseElementVisibilityOptions<Controls extends boolean = false> e
 export function useElementVisibility(
   element: MaybeComputedElementRef,
   options?: UseElementVisibilityOptions<false>
-): ShallowRef<boolean>
+): UseElementVisibilityReturn<false>
 export function useElementVisibility(
   element: MaybeComputedElementRef,
   options?: UseElementVisibilityOptions<true>
-): UseIntersectionObserverReturn & { isVisible: ShallowRef<boolean> }
+): UseElementVisibilityReturn<true>
 export function useElementVisibility(
   element: MaybeComputedElementRef,
   options: UseElementVisibilityOptions<boolean> = {},
-) {
+): UseElementVisibilityReturn<boolean> {
   const {
     window = defaultWindow,
     scrollTarget,
@@ -97,4 +97,7 @@ export function useElementVisibility(
     : isVisible
 }
 
-export type UseElementVisibilityReturn = ReturnType<typeof useElementVisibility>
+export type UseElementVisibilityReturn<Controls extends boolean = false>
+  = Controls extends true
+    ? UseIntersectionObserverReturn & { isVisible: ShallowRef<boolean> }
+    : ShallowRef<boolean>

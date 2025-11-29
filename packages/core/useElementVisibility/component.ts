@@ -5,7 +5,7 @@ import { defineComponent, h, reactive, shallowRef } from 'vue'
 
 export interface UseElementVisibilityProps extends Omit<UseElementVisibilityOptions<true>, 'controls'>, RenderableComponent {}
 interface UseElementVisibilitySlots {
-  default: (data: Reactive<UseElementVisibilityReturn>) => any
+  default: (data: Reactive<UseElementVisibilityReturn<true>>) => any
 }
 
 export const UseElementVisibility = /* #__PURE__ */ defineComponent<

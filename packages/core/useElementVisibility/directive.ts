@@ -9,7 +9,7 @@ import { watch } from 'vue'
  * 2. A function that receives the full state (with controls).
  */
 type BindingValueFunctionWithoutControls = (isVisible: boolean) => void
-type BindingValueFunctionWithControls = (state: UseElementVisibilityReturn) => void
+type BindingValueFunctionWithControls = (state: UseElementVisibilityReturn<true>) => void
 
 type BindingValueArray = [BindingValueFunctionWithoutControls, UseElementVisibilityOptions<false>]
   | [BindingValueFunctionWithControls, UseElementVisibilityOptions<true>]
