@@ -3,11 +3,9 @@ import type { Reactive, SlotsType } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
 import { defineComponent, h, reactive, shallowRef } from 'vue'
 
-export interface UseElementVisibilityProps extends UseElementVisibilityOptions, RenderableComponent {}
+export interface UseElementVisibilityProps extends Omit<UseElementVisibilityOptions<true>, 'controls'>, RenderableComponent {}
 interface UseElementVisibilitySlots {
-  default: (data: Reactive<{
-    isVisible: UseElementVisibilityReturn
-  }>) => any
+  default: (data: Reactive<UseElementVisibilityReturn>) => any
 }
 
 export const UseElementVisibility = /* #__PURE__ */ defineComponent<
@@ -18,9 +16,7 @@ export const UseElementVisibility = /* #__PURE__ */ defineComponent<
 >(
   (props, { slots }) => {
     const target = shallowRef<HTMLDivElement>()
-    const data = reactive({
-      isVisible: useElementVisibility(target, props),
-    })
+    const data = reactive(useElementVisibility(target, { ...props, controls: true }))
 
     return () => {
       if (slots.default)
