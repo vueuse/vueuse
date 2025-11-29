@@ -287,7 +287,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
       : storage!.getItem(keyComputed.value)
 
     if (rawValue == null) {
-      if (writeDefaults && rawInit != null)
+      // when event is not null, we should not write defaults to storage
+      if (writeDefaults && rawInit != null && event == null)
         storage!.setItem(keyComputed.value, serializer.write(rawInit))
       return rawInit
     }
