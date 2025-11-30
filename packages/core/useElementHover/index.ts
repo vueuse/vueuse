@@ -43,7 +43,7 @@ export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefi
 
   useEventListener(el, 'mouseenter', () => toggle(true), { passive: true })
   useEventListener(el, 'mouseleave', () => toggle(false), { passive: true })
-  watch(() => unrefElement(el), newEl => isHovered.value = newEl?.matches?.(':hover') ?? false, { immediate: true })
+  watch(() => unrefElement(el as MaybeComputedElementRef), newEl => isHovered.value = newEl?.matches?.(':hover') ?? false, { immediate: true })
 
   if (triggerOnRemoval) {
     onElementRemoval(
