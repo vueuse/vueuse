@@ -2,7 +2,7 @@ import type { TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import { computed, shallowRef } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { onElementRemoval } from '../onElementRemoval'
 import { unrefElement } from '../unrefElement'
@@ -43,6 +43,7 @@ export function useElementHover(el: MaybeRefOrGetter<EventTarget | null | undefi
 
   useEventListener(el, 'mouseenter', () => toggle(true), { passive: true })
   useEventListener(el, 'mouseleave', () => toggle(false), { passive: true })
+  watch(() => unrefElement(el), newEl => isHovered.value = newEl?.matches?.(':hover') ?? false, { immediate: true })
 
   if (triggerOnRemoval) {
     onElementRemoval(
