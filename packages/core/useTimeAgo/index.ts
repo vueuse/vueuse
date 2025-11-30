@@ -69,6 +69,7 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
   /**
    * Intervals to update, set 0 to disable auto update
    *
+   * @deprecated
    * @default 30_000
    */
   updateInterval?: Legacy extends false ? never : number

@@ -49,6 +49,7 @@ export interface UseTimeAgoIntlOptions<Controls extends boolean, Legacy = false>
   /**
    * Update interval in milliseconds, set 0 to disable auto update
    *
+   * @deprecated
    * @default 30_000
    */
   updateInterval?: Legacy extends false ? never : number
