@@ -120,6 +120,14 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
    * @default false
    */
   initOnMounted?: boolean
+
+  /**
+   * Skip serialization for storage backends that support native object storage
+   * (e.g., chrome.storage.local, IndexedDB)
+   *
+   * @default false
+   */
+  noSerialization?: boolean
 }
 
 export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
@@ -152,6 +160,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
       console.error(e)
     },
     initOnMounted,
+    noSerialization = false,
   } = options
 
   const data = (shallow ? shallowRef : deepRef)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
@@ -171,7 +180,11 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
   const rawInit: T = toValue(defaults)
   const type = guessSerializerType<T>(rawInit)
-  const serializer = options.serializer ?? StorageSerializers[type]
+  const serializer = options.serializer ?? (
+    noSerialization
+      ? { read: (v: any) => v, write: (v: any) => v } // 直接透传，不序列化
+      : StorageSerializers[type]
+  )
 
   const { pause: pauseWatch, resume: resumeWatch } = watchPausable(
     data,
@@ -248,10 +261,11 @@ export function useStorage<T extends (string | number | boolean | object | null)
         storage!.removeItem(keyComputed.value)
       }
       else {
-        const serialized = serializer.write(v as any)
-        if (oldValue !== serialized) {
-          storage!.setItem(keyComputed.value, serialized)
-          dispatchWriteEvent(oldValue, serialized)
+        // 根据 noSerialization 选项决定是否序列化
+        const valueToStore = noSerialization ? v : serializer.write(v as any)
+        if (oldValue !== valueToStore) {
+          storage!.setItem(keyComputed.value, valueToStore)
+          dispatchWriteEvent(oldValue, valueToStore)
         }
       }
     }
@@ -267,11 +281,11 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
     if (rawValue == null) {
       if (writeDefaults && rawInit != null)
-        storage!.setItem(keyComputed.value, serializer.write(rawInit))
+        storage!.setItem(keyComputed.value, noSerialization ? rawInit : serializer.write(rawInit))
       return rawInit
     }
     else if (!event && mergeDefaults) {
-      const value = serializer.read(rawValue)
+      const value = noSerialization ? rawValue : serializer.read(rawValue)
       if (typeof mergeDefaults === 'function')
         return mergeDefaults(value, rawInit)
       else if (type === 'object' && !Array.isArray(value))
@@ -282,7 +296,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
       return rawValue
     }
     else {
-      return serializer.read(rawValue)
+      return noSerialization ? rawValue : serializer.read(rawValue)
     }
   }
 
