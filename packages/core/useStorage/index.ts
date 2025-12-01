@@ -2,10 +2,12 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRe
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
+import type { UseBroadcastChannelReturn } from '../useBroadcastChannel'
 import { pausableWatch, tryOnMounted } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
+import { useBroadcastChannel } from '../useBroadcastChannel'
 import { useEventListener } from '../useEventListener'
 import { guessSerializerType } from './guess'
 
@@ -196,18 +198,28 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
     updateFromCustomEvent(ev)
   }
+  const onChannelMessage = (value: StorageEventLike): void => {
+    if (initOnMounted && !firstMounted) {
+      return
+    }
 
-  /**
-   * The custom event is needed for same-document syncing when using custom
-   * storage backends, but it doesn't work across different documents.
-   *
-   * TODO: Consider implementing a BroadcastChannel-based solution that fixes this.
-   */
+    update(value)
+  }
+
+  // For custom storage backends, use CustomEvent for same-document sync
+  // and BroadcastChannel for cross-document sync.
+
+  let channel: UseBroadcastChannelReturn<StorageEventLike, StorageEventLike> | undefined
   if (window && listenToStorageChanges) {
-    if (storage instanceof Storage)
+    if (storage instanceof Storage) {
       useEventListener(window, 'storage', onStorageEvent, { passive: true })
-    else
+    }
+    else {
       useEventListener(window, customStorageEventName, onStorageCustomEvent)
+
+      channel = useBroadcastChannel({ name: customStorageEventName, window })
+      watch(channel.data, onChannelMessage)
+    }
   }
 
   if (initOnMounted) {
@@ -231,11 +243,17 @@ export function useStorage<T extends (string | number | boolean | object | null)
       }
       // We also use a CustomEvent since StorageEvent cannot
       // be constructed with a non-built-in storage area
-      window.dispatchEvent(storage instanceof Storage
-        ? new StorageEvent('storage', payload)
-        : new CustomEvent<StorageEventLike>(customStorageEventName, {
+      if (storage instanceof Storage) {
+        window.dispatchEvent(new StorageEvent('storage', payload))
+      }
+      else {
+        window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
           detail: payload,
         }))
+        // storageArea cannot be cloned, so exclude it
+        const { storageArea: _, ...broadcastPayload } = payload
+        channel?.post(broadcastPayload as StorageEventLike)
+      }
     }
   }
 
@@ -266,7 +284,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
       : storage!.getItem(keyComputed.value)
 
     if (rawValue == null) {
-      if (writeDefaults && rawInit != null)
+      // when event is not null, we should not write defaults to storage
+      if (writeDefaults && rawInit != null && event == null)
         storage!.setItem(keyComputed.value, serializer.write(rawInit))
       return rawInit
     }
@@ -287,7 +306,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
   }
 
   function update(event?: StorageEventLike) {
-    if (event && event.storageArea !== storage)
+    // storageArea is null when the event comes from BroadcastChannel
+    if (event && event.storageArea !== storage && event.storageArea != null)
       return
 
     if (event && event.key == null) {
