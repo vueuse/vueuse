@@ -2,10 +2,12 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRe
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
-import { pausableWatch, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
+import type { UseBroadcastChannelReturn } from '../useBroadcastChannel'
+import { pausableWatch, tryOnMounted } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
+import { useBroadcastChannel } from '../useBroadcastChannel'
 import { useEventListener } from '../useEventListener'
 import { guessSerializerType } from './guess'
 
@@ -196,18 +198,18 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
     updateFromCustomEvent(ev)
   }
-  const onMessageEvent = (ev: MessageEvent<StorageEventLike>): void => {
+  const onChannelMessage = (value: StorageEventLike): void => {
     if (initOnMounted && !firstMounted) {
       return
     }
 
-    updateFromMessageEvent(ev)
+    update(value)
   }
 
   // For custom storage backends, use CustomEvent for same-document sync
   // and BroadcastChannel for cross-document sync.
 
-  let channel: BroadcastChannel | undefined
+  let channel: UseBroadcastChannelReturn<StorageEventLike, StorageEventLike> | undefined
   if (window && listenToStorageChanges) {
     if (storage instanceof Storage) {
       useEventListener(window, 'storage', onStorageEvent, { passive: true })
@@ -215,11 +217,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
     else {
       useEventListener(window, customStorageEventName, onStorageCustomEvent)
 
-      if (typeof BroadcastChannel !== 'undefined') {
-        channel = new BroadcastChannel(customStorageEventName)
-        useEventListener(channel, 'message', onMessageEvent)
-        tryOnScopeDispose(() => channel!.close())
-      }
+      channel = useBroadcastChannel({ name: customStorageEventName, window })
+      watch(channel.data, onChannelMessage)
     }
   }
 
@@ -251,11 +250,9 @@ export function useStorage<T extends (string | number | boolean | object | null)
         window.dispatchEvent(new CustomEvent<StorageEventLike>(customStorageEventName, {
           detail: payload,
         }))
-        if (channel) {
-          // storageArea cannot be cloned, so exclude it
-          const { storageArea: _, ...broadcastPayload } = payload
-          channel.postMessage(broadcastPayload)
-        }
+        // storageArea cannot be cloned, so exclude it
+        const { storageArea: _, ...broadcastPayload } = payload
+        channel?.post(broadcastPayload as StorageEventLike)
       }
     }
   }
@@ -344,10 +341,6 @@ export function useStorage<T extends (string | number | boolean | object | null)
 
   function updateFromCustomEvent(event: CustomEvent<StorageEventLike>) {
     update(event.detail)
-  }
-
-  function updateFromMessageEvent(event: MessageEvent<StorageEventLike>) {
-    update(event.data)
   }
 
   return data
