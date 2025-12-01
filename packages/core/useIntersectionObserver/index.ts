@@ -8,6 +8,16 @@ import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
+declare global {
+  // Augment the type b/c typescript 5.9 lib.dom does not include
+  // definitions for the these options yet.
+  interface IntersectionObserverInit {
+    delay?: number
+    scrollMargin?: string
+    trackVisibility?: boolean
+  }
+}
+
 export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * Start the IntersectionObserver immediately on creation
@@ -15,6 +25,11 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
    * @default true
    */
   immediate?: boolean
+
+  /**
+   * A number specifying the minimum permitted delay between notifications from the observer, in milliseconds.
+   */
+  delay?: number
 
   /**
    * The Element or Document whose bounds are used as the bounding box when testing for intersection.
@@ -27,10 +42,20 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   rootMargin?: string
 
   /**
+   * A string that specifies the offsets to add to every scroll container on path to the target when calculating intersections.
+   */
+  scrollMargin?: string
+
+  /**
    * Either a single number or an array of numbers between 0.0 and 1.
    * @default 0
    */
   threshold?: number | number[]
+
+  /**
+   * A boolean indicating whether the observer should track visibility.
+   */
+  trackVisibility?: boolean
 }
 
 export interface UseIntersectionObserverReturn extends Pausable {
@@ -52,9 +77,12 @@ export function useIntersectionObserver(
   options: UseIntersectionObserverOptions = {},
 ): UseIntersectionObserverReturn {
   const {
+    delay = 0,
     root,
     rootMargin = '0px',
+    scrollMargin = '0px',
     threshold = 0,
+    trackVisibility = false,
     window = defaultWindow,
     immediate = true,
   } = options
@@ -82,9 +110,12 @@ export function useIntersectionObserver(
           const observer = new IntersectionObserver(
             callback,
             {
+              delay,
               root: unrefElement(root),
               rootMargin,
+              scrollMargin,
               threshold,
+              trackVisibility,
             },
           )
 
