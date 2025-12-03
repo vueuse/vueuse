@@ -2,7 +2,7 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRe
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
-import { tryOnMounted, watchPausable } from '@vueuse/shared'
+import { tryOnMounted } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
@@ -154,8 +154,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
     initOnMounted,
   } = options
 
-  const data = (shallow ? shallowRef : deepRef)(typeof defaults === 'function' ? defaults() : defaults) as RemovableRef<T>
-  const keyComputed = computed<string>(() => toValue(key))
+  const data: RemovableRef<T> = (shallow ? shallowRef : deepRef)(typeof defaults === 'function' ? defaults() : defaults)
+  const keyComputed = computed(() => toValue(key))
 
   if (!storage) {
     try {
@@ -173,9 +173,11 @@ export function useStorage<T extends (string | number | boolean | object | null)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
-  const { pause: pauseWatch, resume: resumeWatch } = watchPausable(
+  const { pause: pauseWatch, resume: resumeWatch } = watch(
     data,
-    newValue => write(newValue),
+    (newValue) => {
+      write(newValue)
+    },
     { flush, deep, eventFilter },
   )
 
