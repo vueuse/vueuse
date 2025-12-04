@@ -1,6 +1,6 @@
 import type { Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
-import { useWebWorkerFn } from '@vueuse/core/useWebWorkerFn'
+import { useWebWorkerFn } from '../useWebWorkerFn'
 import { isClient, tryOnScopeDispose } from '@vueuse/shared'
 import { isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 
