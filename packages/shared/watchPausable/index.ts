@@ -1,4 +1,4 @@
-import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue'
+import type { MultiWatchSources, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { MapOldSources, MapSources, Pausable, PausableFilterOptions } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { pausableFilter } from '../utils'
@@ -10,7 +10,10 @@ export interface WatchPausableReturn extends Pausable {
 
 export type WatchPausableOptions<Immediate> = WatchWithFilterOptions<Immediate> & PausableFilterOptions
 
-export function watchPausable<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchPausableOptions<Immediate>): WatchPausableReturn
+/**
+ * @deprecated This function will be removed in future version.
+ */
+export function watchPausable<T extends Readonly<MultiWatchSources>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchPausableOptions<Immediate>): WatchPausableReturn
 export function watchPausable<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchPausableOptions<Immediate>): WatchPausableReturn
 export function watchPausable<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchPausableOptions<Immediate>): WatchPausableReturn
 export function watchPausable<Immediate extends Readonly<boolean> = false>(
@@ -37,5 +40,5 @@ export function watchPausable<Immediate extends Readonly<boolean> = false>(
   return { stop, pause, resume, isActive }
 }
 
-// alias
-export { watchPausable as pausableWatch }
+/** @deprecated use `watchPausable` instead */
+export const pausableWatch = watchPausable

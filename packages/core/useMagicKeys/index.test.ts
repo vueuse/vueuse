@@ -1,22 +1,14 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import { dispatchKeyboardEvent } from '../../.test'
 import { useMagicKeys } from './index'
-
-interface dispatchKeyboardEventOptions extends Partial<KeyboardEvent> {
-  key: string
-  target: HTMLElement
-  eventType?: 'keydown' | 'keyup'
-}
-
-function dispatchKeyboardEvent(options: dispatchKeyboardEventOptions): void {
-  const { eventType = 'keydown', target, key, ...args } = options
-  target.dispatchEvent(new KeyboardEvent(eventType, { key, ...args }))
-}
 
 describe('useMagicKeys', () => {
   let target: HTMLInputElement
+
   beforeEach(() => {
     target = document.createElement('input')
   })
+
   it('single key', async () => {
     const { A } = useMagicKeys({ target })
     dispatchKeyboardEvent({ target, key: 'A' })
@@ -96,6 +88,21 @@ describe('useMagicKeys', () => {
     expect(shift.value).toBe(false)
   })
 
+  it('prevent incorrect clearing of other keys after releasing alt', () => {
+    // #5035
+    const { current } = useMagicKeys({ target })
+
+    dispatchKeyboardEvent({ target, key: 'v' })
+    dispatchKeyboardEvent({ target, key: 'Alt', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'u', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'e', altKey: true })
+    expect(current).toStrictEqual(new Set(['v', 'alt', 'u', 'e']))
+
+    // Clear key pressed after alt
+    dispatchKeyboardEvent({ target, key: 'Alt', altKey: true, eventType: 'keyup' })
+    expect(current).toStrictEqual(new Set(['v']))
+  })
+
   it('current return value', async () => {
     const { v, current } = useMagicKeys({ target })
     expect(v.value).toBe(false)
@@ -146,5 +153,15 @@ describe('useMagicKeys', () => {
 
     window.dispatchEvent(new Event('focus'))
     expect(alt_tab.value).toBe(false)
+  })
+
+  it('should handle empty key events without errors', async () => {
+    const { a } = useMagicKeys({ target })
+
+    expect(() => {
+      target.dispatchEvent(new KeyboardEvent('keyup', {}))
+    }).not.toThrow()
+
+    expect(a.value).toBe(false)
   })
 })

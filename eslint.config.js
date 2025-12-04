@@ -25,6 +25,16 @@ export default antfu(
   {
     formatters: true,
     pnpm: true,
+    test: {
+      overrides: {
+        'test/padding-around-after-all-blocks': 'error',
+        'test/padding-around-after-each-blocks': 'error',
+        'test/padding-around-before-all-blocks': 'error',
+        'test/padding-around-before-each-blocks': 'error',
+        'test/padding-around-describe-blocks': 'error',
+        'test/padding-around-test-blocks': 'error',
+      },
+    },
     ignores: [
       'patches',
       'playgrounds',
@@ -81,6 +91,30 @@ export default antfu(
           ...restricted,
           '@vueuse/core',
         ],
+      }],
+    },
+  },
+  {
+    files: ['packages/core/**/component.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        paths: restricted,
+        patterns: [{
+          group: ['./*'],
+          message: 'Please use `@vueuse/core` instead.',
+        }],
+      }],
+    },
+  },
+  {
+    files: ['packages/**/component.ts'],
+    ignores: ['packages/core/**/component.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        paths: restricted,
+        patterns: [{
+          group: ['@vueuse/*', '!@vueuse/shared', '!@vueuse/core'],
+        }],
       }],
     },
   },

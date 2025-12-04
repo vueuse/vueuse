@@ -2,8 +2,8 @@
 import { useIntersectionObserver } from '@vueuse/core'
 import { computed, shallowRef, useTemplateRef } from 'vue'
 
-const root = useTemplateRef<HTMLElement>('root')
-const target = useTemplateRef<HTMLElement>('target')
+const root = useTemplateRef('root')
+const target = useTemplateRef('target')
 const isVisible = shallowRef(false)
 
 const rootMarginTop = shallowRef(0)
