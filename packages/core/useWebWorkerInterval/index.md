@@ -2,16 +2,16 @@
 category: Animation
 ---
 
-# useWebWorkerIntervalFn
+# useWebWorkerInterval
 
 Wrapper for Web Worker based `setInterval` with controls
 
 ## Usage
 
 ```ts
-import { useWebWorkerIntervalFn } from '@vueuse/core'
+import { useWebWorkerInterval } from '@vueuse/core'
 
-const { pause, resume } = useWebWorkerIntervalFn(() => {
+const { pause, resume } = useWebWorkerInterval(() => {
   /* your function */
 }, 1000)
 ```

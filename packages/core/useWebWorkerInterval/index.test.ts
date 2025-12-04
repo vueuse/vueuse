@@ -1,7 +1,7 @@
 import type { useWebWorkerIntervalFnReturn } from '../index'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, shallowRef } from 'vue'
-import { useWebWorkerIntervalFn } from './index'
+import { useWebWorkerInterval } from './index'
 
 class MockWorker {
   interval = 0
@@ -34,7 +34,7 @@ class MockWorker {
   terminate = vi.fn()
 }
 
-describe('useWebWorkerIntervalFn', () => {
+describe('useWebWorkerInterval', () => {
   let callback = vi.fn()
   vi.useFakeTimers()
 
@@ -94,12 +94,12 @@ describe('useWebWorkerIntervalFn', () => {
   }
 
   it('basic pause/resume', async () => {
-    await exec(useWebWorkerIntervalFn(callback, 50))
+    await exec(useWebWorkerInterval(callback, 50))
 
     callback = vi.fn()
 
     const interval = shallowRef(50)
-    await exec(useWebWorkerIntervalFn(callback, interval))
+    await exec(useWebWorkerInterval(callback, interval))
 
     callback.mockClear()
     interval.value = 20
@@ -108,12 +108,12 @@ describe('useWebWorkerIntervalFn', () => {
   })
 
   it('pause/resume with immediateCallback', async () => {
-    await execImmediateCallback(useWebWorkerIntervalFn(callback, 50, { immediateCallback: true }))
+    await execImmediateCallback(useWebWorkerInterval(callback, 50, { immediateCallback: true }))
 
     callback = vi.fn()
 
     const interval = shallowRef(50)
-    await execImmediateCallback(useWebWorkerIntervalFn(callback, interval, { immediateCallback: true }))
+    await execImmediateCallback(useWebWorkerInterval(callback, interval, { immediateCallback: true }))
 
     callback.mockClear()
     interval.value = 20
@@ -124,7 +124,7 @@ describe('useWebWorkerIntervalFn', () => {
   it('pause/resume in scope', async () => {
     const scope = effectScope()
     await scope.run(async () => {
-      await exec(useWebWorkerIntervalFn(callback, 50))
+      await exec(useWebWorkerInterval(callback, 50))
     })
     callback.mockClear()
     await scope.stop()
@@ -133,7 +133,7 @@ describe('useWebWorkerIntervalFn', () => {
   })
 
   it('pause in callback', async () => {
-    const pausable = useWebWorkerIntervalFn(() => {
+    const pausable = useWebWorkerInterval(() => {
       callback()
       pausable.pause()
     }, 50, { immediateCallback: true, immediate: false })
@@ -154,7 +154,7 @@ describe('useWebWorkerIntervalFn', () => {
   })
 
   it('cant work when interval is negative', async () => {
-    const { isActive } = useWebWorkerIntervalFn(callback, -1)
+    const { isActive } = useWebWorkerInterval(callback, -1)
 
     expect(isActive.value).toBeFalsy()
     await vi.advanceTimersByTimeAsync(60)

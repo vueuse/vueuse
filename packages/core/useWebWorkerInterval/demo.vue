@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { rand, useWebWorkerIntervalFn } from '@vueuse/core'
+import { rand, useWebWorkerInterval } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 const greetings = ['Hello', 'Hi', 'Yo!', 'Hey', 'Hola', 'こんにちは', 'Bonjour', 'Salut!', '你好', 'Привет']
 const word = shallowRef('Hello')
 const interval = shallowRef(500)
 
-const { pause, resume, isActive } = useWebWorkerIntervalFn(() => {
+const { pause, resume, isActive } = useWebWorkerInterval(() => {
   word.value = greetings[rand(0, greetings.length - 1)]
 }, interval)
 </script>
