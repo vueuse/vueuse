@@ -92,7 +92,7 @@ A function folder typically contains these 4 files:
 ```bash
 index.ts            # function source code itself
 demo.vue            # documentation demo
-index.test.ts       # vitest unit testing
+index.browser.test.ts       # vitest unit testing
 index.md            # documentation
 ```
 
