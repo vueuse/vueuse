@@ -1,8 +1,8 @@
 import type { Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
-import { useWebWorkerFn } from '../useWebWorkerFn'
 import { isClient, tryOnScopeDispose } from '@vueuse/shared'
 import { isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
+import { useWebWorkerFn } from '../useWebWorkerFn'
 
 export interface useWebWorkerIntervalFnOptions {
   /**
@@ -39,7 +39,7 @@ function schedulerTask(interval: number = 1000) {
  * @param options
  */
 
-export function useWebWorkerInterval(cb: () => void, interval: MaybeRefOrGetter<number> = 1000, options: useWebWorkerIntervalFnOptions = {}): useWebWorkerIntervalFnReturn {
+export function useWebWorkerInterval(cb: () => void | Promise<void>, interval: MaybeRefOrGetter<number> = 1000, options: useWebWorkerIntervalFnOptions = {}): useWebWorkerIntervalFnReturn {
   const {
     immediate = true,
     immediateCallback = false,
@@ -67,11 +67,13 @@ export function useWebWorkerInterval(cb: () => void, interval: MaybeRefOrGetter<
     if (immediateCallback) {
       cb()
     }
-    clean()
     if (isActive.value) {
-      workerFn(intervalValue).then(() => {
+      clean()
+      workerFn(intervalValue).then(async () => {
         if (isActive.value) {
-          cb()
+          await cb()
+        }
+        if (isActive.value) {
           resume()
         }
       })
