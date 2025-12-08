@@ -121,7 +121,10 @@ describe('useAsyncState', () => {
   })
 
   it('does not set `state` from an outdated execution', async () => {
-    const { execute, state } = useAsyncState((returnValue: string, timeout: number) => promiseTimeout(timeout).then(() => returnValue), '')
+    const {
+      execute,
+      state,
+    } = useAsyncState((returnValue: string, timeout: number) => promiseTimeout(timeout).then(() => returnValue), '')
     await Promise.all([
       execute(0, 'foo', 100),
       execute(0, 'bar', 50),
@@ -152,5 +155,75 @@ describe('useAsyncState', () => {
       execute(0, 0),
     ])
     expect(error.value).toBeUndefined()
+  })
+
+  it('should support object destructuring', async () => {
+    const { state, isLoading, execute, isReady, error, executeImmediate } = useAsyncState(p1, 0, { immediate: false })
+    expect(state.value).toBe(0)
+    expect(isLoading.value).toBe(false)
+    expect(isReady.value).toBe(false)
+    expect(error.value).toBeUndefined()
+    expect(typeof execute).toBe('function')
+    expect(typeof executeImmediate).toBe('function')
+
+    await execute(0, 5)
+    expect(state.value).toBe(5)
+    expect(isReady.value).toBe(true)
+  })
+
+  it('should support array destructuring', async () => {
+    const [state, isLoading, execute, isReady, error, executeImmediate] = useAsyncState(p1, 0, { immediate: false })
+    expect(state.value).toBe(0)
+    expect(isLoading.value).toBe(false)
+    expect(isReady.value).toBe(false)
+    expect(error.value).toBeUndefined()
+    expect(typeof execute).toBe('function')
+    expect(typeof executeImmediate).toBe('function')
+
+    await execute(0, 10)
+    expect(state.value).toBe(10)
+    expect(isReady.value).toBe(true)
+  })
+
+  it('should support array destructuring with correct order', async () => {
+    // Order: state, isLoading, execute, isReady, error, executeImmediate
+    const [state, isLoading, execute, isReady, error, executeImmediate] = useAsyncState(p1, 0, { immediate: false })
+
+    expect(isLoading.value).toBe(false)
+    expect(error.value).toBeUndefined()
+    const promise = execute(0, 3)
+    expect(isLoading.value).toBe(true)
+    await promise
+    expect(state.value).toBe(3)
+    expect(isLoading.value).toBe(false)
+    expect(isReady.value).toBe(true)
+    expect(error.value).toBeUndefined()
+
+    await executeImmediate(7)
+    expect(state.value).toBe(7)
+  })
+
+  it('should support partial array destructuring', async () => {
+    const [state, isLoading] = useAsyncState(p1, 0)
+    expect(state.value).toBe(0)
+    expect(typeof isLoading.value).toBe('boolean')
+  })
+
+  it('should support mixed destructuring usage', async () => {
+    const result = useAsyncState(p1, 0, { immediate: false })
+
+    // Object destructuring
+    const { state, execute } = result
+    expect(state.value).toBe(0)
+
+    // Array destructuring
+    const [state2, isLoading2] = result
+    expect(state2.value).toBe(0)
+    expect(isLoading2.value).toBe(false)
+
+    // Both should reference the same values
+    await execute(0, 15)
+    expect(state.value).toBe(15)
+    expect(state2.value).toBe(15)
   })
 })
