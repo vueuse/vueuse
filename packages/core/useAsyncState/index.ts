@@ -1,5 +1,5 @@
 import type { MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
-import { noop, promiseTimeout, until } from '@vueuse/shared'
+import { makeDestructurable, noop, promiseTimeout, until } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
@@ -11,8 +11,18 @@ export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow ext
   executeImmediate: (...args: Params) => Promise<Data>
 }
 
+export type UseAsyncStateReturnArray<Data, Params extends any[], Shallow extends boolean> = [
+  Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>,
+  Ref<boolean>,
+  (delay?: number, ...args: Params) => Promise<Data>,
+  Ref<boolean>,
+  Ref<unknown>,
+  (...args: Params) => Promise<Data>,
+]
+
 export type UseAsyncStateReturn<Data, Params extends any[], Shallow extends boolean>
   = UseAsyncStateReturnBase<Data, Params, Shallow>
+    & UseAsyncStateReturnArray<Data, Params, Shallow>
     & PromiseLike<UseAsyncStateReturnBase<Data, Params, Shallow>>
 
 export interface UseAsyncStateOptions<Shallow extends boolean, D = any> {
@@ -99,6 +109,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   const error = shallowRef<unknown | undefined>(undefined)
 
   let executionsCount = 0
+
   async function execute(delay = 0, ...args: any[]) {
     const executionId = (executionsCount += 1)
 
@@ -157,11 +168,21 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     })
   }
 
-  return {
-    ...shell,
-    then(onFulfilled, onRejected) {
-      return waitUntilIsLoaded()
-        .then(onFulfilled, onRejected)
+  return makeDestructurable(
+    {
+      ...shell,
+      then(onFulfilled: any, onRejected: any) {
+        return waitUntilIsLoaded()
+          .then(onFulfilled, onRejected)
+      },
     },
-  }
+    [
+      state,
+      isLoading,
+      execute,
+      isReady,
+      error,
+      shell.executeImmediate,
+    ],
+  ) as unknown as UseAsyncStateReturn<Data, Params, Shallow>
 }
