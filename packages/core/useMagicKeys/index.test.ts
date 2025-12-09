@@ -156,12 +156,15 @@ describe('useMagicKeys', () => {
   })
 
   it('should handle empty key events without errors', async () => {
+    const errorPromise = new Promise((_, reject) => {
+      process.once('uncaughtException', reject)
+      process.once('unhandledRejection', reject)
+    })
+
     const { a } = useMagicKeys({ target })
+    target.dispatchEvent(new KeyboardEvent('keyup', {}))
 
-    expect(() => {
-      target.dispatchEvent(new KeyboardEvent('keyup', {}))
-    }).not.toThrow()
-
+    await expect(Promise.race([errorPromise, Promise.resolve()])).resolves.not.toThrow()
     expect(a.value).toBe(false)
   })
 })
