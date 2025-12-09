@@ -167,4 +167,22 @@ describe('useMagicKeys', () => {
     await expect(Promise.race([errorPromise, Promise.resolve()])).resolves.not.toThrow()
     expect(a.value).toBe(false)
   })
+
+  it ('should handle key events with key == undefined withouth errors', async () => {
+    const errorPromise = new Promise((_, reject) => {
+      process.once('uncaughtException', reject)
+      process.once('unhandledRejection', reject)
+    })
+
+    const { a } = useMagicKeys({ target })
+
+    // Chromium autocomplete can trigger key events with key == undefined
+    // (https://issues.chromium.org/issues/40539270, https://github.com/microsoft/TypeScript/issues/59631)
+    const e = new KeyboardEvent('keyup', { key: undefined })
+    Object.defineProperty(e, 'key', { value: undefined })
+    target.dispatchEvent(e)
+
+    await expect(Promise.race([errorPromise, Promise.resolve()])).resolves.not.toThrow()
+    expect(a.value).toBe(false)
+  })
 })
