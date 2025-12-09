@@ -47,4 +47,4 @@ function increaseAge() {
     <button @click="increaseAge">Add age</button>
   </div>
 </template>
-
+```
