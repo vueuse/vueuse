@@ -53,7 +53,8 @@ export function useRouteParams<
 
   const _paramsQueue = _queue.get(router)!
 
-  let param = route.params[name] as any
+  const getParams = () => (router && router.currentRoute) ? router.currentRoute.value.params : route.params
+  let param = getParams()[name] as any
 
   tryOnScopeDispose(() => {
     param = undefined
@@ -104,7 +105,7 @@ export function useRouteParams<
   })
 
   watch(
-    () => route.params[name],
+    () => getParams()[name],
     (v) => {
       if (param === transformGet(v as T))
         return
