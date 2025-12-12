@@ -96,13 +96,13 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 6: Custom event target with event type infer
+ * Overload 6: Custom event target fallback
  *
  * @see https://vueuse.org/useEventListener
  */
-export function useEventListener<Names extends string, EventType = Event>(
-  target: MaybeRefOrGetter<Arrayable<InferEventTarget<Names>> | null | undefined>,
-  event: MaybeRefOrGetter<Arrayable<Names>>,
+export function useEventListener<EventType = Event>(
+  target: MaybeRefOrGetter<Arrayable<EventTarget> | null | undefined>,
+  event: MaybeRefOrGetter<Arrayable<string>>,
   listener: MaybeRef<Arrayable<GeneralEventListener<EventType>>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
@@ -110,13 +110,13 @@ export function useEventListener<Names extends string, EventType = Event>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 7: Custom event target fallback
+ * Overload 7: Custom event target with event type infer
  *
  * @see https://vueuse.org/useEventListener
  */
-export function useEventListener<EventType = Event>(
-  target: MaybeRefOrGetter<Arrayable<EventTarget> | null | undefined>,
-  event: MaybeRefOrGetter<Arrayable<string>>,
+export function useEventListener<Names extends string, EventType = Event>(
+  target: MaybeRefOrGetter<Arrayable<InferEventTarget<Names>> | null | undefined>,
+  event: MaybeRefOrGetter<Arrayable<Names>>,
   listener: MaybeRef<Arrayable<GeneralEventListener<EventType>>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
