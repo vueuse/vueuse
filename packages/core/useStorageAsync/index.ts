@@ -104,6 +104,12 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
   const promise = new Promise((resolve) => {
     read().then(() => {
       onReady?.(data.value)
+
+      Object.assign(data, {
+        then: undefined,
+        catch: undefined,
+      })
+
       resolve(data)
     })
   })
