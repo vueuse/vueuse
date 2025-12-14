@@ -247,6 +247,7 @@
   useSpeechSynthesis: function
   useSSRWidth: function
   useStepper: function
+  useStickToBottom: function
   useStorage: function
   useStorageAsync: function
   useStyleTag: function
