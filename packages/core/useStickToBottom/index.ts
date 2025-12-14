@@ -1,8 +1,12 @@
 import type { ComputedRef, Ref } from 'vue'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
+import { tryOnScopeDispose } from '@vueuse/shared'
+import { computed, shallowRef, watch } from 'vue'
+import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
+import { useSupported } from '../useSupported'
 
 const DEFAULT_SPRING_ANIMATION = {
   damping: 0.7,
@@ -25,7 +29,7 @@ export interface ScrollElements {
 
 export type GetTargetScrollTop = (targetScrollTop: number, context: ScrollElements) => number
 
-export interface UseStickToBottomOptions extends SpringAnimation {
+export interface UseStickToBottomOptions extends SpringAnimation, ConfigurableWindow {
   /** Scrollable element (the element with `scrollTop`) */
   scrollElement: MaybeComputedElementRef<HTMLElement | null>
 
@@ -56,6 +60,8 @@ export type ScrollToBottomOptions
     }
 
 export interface UseStickToBottomReturn {
+  /** Whether ResizeObserver is supported in the provided window */
+  isSupported: ComputedRef<boolean>
   isAtBottom: ComputedRef<boolean>
   isNearBottom: Ref<boolean>
   escapedFromLock: Ref<boolean>
@@ -101,49 +107,33 @@ function mergeAnimations(...animations: (Animation | boolean | undefined)[]) {
   return instant ? 'instant' : animationCache.get(key)!
 }
 
-let mouseDown = false
-let mouseTrackingReady = false
-
-function ensureMouseTracking() {
-  if (mouseTrackingReady)
-    return
-  mouseTrackingReady = true
-
-  globalThis.document?.addEventListener('mousedown', () => {
-    mouseDown = true
-  })
-  globalThis.document?.addEventListener('mouseup', () => {
-    mouseDown = false
-  })
-  globalThis.document?.addEventListener('click', () => {
-    mouseDown = false
-  })
-}
-
-function raf(cb: FrameRequestCallback) {
-  if (globalThis.requestAnimationFrame)
-    return globalThis.requestAnimationFrame(cb)
+function raf(window: Window | undefined, cb: FrameRequestCallback) {
+  if (window?.requestAnimationFrame)
+    return window.requestAnimationFrame(cb)
 
   return setTimeout(() => cb(Date.now()), 16) as unknown as number
 }
 
-function now() {
-  return globalThis.performance?.now?.() ?? Date.now()
+function now(window: Window | undefined) {
+  return window?.performance?.now?.() ?? Date.now()
 }
 
 function isScrollableElement(el: unknown): el is HTMLElement {
   return !!el && typeof el === 'object' && 'scrollTop' in (el as any) && 'scrollHeight' in (el as any)
 }
 
-function rafPromise() {
-  return new Promise<void>(resolve => raf(() => resolve()))
+function rafPromise(window: Window | undefined) {
+  return new Promise<void>(resolve => raf(window, () => resolve()))
 }
 
 /**
  * Smoothly stick a scroll container to the bottom, with escape handling.
  */
 export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBottomReturn {
-  ensureMouseTracking()
+  const { window = defaultWindow } = options
+  const document = window?.document
+
+  const isSupported = useSupported(() => !!window && 'ResizeObserver' in (window as any))
 
   const {
     scrollElement,
@@ -156,6 +146,19 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
     stiffness,
     mass,
   } = options
+
+  const isMouseDown = shallowRef(false)
+  if (document) {
+    useEventListener(document, 'mousedown', () => {
+      isMouseDown.value = true
+    })
+    useEventListener(document, 'mouseup', () => {
+      isMouseDown.value = false
+    })
+    useEventListener(document, 'click', () => {
+      isMouseDown.value = false
+    })
+  }
 
   const escapedFromLock = shallowRef(false)
   const isAtBottomLocked = shallowRef(initial !== false)
@@ -240,7 +243,7 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
     )
 
     lastCalculation = { targetScrollTop: target, calculatedScrollTop: calculated }
-    raf(() => {
+    raf(window, () => {
       lastCalculation = undefined
     })
 
@@ -257,10 +260,10 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
 
   function isSelecting() {
     const viewport = resolvedScrollElement.value
-    if (!viewport || !mouseDown)
+    if (!viewport || !isMouseDown.value)
       return false
 
-    const selection = globalThis.getSelection?.()
+    const selection = window?.getSelection?.()
     if (!selection || !selection.rangeCount)
       return false
 
@@ -314,14 +317,14 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
     }
 
     const next = async (): Promise<boolean> => {
-      const promise = rafPromise().then(() => {
+      const promise = rafPromise(window).then(() => {
         if (!isAtBottomLocked.value) {
           state.animation = undefined
           return false
         }
 
         const scrollTop = getScrollTop()
-        const tick = now()
+        const tick = now(window)
         const tickDelta = (tick - (state.lastTick ?? tick)) / SIXTY_FPS_INTERVAL_MS
 
         state.animation ||= { behavior, promise, ignoreEscapes }
@@ -375,7 +378,7 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
       })
 
       return promise.then((ok) => {
-        raf(() => {
+        raf(window, () => {
           if (!state.animation) {
             state.lastTick = undefined
             state.velocity = 0
@@ -466,7 +469,7 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
       return
 
     let element = target as HTMLElement | null
-    while (element && globalThis.getComputedStyle && !['scroll', 'auto'].includes(getComputedStyle(element).overflow))
+    while (element && window?.getComputedStyle && !['scroll', 'auto'].includes(window.getComputedStyle(element).overflow))
       element = element.parentElement
 
     if (
@@ -503,10 +506,11 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
       if (!content)
         return
 
-      if (typeof ResizeObserver === 'undefined')
+      const ResizeObserverCtor = (window as any)?.ResizeObserver as typeof ResizeObserver | undefined
+      if (!ResizeObserverCtor)
         return
 
-      resizeObserver = new ResizeObserver((entries) => {
+      resizeObserver = new ResizeObserverCtor((entries: ResizeObserverEntry[]) => {
         const viewport = resolvedScrollElement.value
         if (!viewport)
           return
@@ -547,7 +551,7 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
 
         previousHeight = height
 
-        raf(() => {
+        raf(window, () => {
           setTimeout(() => {
             if (state.resizeDifference === difference)
               state.resizeDifference = 0
@@ -555,7 +559,7 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
         })
       })
 
-      resizeObserver.observe(content)
+      resizeObserver?.observe(content)
       onCleanup(() => resizeObserver?.disconnect())
     },
     { immediate: true },
@@ -580,11 +584,10 @@ export function useStickToBottom(options: UseStickToBottomOptions): UseStickToBo
     { immediate: true },
   )
 
-  onBeforeUnmount(() => {
-    resizeObserver?.disconnect()
-  })
+  tryOnScopeDispose(() => resizeObserver?.disconnect())
 
   return {
+    isSupported,
     isAtBottom,
     isNearBottom,
     escapedFromLock,

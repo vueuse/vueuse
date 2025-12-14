@@ -7,7 +7,7 @@ describe('useStickToBottom', () => {
   it('scrollToBottom sets scrollTop to calculated bottom', async () => {
     const api: any = {}
 
-    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+    const rafSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
       cb(0)
       return 0 as any
     })
@@ -58,13 +58,15 @@ describe('useStickToBottom', () => {
     const ok = await api.scrollToBottom(false)
     expect(ok).toBe(true)
     expect(viewport.scrollTop).toBe(799)
+
+    rafSpy.mockRestore()
   })
 
   it('escapes when user scrolls up', async () => {
     const api: any = {}
 
     vi.useFakeTimers()
-    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+    const rafSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb: FrameRequestCallback) => {
       cb(0)
       return 0 as any
     })
@@ -122,6 +124,7 @@ describe('useStickToBottom', () => {
     expect(api.isAtBottom.value).toBe(false)
     expect(api.showScrollToBottom.value).toBe(true)
 
+    rafSpy.mockRestore()
     vi.useRealTimers()
   })
 })

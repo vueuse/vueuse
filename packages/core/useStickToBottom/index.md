@@ -6,6 +6,10 @@ category: Sensors
 
 Stick a scroll container to the bottom, designed for chat/message UIs.
 
+## Support
+
+This composable uses `ResizeObserver` to react to content size changes. You can check `isSupported` to know if it is available in the current environment.
+
 ## Usage
 
 ```vue
@@ -17,6 +21,7 @@ const scrollEl = useTemplateRef<HTMLElement>('scrollEl')
 const contentEl = useTemplateRef<HTMLElement>('contentEl')
 
 const {
+  isSupported,
   showScrollToBottom,
   scrollToBottomAndResume,
 } = useStickToBottom({
@@ -37,6 +42,10 @@ const {
   <button v-if="showScrollToBottom" @click="scrollToBottomAndResume(true)">
     Scroll to bottom
   </button>
+
+  <p v-if="!isSupported" style="opacity: 0.7">
+    ResizeObserver is not supported in this environment.
+  </p>
 </template>
 ```
 
