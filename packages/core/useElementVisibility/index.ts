@@ -1,4 +1,3 @@
-import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
@@ -17,7 +16,7 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<Us
   /**
    * The element that is used as the viewport for checking visibility of the target.
    */
-  scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
+  scrollTarget?: UseIntersectionObserverOptions['root']
   /**
    * Stop tracking when element visibility changes for the first time
    *
