@@ -141,7 +141,7 @@ export interface ThrottleFilterOptions {
 /**
  * Create an EventFilter that throttle the events
  */
-export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
+export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter & { clear: () => void }
 export function throttleFilter(options: ThrottleFilterOptions): EventFilter
 export function throttleFilter(...args: any[]) {
   let lastExec = 0
@@ -203,6 +203,9 @@ export function throttleFilter(...args: any[]) {
     return lastValue
   }
 
+  Object.assign(filter, {
+    clear,
+  })
   return filter
 }
 
