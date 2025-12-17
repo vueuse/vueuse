@@ -37,7 +37,8 @@ const { shift, space, a } = useMagicKeys()
 watch(
   () => space?.value,
   (v) => {
-    if (v) console.log('space has been pressed')
+    if (v)
+      console.log('space has been pressed')
   },
 )
 
