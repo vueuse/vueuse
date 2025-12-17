@@ -1,5 +1,5 @@
 import type { Fn } from '@vueuse/shared'
-import type { MaybeRef, WatchSource } from 'vue'
+import type { MaybeRef, MultiWatchSources, WatchSource } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { toRef } from '@vueuse/shared'
 import { nextTick, shallowRef, toValue, watch } from 'vue'
@@ -12,7 +12,7 @@ export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   /** Textarea content. */
   input?: MaybeRef<string>
   /** Watch sources that should trigger a textarea resize. */
-  watch?: WatchSource | Array<WatchSource>
+  watch?: WatchSource | MultiWatchSources
   /** Function called when the textarea size changes. */
   onResize?: () => void
   /** Specify style target to apply the height based on textarea content. If not provided it will use textarea it self.  */

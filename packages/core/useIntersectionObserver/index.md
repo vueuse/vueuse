@@ -13,7 +13,7 @@ Detects that a target element's visibility.
 import { useIntersectionObserver } from '@vueuse/core'
 import { shallowRef, useTemplateRef } from 'vue'
 
-const target = useTemplateRef<HTMLDivElement>('target')
+const target = useTemplateRef('target')
 const targetIsVisible = shallowRef(false)
 
 const { stop } = useIntersectionObserver(
@@ -38,7 +38,7 @@ const { stop } = useIntersectionObserver(
 import { vIntersectionObserver } from '@vueuse/components'
 import { shallowRef, useTemplateRef } from 'vue'
 
-const root = useTemplateRef<HTMLDivElement>('root')
+const root = useTemplateRef('root')
 
 const isVisible = shallowRef(false)
 

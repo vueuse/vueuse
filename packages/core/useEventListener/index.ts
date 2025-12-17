@@ -1,6 +1,6 @@
 import type { Arrayable, Fn } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
-import { isObject, toArray, tryOnScopeDispose, watchImmediate } from '@vueuse/shared'
+import { isObject, toArray, watchImmediate } from '@vueuse/shared'
 // eslint-disable-next-line no-restricted-imports -- We specifically need to use unref here to distinguish between callbacks
 import { computed, toValue, unref } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -122,12 +122,6 @@ export function useEventListener<EventType = Event>(
 ): Fn
 
 export function useEventListener(...args: Parameters<typeof useEventListener>) {
-  const cleanups: Function[] = []
-  const cleanup = () => {
-    cleanups.forEach(fn => fn())
-    cleanups.length = 0
-  }
-
   const register = (
     el: EventTarget,
     event: string,
@@ -143,7 +137,7 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
     return test.every(e => typeof e !== 'string') ? test : undefined
   })
 
-  const stopWatch = watchImmediate(
+  return watchImmediate(
     () => [
       firstParamTargets.value?.map(e => unrefElement(e as never)) ?? [defaultWindow].filter(e => e != null),
       toArray(toValue(firstParamTargets.value ? args[1] : args[0]) as string[]),
@@ -151,31 +145,25 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
       // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
       toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
     ] as const,
-    ([raw_targets, raw_events, raw_listeners, raw_options]) => {
-      cleanup()
-
+    ([raw_targets, raw_events, raw_listeners, raw_options], _, onCleanup) => {
       if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
         return
 
       // create a clone of options, to avoid it being changed reactively on removal
       const optionsClone = isObject(raw_options) ? { ...raw_options } : raw_options
-      cleanups.push(
-        ...raw_targets.flatMap(el =>
-          raw_events.flatMap(event =>
-            raw_listeners.map(listener => register(el, event, listener, optionsClone)),
-          ),
-        ),
-      )
+      const cleanups = raw_targets
+        .flatMap(el =>
+          raw_events
+            .flatMap(event =>
+              raw_listeners.map(listener =>
+                register(el, event, listener, optionsClone),
+              ),
+            ),
+        )
+      onCleanup(() => {
+        cleanups.forEach(fn => fn())
+      })
     },
     { flush: 'post' },
   )
-
-  const stop = () => {
-    stopWatch()
-    cleanup()
-  }
-
-  tryOnScopeDispose(cleanup)
-
-  return stop
 }
