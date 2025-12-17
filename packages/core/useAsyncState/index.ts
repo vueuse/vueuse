@@ -1,12 +1,18 @@
-import type { MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
+import type { ComputedRef, MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, toValue } from 'vue'
+import { computed, ref as deepRef, shallowRef, toValue } from 'vue'
+
+/**
+ * Status of the async state
+ */
+export type UseAsyncStateStatus = 'idle' | 'loading' | 'error' | 'success'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
   isReady: Ref<boolean>
   isLoading: Ref<boolean>
   error: Ref<unknown>
+  status: ComputedRef<UseAsyncStateStatus>
   execute: (delay?: number, ...args: Params) => Promise<Data>
   executeImmediate: (...args: Params) => Promise<Data>
 }
@@ -98,6 +104,16 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
 
+  const status = computed<UseAsyncStateStatus>(() => {
+    if (isLoading.value)
+      return 'loading'
+    if (error.value !== undefined)
+      return 'error'
+    if (isReady.value)
+      return 'success'
+    return 'idle'
+  })
+
   let executionsCount = 0
   async function execute(delay = 0, ...args: any[]) {
     const executionId = (executionsCount += 1)
@@ -147,6 +163,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     isReady,
     isLoading,
     error,
+    status,
     execute,
     executeImmediate: (...args: any[]) => execute(0, ...args),
   }
