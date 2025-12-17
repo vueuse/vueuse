@@ -20,31 +20,5 @@ message.reset()
 console.log(message.value) // 'default message'
 ```
 
-Since `refManualReset` is implemented using `customRef`, it does **not** provide deep reactivity by default.  
-If you need nested properties to be reactive, wrap the initial value with `reactive`:
-
-```vue
-<script setup lang="ts">
-import { reactive } from 'vue'
-import { refManualReset } from '@vueuse/core'
-
-const form = refManualReset(reactive({
-  user: {
-    name: "Tom",
-    profile: { age: 18 },
-  },
-}))
-
-function increaseAge() {
-  // Deep mutations will now update the UI
-  form.value.user.profile.age++
-}
-</script>
-
-<template>
-  <div class="flex flex-col items-center justify-center w-screen h-screen">
-    <div>Age: {{ form.user.profile.age }}</div>
-    <button @click="increaseAge">Add age</button>
-  </div>
-</template>
-```
+> **Note**: `refManualReset` is shallow, which may cause your UI not updated on value changes.
+> Wrap your value with `reactive` can achieve deep reactivity, but this workaround may not suit all use cases.
