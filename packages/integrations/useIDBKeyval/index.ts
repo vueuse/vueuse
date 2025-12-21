@@ -1,6 +1,6 @@
 import type { ConfigurableFlush, RemovableRef } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
-import { watchPausable } from '@vueuse/core'
+import { isClient, watchPausable } from '@vueuse/shared'
 import { del, get, set, update } from 'idb-keyval'
 import { ref as deepRef, shallowRef, toRaw, toValue } from 'vue'
 
@@ -78,6 +78,15 @@ export function useIDBKeyval<T>(
   const data = (shallow ? shallowRef : deepRef)(initialValue) as Ref<T>
 
   const rawInit: T = toValue(initialValue)
+
+  // SSR guard: indexedDB is not available in SSR environment
+  if (!isClient) {
+    return {
+      set: async () => {},
+      isFinished,
+      data: data as RemovableRef<T>,
+    }
+  }
 
   async function read() {
     try {
