@@ -51,12 +51,13 @@ export function useSortable<T>(
     },
   }
 
-  const target = computed(() => (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el)))
+  const target = computed(() => (typeof el === 'string' ? undefined : unrefElement(el)))
 
   const start = () => {
-    if (!target.value || sortable !== undefined || !(target.value instanceof HTMLElement))
+    const targetElement = (typeof el === 'string' ? document?.querySelector(el) : target.value)
+    if (!targetElement || sortable !== undefined || !(targetElement instanceof HTMLElement))
       return
-    sortable = new Sortable(target.value, { ...defaultOptions, ...resetOptions })
+    sortable = new Sortable(targetElement, { ...defaultOptions, ...resetOptions })
   }
 
   const stop = () => {
