@@ -3,7 +3,7 @@ import type { Options } from 'sortablejs'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import { isRef, nextTick, toValue } from 'vue'
+import { computed, isRef, nextTick, toValue, watch } from 'vue'
 
 export interface UseSortableReturn {
   /**
@@ -51,11 +51,12 @@ export function useSortable<T>(
     },
   }
 
+  const target = computed(() => (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el)))
+
   const start = () => {
-    const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
-    if (!target || sortable !== undefined)
+    if (!target.value || sortable !== undefined || !(target.value instanceof HTMLElement))
       return
-    sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
+    sortable = new Sortable(target.value, { ...defaultOptions, ...resetOptions })
   }
 
   const stop = () => {
@@ -71,8 +72,14 @@ export function useSortable<T>(
   }
 
   tryOnMounted(start)
-
   tryOnScopeDispose(stop)
+
+  watch(target, (targetValue, _, onCleanup) => {
+    if (targetValue)
+      start()
+
+    onCleanup(stop)
+  })
 
   return {
     stop,
@@ -94,7 +101,7 @@ export function insertNodeAt(
   index: number,
 ) {
   const refElement = parentElement.children[index]
-  parentElement.insertBefore(element, refElement)
+  parentElement.insertBefore(element, refElement ?? null)
 }
 
 /**
@@ -125,7 +132,9 @@ export function moveArrayElement<T>(
   if (to >= 0 && to < array.length) {
     const element = array.splice(from, 1)[0]
     nextTick(() => {
-      array.splice(to, 0, element)
+      if (element)
+        array.splice(to, 0, element)
+
       // When list is ref, assign array to list.value
       if (_valueIsRef)
         (list as MaybeRef).value = array
