@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, shallowRef, useTemplateRef } from 'vue'
+import { defineComponent, nextTick, shallowRef, useTemplateRef } from 'vue'
 import { useSortable } from './index'
 
 describe('useSortable', () => {
@@ -178,5 +178,33 @@ describe('useSortable', () => {
     finally {
       wrapper.unmount()
     }
+  })
+
+  it('should initialise Sortable when element becomes available (v-if)', async () => {
+    const wrapper = mount(defineComponent({
+      template: '<div><div v-if="show" ref="el"></div></div>',
+      setup() {
+        const show = shallowRef(false)
+        const el = useTemplateRef<HTMLElement>('el')
+        const list = shallowRef<string[]>([])
+
+        const result = useSortable(el, list, {})
+
+        return { ...result, el, show }
+      },
+    }))
+
+    const vm = wrapper.vm
+
+    expect(vm.el).toBeNull()
+
+    vm.show = true
+    await nextTick()
+
+    expect(vm.el).toBeInstanceOf(HTMLElement)
+    const sortable = Sortable.get(vm.el!)
+    expect(sortable).toBeDefined()
+
+    wrapper.unmount()
   })
 })
