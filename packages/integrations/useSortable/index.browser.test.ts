@@ -180,7 +180,7 @@ describe('useSortable', () => {
     }
   })
 
-  it('should initialise Sortable when element becomes available (v-if)', async () => {
+  it('should initialize Sortable when element becomes available (v-if)', async () => {
     const wrapper = mount(defineComponent({
       template: '<div><div v-if="show" ref="el"></div></div>',
       setup() {
