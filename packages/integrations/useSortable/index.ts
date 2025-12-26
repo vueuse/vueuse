@@ -3,7 +3,7 @@ import type { Options } from 'sortablejs'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import { computed, isRef, nextTick, toValue, watch } from 'vue'
+import { isRef, nextTick, toValue, watch } from 'vue'
 
 export interface UseSortableReturn {
   /**
@@ -51,10 +51,15 @@ export function useSortable<T>(
     },
   }
 
-  const target = computed(() => (typeof el === 'string' ? undefined : unrefElement(el)))
+  const getTargetElement: () => Element | null | undefined = () => {
+    if (typeof el === 'string') {
+      return document?.querySelector(el)
+    }
+    return unrefElement(el)
+  }
 
   const start = () => {
-    const targetElement = (typeof el === 'string' ? document?.querySelector(el) : target.value)
+    const targetElement = getTargetElement()
     if (!targetElement || sortable !== undefined || !(targetElement instanceof HTMLElement))
       return
     sortable = new Sortable(targetElement, { ...defaultOptions, ...resetOptions })
@@ -75,7 +80,7 @@ export function useSortable<T>(
   tryOnMounted(start)
   tryOnScopeDispose(stop)
 
-  watch(target, (targetValue, _, onCleanup) => {
+  watch(() => toValue(el), (targetValue, _, onCleanup) => {
     if (targetValue)
       start()
 
