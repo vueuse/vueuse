@@ -14,7 +14,11 @@ describe('unrefElement', () => {
 
     const Component = defineComponent({
       template: `
-        <div ref="target-node" id="target-node">Target Node</div>
+        <div>
+          <div>Node 1</div>
+          <div ref="target-node">Node 2</div>
+          <div>Node 3</div>
+        </div>
       `,
       setup() {
         const targetNodeRef = useTemplateRef<HTMLElement>('target-node')
@@ -28,7 +32,7 @@ describe('unrefElement', () => {
 
     await vi.waitFor(() => {
       expect(unrefElementReturn).toBeInstanceOf(HTMLDivElement)
-      expect(unrefElementReturn?.id).toBe('target-node')
+      expect(unrefElementReturn!.textContent).toBe('Node 2')
     })
   })
 
@@ -37,7 +41,9 @@ describe('unrefElement', () => {
 
     const ChildComponent = defineComponent({
       template: `
-        <div id="child-root-node">Child Root Node</div>
+        <div id="child-root-node">
+          <div id="grand-child-node" />
+        </div>
       `,
     })
 
@@ -62,11 +68,11 @@ describe('unrefElement', () => {
 
     await vi.waitFor(() => {
       expect(unrefElementReturn).toBeInstanceOf(HTMLDivElement)
-      expect(unrefElementReturn?.id).toBe('child-root-node')
+      expect(unrefElementReturn!.id).toBe('child-root-node')
     })
   })
 
-  it('return the text node if it is a Vue instance with only text', async () => {
+  it('return a text node if it is a Vue instance with only text', async () => {
     let unrefElementReturn: HTMLElement | null | undefined
 
     const ChildComponent = defineComponent({
@@ -93,8 +99,8 @@ describe('unrefElement', () => {
     page.render(Component)
 
     await vi.waitFor(() => {
-      expect(unrefElementReturn?.nodeType).toBe(Node.TEXT_NODE)
-      expect(unrefElementReturn?.textContent).toBe('This is a text node')
+      expect(unrefElementReturn!.nodeType).toBe(Node.TEXT_NODE)
+      expect(unrefElementReturn!.textContent).toBe('This is a text node')
     })
   })
 
@@ -129,8 +135,8 @@ describe('unrefElement', () => {
 
     await vi.waitFor(() => {
       expect(unrefElementReturn).toBeInstanceOf(Text)
-      expect(unrefElementReturn?.id).toBeUndefined()
-      expect(unrefElementReturn?.textContent).toBe('')
+      expect(unrefElementReturn!.id).toBeUndefined()
+      expect(unrefElementReturn!.textContent).toBe('')
     })
   })
 })
