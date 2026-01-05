@@ -1,40 +1,87 @@
+import type { Maybe } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-router'
-import type { ReactiveRouteOptionsWithTransform } from '../_types'
+import type { RouteMap, RouteParams, Router } from 'vue-router'
+import type {
+  GetRouteParams,
+  ReactiveRouteOptionsWithName,
+  ReactiveRouteOptionsWithTransform,
+  RouteParamValue,
+  RouteParamValueRaw,
+  RouteType,
+  ToPrimitive,
+  WithDefault,
+} from '../_types'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { isEmpty, mergeDefault, parseArgs } from '../_utils'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteParams(
   name: string
-): Ref<null | string | string[]>
+): Ref<undefined | null | string | string[]>
 
 export function useRouteParams<
-  T extends RouteParamValueRaw = RouteParamValueRaw,
+  R extends RouteParamValue = RouteParamValue,
+  D extends RouteParamValueRaw = R,
+  T = WithDefault<R, ToPrimitive<D>>,
   K = T,
 >(
   name: string,
-  defaultValue?: MaybeRefOrGetter<T>,
+  defaultValue?: MaybeRefOrGetter<D>,
   options?: ReactiveRouteOptionsWithTransform<T, K>
 ): Ref<K>
 
 export function useRouteParams<
-  T extends RouteParamValueRaw = RouteParamValueRaw,
+  R extends Record<string, RouteParamValue> = Record<string, RouteParamValue>,
+  D extends Maybe<Record<string, RouteParamValueRaw>> = R,
+  T = WithDefault<R, NonNullable<ToPrimitive<D>>>,
   K = T,
 >(
-  name: string,
-  defaultValue?: MaybeRefOrGetter<T>,
-  options: ReactiveRouteOptionsWithTransform<T, K> = {},
-): Ref<K> {
+  defaultValue?: MaybeRefOrGetter<D>,
+  options?: ReactiveRouteOptionsWithTransform<T, K>
+): Ref<K>
+
+export function useRouteParams<
+  M extends keyof RouteMap = keyof RouteMap,
+  N extends string | number | symbol = keyof RouteParams<M>,
+  R extends GetRouteParams<M, N> = GetRouteParams<M, N>,
+  E extends GetRouteParams<M, N> = R,
+  D extends GetRouteParams<M, N> | RouteParamValueRaw = R,
+  T = WithDefault<R, ToPrimitive<D>>,
+  K = T,
+>(
+  name: N,
+  defaultValue: MaybeRefOrGetter<D | E>,
+  options: ReactiveRouteOptionsWithName<T, K, M>
+): Ref<K>
+
+export function useRouteParams<
+  M extends keyof RouteMap = keyof RouteMap,
+  R extends GetRouteParams<M> = GetRouteParams<M>,
+  E extends GetRouteParams<M> = R,
+  D extends GetRouteParams<M> | Maybe<Record<string, RouteParamValueRaw>> = R,
+  T = WithDefault<R, NonNullable<ToPrimitive<D>>>,
+  K = T,
+>(
+  defaultValue: MaybeRefOrGetter<D | E>,
+  options: ReactiveRouteOptionsWithName<T, K, M>
+): Ref<K>
+
+export function useRouteParams<
+  T extends RouteParamValueRaw | Record<string, RouteParamValueRaw>,
+  K = T,
+>(...args: unknown[]): Ref<K> {
+  const { name, defaultValue, options } = parseArgs<T, K>(args)
   const {
     mode = 'replace',
-    route = useRoute(),
+    name: routeName,
+    route = useRoute(routeName),
     router = useRouter(),
     transform,
   } = options
-
+  type ParamsKey = keyof typeof route.params
   let transformGet = (value: T) => value as unknown as K
   let transformSet = (value: K) => value as unknown as T
 
@@ -53,7 +100,7 @@ export function useRouteParams<
 
   const _paramsQueue = _queue.get(router)!
 
-  let param = route.params[name] as any
+  let param = (name ? route.params[name as ParamsKey] : route.params) as any
 
   tryOnScopeDispose(() => {
     param = undefined
@@ -67,8 +114,11 @@ export function useRouteParams<
     return {
       get() {
         track()
-
-        return transformGet(param !== undefined && param !== '' ? param : toValue(defaultValue))
+        return transformGet(
+          mergeDefault(param, {
+            defaultValue: toValue(defaultValue),
+          }),
+        )
       },
       set(v) {
         v = transformSet(v)
@@ -76,8 +126,19 @@ export function useRouteParams<
         if (param === v)
           return
 
-        param = (v === toValue(defaultValue) || v === null) ? undefined : v
-        _paramsQueue.set(name, (v === toValue(defaultValue) || v === null) ? undefined : v)
+        param = isEmpty(v, {
+          defaultValue: toValue(defaultValue),
+        })
+          ? undefined
+          : v
+        if (name) {
+          _paramsQueue.set(name, param)
+        }
+        else {
+          Object.entries(param || {}).forEach(([key, value]) => {
+            _paramsQueue.set(key, value)
+          })
+        }
 
         trigger()
 
@@ -88,7 +149,7 @@ export function useRouteParams<
           const newParams = Object.fromEntries(_paramsQueue.entries())
           _paramsQueue.clear()
 
-          const { params, query, hash } = route
+          const { params, query, hash } = route as RouteType
 
           router[toValue(mode)]({
             params: {
@@ -97,14 +158,14 @@ export function useRouteParams<
             },
             query,
             hash,
-          } as LocationAsRelativeRaw)
+          })
         })
       },
     }
   })
 
   watch(
-    () => route.params[name],
+    () => name ? route.params[name as ParamsKey] : route.params,
     (v) => {
       if (param === transformGet(v as T))
         return

@@ -1,5 +1,7 @@
+import type { Maybe } from '@vueuse/shared'
 import type { Ref } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
+import type { Merge } from '../_types'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { useRouteQuery } from './index'
 
@@ -33,6 +35,10 @@ describe('useRouteQuery', () => {
     const perPage = useRouteQuery('perPage', '15', { transform, route, router })
     const tags = useRouteQuery('tags', [], { transform: toArray, route: getRoute({ tags: 'vite' }), router })
 
+    expectTypeOf(page.value).toEqualTypeOf<number>()
+    expectTypeOf(perPage.value).toEqualTypeOf<number>()
+    expectTypeOf(tags.value).toEqualTypeOf<Array<string | null>>()
+
     expect(page.value).toBe(1)
     expect(perPage.value).toBe(15)
     expect(tags.value).toEqual(['vite'])
@@ -42,16 +48,25 @@ describe('useRouteQuery', () => {
     let route = getRoute({
       serialized: '{"foo":"bar"}',
     })
+    interface ObjectType { foo?: string }
     const router = { replace: (r: any) => route = r } as any
 
     const object = useRouteQuery('serialized', undefined, {
       transform: {
-        get: (value: string) => JSON.parse(value),
-        set: (value: any) => JSON.stringify(value),
+        get: value => JSON.parse(
+          value
+            ? typeof value === 'object'
+              ? JSON.stringify(value)
+              : value
+            : '{}',
+        ) as ObjectType,
+        set: value => JSON.stringify(value),
       },
       router,
       route,
     })
+
+    expectTypeOf(object.value).toEqualTypeOf<ObjectType>()
 
     expect(object.value).toEqual({ foo: 'bar' })
 
@@ -77,6 +92,8 @@ describe('useRouteQuery', () => {
       route,
     })
 
+    expectTypeOf(search.value).toEqualTypeOf<string>()
+
     expect(search.value).toBe('vue3')
     expect(route.query.search).toBe('VUE3')
   })
@@ -93,6 +110,8 @@ describe('useRouteQuery', () => {
       route,
     })
 
+    expectTypeOf(search.value).toEqualTypeOf<string>()
+
     search.value = 'VUE3'
     expect(search.value).toBe('vue3')
 
@@ -107,8 +126,11 @@ describe('useRouteQuery', () => {
     })
     const router = { replace: (r: any) => route = r } as any
 
-    const code: Ref<any> = useRouteQuery('code', 'foo', { route, router })
-    const search: Ref<any> = useRouteQuery('search', null, { route, router })
+    const code = useRouteQuery('code', 'foo', { route, router })
+    const search = useRouteQuery('search', null, { route, router })
+
+    expectTypeOf(code.value).toEqualTypeOf<string | string[] | null>()
+    expectTypeOf(search.value).toEqualTypeOf<string | string[] | null>()
 
     expect(code.value).toBe('foo')
 
@@ -122,9 +144,13 @@ describe('useRouteQuery', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const code: Ref<any> = useRouteQuery('code', null, { route, router })
-    const page: Ref<any> = useRouteQuery('page', null, { route, router })
-    const lang: Ref<any> = useRouteQuery('lang', null, { route, router })
+    const code = useRouteQuery('code', null, { route, router })
+    const page = useRouteQuery('page', null, { route, router })
+    const lang = useRouteQuery('lang', null, { route, router })
+
+    expectTypeOf(code.value).toEqualTypeOf<string | string[] | null>()
+    expectTypeOf(page.value).toEqualTypeOf<string | string[] | null>()
+    expectTypeOf(lang.value).toEqualTypeOf<string | string[] | null>()
 
     code.value = 'bar'
     page.value = '1'
@@ -144,8 +170,11 @@ describe('useRouteQuery', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const page: Ref<any> = useRouteQuery('page', 2, { route, router })
-    const lang: Ref<any> = useRouteQuery('lang', 'pt-BR', { route, router })
+    const page = useRouteQuery('page', 2, { route, router })
+    const lang = useRouteQuery('lang', 'pt-BR', { route, router })
+
+    expectTypeOf(page.value).toEqualTypeOf<string | string[] | null | number>()
+    expectTypeOf(lang.value).toEqualTypeOf<string | string[] | null>()
 
     expect(page.value).toBe(2)
     expect(lang.value).toBe('pt-BR')
@@ -157,10 +186,10 @@ describe('useRouteQuery', () => {
     const scopeA = effectScope()
     const scopeB = effectScope()
 
-    let page: Ref<any> = deepRef(null)
-    let lang: Ref<any> = deepRef(null)
-    let code: Ref<any> = deepRef(null)
-    let search: Ref<any> = deepRef(null)
+    let page = deepRef<number | null>(null)
+    let lang = deepRef<string | null>(null)
+    let code = deepRef<string | null>(null)
+    let search = deepRef<string | null>(null)
 
     await scopeA.run(async () => {
       page = useRouteQuery('page', null, { route, router })
@@ -215,12 +244,12 @@ describe('useRouteQuery', () => {
     route.query.page = 2
 
     const defaultPage = 'DEFAULT_PAGE'
-    let page1: Ref<any> = deepRef(null)
+    let page1 = deepRef<number | string | null>(null)
     await scopeA.run(async () => {
       page1 = useRouteQuery('page', defaultPage, { route, router })
     })
 
-    let page2: Ref<any> = deepRef(null)
+    let page2 = deepRef<number | null>(null)
     await scopeB.run(async () => {
       page2 = useRouteQuery('page', defaultPage, { route, router })
     })
@@ -239,7 +268,9 @@ describe('useRouteQuery', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
 
-    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+    const page = useRouteQuery('page', null, { route, router })
+
+    expectTypeOf(page.value).toEqualTypeOf<string | string[] | null>()
 
     expect(page.value).toBeNull()
 
@@ -254,7 +285,9 @@ describe('useRouteQuery', () => {
     })
     const router = { replace: (r: any) => route = r } as any
 
-    const lang: Ref<any> = useRouteQuery('lang', undefined, { route, router })
+    const lang = useRouteQuery('lang', undefined, { route, router })
+
+    expectTypeOf(lang.value).toEqualTypeOf<string | string[] | null | undefined>()
 
     expect(lang.value).toBeUndefined()
 
@@ -262,11 +295,15 @@ describe('useRouteQuery', () => {
 
     expect(lang.value).toBeNull()
 
-    const code: Ref<any> = useRouteQuery('code', null, { route, router })
+    const code = useRouteQuery('code', null, { route, router })
+
+    expectTypeOf(code.value).toEqualTypeOf<string | string[] | null>()
 
     expect(code.value).toBeNull()
 
-    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+    const page = useRouteQuery('page', null, { route, router })
+
+    expectTypeOf(page.value).toEqualTypeOf<string | string[] | null>()
 
     expect(page.value).toBe(1)
   })
@@ -277,7 +314,7 @@ describe('useRouteQuery', () => {
     })
     const router = { replace: (r: any) => route = r } as any
 
-    const search: Ref<any> = useRouteQuery('search', 'default', { route, router })
+    const search: Ref<Maybe<string>> = useRouteQuery('search', 'default', { route, router })
 
     expect(search.value).toBe('vue3')
     expect(route.query.search).toBe('vue3')
@@ -298,6 +335,8 @@ describe('useRouteQuery', () => {
 
     const page = useRouteQuery('page', 1, { transform: Number, route, router })
 
+    expectTypeOf(page.value).toEqualTypeOf<number>()
+
     watch(page, onUpdate)
 
     page.value = 1
@@ -315,6 +354,9 @@ describe('useRouteQuery', () => {
     const onUpdate = vi.fn()
 
     const page = useRouteQuery('page', 1, { transform: Number, route, router })
+
+    expectTypeOf(page.value).toEqualTypeOf<number>()
+
     const pageObj = computed(() => ({
       page: page.value,
     }))
@@ -341,6 +383,8 @@ describe('useRouteQuery', () => {
 
     const page = useRouteQuery('page', 1, { transform: Number, route, router })
 
+    expectTypeOf(page.value).toEqualTypeOf<number>()
+
     watch(() => ({ page: page.value }), onUpdate)
 
     page.value = 2
@@ -359,7 +403,9 @@ describe('useRouteQuery', () => {
     route.params = { foo: 'bar' }
     route.hash = '#hash'
 
-    const id: Ref<any> = useRouteQuery('id', null, { route, router })
+    const id = useRouteQuery('id', null, { route, router })
+
+    expectTypeOf(id.value).toEqualTypeOf<string | string[] | null>()
 
     id.value = '2'
 
@@ -377,8 +423,11 @@ describe('useRouteQuery', () => {
     const defaultPage = shallowRef(1)
     const defaultLang = () => 'pt-BR'
 
-    const page: Ref<any> = useRouteQuery('page', defaultPage, { route, router })
-    const lang: Ref<any> = useRouteQuery('lang', defaultLang, { route, router })
+    const page = useRouteQuery('page', defaultPage, { route, router })
+    const lang = useRouteQuery('lang', defaultLang, { route, router })
+
+    expectTypeOf(page.value).toEqualTypeOf<string | string[] | number | null>()
+    expectTypeOf(lang.value).toEqualTypeOf<string | string[] | null>()
 
     expect(page.value).toBe(1)
     expect(lang.value).toBe('pt-BR')
@@ -389,14 +438,62 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(2)
     expect(lang.value).toBe('en-US')
   })
+  it('should handle entire query object', async () => {
+    let route = getRoute({ id: '1', name: 'test' })
+    let route2 = getRoute()
+    const router = { replace: (r: any) => route = r } as any
+    const router2 = { replace: (r: any) => route2 = r } as any
 
+    const query = useRouteQuery({ id: 'default', name: 'default', foo: 'default' }, { route, router })
+    const query2 = useRouteQuery(null, { name: '/foo/[count]', route: route2, router: router2 })
+
+    expectTypeOf(query.value).toEqualTypeOf<Merge<Record<string, Maybe<string | string[]>>, { id: string, name: string, foo: string }>>()
+    expectTypeOf(query2.value).toEqualTypeOf<Record<string, Maybe<string | string[]>>>()
+
+    expect(query.value).toEqual({ id: '1', name: 'test', foo: 'default' })
+    expect(query2.value).toEqual({})
+
+    query.value = { id: '2', name: 'vue' }
+    // @ts-expect-error Type 'null' is not assignable to type 'Record<string, RouteQueryValue>'
+    query2.value = null
+    await nextTick()
+
+    expect(route.query).toEqual({ id: '2', name: 'vue' })
+    expect(route2.query).toEqual({})
+  })
+
+  it('should handle transform for entire query object', async () => {
+    let route = getRoute({ count: '5' })
+    const router = { replace: (r: any) => route = r } as any
+
+    const query = useRouteQuery(
+      { count: '0' },
+      {
+        transform: {
+          get: v => ({ count: Number(v.count) }),
+          set: v => ({ count: String(v.count) }),
+        },
+        route,
+        router,
+      },
+    )
+
+    expectTypeOf(query.value).toEqualTypeOf<{ count: number }>()
+
+    expect(query.value).toEqual({ count: 5 })
+
+    query.value = { count: 10 }
+    await nextTick()
+
+    expect(route.query.count).toBe('10')
+  })
   it.each([{ value: 'default' }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
     })
     const router = { replace: (r: any) => route = r } as any
 
-    const search: Ref<any> = useRouteQuery('search', 'default', { route, router })
+    const search: Ref<Maybe<string>> = useRouteQuery('search', 'default', { route, router })
 
     expect(search.value).toBe('vue3')
     expect(route.query.search).toBe('vue3')

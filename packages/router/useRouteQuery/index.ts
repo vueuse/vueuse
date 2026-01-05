@@ -1,9 +1,18 @@
+import type { Maybe } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { Router } from 'vue-router'
-import type { ReactiveRouteOptionsWithTransform, RouteQueryValueRaw } from '../_types'
+import type {
+  ReactiveRouteOptionsWithName,
+  RouteQueryValue,
+  RouteQueryValueRaw,
+  RouteType,
+  ToPrimitive,
+  WithDefault,
+} from '../_types'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { isEmpty, mergeDefault, parseArgs } from '../_utils'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
@@ -12,25 +21,37 @@ export function useRouteQuery(
 ): Ref<undefined | null | string | string[]>
 
 export function useRouteQuery<
-  T extends RouteQueryValueRaw = RouteQueryValueRaw,
+  R extends RouteQueryValue = RouteQueryValue,
+  D extends RouteQueryValueRaw = R,
+  T = WithDefault<R, ToPrimitive<D> | null>,
   K = T,
 >(
   name: string,
-  defaultValue?: MaybeRefOrGetter<T>,
-  options?: ReactiveRouteOptionsWithTransform<T, K>
+  defaultValue?: MaybeRefOrGetter<D>,
+  options?: ReactiveRouteOptionsWithName<T, K>
 ): Ref<K>
 
 export function useRouteQuery<
-  T extends RouteQueryValueRaw = RouteQueryValueRaw,
+  R extends Record<string, RouteQueryValue> = Record<string, RouteQueryValue>,
+  D extends Maybe<Record<string, RouteQueryValueRaw>> = R,
+  T = WithDefault<R, NonNullable<ToPrimitive<D>>>,
   K = T,
 >(
-  name: string,
-  defaultValue?: MaybeRefOrGetter<T>,
-  options: ReactiveRouteOptionsWithTransform<T, K> = {},
+  defaultValue?: MaybeRefOrGetter<D>,
+  options?: ReactiveRouteOptionsWithName<T, K>
+): Ref<K>
+
+export function useRouteQuery<
+  T extends RouteQueryValueRaw | Record<string, RouteQueryValueRaw>,
+  K = T,
+>(
+  ...args: unknown[]
 ): Ref<K> {
+  const { name, defaultValue, options } = parseArgs<T, K>(args)
   const {
     mode = 'replace',
-    route = useRoute(),
+    name: routeName,
+    route = useRoute(routeName),
     router = useRouter(),
     transform,
   } = options
@@ -53,7 +74,7 @@ export function useRouteQuery<
 
   const _queriesQueue = _queue.get(router)!
 
-  let query = route.query[name] as any
+  let query = (name ? route.query[name] : route.query) as any
 
   tryOnScopeDispose(() => {
     query = undefined
@@ -68,7 +89,10 @@ export function useRouteQuery<
       get() {
         track()
 
-        return transformGet(query !== undefined ? query : toValue(defaultValue))
+        return transformGet(mergeDefault(query, {
+          exclude: [null],
+          defaultValue: toValue(defaultValue),
+        }))
       },
       set(v) {
         v = transformSet(v)
@@ -76,8 +100,20 @@ export function useRouteQuery<
         if (query === v)
           return
 
-        query = (v === toValue(defaultValue)) ? undefined : v
-        _queriesQueue.set(name, (v === toValue(defaultValue)) ? undefined : v)
+        query = isEmpty(v, {
+          defaultValue: toValue(defaultValue),
+          exclude: [null],
+        })
+          ? undefined
+          : v
+        if (name) {
+          _queriesQueue.set(name, query)
+        }
+        else {
+          Object.entries(query || {}).forEach(([key, value]) => {
+            _queriesQueue.set(key, value)
+          })
+        }
 
         trigger()
 
@@ -88,7 +124,7 @@ export function useRouteQuery<
           const newQueries = Object.fromEntries(_queriesQueue.entries())
           _queriesQueue.clear()
 
-          const { params, query, hash } = route
+          const { params, query, hash } = route as RouteType
 
           router[toValue(mode)]({
             params,
@@ -101,7 +137,7 @@ export function useRouteQuery<
   })
 
   watch(
-    () => route.query[name],
+    () => name ? route.query[name] : route.query,
     (v) => {
       if (query === transformGet(v as T))
         return
