@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter, WatchOptions, WatchSource } from 'vue'
-import type { ElementOf, ShallowUnwrapRef, WatchOptionFlush } from '../utils'
+import type { ConfigurableFlushSync, ElementOf, ShallowUnwrapRef } from '../utils'
 import { isRef, nextTick, toValue, watch } from 'vue'
 import { promiseTimeout } from '../utils'
 
-export interface UntilToMatchOptions {
+export interface UntilToMatchOptions extends ConfigurableFlushSync {
   /**
    * Milliseconds timeout for promise to resolve/reject if the when condition does not meet.
    * 0 for never timed out
@@ -18,13 +18,6 @@ export interface UntilToMatchOptions {
    * @default false
    */
   throwOnTimeout?: boolean
-
-  /**
-   * `flush` option for internal watch
-   *
-   * @default 'sync'
-   */
-  flush?: WatchOptionFlush
 
   /**
    * `deep` option for internal watch
