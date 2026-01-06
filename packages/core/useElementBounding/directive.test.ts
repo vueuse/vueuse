@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import { vElementBounding } from './directive'
 
 const App = defineComponent({
@@ -22,6 +22,19 @@ const App = defineComponent({
   </template>
   `,
 })
+
+const originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect
+const mockGetBoundingClientRect = vi.fn(() => ({
+  width: 100,
+  height: 50,
+  top: 0,
+  right: 100,
+  bottom: 50,
+  left: 0,
+  x: 0,
+  y: 0,
+  toJSON: vi.fn(),
+}))
 
 describe('vElementBounding', () => {
   let onBounding = vi.fn()
@@ -44,6 +57,32 @@ describe('vElementBounding', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      HTMLElement.prototype.getBoundingClientRect = mockGetBoundingClientRect
+      const element = wrapper.element.querySelector('div')
+
+      wrapper.unmount()
+      await nextTick()
+      if (element) {
+        element.style.width = '300px'
+        mockGetBoundingClientRect.mockReturnValue({
+          width: 300,
+          height: 50,
+          top: 0,
+          right: 300,
+          bottom: 50,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: vi.fn(),
+        })
+        window.dispatchEvent(new Event('resize'))
+        await nextTick()
+        expect(onBounding).toBeCalledTimes(0)
+      }
+      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect
     })
   })
 
@@ -73,6 +112,32 @@ describe('vElementBounding', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      HTMLElement.prototype.getBoundingClientRect = mockGetBoundingClientRect
+      const element = wrapper.element.querySelector('div')
+
+      wrapper.unmount()
+      await nextTick()
+      if (element) {
+        element.style.width = '300px'
+        mockGetBoundingClientRect.mockReturnValue({
+          width: 300,
+          height: 50,
+          top: 0,
+          right: 300,
+          bottom: 50,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: vi.fn(),
+        })
+        window.dispatchEvent(new Event('resize'))
+        await nextTick()
+        expect(onBounding).toBeCalledTimes(0)
+      }
+      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect
     })
   })
 })
