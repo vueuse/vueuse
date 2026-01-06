@@ -37,7 +37,7 @@ catalogs:
     typescript: ^5.9.3
     unimport: ^5.5.0
     unocss: ^66.5.4
-    vite: npm:rolldown-vite@latest
+    vite: ^8.0.0-beta.2
     vite-plugin-inspect: ^11.3.3
     vue: ^3.5.22
     vue-tsc: ^3.1.1
@@ -83,7 +83,7 @@ catalogs:
     '@vue/test-utils': ^2.4.6
     fake-indexeddb: ^6.2.4
     jsdom: ^27.1.0
-    msw: ^2.3.0
+    msw: ^2.12.4
     playwright: 1.49.0
     vitest: ^4.0.8
     vitest-browser-vue: ^2.0.1
