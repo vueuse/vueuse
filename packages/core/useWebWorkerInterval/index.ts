@@ -4,7 +4,7 @@ import { isClient, tryOnScopeDispose } from '@vueuse/shared'
 import { isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { useWebWorkerFn } from '../useWebWorkerFn'
 
-export interface useWebWorkerIntervalFnOptions {
+export interface useWebWorkerIntervalOptions {
   /**
    * Start the timer immediately
    *
@@ -20,7 +20,7 @@ export interface useWebWorkerIntervalFnOptions {
   immediateCallback?: boolean
 }
 
-export type useWebWorkerIntervalFnReturn = Pausable
+export type useWebWorkerIntervalReturn = Pausable
 
 function schedulerTask(interval: number = 1000) {
   return new Promise((resolve) => {
@@ -39,7 +39,7 @@ function schedulerTask(interval: number = 1000) {
  * @param options
  */
 
-export function useWebWorkerInterval(cb: () => void | Promise<void>, interval: MaybeRefOrGetter<number> = 1000, options: useWebWorkerIntervalFnOptions = {}): useWebWorkerIntervalFnReturn {
+export function useWebWorkerInterval(cb: () => void | Promise<void>, interval: MaybeRefOrGetter<number> = 1000, options: useWebWorkerIntervalOptions = {}): useWebWorkerIntervalReturn {
   const {
     immediate = true,
     immediateCallback = false,
