@@ -10,7 +10,7 @@ export type WebSocketHeartbeatMessage = string | ArrayBuffer | Blob
 
 const DEFAULT_PING_MESSAGE = 'ping'
 
-export interface UseWebSocketOptions<Legacy = false> {
+export interface UseWebSocketOptions {
   onConnected?: (ws: WebSocket) => void
   onDisconnected?: (ws: WebSocket, event: CloseEvent) => void
   onError?: (ws: WebSocket, event: Event) => void
@@ -37,10 +37,10 @@ export interface UseWebSocketOptions<Legacy = false> {
     /**
      * Interval, in milliseconds
      *
-     * @deprecated
+     * @deprecated Please use `scheduler` option instead
      * @default 1000
      */
-    interval?: Legacy extends false ? never : number
+    interval?: number
 
     /**
      * Heartbeat response timeout, in milliseconds
@@ -153,7 +153,7 @@ function resolveNestedOptions<T>(options: T | true): T {
   return options
 }
 
-function getDefaultScheduler(options: Extract<UseWebSocketOptions<true>['heartbeat'], { interval?: number }>) {
+function getDefaultScheduler(options: Extract<UseWebSocketOptions['heartbeat'], { interval?: number }>) {
   if ('interval' in options) {
     const {
       interval = 1000,
@@ -171,13 +171,9 @@ function getDefaultScheduler(options: Extract<UseWebSocketOptions<true>['heartbe
  * @see https://vueuse.org/useWebSocket
  * @param url
  */
-export function useWebSocket<Data = any>(url: MaybeRefOrGetter<string | URL | undefined>, options?: UseWebSocketOptions): UseWebSocketReturn<Data>
-/** @deprecated Please use with `scheduler` option */
-export function useWebSocket<Data = any>(url: MaybeRefOrGetter<string | URL | undefined>, options: UseWebSocketOptions<true>): UseWebSocketReturn<Data>
-
 export function useWebSocket<Data = any>(
   url: MaybeRefOrGetter<string | URL | undefined>,
-  options: UseWebSocketOptions<boolean> = {},
+  options: UseWebSocketOptions = {},
 ): UseWebSocketReturn<Data> {
   const {
     onConnected,

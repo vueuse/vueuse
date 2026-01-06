@@ -5,7 +5,7 @@ import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-function getDefaultScheduler(options: UseNowOptions<boolean, boolean>) {
+function getDefaultScheduler(options: UseNowOptions<boolean>) {
   if ('interval' in options || 'immediate' in options) {
     const {
       interval = 'requestAnimationFrame',
@@ -20,7 +20,7 @@ function getDefaultScheduler(options: UseNowOptions<boolean, boolean>) {
   return useRafFn
 }
 
-export interface UseNowOptions<Controls extends boolean, Legacy = false> extends ConfigurableScheduler {
+export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
   /**
    * Expose more controls
    *
@@ -31,18 +31,18 @@ export interface UseNowOptions<Controls extends boolean, Legacy = false> extends
   /**
    * Start the clock immediately
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default true
    */
-  immediate?: Legacy extends false ? never : boolean
+  immediate?: boolean
 
   /**
    * Update interval in milliseconds, or use requestAnimationFrame
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default requestAnimationFrame
    */
-  interval?: Legacy extends false ? never : 'requestAnimationFrame' | number
+  interval?: 'requestAnimationFrame' | number
 }
 
 /**
@@ -55,10 +55,6 @@ export interface UseNowOptions<Controls extends boolean, Legacy = false> extends
  */
 export function useNow(options?: UseNowOptions<false>): Ref<Date>
 export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausable
-/** @deprecated Please use with `scheduler` option */
-export function useNow(options: UseNowOptions<false, true>): Ref<Date>
-/** @deprecated Please use with `scheduler` option */
-export function useNow(options: UseNowOptions<true, true>): { now: Ref<Date> } & Pausable
 
 /**
  * Reactive current Date instance.
@@ -68,7 +64,7 @@ export function useNow(options: UseNowOptions<true, true>): { now: Ref<Date> } &
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNow(options: UseNowOptions<boolean, boolean> = {}) {
+export function useNow(options: UseNowOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     scheduler = getDefaultScheduler(options),

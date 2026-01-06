@@ -5,7 +5,7 @@ import { timestamp, useIntervalFn } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-function getDefaultScheduler(options: UseTimestampOptions<boolean, true>) {
+function getDefaultScheduler(options: UseTimestampOptions<boolean>) {
   if ('interval' in options || 'immediate' in options) {
     const {
       interval = 'requestAnimationFrame',
@@ -20,7 +20,7 @@ function getDefaultScheduler(options: UseTimestampOptions<boolean, true>) {
   return useRafFn
 }
 
-export interface UseTimestampOptions<Controls extends boolean, Legacy = false> extends ConfigurableScheduler {
+export interface UseTimestampOptions<Controls extends boolean> extends ConfigurableScheduler {
   /**
    * Expose more controls
    *
@@ -38,18 +38,18 @@ export interface UseTimestampOptions<Controls extends boolean, Legacy = false> e
   /**
    * Update the timestamp immediately
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default true
    */
-  immediate?: Legacy extends false ? never : boolean
+  immediate?: boolean
 
   /**
    * Update interval, or use requestAnimationFrame
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default requestAnimationFrame
    */
-  interval?: Legacy extends false ? never : 'requestAnimationFrame' | number
+  interval?: 'requestAnimationFrame' | number
   /**
    * Callback on each update
    */
@@ -64,12 +64,8 @@ export interface UseTimestampOptions<Controls extends boolean, Legacy = false> e
  */
 export function useTimestamp(options?: UseTimestampOptions<false>): ShallowRef<number>
 export function useTimestamp(options: UseTimestampOptions<true>): { timestamp: ShallowRef<number> } & Pausable
-/** @deprecated Please use with `scheduler` option */
-export function useTimestamp(options?: UseTimestampOptions<false, true>): ShallowRef<number>
-/** @deprecated Please use with `scheduler` option */
-export function useTimestamp(options: UseTimestampOptions<true, true>): { timestamp: ShallowRef<number> } & Pausable
 
-export function useTimestamp(options: UseTimestampOptions<boolean, boolean> = {}) {
+export function useTimestamp(options: UseTimestampOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
     offset = 0,

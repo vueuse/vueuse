@@ -58,7 +58,7 @@ export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitN
   units?: UseTimeAgoUnit<UnitNames>[]
 }
 
-export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault, Legacy = false> extends FormatTimeAgoOptions<UnitNames>, ConfigurableScheduler {
+export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> extends FormatTimeAgoOptions<UnitNames>, ConfigurableScheduler {
   /**
    * Expose more controls
    *
@@ -69,10 +69,10 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
   /**
    * Intervals to update, set 0 to disable auto update
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default 30_000
    */
-  updateInterval?: Legacy extends false ? never : number
+  updateInterval?: number
 }
 
 export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
@@ -127,7 +127,7 @@ function DEFAULT_FORMATTER(date: Date) {
 
 export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgo: ComputedRef<string> } & Pausable : ComputedRef<string>
 
-function getDefaultScheduler(options: UseTimeAgoOptions<boolean, string, boolean>) {
+function getDefaultScheduler(options: UseTimeAgoOptions<boolean, string>) {
   if ('updateInterval' in options) {
     const { updateInterval = 30_000 } = options
     return (cb: AnyFn) => useIntervalFn(cb, updateInterval)
@@ -145,10 +145,6 @@ function getDefaultScheduler(options: UseTimeAgoOptions<boolean, string, boolean
  */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>
-/** @deprecated Please use with `scheduler` */
-export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames, true>): UseTimeAgoReturn<false>
-/** @deprecated Please use with `scheduler` */
-export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames, true>): UseTimeAgoReturn<true>
 
 /**
  * Reactive time ago formatter.
@@ -157,7 +153,7 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames, boolean> = {}) {
+export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
   const {
     controls: exposeControls = false,
     scheduler = getDefaultScheduler(options),

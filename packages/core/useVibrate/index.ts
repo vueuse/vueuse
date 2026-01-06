@@ -5,7 +5,7 @@ import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
-function getDefaultScheduler(options: UseVibrateOptions<true> = { interval: 0 }) {
+function getDefaultScheduler(options: UseVibrateOptions = { interval: 0 }) {
   const {
     interval,
   } = options
@@ -19,7 +19,7 @@ function getDefaultScheduler(options: UseVibrateOptions<true> = { interval: 0 })
   })
 }
 
-export interface UseVibrateOptions<Legacy = false> extends ConfigurableNavigator, ConfigurableScheduler {
+export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableScheduler {
   /**
    *
    * Vibration Pattern
@@ -39,11 +39,11 @@ export interface UseVibrateOptions<Legacy = false> extends ConfigurableNavigator
    *
    * Pass `0` to disable
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default 0
    *
    */
-  interval: Legacy extends false ? never : number
+  interval: number
 }
 
 export interface UseVibrateReturn {
@@ -63,11 +63,7 @@ export interface UseVibrateReturn {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useVibrate(options?: UseVibrateOptions): UseVibrateReturn
-/** @deprecated Please use with `scheduler` option */
-export function useVibrate(options: UseVibrateOptions<true>): UseVibrateReturn
-
-export function useVibrate(options?: UseVibrateOptions<boolean>): UseVibrateReturn {
+export function useVibrate(options?: UseVibrateOptions): UseVibrateReturn {
   const {
     pattern = [],
     scheduler = getDefaultScheduler(options),

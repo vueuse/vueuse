@@ -5,7 +5,7 @@ import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
 
-function getDefaultScheduler(options: UseMemoryOptions<true>) {
+function getDefaultScheduler(options: UseMemoryOptions) {
   if ('interval' in options || 'immediate' in options || 'immediateCallback' in options) {
     const {
       interval = 1000,
@@ -44,25 +44,25 @@ export interface MemoryInfo {
   [Symbol.toStringTag]: 'MemoryInfo'
 }
 
-export interface UseMemoryOptions<Legacy = false> extends ConfigurableScheduler {
+export interface UseMemoryOptions extends ConfigurableScheduler {
   /**
    * Start the timer immediately
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default true
    */
-  immediate?: Legacy extends false ? never : boolean
+  immediate?: boolean
 
   /**
    * Execute the callback immediately after calling `resume`
    *
-   * @deprecated
+   * @deprecated Please use `scheduler` option instead
    * @default false
    */
-  immediateCallback?: Legacy extends false ? never : boolean
+  immediateCallback?: boolean
 
-  /** @deprecated */
-  interval?: Legacy extends false ? never : number
+  /** @deprecated Please use `scheduler` option instead */
+  interval?: number
 }
 
 export interface UseMemoryReturn {
@@ -82,11 +82,7 @@ type PerformanceMemory = Performance & {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useMemory(options?: UseMemoryOptions): UseMemoryReturn
-/** @deprecated Please use with `scheduler` option */
-export function useMemory(options: UseMemoryOptions<true>): UseMemoryReturn
-
-export function useMemory(options: UseMemoryOptions<boolean> = {}): UseMemoryReturn {
+export function useMemory(options: UseMemoryOptions = {}): UseMemoryReturn {
   const memory = deepRef<MemoryInfo>()
   const isSupported = useSupported(() => typeof performance !== 'undefined' && 'memory' in performance)
 

@@ -11,7 +11,7 @@ describe('useCountdown', () => {
   let countdown = 3
   let interval = 100
   const immediate = true
-  let options: UseCountdownOptions<true> = {
+  let options: UseCountdownOptions = {
     interval,
     onComplete: completeCallback,
     onTick: tickCallback,

@@ -7,7 +7,7 @@ import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
-function getDefaultScheduler(options: UseElementByPointOptions<boolean, true>) {
+function getDefaultScheduler(options: UseElementByPointOptions<boolean>) {
   if ('interval' in options || 'immediate' in options) {
     const {
       interval = 'requestAnimationFrame',
@@ -22,14 +22,14 @@ function getDefaultScheduler(options: UseElementByPointOptions<boolean, true>) {
   return useRafFn
 }
 
-export interface UseElementByPointOptions<Multiple extends boolean = false, Legacy = false> extends ConfigurableDocument, ConfigurableScheduler {
+export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, ConfigurableScheduler {
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>
-  /** @deprecated */
-  immediate?: Legacy extends false ? never : boolean
-  /** @deprecated */
-  interval?: Legacy extends false ? never : 'requestAnimationFrame' | number
+  /** @deprecated Please use `scheduler` option instead */
+  immediate?: boolean
+  /** @deprecated Please use `scheduler` option instead */
+  interval?: 'requestAnimationFrame' | number
 }
 
 export interface UseElementByPointReturn<Multiple extends boolean = false> extends Pausable {
@@ -43,11 +43,7 @@ export interface UseElementByPointReturn<Multiple extends boolean = false> exten
  * @see https://vueuse.org/useElementByPoint
  * @param options - UseElementByPointOptions
  */
-export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M>): UseElementByPointReturn<M>
-/** @deprecated Please use with `scheduler` option */
-export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M, true>): UseElementByPointReturn<M>
-
-export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M, boolean>): UseElementByPointReturn<M> {
+export function useElementByPoint<M extends boolean = false>(options: UseElementByPointOptions<M>): UseElementByPointReturn<M> {
   const {
     x,
     y,
