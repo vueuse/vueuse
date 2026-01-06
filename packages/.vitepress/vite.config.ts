@@ -57,6 +57,14 @@ export default defineConfig({
   ],
   resolve: {
     tsconfigPaths: true,
+    alias: {
+      '@vueuse/shared': resolve(__dirname, '../shared/index.ts'),
+      '@vueuse/core': resolve(__dirname, '../core/index.ts'),
+      '@vueuse/math': resolve(__dirname, '../math/index.ts'),
+      '@vueuse/integrations': resolve(__dirname, '../integrations'),
+      '@vueuse/components': resolve(__dirname, '../components/index.ts'),
+      '@vueuse/metadata': resolve(__dirname, '../metadata/index.ts'),
+    },
     dedupe: [
       'vue',
       '@vue/runtime-core',
