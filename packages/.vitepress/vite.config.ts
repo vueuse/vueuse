@@ -56,7 +56,6 @@ export default defineConfig({
     Inspect(),
   ],
   resolve: {
-    tsconfigPaths: true,
     alias: {
       '@vueuse/shared': resolve(__dirname, '../shared/index.ts'),
       '@vueuse/core': resolve(__dirname, '../core/index.ts'),
