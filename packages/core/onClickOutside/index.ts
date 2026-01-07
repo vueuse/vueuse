@@ -60,7 +60,7 @@ export function onClickOutside<
 >(
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
-  options?: T
+  options?: T,
 ): Fn
 
 export function onClickOutside<
@@ -68,7 +68,7 @@ export function onClickOutside<
 >(
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
-  options: T
+  options: T,
 ): OnClickOutsideControlsReturn
 
 // Implementation

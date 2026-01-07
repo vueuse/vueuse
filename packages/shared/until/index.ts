@@ -37,10 +37,10 @@ export interface UntilToMatchOptions {
 export interface UntilBaseInstance<T, Not extends boolean = false> {
   toMatch: (<U extends T = T>(
     condition: (v: T) => v is U,
-    options?: UntilToMatchOptions
+    options?: UntilToMatchOptions,
   ) => Not extends true ? Promise<Exclude<T, U>> : Promise<U>) & ((
     condition: (v: T) => boolean,
-    options?: UntilToMatchOptions
+    options?: UntilToMatchOptions,
   ) => Promise<T>)
   changed: (options?: UntilToMatchOptions) => Promise<T>
   changedTimes: (n?: number, options?: UntilToMatchOptions) => Promise<T>
