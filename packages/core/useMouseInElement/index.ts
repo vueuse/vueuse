@@ -71,27 +71,32 @@ export function useMouseInElement(
     if (!el || !(el instanceof Element))
       return
 
-    const {
-      left,
-      top,
-      width,
-      height,
-    } = el.getBoundingClientRect()
+    for (const rect of el.getClientRects()) {
+      const {
+        left,
+        top,
+        width,
+        height,
+      } = rect
 
-    elementPositionX.value = left + (type === 'page' ? window.pageXOffset : 0)
-    elementPositionY.value = top + (type === 'page' ? window.pageYOffset : 0)
-    elementHeight.value = height
-    elementWidth.value = width
+      elementPositionX.value = left + (type === 'page' ? window.pageXOffset : 0)
+      elementPositionY.value = top + (type === 'page' ? window.pageYOffset : 0)
+      elementHeight.value = height
+      elementWidth.value = width
 
-    const elX = x.value - elementPositionX.value
-    const elY = y.value - elementPositionY.value
-    isOutside.value = width === 0 || height === 0
-      || elX < 0 || elY < 0
-      || elX > width || elY > height
+      const elX = x.value - elementPositionX.value
+      const elY = y.value - elementPositionY.value
+      isOutside.value = width === 0 || height === 0
+        || elX < 0 || elY < 0
+        || elX > width || elY > height
 
-    if (handleOutside) {
-      elementX.value = elX
-      elementY.value = elY
+      if (handleOutside || !isOutside.value) {
+        elementX.value = elX
+        elementY.value = elY
+      }
+
+      if (!isOutside.value)
+        break
     }
   }
 

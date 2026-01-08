@@ -11,6 +11,7 @@
       "@vueuse/core": ["./packages/core/index.ts"],
       "@vueuse/core/*": ["./packages/core/*"],
       "@vueuse/integrations": ["./packages/integrations/index.ts"],
+      "@vueuse/integrations/*": ["./packages/integrations/*"],
       "@vueuse/metadata": ["./packages/metadata/index.ts"],
       "@vueuse/math": ["./packages/math/index.ts"],
       "@vueuse/shared": ["./packages/shared/index.ts"],
@@ -23,17 +24,18 @@
     "resolveJsonModule": true,
     "types": [
       "@types/web-bluetooth",
-      "@vitest/browser/providers/playwright",
       "vite-plugin-pwa/vue",
       "vitest",
       "vitest-browser-vue"
     ],
+    "allowImportingTsExtensions": true,
     "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "declaration": true,
     "declarationDir": "./types",
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true

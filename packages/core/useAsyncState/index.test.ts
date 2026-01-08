@@ -1,5 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick, shallowRef } from 'vue'
 import { useAsyncState } from './index'
 
 describe('useAsyncState', () => {
@@ -89,5 +90,67 @@ describe('useAsyncState', () => {
   it('should work with throwError', async () => {
     const { execute } = useAsyncState(p2, '0', { throwError: true, immediate: false })
     await expect(execute()).rejects.toThrowError('error')
+  })
+
+  it('default onError uses globalThis.reportError', async () => {
+    const originalReportError = globalThis.reportError
+    const mockReportError = vi.fn()
+    globalThis.reportError = mockReportError
+
+    const error = new Error('error message')
+    const func = vi.fn(async () => {
+      throw error
+    })
+
+    const { execute } = useAsyncState(func, '', { immediate: false })
+    await execute()
+    expect(func).toBeCalledTimes(1)
+
+    await nextTick()
+    expect(mockReportError).toHaveBeenCalledWith(error)
+    globalThis.reportError = originalReportError
+  })
+
+  it('supports initialState as shallow ref', async () => {
+    const initialState = shallowRef(200)
+    const asyncValue = Promise.resolve(100)
+    const { state } = useAsyncState(asyncValue, initialState)
+    await asyncValue
+    expect(state.value).toBe(100)
+    expect(initialState).toBe(state)
+  })
+
+  it('does not set `state` from an outdated execution', async () => {
+    const { execute, state } = useAsyncState((returnValue: string, timeout: number) => promiseTimeout(timeout).then(() => returnValue), '')
+    await Promise.all([
+      execute(0, 'foo', 100),
+      execute(0, 'bar', 50),
+    ])
+    expect(state.value).toBe('bar')
+  })
+
+  it('does not set `isReady` from an outdated execution', async () => {
+    const { execute, isReady } = useAsyncState(promiseTimeout, shallowRef<void>())
+    void execute(0, 0)
+    void execute(0, 100)
+    await promiseTimeout(50)
+    expect(isReady.value).toBe(false)
+  })
+
+  it('does not set `isLoading` from an outdated execution', async () => {
+    const { execute, isLoading } = useAsyncState(promiseTimeout, shallowRef<void>())
+    void execute(0, 0)
+    void execute(0, 100)
+    await promiseTimeout(50)
+    expect(isLoading.value).toBe(true)
+  })
+
+  it('does not set `error` from an outdated execution', async () => {
+    const { execute, error } = useAsyncState(promiseTimeout, shallowRef<void>())
+    await Promise.all([
+      execute(0, 100, true),
+      execute(0, 0),
+    ])
+    expect(error.value).toBeUndefined()
   })
 })

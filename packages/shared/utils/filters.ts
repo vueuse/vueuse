@@ -4,7 +4,7 @@ import { isRef, readonly, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'
 
-export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
+export type FunctionArgs<Args extends any[] = any[], Return = unknown> = (...args: Args) => Return
 
 export interface FunctionWrapperOptions<Args extends any[] = any[], This = any> {
   fn: FunctionArgs<Args, This>
@@ -14,7 +14,7 @@ export interface FunctionWrapperOptions<Args extends any[] = any[], This = any> 
 
 export type EventFilter<Args extends any[] = any[], This = any, Invoke extends AnyFn = AnyFn> = (
   invoke: Invoke,
-  options: FunctionWrapperOptions<Args, This>
+  options: FunctionWrapperOptions<Args, This>,
 ) => ReturnType<Invoke> | Promisify<ReturnType<Invoke>>
 
 export interface ConfigurableEventFilter {
@@ -140,11 +140,6 @@ export interface ThrottleFilterOptions {
 // TODO v11: refactor the params to object
 /**
  * Create an EventFilter that throttle the events
- *
- * @param ms
- * @param [trailing]
- * @param [leading]
- * @param [rejectOnCancel]
  */
 export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
 export function throttleFilter(options: ThrottleFilterOptions): EventFilter
@@ -184,10 +179,10 @@ export function throttleFilter(...args: any[]) {
       lastExec = Date.now()
       return invoke()
     }
-
-    if (elapsed > duration && (leading || !isLeading)) {
+    if (elapsed > duration) {
       lastExec = Date.now()
-      invoke()
+      if (leading || !isLeading)
+        invoke()
     }
     else if (trailing) {
       lastValue = new Promise((resolve, reject) => {

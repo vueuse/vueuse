@@ -1,104 +1,110 @@
+shamefullyHoist: true
+shellEmulator: true
+trustPolicy: no-downgrade
+
 packages:
   - packages/*
   - '!playgrounds'
 
+patchedDependencies:
+  google-font-installer@1.2.0: patches/google-font-installer@1.2.0.patch
+
 catalogs:
   dev:
-    '@antfu/eslint-config': ^4.16.2
-    '@antfu/ni': ^25.0.0
-    '@iconify/json': ^2.2.354
-    '@rollup/plugin-json': ^6.1.0
-    '@rollup/plugin-replace': ^6.0.2
-    '@vitejs/plugin-vue': ^6.0.0
-    '@vue/compiler-sfc': ^3.5.17
-    bumpp: ^10.2.0
+    '@antfu/eslint-config': ^6.7.3
+    '@antfu/ni': ^28.1.0
+    '@iconify/json': ^2.2.425
+    '@vitejs/plugin-vue': ^6.0.3
+    '@vue/compiler-sfc': ^3.5.26
+    bumpp: ^10.3.2
     consola: ^3.4.2
-    eslint: ^9.30.1
+    eslint: ^9.39.2
     eslint-factory: ^0.1.2
-    eslint-plugin-format: ^1.0.1
-    eslint-plugin-unimport: ^0.1.2
+    eslint-plugin-format: ^1.2.0
+    eslint-plugin-unimport: ^1.0.0
     export-size: ^0.7.0
-    jsdom: ^26.1.0
-    lint-staged: ^16.1.2
-    nuxt: ^3.17.6
-    ofetch: ^1.4.1
-    pnpm: ^10.12.4
+    lint-staged: ^16.2.7
+    nuxt: ^4.2.2
+    ofetch: ^1.5.1
+    pnpm: ^10.27.0
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
-    prettier: ^3.6.2
-    rollup: ^4.44.1
-    rollup-plugin-dts: ^6.2.1
-    rollup-plugin-esbuild: ^6.2.1
-    rollup-plugin-pure: ^0.4.0
-    sharp: ^0.34.2
-    simple-git: ^3.28.0
-    simple-git-hooks: ^2.13.0
-    taze: ^19.1.0
-    tinyglobby: ^0.2.14
-    tsx: ^4.20.3
-    typescript: ^5.8.3
-    unimport: ^5.1.0
-    unocss: ^66.3.2
-    vite: ^7.0.0
-    vite-plugin-inspect: ^11.3.0
-    vue: ^3.5.17
-    vue-tsc: ^3.0.0
+    prettier: ^3.7.4
+    sharp: ^0.34.5
+    simple-git: ^3.30.0
+    simple-git-hooks: ^2.13.1
+    taze: ^19.9.2
+    tinyglobby: ^0.2.15
+    tsdown: ^0.15.12
+    tsx: ^4.21.0
+    turbo: ^2.7.3
+    typescript: ^5.9.3
+    unimport: ^5.6.0
+    unocss: ^66.5.12
+    vite: ^8.0.0-beta.5
+    vite-plugin-inspect: ^11.3.3
+    vue: ^3.5.26
+    vue-tsc: ^3.2.2
   docs:
-    '@shikijs/vitepress-twoslash': ^3.7.0
-    '@vite-pwa/vitepress': ^1.0.0
-    '@vue/repl': ^4.6.1
+    '@shikijs/vitepress-twoslash': ^3.20.0
+    '@vite-pwa/vitepress': ^1.1.0
+    '@vue/repl': ^4.7.1
     google-font-installer: ^1.2.0
     gray-matter: ^4.0.3
     markdown-table: ^3.0.4
     md5: ^2.3.0
     remove-markdown: ^0.6.2
-    unplugin-icons: ^22.1.0
-    unplugin-vue-components: ^28.8.0
-    vite-plugin-pwa: ^1.0.1
-    vitepress: ^2.0.0-alpha.7
-    yaml: ^2.8.0
+    unplugin-icons: ^22.5.0
+    unplugin-vue-components: ^30.0.0
+    vite-plugin-pwa: ^1.2.0
+    vitepress: ^2.0.0-alpha.15
+    yaml: ^2.8.2
   integrations:
-    '@nuxt/kit': ^3.17.6
-    '@nuxt/schema': ^3.17.6
+    '@nuxt/kit': ^4.2.2
+    '@nuxt/schema': ^4.2.2
     async-validator: ^4.2.5
-    axios: ^1.10.0
+    axios: ^1.13.2
     change-case: ^5.4.4
     drauu: ^0.4.3
     electron: ^13.1.0
-    firebase: ^10.14.1
-    focus-trap: ^7.6.5
+    firebase: ^12.7.0
+    focus-trap: ^7.7.1
     fuse.js: ^7.1.0
     idb-keyval: ^6.2.2
     jwt-decode: ^4.0.0
-    local-pkg: ^1.1.1
+    local-pkg: ^1.1.2
     nprogress: ^0.2.0
     qrcode: ^1.5.4
     rxjs: ^6.6.7
     sortablejs: ^1.15.6
     universal-cookie: ^8.0.1
-    vue-router: ^4.5.1
+    vue-router: ^4.6.4
   test:
     '@arethetypeswrong/cli': ^0.18.2
-    '@vitest/browser': ^3.2.4
-    '@vitest/coverage-v8': ^3.2.4
-    '@vitest/ui': ^3.2.4
+    '@vitest/browser-playwright': ^4.0.16
+    '@vitest/coverage-v8': ^4.0.16
+    '@vitest/ui': ^4.0.16
     '@vue/test-utils': ^2.4.6
-    fake-indexeddb: ^6.0.1
-    msw: ^2.3.0
+    fake-indexeddb: ^6.2.5
+    jsdom: ^27.4.0
+    msw: ^2.12.7
     playwright: 1.49.0
-    vitest: ^3.2.4
-    vitest-browser-vue: ^1.0.0
-    vitest-package-exports: ^0.1.1
+    vitest: ^4.0.16
+    vitest-browser-vue: ^2.0.1
+    vitest-package-exports: ^1.1.2
   types:
     '@type-challenges/utils': ^0.1.1
-    '@types/md5': ^2.3.5
-    '@types/node': ^24.0.10
+    '@types/md5': ^2.3.6
+    '@types/node': ^25.0.3
     '@types/nprogress': ^0.2.3
-    '@types/qrcode': ^1.5.5
+    '@types/qrcode': ^1.5.6
     '@types/remove-markdown': ^0.3.4
-    '@types/semver': ^7.7.0
-    '@types/sortablejs': ^1.15.8
+    '@types/semver': ^7.7.1
+    '@types/sortablejs': ^1.15.9
     '@types/web-bluetooth': ^0.0.21
 
 neverBuiltDependencies:
   - electron
+
+sideEffectsCache: false
+strictPeerDependencies: false

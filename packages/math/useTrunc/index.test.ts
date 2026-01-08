@@ -18,6 +18,7 @@ describe('useTrunk', () => {
   it('should be defined', () => {
     expect(useTrunc).toBeDefined()
   })
+
   it('should work', () => {
     const base = deepRef(1.95)
     const result = useTrunc(base)

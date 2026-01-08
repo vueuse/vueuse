@@ -1,21 +1,22 @@
-import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
 import { watchOnce } from '@vueuse/shared'
-import { shallowRef, toValue } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
-export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'threshold'> {
+export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'rootMargin' | 'threshold'> {
   /**
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin
+   * Initial value.
+   *
+   * @default false
    */
-  rootMargin?: MaybeRefOrGetter<string>
+  initialValue?: boolean
   /**
    * The element that is used as the viewport for checking visibility of the target.
    */
-  scrollTarget?: MaybeRefOrGetter<HTMLElement | undefined | null>
+  scrollTarget?: UseIntersectionObserverOptions['root']
   /**
    * Stop tracking when element visibility changes for the first time
    *
@@ -39,8 +40,9 @@ export function useElementVisibility(
     threshold = 0,
     rootMargin,
     once = false,
+    initialValue = false,
   } = options
-  const elementIsVisible = shallowRef(false)
+  const elementIsVisible = shallowRef(initialValue)
 
   const { stop } = useIntersectionObserver(
     element,
@@ -67,9 +69,11 @@ export function useElementVisibility(
       root: scrollTarget,
       window,
       threshold,
-      rootMargin: toValue(rootMargin),
+      rootMargin,
     },
   )
 
   return elementIsVisible
 }
+
+export type UseElementVisibilityReturn = ReturnType<typeof useElementVisibility>

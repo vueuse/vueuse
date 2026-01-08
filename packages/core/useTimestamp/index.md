@@ -8,13 +8,15 @@ Reactive current timestamp
 
 ## Usage
 
-```js
+```ts
 import { useTimestamp } from '@vueuse/core'
 
 const timestamp = useTimestamp({ offset: 0 })
 ```
 
-```js
+```ts
+import { useTimestamp } from '@vueuse/core'
+// ---cut---
 const { timestamp, pause, resume } = useTimestamp({ controls: true })
 ```
 

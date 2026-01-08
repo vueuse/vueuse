@@ -43,13 +43,13 @@ export function useMutationObserver(
   })
 
   const stopWatch = watch(
-    () => targets.value,
-    (targets) => {
+    targets,
+    (newTargets) => {
       cleanup()
 
-      if (isSupported.value && targets.size) {
+      if (isSupported.value && newTargets.size) {
         observer = new MutationObserver(callback)
-        targets.forEach(el => observer!.observe(el, mutationOptions))
+        newTargets.forEach(el => observer!.observe(el, mutationOptions))
       }
     },
     { immediate: true, flush: 'post' },

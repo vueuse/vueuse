@@ -37,12 +37,12 @@ type Falsy = false | 0 | '' | null | undefined
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<DocumentReference<T> | Falsy>,
   initialValue: T,
-  options?: UseFirestoreOptions
+  options?: UseFirestoreOptions,
 ): Ref<T | null>
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<Query<T> | Falsy>,
   initialValue: T[],
-  options?: UseFirestoreOptions
+  options?: UseFirestoreOptions,
 ): Ref<T[]>
 
 // nullable initial values
@@ -54,7 +54,7 @@ export function useFirestore<T extends DocumentData>(
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<Query<T> | Falsy>,
   initialValue?: T[],
-  options?: UseFirestoreOptions
+  options?: UseFirestoreOptions,
 ): Ref<T[] | undefined>
 
 /**

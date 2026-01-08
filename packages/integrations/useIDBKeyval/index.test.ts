@@ -107,6 +107,7 @@ describe('useIDBKeyval', () => {
 
     expect(console.error).toHaveBeenCalledTimes(1)
   })
+
   it ('isFinished', async () => {
     const { isFinished } = useIDBKeyval(KEY4, 'test')
     expect(isFinished.value).toBe(false)
@@ -116,12 +117,14 @@ describe('useIDBKeyval', () => {
 
     expect(isFinished.value).toBe(true)
   })
+
   it('writeDefaults false', async () => {
     useIDBKeyval(KEY4, 'test', { writeDefaults: false })
 
     // the initial 3 IDB calls minus this one
     expect(set).toHaveBeenCalledTimes(3)
   })
+
   it('get/set with serializer', async () => {
     const serializer = {
       read(raw: unknown): string {
@@ -139,6 +142,7 @@ describe('useIDBKeyval', () => {
     expect(data.value).toEqual('foo')
     expect(await get(KEY4)).toEqual(1)
   })
+
   it('get/set with serializer and existing value', async () => {
     const serializer = {
       read(raw: unknown): string {

@@ -7,6 +7,10 @@ related: createGlobalState
 
 Make a composable function usable with multiple Vue instances.
 
+> [!WARNING]
+> When used in a **SSR** environment, `createSharedComposable` will **automatically fallback** to a non-shared version.
+> This means every call will create a fresh instance in SSR to avoid [cross-request state pollution](https://vuejs.org/guide/scaling-up/ssr.html#cross-request-state-pollution).
+
 ## Usage
 
 ```ts

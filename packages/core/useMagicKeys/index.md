@@ -8,7 +8,7 @@ Reactive keys pressed state, with magical keys combination support.
 
 ## Usage
 
-```js
+```ts
 import { useMagicKeys } from '@vueuse/core'
 
 const { shift, space, a /* keys you want to monitor */ } = useMagicKeys()
@@ -23,6 +23,34 @@ watchEffect(() => {
     console.log('Shift + A have been pressed')
 })
 ```
+
+::: tip NOTE
+If you're using TypeScript with `noUncheckedIndexedAccess` enabled in your `tsconfig.json` (or using Nuxt which enables it by default), the destructured keys will have the type `ComputedRef<boolean> | undefined`.
+
+The `noUncheckedIndexedAccess` TypeScript option adds `undefined` to any un-declared field accessed via index signatures. Since `useMagicKeys()` uses an index signature to allow accessing any key dynamically, TypeScript will treat destructured properties as potentially undefined for type safety.
+
+You'll need to use optional chaining or wrap with a getter function:
+
+```ts
+const { shift, space, a } = useMagicKeys()
+
+watch(
+  () => space?.value,
+  (v) => {
+    if (v)
+      console.log('space has been pressed')
+  },
+)
+
+watchEffect(() => {
+  if (shift?.value && a?.value)
+    console.log('Shift + A have been pressed')
+})
+```
+
+Check the [TypeScript documentation](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess) for more details about `noUncheckedIndexedAccess`.
+
+:::
 
 Check out [all the possible keycodes](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values).
 
@@ -141,6 +169,8 @@ whenever(ctrl_s, () => console.log('Ctrl+S have been pressed'))
 By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to use the object in the template, you can set it to reactive mode.
 
 ```ts
+import { useMagicKeys } from '@vueuse/core'
+// ---cut---
 const keys = useMagicKeys({ reactive: true })
 ```
 

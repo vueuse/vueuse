@@ -1,6 +1,6 @@
+import type { UseInfiniteScrollOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
-import type { UseInfiniteScrollOptions } from './index'
-import { useInfiniteScroll } from './index'
+import { useInfiniteScroll } from '@vueuse/core'
 
 type BindingValueFunction = Parameters<typeof useInfiniteScroll>[1]
 type BindingValueArray = [BindingValueFunction, UseInfiniteScrollOptions]
