@@ -73,7 +73,7 @@ export default defineConfig({
     noDiscovery: true,
   },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         advancedChunks: {
           groups: [

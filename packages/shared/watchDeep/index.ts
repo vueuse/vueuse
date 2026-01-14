@@ -10,13 +10,13 @@ export function watchDeep<
 >(
   source: [...T],
   cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
-  options?: Omit<WatchOptions<Immediate>, 'deep'>
+  options?: Omit<WatchOptions<Immediate>, 'deep'>,
 ): WatchHandle
 
 export function watchDeep<T, Immediate extends Readonly<boolean> = false>(
   source: WatchSource<T>,
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
-  options?: Omit<WatchOptions<Immediate>, 'deep'>
+  options?: Omit<WatchOptions<Immediate>, 'deep'>,
 ): WatchHandle
 
 export function watchDeep<
@@ -25,7 +25,7 @@ export function watchDeep<
 >(
   source: T,
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
-  options?: Omit<WatchOptions<Immediate>, 'deep'>
+  options?: Omit<WatchOptions<Immediate>, 'deep'>,
 ): WatchHandle
 
 /**
