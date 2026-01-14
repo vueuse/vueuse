@@ -18,8 +18,10 @@ describe('useThrottleFn', () => {
     run()
     expect(callback).toHaveBeenCalledTimes(1)
     vi.advanceTimersByTime(ms + 10)
-    run()
     expect(callback).toHaveBeenCalledTimes(2)
+    run()
+    vi.advanceTimersByTime(ms + 10)
+    expect(callback).toHaveBeenCalledTimes(3)
   })
 
   it('should work with trailing', async () => {
