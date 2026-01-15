@@ -133,6 +133,8 @@ export function useEventSource<Events extends string[], Data = any>(
   let explicitlyClosed = false
   let retried = 0
 
+  const DEFAULT_EVENT = 'message'
+
   const {
     withCredentials = false,
     immediate = true,
@@ -192,12 +194,12 @@ export function useEventSource<Events extends string[], Data = any>(
     }
 
     es.onmessage = (e: MessageEvent) => {
-      event.value = null
+      event.value = DEFAULT_EVENT
       data.value = serializer.read(e.data) ?? null
       lastEventId.value = e.lastEventId
     }
-
-    for (const event_name of events) {
+    const customEvents = events.filter(e => e !== DEFAULT_EVENT)
+    for (const event_name of customEvents) {
       useEventListener(es, event_name, (e: Event & { data?: string, lastEventId?: string }) => {
         event.value = event_name
         data.value = serializer.read(e.data) ?? null
