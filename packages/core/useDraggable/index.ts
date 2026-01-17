@@ -153,6 +153,13 @@ export interface UseDraggableOptions {
 
 const defaultScrollConfig = { speed: 2, margin: 30, direction: 'both' }
 
+function clampContainerScroll(container: HTMLElement) {
+  if (container.scrollLeft > container.scrollWidth - container.clientWidth)
+    container.scrollLeft = Math.max(0, container.scrollWidth - container.clientWidth)
+  if (container.scrollTop > container.scrollHeight - container.clientHeight)
+    container.scrollTop = Math.max(0, container.scrollHeight - container.clientHeight)
+}
+
 /**
  * Make elements draggable.
  *
@@ -212,13 +219,6 @@ export function useDraggable(
 
   const getScrollAxisValues = (value: number | Position): [number, number] =>
     typeof value === 'number' ? [value, value] : [value.x, value.y]
-
-  function clampContainerScroll(container: HTMLElement) {
-    if (container.scrollLeft > container.scrollWidth - container.clientWidth)
-      container.scrollLeft = Math.max(0, container.scrollWidth - container.clientWidth)
-    if (container.scrollTop > container.scrollHeight - container.clientHeight)
-      container.scrollTop = Math.max(0, container.scrollHeight - container.clientHeight)
-  }
 
   const handleAutoScroll = (
     container: HTMLElement | SVGElement,
@@ -341,8 +341,8 @@ export function useDraggable(
       return
 
     const container = toValue(containerElement)
-    if (container)
-      clampContainerScroll(container as HTMLElement)
+    if (container instanceof HTMLElement)
+      clampContainerScroll(container)
 
     const targetRect = toValue(target)!.getBoundingClientRect()
     let { x, y } = position.value
