@@ -17,13 +17,13 @@ export type ComputedWithControlRef<T = any> = ComputedRefWithControl<T> | Writab
 export function computedWithControl<T>(
   source: WatchSource | MultiWatchSources,
   fn: ComputedGetter<T>,
-  options?: WatchOptions
+  options?: WatchOptions,
 ): ComputedRefWithControl<T>
 
 export function computedWithControl<T>(
   source: WatchSource | MultiWatchSources,
   fn: WritableComputedOptions<T>,
-  options?: WatchOptions
+  options?: WatchOptions,
 ): WritableComputedRefWithControl<T>
 
 /**

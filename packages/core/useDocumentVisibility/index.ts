@@ -13,7 +13,7 @@ import { useEventListener } from '../useEventListener'
 export function useDocumentVisibility(options: ConfigurableDocument = {}) {
   const { document = defaultDocument } = options
   if (!document)
-    return shallowRef('visible')
+    return shallowRef<DocumentVisibilityState>('visible')
 
   const visibility = shallowRef(document.visibilityState)
 
