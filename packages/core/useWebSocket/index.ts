@@ -240,6 +240,9 @@ export function useWebSocket<Data = any>(
     status.value = 'CONNECTING'
 
     ws.onopen = () => {
+      if (wsRef.value !== ws)
+        return
+
       status.value = 'OPEN'
       retried = 0
       onConnected?.(ws!)
@@ -248,7 +251,9 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onclose = (ev) => {
-      status.value = 'CLOSED'
+      if (wsRef.value === ws)
+        status.value = 'CLOSED'
+
       resetHeartbeat()
       heartbeatPause?.()
       onDisconnected?.(ws, ev)
@@ -260,11 +265,11 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        const checkRetires = typeof retries === 'function'
+        const checkRetries = typeof retries === 'function'
           ? retries
           : () => typeof retries === 'number' && (retries < 0 || retried < retries)
 
-        if (checkRetires(retried)) {
+        if (checkRetries(retried)) {
           retried += 1
           const delayTime = typeof delay === 'function' ? delay(retried) : delay
           retryTimeout = setTimeout(_init, delayTime)
