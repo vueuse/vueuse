@@ -72,6 +72,45 @@ debouncedRequest()
 setTimeout(debouncedRequest, 500)
 ```
 
+## Cancel
+
+You can cancel any pending execution by calling the `cancel` method on the debounced function.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+debouncedFn()
+
+// Cancel the pending execution before it runs
+debouncedFn.cancel()
+```
+
+This is useful when you need to prevent the debounced function from executing, for example, when a component is unmounted or when user input changes context.
+
+## Pending State
+
+You can check if there's a pending execution using the `pending` property.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+debouncedFn()
+debouncedFn.pending // true
+
+// After debounce time elapses or cancel is called
+debouncedFn.pending // false
+```
+
+This is useful for showing loading indicators or disabling UI elements while waiting for the debounced function to execute.
+
 ## Recommended Reading
 
 - [**Debounce vs Throttle**: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)
