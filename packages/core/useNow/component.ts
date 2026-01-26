@@ -25,6 +25,7 @@ export const UseNow = /* #__PURE__ */ defineComponent<
   {
     name: 'UseNow',
     props: [
+      'scheduler',
       'immediate',
       'interval',
     ],
