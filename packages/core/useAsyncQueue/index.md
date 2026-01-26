@@ -4,7 +4,7 @@ category: Utilities
 
 # useAsyncQueue
 
-Executes each asynchronous task sequentially and passes the current task result to the next task
+Executes each asynchronous task sequentially and passes the current task result to the next task.
 
 ## Usage
 
@@ -32,4 +32,53 @@ const { activeIndex, result } = useAsyncQueue([p1, p2])
 console.log(activeIndex.value) // current pending task index
 
 console.log(result) // the tasks result
+```
+
+### Result State
+
+Each task in the result array has a `state` and `data` property:
+
+```ts
+interface UseAsyncQueueResult<T> {
+  state: 'aborted' | 'fulfilled' | 'pending' | 'rejected'
+  data: T | null
+}
+```
+
+### Interrupt on Failure
+
+By default, if a task fails, subsequent tasks will not be executed. Set `interrupt: false` to continue executing even after failures.
+
+```ts
+const { result } = useAsyncQueue([p1, p2], {
+  interrupt: false, // continue even if p1 fails
+})
+```
+
+### Callbacks
+
+```ts
+const { result } = useAsyncQueue([p1, p2], {
+  onError() {
+    console.log('A task failed')
+  },
+  onFinished() {
+    console.log('All tasks completed (or interrupted)')
+  },
+})
+```
+
+### Abort Signal
+
+You can pass an `AbortSignal` to cancel the queue execution.
+
+```ts
+const controller = new AbortController()
+
+const { result } = useAsyncQueue([p1, p2], {
+  signal: controller.signal,
+})
+
+// Later, abort the queue
+controller.abort()
 ```
