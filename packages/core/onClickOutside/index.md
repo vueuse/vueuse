@@ -92,9 +92,48 @@ onClickOutside(target, handler, { detectIframe: true })
 
 ## Component Usage
 
+The `OnClickOutside` component wraps its content in an HTML element (default: `<div>`) and triggers an event when clicks occur outside of it.
 ```vue
 <template>
-  <OnClickOutside :options="{ ignore: [/* ... */] }" @trigger="count++">
+  <OnClickOutside @trigger="count++">
+    <div>
+      Click Outside of Me
+    </div>
+  </OnClickOutside>
+</template>
+```
+
+### Component Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `as` | `string \| Component` | `'div'` | The element tag or component to render as the wrapper |
+| `options` | `OnClickOutsideOptions` | `{}` | Options (same as the composable, except `controls`) |
+
+### Component Events
+
+| Event | Type | Description |
+|-------|------|-------------|
+| `trigger` | `(event: Event) => void` | Emitted when a click occurs outside the element |
+
+### Examples
+
+**Using a custom wrapper element:**
+```vue
+<template>
+  <OnClickOutside as="section" @trigger="handleClickOutside">
+    <div>This is wrapped in a &lt;section&gt; tag</div>
+  </OnClickOutside>
+</template>
+```
+
+**With options:**
+```vue
+<template>
+  <OnClickOutside 
+    :options="{ ignore: ['.ignore-class'], detectIframe: true }" 
+    @trigger="count++"
+  >
     <div>
       Click Outside of Me
     </div>
