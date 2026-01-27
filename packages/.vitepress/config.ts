@@ -15,6 +15,7 @@ const Guide = [
   { text: 'Best Practice', link: '/guide/best-practice' },
   { text: 'Configurations', link: '/guide/config' },
   { text: 'Components', link: '/guide/components' },
+  { text: 'Work with AI', link: '/guide/work-with-ai' },
   { text: 'Contributing', link: '/contributing' },
   { text: 'Guidelines', link: '/guidelines' },
 ]
