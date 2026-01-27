@@ -1,4 +1,6 @@
-# Agent Skills
+# Work with AI
+
+## Agent Skills
 
 > [!IMPORTANT]
 > 🧪 Experimental: VueUse Skills are currently experimental and under active development, feedbacks are welcome.
@@ -9,15 +11,15 @@ After installing the skill, when you use an AI Agent to assist with developing V
 
 This allows the agent to accurately use VueUse functions **without requiring an internet connection or additional permissions**.
 
-## Installation
+### Installation
 
 ```bash
 npx skills add vueuse/skills
 ```
 
-## Usage
+### Usage
 
-### Using an Agent to Develop Vue Applications
+#### Using an Agent to Develop Vue Applications
 
 Example prompt:
 
@@ -612,7 +614,7 @@ input[type='text']:focus {
 
 </details>
 
-### Asking the AI Agent How to Use VueUse
+#### Asking the AI Agent How to Use VueUse
 
 Example prompt:
 

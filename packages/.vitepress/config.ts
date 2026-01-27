@@ -15,9 +15,9 @@ const Guide = [
   { text: 'Best Practice', link: '/guide/best-practice' },
   { text: 'Configurations', link: '/guide/config' },
   { text: 'Components', link: '/guide/components' },
+  { text: 'Work with AI', link: '/guide/work-with-ai' },
   { text: 'Contributing', link: '/contributing' },
   { text: 'Guidelines', link: '/guidelines' },
-  { text: 'Agent Skills', link: '/agent-skills' },
 ]
 
 const CoreCategories = coreCategoryNames.map(c => ({
@@ -175,7 +175,6 @@ export default withPwa(defineConfig({
       '/add-ons': DefaultSideBar,
       '/ecosystem': DefaultSideBar,
       '/guidelines': DefaultSideBar,
-      '/agent-skills': DefaultSideBar,
       '/export-size': DefaultSideBar,
       '/functions': FunctionsSideBar,
       '/core/': FunctionsSideBar,
