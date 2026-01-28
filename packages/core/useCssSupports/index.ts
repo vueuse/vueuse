@@ -1,11 +1,12 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import { isClient } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMounted } from '../useMounted'
 
 export interface UseCssSupportsOptions extends ConfigurableWindow {
-
+  ssrValue?: boolean
 }
 
 export interface UseCssSupportsReturn {
@@ -23,7 +24,7 @@ export function useCssSupports(...args: any[]): UseCssSupportsReturn {
 
   const [prop, value] = args
 
-  const { window = defaultWindow } = options
+  const { window = defaultWindow, ssrValue = false } = options
 
   const isMounted = useMounted()
 
@@ -32,6 +33,10 @@ export function useCssSupports(...args: any[]): UseCssSupportsReturn {
       // to trigger the ref
       // eslint-disable-next-line ts/no-unused-expressions
       isMounted.value
+
+      if (!isClient) {
+        return ssrValue
+      }
 
       return args.length === 2
         // @ts-expect-error window type is not correct
