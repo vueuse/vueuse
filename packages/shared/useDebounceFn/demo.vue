@@ -18,8 +18,14 @@ function clickedFn() {
   <button @click="clickedFn">
     Smash me!
   </button>
+
+  <button :disabled="!debouncedFn.pending" @click="debouncedFn.cancel()">
+    Cancel
+  </button>
+
   <note>Delay is set to 1000ms and maxWait is set to 5000ms for this demo.</note>
 
   <p>Button clicked: {{ clicked }}</p>
   <p>Event handler called: {{ updated }}</p>
+  <p>Pending: {{ debouncedFn.pending }}</p>
 </template>
