@@ -12,6 +12,10 @@ A boolean switcher with utility functions.
 import { useToggle } from '@vueuse/core'
 
 const [value, toggle] = useToggle()
+
+// or destructuring by property
+
+const { state, toggle: toggleState } = useToggle()
 ```
 
 When you pass a ref, `useToggle` will return a simple toggle function instead:
