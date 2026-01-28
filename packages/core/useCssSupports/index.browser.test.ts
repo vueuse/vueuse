@@ -47,4 +47,11 @@ describe('useCssSupports', () => {
     expect(useCssSupports('display: flex').isSupported.value).toBe(true)
     expect(useCssSupports('display: flex', {}).isSupported.value).toBe(true)
   })
+
+  it('should use prop + value instead of condition if value is explicitly undefined', () => {
+    expect(useCssSupports('display: flex').isSupported.value).toBe(true)
+    expect(useCssSupports('display: flex', undefined).isSupported.value).toBe(false)
+    // @ts-expect-error overload catches this issue correctly
+    expect(useCssSupports('display: flex', shallowRef(undefined)).isSupported.value).toBe(false)
+  })
 })
