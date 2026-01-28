@@ -4,13 +4,13 @@ import { shallowRef } from 'vue'
 
 const updated = shallowRef(0)
 const clicked = shallowRef(0)
-const debouncedFn = useDebounceFn(() => {
+const { execute, pending, cancel } = useDebounceFn(() => {
   updated.value += 1
 }, 1000, { maxWait: 5000 })
 
 function clickedFn() {
   clicked.value += 1
-  debouncedFn()
+  execute()
 }
 </script>
 
@@ -18,8 +18,12 @@ function clickedFn() {
   <button @click="clickedFn">
     Smash me!
   </button>
+  <button :disabled="!pending" @click="cancel()">
+    Cancel
+  </button>
   <note>Delay is set to 1000ms and maxWait is set to 5000ms for this demo.</note>
 
   <p>Button clicked: {{ clicked }}</p>
   <p>Event handler called: {{ updated }}</p>
+  <p>Pending: {{ pending }}</p>
 </template>
