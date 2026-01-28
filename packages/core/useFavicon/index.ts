@@ -19,11 +19,11 @@ export interface UseFaviconOptions extends ConfigurableDocument {
  */
 export function useFavicon(
   newIcon: ReadonlyRefOrGetter<string | null | undefined>,
-  options?: UseFaviconOptions
+  options?: UseFaviconOptions,
 ): ComputedRef<string | null | undefined>
 export function useFavicon(
   newIcon?: MaybeRef<string | null | undefined>,
-  options?: UseFaviconOptions
+  options?: UseFaviconOptions,
 ): Ref<string | null | undefined>
 export function useFavicon(
   newIcon: MaybeRefOrGetter<string | null | undefined> = null,

@@ -25,6 +25,23 @@ const count = useObservable(
 )
 ```
 
+### Initial Value
+
+You can provide an initial value that will be used before the Observable emits its first value:
+
+```ts no-twoslash
+import { useObservable } from '@vueuse/rxjs'
+import { interval } from 'rxjs'
+
+const count = useObservable(
+  interval(1000),
+  { initialValue: 0 },
+)
+// count.value is 0 until the first emission
+```
+
+### Error Handling
+
 If you want to add custom error handling to an `Observable` that might error, you can supply an optional `onError` configuration. Without this, RxJS will treat any error in the supplied `Observable` as an "unhandled error" and it will be thrown in a new call stack and reported to `window.onerror` (or `process.on('error')` if you happen to be in Node).
 
 ```ts no-twoslash
@@ -49,3 +66,10 @@ const count = useObservable(
   },
 )
 ```
+
+### Options
+
+| Option         | Type                 | Description                              |
+| -------------- | -------------------- | ---------------------------------------- |
+| `initialValue` | `T`                  | Value to use before the Observable emits |
+| `onError`      | `(err: any) => void` | Error handler for Observable errors      |

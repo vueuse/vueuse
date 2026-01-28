@@ -1,11 +1,27 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
-export interface UseCountdownOptions {
+function getDefaultScheduler(options: UseCountdownOptions) {
+  if ('interval' in options || 'immediate' in options) {
+    const {
+      interval = 1000,
+      immediate = false,
+    } = options
+
+    return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
+  }
+
+  return (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false })
+}
+
+export interface UseCountdownOptions extends ConfigurableScheduler {
   /**
    *  Interval for the countdown in milliseconds. Default is 1000ms.
+   *
+   * @deprecated Please use `scheduler` option instead
    */
   interval?: MaybeRefOrGetter<number>
   /**
@@ -19,6 +35,7 @@ export interface UseCountdownOptions {
   /**
    * Start the countdown immediately
    *
+   * @deprecated Please use `scheduler` option instead
    * @default false
    */
   immediate?: boolean
@@ -44,46 +61,52 @@ export interface UseCountdownReturn extends Pausable {
 }
 
 /**
- * Wrapper for `useIntervalFn` that provides a countdown timer in seconds.
+ * Reactive countdown timer in seconds.
  *
  * @param initialCountdown
  * @param options
  *
  * @see https://vueuse.org/useCountdown
  */
-export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options?: UseCountdownOptions): UseCountdownReturn {
+export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options: UseCountdownOptions = {}): UseCountdownReturn {
   const remaining = shallowRef(toValue(initialCountdown))
 
-  const intervalController = useIntervalFn(() => {
+  const {
+    scheduler = getDefaultScheduler(options),
+    onTick,
+    onComplete,
+  } = options
+
+  const controls = scheduler(() => {
     const value = remaining.value - 1
     remaining.value = value < 0 ? 0 : value
-    options?.onTick?.()
+    onTick?.()
     if (remaining.value <= 0) {
-      intervalController.pause()
-      options?.onComplete?.()
+      controls.pause()
+      onComplete?.()
     }
-  }, options?.interval ?? 1000, { immediate: options?.immediate ?? false })
+  })
 
   const reset = (countdown?: MaybeRefOrGetter<number>) => {
     remaining.value = toValue(countdown) ?? toValue(initialCountdown)
   }
 
   const stop = () => {
-    intervalController.pause()
+    controls.pause()
     reset()
   }
 
   const resume = () => {
-    if (!intervalController.isActive.value) {
+    if (!controls.isActive.value) {
       if (remaining.value > 0) {
-        intervalController.resume()
+        controls.resume()
       }
     }
   }
 
   const start = (countdown?: MaybeRefOrGetter<number>) => {
     reset(countdown)
-    intervalController.resume()
+    controls.resume()
   }
 
   return {
@@ -91,8 +114,8 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
     reset,
     stop,
     start,
-    pause: intervalController.pause,
+    pause: controls.pause,
     resume,
-    isActive: intervalController.isActive,
+    isActive: controls.isActive,
   }
 }
