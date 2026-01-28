@@ -163,3 +163,35 @@ describe('useIDBKeyval', () => {
     expect(await get(KEY4)).toEqual(0)
   })
 })
+
+describe('useIDBKeyval SSR', () => {
+  beforeEach(() => {
+    vi.resetModules()
+  })
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('should return initial value in SSR environment', async () => {
+    // Mock isClient to false to simulate SSR
+    vi.doMock('@vueuse/shared', async () => {
+      const actual = await vi.importActual('@vueuse/shared')
+      return {
+        ...actual,
+        isClient: false,
+      }
+    })
+
+    const { useIDBKeyval: useIDBKeyvalSSR } = await import('./index')
+
+    const { data, isFinished, set: setData } = useIDBKeyvalSSR('ssr-key', { count: 42 })
+
+    expect(data.value).toEqual({ count: 42 })
+    expect(isFinished.value).toBe(false)
+
+    // set should be a no-op in SSR
+    await setData({ count: 100 })
+    expect(data.value).toEqual({ count: 42 })
+  })
+})
