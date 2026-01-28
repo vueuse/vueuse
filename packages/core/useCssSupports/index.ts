@@ -32,11 +32,12 @@ export function useCssSupports(...args: any[]): UseCssSupportsReturn {
       // to trigger the ref
       // eslint-disable-next-line ts/no-unused-expressions
       isMounted.value
-      return Boolean(toValue(value)
+
+      return args.length === 2
         // @ts-expect-error window type is not correct
         ? window?.CSS.supports(toValue(prop), toValue(value))
         // @ts-expect-error window type is not correct
-        : window?.CSS.supports(toValue(prop)))
+        : window?.CSS.supports(toValue(prop))
     }),
   }
 }
