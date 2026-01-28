@@ -2,7 +2,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import type { UseScrollOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import { vScroll } from './directive'
 
 const App = defineComponent({
@@ -23,6 +23,8 @@ const App = defineComponent({
   </template>
   `,
 })
+
+const mockScrollEvent = new Event('scroll')
 
 describe('vScroll', () => {
   let onScroll = vi.fn()
@@ -45,6 +47,16 @@ describe('vScroll', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.element.querySelector('div')
+      wrapper.unmount()
+      if (element) {
+        element.dispatchEvent(mockScrollEvent)
+        await nextTick()
+        expect(onScroll).toBeCalledTimes(0)
+      }
     })
   })
 
@@ -69,6 +81,16 @@ describe('vScroll', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      const element = wrapper.element.querySelector('div')
+      wrapper.unmount()
+      if (element) {
+        element.dispatchEvent(mockScrollEvent)
+        await nextTick()
+        expect(onScroll).toBeCalledTimes(0)
+      }
     })
   })
 })
