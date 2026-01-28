@@ -4,7 +4,7 @@
 
 # useCssSupports
 
-SSR compatible `CSS.supports`.
+SSR compatible and reactive [`CSS.supports`](https://developer.mozilla.org/docs/Web/API/CSS/supports_static).
 
 ## Usage
 

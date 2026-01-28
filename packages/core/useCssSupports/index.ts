@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { computed, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -8,7 +8,21 @@ export interface UseCssSupportsOptions extends ConfigurableWindow {
 
 }
 
-export function useCssSupports(prop: MaybeRefOrGetter<string>, value?: MaybeRefOrGetter<string>, options: UseCssSupportsOptions = {}) {
+export interface UseCssSupportsReturn {
+  isSupported: ComputedRef<boolean>
+}
+
+export function useCssSupports(property: MaybeRefOrGetter<string>, value: MaybeRefOrGetter<string>, options?: UseCssSupportsOptions): UseCssSupportsReturn
+export function useCssSupports(conditionText: MaybeRefOrGetter<string>, options?: UseCssSupportsOptions): UseCssSupportsReturn
+export function useCssSupports(...args: any[]): UseCssSupportsReturn {
+  let options: UseCssSupportsOptions = {}
+
+  if (typeof toValue(args.at(-1)) === 'object') {
+    options = args.pop()
+  }
+
+  const [prop, value] = args
+
   const { window = defaultWindow } = options
 
   const isMounted = useMounted()
@@ -18,8 +32,11 @@ export function useCssSupports(prop: MaybeRefOrGetter<string>, value?: MaybeRefO
       // to trigger the ref
       // eslint-disable-next-line ts/no-unused-expressions
       isMounted.value
-      // @ts-expect-error window type is not correct
-      return toValue(value) ? window?.CSS.supports(toValue(prop), toValue(value)) : window?.CSS.supports(toValue(prop))
+      return Boolean(toValue(value)
+        // @ts-expect-error window type is not correct
+        ? window?.CSS.supports(toValue(prop), toValue(value))
+        // @ts-expect-error window type is not correct
+        : window?.CSS.supports(toValue(prop)))
     }),
   }
 }

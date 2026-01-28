@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { useCssSupports } from '@vueuse/core'
+import { shallowRef } from 'vue'
 
-const { isSupported: textDecoration } = useCssSupports('text-decoration-style', 'blink')
-const { isSupported: flex } = useCssSupports('display: flex')
-const { isSupported: variable } = useCssSupports('(--foo: red)')
-const { isSupported: selectorHas } = useCssSupports('selector(:has(a))')
-const { isSupported: query } = useCssSupports('(transform-style: preserve) or (-moz-transform-style: preserve) or (-webkit-transform-style: preserve)')
-const { isSupported: doesNotExists } = useCssSupports('doesNotExist')
+const conditionText = shallowRef('display: flex')
+const prop = shallowRef('container-type')
+const value = shallowRef('scroll-state')
+
+const { isSupported: conditionTextSupported } = useCssSupports(conditionText)
+const { isSupported: propValueSupported } = useCssSupports(prop, value)
 </script>
 
 <template>
-  <div>
-    <ul>
-      <li><code>useCssSupports("text-decoration-style", "blink")</code>: {{ textDecoration }}</li>
-      <li><code>useCssSupports('display: flex')</code>: {{ flex }}</li>
-      <li><code>useCssSupports("(--foo: red)")</code>: {{ variable }}</li>
-      <li><code>useCssSupports("selector(:has(a))")</code>: {{ selectorHas }}</li>
-      <li><code>useCssSupports("(transform-style: preserve) or (-moz-transform-style: preserve) or (-webkit-transform-style: preserve)")</code>: {{ query }}</li>
-      <li><code>useCssSupports("doesNotExist")</code>: {{ doesNotExists }}</li>
-    </ul>
+  <div style="display: flex; flex-direction: column;">
+    <input v-model="conditionText" name="condition" type="text">
+    <span><code>useCssSupports("{{ conditionText }}")</code>: {{ conditionTextSupported }}</span>
+    <hr>
+    <input v-model="prop" name="prop" type="text"><input v-model="value" name="value" type="text">
+    <span><code>useCssSupports("{{ prop }}", "{{ value }}")</code>: {{ propValueSupported }}</span>
   </div>
 </template>
