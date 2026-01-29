@@ -96,7 +96,41 @@ useSortable('#dv', list)
 </template>
 ```
 
-### Tips
+### Return Values
+
+| Property | Description                                                      |
+| -------- | ---------------------------------------------------------------- |
+| `start`  | Initialize the Sortable instance (called automatically on mount) |
+| `stop`   | Destroy the Sortable instance                                    |
+| `option` | Get or set Sortable options at runtime                           |
+
+```ts
+const { start, stop, option } = useSortable(el, list)
+
+// Stop sorting
+stop()
+
+// Start sorting again
+start()
+
+// Get/set options
+option('animation', 200) // set
+const animation = option('animation') // get
+```
+
+### Watch Element Changes
+
+Use the `watchElement` option to automatically reinitialize Sortable when the element changes (useful with `v-if`).
+
+```ts
+import { useSortable } from '@vueuse/integrations/useSortable'
+
+useSortable(el, list, {
+  watchElement: true, // auto-reinitialize when element changes
+})
+```
+
+### Custom Update Handler
 
 If you want to handle the `onUpdate` yourself, you can pass in `onUpdate` parameters, and we also exposed a function to move the item position.
 
@@ -115,3 +149,13 @@ useSortable(el, list, {
   }
 })
 ```
+
+### Helper Functions
+
+The following helper functions are also exported:
+
+| Function                                   | Description                                           |
+| ------------------------------------------ | ----------------------------------------------------- |
+| `moveArrayElement(list, from, to, event?)` | Move an element in an array from one index to another |
+| `insertNodeAt(parent, element, index)`     | Insert a DOM node at a specific index                 |
+| `removeNode(node)`                         | Remove a DOM node from its parent                     |

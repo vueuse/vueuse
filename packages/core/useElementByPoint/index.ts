@@ -1,17 +1,34 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
-import type { ConfigurableDocument } from '../_configurable'
+import type { ConfigurableDocument, ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
-export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument {
+function getDefaultScheduler(options: UseElementByPointOptions<boolean>) {
+  if ('interval' in options || 'immediate' in options) {
+    const {
+      interval = 'requestAnimationFrame',
+      immediate = true,
+    } = options
+
+    return interval === 'requestAnimationFrame'
+      ? (cb: AnyFn) => useRafFn(cb, { immediate })
+      : (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
+  }
+
+  return useRafFn
+}
+
+export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, ConfigurableScheduler {
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>
+  /** @deprecated Please use `scheduler` option instead */
   immediate?: boolean
+  /** @deprecated Please use `scheduler` option instead */
   interval?: 'requestAnimationFrame' | number
 }
 
@@ -32,8 +49,7 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
     y,
     document = defaultDocument,
     multiple,
-    interval = 'requestAnimationFrame',
-    immediate = true,
+    scheduler = getDefaultScheduler(options),
   } = options
 
   const isSupported = useSupported(() => {
@@ -45,15 +61,11 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
 
   const element = shallowRef<any>(null)
 
-  const cb = () => {
+  const controls = scheduler(() => {
     element.value = toValue(multiple)
       ? document?.elementsFromPoint(toValue(x), toValue(y)) ?? []
       : document?.elementFromPoint(toValue(x), toValue(y)) ?? null
-  }
-
-  const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(cb, { immediate })
-    : useIntervalFn(cb, interval, { immediate })
+  })
 
   return {
     isSupported,

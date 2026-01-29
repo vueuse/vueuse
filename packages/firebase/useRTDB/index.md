@@ -20,6 +20,19 @@ const db = getDatabase(app)
 const todos = useRTDB(db.ref('todos'))
 ```
 
+## Options
+
+| Option         | Type                   | Default         | Description                                               |
+| -------------- | ---------------------- | --------------- | --------------------------------------------------------- |
+| `autoDispose`  | `boolean`              | `true`          | Automatically unsubscribe when the component is unmounted |
+| `errorHandler` | `(err: Error) => void` | `console.error` | Custom error handler for database errors                  |
+
+## Return Value
+
+Returns a `Ref<T | undefined>` that is automatically updated when the database value changes.
+
+## Reusing Database References
+
 You can reuse the db reference by passing `autoDispose: false`
 
 ```ts
