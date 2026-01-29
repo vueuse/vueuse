@@ -1,10 +1,26 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { Ref } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
-export interface UseNowOptions<Controls extends boolean> {
+function getDefaultScheduler(options: UseNowOptions<boolean>) {
+  if ('interval' in options || 'immediate' in options) {
+    const {
+      interval = 'requestAnimationFrame',
+      immediate = true,
+    } = options
+
+    return interval === 'requestAnimationFrame'
+      ? (fn: AnyFn) => useRafFn(fn, { immediate })
+      : (fn: AnyFn) => useIntervalFn(fn, interval, options)
+  }
+
+  return useRafFn
+}
+
+export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
   /**
    * Expose more controls
    *
@@ -15,6 +31,7 @@ export interface UseNowOptions<Controls extends boolean> {
   /**
    * Start the clock immediately
    *
+   * @deprecated Please use `scheduler` option instead
    * @default true
    */
   immediate?: boolean
@@ -22,6 +39,7 @@ export interface UseNowOptions<Controls extends boolean> {
   /**
    * Update interval in milliseconds, or use requestAnimationFrame
    *
+   * @deprecated Please use `scheduler` option instead
    * @default requestAnimationFrame
    */
   interval?: 'requestAnimationFrame' | number
@@ -49,17 +67,14 @@ export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausa
 export function useNow(options: UseNowOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
-    interval = 'requestAnimationFrame',
-    immediate = true,
+    scheduler = getDefaultScheduler(options),
   } = options
 
   const now = deepRef(new Date())
 
   const update = () => now.value = new Date()
 
-  const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(update, { immediate })
-    : useIntervalFn(update, interval, { immediate })
+  const controls = scheduler(update)
 
   if (exposeControls) {
     return {
