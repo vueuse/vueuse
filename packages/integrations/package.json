@@ -58,7 +58,7 @@
     "axios": "^1",
     "change-case": "^5",
     "drauu": "^0.4",
-    "focus-trap": "^7",
+    "focus-trap": "^7 || ^8",
     "fuse.js": "^7",
     "idb-keyval": "^6",
     "jwt-decode": "^4",
