@@ -3,7 +3,7 @@
   "type": "module",
   "version": "14.1.0",
   "private": true,
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.28.2",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
@@ -122,7 +122,9 @@
     "@vueuse/nuxt": "workspace:*",
     "@vueuse/rxjs": "workspace:*",
     "@vueuse/shared": "workspace:*",
+    "chokidar": "catalog:dev",
     "eslint": "catalog:dev",
+    "semver": "catalog:dev",
     "vite": "catalog:dev",
     "vite-plugin-pwa": "catalog:docs",
     "vue": "catalog:dev"
