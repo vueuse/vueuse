@@ -16,11 +16,45 @@ const max = shallowRef(10)
 const value = useClamp(0, min, max)
 ```
 
-You can also pass a `ref` and the returned `computed` will be updated when the source ref changes:
+### Writable Ref
+
+When you pass a mutable `ref`, the returned value is a **writable computed** that clamps values when setting:
 
 ```ts
 import { useClamp } from '@vueuse/math'
 
 const number = shallowRef(0)
 const clamped = useClamp(number, 0, 10)
+
+clamped.value = 15 // clamped.value will be 10
+clamped.value = -5 // clamped.value will be 0
+```
+
+### Read-only Mode
+
+When you pass a getter function or readonly ref, the returned value is a read-only computed:
+
+```ts
+import { useClamp } from '@vueuse/math'
+
+const value = ref(5)
+const clamped = useClamp(() => value.value * 2, 0, 10)
+
+// clamped.value is computed from the getter
+```
+
+### Reactive Bounds
+
+All arguments (value, min, max) can be reactive:
+
+```ts
+import { useClamp } from '@vueuse/math'
+
+const value = shallowRef(5)
+const min = shallowRef(0)
+const max = shallowRef(10)
+
+const clamped = useClamp(value, min, max)
+
+max.value = 3 // clamped.value automatically becomes 3
 ```

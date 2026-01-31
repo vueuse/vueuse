@@ -53,7 +53,7 @@ export interface UsePermissionReturnWithControls {
  */
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
-  options?: UsePermissionOptions<false>
+  options?: UsePermissionOptions<false>,
 ): UsePermissionReturn
 export function usePermission(
   permissionDesc: GeneralPermissionDescriptor | GeneralPermissionDescriptor['name'],
