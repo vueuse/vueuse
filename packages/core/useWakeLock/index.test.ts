@@ -1,6 +1,6 @@
 import type { WakeLockSentinel } from './index'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { effectScope, nextTick } from 'vue'
 import { useWakeLock } from './index'
 
 class MockWakeLockSentinel extends EventTarget {
@@ -144,5 +144,63 @@ describe('useWakeLock', () => {
     await nextTick()
 
     expect(isActive.value).toBeTruthy()
+  })
+
+  it('should automatically release wake lock on scope dispose', async () => {
+    const sentinel = defineWakeLockAPI()
+    const mockDocument = new MockDocument()
+    mockDocument.visibilityState = 'visible'
+
+    const scope = effectScope()
+    let wakeLock: ReturnType<typeof useWakeLock> | null = null
+
+    await scope.run(async () => {
+      wakeLock = useWakeLock({ document: mockDocument as Document })
+      await wakeLock!.request('screen')
+    })
+
+    // Verify wake lock is active before dispose
+    expect(wakeLock!.isActive.value).toBeTruthy()
+    expect(wakeLock!.sentinel.value).toBeTruthy()
+    expect(sentinel.released).toBeFalsy()
+
+    // Dispose the scope (simulating component unmount)
+    // This should trigger tryOnScopeDispose which calls release()
+    scope.stop()
+    await nextTick()
+
+    // Verify wake lock was automatically released
+    expect(wakeLock!.sentinel.value).toBeNull()
+    expect(sentinel.released).toBeTruthy()
+    expect(wakeLock!.isActive.value).toBeFalsy()
+  })
+
+  it('should not release wake lock if scope is not disposed', async () => {
+    const sentinel = defineWakeLockAPI()
+    const mockDocument = new MockDocument()
+    mockDocument.visibilityState = 'visible'
+
+    const scope = effectScope()
+    let wakeLock: ReturnType<typeof useWakeLock> | null = null
+
+    await scope.run(async () => {
+      wakeLock = useWakeLock({ document: mockDocument as Document })
+      await wakeLock!.request('screen')
+    })
+
+    // Verify wake lock is active
+    expect(wakeLock!.isActive.value).toBeTruthy()
+    expect(wakeLock!.sentinel.value).toBeTruthy()
+    expect(sentinel.released).toBeFalsy()
+
+    // Don't dispose scope - wake lock should remain active
+    await nextTick()
+
+    expect(wakeLock!.sentinel.value).toBeTruthy()
+    expect(sentinel.released).toBeFalsy()
+    expect(wakeLock!.isActive.value).toBeTruthy()
+
+    // Cleanup
+    scope.stop()
   })
 })
