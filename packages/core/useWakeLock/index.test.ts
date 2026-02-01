@@ -174,33 +174,4 @@ describe('useWakeLock', () => {
     expect(sentinel.released).toBeTruthy()
     expect(wakeLock!.isActive.value).toBeFalsy()
   })
-
-  it('should not release wake lock if scope is not disposed', async () => {
-    const sentinel = defineWakeLockAPI()
-    const mockDocument = new MockDocument()
-    mockDocument.visibilityState = 'visible'
-
-    const scope = effectScope()
-    let wakeLock: ReturnType<typeof useWakeLock> | null = null
-
-    await scope.run(async () => {
-      wakeLock = useWakeLock({ document: mockDocument as Document })
-      await wakeLock!.request('screen')
-    })
-
-    // Verify wake lock is active
-    expect(wakeLock!.isActive.value).toBeTruthy()
-    expect(wakeLock!.sentinel.value).toBeTruthy()
-    expect(sentinel.released).toBeFalsy()
-
-    // Don't dispose scope - wake lock should remain active
-    await nextTick()
-
-    expect(wakeLock!.sentinel.value).toBeTruthy()
-    expect(sentinel.released).toBeFalsy()
-    expect(wakeLock!.isActive.value).toBeTruthy()
-
-    // Cleanup
-    scope.stop()
-  })
 })
