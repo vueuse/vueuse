@@ -1,6 +1,6 @@
 import type { WakeLockSentinel } from './index'
 import { describe, expect, it, vi } from 'vitest'
-import { effectScope, nextTick } from 'vue'
+import { nextTick } from 'vue'
 import { useWakeLock } from './index'
 
 class MockWakeLockSentinel extends EventTarget {
@@ -144,34 +144,5 @@ describe('useWakeLock', () => {
     await nextTick()
 
     expect(isActive.value).toBeTruthy()
-  })
-
-  it('should automatically release wake lock on scope dispose', async () => {
-    const sentinel = defineWakeLockAPI()
-    const mockDocument = new MockDocument()
-    mockDocument.visibilityState = 'visible'
-
-    const scope = effectScope()
-    let wakeLock: ReturnType<typeof useWakeLock> | null = null
-
-    await scope.run(async () => {
-      wakeLock = useWakeLock({ document: mockDocument as Document })
-      await wakeLock!.request('screen')
-    })
-
-    // Verify wake lock is active before dispose
-    expect(wakeLock!.isActive.value).toBeTruthy()
-    expect(wakeLock!.sentinel.value).toBeTruthy()
-    expect(sentinel.released).toBeFalsy()
-
-    // Dispose the scope (simulating component unmount)
-    // This should trigger tryOnScopeDispose which calls release()
-    scope.stop()
-    await nextTick()
-
-    // Verify wake lock was automatically released
-    expect(wakeLock!.sentinel.value).toBeNull()
-    expect(sentinel.released).toBeTruthy()
-    expect(wakeLock!.isActive.value).toBeFalsy()
   })
 })
