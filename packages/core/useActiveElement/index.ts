@@ -20,7 +20,7 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
   triggerOnRemoval?: boolean
 }
 
-export type useActiveElementReturn<T extends HTMLElement> = ShallowRef<T | null | undefined>
+export type UseActiveElementReturn<T extends HTMLElement = HTMLElement> = ShallowRef<T | null | undefined>
 
 /**
  * Reactive `document.activeElement`
@@ -32,7 +32,7 @@ export type useActiveElementReturn<T extends HTMLElement> = ShallowRef<T | null 
  */
 export function useActiveElement<T extends HTMLElement>(
   options: UseActiveElementOptions = {},
-): useActiveElementReturn<T> {
+): UseActiveElementReturn<T> {
   const {
     window = defaultWindow,
     deep = true,
