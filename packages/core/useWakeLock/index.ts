@@ -1,5 +1,5 @@
 import type { ConfigurableDocument, ConfigurableNavigator } from '../_configurable'
-import { whenever } from '@vueuse/shared'
+import { tryOnScopeDispose, whenever } from '@vueuse/shared'
 import { computed, shallowRef } from 'vue'
 import { defaultDocument, defaultNavigator } from '../_configurable'
 import { useDocumentVisibility } from '../useDocumentVisibility'
@@ -73,6 +73,10 @@ export function useWakeLock(options: UseWakeLockOptions = {}) {
     sentinel.value = null
     await s?.release()
   }
+
+  tryOnScopeDispose(() => {
+    release()
+  })
 
   return {
     sentinel,
