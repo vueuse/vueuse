@@ -1,11 +1,22 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { Ref } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
+
+export interface UseDeviceOrientationOptions extends ConfigurableWindow {
+}
+
+export interface UseDeviceOrientationReturn extends Supportable {
+  isAbsolute: ShallowRef<boolean, boolean>
+  alpha: Ref<number | null, number | null>
+  beta: Ref<number | null, number | null>
+  gamma: Ref<number | null, number | null>
+}
 
 /**
  * Reactive DeviceOrientationEvent.
@@ -15,7 +26,7 @@ import { useSupported } from '../useSupported'
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useDeviceOrientation(options: ConfigurableWindow = {}) {
+export function useDeviceOrientation(options: UseDeviceOrientationOptions = {}) {
   const { window = defaultWindow } = options
   const isSupported = useSupported(() => window && 'DeviceOrientationEvent' in window)
 
@@ -41,5 +52,3 @@ export function useDeviceOrientation(options: ConfigurableWindow = {}) {
     gamma,
   }
 }
-
-export type UseDeviceOrientationReturn = ReturnType<typeof useDeviceOrientation>

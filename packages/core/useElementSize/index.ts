@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
 import { toArray, tryOnMounted } from '@vueuse/shared'
@@ -11,6 +12,15 @@ export interface ElementSize {
   height: number
 }
 
+export interface UseElementSizeOptions extends UseResizeObserverOptions {
+}
+
+export interface UseElementSizeReturn {
+  width: ShallowRef<number>
+  height: ShallowRef<number>
+  stop: () => void
+}
+
 /**
  * Reactive size of an HTML element.
  *
@@ -19,8 +29,8 @@ export interface ElementSize {
 export function useElementSize(
   target: MaybeComputedElementRef,
   initialSize: ElementSize = { width: 0, height: 0 },
-  options: UseResizeObserverOptions = {},
-) {
+  options: UseElementSizeOptions = {},
+): UseElementSizeReturn {
   const { window = defaultWindow, box = 'content-box' } = options
   const isSVG = computed(() => unrefElement(target)?.namespaceURI?.includes('svg'))
   const width = shallowRef(initialSize.width)
@@ -86,5 +96,3 @@ export function useElementSize(
     stop,
   }
 }
-
-export type UseElementSizeReturn = ReturnType<typeof useElementSize>

@@ -42,11 +42,15 @@ export interface OnLongPressModifiers {
   self?: boolean
 }
 
+export type OnLongPressReturn = () => void
+/** @deprecated use {@link OnLongPressReturn} instead */
+export type UseOnLongPressReturn = OnLongPressReturn
+
 export function onLongPress(
   target: MaybeElementRef,
   handler: (evt: PointerEvent) => void,
   options?: OnLongPressOptions,
-) {
+): OnLongPressReturn {
   const elementRef = computed(() => unrefElement(target))
 
   let timeout: TimerHandle
@@ -155,5 +159,3 @@ export function onLongPress(
 
   return stop
 }
-
-export type UseOnLongPressReturn = ReturnType<typeof onLongPress>

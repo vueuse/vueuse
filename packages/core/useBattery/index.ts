@@ -1,10 +1,22 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import { shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
+
+export interface UseBatteryOptions extends ConfigurableNavigator {
+}
+
+export interface UseBatteryReturn {
+  isSupported: ComputedRef<boolean>
+  charging: ShallowRef<boolean>
+  chargingTime: ShallowRef<number>
+  dischargingTime: ShallowRef<number>
+  level: ShallowRef<number>
+}
 
 export interface BatteryManager extends EventTarget {
   charging: boolean
@@ -24,7 +36,7 @@ type NavigatorWithBattery = Navigator & {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useBattery(options: ConfigurableNavigator = {}) {
+export function useBattery(options: UseBatteryOptions = {}): UseBatteryReturn {
   const { navigator = defaultNavigator } = options
   const events = ['chargingchange', 'chargingtimechange', 'dischargingtimechange', 'levelchange']
 
@@ -62,5 +74,3 @@ export function useBattery(options: ConfigurableNavigator = {}) {
     level,
   }
 }
-
-export type UseBatteryReturn = ReturnType<typeof useBattery>

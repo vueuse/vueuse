@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
@@ -25,6 +26,8 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<Us
   once?: boolean
 }
 
+export type UseElementVisibilityReturn = ShallowRef<boolean>
+
 /**
  * Tracks the visibility of an element within the viewport.
  *
@@ -33,7 +36,7 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<Us
 export function useElementVisibility(
   element: MaybeComputedElementRef,
   options: UseElementVisibilityOptions = {},
-) {
+): UseElementVisibilityReturn {
   const {
     window = defaultWindow,
     scrollTarget,
@@ -75,5 +78,3 @@ export function useElementVisibility(
 
   return elementIsVisible
 }
-
-export type UseElementVisibilityReturn = ReturnType<typeof useElementVisibility>
