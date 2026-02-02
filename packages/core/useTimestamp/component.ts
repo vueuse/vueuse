@@ -5,7 +5,7 @@ import { defineComponent, reactive } from 'vue'
 
 export interface UseTimestampProps extends Omit<UseTimestampOptions<true>, 'controls'> {}
 interface UseTimestampSlots {
-  default: (data: Reactive<UseTimestampReturn>) => any
+  default: (data: Reactive<UseTimestampReturn<true>>) => any
 }
 
 export const UseTimestamp = /* #__PURE__ */ defineComponent<
