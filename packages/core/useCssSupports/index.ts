@@ -1,5 +1,6 @@
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { isClient } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -9,8 +10,7 @@ export interface UseCssSupportsOptions extends ConfigurableWindow {
   ssrValue?: boolean
 }
 
-export interface UseCssSupportsReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseCssSupportsReturn extends Supportable {
 }
 
 export function useCssSupports(property: MaybeRefOrGetter<string>, value: MaybeRefOrGetter<string>, options?: UseCssSupportsOptions): UseCssSupportsReturn
