@@ -1,7 +1,8 @@
+import type { ConfigurableEventFilter } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
-import { tryOnScopeDispose } from '@vueuse/shared'
+import { bypassFilter, createFilterWrapper, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
@@ -34,7 +35,7 @@ export interface ResizeObserverEntry {
  */
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void
 
-export interface UseResizeObserverOptions extends ResizeObserverOptions, ConfigurableWindow {
+export interface UseResizeObserverOptions extends ResizeObserverOptions, ConfigurableWindow, ConfigurableEventFilter {
 }
 
 /**
@@ -50,7 +51,7 @@ export function useResizeObserver(
   callback: globalThis.ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
 ) {
-  const { window = defaultWindow, ...observerOptions } = options
+  const { window = defaultWindow, eventFilter = bypassFilter, ...observerOptions } = options
   let observer: ResizeObserver | undefined
   const isSupported = useSupported(() => window && 'ResizeObserver' in window)
 
@@ -68,12 +69,14 @@ export function useResizeObserver(
       : [unrefElement(_targets)]
   })
 
+  const filteredCallback = createFilterWrapper(eventFilter, callback)
+
   const stopWatch = watch(
     targets,
     (els) => {
       cleanup()
       if (isSupported.value && window) {
-        observer = new ResizeObserver(callback)
+        observer = new ResizeObserver(filteredCallback)
         for (const _el of els) {
           if (_el)
             observer!.observe(_el, observerOptions)
