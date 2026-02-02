@@ -1,6 +1,7 @@
 import type { AnyFn } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 import type { ConfigurableScheduler } from '../_configurable'
+import type { Supportable } from '../types'
 import { useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef } from 'vue'
 import { useSupported } from '../useSupported'
@@ -65,8 +66,7 @@ export interface UseMemoryOptions extends ConfigurableScheduler {
   interval?: number
 }
 
-export interface UseMemoryReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseMemoryReturn extends Supportable {
   memory: Ref<MemoryInfo | undefined>
 }
 

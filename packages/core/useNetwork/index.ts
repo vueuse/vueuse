@@ -1,7 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { readonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -11,8 +12,7 @@ export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi
 
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
-export interface NetworkState {
-  isSupported: ComputedRef<boolean>
+export interface NetworkState extends Supportable {
   /**
    * If the user is currently connected.
    */
