@@ -26,6 +26,11 @@ export interface NavigatorLanguageState extends Supportable {
   language: ShallowRef<string | undefined>
 }
 
+export interface UseNavigatorLanguageOptions extends ConfigurableWindow {
+}
+
+export type UseNavigatorLanguageReturn = Readonly<NavigatorLanguageState>
+
 /**
  *
  * Reactive useNavigatorLanguage
@@ -35,7 +40,7 @@ export interface NavigatorLanguageState extends Supportable {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly<NavigatorLanguageState> {
+export function useNavigatorLanguage(options: UseNavigatorLanguageOptions = {}): UseNavigatorLanguageReturn {
   const { window = defaultWindow } = options
 
   const navigator = window?.navigator
@@ -55,5 +60,3 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
     language,
   }
 }
-
-export type UseNavigatorLanguageReturn = ReturnType<typeof useNavigatorLanguage>

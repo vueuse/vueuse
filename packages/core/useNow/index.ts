@@ -45,6 +45,8 @@ export interface UseNowOptions<Controls extends boolean> extends ConfigurableSch
   interval?: 'requestAnimationFrame' | number
 }
 
+export type UseNowReturn<Controls extends boolean> = Controls extends true ? ({ now: Ref<Date> } & Pausable) : Ref<Date>
+
 /**
  * Reactive current Date instance.
  *
@@ -64,7 +66,7 @@ export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausa
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNow(options: UseNowOptions<boolean> = {}) {
+export function useNow(options: UseNowOptions<boolean> = {}): UseNowReturn<boolean> {
   const {
     controls: exposeControls = false,
     scheduler = getDefaultScheduler(options),
@@ -86,5 +88,3 @@ export function useNow(options: UseNowOptions<boolean> = {}) {
     return now
   }
 }
-
-export type UseNowReturn = ReturnType<typeof useNow>
