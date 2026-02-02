@@ -16,7 +16,7 @@ export type UseDocumentVisibilityReturn = ShallowRef<DocumentVisibilityState>
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useDocumentVisibility(options: ConfigurableDocument = {}): UseDocumentVisibilityReturn {
+export function useDocumentVisibility(options: UseDocumentVisibilityOptions = {}): UseDocumentVisibilityReturn {
   const { document = defaultDocument } = options
   if (!document)
     return shallowRef<DocumentVisibilityState>('visible')
