@@ -109,7 +109,7 @@ describe('useIntersectionObserver', () => {
       await vi.waitFor(() => {
         expect(callbackMock).toHaveBeenCalledTimes(2)
         expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
-        expect(callbackMock.mock.calls[0][0][0].rootBounds!.height).toBe(200)
+        expect(callbackMock.mock.calls[1][0][0].rootBounds!.height).toBe(200)
       })
     })
 

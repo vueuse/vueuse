@@ -156,6 +156,7 @@
   useConfirmDialog: function
   useCountdown: function
   useCounter: function
+  useCssSupports: function
   useCssVar: function
   useCurrentElement: function
   useCycleList: function

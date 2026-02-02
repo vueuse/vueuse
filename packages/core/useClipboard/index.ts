@@ -1,7 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { useTimeoutFn } from '@vueuse/shared'
 import { computed, readonly, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
@@ -37,8 +38,7 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   legacy?: boolean
 }
 
-export interface UseClipboardReturn<Optional> {
-  isSupported: ComputedRef<boolean>
+export interface UseClipboardReturn<Optional> extends Supportable {
   text: Readonly<ShallowRef<string>>
   copied: Readonly<ShallowRef<boolean>>
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>

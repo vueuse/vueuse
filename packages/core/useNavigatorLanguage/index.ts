@@ -1,14 +1,12 @@
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { shallowRef } from 'vue'
-
 import { defaultWindow } from '../_configurable'
-
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
-export interface NavigatorLanguageState {
-  isSupported: ComputedRef<boolean>
+export interface NavigatorLanguageState extends Supportable {
   /**
    *
    * ISO 639-1 standard Language Code
