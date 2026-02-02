@@ -26,7 +26,7 @@ function getRangesFromSelection(selection: Selection) {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useTextSelection(options: UseTextSelectionOptions = {}) {
+export function useTextSelection(options: UseTextSelectionOptions = {}): UseTextSelectionReturn {
   const {
     window = defaultWindow,
   } = options

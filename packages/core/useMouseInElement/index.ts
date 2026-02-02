@@ -1,6 +1,6 @@
 import type { ShallowRef } from 'vue'
 import type { MaybeElementRef } from '../unrefElement'
-import type { UseMouseOptions, UseMouseSourceType } from '../useMouse'
+import type { UseMouseOptions, UseMouseReturn } from '../useMouse'
 import { tryOnMounted } from '@vueuse/shared'
 import { shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -32,6 +32,17 @@ export interface MouseInElementOptions extends UseMouseOptions {
    * @default true
    */
   windowResize?: boolean
+}
+
+export interface UseMouseInElementReturn extends UseMouseReturn {
+  elementX: ShallowRef<number>
+  elementY: ShallowRef<number>
+  elementPositionX: ShallowRef<number>
+  elementPositionY: ShallowRef<number>
+  elementHeight: ShallowRef<number>
+  elementWidth: ShallowRef<number>
+  isOutside: ShallowRef<boolean>
+  stop: () => void
 }
 
 /**
@@ -164,18 +175,4 @@ export function useMouseInElement(
     isOutside,
     stop,
   }
-}
-
-export interface UseMouseInElementReturn {
-  x: ShallowRef<number>
-  y: ShallowRef<number>
-  sourceType: ShallowRef<UseMouseSourceType>
-  elementX: ShallowRef<number>
-  elementY: ShallowRef<number>
-  elementPositionX: ShallowRef<number>
-  elementPositionY: ShallowRef<number>
-  elementHeight: ShallowRef<number>
-  elementWidth: ShallowRef<number>
-  isOutside: ShallowRef<boolean>
-  stop: () => void
 }

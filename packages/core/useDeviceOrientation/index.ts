@@ -26,7 +26,7 @@ export interface UseDeviceOrientationReturn extends Supportable {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useDeviceOrientation(options: UseDeviceOrientationOptions = {}) {
+export function useDeviceOrientation(options: UseDeviceOrientationOptions = {}): UseDeviceOrientationReturn {
   const { window = defaultWindow } = options
   const isSupported = useSupported(() => window && 'DeviceOrientationEvent' in window)
 

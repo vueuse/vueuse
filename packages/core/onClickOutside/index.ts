@@ -61,7 +61,7 @@ export function onClickOutside<
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
   options?: T,
-): OnClickOutsideReturn
+): Fn
 
 export function onClickOutside<
   T extends OnClickOutsideOptions<true>,
@@ -69,14 +69,18 @@ export function onClickOutside<
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
   options: T,
-): OnClickOutsideReturn<true>
+): {
+  stop: Fn
+  cancel: Fn
+  trigger: (event: Event) => void
+}
 
 // Implementation
 export function onClickOutside(
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler,
   options: OnClickOutsideOptions<boolean> = {},
-) {
+): OnClickOutsideReturn<boolean> {
   const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, controls = false } = options
 
   if (!window) {
