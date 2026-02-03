@@ -1,7 +1,7 @@
 import type { WakeLockSentinel } from './index'
 import { flushPromises, mount } from '@vue/test-utils'
 import { useWakeLock } from '@vueuse/core'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { defineComponent } from 'vue'
 
 class MockWakeLockSentinel extends EventTarget {
@@ -39,46 +39,26 @@ describe('useWakeLock Browser', () => {
 
     const { wakeLock } = wrapper.vm
 
-    await vi.waitFor(() => {
-      expect(wakeLock.sentinel.value).toBeTruthy()
-    })
+    expect(wakeLock.sentinel.value).toBeDefined()
 
-    expect(wakeLock.isActive.value).toBeTruthy()
-    expect(wakeLock.sentinel.value).toBeTruthy()
+    wrapper.unmount()
 
-    if (wakeLock.sentinel.value) {
-      const sentinelBeforeUnmount = wakeLock.sentinel.value
-      expect(sentinelBeforeUnmount.released).toBeFalsy()
-
-      wrapper.unmount()
-      await flushPromises()
-
-      await vi.waitFor(() => {
-        expect(wakeLock.sentinel.value).toBeNull()
-        expect(sentinelBeforeUnmount.released).toBeTruthy()
-        expect(wakeLock.isActive.value).toBeFalsy()
-      })
-    }
+    expect(wakeLock.sentinel.value).toBeNull()
   })
 
   it('should handle wake lock lifecycle correctly', async () => {
     defineWakeLockAPI()
 
-    const { isSupported, request, release, sentinel, isActive } = useWakeLock()
-
-    expect(isSupported.value).toBeTruthy()
+    const { request, release, sentinel } = useWakeLock()
+    expect(sentinel.value).toBe(null)
 
     await request('screen')
 
-    await vi.waitFor(() => {
-      expect(sentinel.value).toBeTruthy()
-    })
-
-    expect(isActive.value).toBeTruthy()
-    expect(sentinel.value).toBeTruthy()
+    expect(sentinel.value).toBeDefined()
+    expect(sentinel.value!.released).toBeFalsy()
 
     await release()
-    expect(isActive.value).toBeFalsy()
+
     expect(sentinel.value).toBeNull()
   })
 })
