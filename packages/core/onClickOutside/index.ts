@@ -39,7 +39,7 @@ export type OnClickOutsideHandler<
     | PointerEvent,
 ) => void
 
-interface OnClickOutsideControlsReturn {
+export type OnClickOutsideReturn<Controls extends boolean = false> = Controls extends false ? Fn : {
   stop: Fn
   cancel: Fn
   trigger: (event: Event) => void
@@ -69,14 +69,18 @@ export function onClickOutside<
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
   options: T,
-): OnClickOutsideControlsReturn
+): {
+  stop: Fn
+  cancel: Fn
+  trigger: (event: Event) => void
+}
 
 // Implementation
 export function onClickOutside(
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler,
   options: OnClickOutsideOptions<boolean> = {},
-) {
+): OnClickOutsideReturn<boolean> {
   const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, controls = false } = options
 
   if (!window) {

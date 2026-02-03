@@ -1,5 +1,7 @@
+import type { EventHookOn, Pausable } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableNavigator, ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { createEventHook, tryOnMounted } from '@vueuse/shared'
 import { computed, ref as deepRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
@@ -9,6 +11,12 @@ import { useSupported } from '../useSupported'
 
 export interface UseGamepadOptions extends ConfigurableWindow, ConfigurableNavigator {
 
+}
+
+export interface UseGamepadReturn extends Supportable, Pausable {
+  onConnected: EventHookOn<number>
+  onDisconnected: EventHookOn<number>
+  gamepads: Ref<Gamepad[]>
 }
 
 /**
@@ -60,7 +68,7 @@ export function mapGamepadToXbox360Controller(gamepad: Ref<Gamepad | undefined>)
 }
 
 /* @__NO_SIDE_EFFECTS__ */
-export function useGamepad(options: UseGamepadOptions = {}) {
+export function useGamepad(options: UseGamepadOptions = {}): UseGamepadReturn {
   const {
     navigator = defaultNavigator,
   } = options
@@ -145,5 +153,3 @@ export function useGamepad(options: UseGamepadOptions = {}) {
     isActive,
   }
 }
-
-export type UseGamepadReturn = ReturnType<typeof useGamepad>

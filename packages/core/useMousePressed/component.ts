@@ -1,9 +1,9 @@
-import type { MousePressedOptions, RenderableComponent, UseMousePressedReturn } from '@vueuse/core'
+import type { RenderableComponent, UseMousePressedOptions, UseMousePressedReturn } from '@vueuse/core'
 import type { Reactive, SlotsType } from 'vue'
 import { useMousePressed } from '@vueuse/core'
 import { defineComponent, h, reactive, shallowRef } from 'vue'
 
-export interface UseMousePressedProps extends Omit<MousePressedOptions, 'target'>, RenderableComponent {}
+export interface UseMousePressedProps extends Omit<UseMousePressedOptions, 'target'>, RenderableComponent {}
 interface UseMousePressedSlots {
   default: (data: Reactive<UseMousePressedReturn>) => any
 }

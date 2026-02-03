@@ -1,8 +1,9 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { shallowRef, toValue, watch } from 'vue'
@@ -37,6 +38,17 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
   maxAlternatives?: number
 }
 
+export interface UseSpeechRecognitionReturn extends Supportable {
+  isListening: ShallowRef<boolean>
+  isFinal: ShallowRef<boolean>
+  recognition: SpeechRecognition | undefined
+  result: ShallowRef<string>
+  error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>
+  toggle: (value?: boolean) => void
+  start: () => void
+  stop: () => void
+}
+
 /**
  * Reactive SpeechRecognition.
  *
@@ -44,7 +56,7 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition SpeechRecognition
  * @param options
  */
-export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) {
+export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}): UseSpeechRecognitionReturn {
   const {
     interimResults = true,
     continuous = true,
@@ -151,5 +163,3 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     stop,
   }
 }
-
-export type UseSpeechRecognitionReturn = ReturnType<typeof useSpeechRecognition>
