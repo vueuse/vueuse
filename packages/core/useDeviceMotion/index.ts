@@ -3,6 +3,7 @@
 import type { ConfigurableEventFilter } from '@vueuse/shared'
 import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { bypassFilter, createFilterWrapper } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -26,12 +27,11 @@ interface DeviceMotionEventiOS extends UseDeviceMotionOptions {
   requestPermission: () => Promise<'granted' | 'denied'>
 }
 
-export interface UseDeviceMotionReturn {
+export interface UseDeviceMotionReturn extends Supportable {
   acceleration: Ref<DeviceMotionEventAcceleration | null>
   accelerationIncludingGravity: Ref<DeviceMotionEventAcceleration | null>
   rotationRate: Ref<DeviceMotionEventRotationRate | null>
   interval: ShallowRef<number>
-  isSupported: ComputedRef<boolean>
   requirePermissions: ComputedRef<boolean>
   ensurePermissions: () => Promise<void>
   permissionGranted: ShallowRef<boolean>
