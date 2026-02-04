@@ -1,4 +1,3 @@
-import type { WakeLockSentinel } from './index'
 import { flushPromises, mount } from '@vue/test-utils'
 import { useWakeLock } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
@@ -12,22 +11,23 @@ class MockWakeLockSentinel extends EventTarget {
   }
 }
 
-function defineWakeLockAPI() {
+function createMockNavigator() {
   const sentinel = new MockWakeLockSentinel()
-  Object.defineProperty(navigator, 'wakeLock', {
-    value: { request: async () => sentinel as WakeLockSentinel },
-    writable: true,
-  })
-  return sentinel
+  const mockNavigator = {
+    wakeLock: {
+      request: async () => sentinel,
+    },
+  } as Navigator
+  return { mockNavigator, sentinel }
 }
 
 describe('useWakeLock Browser', () => {
   it('should automatically release wake lock when component unmounts', async () => {
-    defineWakeLockAPI()
+    const { mockNavigator } = createMockNavigator()
 
     const TestComponent = defineComponent({
       setup() {
-        const wakeLock = useWakeLock()
+        const wakeLock = useWakeLock({ navigator: mockNavigator })
         wakeLock.request('screen')
         return { wakeLock }
       },
@@ -47,9 +47,9 @@ describe('useWakeLock Browser', () => {
   })
 
   it('should handle wake lock lifecycle correctly', async () => {
-    defineWakeLockAPI()
+    const { mockNavigator } = createMockNavigator()
 
-    const { request, release, sentinel } = useWakeLock()
+    const { request, release, sentinel } = useWakeLock({ navigator: mockNavigator })
     expect(sentinel.value).toBe(null)
 
     await request('screen')
