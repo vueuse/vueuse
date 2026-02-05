@@ -56,7 +56,8 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
 
   const isActive = shallowRef(false)
   const intervalLimit = computed(() => {
-    return fpsLimit ? 1000 / toValue(fpsLimit) : null
+    const limit = toValue(fpsLimit)
+    return limit ? 1000 / limit : null
   })
   let previousFrameTimestamp = 0
   let rafId: null | number = null
