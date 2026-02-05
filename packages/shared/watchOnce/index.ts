@@ -6,19 +6,19 @@ import { watch } from 'vue'
 export function watchOnce<T extends Readonly<MultiWatchSources>>(
   source: [...T],
   cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
-  options?: Omit<WatchOptions<true>, 'once'>
+  options?: Omit<WatchOptions<true>, 'once'>,
 ): WatchHandle
 
 export function watchOnce<T>(
   source: WatchSource<T>,
   cb: WatchCallback<T, T | undefined>,
-  options?: Omit<WatchOptions<true>, 'once'>
+  options?: Omit<WatchOptions<true>, 'once'>,
 ): WatchHandle
 
 export function watchOnce<T extends object>(
   source: T,
   cb: WatchCallback<T, T | undefined>,
-  options?: Omit<WatchOptions<true>, 'once'>
+  options?: Omit<WatchOptions<true>, 'once'>,
 ): WatchHandle
 
 /**

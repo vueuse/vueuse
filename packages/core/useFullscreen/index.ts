@@ -1,4 +1,6 @@
+import type { ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
+import type { Supportable } from '../types'
 import type { MaybeElementRef } from '../unrefElement'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef } from 'vue'
@@ -14,6 +16,13 @@ export interface UseFullscreenOptions extends ConfigurableDocument {
    * @default false
    */
   autoExit?: boolean
+}
+
+export interface UseFullscreenReturn extends Supportable {
+  isFullscreen: ShallowRef<boolean>
+  enter: () => Promise<void>
+  exit: () => Promise<void>
+  toggle: () => Promise<void>
 }
 
 const eventHandlers = [
@@ -34,7 +43,7 @@ const eventHandlers = [
 export function useFullscreen(
   target?: MaybeElementRef,
   options: UseFullscreenOptions = {},
-) {
+): UseFullscreenReturn {
   const {
     document = defaultDocument,
     autoExit = false,
@@ -173,5 +182,3 @@ export function useFullscreen(
     toggle,
   }
 }
-
-export type UseFullscreenReturn = ReturnType<typeof useFullscreen>

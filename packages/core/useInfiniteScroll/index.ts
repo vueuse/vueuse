@@ -1,6 +1,6 @@
 import type { Awaitable } from '@vueuse/shared'
-import type { MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
-import type { UseScrollOptions } from '../useScroll'
+import type { ComputedRef, MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
+import type { UseScrollOptions, UseScrollReturn } from '../useScroll'
 import { tryOnUnmounted } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, reactive, toValue, watch } from 'vue'
 import { resolveElement } from '../_resolve-element'
@@ -39,6 +39,11 @@ export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement = Infi
   canLoadMore?: (el: T) => boolean
 }
 
+export interface UseInfiniteScrollReturn {
+  isLoading: ComputedRef<boolean>
+  reset: () => void
+}
+
 /**
  * Reactive infinite scroll.
  *
@@ -46,9 +51,9 @@ export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement = Infi
  */
 export function useInfiniteScroll<T extends InfiniteScrollElement>(
   element: MaybeRefOrGetter<T>,
-  onLoadMore: (state: UnwrapNestedRefs<ReturnType<typeof useScroll>>) => Awaitable<void>,
+  onLoadMore: (state: UnwrapNestedRefs<UseScrollReturn>) => Awaitable<void>,
   options: UseInfiniteScrollOptions<T> = {},
-) {
+): UseInfiniteScrollReturn {
   const {
     direction = 'bottom',
     interval = 100,
@@ -85,7 +90,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
   function checkAndLoad() {
     state.measure()
 
-    if (!observedElement.value || !isElementVisible.value || !canLoad.value)
+    if (!observedElement.value || !isElementVisible.value || !canLoad.value || promise.value)
       return
 
     const { scrollHeight, clientHeight, scrollWidth, clientWidth } = observedElement.value as HTMLElement
@@ -94,23 +99,21 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
       : scrollWidth <= clientWidth
 
     if (state.arrivedState[direction] || isNarrower) {
-      if (!promise.value) {
-        promise.value = Promise.all([
-          onLoadMore(state),
-          new Promise(resolve => setTimeout(resolve, interval)),
-        ])
-          .finally(() => {
-            promise.value = null
-            nextTick(() => checkAndLoad())
-          })
-      }
+      promise.value = Promise.all([
+        onLoadMore(state),
+        new Promise(resolve => setTimeout(resolve, interval)),
+      ])
+        .finally(() => {
+          promise.value = null
+          nextTick(() => checkAndLoad())
+        })
     }
   }
 
   const stop = watch(
     () => [state.arrivedState[direction], isElementVisible.value, canLoad.value],
     checkAndLoad,
-    { immediate: true },
+    { immediate: true, flush: 'post' },
   )
 
   tryOnUnmounted(stop)

@@ -1,18 +1,21 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { readonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
+export interface UseNetworkOptions extends ConfigurableWindow {
+}
+
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
 
-export interface NetworkState {
-  isSupported: ComputedRef<boolean>
+export interface NetworkState extends Supportable {
   /**
    * If the user is currently connected.
    */
@@ -51,6 +54,8 @@ export interface NetworkState {
   type: Readonly<ShallowRef<NetworkType>>
 }
 
+export type UseNetworkReturn = Readonly<NetworkState>
+
 /**
  * Reactive Network status.
  *
@@ -59,7 +64,7 @@ export interface NetworkState {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkState> {
+export function useNetwork(options: UseNetworkOptions = {}): UseNetworkReturn {
   const { window = defaultWindow } = options
   const navigator = window?.navigator
   const isSupported = useSupported(() => navigator && 'connection' in navigator)
@@ -126,5 +131,3 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
     type: readonly(type),
   }
 }
-
-export type UseNetworkReturn = ReturnType<typeof useNetwork>
