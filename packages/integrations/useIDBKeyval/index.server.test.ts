@@ -12,4 +12,3 @@ describe('useIDBKeyval SSR', () => {
     expect(data.value).toEqual({ count: 42 })
   })
 })
-
