@@ -14,11 +14,11 @@ Debounce execution of a function.
 ```ts
 import { useDebounceFn, useEventListener } from '@vueuse/core'
 
-const debouncedFn = useDebounceFn(() => {
+const { execute } = useDebounceFn(() => {
   // do something
 }, 1000)
 
-useEventListener(window, 'resize', debouncedFn)
+useEventListener(window, 'resize', execute)
 ```
 
 You can also pass a 3rd parameter to this, with a maximum wait time, similar to [lodash debounce](https://lodash.com/docs/4.17.15#debounce)
@@ -28,11 +28,11 @@ import { useDebounceFn, useEventListener } from '@vueuse/core'
 
 // If no invokation after 5000ms due to repeated input,
 // the function will be called anyway.
-const debouncedFn = useDebounceFn(() => {
+const { execute } = useDebounceFn(() => {
   // do something
 }, 1000, { maxWait: 5000 })
 
-useEventListener(window, 'resize', debouncedFn)
+useEventListener(window, 'resize', execute)
 ```
 
 Optionally, you can get the return value of the function using promise operations.
@@ -40,15 +40,15 @@ Optionally, you can get the return value of the function using promise operation
 ```ts
 import { useDebounceFn } from '@vueuse/core'
 
-const debouncedRequest = useDebounceFn(() => 'response', 1000)
+const { execute } = useDebounceFn(() => 'response', 1000)
 
-debouncedRequest().then((value) => {
+execute().then((value) => {
   console.log(value) // 'response'
 })
 
 // or use async/await
 async function doRequest() {
-  const value = await debouncedRequest()
+  const value = await execute()
   console.log(value) // 'response'
 }
 ```
@@ -58,9 +58,9 @@ Since unhandled rejection error is quite annoying when developer doesn't need th
 ```ts
 import { useDebounceFn } from '@vueuse/core'
 
-const debouncedRequest = useDebounceFn(() => 'response', 1000, { rejectOnCancel: true })
+const { execute } = useDebounceFn(() => 'response', 1000, { rejectOnCancel: true })
 
-debouncedRequest()
+execute()
   .then((value) => {
     // do something
   })
@@ -69,8 +69,47 @@ debouncedRequest()
   })
 
 // calling it again will cancel the previous request and gets rejected
-setTimeout(debouncedRequest, 500)
+setTimeout(execute, 500)
 ```
+
+## Cancel
+
+You can cancel any pending execution by calling the `cancel` method.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const { execute, cancel } = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+execute()
+
+// Cancel the pending execution before it runs
+cancel()
+```
+
+This is useful when you need to prevent the debounced function from executing, for example, when a component is unmounted or when user input changes context.
+
+## Pending State
+
+You can check if there's a pending execution using the `pending` ref.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const { execute, pending } = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+execute()
+console.log(pending.value) // true
+
+// After debounce time elapses or cancel is called
+console.log(pending.value) // false
+```
+
+This is useful for showing loading indicators or disabling UI elements while waiting for the debounced function to execute.
 
 ## Recommended Reading
 
