@@ -28,7 +28,7 @@ export interface UseRafFnOptions extends ConfigurableWindow {
    * The maximum frame per second to execute the function.
    * Set to `null` to disable the limit.
    *
-   * @default undefined
+   * @default null
    */
   fpsLimit?: MaybeRefOrGetter<number | null>
   /**
@@ -49,7 +49,7 @@ export interface UseRafFnOptions extends ConfigurableWindow {
 export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
-    fpsLimit = undefined,
+    fpsLimit = null,
     window = defaultWindow,
     once = false,
   } = options
