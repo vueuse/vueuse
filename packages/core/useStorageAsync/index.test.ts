@@ -66,16 +66,12 @@ describe('useStorageAsync', () => {
   it('onReadyByPromise', async () => {
     localStorage.setItem(KEY2, 'AnotherValue')
 
-    const storage = useStorageAsync(
+    const storage = await useStorageAsync(
       KEY2,
       '',
       new AsyncStubStorage(),
     )
 
-    expect(storage.value).toBe('')
-
-    storage.then((result) => {
-      expect(result.value).toBe('AnotherValue')
-    })
+    expect(storage.value).toBe('AnotherValue')
   })
 })
