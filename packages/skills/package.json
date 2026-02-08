@@ -2,6 +2,7 @@
   "name": "@vueuse/skills",
   "type": "module",
   "version": "14.2.0",
+  "description": "Agent Skills for VueUse",
   "author": "SerKo <https://github.com/serkodev>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
