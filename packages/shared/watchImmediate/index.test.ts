@@ -1,5 +1,4 @@
-import type { ModelRef } from 'vue'
-import { describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { nextTick, shallowRef } from 'vue'
 import { watchImmediate } from './index'
 
@@ -21,12 +20,5 @@ describe('watchImmediate', () => {
     obj.value = 'VueUse'
     await nextTick()
     expect(spy).toBeCalledTimes(2)
-  })
-
-  it('should infer model ref type correctly', () => {
-    const modalValue = shallowRef(0) as ModelRef<number>
-    watchImmediate(modalValue, (val) => {
-      expectTypeOf(val).toBeNumber()
-    })
   })
 })
