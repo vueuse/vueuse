@@ -682,6 +682,16 @@ importers:
         specifier: ^3.5.27
         version: 3.5.27(typescript@5.9.3)
 
+  packages/skills:
+    dependencies:
+      '@vueuse/metadata':
+        specifier: workspace:*
+        version: link:../metadata
+    devDependencies:
+      tsx:
+        specifier: catalog:dev
+        version: 4.21.0
+
 packages:
 
   '@aashutoshrathi/word-wrap@1.2.6':
@@ -5594,7 +5604,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
