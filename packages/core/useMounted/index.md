@@ -23,3 +23,18 @@ onMounted(() => {
   isMounted.value = true
 })
 ```
+
+### Awaitable
+
+The return value of `useMounted` is also a `PromiseLike`, so you can `await` it to wait until the component is mounted:
+
+```ts
+import { useMounted } from '@vueuse/core'
+
+const isMounted = useMounted()
+
+async function doSomething() {
+  await isMounted
+  // Component is now mounted, safe to access DOM etc.
+}
+```
