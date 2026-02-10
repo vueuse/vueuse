@@ -1,0 +1,36 @@
+{
+  "name": "@vueuse/skills",
+  "type": "module",
+  "version": "14.2.0",
+  "description": "Agent Skills for VueUse",
+  "author": "SerKo <https://github.com/serkodev>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/vueuse/vueuse#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vueuse/vueuse.git",
+    "directory": "packages/skills"
+  },
+  "bugs": {
+    "url": "https://github.com/vueuse/vueuse/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue-use",
+    "utils",
+    "skills"
+  ],
+  "files": [
+    "skills"
+  ],
+  "scripts": {
+    "build": "tsx build.ts"
+  },
+  "dependencies": {
+    "@vueuse/metadata": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "catalog:dev"
+  }
+}
