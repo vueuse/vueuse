@@ -1,5 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, toValue, watch } from 'vue'
@@ -8,6 +9,11 @@ import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
 export interface UseMutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
+
+export interface UseMutationObserverReturn extends Supportable {
+  stop: () => void
+  takeRecords: () => MutationRecord[] | undefined
+}
 
 /**
  * Watch for changes being made to the DOM tree.
@@ -22,7 +28,7 @@ export function useMutationObserver(
   target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
   callback: MutationCallback,
   options: UseMutationObserverOptions = {},
-) {
+): UseMutationObserverReturn {
   const { window = defaultWindow, ...mutationOptions } = options
   let observer: MutationObserver | undefined
   const isSupported = useSupported(() => window && 'MutationObserver' in window)
@@ -72,5 +78,3 @@ export function useMutationObserver(
     takeRecords,
   }
 }
-
-export type UseMutationObserverReturn = ReturnType<typeof useMutationObserver>

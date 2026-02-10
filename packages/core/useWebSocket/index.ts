@@ -1,5 +1,6 @@
-import type { Fn, TimerHandle } from '@vueuse/shared'
+import type { AnyFn, Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
@@ -20,7 +21,7 @@ export interface UseWebSocketOptions {
    *
    * @default false
    */
-  heartbeat?: boolean | {
+  heartbeat?: boolean | ConfigurableScheduler & {
     /**
      * Message for the heartbeat
      *
@@ -36,6 +37,7 @@ export interface UseWebSocketOptions {
     /**
      * Interval, in milliseconds
      *
+     * @deprecated Please use `scheduler` option instead
      * @default 1000
      */
     interval?: MaybeRefOrGetter<number>
@@ -66,6 +68,8 @@ export interface UseWebSocketOptions {
     /**
      * Delay before each reconnect attempt, in milliseconds,
      * or a function which returns the delay before the next attempt
+     *
+     * Or you can pass a function to calculate the delay based on the number of retries.
      *
      * @default 1000
      */
@@ -148,6 +152,18 @@ function resolveNestedOptions<T>(options: T | true): T {
   if (options === true)
     return {} as T
   return options
+}
+
+function getDefaultScheduler(options: Extract<UseWebSocketOptions['heartbeat'], { interval?: number }>) {
+  if ('interval' in options) {
+    const {
+      interval = 1000,
+    } = options
+
+    return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate: false })
+  }
+
+  return (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false })
 }
 
 /**
@@ -299,24 +315,20 @@ export function useWebSocket<Data = any>(
   if (options.heartbeat) {
     const {
       message = DEFAULT_PING_MESSAGE,
-      interval = 1000,
+      scheduler = getDefaultScheduler(resolveNestedOptions(options.heartbeat)),
       pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
-    const { pause, resume } = useIntervalFn(
-      () => {
-        send(toValue(message), false)
-        if (pongTimeoutWait != null)
-          return
-        pongTimeoutWait = setTimeout(() => {
-          // auto-reconnect will be trigger with ws.onclose()
-          close()
-          explicitlyClosed = false
-        }, pongTimeout)
-      },
-      interval,
-      { immediate: false },
-    )
+    const { pause, resume } = scheduler(() => {
+      send(toValue(message), false)
+      if (pongTimeoutWait != null)
+        return
+      pongTimeoutWait = setTimeout(() => {
+        // auto-reconnect will be trigger with ws.onclose()
+        close()
+        explicitlyClosed = false
+      }, pongTimeout)
+    })
 
     heartbeatPause = pause
     heartbeatResume = resume

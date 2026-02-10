@@ -1,69 +1,76 @@
+shamefullyHoist: true
+shellEmulator: true
+trustPolicy: no-downgrade
+
 packages:
   - packages/*
   - '!playgrounds'
 
+patchedDependencies:
+  google-font-installer@1.2.0: patches/google-font-installer@1.2.0.patch
+
 catalogs:
   dev:
-    '@antfu/eslint-config': ^5.4.1
-    '@antfu/ni': ^26.0.1
-    '@iconify/json': ^2.2.387
-    '@vitejs/plugin-vue': ^6.0.1
-    '@vue/compiler-sfc': ^3.5.21
-    bumpp: ^10.2.3
+    '@antfu/eslint-config': ^7.2.0
+    '@antfu/ni': ^28.2.0
+    '@iconify/json': ^2.2.433
+    '@vitejs/plugin-vue': ^6.0.3
+    '@vue/compiler-sfc': ^3.5.27
+    bumpp: ^10.4.0
+    chokidar: ^5.0.0
     consola: ^3.4.2
-    eslint: ^9.36.0
+    eslint: ^9.39.2
     eslint-factory: ^0.1.2
-    eslint-plugin-format: ^1.0.2
-    eslint-plugin-unimport: ^0.1.2
+    eslint-plugin-format: ^1.3.1
+    eslint-plugin-unimport: ^1.0.0
     export-size: ^0.7.0
-    jsdom: ^27.0.0
-    lint-staged: ^16.2.0
-    nuxt: ^4.1.2
-    ofetch: ^1.4.1
-    pnpm: ^10.17.1
+    lint-staged: ^16.2.7
+    nuxt: ^4.3.0
+    ofetch: ^1.5.1
+    pnpm: ^10.28.2
     postcss: ^8.5.6
     postcss-nested: ^7.0.2
-    prettier: ^3.6.2
-    rolldown-vite: ^7.1.12
-    sharp: ^0.34.4
-    simple-git: ^3.28.0
+    prettier: ^3.8.1
+    semver: ^7.7.3
+    sharp: ^0.34.5
+    simple-git: ^3.30.0
     simple-git-hooks: ^2.13.1
-    taze: ^19.7.0
+    taze: ^19.9.2
     tinyglobby: ^0.2.15
-    tsdown: ^0.15.4
-    tsx: ^4.20.5
-    turbo: ^2.5.8
-    typescript: ^5.9.2
-    unimport: ^5.3.0
-    unocss: ^66.5.2
-    vite: ^7.1.7
+    tsdown: ^0.15.12
+    tsx: ^4.21.0
+    turbo: ^2.8.1
+    typescript: ^5.9.3
+    unimport: ^5.6.0
+    unocss: ^66.6.0
+    vite: ^8.0.0-beta.11
     vite-plugin-inspect: ^11.3.3
-    vue: ^3.5.21
-    vue-tsc: ^3.0.8
+    vue: ^3.5.27
+    vue-tsc: ^3.2.4
   docs:
-    '@shikijs/vitepress-twoslash': ^3.13.0
-    '@vite-pwa/vitepress': ^1.0.0
-    '@vue/repl': ^4.7.0
+    '@shikijs/vitepress-twoslash': ^3.22.0
+    '@vite-pwa/vitepress': ^1.1.0
+    '@vue/repl': ^4.7.1
     google-font-installer: ^1.2.0
     gray-matter: ^4.0.3
     markdown-table: ^3.0.4
     md5: ^2.3.0
-    remove-markdown: ^0.6.2
-    unplugin-icons: ^22.3.0
-    unplugin-vue-components: ^29.1.0
-    vite-plugin-pwa: ^1.0.3
-    vitepress: ^2.0.0-alpha.12
-    yaml: ^2.8.1
+    remove-markdown: ^0.6.3
+    unplugin-icons: ^23.0.1
+    unplugin-vue-components: ^31.0.0
+    vite-plugin-pwa: ^1.2.0
+    vitepress: ^2.0.0-alpha.15
+    yaml: ^2.8.2
   integrations:
-    '@nuxt/kit': ^4.1.2
-    '@nuxt/schema': ^4.1.2
+    '@nuxt/kit': ^4.3.0
+    '@nuxt/schema': ^4.3.0
     async-validator: ^4.2.5
-    axios: ^1.12.2
+    axios: ^1.13.4
     change-case: ^5.4.4
-    drauu: ^0.4.3
+    drauu: ^1.0.0
     electron: ^13.1.0
-    firebase: ^12.3.0
-    focus-trap: ^7.6.5
+    firebase: ^12.8.0
+    focus-trap: ^8.0.0
     fuse.js: ^7.1.0
     idb-keyval: ^6.2.2
     jwt-decode: ^4.0.0
@@ -73,34 +80,33 @@ catalogs:
     rxjs: ^6.6.7
     sortablejs: ^1.15.6
     universal-cookie: ^8.0.1
-    vue-router: ^4.5.1
+    vue-router: ^5.0.1
   test:
     '@arethetypeswrong/cli': ^0.18.2
-    '@vitest/browser': ^3.2.4
-    '@vitest/coverage-v8': ^3.2.4
-    '@vitest/ui': ^3.2.4
+    '@vitest/browser-playwright': ^4.0.18
+    '@vitest/coverage-v8': ^4.0.18
+    '@vitest/ui': ^4.0.18
     '@vue/test-utils': ^2.4.6
-    fake-indexeddb: ^6.2.2
-    msw: ^2.3.0
+    fake-indexeddb: ^6.2.5
+    jsdom: ^27.4.0
+    msw: ^2.12.7
     playwright: 1.49.0
-    vitest: ^3.2.4
-    vitest-browser-vue: ^1.1.0
-    vitest-package-exports: ^0.1.1
+    vitest: ^4.0.18
+    vitest-browser-vue: ^2.0.2
+    vitest-package-exports: ^1.1.2
   types:
     '@type-challenges/utils': ^0.1.1
-    '@types/md5': ^2.3.5
-    '@types/node': ^24.5.2
+    '@types/md5': ^2.3.6
+    '@types/node': ^25.1.0
     '@types/nprogress': ^0.2.3
-    '@types/qrcode': ^1.5.5
+    '@types/qrcode': ^1.5.6
     '@types/remove-markdown': ^0.3.4
     '@types/semver': ^7.7.1
-    '@types/sortablejs': ^1.15.8
+    '@types/sortablejs': ^1.15.9
     '@types/web-bluetooth': ^0.0.21
 
 neverBuiltDependencies:
   - electron
 
-shamefullyHoist: true
-shellEmulator: true
 sideEffectsCache: false
 strictPeerDependencies: false

@@ -1,6 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { noop, notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
@@ -24,7 +25,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   /**
    * A string which specifies a set of offsets to add to the root's bounding_box when calculating intersections.
    */
-  rootMargin?: string
+  rootMargin?: MaybeRefOrGetter<string>
 
   /**
    * Either a single number or an array of numbers between 0.0 and 1.
@@ -33,8 +34,7 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   threshold?: number | number[]
 }
 
-export interface UseIntersectionObserverReturn extends Pausable {
-  isSupported: ComputedRef<boolean>
+export interface UseIntersectionObserverReturn extends Supportable, Pausable {
   stop: () => void
 }
 
@@ -53,7 +53,7 @@ export function useIntersectionObserver(
 ): UseIntersectionObserverReturn {
   const {
     root,
-    rootMargin = '0px',
+    rootMargin,
     threshold = 0,
     window = defaultWindow,
     immediate = true,
@@ -70,8 +70,8 @@ export function useIntersectionObserver(
 
   const stopWatch = isSupported.value
     ? watch(
-        () => [targets.value, unrefElement(root as MaybeComputedElementRef), isActive.value] as const,
-        ([targets, root]) => {
+        () => [targets.value, unrefElement(root as MaybeComputedElementRef), toValue(rootMargin), isActive.value] as const,
+        ([targets, root, rootMargin]) => {
           cleanup()
           if (!isActive.value)
             return

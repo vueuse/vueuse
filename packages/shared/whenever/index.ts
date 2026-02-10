@@ -1,7 +1,9 @@
-import type { WatchCallback, WatchOptions, WatchSource } from 'vue'
+import type { WatchCallback, WatchHandle, WatchOptions, WatchSource } from 'vue'
 import { nextTick, watch } from 'vue'
 
-export interface WheneverOptions extends WatchOptions {
+type Truthy<T> = T extends false | null | undefined ? never : T
+
+export interface WheneverOptions<Immediate = boolean> extends WatchOptions<Immediate> {
   /**
    * Only trigger once when the condition is met
    *
@@ -17,14 +19,16 @@ export interface WheneverOptions extends WatchOptions {
  *
  * @see https://vueuse.org/whenever
  */
-export function whenever<T>(source: WatchSource<T | false | null | undefined>, cb: WatchCallback<T>, options?: WheneverOptions) {
+export function whenever<T>(source: WatchSource<T>, cb: WatchCallback<Truthy<T>, T | undefined>, options?: WheneverOptions<true>): WatchHandle
+export function whenever<T>(source: WatchSource<T>, cb: WatchCallback<Truthy<T>, T>, options?: WheneverOptions<false>): WatchHandle
+export function whenever<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<Truthy<T>, T | undefined>, options?: WheneverOptions<Immediate>) {
   const stop = watch(
     source,
     (v, ov, onInvalidate) => {
       if (v) {
         if (options?.once)
           nextTick(() => stop())
-        cb(v, ov, onInvalidate)
+        cb(v as Truthy<T>, ov, onInvalidate)
       }
     },
     {

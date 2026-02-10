@@ -26,11 +26,11 @@ export interface UseRafFnOptions extends ConfigurableWindow {
   immediate?: boolean
   /**
    * The maximum frame per second to execute the function.
-   * Set to `undefined` to disable the limit.
+   * Set to `null` to disable the limit.
    *
-   * @default undefined
+   * @default null
    */
-  fpsLimit?: MaybeRefOrGetter<number>
+  fpsLimit?: MaybeRefOrGetter<number | null>
   /**
    * After the requestAnimationFrame loop executed once, it will be automatically stopped.
    *
@@ -49,14 +49,15 @@ export interface UseRafFnOptions extends ConfigurableWindow {
 export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options: UseRafFnOptions = {}): Pausable {
   const {
     immediate = true,
-    fpsLimit = undefined,
+    fpsLimit = null,
     window = defaultWindow,
     once = false,
   } = options
 
   const isActive = shallowRef(false)
   const intervalLimit = computed(() => {
-    return fpsLimit ? 1000 / toValue(fpsLimit) : null
+    const limit = toValue(fpsLimit)
+    return limit ? 1000 / limit : null
   })
   let previousFrameTimestamp = 0
   let rafId: null | number = null

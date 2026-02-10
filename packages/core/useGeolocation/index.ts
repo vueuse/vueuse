@@ -1,6 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
+import type { Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
@@ -10,13 +12,21 @@ export interface UseGeolocationOptions extends Partial<PositionOptions>, Configu
   immediate?: boolean
 }
 
+export interface UseGeolocationReturn extends Supportable {
+  coords: Ref<Omit<GeolocationPosition['coords'], 'toJSON'>>
+  locatedAt: ShallowRef<number | null>
+  error: ShallowRef<GeolocationPositionError | null>
+  resume: () => void
+  pause: () => void
+}
+
 /**
  * Reactive Geolocation API.
  *
  * @see https://vueuse.org/useGeolocation
  * @param options
  */
-export function useGeolocation(options: UseGeolocationOptions = {}) {
+export function useGeolocation(options: UseGeolocationOptions = {}): UseGeolocationReturn {
   const {
     enableHighAccuracy = true,
     maximumAge = 30000,
@@ -82,5 +92,3 @@ export function useGeolocation(options: UseGeolocationOptions = {}) {
     pause,
   }
 }
-
-export type UseGeolocationReturn = ReturnType<typeof useGeolocation>

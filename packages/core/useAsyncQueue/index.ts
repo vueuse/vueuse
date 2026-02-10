@@ -127,6 +127,8 @@ export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
 
         updateResult(promiseState.rejected, e)
         onError()
+        if (activeIndex.value === tasks.length - 1)
+          onFinished()
         return e
       })
   }, Promise.resolve())

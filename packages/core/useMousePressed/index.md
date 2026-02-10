@@ -30,7 +30,7 @@ import { useMousePressed } from '@vueuse/core'
 // ---cut---
 import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLDivElement>('el')
+const el = useTemplateRef('el')
 
 const { pressed } = useMousePressed({ target: el })
 </script>
