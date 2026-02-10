@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/metadata",
   "type": "module",
-  "version": "14.2.0",
+  "version": "14.2.1",
   "description": "Metadata for VueUse functions",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
