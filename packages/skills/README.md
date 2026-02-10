@@ -30,9 +30,16 @@ First, add a `prepare` script to your `package.json` so the skills are symlinked
 Then, install both `skills-npm` and `@vueuse/skills`:
 
 ```bash
-npm i -D skills-npm
-npm i -D @vueuse/skills
+npm i -D @vueuse/skills skills-npm
 ```
+
+## Install via [skills](https://github.com/vercel-labs/skills)
+
+```bash
+npx skills add vueuse/vueuse
+```
+
+Install skills via [skills](https://github.com/vercel-labs/skills) you need to be careful about the potential version mismatch between the skill and your local VueUse version.
 
 ## Example Usage
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as metadata from '@vueuse/metadata'
@@ -13,12 +13,13 @@ interface FunctionReference {
   reference: string
 }
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const r = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
-const SKILL_DIR = path.join(__dirname, './skills/vueuse-functions')
+const SKILL_DIR = r('./skills/vueuse-functions')
+const SKILL_COPY_DIR = r('../../skills/vueuse-functions')
 const SKILL_REFERENCE_DIR = './references'
-const SKILLS_TEMPLATE_PATH = path.join(__dirname, './templates/vueuse-functions-skills.md')
-const VUEUSE_ROOT = path.join(__dirname, '../..')
+const SKILLS_TEMPLATE_PATH = r('./templates/vueuse-functions-skills.md')
+const VUEUSE_ROOT = r('../..')
 
 const EXPLICIT_ONLY_FUNCTIONS = new Set([
   'get',
@@ -38,6 +39,10 @@ const EXPLICIT_ONLY_FUNCTIONS = new Set([
   writeFileSync(outputPath, templateContent)
 
   console.log(`Generated skills documentation at: ${outputPath}`)
+
+  // Copy to project root skills directory
+  cpSync(SKILL_DIR, SKILL_COPY_DIR, { recursive: true, force: true })
+  console.log(`Copied skills to: ${SKILL_COPY_DIR}`)
 })()
 
 // Utils
@@ -47,13 +52,13 @@ async function prepareFunctionReferences(outDir: string, referenceDir = SKILL_RE
 
   const categories: Record<string, FunctionReference[]> = {}
 
-  for (const catagory of metadata.categoryNames) {
-    if (catagory.startsWith('_'))
+  for (const category of metadata.categoryNames) {
+    if (category.startsWith('_'))
       continue
 
     const refs: FunctionReference[] = []
 
-    const functions = metadata.functions.filter(i => i.category === catagory && !i.internal)
+    const functions = metadata.functions.filter(i => i.category === category && !i.internal)
     for (const fn of functions) {
       const description = toTitleCase(fn.description?.replace(/\|/g, '\\|') ?? '')
 
@@ -74,7 +79,7 @@ async function prepareFunctionReferences(outDir: string, referenceDir = SKILL_RE
       }
     }
 
-    categories[catagory] = refs
+    categories[category] = refs
   }
   return categories
 }
