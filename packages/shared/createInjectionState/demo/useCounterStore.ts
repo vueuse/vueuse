@@ -1,9 +1,9 @@
-import { computed, ref as deepRef, shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { createInjectionState } from '../../createInjectionState'
 
 const [useProvideCounterStore, useCounterStore] = createInjectionState((initialValue: number) => {
   // state
-  const count = deepRef(initialValue)
+  const count = shallowRef(initialValue)
 
   // getters
   const double = computed(() => count.value * 2)

@@ -1,8 +1,8 @@
 import type { AnyFn, Fn, TimerHandle } from '@vueuse/shared'
-import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableScheduler } from '../_configurable'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
+import { shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -114,7 +114,7 @@ export interface UseWebSocketReturn<T> {
    * Reference to the latest data received via the websocket,
    * can be watched to respond to incoming messages
    */
-  data: Ref<T | null>
+  data: ShallowRef<T | null>
 
   /**
    * The current websocket status, can be only one of:
@@ -144,7 +144,7 @@ export interface UseWebSocketReturn<T> {
   /**
    * Reference to the WebSocket instance.
    */
-  ws: Ref<WebSocket | undefined>
+  ws: ShallowRef<WebSocket | undefined>
 }
 
 function resolveNestedOptions<T>(options: T | true): T {
@@ -186,9 +186,9 @@ export function useWebSocket<Data = any>(
     protocols = [],
   } = options
 
-  const data: Ref<Data | null> = deepRef(null)
+  const data = shallowRef<Data | null>(null)
   const status = shallowRef<WebSocketStatus>('CLOSED')
-  const wsRef = deepRef<WebSocket | undefined>()
+  const wsRef = shallowRef<WebSocket | undefined>()
   const urlRef = toRef(url)
 
   let heartbeatPause: Fn | undefined

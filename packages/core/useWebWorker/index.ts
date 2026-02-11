@@ -1,15 +1,15 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { Ref, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 type PostMessage = typeof Worker.prototype['postMessage']
 
 export interface UseWebWorkerReturn<Data = any> {
-  data: Ref<Data>
+  data: ShallowRef<Data>
   post: PostMessage
   terminate: () => void
   worker: ShallowRef<Worker | undefined>
@@ -49,7 +49,7 @@ export function useWebWorker<Data = any>(
     window = defaultWindow,
   } = options ?? {}
 
-  const data: Ref<any> = deepRef(null)
+  const data = shallowRef<any>(null)
   const worker = shallowRef<Worker>()
 
   const post: PostMessage = (...args) => {
