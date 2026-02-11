@@ -217,7 +217,7 @@ export function useScroll(
     directions.bottom = false
     onStop(e)
   }
-  const onScrollEndDebounced = useDebounceFn(onScrollEnd, throttle + idle)
+  const { execute: onScrollEndDebounced } = useDebounceFn(onScrollEnd, throttle + idle)
 
   const setArrivedState = (target: HTMLElement | SVGElement | Window | Document | null | undefined) => {
     if (!window)
