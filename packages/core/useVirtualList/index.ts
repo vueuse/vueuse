@@ -1,5 +1,5 @@
 import type { ComputedRef, MaybeRef, Ref, ShallowRef, StyleValue } from 'vue'
-import { computed, ref as deepRef, shallowRef, toValue, watch } from 'vue'
+import { computed, ref as deepRef, shallowRef, watch } from 'vue'
 import { useElementSize } from '../useElementSize'
 
 type UseVirtualListItemSize = number | ((index: number) => number)
@@ -200,8 +200,8 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
   }
 }
 
-function useWatchForSizes<T>(size: UseVirtualElementSizes, list: MaybeRef<readonly T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
-  watch([size.width, size.height, () => toValue(list), containerRef], () => {
+function useWatchForSizes<T>(size: UseVirtualElementSizes, listRef: Ref<readonly T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
+  watch([size.width, size.height, listRef, containerRef], () => {
     calculateRange()
   })
 }
@@ -248,7 +248,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
 
   const totalWidth = createComputedTotalSize(itemWidth, source)
 
-  useWatchForSizes(size, list, containerRef, calculateRange)
+  useWatchForSizes(size, source, containerRef, calculateRange)
 
   const scrollTo = createScrollTo('horizontal', calculateRange, getDistanceLeft, containerRef)
 
@@ -294,7 +294,7 @@ function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list:
 
   const totalHeight = createComputedTotalSize(itemHeight, source)
 
-  useWatchForSizes(size, list, containerRef, calculateRange)
+  useWatchForSizes(size, source, containerRef, calculateRange)
 
   const scrollTo = createScrollTo('vertical', calculateRange, getDistanceTop, containerRef)
 
