@@ -127,7 +127,7 @@ const refHistory = useRefHistory(target, {
 refHistory.clear() // explicitly clear all the history
 ```
 
-### History Flush Timing
+### History WatchOptionFlush Timing
 
 From [Vue's documentation](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing): Vue's reactivity system buffers invalidated effects and flush them asynchronously to avoid unnecessary duplicate invocation when there are many state mutations happening in the same "tick".
 

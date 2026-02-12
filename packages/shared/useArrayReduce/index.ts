@@ -3,6 +3,8 @@ import { computed, toValue } from 'vue'
 
 export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, currentIndex: number) => R
 
+export type UseArrayReduceReturn<T = any> = ComputedRef<T>
+
 /**
  * Reactive `Array.reduce`
  *
@@ -17,7 +19,7 @@ export type UseArrayReducer<PV, CV, R> = (previousValue: PV, currentValue: CV, c
 export function useArrayReduce<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: UseArrayReducer<T, T, T>,
-): ComputedRef<T>
+): UseArrayReduceReturn<T>
 
 /**
  * Reactive `Array.reduce`
@@ -35,7 +37,7 @@ export function useArrayReduce<T, U>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: UseArrayReducer<U, T, U>,
   initialValue: MaybeRefOrGetter<U>,
-): ComputedRef<U>
+): UseArrayReduceReturn<U>
 
 /**
  * Reactive `Array.reduce`
@@ -53,7 +55,7 @@ export function useArrayReduce<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: ((...p: any[]) => any),
   ...args: any[]
-): ComputedRef<T> {
+): UseArrayReduceReturn<T> {
   const reduceCallback = (sum: any, value: any, index: number) => reducer(toValue(sum), toValue(value), index)
 
   return computed(() => {

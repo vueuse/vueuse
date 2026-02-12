@@ -37,7 +37,7 @@ export function useWebWorker<T = any>(
  * @see https://vueuse.org/useWebWorker
  */
 export function useWebWorker<T = any>(
-  worker: Worker | WorkerFn
+  worker: Worker | WorkerFn,
 ): UseWebWorkerReturn<T>
 
 export function useWebWorker<Data = any>(

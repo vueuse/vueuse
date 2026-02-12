@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/router",
   "type": "module",
-  "version": "14.0.0-alpha.1",
+  "version": "14.2.1",
   "description": "Utilities for vue-router",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -41,7 +41,7 @@
   },
   "peerDependencies": {
     "vue": "^3.5.0",
-    "vue-router": "^4.0.0"
+    "vue-router": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*"

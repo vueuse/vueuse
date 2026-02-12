@@ -1,9 +1,9 @@
 import type { RenderableComponent } from '@vueuse/core'
-import type { UseSortableOptions, UseSortableReturn } from '@vueuse/integrations/useSortable'
 import type { Reactive, SlotsType } from 'vue'
+import type { UseSortableOptions, UseSortableReturn } from './index'
 import { useVModel } from '@vueuse/core'
-import { useSortable } from '@vueuse/integrations/useSortable'
 import { defineComponent, h, reactive, shallowRef } from 'vue'
+import { useSortable } from './index'
 
 export interface UseSortableProps extends RenderableComponent {
   modelValue: any[]

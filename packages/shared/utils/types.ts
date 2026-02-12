@@ -1,6 +1,12 @@
 import type { ComputedRef, getCurrentInstance, MaybeRef, Ref, ShallowRef, WatchOptions, WatchSource } from 'vue'
 
 /**
+ * Keep export for compatibility
+ * @deprecated Use `import type { MultiWatchSources } from 'vue'` instead
+ */
+export type { MultiWatchSources } from 'vue'
+
+/**
  * Void function
  */
 export type Fn = () => void
@@ -13,10 +19,7 @@ export type AnyFn = (...args: any[]) => any
 /**
  * A ref that allow to set null or undefined
  */
-export type RemovableRef<T> = Omit<Ref<T>, 'value'> & {
-  get value(): T
-  set value(value: T | null | undefined)
-}
+export type RemovableRef<T> = Ref<T, T | null | undefined>
 
 /**
  * Maybe it's a computed ref, or a readonly value, or a getter function
@@ -100,13 +103,15 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   start: (...args: StartFnArgs) => void
 }
 
+export type WatchOptionFlush = WatchOptions['flush']
+
 export interface ConfigurableFlush {
   /**
    * Timing for monitoring changes, refer to WatchOptions for more details
    *
    * @default 'pre'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
 }
 
 export interface ConfigurableFlushSync {
@@ -116,11 +121,8 @@ export interface ConfigurableFlushSync {
    *
    * @default 'sync'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
 }
-
-// Internal Types
-export type MultiWatchSources = (WatchSource<unknown> | object)[]
 
 export type MapSources<T> = {
   [K in keyof T]: T[K] extends WatchSource<infer V> ? V : never;

@@ -1,9 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { useTimeoutFn } from '@vueuse/shared'
-import { computed, shallowRef, toValue } from 'vue'
+import { computed, readonly, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
@@ -37,10 +38,9 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   legacy?: boolean
 }
 
-export interface UseClipboardReturn<Optional> {
-  isSupported: ComputedRef<boolean>
-  text: ComputedRef<string>
-  copied: ComputedRef<boolean>
+export interface UseClipboardReturn<Optional> extends Supportable {
+  text: Readonly<ShallowRef<string>>
+  copied: Readonly<ShallowRef<boolean>>
   copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
 }
 
@@ -111,9 +111,10 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   function legacyCopy(value: string) {
     const ta = document.createElement('textarea')
-    ta.value = value ?? ''
+    ta.value = value
     ta.style.position = 'absolute'
     ta.style.opacity = '0'
+    ta.setAttribute('readonly', '')
     document.body.appendChild(ta)
     ta.select()
     document.execCommand('copy')
@@ -130,8 +131,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
   return {
     isSupported,
-    text: text as ComputedRef<string>,
-    copied: copied as ComputedRef<boolean>,
+    text: readonly(text),
+    copied: readonly(copied),
     copy,
   }
 }

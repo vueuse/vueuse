@@ -40,6 +40,6 @@ export default {
 if (typeof window !== 'undefined' && window.self === window.top) {
   const script = document.createElement('script')
   script.async = true
-  script.src = 'https://vueschool.io/banner.js?affiliate=vueuse&type=bottom'
+  script.src = 'https://media.bitterbrains.com/main.js?from=vueuse&type=bottom'
   document.head.appendChild(script)
 }

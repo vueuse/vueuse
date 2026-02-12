@@ -6,6 +6,7 @@ describe('useTimeout', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
+
   it('works', () => {
     const ready = useTimeout(10)
     expect(ready.value).toEqual(false)

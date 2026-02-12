@@ -11,9 +11,9 @@ const { videoInputs: cameras } = useDevicesList({
   },
 })
 
-const video = useTemplateRef<HTMLVideoElement>('video')
+const video = useTemplateRef('video')
 const { stream, enabled } = useUserMedia({
-  constraints: reactive({ video: { deviceId: currentCamera } }),
+  constraints: reactive({ video: { deviceId: { exact: currentCamera } } }),
 })
 
 watchEffect(() => {

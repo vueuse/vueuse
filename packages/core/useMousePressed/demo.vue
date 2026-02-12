@@ -15,7 +15,7 @@ const stringify = reactify(
   }),
 )
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const [withTarget, toggle] = useToggle()
 const target = computed<HTMLElement | null>(() =>
   (withTarget.value ? el.value : window) as HTMLElement)

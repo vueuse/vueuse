@@ -70,6 +70,37 @@ const server = setupServer(
   http.get(`${baseUrl}/test`, ({ request }) => {
     return commonTransformers(request)
   }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/1', () => {
+    return HttpResponse.json({
+      userId: 1,
+      id: 1,
+      title: 'delectus aut autem',
+      completed: false,
+    })
+  }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/2', () => {
+    return HttpResponse.json({
+      userId: 2,
+      id: 2,
+      title: 'quis ut nam facilis et officia qui',
+      completed: false,
+    })
+  }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/3', () => {
+    return HttpResponse.json({
+      userId: 3,
+      id: 3,
+      title: 'fugiat veniam minus',
+      completed: false,
+    })
+  }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/1/wrong-url', () => {
+    return HttpResponse.json({}, { status: 404 })
+  }),
 )
 
 beforeAll(() => server.listen())
