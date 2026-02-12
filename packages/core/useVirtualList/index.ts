@@ -234,7 +234,7 @@ function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () =
     if (!containerRef.value)
       return
 
-    options = Object.assign(defaultScrollToOptions, options)
+    options = {...defaultScrollToOptions, ...options}
     let offset = 0
     const axisToCheck = options[type === 'horizontal' ? 'inline' : 'block']
     if (axisToCheck) {
