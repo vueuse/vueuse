@@ -30,8 +30,9 @@ export interface OnLongPressOptions {
    * @param duration how long the element was pressed in ms
    * @param distance distance from the pointerdown position
    * @param isLongPress whether the action was a long press or not
+   * @param pointerEvent the native {@link PointerEvent} triggered by the browser
    */
-  onMouseUp?: (duration: number, distance: number, isLongPress: boolean) => void
+  onMouseUp?: (duration: number, distance: number, isLongPress: boolean, pointerEvent: PointerEvent) => void
 }
 
 export interface OnLongPressModifiers {
@@ -95,7 +96,7 @@ export function onLongPress(
     const dx = ev.x - _posStart.x
     const dy = ev.y - _posStart.y
     const distance = Math.sqrt(dx * dx + dy * dy)
-    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed)
+    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed, ev)
   }
 
   function onDown(ev: PointerEvent) {

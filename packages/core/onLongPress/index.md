@@ -85,8 +85,8 @@ You can provide an `onMouseUp` callback to be notified when the pointer is relea
 import { onLongPress } from '@vueuse/core'
 
 onLongPress(target, handler, {
-  onMouseUp(duration, distance, isLongPress) {
-    console.log(`Held for ${duration}ms, moved ${distance}px, long press: ${isLongPress}`)
+  onMouseUp(duration, distance, isLongPress, pointerEvent) {
+    console.log(`Held for ${duration}ms, moved ${distance}px, long press: ${isLongPress}, x: ${pointerEvent.clientX}`)
   },
 })
 ```

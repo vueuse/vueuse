@@ -163,7 +163,7 @@ describe('onLongPress', () => {
     pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false, expect.any(PointerEvent))
     expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250 - 2)
 
     // wait for 500ms after pointer up
@@ -182,7 +182,7 @@ describe('onLongPress', () => {
     pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(2)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true, expect.any(PointerEvent))
     expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500 - 2)
   }
 
