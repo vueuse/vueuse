@@ -198,7 +198,8 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
           prop = aliasMap[prop]
         // create new tracking
         if (!(prop in refs)) {
-          if (/[+_-]/.test(prop)) {
+          // Single characters are always literal keys,
+          if (prop.length > 1 && /[+_-]/.test(prop)) { 
             const keys = prop.split(/[+_-]/g).map(i => i.trim())
             refs[prop] = computed(() => keys.map(key => toValue(proxy[key])).every(Boolean))
           }
