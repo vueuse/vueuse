@@ -3,7 +3,7 @@
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
@@ -52,17 +52,17 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     window = defaultWindow,
   } = options
 
-  const worker = deepRef<(Worker & { _url?: string }) | undefined>()
+  let worker: (Worker & { _url?: string }) | undefined
   const workerStatus = shallowRef<WebWorkerStatus>('PENDING')
-  const promise = deepRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
+  const promise = shallowRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
   const timeoutId = shallowRef<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
-    if (worker.value && worker.value._url && window) {
-      worker.value.terminate()
-      URL.revokeObjectURL(worker.value._url)
+    if (worker && worker._url && window) {
+      worker.terminate()
+      URL.revokeObjectURL(worker._url)
       promise.value = {}
-      worker.value = undefined
+      worker = undefined
       window.clearTimeout(timeoutId.value)
       workerStatus.value = status
     }
@@ -114,7 +114,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
       resolve,
       reject,
     }
-    worker.value?.postMessage([[...fnArgs]])
+    worker?.postMessage([[...fnArgs]])
 
     workerStatus.value = 'RUNNING'
   })
@@ -128,7 +128,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
       return Promise.reject()
     }
 
-    worker.value = generateWorker()
+    worker = generateWorker()
     return callWorker(...fnArgs)
   }
 
