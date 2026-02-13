@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify, TimerHandle } from './types'
-import { isRef, readonly, toValue } from 'vue'
+import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify, PromisifyFn, TimerHandle } from './types'
+import { isRef, readonly, shallowReactive, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'
 
@@ -16,6 +16,12 @@ export type EventFilter<Args extends any[] = any[], This = any, Invoke extends A
   invoke: Invoke,
   options: FunctionWrapperOptions<Args, This>,
 ) => ReturnType<Invoke> | Promisify<ReturnType<Invoke>>
+
+export interface CancelableEventFilter<Args extends any[] = any[], This = any, Invoke extends AnyFn = AnyFn> {
+  (invoke: Invoke, options: FunctionWrapperOptions<Args, This>): ReturnType<Invoke> | Promisify<ReturnType<Invoke>>
+  cancel: () => void
+  readonly pending: boolean
+}
 
 export interface ConfigurableEventFilter {
   /**
@@ -41,16 +47,31 @@ export interface DebounceFilterOptions {
   rejectOnCancel?: boolean
 }
 
+export type CancelablePromisifyFn<T extends AnyFn> = PromisifyFn<T> & {
+  cancel: () => void
+  readonly pending: boolean
+}
+
 /**
  * @internal
  */
-export function createFilterWrapper<T extends AnyFn>(filter: EventFilter, fn: T) {
+export function createFilterWrapper<T extends AnyFn>(filter: CancelableEventFilter, fn: T): CancelablePromisifyFn<T>
+export function createFilterWrapper<T extends AnyFn>(filter: EventFilter, fn: T): PromisifyFn<T>
+export function createFilterWrapper<T extends AnyFn>(filter: EventFilter | CancelableEventFilter, fn: T) {
   function wrapper(this: any, ...args: ArgumentsType<T>) {
     return new Promise<Awaited<ReturnType<T>>>((resolve, reject) => {
       // make sure it's a promise
       Promise.resolve(filter(() => fn.apply(this, args), { fn, thisArg: this, args }))
         .then(resolve)
         .catch(reject)
+    })
+  }
+
+  if ('cancel' in filter) {
+    (wrapper as CancelablePromisifyFn<T>).cancel = filter.cancel
+    Object.defineProperty(wrapper, 'pending', {
+      get: () => filter.pending,
+      enumerable: true,
     })
   }
 
@@ -64,10 +85,11 @@ export const bypassFilter: EventFilter = (invoke) => {
 /**
  * Create an EventFilter that debounce the events
  */
-export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}) {
+export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}): CancelableEventFilter {
   let timer: TimerHandle
   let maxTimer: TimerHandle
   let lastRejector: AnyFn = noop
+  const _state = shallowReactive({ pending: false })
 
   const _clearTimeout = (timer: TimerHandle) => {
     clearTimeout(timer)
@@ -77,7 +99,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
 
   let lastInvoker: () => void
 
-  const filter: EventFilter = (invoke) => {
+  const filter = ((invoke) => {
     const duration = toValue(ms)
     const maxDuration = toValue(options.maxWait)
 
@@ -89,8 +111,11 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
         _clearTimeout(maxTimer)
         maxTimer = undefined
       }
+      _state.pending = false
       return Promise.resolve(invoke())
     }
+
+    _state.pending = true
 
     return new Promise((resolve, reject) => {
       lastRejector = options.rejectOnCancel ? reject : resolve
@@ -101,6 +126,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
           if (timer)
             _clearTimeout(timer)
           maxTimer = undefined
+          _state.pending = false
           resolve(lastInvoker())
         }, maxDuration)
       }
@@ -110,10 +136,28 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
         if (maxTimer)
           _clearTimeout(maxTimer)
         maxTimer = undefined
+        _state.pending = false
         resolve(invoke())
       }, duration)
     })
+  }) as CancelableEventFilter
+
+  filter.cancel = () => {
+    if (timer) {
+      _clearTimeout(timer)
+      timer = undefined
+    }
+    if (maxTimer) {
+      _clearTimeout(maxTimer)
+      maxTimer = undefined
+    }
+    _state.pending = false
   }
+
+  Object.defineProperty(filter, 'pending', {
+    get: () => _state.pending,
+    enumerable: true,
+  })
 
   return filter
 }
