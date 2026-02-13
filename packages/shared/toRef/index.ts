@@ -1,5 +1,5 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref, ToRef } from 'vue'
-import { customRef, ref as deepRef, readonly,
+import { customRef, readonly as deepReadonly, ref as deepRef,
   // eslint-disable-next-line no-restricted-imports
   toRef as vueToRef } from 'vue'
 import { noop } from '../utils/is'
@@ -18,6 +18,6 @@ export function toRef(...args: any[]) {
     return vueToRef(...args as [any, any])
   const r = args[0]
   return typeof r === 'function'
-    ? readonly(customRef(() => ({ get: r as any, set: noop })))
+    ? deepReadonly(customRef(() => ({ get: r as any, set: noop })))
     : deepRef(r)
 }

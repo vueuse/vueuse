@@ -3,7 +3,7 @@
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Supportable } from '../types'
-import { readonly, shallowRef } from 'vue'
+import { shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -120,14 +120,14 @@ export function useNetwork(options: UseNetworkOptions = {}): UseNetworkReturn {
 
   return {
     isSupported,
-    isOnline: readonly(isOnline),
-    saveData: readonly(saveData),
-    offlineAt: readonly(offlineAt),
-    onlineAt: readonly(onlineAt),
-    downlink: readonly(downlink),
-    downlinkMax: readonly(downlinkMax),
-    effectiveType: readonly(effectiveType),
-    rtt: readonly(rtt),
-    type: readonly(type),
+    isOnline: shallowReadonly(isOnline),
+    saveData: shallowReadonly(saveData),
+    offlineAt: shallowReadonly(offlineAt),
+    onlineAt: shallowReadonly(onlineAt),
+    downlink: shallowReadonly(downlink),
+    downlinkMax: shallowReadonly(downlinkMax),
+    effectiveType: shallowReadonly(effectiveType),
+    rtt: shallowReadonly(rtt),
+    type: shallowReadonly(type),
   }
 }
