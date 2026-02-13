@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import { describe, expect, expectTypeOf, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, nextTick, shallowRef } from 'vue'
 import { asyncComputed, computedAsync } from './index'
 
@@ -18,6 +18,14 @@ describe('computed', () => {
 })
 
 describe('computedAsync', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('export module', () => {
     expect(computedAsync).toBeDefined()
     expect(asyncComputed).toBeDefined()
@@ -193,7 +201,6 @@ describe('computedAsync', () => {
   })
 
   it('evaluating works', async () => {
-    vi.useFakeTimers()
     const evaluating = shallowRef(false)
 
     const data = computedAsync(
@@ -241,7 +248,6 @@ describe('computedAsync', () => {
   })
 
   it('cancel is called', async () => {
-    vi.useFakeTimers()
     const onCancel = vi.fn()
     const evaluating = shallowRef(false)
 

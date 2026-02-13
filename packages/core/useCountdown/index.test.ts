@@ -1,11 +1,10 @@
 import type { Pausable } from '@vueuse/shared'
 import type { UseCountdownOptions } from './index'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, shallowRef } from 'vue'
 import { useCountdown } from './index'
 
 describe('useCountdown', () => {
-  vi.useFakeTimers()
   let tickCallback = vi.fn()
   let completeCallback = vi.fn()
   let countdown = 3
@@ -19,6 +18,8 @@ describe('useCountdown', () => {
   }
 
   beforeEach(() => {
+    vi.useFakeTimers()
+
     tickCallback = vi.fn()
     completeCallback = vi.fn()
     countdown = 3
@@ -29,6 +30,10 @@ describe('useCountdown', () => {
       onTick: tickCallback,
       immediate,
     }
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   async function exec({ isActive, pause, resume }: Pausable) {

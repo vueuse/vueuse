@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 import { onLongPress } from './index'
@@ -13,6 +13,10 @@ describe('onLongPress', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   async function triggerCallback(isRef: boolean) {

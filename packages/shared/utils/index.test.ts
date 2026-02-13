@@ -100,6 +100,10 @@ describe('filters', () => {
     vi.useFakeTimers()
   })
 
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   describe('debounceFilter', () => {
     it('should debounce', () => {
       const debouncedFilterSpy = vi.fn()
@@ -370,6 +374,10 @@ describe('is', () => {
 describe('optionsFilters', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('optionsThrottleFilter should throttle', () => {
