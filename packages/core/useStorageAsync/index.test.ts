@@ -1,6 +1,6 @@
 import type { Awaitable, StorageLikeAsync } from '@vueuse/core'
 import { createEventHook, useStorageAsync } from '@vueuse/core'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const KEY = 'custom-key'
 const KEY2 = 'custom-key2'
@@ -38,6 +38,11 @@ class AsyncStubStorage implements StorageLikeAsync {
 describe('useStorageAsync', () => {
   beforeEach(() => {
     localStorage.clear()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('onReady', async () => {
@@ -60,7 +65,9 @@ describe('useStorageAsync', () => {
     )
 
     expect(storage.value).toBe('')
-    await expect(promise).resolves.toBe('CurrentValue')
+    vi.waitFor(async () => {
+      await expect(promise).resolves.toBe('CurrentValue')
+    })
   })
 
   it('onReadyByPromise', async () => {
@@ -74,7 +81,8 @@ describe('useStorageAsync', () => {
 
     expect(storage.value).toBe('')
 
-    storage.then((result) => {
+    vi.waitFor(async () => {
+      const result = await storage
       expect(result.value).toBe('AnotherValue')
     })
   })

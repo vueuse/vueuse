@@ -1,14 +1,18 @@
 import type { Pausable } from '../utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, shallowRef } from 'vue'
 import { useIntervalFn } from './index'
 
 describe('useIntervalFn', () => {
   let callback = vi.fn()
-  vi.useFakeTimers()
 
   beforeEach(() => {
     callback = vi.fn()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   async function exec({ isActive, pause, resume }: Pausable) {

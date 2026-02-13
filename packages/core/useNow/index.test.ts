@@ -1,10 +1,16 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { UseNow } from './component'
 import { useNow } from './index'
 
 describe('useNow', () => {
-  vi.useFakeTimers()
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 
   it('should get now timestamp by default', async () => {
     const now = useNow()

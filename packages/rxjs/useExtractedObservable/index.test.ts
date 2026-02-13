@@ -1,10 +1,18 @@
 import { BehaviorSubject, of, Subject } from 'rxjs'
 import { delay, endWith, tap } from 'rxjs/operators'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, reactive, shallowRef } from 'vue'
 import { useExtractedObservable } from './index'
 
 describe('useExtractedObservable', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   describe('when no options are provided', () => {
     it('should call the extractor immediately', () => {
       const obs = new Subject<number>()
@@ -148,7 +156,6 @@ describe('useExtractedObservable', () => {
     })
 
     it('doesn\'t call onComplete if the watched observable has changed before it could complete', async () => {
-      vi.useFakeTimers()
       expect.hasAssertions()
 
       const re = deepRef([13, 23, 420])
