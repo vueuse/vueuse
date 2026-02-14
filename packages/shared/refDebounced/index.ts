@@ -19,7 +19,6 @@ export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 20
 
   watch(value, () => updater())
 
-
   return shallowReadonly(debounced)
 }
 
