@@ -174,6 +174,14 @@ export interface UseFetchOptions {
   timeout?: number
 
   /**
+   * Automatically parse jsonString for bigint to string or js bigint
+   * ECMAScript 2020 (ES11) supported BigInt
+   *
+   * @default undefined
+   */
+  bigintType?: 'string' | 'bigint'
+
+  /**
    * Allow update the `data` ref when fetch error whenever provided, or mutated in the `onFetchError` callback
    *
    * @default false
@@ -432,6 +440,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       headers: {},
     }
 
+    let _url = toValue(url)
     const payload = toValue(config.payload)
     if (payload) {
       const headers = headersToObject(defaultFetchOptions.headers) as Record<string, string>
@@ -444,14 +453,26 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       if (config.payloadType)
         headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
 
-      defaultFetchOptions.body = config.payloadType === 'json'
-        ? JSON.stringify(payload)
-        : payload as BodyInit
+      // json request .get(params) params to get url add query string
+      if (config.method === 'GET') {
+        defaultFetchOptions.body = undefined
+
+        const querys = []
+        for (let key in payload) {
+          if(payload.hasOwnProperty(key)) {
+            querys.push(`${key}=${encodeURIComponent(String(payload[key]))}`)
+          }
+        }
+        _url += (_url.indexOf('?') > -1 ? '&' : '?') + querys.join('&')
+      }
+      else {
+        defaultFetchOptions.body = config.payloadType === 'json' ? JSON.stringify(payload) : payload as BodyInit
+      }
     }
 
     let isCanceled = false
     const context: BeforeFetchContext = {
-      url: toValue(url),
+      url: _url,
       options: {
         ...defaultFetchOptions,
         ...fetchOptions,
@@ -487,7 +508,36 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         response.value = fetchResponse
         statusCode.value = fetchResponse.status
 
-        responseData = await fetchResponse.clone()[config.type]()
+        // Separate processing of data configured with bigintType
+        if (options.bigintType && config.type === 'json') {
+          const res = await fetchResponse.clone().text()
+          // responseData = JSON.parse(res.replace(/(?!["'])\b(\d{16,})\b(?!"|')/g, '"$1"'))
+          // eslint-disable-next-line
+          responseData = JSON.parse(res, (key: string, value: any, { source }: any): any => {
+            const bigintReg = /^-?\d{16,}$/
+            switch (options.bigintType) {
+              case 'string':
+                if (typeof value === 'bigint') {
+                  return value.toString()
+                } else if (bigintReg.test(source)) {
+                  return source
+                }
+                break
+              case 'bigint':
+                const isBigInt = typeof BigInt === 'function'
+                if (bigintReg.test(source)) {
+                  return isBigInt ? BigInt(source) : source
+                } else if (bigintReg.test(value)) {
+                  return isBigInt ? BigInt(value) : value
+                }
+                break
+            }
+            return value
+          })
+        } else {
+          responseData = await fetchResponse.clone()[config.type]()
+        }
+
 
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
