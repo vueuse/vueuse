@@ -1,8 +1,8 @@
-import type { MaybeRef, Ref } from 'vue'
+import type { MaybeRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { PointerType, Position } from '../types'
 import { objectPick, toRefs } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -36,6 +36,20 @@ export interface UsePointerOptions extends ConfigurableWindow {
   target?: MaybeRef<EventTarget | null | undefined> | Document | Window
 }
 
+export interface UsePointerReturn {
+  pressure: Ref<number>
+  pointerId: Ref<number>
+  tiltX: Ref<number>
+  tiltY: Ref<number>
+  width: Ref<number>
+  height: Ref<number>
+  twist: Ref<number>
+  pointerType: Ref<PointerType | null>
+  x: Ref<number>
+  y: Ref<number>
+  isInside: ShallowRef<boolean>
+}
+
 const defaultState: UsePointerState = /* #__PURE__ */ {
   x: 0,
   y: 0,
@@ -56,13 +70,13 @@ const keys = /* #__PURE__ */ Object.keys(defaultState) as (keyof UsePointerState
  * @see https://vueuse.org/usePointer
  * @param options
  */
-export function usePointer(options: UsePointerOptions = {}) {
+export function usePointer(options: UsePointerOptions = {}): UsePointerReturn {
   const {
     target = defaultWindow,
   } = options
 
   const isInside = shallowRef(false)
-  const state = deepRef(options.initialValue || {}) as unknown as Ref<UsePointerState>
+  const state = shallowRef(options.initialValue || {}) as unknown as Ref<UsePointerState>
   Object.assign(state.value, defaultState, state.value)
 
   const handler = (event: PointerEvent) => {
@@ -84,5 +98,3 @@ export function usePointer(options: UsePointerOptions = {}) {
     isInside,
   }
 }
-
-export type UsePointerReturn = ReturnType<typeof usePointer>

@@ -1,6 +1,6 @@
-import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/shared'
+import type { MapOldSources, MapSources } from '@vueuse/shared'
 import type { Subscription } from 'rxjs'
-import type { ShallowRef, WatchOptions, WatchSource } from 'vue'
+import type { MultiWatchSources, ShallowRef, WatchOptions, WatchSource } from 'vue'
 import type { UseObservableOptions } from '../useObservable'
 import type { WatchExtractedObservableCallback } from '../watchExtractedObservable'
 import { tryOnScopeDispose } from '@vueuse/shared'
@@ -95,7 +95,7 @@ export function useExtractedObservable<T = any, E = unknown, Immediate extends R
   // Construct it first so that the `watch` can override the value if the observable emits immediately
   const obsRef = shallowRef<E | undefined>(options?.initialValue)
 
-  watch(source as any, (value, oldValue, onCleanup) => {
+  watch(source as WatchSource<T>, (value, oldValue, onCleanup) => {
     subscription?.unsubscribe()
 
     if (typeof value !== 'undefined' && value !== null) {

@@ -35,9 +35,9 @@ describe('onLongPress', () => {
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
-  async function triggerCallbackWithDelay(isRef: boolean) {
+  async function triggerCallbackWithDelay(isRef: boolean, delayFunc?: (ev: PointerEvent | TouchEvent) => number) {
     const onLongPressCallback = vi.fn()
-    onLongPress(isRef ? element : element.value, onLongPressCallback, { delay: 1000 })
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { delay: delayFunc ?? 1000 })
     // first pointer down
     element.value.dispatchEvent(pointerdownEvent)
 
@@ -56,7 +56,7 @@ describe('onLongPress', () => {
     element.value.dispatchEvent(pointerdownEvent)
 
     // wait for 1000ms after pointer down
-    await vi.advanceTimersByTimeAsync(1000)
+    await vi.advanceTimersByTimeAsync(delayFunc ? delayFunc(pointerdownEvent) : 1000)
     expect(onLongPressCallback).toHaveBeenCalledTimes(1)
   }
 
@@ -174,7 +174,7 @@ describe('onLongPress', () => {
     pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false, expect.any(PointerEvent))
     expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250 - 2)
 
     // wait for 500ms after pointer up
@@ -193,7 +193,7 @@ describe('onLongPress', () => {
     pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(2)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true, expect.any(PointerEvent))
     expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500 - 2)
   }
 
@@ -448,7 +448,7 @@ describe('onLongPress', () => {
     touchendEvent = new TouchEvent('touchend', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(touchendEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false, expect.any(TouchEvent))
     expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250 - 2)
 
     // wait for 500ms after touch up
@@ -467,32 +467,48 @@ describe('onLongPress', () => {
     touchendEvent = new TouchEvent('touchend', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(touchendEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(2)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true, expect.any(TouchEvent))
     expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500 - 2)
   }
 
   function suites(isRef: boolean) {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', () => triggerCallback(isRef))
+
       it('should trigger longpress after 500ms on touch', () => triggerTouchCallback(isRef))
     })
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', () => triggerCallbackWithDelay(isRef))
+
       it('should not trigger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
+
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
+
       it('should stop propagation', () => stopPropagation(isRef))
+
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
+
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
+
       it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
 
+      it('should trigger longpress after options.delay ms when options.delay is a function', () => triggerCallbackWithDelay(isRef, () => 2000))
+
       it('should trigger longpress after options.delay ms on touch', () => triggerCallbackWithDelayOnTouch(isRef))
+
       it('should not trigger longpress when child element on longpress on touch', () => notTriggerCallbackOnChildLongPressOnTouch(isRef))
+
       it('should work with once and prevent modifiers on touch', () => workOnceAndPreventModifiersOnTouch(isRef))
+
       it('should stop propagation on touch', () => stopPropagationOnTouch(isRef))
+
       it('should remove event listeners after being stopped on touch', () => stopEventListenersOnTouch(isRef))
+
       it('should trigger longpress if touch is moved', () => triggerCallbackWithThresholdOnTouch(isRef))
+
       it('should not trigger longpress if touch is moved out of element', () => notTriggerCallbackWhenTouchOutOfElementBound(isRef))
+
       it('should trigger onTouchEnd when touch is released', () => triggerOnTouchUp(isRef))
     })
   }

@@ -1,17 +1,18 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
-export type WebWorkerStatus =
-  | 'PENDING'
-  | 'SUCCESS'
-  | 'RUNNING'
-  | 'ERROR'
-  | 'TIMEOUT_EXPIRED'
+export type WebWorkerStatus
+  = | 'PENDING'
+    | 'SUCCESS'
+    | 'RUNNING'
+    | 'ERROR'
+    | 'TIMEOUT_EXPIRED'
 
 export interface UseWebWorkerOptions extends ConfigurableWindow {
   /**
@@ -30,6 +31,12 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
   localDependencies?: Function[]
 }
 
+export interface UseWebWorkerFnReturn<T extends (...fnArgs: any[]) => any> {
+  workerFn: (...fnArgs: Parameters<T>) => Promise<ReturnType<T>>
+  workerStatus: ShallowRef<WebWorkerStatus>
+  workerTerminate: (status?: WebWorkerStatus) => void
+}
+
 /**
  * Run expensive function without blocking the UI, using a simple syntax that makes use of Promise.
  *
@@ -37,7 +44,7 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, options: UseWebWorkerOptions = {}) {
+export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, options: UseWebWorkerOptions = {}): UseWebWorkerFnReturn<T> {
   const {
     dependencies = [],
     localDependencies = [],
@@ -131,5 +138,3 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     workerTerminate,
   }
 }
-
-export type UseWebWorkerFnReturn = ReturnType<typeof useWebWorkerFn>

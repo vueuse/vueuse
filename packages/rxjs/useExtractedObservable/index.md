@@ -14,7 +14,9 @@ of [`watch`](https://vuejs.org/guide/essentials/watchers.html#basic-example).
 
 ## Usage
 
-```ts
+<!-- TODO: import rxjs error if enable twoslash -->
+
+```ts no-twoslash
 import { useExtractedObservable } from '@vueuse/rxjs'
 import ObservableSocket from 'observable-socket'
 import { computed } from 'vue'
@@ -29,7 +31,7 @@ If you want to add custom error handling to an `Observable` that might error, yo
 configuration. Without this, RxJS will treat any error in the supplied `Observable` as an "unhandled error" and it will
 be thrown in a new call stack and reported to `window.onerror` (or `process.on('error')` if you happen to be in Node).
 
-```ts
+```ts no-twoslash
 import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith, tap } from 'rxjs/operators'
@@ -62,7 +64,7 @@ const count = useExtractedObservable(
 You can also supply an optional `onComplete` configuration if you need to attach special behavior when the watched
 observable completes.
 
-```ts
+```ts no-twoslash
 import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith, takeWhile } from 'rxjs/operators'
@@ -91,7 +93,7 @@ const count = useExtractedObservable(
 
 If you want, you can also pass `watch` options as the last argument:
 
-```ts
+```ts no-twoslash
 import { useExtractedObservable } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { mapTo, scan, startWith, takeWhile } from 'rxjs/operators'
@@ -116,3 +118,15 @@ const count = useExtractedObservable(
   }
 )
 ```
+
+## Options
+
+| Option         | Type                 | Description                              |
+| -------------- | -------------------- | ---------------------------------------- |
+| `initialValue` | `T`                  | Value to use before the Observable emits |
+| `onError`      | `(err: any) => void` | Error handler for Observable errors      |
+| `onComplete`   | `() => void`         | Called when the Observable completes     |
+
+## Return Value
+
+Returns a readonly `ShallowRef` containing the latest value emitted by the extracted Observable.

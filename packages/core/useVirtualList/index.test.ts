@@ -1,10 +1,23 @@
 import { describe, expect, it } from 'vitest'
-import { ref as deepRef } from 'vue'
+import { ref as deepRef, nextTick } from 'vue'
 import { useVirtualList } from './index'
 
 describe('useVirtualList', () => {
   it('should be defined', () => {
     expect(useVirtualList).toBeDefined()
+  })
+
+  it('should accept plain arrays as input', () => {
+    const {
+      list,
+      containerProps: { ref: containerRef },
+      scrollTo,
+    } = useVirtualList(['a', 'b', 'c', 'd', 'e', 'f'], { itemHeight: () => 50 })
+    const div = { ...document.createElement('div'), clientHeight: 100 }
+
+    containerRef.value = div
+    scrollTo(0)
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
   })
 })
 
@@ -126,5 +139,25 @@ describe('useVirtualList, horizontal', () => {
 
     expect(readonlyList.value).toBeDefined()
     expect(mutableList.value).toBeDefined()
+  })
+
+  it('reacts to changes in a source ref when mutated if no size changes are made to the container', async () => {
+    const mutableInput = deepRef(['a', 'b'])
+
+    const {
+      list,
+      containerProps: { ref: containerRef },
+      scrollTo,
+    } = useVirtualList(mutableInput, { itemHeight: () => 10 })
+
+    containerRef.value = { ...document.createElement('div'), clientHeight: 100 }
+    scrollTo(0)
+
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b'])
+
+    mutableInput.value.push('c', 'd')
+    await nextTick()
+
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
   })
 })

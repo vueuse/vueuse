@@ -50,6 +50,8 @@
   extendRef: function
   formatDate: function
   formatTimeAgo: function
+  formatTimeAgoIntl: function
+  formatTimeAgoIntlParts: function
   get: function
   getLifeCycleTarget: function
   getSSRHandler: function
@@ -98,10 +100,9 @@
   refAutoReset: function
   refDebounced: function
   refDefault: function
+  refManualReset: function
   refThrottled: function
   refWithControl: function
-  resolveRef: function
-  resolveUnref: function
   set: function
   setSSRHandler: function
   StorageSerializers: object
@@ -116,7 +117,7 @@
   toReactive: function
   toRef: function
   toRefs: function
-  toValue: function
+  transition: function
   TransitionPresets: object
   tryOnBeforeMount: function
   tryOnBeforeUnmount: function
@@ -155,6 +156,7 @@
   useConfirmDialog: function
   useCountdown: function
   useCounter: function
+  useCssSupports: function
   useCssVar: function
   useCurrentElement: function
   useCycleList: function
@@ -259,6 +261,7 @@
   useThrottledRefHistory: function
   useThrottleFn: function
   useTimeAgo: function
+  useTimeAgoIntl: function
   useTimeout: function
   useTimeoutFn: function
   useTimeoutPoll: function

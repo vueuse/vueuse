@@ -1,3 +1,4 @@
+import type { WritableComputedRef } from 'vue'
 import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode'
 import { computed } from 'vue'
 import { useColorMode } from '../useColorMode'
@@ -26,13 +27,15 @@ export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchem
   onChanged?: (isDark: boolean, defaultHandler: ((mode: BasicColorSchema) => void), mode: BasicColorSchema) => void
 }
 
+export type UseDarkReturn = WritableComputedRef<boolean>
+
 /**
  * Reactive dark mode with auto data persistence.
  *
  * @see https://vueuse.org/useDark
  * @param options
  */
-export function useDark(options: UseDarkOptions = {}) {
+export function useDark(options: UseDarkOptions = {}): UseDarkReturn {
   const {
     valueDark = 'dark',
     valueLight = '',

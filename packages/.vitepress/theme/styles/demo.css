@@ -60,14 +60,14 @@
 
   button.orange {
     --vp-c-brand: #db8742;
-    --vp-c-brand-dark: #ad6e39;
-    --vp-c-brand-active: #d67e36;
+    --vp-c-brand-2: #ad6e39;
+    --vp-c-brand-3: #d67e36;
   }
 
   button.red {
     --vp-c-brand: #f56c6c;
-    --vp-c-brand-dark: #e41c1c;
-    --vp-c-brand-active: #e94c4c;
+    --vp-c-brand-2: #e41c1c;
+    --vp-c-brand-3: #e94c4c;
   }
 
   button:hover {
@@ -122,7 +122,7 @@
     outline: none;
     background: var(--vp-c-bg);
     color: var(--vp-c-text);
-    min-width: 20rem;
+    min-width: min(20rem, 100%);
     margin: 0.5rem 0;
   }
 
@@ -133,6 +133,39 @@
 
   input:focus {
     border: 1px solid var(--vp-c-border);
+  }
+
+  .radio {
+    @apply inline-flex items-center my-auto cursor-pointer select-none;
+  }
+
+  .radio input {
+    appearance: none;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    display: inline-block;
+    vertical-align: middle;
+    background-origin: border-box;
+    user-select: none;
+    flex-shrink: 0;
+    height: 1rem;
+    width: 1rem;
+    @apply bg-gray-400/30;
+    @apply rounded-full h-4 w-4 select-none relative;
+    @apply mr-1;
+    --tw-ring-offset-width: 1px !important;
+    --tw-ring-color: #8885 !important;
+    --tw-ring-offset-color: transparent !important;
+  }
+
+  .radio input:checked::after {
+    content: '';
+    @apply absolute inset-[3px] rounded-full bg-primary;
+  }
+
+  .radio span {
+    @apply ml-1.5 text-13px opacity-70;
   }
 
   pre,
@@ -164,6 +197,7 @@
     white-space: pre;
     overflow-wrap: normal;
     overflow: hidden;
+    max-width: 100%;
   }
 
   .float {

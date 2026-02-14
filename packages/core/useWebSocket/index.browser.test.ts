@@ -5,6 +5,7 @@ describe('useWebSocket', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
+
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -86,6 +87,45 @@ describe('useWebSocket', () => {
       expect(status.value).toBe('CLOSED')
       vi.advanceTimersByTime(AUTO_RECONNECT_DELAY)
 
+      expect(status.value).toBe('CONNECTING')
+    })
+
+    it('should support delay as a number', () => {
+      const DELAY_TIME = 2500
+
+      const { ws, status } = useWebSocket('ws://localhost', {
+        autoReconnect: {
+          retries: 2,
+          delay: DELAY_TIME,
+        },
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+      ws.value?.onclose?.(new CloseEvent('close'))
+
+      expect(status.value).toBe('CLOSED')
+
+      vi.advanceTimersByTime(DELAY_TIME)
+      expect(status.value).toBe('CONNECTING')
+    })
+
+    it('should support delay as a function', () => {
+      const delayFn = vi.fn((retries: number) => retries * 1000)
+      const { ws, status } = useWebSocket('ws://localhost', {
+        autoReconnect: {
+          retries: 2,
+          delay: delayFn,
+        },
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+      ws.value?.onclose?.(new CloseEvent('close'))
+
+      expect(delayFn).toHaveBeenCalledWith(1)
+      expect(status.value).toBe('CLOSED')
+
+      const returnedDelay = delayFn.mock.results[0].value
+      vi.advanceTimersByTime(returnedDelay)
       expect(status.value).toBe('CONNECTING')
     })
   })

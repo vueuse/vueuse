@@ -1,3 +1,4 @@
+import type { PackageExportsManifest } from 'vitest-package-exports'
 import { x } from 'tinyexec'
 import { describe, expect, it } from 'vitest'
 import { getPackageExportsManifest } from 'vitest-package-exports'
@@ -11,12 +12,17 @@ describe('exports-snapshot', async () => {
   for (const pkg of packages) {
     if (pkg.private)
       continue
+
     it(`${pkg.name}`, async () => {
-      const manifest = await getPackageExportsManifest({
-        importMode: 'src',
-        cwd: pkg.path,
-      })
-      await expect(yaml.stringify(manifest.exports, { sortMapEntries: (a, b) => String(a.key).localeCompare(String(b.key)) }))
+      let manifest: PackageExportsManifest | undefined
+      try {
+        manifest = await getPackageExportsManifest({
+          importMode: 'dist',
+          cwd: pkg.path,
+        })
+      }
+      catch {}
+      await expect(yaml.stringify(manifest?.exports ?? null, { sortMapEntries: (a, b) => String(a.key).localeCompare(String(b.key)) }))
         .toMatchFileSnapshot(`./exports/${pkg.name.split('/').pop()}.yaml`)
     })
   }

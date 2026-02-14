@@ -1,3 +1,5 @@
+import type { ShallowRef } from 'vue'
+import type { Supportable } from '../types'
 import { shallowRef } from 'vue'
 import { useSupported } from '../useSupported'
 
@@ -24,12 +26,19 @@ export interface UseEyeDropperOptions {
   initialValue?: string
 }
 
+export interface UseEyeDropperReturn extends Supportable {
+  sRGBHex: ShallowRef<string>
+  open: (openOptions?: EyeDropperOpenOptions) => Promise<{ sRGBHex: string } | undefined>
+}
+
 /**
  * Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
  *
  * @see https://vueuse.org/useEyeDropper
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-export function useEyeDropper(options: UseEyeDropperOptions = {}) {
+export function useEyeDropper(options: UseEyeDropperOptions = {}): UseEyeDropperReturn {
   const { initialValue = '' } = options
   const isSupported = useSupported(() => typeof window !== 'undefined' && 'EyeDropper' in window)
   const sRGBHex = shallowRef(initialValue)
@@ -45,5 +54,3 @@ export function useEyeDropper(options: UseEyeDropperOptions = {}) {
 
   return { isSupported, sRGBHex, open }
 }
-
-export type UseEyeDropperReturn = ReturnType<typeof useEyeDropper>

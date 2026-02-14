@@ -1,7 +1,11 @@
+import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import { useMounted } from '../useMounted'
 
-export function useSupported(callback: () => unknown) {
+export type UseSupportedReturn = ComputedRef<boolean>
+
+/* @__NO_SIDE_EFFECTS__ */
+export function useSupported(callback: () => unknown): UseSupportedReturn {
   const isMounted = useMounted()
 
   return computed(() => {
@@ -11,5 +15,3 @@ export function useSupported(callback: () => unknown) {
     return Boolean(callback())
   })
 }
-
-export type UseSupportedReturn = ReturnType<typeof useSupported>

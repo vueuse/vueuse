@@ -70,6 +70,15 @@ describe('useRafFn', () => {
     expect(fn1.mock.calls.length).toBeLessThan(fn2.mock.calls.length)
   })
 
+  it('should handle a reactive null fpsLimit as no limit', async () => {
+    const fn = vi.fn()
+    const limit = shallowRef<number | null>(null)
+    useRafFn(fn, { fpsLimit: limit })
+    await vi.waitFor(() => {
+      expect(fn).toHaveBeenCalled()
+    })
+  })
+
   it('should handle a framerate change', { retry: 3 }, async () => {
     const initialFramerate = 60
     const fr = shallowRef(initialFramerate)

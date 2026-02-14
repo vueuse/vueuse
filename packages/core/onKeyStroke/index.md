@@ -1,14 +1,15 @@
 ---
 category: Sensors
+variants: onKeyDown, onKeyUp, onKeyPressed
 ---
 
 # onKeyStroke
 
-Listen for keyboard keystrokes.
+Listen for keyboard keystrokes. By default, listens on `keydown` events on `window`.
 
 ## Usage
 
-```js
+```ts
 import { onKeyStroke } from '@vueuse/core'
 
 onKeyStroke('ArrowDown', (e) => {
@@ -18,16 +19,27 @@ onKeyStroke('ArrowDown', (e) => {
 
 See [this table](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) for all key codes.
 
+### Return Value
+
+Returns a stop function to remove the event listener.
+
+```ts
+const stop = onKeyStroke('Escape', handler)
+
+// Later, stop listening
+stop()
+```
+
 ### Listen To Multiple Keys
 
-```js
+```ts
 import { onKeyStroke } from '@vueuse/core'
 
 onKeyStroke(['s', 'S', 'ArrowDown'], (e) => {
   e.preventDefault()
 })
 
-// listen to all keys by [true / skip the keyDefine]
+// listen to all keys by passing `true` or skipping the key parameter
 onKeyStroke(true, (e) => {
   e.preventDefault()
 })
@@ -36,9 +48,26 @@ onKeyStroke((e) => {
 })
 ```
 
+### Custom Key Predicate
+
+You can pass a custom function to determine which keys should trigger the handler.
+
+```ts
+import { onKeyStroke } from '@vueuse/core'
+
+onKeyStroke(
+  e => e.key === 'A' && e.shiftKey,
+  (e) => {
+    console.log('Shift+A pressed')
+  },
+)
+```
+
 ### Custom Event Target
 
-```js
+```ts
+import { onKeyStroke } from '@vueuse/core'
+
 onKeyStroke('A', (e) => {
   console.log('Key A pressed on document')
 }, { target: document })
@@ -46,18 +75,27 @@ onKeyStroke('A', (e) => {
 
 ### Ignore Repeated Events
 
-The callback will trigger only once when pressing `A` and **hold down**.
+The callback will trigger only once when pressing `A` and **holding down**. The `dedupe` option can also be a reactive ref.
 
-```js
+```ts
 import { onKeyStroke } from '@vueuse/core'
 
-// use `autoRepeat` option
 onKeyStroke('A', (e) => {
   console.log('Key A pressed')
 }, { dedupe: true })
 ```
 
 Reference: [KeyboardEvent.repeat](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat)
+
+### Passive Mode
+
+Set `passive: true` to use a passive event listener.
+
+```ts
+import { onKeyStroke } from '@vueuse/core'
+
+onKeyStroke('A', handler, { passive: true })
+```
 
 ## Directive Usage
 
@@ -79,7 +117,9 @@ function onUpdate(e: KeyboardEvent) {
 
 ### Custom Keyboard Event
 
-```js
+```ts
+import { onKeyStroke } from '@vueuse/core'
+// ---cut---
 onKeyStroke('Shift', (e) => {
   console.log('Shift key up')
 }, { eventName: 'keyup' })
@@ -87,7 +127,9 @@ onKeyStroke('Shift', (e) => {
 
 Or
 
-```js
+```ts
+import { onKeyUp } from '@vueuse/core'
+// ---cut---
 onKeyUp('Shift', () => console.log('Shift key up'))
 ```
 

@@ -2,6 +2,7 @@
 
 import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { computed, ref as deepRef, shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -25,7 +26,7 @@ export interface UseDevicesListOptions extends ConfigurableNavigator {
   constraints?: MediaStreamConstraints
 }
 
-export interface UseDevicesListReturn {
+export interface UseDevicesListReturn extends Supportable {
   /**
    * All devices
    */
@@ -35,7 +36,6 @@ export interface UseDevicesListReturn {
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
   permissionGranted: ShallowRef<boolean>
   ensurePermissions: () => Promise<boolean>
-  isSupported: ComputedRef<boolean>
 }
 
 /**
@@ -86,6 +86,11 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     if (state.value !== 'granted') {
       let granted = true
       try {
+        const allDevices = await navigator!.mediaDevices.enumerateDevices()
+        const hasCamera = allDevices.some(device => device.kind === 'videoinput')
+        const hasMicrophone = allDevices.some(device => device.kind === 'audioinput' || device.kind === 'audiooutput')
+        constraints.video = hasCamera ? constraints.video : false
+        constraints.audio = hasMicrophone ? constraints.audio : false
         stream = await navigator!.mediaDevices.getUserMedia(constraints)
       }
       catch {

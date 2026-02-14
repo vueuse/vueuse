@@ -1,11 +1,20 @@
-import type { UseTimestampOptions } from '@vueuse/core'
+import type { UseTimestampOptions, UseTimestampReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useTimestamp } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-export const UseTimestamp = /* #__PURE__ */ defineComponent<Omit<UseTimestampOptions<true>, 'controls'>>({
-  name: 'UseTimestamp',
-  props: ['immediate', 'interval', 'offset'] as unknown as undefined,
-  setup(props, { slots }) {
+export interface UseTimestampProps extends Omit<UseTimestampOptions<true>, 'controls'> {}
+interface UseTimestampSlots {
+  default: (data: Reactive<UseTimestampReturn<true>>) => any
+}
+
+export const UseTimestamp = /* #__PURE__ */ defineComponent<
+  UseTimestampProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseTimestampSlots>
+>(
+  (props, { slots }) => {
     const data = reactive(useTimestamp({ ...props, controls: true }))
 
     return () => {
@@ -13,4 +22,14 @@ export const UseTimestamp = /* #__PURE__ */ defineComponent<Omit<UseTimestampOpt
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseTimestamp',
+    props: [
+      'scheduler',
+      'callback',
+      'immediate',
+      'interval',
+      'offset',
+    ],
+  },
+)

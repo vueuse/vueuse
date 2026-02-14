@@ -8,7 +8,7 @@ Use EventListener with ease. Register using [addEventListener](https://developer
 
 ## Usage
 
-```js
+```ts
 import { useEventListener } from '@vueuse/core'
 
 useEventListener(document, 'visibilitychange', (evt) => {
@@ -16,19 +16,34 @@ useEventListener(document, 'visibilitychange', (evt) => {
 })
 ```
 
-You can also pass a ref as the event target, `useEventListener` will unregister the previous event and register the new one when you change the target.
+### Default Target
+
+When the target is omitted, it defaults to `window`:
 
 ```ts
 import { useEventListener } from '@vueuse/core'
-import { useTemplateRef } from 'vue'
 
-const element = useTemplateRef<HTMLDivElement>('element')
-useEventListener(element, 'keydown', (e) => {
-  console.log(e.key)
+// Listens on window
+useEventListener('resize', (evt) => {
+  console.log(evt)
 })
 ```
 
+### Reactive Target
+
+You can pass a ref as the event target, `useEventListener` will unregister the previous event and register the new one when the target changes.
+
 ```vue
+<script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
+
+const element = useTemplateRef('element')
+useEventListener(element, 'keydown', (e) => {
+  console.log(e.key)
+})
+</script>
+
 <template>
   <div v-if="cond" ref="element">
     Div1
@@ -39,7 +54,34 @@ useEventListener(element, 'keydown', (e) => {
 </template>
 ```
 
-You can also call the returned to unregister the listener.
+### Multiple Events
+
+You can pass an array of events to listen to multiple events at once:
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+useEventListener(document, ['mouseenter', 'mouseleave'], (evt) => {
+  console.log(evt.type)
+})
+```
+
+### Multiple Targets
+
+You can also pass an array of targets:
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+const buttons = document.querySelectorAll('button')
+useEventListener(buttons, 'click', (evt) => {
+  console.log('Button clicked')
+})
+```
+
+### Cleanup
+
+Returns a cleanup function to manually unregister the listener:
 
 ```ts
 import { useEventListener } from '@vueuse/core'
@@ -54,7 +96,10 @@ cleanup() // This will unregister the listener.
 Note if your components also run in SSR (Server Side Rendering), you might get errors (like `document is not defined`) because DOM APIs like `document` and `window` are not available in Node.js. To avoid that you can put the logic inside `onMounted` hook.
 
 ```ts
-// onMounted will only be called in the client side, so it guarantees the DOM APIs are available.
+import { useEventListener } from '@vueuse/core'
+// ---cut---
+// onMounted will only be called in the client side
+// so it guarantees the DOM APIs are available.
 onMounted(() => {
   useEventListener(document, 'keydown', (e) => {
     console.log(e.key)

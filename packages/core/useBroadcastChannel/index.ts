@@ -1,5 +1,6 @@
-import type { ComputedRef, Ref, ShallowRef } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -83,8 +84,7 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
   }
 }
 
-export interface UseBroadcastChannelReturn<D, P> {
-  isSupported: ComputedRef<boolean>
+export interface UseBroadcastChannelReturn<D, P> extends Supportable {
   channel: Ref<BroadcastChannel | undefined>
   data: Ref<D>
   post: (data: P) => void

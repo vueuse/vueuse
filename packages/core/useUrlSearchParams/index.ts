@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { pausableWatch } from '@vueuse/shared'
-import { reactive } from 'vue'
+import { watchPausable } from '@vueuse/shared'
+import { nextTick, reactive } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -36,6 +36,14 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
    * @default 'replace'
    */
   writeMode?: 'replace' | 'push'
+
+  /**
+   * Custom function to serialize URL parameters
+   * When provided, this function will be used instead of the default URLSearchParams.toString()
+   * @param params The URLSearchParams object to serialize
+   * @returns The serialized query string (should not include the leading '?' or '#')
+   */
+  stringify?: (params: URLSearchParams) => string
 }
 
 /**
@@ -56,6 +64,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     write: enableWrite = true,
     writeMode = 'replace',
     window = defaultWindow!,
+    stringify = params => params.toString(),
   } = options
 
   if (!window)
@@ -78,8 +87,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   }
 
   function constructQuery(params: URLSearchParams) {
-    const stringified = params.toString()
-
+    const stringified = stringify(params)
     if (mode === 'history')
       return `${stringified ? `?${stringified}` : ''}${window.location.hash || ''}`
     if (mode === 'hash-params')
@@ -107,7 +115,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     Array.from(unusedKeys).forEach(key => delete state[key])
   }
 
-  const { pause, resume } = pausableWatch(
+  const { pause, resume } = watchPausable(
     state,
     () => {
       const params = new URLSearchParams('')
@@ -127,7 +135,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     { deep: true },
   )
 
-  function write(params: URLSearchParams, shouldUpdate: boolean) {
+  function write(params: URLSearchParams, shouldUpdate: boolean, shouldWriteHistory = true) {
     pause()
 
     if (shouldUpdate)
@@ -141,21 +149,23 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
       )
     }
     else {
-      window.history.pushState(
-        window.history.state,
-        window.document.title,
-        window.location.pathname + constructQuery(params),
-      )
+      if (shouldWriteHistory) {
+        window.history.pushState(
+          window.history.state,
+          window.document.title,
+          window.location.pathname + constructQuery(params),
+        )
+      }
     }
 
-    resume()
+    nextTick(() => resume())
   }
 
   function onChanged() {
     if (!enableWrite)
       return
 
-    write(read(), true)
+    write(read(), true, false)
   }
 
   const listenerOptions = { passive: true }

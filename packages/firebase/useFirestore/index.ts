@@ -9,9 +9,9 @@ export interface UseFirestoreOptions {
   autoDispose?: boolean | number
 }
 
-export type FirebaseDocRef<T> =
-  Query<T> |
-  DocumentReference<T>
+export type FirebaseDocRef<T>
+  = Query<T>
+    | DocumentReference<T>
 
 function getData<T>(
   docRef: DocumentSnapshot<T> | QueryDocumentSnapshot<T>,
@@ -37,12 +37,12 @@ type Falsy = false | 0 | '' | null | undefined
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<DocumentReference<T> | Falsy>,
   initialValue: T,
-  options?: UseFirestoreOptions
+  options?: UseFirestoreOptions,
 ): Ref<T | null>
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<Query<T> | Falsy>,
   initialValue: T[],
-  options?: UseFirestoreOptions
+  options?: UseFirestoreOptions,
 ): Ref<T[]>
 
 // nullable initial values
@@ -54,7 +54,7 @@ export function useFirestore<T extends DocumentData>(
 export function useFirestore<T extends DocumentData>(
   maybeDocRef: MaybeRef<Query<T> | Falsy>,
   initialValue?: T[],
-  options?: UseFirestoreOptions
+  options?: UseFirestoreOptions,
 ): Ref<T[] | undefined>
 
 /**

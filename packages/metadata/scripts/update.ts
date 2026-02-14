@@ -91,6 +91,9 @@ export async function readMetadata() {
       let alias = frontmatter.alias
       if (typeof alias === 'string')
         alias = alias.split(',').map(s => s.trim()).filter(Boolean)
+      let variants = frontmatter.variants
+      if (typeof variants === 'string')
+        variants = variants.split(',').map(s => s.trim()).filter(Boolean)
       let related = frontmatter.related
       if (typeof related === 'string')
         related = related.split(',').map(s => s.trim()).filter(Boolean)
@@ -108,7 +111,10 @@ export async function readMetadata() {
       )[1] || ''
 
       description = description.trim()
-      description = description.charAt(0).toLowerCase() + description.slice(1)
+
+      // convert description to leading lowercase, except for abbv.
+      if (!description.match(/^[A-Z][A-Z]/))
+        description = description.charAt(0).toLowerCase() + description.slice(1)
 
       fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
       fn.description = description
@@ -118,6 +124,8 @@ export async function readMetadata() {
 
       if (alias?.length)
         fn.alias = alias
+      if (variants?.length)
+        fn.variants = variants
 
       if (related?.length)
         fn.related = related

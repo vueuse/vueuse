@@ -8,7 +8,7 @@ Reactive [Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Perm
 
 ## Usage
 
-```js
+```ts
 import { usePermission } from '@vueuse/core'
 
 const microphoneAccess = usePermission('microphone')

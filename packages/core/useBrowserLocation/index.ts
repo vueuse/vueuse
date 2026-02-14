@@ -18,6 +18,9 @@ const WRITABLE_PROPERTIES = [
   'search',
 ] as const
 
+export interface UseBrowserLocationOptions extends ConfigurableWindow {
+}
+
 export interface BrowserLocationState {
   readonly trigger: string
   readonly state?: any
@@ -33,12 +36,16 @@ export interface BrowserLocationState {
   search?: string
 }
 
+export type UseBrowserLocationReturn = Ref<BrowserLocationState>
+
 /**
  * Reactive browser location.
  *
  * @see https://vueuse.org/useBrowserLocation
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-export function useBrowserLocation(options: ConfigurableWindow = {}) {
+export function useBrowserLocation(options: UseBrowserLocationOptions = {}): UseBrowserLocationReturn {
   const { window = defaultWindow } = options
   const refs = Object.fromEntries(
     WRITABLE_PROPERTIES.map(key => [key, deepRef()]),
@@ -68,7 +75,7 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
     })
   }
 
-  const state = deepRef(buildState('load'))
+  const state = deepRef<BrowserLocationState>(buildState('load'))
 
   if (window) {
     const listenerOptions = { passive: true }
@@ -78,5 +85,3 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
 
   return state
 }
-
-export type UseBrowserLocationReturn = ReturnType<typeof useBrowserLocation>

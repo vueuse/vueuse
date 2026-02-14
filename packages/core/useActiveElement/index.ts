@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import type { ConfigurableDocumentOrShadowRoot, ConfigurableWindow } from '../_configurable'
 import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -19,15 +20,19 @@ export interface UseActiveElementOptions extends ConfigurableWindow, Configurabl
   triggerOnRemoval?: boolean
 }
 
+export type UseActiveElementReturn<T extends HTMLElement = HTMLElement> = ShallowRef<T | null | undefined>
+
 /**
  * Reactive `document.activeElement`
  *
  * @see https://vueuse.org/useActiveElement
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useActiveElement<T extends HTMLElement>(
   options: UseActiveElementOptions = {},
-) {
+): UseActiveElementReturn<T> {
   const {
     window = defaultWindow,
     deep = true,

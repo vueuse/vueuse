@@ -7,9 +7,11 @@ import { events } from './internal'
 
 describe('useEventBus', () => {
   const emptyMap = new Map()
+
   beforeEach(() => {
     events.clear()
   })
+
   it('on event and off listener', () => {
     const { on, off } = useEventBus<number>('foo')
     const { inc } = useCounter(0)
@@ -17,6 +19,7 @@ describe('useEventBus', () => {
     off(inc)
     expect(events).toEqual(emptyMap)
   })
+
   it('on event', () => {
     let event = false
     const { emit, on, reset } = useEventBus<boolean>('on-event')
@@ -28,6 +31,7 @@ describe('useEventBus', () => {
     reset()
     expect(events).toEqual(emptyMap)
   })
+
   it('once event', () => {
     const { once, emit, reset } = useEventBus<number>('foo')
     const { inc, count } = useCounter(0)
@@ -51,6 +55,7 @@ describe('useEventBus', () => {
     expect(events.get('foo')).toBeDefined()
     expect(events.get('bar')).toBeUndefined()
   })
+
   it('not off other events listener', () => {
     const bus1 = useEventBus<number>('foo')
     const bus2 = useEventBus<number>('bar')
@@ -65,6 +70,7 @@ describe('useEventBus', () => {
     expect(events.get('foo')).toBeDefined()
     expect(events.get('bar')).toBeDefined()
   })
+
   it('useEventBus off event', () => {
     const { emit, on, reset } = useEventBus<number>('useEventBus-off')
     const { count, inc } = useCounter(0)
@@ -81,6 +87,7 @@ describe('useEventBus', () => {
     expect(count.value).toBe(2)
     expect(events).toEqual(emptyMap)
   })
+
   it('event off event', () => {
     const event1 = useEventBus<number>('event-off-1')
     const event2 = useEventBus<number>('event-off-2')
