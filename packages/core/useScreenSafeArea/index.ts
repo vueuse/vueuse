@@ -41,8 +41,7 @@ export function useScreenSafeArea(): UseScreenSafeAreaReturn {
 
     tryOnMounted(update)
 
-    const { execute: debouncedUpdate } = useDebounceFn(update)
-    useEventListener('resize', debouncedUpdate, { passive: true })
+    useEventListener('resize', useDebounceFn(update), { passive: true })
   }
 
   function update() {
