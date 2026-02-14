@@ -13,11 +13,12 @@ export type RefDebouncedReturn<T = any> = Readonly<Ref<T>>
 export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 200, options: DebounceFilterOptions = {}): RefDebouncedReturn<T> {
   const debounced = deepRef(toValue(value)) as Ref<T>
 
-  const { execute } = useDebounceFn(() => {
+  const updater = useDebounceFn(() => {
     debounced.value = value.value
   }, ms, options)
 
-  watch(value, () => execute())
+  watch(value, () => updater())
+
 
   return shallowReadonly(debounced)
 }
