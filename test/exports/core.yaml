@@ -175,6 +175,7 @@
   useDropZone: function
   useElementBounding: function
   useElementByPoint: function
+  useElementBySelector: function
   useElementHover: function
   useElementSize: function
   useElementVisibility: function
