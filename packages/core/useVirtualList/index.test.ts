@@ -2,6 +2,23 @@ import { describe, expect, it } from 'vitest'
 import { ref as deepRef, nextTick } from 'vue'
 import { useVirtualList } from './index'
 
+function createDiv(properties: Partial<HTMLElement>) {
+  return {
+    ...document.createElement('div'),
+    ...properties,
+    scrollTo(options?: ScrollToOptions | number) {
+      if (typeof options === 'object') {
+        if (options.top) {
+          this.scrollTop = options.top
+        }
+        if (options.left) {
+          this.scrollLeft = options.left
+        }
+      }
+    },
+  }
+}
+
 describe('useVirtualList', () => {
   it('should be defined', () => {
     expect(useVirtualList).toBeDefined()
@@ -13,7 +30,7 @@ describe('useVirtualList', () => {
       containerProps: { ref: containerRef },
       scrollTo,
     } = useVirtualList(['a', 'b', 'c', 'd', 'e', 'f'], { itemHeight: () => 50 })
-    const div = { ...document.createElement('div'), clientHeight: 100 }
+    const div = createDiv({ clientHeight: 100 })
 
     containerRef.value = div
     scrollTo(0)
@@ -28,7 +45,7 @@ describe('useVirtualList, vertical', () => {
       containerProps: { ref: containerRef },
       scrollTo,
     } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f']), { itemHeight: () => 50, overscan: 1 })
-    const div = { ...document.createElement('div'), clientHeight: 50 }
+    const div = createDiv({ clientHeight: 50 })
 
     containerRef.value = div
 
@@ -47,7 +64,7 @@ describe('useVirtualList, vertical', () => {
       containerProps: { ref: containerRef },
       scrollTo,
     } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemHeight: () => 50, overscan: 1 })
-    const div = { ...document.createElement('div'), clientHeight: 50 }
+    const div = createDiv({ clientHeight: 50 })
 
     containerRef.value = div
 
@@ -72,6 +89,37 @@ describe('useVirtualList, vertical', () => {
     scrollTo(6)
     expect(list.value.map(i => i.data)).toEqual(['f', 'g'])
   })
+
+  it('correctly uses the scrollTo block option to align inside the container', () => {
+    const {
+      list,
+      containerProps: { ref: containerRef },
+      scrollTo,
+    } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemHeight: () => 50, overscan: 1 })
+    const div = createDiv({ clientHeight: 140 })
+
+    containerRef.value = div
+
+    scrollTo(0, { block: 'start' })
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
+
+    scrollTo(3, { block: 'start' })
+    expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
+
+    scrollTo(3, { block: 'center' })
+    expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
+
+    scrollTo(3, { block: 'end' })
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
+
+    containerRef.value.scrollTop = 1500
+    scrollTo(3, { block: 'nearest' })
+    expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
+
+    containerRef.value.scrollTop = 0
+    scrollTo(3, { block: 'nearest' })
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
+  })
 })
 
 describe('useVirtualList, horizontal', () => {
@@ -81,7 +129,7 @@ describe('useVirtualList, horizontal', () => {
       containerProps: { ref: containerRef },
       scrollTo,
     } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f']), { itemWidth: () => 50, overscan: 1 })
-    const div = { ...document.createElement('div'), clientWidth: 50 }
+    const div = createDiv({ clientWidth: 50 })
 
     containerRef.value = div
 
@@ -100,7 +148,7 @@ describe('useVirtualList, horizontal', () => {
       containerProps: { ref: containerRef },
       scrollTo,
     } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemWidth: () => 50, overscan: 1 })
-    const div = { ...document.createElement('div'), clientWidth: 50 }
+    const div = createDiv({ clientWidth: 50 })
 
     containerRef.value = div
 
@@ -124,6 +172,37 @@ describe('useVirtualList, horizontal', () => {
 
     scrollTo(6)
     expect(list.value.map(i => i.data)).toEqual(['f', 'g'])
+  })
+
+  it('correctly uses the scrollTo inline option to align inside the container', () => {
+    const {
+      list,
+      containerProps: { ref: containerRef },
+      scrollTo,
+    } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f', 'g']), { itemWidth: () => 50, overscan: 1 })
+    const div = createDiv({ clientWidth: 140 })
+
+    containerRef.value = div
+
+    scrollTo(0, { inline: 'start' })
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
+
+    scrollTo(3, { inline: 'start' })
+    expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
+
+    scrollTo(3, { inline: 'center' })
+    expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
+
+    scrollTo(3, { inline: 'end' })
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
+
+    containerRef.value.scrollLeft = 1500
+    scrollTo(3, { inline: 'nearest' })
+    expect(list.value.map(i => i.data)).toEqual(['c', 'd', 'e', 'f'])
+
+    containerRef.value.scrollLeft = 0
+    scrollTo(3, { inline: 'nearest' })
+    expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
   })
 
   it('allows both readonly and mutable arrays as input', () => {
