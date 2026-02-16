@@ -330,6 +330,34 @@ describe('filters', () => {
       expect(wrapped.isPending.value).toBe(false)
     })
 
+    it('should be a no-op when cancel is called with nothing pending', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = debounceFilter(1000)
+      createFilterWrapper(filter, debouncedFilterSpy)
+
+      expect(filter.isPending.value).toBe(false)
+      filter.cancel()
+      expect(filter.isPending.value).toBe(false)
+      expect(debouncedFilterSpy).not.toHaveBeenCalled()
+    })
+
+    it('should allow calling after flush', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = debounceFilter(1000)
+      const wrapped = createFilterWrapper(filter, debouncedFilterSpy)
+
+      wrapped()
+      filter.flush()
+      expect(debouncedFilterSpy).toHaveBeenCalledOnce()
+
+      wrapped()
+      expect(filter.isPending.value).toBe(true)
+
+      vi.runAllTimers()
+      expect(filter.isPending.value).toBe(false)
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+    })
+
     it('should expose flush via createFilterWrapper', () => {
       const spy = vi.fn()
       const filter = debounceFilter(1000)

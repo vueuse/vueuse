@@ -157,10 +157,12 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
         maxTimer = undefined
       }
       _pending.value = false
+      lastResolve = noop
     },
     flush: () => {
       if (_pending.value) {
-        // Clear timers without triggering lastRejector
+        // Use native clearTimeout (not _clearTimeout) to avoid
+        // calling lastRejector — we resolve via lastResolve instead
         if (timer) {
           clearTimeout(timer)
           timer = undefined
