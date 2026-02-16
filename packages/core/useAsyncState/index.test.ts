@@ -1,6 +1,6 @@
 import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, shallowRef } from 'vue'
+import { isReadonly, nextTick, shallowRef } from 'vue'
 import { useAsyncState } from './index'
 
 describe('useAsyncState', () => {
@@ -117,7 +117,14 @@ describe('useAsyncState', () => {
     const { state } = useAsyncState(asyncValue, initialState)
     await asyncValue
     expect(state.value).toBe(100)
-    expect(initialState).toBe(state)
+  })
+
+  it('the state is read-only externally', async () => {
+    const { state, execute } = useAsyncState(p1, 0)
+    expect(state.value).toBe(0)
+    expect(isReadonly(state)).toBeTruthy()
+    await execute(0, 2)
+    expect(state.value).toBe(2)
   })
 
   it('does not set `state` from an outdated execution', async () => {
