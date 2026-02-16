@@ -18,8 +18,15 @@ function clickedFn() {
   <button @click="clickedFn">
     Smash me!
   </button>
+  <button @click="debouncedFn.cancel()">
+    Cancel
+  </button>
+  <button @click="debouncedFn.flush()">
+    Flush
+  </button>
   <note>Delay is set to 1000ms and maxWait is set to 5000ms for this demo.</note>
 
+  <p>Pending: {{ debouncedFn.isPending }}</p>
   <p>Button clicked: {{ clicked }}</p>
   <p>Event handler called: {{ updated }}</p>
 </template>
