@@ -1,28 +1,30 @@
+import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { shallowRef } from 'vue'
 import { useFocusWithin } from './index'
 
 describe('useFocusWithin', () => {
-  let parent: HTMLFormElement
-  let child: HTMLDivElement
-  let child2: HTMLDivElement
-  let grandchild: HTMLInputElement
+  let parent: Ref<HTMLFormElement>
+  let child: Ref<HTMLDivElement>
+  let child2: Ref<HTMLDivElement>
+  let grandchild: Ref<HTMLInputElement>
 
   beforeEach(() => {
-    parent = document.createElement('form')
-    parent.tabIndex = 0
-    document.body.appendChild(parent)
+    parent = shallowRef(document.createElement('form'))
+    parent.value.tabIndex = 0
+    document.body.appendChild(parent.value)
 
-    child = document.createElement('div')
-    child.tabIndex = 0
-    parent.appendChild(child)
+    child = shallowRef(document.createElement('div'))
+    child.value.tabIndex = 0
+    parent.value.appendChild(child.value)
 
-    child2 = document.createElement('div')
-    child2.tabIndex = 0
-    parent.appendChild(child2)
+    child2 = shallowRef(document.createElement('div'))
+    child2.value.tabIndex = 0
+    parent.value.appendChild(child2.value)
 
-    grandchild = document.createElement('input')
-    grandchild.tabIndex = 0
-    child.appendChild(grandchild)
+    grandchild = shallowRef(document.createElement('input'))
+    grandchild.value.tabIndex = 0
+    child.value.appendChild(grandchild.value)
   })
 
   it('should be defined', () => {
@@ -52,16 +54,16 @@ describe('useFocusWithin', () => {
 
     expect(focused.value).toBeFalsy()
 
-    child?.focus()
+    child.value?.focus()
     expect(focused.value).toBeTruthy()
 
-    child?.blur()
+    child.value?.blur()
     expect(focused.value).toBeFalsy()
 
-    grandchild?.focus()
+    grandchild.value?.focus()
     expect(focused.value).toBeTruthy()
 
-    grandchild?.blur()
+    grandchild.value?.blur()
     expect(focused.value).toBeFalsy()
   })
 
@@ -70,16 +72,16 @@ describe('useFocusWithin', () => {
 
     expect(focused.value).toBeFalsy()
 
-    child?.focus()
+    child.value?.focus()
     expect(focused.value).toBeTruthy()
 
-    child2?.focus()
+    child2.value?.focus()
     expect(focused.value).toBeTruthy()
 
-    child?.focus()
+    child.value?.focus()
     expect(focused.value).toBeTruthy()
 
-    child?.blur()
+    child.value?.blur()
     expect(focused.value).toBeFalsy()
   })
 
@@ -99,7 +101,7 @@ describe('useFocusWithin', () => {
     parent.value.focus()
     expect(focused.value).toBeFalsy()
 
-    child.focus()
+    child.value.focus()
     expect(focused.value).toBeFalsy()
   })
 })
