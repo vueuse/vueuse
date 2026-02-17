@@ -40,10 +40,10 @@ describe('useFocusWithin', () => {
 
     expect(focused.value).toBeFalsy()
 
-    parent.value?.focus()
+    parent?.focus()
     expect(focused.value).toBeTruthy()
 
-    parent.value?.blur()
+    parent?.blur()
     expect(focused.value).toBeFalsy()
   })
 
@@ -96,7 +96,7 @@ describe('useFocusWithin', () => {
 
     expect(focused.value).toBeFalsy()
 
-    parent.value.focus()
+    parent.focus()
     expect(focused.value).toBeFalsy()
 
     child.focus()
