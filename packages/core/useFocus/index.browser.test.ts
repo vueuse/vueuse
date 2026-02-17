@@ -1,15 +1,15 @@
-import type { Ref } from 'vue'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { shallowRef } from 'vue'
+import { userEvent } from 'vitest/browser'
 import { useFocus } from './index'
 
 describe('useFocus', () => {
-  let target: Ref<HTMLButtonElement>
+  let target: HTMLButtonElement
 
   beforeEach(() => {
-    target = shallowRef(document.createElement('button'))
-    target.value.tabIndex = 0
-    document.body.appendChild(target.value)
+    document.body.innerHTML = ''
+    target = document.createElement('button')
+    target.tabIndex = 0
+    document.body.appendChild(target)
   })
 
   it('should be defined', () => {
@@ -27,10 +27,10 @@ describe('useFocus', () => {
 
     expect(focused.value).toBeFalsy()
 
-    target.value?.focus()
+    target?.focus()
     expect(focused.value).toBeTruthy()
 
-    target.value?.blur()
+    target?.blur()
     expect(focused.value).toBeFalsy()
   })
 
@@ -40,26 +40,28 @@ describe('useFocus', () => {
     expect(focused.value).toBeFalsy()
 
     focused.value = true
-    expect(document.activeElement).toBe(target.value)
+    expect(document.activeElement).toBe(target)
 
     focused.value = false
-    expect(document.activeElement).not.toBe(target.value)
+    expect(document.activeElement).not.toBe(target)
   })
 
-  it('should only focus when :focus-visible matches with focusVisible=true', () => {
+  it('should only focus when :focus-visible matches with focusVisible=true', async () => {
     const { focused } = useFocus(target, { focusVisible: true })
 
-    let event = new Event('focus')
-    Object.defineProperty(event, 'target', { value: { matches: () => true }, enumerable: true })
-    target.value?.dispatchEvent(event)
+    await userEvent.tab()
     expect(focused.value).toBeTruthy()
 
-    target.value?.dispatchEvent(new Event('blur'))
+    await userEvent.tab()
     expect(focused.value).toBeFalsy()
 
-    event = new Event('focus')
-    Object.defineProperty(event, 'target', { value: { matches: () => false }, enumerable: true })
-    target.value?.dispatchEvent(event)
+    target = document.createElement('button')
+    target.tabIndex = 0
+    document.body.appendChild(target)
+
+    await userEvent.tab()
+    await userEvent.tab()
+
     expect(focused.value).toBeFalsy()
   })
 
@@ -75,7 +77,7 @@ describe('useFocus', () => {
     it('should initialize focus', async () => {
       const { focused } = useFocus(target, { initialValue: true })
 
-      expect(document.activeElement).toBe(target.value)
+      expect(document.activeElement).toBe(target)
       expect(focused.value).toBeTruthy()
     })
   })

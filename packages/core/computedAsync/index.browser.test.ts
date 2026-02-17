@@ -310,7 +310,7 @@ describe('computedAsync', () => {
 
   it('type when lazy is a boolean', async () => {
     const lazy: boolean = true
-    const data = [] as string[]
+    const data: string[] = []
     const data1 = computedAsync(async () => data, [], { lazy })
     const data2 = computedAsync(async () => data, undefined, { lazy })
 
