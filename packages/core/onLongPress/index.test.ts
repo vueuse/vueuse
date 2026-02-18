@@ -71,6 +71,60 @@ describe('onLongPress', () => {
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
   }
 
+  async function notTriggerCallbackWhenTargetDifferent(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { self: true } })
+
+    const differentElement = document.createElement('span')
+    const eventWithDifferentTarget = new PointerEvent('pointerdown', {
+      cancelable: true,
+      bubbles: true,
+    })
+
+    Object.defineProperty(eventWithDifferentTarget, 'target', {
+      value: differentElement,
+      writable: false,
+    })
+
+    element.value.dispatchEvent(eventWithDifferentTarget)
+
+    await vi.advanceTimersByTimeAsync(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
+  async function notTriggerCallbackOnTouchPointerType(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback)
+
+    const touchPointerDownEvent = new PointerEvent('pointerdown', {
+      cancelable: true,
+      bubbles: true,
+      pointerType: 'touch',
+    })
+    const touchPointerMoveEvent = new PointerEvent('pointermove', {
+      cancelable: true,
+      bubbles: true,
+      pointerType: 'touch',
+    })
+    const touchPointerUpEvent = new PointerEvent('pointerup', {
+      cancelable: true,
+      bubbles: true,
+      pointerType: 'touch',
+    })
+
+    element.value.dispatchEvent(touchPointerDownEvent)
+
+    await vi.advanceTimersByTimeAsync(250)
+
+    element.value.dispatchEvent(touchPointerMoveEvent)
+    element.value.dispatchEvent(touchPointerUpEvent)
+
+    await vi.advanceTimersByTimeAsync(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
   async function workOnceAndPreventModifiers(isRef: boolean) {
     const onLongPressCallback = vi.fn()
     onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { once: true, prevent: true } })
@@ -227,6 +281,28 @@ describe('onLongPress', () => {
     onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { self: true } })
 
     childElement.value.dispatchEvent(touchstartEvent)
+
+    await vi.advanceTimersByTimeAsync(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
+  async function notTriggerCallbackWhenTargetDifferentOnTouch(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { self: true } })
+
+    const differentElement = document.createElement('span')
+    const eventWithDifferentTarget = new TouchEvent('touchstart', {
+      cancelable: true,
+      bubbles: true,
+    })
+
+    Object.defineProperty(eventWithDifferentTarget, 'target', {
+      value: differentElement,
+      writable: false,
+    })
+
+    element.value.dispatchEvent(eventWithDifferentTarget)
 
     await vi.advanceTimersByTimeAsync(500)
 
@@ -483,6 +559,10 @@ describe('onLongPress', () => {
 
       it('should not trigger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
 
+      it('should not trigger longpress when event target is different element with self modifier', () => notTriggerCallbackWhenTargetDifferent(isRef))
+
+      it('should reject pointer events with touch type to prevent double-handling', () => notTriggerCallbackOnTouchPointerType(isRef))
+
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
 
       it('should stop propagation', () => stopPropagation(isRef))
@@ -498,6 +578,8 @@ describe('onLongPress', () => {
       it('should trigger longpress after options.delay ms on touch', () => triggerCallbackWithDelayOnTouch(isRef))
 
       it('should not trigger longpress when child element on longpress on touch', () => notTriggerCallbackOnChildLongPressOnTouch(isRef))
+
+      it('should not trigger longpress when event target is different element with self modifier on touch', () => notTriggerCallbackWhenTargetDifferentOnTouch(isRef))
 
       it('should work with once and prevent modifiers on touch', () => workOnceAndPreventModifiersOnTouch(isRef))
 
