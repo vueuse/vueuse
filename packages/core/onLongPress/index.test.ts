@@ -125,6 +125,92 @@ describe('onLongPress', () => {
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
   }
 
+  async function notTriggerCallbackOnMoveWithDifferentTarget(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { self: true } })
+
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await vi.advanceTimersByTimeAsync(250)
+
+    const differentElement = document.createElement('span')
+    const moveEventWithDifferentTarget = new PointerEvent('pointermove', {
+      cancelable: true,
+      bubbles: true,
+    })
+
+    Object.defineProperty(moveEventWithDifferentTarget, 'target', {
+      value: differentElement,
+      writable: false,
+    })
+
+    element.value.dispatchEvent(moveEventWithDifferentTarget)
+
+    await vi.advanceTimersByTimeAsync(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+  }
+
+  async function notTriggerCallbackWithDisabledThreshold(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { distanceThreshold: false })
+
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true, clientX: 20, clientY: 20 })
+    const largeMoveEvent = new PointerEvent('pointermove', { cancelable: true, bubbles: true, clientX: 100, clientY: 100 })
+
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await vi.advanceTimersByTimeAsync(250)
+
+    element.value.dispatchEvent(largeMoveEvent)
+
+    await vi.advanceTimersByTimeAsync(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(1)
+  }
+
+  async function notTriggerCallbackOnMoveWithoutStart(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback)
+
+    const moveEvent = new PointerEvent('pointermove', { cancelable: true, bubbles: true, clientX: 50, clientY: 50 })
+    element.value.dispatchEvent(moveEvent)
+
+    await vi.advanceTimersByTimeAsync(500)
+
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
+  async function notTriggerOnMouseUpWithDifferentTarget(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    const onMouseUpCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, {
+      onMouseUp: onMouseUpCallback,
+      modifiers: { self: true },
+    })
+
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await vi.advanceTimersByTimeAsync(250)
+
+    const differentElement = document.createElement('span')
+    const releaseEventWithDifferentTarget = new PointerEvent('pointerup', {
+      cancelable: true,
+      bubbles: true,
+    })
+
+    Object.defineProperty(releaseEventWithDifferentTarget, 'target', {
+      value: differentElement,
+      writable: false,
+    })
+
+    element.value.dispatchEvent(releaseEventWithDifferentTarget)
+
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(0)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
   async function workOnceAndPreventModifiers(isRef: boolean) {
     const onLongPressCallback = vi.fn()
     onLongPress(isRef ? element : element.value, onLongPressCallback, { modifiers: { once: true, prevent: true } })
@@ -562,6 +648,14 @@ describe('onLongPress', () => {
       it('should not trigger longpress when event target is different element with self modifier', () => notTriggerCallbackWhenTargetDifferent(isRef))
 
       it('should reject pointer events with touch type to prevent double-handling', () => notTriggerCallbackOnTouchPointerType(isRef))
+
+      it('should not process move events with different target when self modifier is set', () => notTriggerCallbackOnMoveWithDifferentTarget(isRef))
+
+      it('should allow movement when distance threshold is disabled', () => notTriggerCallbackWithDisabledThreshold(isRef))
+
+      it('should handle move events without start position', () => notTriggerCallbackOnMoveWithoutStart(isRef))
+
+      it('should not trigger onMouseUp when release event has different target with self modifier', () => notTriggerOnMouseUpWithDifferentTarget(isRef))
 
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
 
