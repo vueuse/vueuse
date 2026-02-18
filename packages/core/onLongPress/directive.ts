@@ -2,7 +2,7 @@ import type { OnLongPressOptions } from '@vueuse/core'
 import type { ObjectDirective } from 'vue'
 import { onLongPress } from '@vueuse/core'
 
-type BindingValueFunction = (evt: PointerEvent) => void
+type BindingValueFunction = (evt: PointerEvent | TouchEvent) => void
 
 type BindingValueArray = [
   BindingValueFunction,
