@@ -1,8 +1,9 @@
 import type { InjectionKey } from 'vue'
 import { injectLocal } from '../injectLocal'
+import { makeDestructurable } from '../makeDestructurable'
 import { provideLocal } from '../provideLocal'
 
-export type CreateInjectionStateReturn<Arguments extends Array<any>, Return> = Readonly<[
+export type CreateInjectionStateTuple<Arguments extends Array<any>, Return> = Readonly<[
   /**
    * Call this function in a provider component to create and provide the state.
    *
@@ -17,6 +18,20 @@ export type CreateInjectionStateReturn<Arguments extends Array<any>, Return> = R
    */
   useInjectedState: () => Return | undefined,
 ]>
+
+export interface CreateInjectionStateObject<Arguments extends Array<any>, Return> extends Record<string | number, unknown> {
+  /** provider side function */
+  useProvidingState: (...args: Arguments) => Return
+  /** consumer side function */
+  useInjectedState: () => Return | undefined
+  /** alias: same as useProvidingState */
+  provide: (...args: Arguments) => Return
+  /** alias: same as useInjectedState */
+  inject: () => Return | undefined
+}
+
+export type CreateInjectionStateReturn<Arguments extends Array<any>, Return>
+  = CreateInjectionStateTuple<Arguments, Return> & CreateInjectionStateObject<Arguments, Return>
 
 export interface CreateInjectionStateOptions<Return> {
   /**
@@ -34,6 +49,11 @@ export interface CreateInjectionStateOptions<Return> {
  *
  * @see https://vueuse.org/createInjectionState
  *
+ * Supports both array and object destructuring:
+ * const [provide, inject] = createInjectionState(...)
+ * const { provide, inject } = createInjectionState(...)
+ * Aliases: useProvidingState -> provide, useInjectedState -> inject
+ *
  * @__NO_SIDE_EFFECTS__
  */
 export function createInjectionState<Arguments extends Array<any>, Return>(
@@ -48,5 +68,17 @@ export function createInjectionState<Arguments extends Array<any>, Return>(
     return state
   }
   const useInjectedState = () => injectLocal(key, defaultValue)
-  return [useProvidingState, useInjectedState]
+  const obj: CreateInjectionStateObject<Arguments, Return> = {
+    useProvidingState,
+    useInjectedState,
+    provide: useProvidingState,
+    inject: useInjectedState,
+  }
+
+  const destructurable = makeDestructurable<CreateInjectionStateObject<Arguments, Return>, CreateInjectionStateTuple<Arguments, Return>>(
+    obj,
+    [useProvidingState, useInjectedState] as CreateInjectionStateTuple<Arguments, Return>,
+  ) as CreateInjectionStateReturn<Arguments, Return>
+
+  return destructurable
 }

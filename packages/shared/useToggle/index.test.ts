@@ -11,9 +11,6 @@ describe('useToggle', () => {
     const result = useToggle()
     const [value, toggle] = result
 
-    expect(Array.isArray(result)).toBe(true)
-    expect(result.length).toBe(2)
-
     expect(typeof toggle).toBe('function')
     expect(isRef(value)).toBe(true)
     expect(toValue(value)).toBe(false)
@@ -22,9 +19,6 @@ describe('useToggle', () => {
   it('default result with initialValue', () => {
     const result = useToggle(true)
     const [value, toggle] = result
-
-    expect(Array.isArray(result)).toBe(true)
-    expect(result.length).toBe(2)
 
     expect(typeof toggle).toBe('function')
     expect(isRef(value)).toBe(true)
@@ -93,5 +87,37 @@ describe('useToggle', () => {
 
     expect(toggle('ON')).toBe('ON')
     expect(toValue(status)).toBe('ON')
+  })
+
+  it('should toggle primitive boolean via array destructuring', () => {
+    const [state, toggle] = useToggle()
+    expect(state.value).toBe(false)
+    toggle()
+    expect(state.value).toBe(true)
+    toggle(false)
+    expect(state.value).toBe(false)
+  })
+
+  it('should support object destructuring access', () => {
+    const { state, toggle } = useToggle(true)
+    expect(state.value).toBe(true)
+    toggle()
+    expect(state.value).toBe(false)
+  })
+
+  it('should return a function when passing a ref', () => {
+    const r = shallowRef(false)
+    const toggle = useToggle(r)
+    toggle()
+    expect(r.value).toBe(true)
+  })
+
+  it('should respect custom truthy/falsy values', () => {
+    const { state, toggle } = useToggle<'ON' | 'OFF', 'OFF' | 'ON', string>('OFF', { truthyValue: 'ON', falsyValue: 'OFF' })
+    expect(state.value).toBe('OFF')
+    toggle()
+    expect(state.value).toBe('ON')
+    toggle()
+    expect(state.value).toBe('OFF')
   })
 })
