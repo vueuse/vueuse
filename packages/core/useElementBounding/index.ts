@@ -36,6 +36,19 @@ export interface UseElementBoundingOptions {
   immediate?: boolean
 
   /**
+   * Delay (in milliseconds) before calling the `update()` function after the component is mounted.
+   *
+   * This ensures the initial bounding box is computed correctly, especially when the target element
+   * has a transition effect. Without a delay, `update()` might be called prematurely, leading to
+   * inaccurate calculations if the element's layout is still in flux.
+   *
+   * Use this option to allow animations or transitions to complete before the bounding box is measured.
+   *
+   * @default 0
+   */
+  immediateWithDelay?: number
+
+  /**
    * Timing to recalculate the bounding box
    *
    * Setting to `next-frame` can be useful when using this together with something like {@link useBreakpoints}
@@ -73,6 +86,7 @@ export function useElementBounding(
     windowResize = true,
     windowScroll = true,
     immediate = true,
+    immediateWithDelay = 0,
     updateTiming = 'sync',
   } = options
 
@@ -136,6 +150,8 @@ export function useElementBounding(
   tryOnMounted(() => {
     if (immediate)
       update()
+    if (immediateWithDelay)
+      setTimeout(update, immediateWithDelay)
   })
 
   return {
