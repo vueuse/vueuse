@@ -107,7 +107,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     })
 
     if (options.autoImports) {
-      // auto import
+      // auto import functions
       nuxt.hook('imports:sources', (sources: (Import | Preset)[]) => {
         if (sources.find(i => fullPackages.includes((i as Import).from)))
           return
@@ -155,6 +155,44 @@ export default defineNuxtModule<VueUseNuxtOptions>({
             imports,
             priority: -1,
           })
+        }
+
+        // Auto-import directives from @vueuse/components if installed
+        if (isPackageExists(
+          '@vueuse/components',
+          { paths: nuxt.options._layers.map(layer => layer.config.rootDir) },
+        )) {
+          const directiveImports = metadata
+            .functions
+            .filter(i => i.directive && !i.internal)
+            .map((i): Import => {
+              // Convert function name to directive name
+              // onClickOutside -> vOnClickOutside
+              // useElementSize -> vElementSize
+              const directiveName = i.name.startsWith('on')
+                ? `v${i.name.charAt(0).toUpperCase()}${i.name.slice(1)}`
+                : `v${i.name.replace(/^use/, '')}`
+
+              return {
+                from: '@vueuse/components',
+                name: directiveName,
+                as: directiveName,
+                priority: -1,
+                meta: {
+                  description: `Directive version of ${i.name}`,
+                  docsUrl: i.docs,
+                  category: i.category,
+                },
+              }
+            })
+
+          if (directiveImports.length > 0) {
+            sources.push({
+              from: '@vueuse/components',
+              imports: directiveImports,
+              priority: -1,
+            })
+          }
         }
       })
     }
