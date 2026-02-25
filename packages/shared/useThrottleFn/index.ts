@@ -21,15 +21,24 @@ import { createFilterWrapper, throttleFilter } from '../utils'
  *
  * @__NO_SIDE_EFFECTS__
  */
+
+export type CancelableFn<T extends FunctionArgs>
+  = PromisifyFn<T> & {
+    /**
+     * Cancel any pending throttled invocation.
+     */
+    cancel: () => void
+  }
+
 export function useThrottleFn<T extends FunctionArgs>(
   fn: T,
   ms: MaybeRefOrGetter<number> = 200,
   trailing = false,
   leading = true,
   rejectOnCancel = false,
-): PromisifyFn<T> {
-  return createFilterWrapper(
-    throttleFilter(ms, trailing, leading, rejectOnCancel),
-    fn,
-  )
+): CancelableFn<T> {
+  const filter = throttleFilter(ms, trailing, leading, rejectOnCancel)
+  const wrapper = createFilterWrapper(filter, fn) as CancelableFn<T>
+  wrapper.cancel = filter.clear
+  return wrapper
 }
