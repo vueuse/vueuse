@@ -58,7 +58,7 @@ describe('onStartTyping', () => {
     }
 
     for (let i = 0; i < functionKeys.length; i++) {
-      await userEvent.fill(element, String.fromCharCode(functionKeys[i]) + String.fromCharCode(functionKeys[i]))
+      await userEvent.fill(element, String.fromCharCode(functionKeys[i]))
     }
 
     expect(callBackFn).toBeCalledTimes(0)
