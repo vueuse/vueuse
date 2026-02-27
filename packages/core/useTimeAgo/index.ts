@@ -16,9 +16,11 @@ export interface UseTimeAgoMessagesBuiltIn {
   invalid: string
 }
 
+type CustomUnit<UnitNames extends string> = Record<Exclude<UnitNames, keyof UseTimeAgoMessagesBuiltIn>, string | UseTimeAgoFormatter<number>>
+
 export type UseTimeAgoMessages<UnitNames extends string = UseTimeAgoUnitNamesDefault>
   = UseTimeAgoMessagesBuiltIn
-    & Record<UnitNames, string | UseTimeAgoFormatter<number>>
+    & CustomUnit<UnitNames>
 
 export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitNamesDefault> {
   /**
@@ -36,7 +38,7 @@ export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitN
   /**
    * Messages for formatting the string
    */
-  messages?: UseTimeAgoMessages<UnitNames>
+  messages?: Partial<UseTimeAgoMessages<UnitNames>>
 
   /**
    * Minimum display time unit (default is minute)
@@ -75,7 +77,7 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
   updateInterval?: number
 }
 
-export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
+export interface UseTimeAgoUnit<Unit extends string> {
   max: number
   value: number
   name: Unit
@@ -91,7 +93,7 @@ const DEFAULT_UNITS: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[] = [
   { max: Number.POSITIVE_INFINITY, value: 31536000000, name: 'year' },
 ]
 
-const DEFAULT_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
+const USE_TIME_AGO_MESSAGES_DEFAULT: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
   justNow: 'just now',
   past: n => n.match(/\d/) ? `${n} ago` : n,
   future: n => n.match(/\d/) ? `in ${n}` : n,
@@ -180,12 +182,13 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
 export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(from: Date, options: FormatTimeAgoOptions<UnitNames> = {}, now: Date | number = Date.now()): string {
   const {
     max,
-    messages = DEFAULT_MESSAGES as UseTimeAgoMessages<UnitNames>,
     fullDateFormatter = DEFAULT_FORMATTER,
     units = DEFAULT_UNITS as UseTimeAgoUnit<UnitNames>[],
     showSecond = false,
     rounding = 'round',
   } = options
+
+  const messages = { ...USE_TIME_AGO_MESSAGES_DEFAULT, ...options.messages } as UseTimeAgoMessages<UnitNames>
 
   const roundFn = typeof rounding === 'number'
     ? (n: number) => +n.toFixed(rounding)
@@ -202,11 +205,11 @@ export function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefa
     const val = getValue(diff, unit)
     const past = diff > 0
 
-    const str = applyFormat(unit.name as UnitNames, val, past)
+    const str = applyFormat(unit.name as keyof UseTimeAgoMessages<UnitNames>, val, past)
     return applyFormat(past ? 'past' : 'future', str, past)
   }
 
-  function applyFormat(name: UnitNames | keyof UseTimeAgoMessagesBuiltIn, val: number | string, isPast: boolean) {
+  function applyFormat(name: keyof UseTimeAgoMessages<UnitNames>, val: number | string, isPast: boolean) {
     const formatter = messages[name]
     if (typeof formatter === 'function')
       return formatter(val as never, isPast)
