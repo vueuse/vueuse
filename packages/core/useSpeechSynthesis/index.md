@@ -17,7 +17,6 @@ const {
   isSupported,
   isPlaying,
   status,
-  voiceInfo,
   utterance,
   error,
   stop,
