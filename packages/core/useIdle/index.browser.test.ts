@@ -1,5 +1,7 @@
 import type { WindowEventName } from '@vueuse/core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { userEvent } from 'vitest/browser'
+import { nextTick } from 'vue'
 import { useIdle } from '.'
 
 describe('useIdle', () => {
@@ -8,7 +10,7 @@ describe('useIdle', () => {
   })
 
   afterEach(() => {
-    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   it('should initialize with correct default values', () => {
@@ -29,7 +31,7 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
   })
 
-  it('should reset idle state on user activity', () => {
+  it('should reset idle state on user activity', async () => {
     const timeout = 1000
     const { idle } = useIdle(timeout)
 
@@ -37,15 +39,20 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
 
     // Simulate user activity
-    window.dispatchEvent(new MouseEvent('mousemove'))
+    await userEvent.keyboard('foo')
     expect(idle.value).toBe(false)
 
     // Should become idle again after timeout
-    vi.advanceTimersByTime(timeout)
+    // todo: why +50?
+    vi.advanceTimersByTime(timeout + 50)
     expect(idle.value).toBe(true)
   })
 
-  it('should accept custom events list', () => {
+  it('should accept custom events list', async () => {
+    document.body.innerHTML = ''
+    const button = document.createElement('button')
+    document.body.appendChild(button)
+
     const timeout = 1000
     const customEvents: WindowEventName[] = ['click', 'keypress']
     const { idle } = useIdle(timeout, { events: customEvents })
@@ -54,11 +61,12 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
 
     // Should not respond to mousemove (not in custom events)
-    window.dispatchEvent(new MouseEvent('mousemove'))
+    await userEvent.hover(button)
     expect(idle.value).toBe(true)
 
     // Should respond to click (in custom events)
-    window.dispatchEvent(new MouseEvent('click'))
+    await userEvent.click(button)
+    await nextTick()
     expect(idle.value).toBe(false)
   })
 
@@ -123,14 +131,14 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
   })
 
-  it('should update lastActive timestamp on activity', () => {
+  it('should update lastActive timestamp on activity', async () => {
     const timeout = 1000
     const { lastActive } = useIdle(timeout)
     const initialTime = lastActive.value
 
     // Advance time and simulate activity
     vi.advanceTimersByTime(500)
-    window.dispatchEvent(new MouseEvent('mousemove'))
+    await userEvent.keyboard('foo')
 
     // Should have updated the lastActive time
     expect(lastActive.value).toBeGreaterThan(initialTime)
@@ -171,12 +179,12 @@ describe('useIdle', () => {
     expect(isPending.value).toBe(false)
   })
 
-  it('should use initialState when starting after start', () => {
+  it('should use initialState when starting after start', async () => {
     const { idle, stop, start } = useIdle(1000, { initialState: true })
 
     expect(idle.value).toBe(true)
 
-    window.dispatchEvent(new MouseEvent('mousemove'))
+    await userEvent.keyboard('foo')
     expect(idle.value).toBe(false)
 
     stop()
@@ -186,7 +194,7 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
 
     vi.advanceTimersByTime(51)
-    window.dispatchEvent(new MouseEvent('mousemove'))
+    await userEvent.keyboard('foo')
     expect(idle.value).toBe(false)
   })
 

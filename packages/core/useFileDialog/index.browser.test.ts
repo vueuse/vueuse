@@ -2,16 +2,6 @@ import { describe, expect, it, vi } from 'vitest'
 import { nextTick, shallowRef } from 'vue'
 import { useFileDialog } from './index'
 
-class DataTransferMock {
-  items = new Set()
-
-  get files() {
-    return this.items.values()
-  }
-}
-
-vi.stubGlobal('DataTransfer', DataTransferMock)
-
 describe('useFileDialog', () => {
   const file1 = new File(['content1'], 'file1.txt', { type: 'text/plain' })
   const file2 = new File(['content2'], 'file2.txt', { type: 'text/plain' })
