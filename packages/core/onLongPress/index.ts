@@ -14,7 +14,7 @@ export interface OnLongPressOptions {
    *
    * @default 500
    */
-  delay?: number | ((ev: PointerEvent) => number)
+  delay?: number | ((ev: PointerEvent | TouchEvent) => number)
 
   modifiers?: OnLongPressModifiers
 
@@ -32,7 +32,7 @@ export interface OnLongPressOptions {
    * @param isLongPress whether the action was a long press or not
    * @param pointerEvent the native {@link PointerEvent} triggered by the browser
    */
-  onMouseUp?: (duration: number, distance: number, isLongPress: boolean, pointerEvent: PointerEvent) => void
+  onMouseUp?: (duration: number, distance: number, isLongPress: boolean, pointerEvent: PointerEvent | TouchEvent) => void
 }
 
 export interface OnLongPressModifiers {
@@ -49,7 +49,7 @@ export type UseOnLongPressReturn = OnLongPressReturn
 
 export function onLongPress(
   target: MaybeElementRef,
-  handler: (evt: PointerEvent) => void,
+  handler: (evt: PointerEvent | TouchEvent) => void,
   options?: OnLongPressOptions,
 ): OnLongPressReturn {
   const elementRef = computed(() => unrefElement(target))
@@ -69,7 +69,7 @@ export function onLongPress(
     hasLongPressed = false
   }
 
-  function getDelay(ev: PointerEvent): number {
+  function getDelay(ev: PointerEvent | TouchEvent): number {
     const delay = options?.delay
     if (typeof delay === 'function') {
       return delay(ev)
@@ -77,33 +77,19 @@ export function onLongPress(
     return delay ?? DEFAULT_DELAY
   }
 
-  function onRelease(ev: PointerEvent) {
-    const [_startTimestamp, _posStart, _hasLongPressed] = [startTimestamp, posStart, hasLongPressed]
-    clear()
-
-    if (!options?.onMouseUp || !_posStart || !_startTimestamp)
-      return
-
-    if (options?.modifiers?.self && ev.target !== elementRef.value)
-      return
-
-    if (options?.modifiers?.prevent)
-      ev.preventDefault()
-
-    if (options?.modifiers?.stop)
-      ev.stopPropagation()
-
-    const dx = ev.x - _posStart.x
-    const dy = ev.y - _posStart.y
-    const distance = Math.sqrt(dx * dx + dy * dy)
-    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed, ev)
+  function getEventCoordinates(ev: PointerEvent | TouchEvent): { x: number, y: number } {
+    if ('x' in ev) {
+      return { x: ev.x, y: ev.y }
+    }
+    return {
+      x: ev.touches[0]?.clientX ?? 0,
+      y: ev.touches[0]?.clientY ?? 0,
+    }
   }
 
-  function onDown(ev: PointerEvent) {
+  function processModifiers(ev: PointerEvent | TouchEvent): boolean {
     if (options?.modifiers?.self && ev.target !== elementRef.value)
-      return
-
-    clear()
+      return false
 
     if (options?.modifiers?.prevent)
       ev.preventDefault()
@@ -111,10 +97,20 @@ export function onLongPress(
     if (options?.modifiers?.stop)
       ev.stopPropagation()
 
-    posStart = {
-      x: ev.x,
-      y: ev.y,
-    }
+    return true
+  }
+
+  function handleStart(ev: PointerEvent | TouchEvent) {
+    if ('pointerType' in ev && ev.pointerType === 'touch')
+      return
+
+    if (!processModifiers(ev))
+      return
+
+    clear()
+
+    const coords = getEventCoordinates(ev)
+    posStart = coords
     startTimestamp = ev.timeStamp
     timeout = setTimeout(
       () => {
@@ -125,24 +121,66 @@ export function onLongPress(
     )
   }
 
-  function onMove(ev: PointerEvent) {
-    if (options?.modifiers?.self && ev.target !== elementRef.value)
+  function handleMove(ev: PointerEvent | TouchEvent) {
+    if ('pointerType' in ev && ev.pointerType === 'touch')
       return
+
+    if (!processModifiers(ev))
+      return
+
+    if ('touches' in ev) {
+      const coords = getEventCoordinates(ev)
+      if (isTouchOut(coords.x, coords.y))
+        return
+    }
 
     if (!posStart || options?.distanceThreshold === false)
       return
 
-    if (options?.modifiers?.prevent)
-      ev.preventDefault()
-
-    if (options?.modifiers?.stop)
-      ev.stopPropagation()
-
-    const dx = ev.x - posStart.x
-    const dy = ev.y - posStart.y
+    const coords = getEventCoordinates(ev)
+    const dx = coords.x - posStart.x
+    const dy = coords.y - posStart.y
     const distance = Math.sqrt(dx * dx + dy * dy)
     if (distance >= (options?.distanceThreshold ?? DEFAULT_THRESHOLD))
       clear()
+  }
+
+  function handleRelease(ev: PointerEvent | TouchEvent) {
+    if ('pointerType' in ev && ev.pointerType === 'touch')
+      return
+
+    const [_startTimestamp, _posStart, _hasLongPressed] = [
+      startTimestamp,
+      posStart,
+      hasLongPressed,
+    ]
+    clear()
+
+    if (!options?.onMouseUp || !_posStart || !_startTimestamp)
+      return
+
+    if (!processModifiers(ev))
+      return
+
+    const coords = getEventCoordinates(ev)
+    const dx = coords.x - _posStart.x
+    const dy = coords.y - _posStart.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
+    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed, ev)
+  }
+
+  function isTouchOut(x: number, y: number): boolean {
+    const { left, right, top, bottom } = elementRef.value?.getBoundingClientRect() ?? {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+    }
+    const isOutOfBound = x < left || x > right || y < top || y > bottom
+    if (isOutOfBound) {
+      elementRef.value?.dispatchEvent(new CustomEvent('touchout'))
+    }
+    return isOutOfBound
   }
 
   const listenerOptions: AddEventListenerOptions = {
@@ -151,9 +189,12 @@ export function onLongPress(
   }
 
   const cleanup = [
-    useEventListener(elementRef, 'pointerdown', onDown, listenerOptions),
-    useEventListener(elementRef, 'pointermove', onMove, listenerOptions),
-    useEventListener(elementRef, ['pointerup', 'pointerleave'], onRelease, listenerOptions),
+    useEventListener(elementRef, 'pointerdown', handleStart, listenerOptions),
+    useEventListener(elementRef, 'pointermove', handleMove, listenerOptions),
+    useEventListener(elementRef, ['pointerup', 'pointerleave'], handleRelease, listenerOptions),
+    useEventListener(elementRef, 'touchstart', handleStart, listenerOptions),
+    useEventListener(elementRef, 'touchmove', handleMove, listenerOptions),
+    useEventListener(elementRef, ['touchend', 'touchout'], handleRelease, listenerOptions),
   ]
 
   const stop = () => cleanup.forEach(fn => fn())
