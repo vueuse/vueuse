@@ -5,7 +5,7 @@ import { defaultWindow } from '../_configurable'
 export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
   /**
    * The prefix for the id of the announcer elements.
-   * @default 'vueuse-announcer'
+   * @default 'vueuse-live-announcer'
    */
   idPrefix?: string
 }
@@ -18,7 +18,7 @@ export interface UseLiveAnnouncerReturn {
 
 export function useLiveAnnouncer(options: UseLiveAnnouncerOptions = {}): UseLiveAnnouncerReturn {
   const {
-    idPrefix = 'vueuse-announcer',
+    idPrefix = 'vueuse-live-announcer',
     window = defaultWindow,
   } = options
 

@@ -32,7 +32,7 @@ These ensure robust support across different screen readers.
 ### idPrefix
 
 - Type: `string`
-- Default: `'vueuse-announcer'`
+- Default: `'vueuse-live-announcer'`
 
 Prefix for the id of the announcer elements. The generated elements will have IDs `${idPrefix}-container`, `${idPrefix}-polite`, and `${idPrefix}-assertive`.
 

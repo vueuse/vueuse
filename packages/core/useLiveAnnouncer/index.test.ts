@@ -16,9 +16,9 @@ describe('useLiveAnnouncer', () => {
     announce('Test message')
     await nextTick()
 
-    const container = document.getElementById('vueuse-announcer-container')
-    const polite = document.getElementById('vueuse-announcer-polite')
-    const assertive = document.getElementById('vueuse-announcer-assertive')
+    const container = document.getElementById('vueuse-live-announcer-container')
+    const polite = document.getElementById('vueuse-live-announcer-polite')
+    const assertive = document.getElementById('vueuse-live-announcer-assertive')
 
     expect(container).not.toBeNull()
     expect(polite).not.toBeNull()
@@ -37,7 +37,7 @@ describe('useLiveAnnouncer', () => {
     polite('Polite message')
     await nextTick()
 
-    const politeEl = document.getElementById('vueuse-announcer-polite')
+    const politeEl = document.getElementById('vueuse-live-announcer-polite')
     expect(politeEl?.textContent).toBe('Polite message')
   })
 
@@ -46,7 +46,7 @@ describe('useLiveAnnouncer', () => {
     assertive('Assertive message')
     await nextTick()
 
-    const assertiveEl = document.getElementById('vueuse-announcer-assertive')
+    const assertiveEl = document.getElementById('vueuse-live-announcer-assertive')
     expect(assertiveEl?.textContent).toBe('Assertive message')
   })
 
@@ -58,7 +58,7 @@ describe('useLiveAnnouncer', () => {
     announce('Temp message', 'polite', timeout)
     await nextTick()
 
-    const politeEl = document.getElementById('vueuse-announcer-polite')
+    const politeEl = document.getElementById('vueuse-live-announcer-polite')
     expect(politeEl?.textContent).toBe('Temp message')
 
     vi.advanceTimersByTime(timeout - 10)
@@ -79,7 +79,7 @@ describe('useLiveAnnouncer', () => {
     assertive('Second message', 1000)
     await nextTick()
 
-    const assertiveEl = document.getElementById('vueuse-announcer-assertive')
+    const assertiveEl = document.getElementById('vueuse-live-announcer-assertive')
     expect(assertiveEl?.textContent).toBe('Second message')
 
     vi.advanceTimersByTime(500)
