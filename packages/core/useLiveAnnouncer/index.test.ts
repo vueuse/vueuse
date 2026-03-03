@@ -103,4 +103,10 @@ describe('useLiveAnnouncer', () => {
     expect(assertive).not.toBeNull()
     expect(polite?.textContent).toBe('Custom prefix message')
   })
+
+  it('should handle undefined document', () => {
+    // @ts-expect-error mock window without document
+    const { announce } = useLiveAnnouncer({ window: {} })
+    expect(() => announce('test')).not.toThrow()
+  })
 })
