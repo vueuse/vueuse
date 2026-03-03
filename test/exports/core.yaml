@@ -200,6 +200,7 @@
   useIntervalFn: function
   useKeyModifier: function
   useLastChanged: function
+  useLiveAnnouncer: function
   useLocalStorage: function
   useMagicKeys: function
   useManualRefHistory: function
