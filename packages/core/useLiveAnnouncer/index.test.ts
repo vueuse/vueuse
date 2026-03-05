@@ -109,4 +109,12 @@ describe('useLiveAnnouncer', () => {
     const { announce } = useLiveAnnouncer({ window: {} })
     expect(() => announce('test')).not.toThrow()
   })
+
+  it('should handle invalid parameters', () => {
+    const { announce } = useLiveAnnouncer({ idPrefix: 'defensive-2' })
+    const secondContainer = document.getElementById('defensive-2-container')
+    secondContainer?.remove()
+    // @ts-expect-error testing invalid mode fallback
+    expect(() => announce('test', 'invalid')).not.toThrow()
+  })
 })
