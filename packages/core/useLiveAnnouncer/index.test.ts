@@ -1,5 +1,6 @@
+import * as shared from '@vueuse/shared'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { effectScope, nextTick } from 'vue'
 import { useLiveAnnouncer } from './index'
 
 describe('useLiveAnnouncer', () => {
@@ -110,11 +111,67 @@ describe('useLiveAnnouncer', () => {
     expect(() => announce('test')).not.toThrow()
   })
 
+  it('should cleanup container when scope is disposed', () => {
+    const scope = effectScope()
+
+    scope.run(() => useLiveAnnouncer({ idPrefix: 'test-scope' }))
+    expect(document.getElementById('test-scope-container')).not.toBeNull()
+
+    scope.stop()
+    expect(document.getElementById('test-scope-container')).toBeNull()
+  })
+
+  it('should handle reference counting correctly', () => {
+    const scope = effectScope()
+    const sharedScopeA = effectScope()
+    const sharedScopeB = effectScope()
+
+    scope.run(() => useLiveAnnouncer({ idPrefix: 'test-scope-1' }))
+    sharedScopeA.run(() => useLiveAnnouncer({ idPrefix: 'test-scope-2' }))
+    sharedScopeB.run(() => useLiveAnnouncer({ idPrefix: 'test-scope-2' }))
+    expect(document.getElementById('test-scope-1-container')).not.toBeNull()
+    expect(document.getElementById('test-scope-2-container')).not.toBeNull()
+
+    scope.stop()
+    expect(document.getElementById('test-scope-1-container')).toBeNull()
+    expect(document.getElementById('test-scope-2-container')).not.toBeNull()
+
+    sharedScopeA.stop()
+    expect(document.getElementById('test-scope-1-container')).toBeNull()
+    expect(document.getElementById('test-scope-2-container')).not.toBeNull()
+
+    sharedScopeB.stop()
+    expect(document.getElementById('test-scope-1-container')).toBeNull()
+    expect(document.getElementById('test-scope-2-container')).toBeNull()
+  })
+
+  it('should handle missing DOM elements', () => {
+    const scope = effectScope()
+    scope.run(() => useLiveAnnouncer({ idPrefix: 'defensive' }))
+    const container = document.getElementById('defensive-container')
+    container?.remove()
+    scope.stop()
+  })
+
   it('should handle invalid parameters', () => {
     const { announce } = useLiveAnnouncer({ idPrefix: 'defensive-2' })
     const secondContainer = document.getElementById('defensive-2-container')
     secondContainer?.remove()
     // @ts-expect-error testing invalid mode fallback
     expect(() => announce('test', 'invalid')).not.toThrow()
+  })
+
+  it('should handle manual cleanup', () => {
+    let capturedCleanup: (() => void) | undefined
+    const spy = vi.spyOn(shared, 'tryOnScopeDispose').mockImplementation((fn) => {
+      capturedCleanup = fn as () => void
+      return true
+    })
+    useLiveAnnouncer({ idPrefix: 'manual-test' })
+    if (capturedCleanup) {
+      capturedCleanup()
+      expect(() => capturedCleanup!()).not.toThrow()
+    }
+    spy.mockRestore()
   })
 })

@@ -1,6 +1,9 @@
 import type { ConfigurableWindow } from '../_configurable'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { nextTick } from 'vue'
 import { defaultWindow } from '../_configurable'
+
+const announcerMap = new Map<string, number>()
 
 export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
   /**
@@ -8,6 +11,21 @@ export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
    * @default 'vueuse-live-announcer'
    */
   idPrefix?: string
+}
+
+function cleanup(idPrefix: string) {
+  const count = announcerMap.get(idPrefix) || 0
+
+  if (count <= 1) {
+    const container = document.getElementById(`${idPrefix}-container`)
+    if (container) {
+      container.remove()
+    }
+    announcerMap.delete(idPrefix)
+  }
+  else {
+    announcerMap.set(idPrefix, count - 1)
+  }
 }
 
 export interface UseLiveAnnouncerReturn {
@@ -23,6 +41,15 @@ export function useLiveAnnouncer(options: UseLiveAnnouncerOptions = {}): UseLive
   } = options
 
   const document = window?.document
+
+  if (document) {
+    const count = announcerMap.get(idPrefix) || 0
+    announcerMap.set(idPrefix, count + 1)
+
+    tryOnScopeDispose(() => {
+      cleanup(idPrefix)
+    })
+  }
 
   function ensureAnnouncer() {
     if (!document)
