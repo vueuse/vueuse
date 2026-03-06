@@ -157,6 +157,108 @@ describe('filters', () => {
 
       expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
     })
+
+    it('should cancel pending execution', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(debounceFilter(1000), debouncedFilterSpy)
+
+      filter()
+      vi.advanceTimersByTime(500)
+      filter.cancel()
+      vi.runAllTimers()
+
+      expect(debouncedFilterSpy).not.toHaveBeenCalled()
+    })
+
+    it('should cancel and resolve with undefined when rejectOnCancel is false', async () => {
+      const debouncedSum = createFilterWrapper(
+        debounceFilter(500, { rejectOnCancel: false }),
+        (a: number, b: number) => a + b,
+      )
+
+      const result = debouncedSum(2, 3)
+      vi.advanceTimersByTime(200)
+      debouncedSum.cancel()
+      vi.runAllTimers()
+
+      await expect(result).resolves.toBeUndefined()
+    })
+
+    it('should cancel and reject when rejectOnCancel is true', async () => {
+      const debouncedSum = createFilterWrapper(
+        debounceFilter(500, { rejectOnCancel: true }),
+        (a: number, b: number) => a + b,
+      )
+
+      const result = debouncedSum(2, 3)
+      vi.advanceTimersByTime(200)
+      debouncedSum.cancel()
+      vi.runAllTimers()
+
+      await expect(result).rejects.toBeUndefined()
+    })
+
+    it('should cancel with maxWait timer active', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(
+        debounceFilter(500, { maxWait: 1000 }),
+        debouncedFilterSpy,
+      )
+
+      filter()
+      vi.advanceTimersByTime(300)
+      filter()
+      vi.advanceTimersByTime(300)
+      filter.cancel()
+      vi.runAllTimers()
+
+      expect(debouncedFilterSpy).not.toHaveBeenCalled()
+    })
+
+    it('should allow calling after cancel', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(debounceFilter(500), debouncedFilterSpy)
+
+      filter()
+      filter.cancel()
+      filter()
+      vi.runAllTimers()
+
+      expect(debouncedFilterSpy).toHaveBeenCalledOnce()
+    })
+
+    it('should track pending state', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(debounceFilter(500), debouncedFilterSpy)
+
+      expect(filter.pending).toBe(false)
+
+      filter()
+      expect(filter.pending).toBe(true)
+
+      vi.advanceTimersByTime(500)
+      expect(filter.pending).toBe(false)
+    })
+
+    it('should set pending to false on cancel', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(debounceFilter(500), debouncedFilterSpy)
+
+      filter()
+      expect(filter.pending).toBe(true)
+
+      filter.cancel()
+      expect(filter.pending).toBe(false)
+    })
+
+    it('should set pending to false when duration is 0', () => {
+      const debouncedFilterSpy = vi.fn()
+      const filter = createFilterWrapper(debounceFilter(0), debouncedFilterSpy)
+
+      filter()
+      expect(filter.pending).toBe(false)
+      expect(debouncedFilterSpy).toHaveBeenCalledOnce()
+    })
   })
 
   describe('throttleFilter', () => {
