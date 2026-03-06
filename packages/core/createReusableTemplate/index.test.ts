@@ -105,7 +105,6 @@ describe('createReusableTemplate', () => {
         return h(Fragment, null, [
           h(DefineFoo, ({ $slots, ...args }: any) => h('pre', JSON.stringify(args))),
           h(ReuseFoo, { myMsg: 'Foo' }),
-          // @ts-expect-error Vue automatically converts hyphenized props to camelCase
           h(ReuseFoo, { 'my-msg': 'Bar' }),
         ])
       },
