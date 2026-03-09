@@ -1,4 +1,4 @@
-import type { ComponentObjectPropsOptions, DefineComponent, Slot } from 'vue'
+import type { ComponentObjectPropsOptions, DefineComponent, ExtractPropTypes, Slot } from 'vue'
 import { camelize, makeDestructurable } from '@vueuse/shared'
 import { defineComponent, shallowRef } from 'vue'
 
@@ -59,10 +59,13 @@ export interface CreateReusableTemplateOptions<Props extends Record<string, any>
  * @__NO_SIDE_EFFECTS__
  */
 export function createReusableTemplate<
-  Bindings extends Record<string, any>,
+  Options extends CreateReusableTemplateOptions<Record<string, any>> | Record<string, any>,
   MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals = Record<'default', undefined>,
+  Bindings extends Record<string, any> = Options['props'] extends ComponentObjectPropsOptions
+    ? ExtractPropTypes<Options['props']>
+    : Record<string, any>,
 >(
-  options: CreateReusableTemplateOptions<Bindings> = {},
+  options: Options = {} as Options,
 ): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps> {
   const {
     inheritAttrs = true,
