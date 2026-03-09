@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { userEvent } from 'vitest/browser'
 import { nextTick } from 'vue'
 import { useActiveElement } from './index'
 
@@ -33,30 +34,30 @@ describe('useActiveElement', () => {
     expect(activeElement.value).to.equal(document.body)
   })
 
-  it('should initialise with already-active element', () => {
-    input.focus()
+  it('should initialise with already-active element', async () => {
+    await userEvent.fill(input, 'focus')
 
     const activeElement = useActiveElement()
 
     expect(activeElement.value).to.equal(input)
   })
 
-  it('should accept custom document', () => {
+  it('should accept custom document', async () => {
     const activeElement = useActiveElement({ document: shadowRoot })
 
-    shadowInput.focus()
+    await userEvent.fill(shadowInput, 'focus')
 
     expect(activeElement.value).to.equal(shadowInput)
   })
 
-  it('should observe focus/blur events', () => {
+  it('should observe focus/blur events', async () => {
     const activeElement = useActiveElement()
 
-    input.focus()
+    await userEvent.fill(input, 'focus')
 
     expect(activeElement.value).to.equal(input)
 
-    input.blur()
+    await userEvent.click(document.body)
 
     expect(activeElement.value).to.equal(document.body)
   })
@@ -64,7 +65,7 @@ describe('useActiveElement', () => {
   it('should update when activeElement is removed w/document', async () => {
     const activeElement = useActiveElement({ triggerOnRemoval: true })
 
-    input.focus()
+    await userEvent.fill(input, 'focus')
 
     expect(activeElement.value).to.equal(input)
 
@@ -78,7 +79,7 @@ describe('useActiveElement', () => {
   it('should update when activeElement is removed w/shadowRoot', async () => {
     const activeElement = useActiveElement({ triggerOnRemoval: true, document: shadowRoot })
 
-    shadowInput.focus()
+    await userEvent.fill(shadowInput, 'focus')
 
     expect(activeElement.value).to.equal(shadowInput)
 
