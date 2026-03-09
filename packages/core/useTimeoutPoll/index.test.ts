@@ -1,10 +1,14 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, shallowRef } from 'vue'
 import { useTimeoutPoll } from './index'
 
 describe('useTimeoutPoll', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('basic pause/resume', async () => {
