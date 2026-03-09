@@ -8,7 +8,7 @@ describe('useIdle', () => {
   })
 
   afterEach(() => {
-    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   it('should initialize with correct default values', () => {

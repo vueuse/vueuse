@@ -1,9 +1,17 @@
-import type { WatchStopHandle } from 'vue'
+import type { ShallowRef, WatchStopHandle } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, watchImmediate } from '@vueuse/shared'
 import { readonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
+
+export interface UseDevicePixelRatioOptions extends ConfigurableWindow {
+}
+
+export interface UseDevicePixelRatioReturn {
+  pixelRatio: ShallowRef<number>
+  stop: WatchStopHandle
+}
 
 /**
  * Reactively track `window.devicePixelRatio`.
@@ -12,7 +20,7 @@ import { useMediaQuery } from '../useMediaQuery'
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
+export function useDevicePixelRatio(options: UseDevicePixelRatioOptions = {}): UseDevicePixelRatioReturn {
   const {
     window = defaultWindow,
   } = options
@@ -30,5 +38,3 @@ export function useDevicePixelRatio(options: ConfigurableWindow = {}) {
     stop,
   }
 }
-
-export type UseDevicePixelRatioReturn = ReturnType<typeof useDevicePixelRatio>

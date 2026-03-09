@@ -7,7 +7,7 @@ describe('useWebSocket', () => {
   })
 
   afterEach(() => {
-    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   describe('autoReconnect', () => {

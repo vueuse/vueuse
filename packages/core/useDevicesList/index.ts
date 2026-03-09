@@ -1,9 +1,9 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { ComputedRef, Ref, ShallowRef } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import type { Supportable } from '../types'
-import { computed, ref as deepRef, shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { usePermission } from '../usePermission'
@@ -30,7 +30,7 @@ export interface UseDevicesListReturn extends Supportable {
   /**
    * All devices
    */
-  devices: Ref<MediaDeviceInfo[]>
+  devices: ShallowRef<MediaDeviceInfo[]>
   videoInputs: ComputedRef<MediaDeviceInfo[]>
   audioInputs: ComputedRef<MediaDeviceInfo[]>
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
@@ -52,7 +52,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     onUpdated,
   } = options
 
-  const devices = deepRef([]) as Ref<MediaDeviceInfo[]>
+  const devices = shallowRef<MediaDeviceInfo[]>([])
   const videoInputs = computed(() => devices.value.filter(i => i.kind === 'videoinput'))
   const audioInputs = computed(() => devices.value.filter(i => i.kind === 'audioinput'))
   const audioOutputs = computed(() => devices.value.filter(i => i.kind === 'audiooutput'))

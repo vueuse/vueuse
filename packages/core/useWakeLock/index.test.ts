@@ -1,5 +1,5 @@
 import type { WakeLockSentinel } from './index'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useWakeLock } from './index'
 
@@ -24,6 +24,14 @@ class MockDocument extends EventTarget {
 }
 
 describe('useWakeLock', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('isActive not changed if not supported', async () => {
     const { isActive, request, release } = useWakeLock({ navigator: {} as Navigator })
 
@@ -55,7 +63,6 @@ describe('useWakeLock', () => {
   })
 
   it('isActive changed if show other tabs or minimize window', async () => {
-    vi.useFakeTimers()
     defineWakeLockAPI()
 
     const { isActive, request } = useWakeLock()

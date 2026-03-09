@@ -8,6 +8,9 @@ import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
+export interface UseNetworkOptions extends ConfigurableWindow {
+}
+
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown'
 
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined
@@ -51,6 +54,8 @@ export interface NetworkState extends Supportable {
   type: Readonly<ShallowRef<NetworkType>>
 }
 
+export type UseNetworkReturn = Readonly<NetworkState>
+
 /**
  * Reactive Network status.
  *
@@ -59,7 +64,7 @@ export interface NetworkState extends Supportable {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkState> {
+export function useNetwork(options: UseNetworkOptions = {}): UseNetworkReturn {
   const { window = defaultWindow } = options
   const navigator = window?.navigator
   const isSupported = useSupported(() => navigator && 'connection' in navigator)
@@ -126,5 +131,3 @@ export function useNetwork(options: ConfigurableWindow = {}): Readonly<NetworkSt
     type: readonly(type),
   }
 }
-
-export type UseNetworkReturn = ReturnType<typeof useNetwork>

@@ -1,10 +1,18 @@
-import type { NProgressOptions } from 'nprogress'
-import type { MaybeRefOrGetter } from 'vue'
+import type { NProgress, NProgressOptions } from 'nprogress'
+import type { MaybeRefOrGetter, Ref, WritableComputedRef } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import nprogress from 'nprogress'
 import { computed, watchEffect } from 'vue'
 
 export type UseNProgressOptions = Partial<NProgressOptions>
+
+export interface UseNProgressReturn {
+  isLoading: WritableComputedRef<boolean, boolean>
+  progress: Ref<number | null | undefined>
+  start: () => NProgress
+  done: (force?: boolean) => NProgress
+  remove: () => void
+}
 
 /**
  * Reactive progress bar.
@@ -14,7 +22,7 @@ export type UseNProgressOptions = Partial<NProgressOptions>
 export function useNProgress(
   currentProgress: MaybeRefOrGetter<number | null | undefined> = null,
   options?: UseNProgressOptions,
-) {
+): UseNProgressReturn {
   const progress = toRef(currentProgress)
   const isLoading = computed({
     set: load => load ? nprogress.start() : nprogress.done(),
@@ -48,5 +56,3 @@ export function useNProgress(
     },
   }
 }
-
-export type UseNProgressReturn = ReturnType<typeof useNProgress>
