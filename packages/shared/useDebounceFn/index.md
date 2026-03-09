@@ -40,15 +40,15 @@ Optionally, you can get the return value of the function using promise operation
 ```ts
 import { useDebounceFn } from '@vueuse/core'
 
-const debouncedRequest = useDebounceFn(() => 'response', 1000)
+const debouncedFn = useDebounceFn(() => 'response', 1000)
 
-debouncedRequest().then((value) => {
+debouncedFn().then((value) => {
   console.log(value) // 'response'
 })
 
 // or use async/await
 async function doRequest() {
-  const value = await debouncedRequest()
+  const value = await debouncedFn()
   console.log(value) // 'response'
 }
 ```
@@ -58,9 +58,9 @@ Since unhandled rejection error is quite annoying when developer doesn't need th
 ```ts
 import { useDebounceFn } from '@vueuse/core'
 
-const debouncedRequest = useDebounceFn(() => 'response', 1000, { rejectOnCancel: true })
+const debouncedFn = useDebounceFn(() => 'response', 1000, { rejectOnCancel: true })
 
-debouncedRequest()
+debouncedFn()
   .then((value) => {
     // do something
   })
@@ -69,8 +69,66 @@ debouncedRequest()
   })
 
 // calling it again will cancel the previous request and gets rejected
-setTimeout(debouncedRequest, 500)
+setTimeout(debouncedFn, 500)
 ```
+
+## Cancel
+
+You can cancel any pending execution by calling the `cancel` method.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+debouncedFn()
+
+// Cancel the pending execution before it runs
+debouncedFn.cancel()
+```
+
+This is useful when you need to prevent the debounced function from executing, for example, when a component is unmounted or when user input changes context.
+
+## Pending State
+
+You can check if there's a pending execution using the `isPending` ref.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+debouncedFn()
+console.log(debouncedFn.isPending.value) // true
+
+// After debounce time elapses or cancel is called
+console.log(debouncedFn.isPending.value) // false
+```
+
+This is useful for showing loading indicators or disabling UI elements while waiting for the debounced function to execute.
+
+## Flush
+
+You can immediately execute the pending invocation using the `flush` method.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000)
+
+debouncedFn()
+
+// Execute the pending invocation immediately instead of waiting
+debouncedFn.flush()
+```
+
+This is useful when you need to ensure the debounced function runs right away, for example, before navigating away from a page or submitting a form.
 
 ## Recommended Reading
 
