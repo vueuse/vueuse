@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify, TimerHandle } from './types'
-import { isRef, readonly, toValue } from 'vue'
+import { isRef, shallowReadonly, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'
 
@@ -240,5 +240,5 @@ export function pausableFilter(extendFilter: EventFilter = bypassFilter, options
       extendFilter(...args)
   }
 
-  return { isActive: readonly(isActive), pause, resume, eventFilter }
+  return { isActive: shallowReadonly(isActive), pause, resume, eventFilter }
 }

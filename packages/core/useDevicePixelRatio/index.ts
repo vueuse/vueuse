@@ -1,7 +1,7 @@
 import type { ShallowRef, WatchStopHandle } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, watchImmediate } from '@vueuse/shared'
-import { readonly, shallowRef } from 'vue'
+import { shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
 
@@ -9,7 +9,7 @@ export interface UseDevicePixelRatioOptions extends ConfigurableWindow {
 }
 
 export interface UseDevicePixelRatioReturn {
-  pixelRatio: ShallowRef<number>
+  pixelRatio: Readonly<ShallowRef<number>>
   stop: WatchStopHandle
 }
 
@@ -34,7 +34,7 @@ export function useDevicePixelRatio(options: UseDevicePixelRatioOptions = {}): U
   }
 
   return {
-    pixelRatio: readonly(pixelRatio),
+    pixelRatio: shallowReadonly(pixelRatio),
     stop,
   }
 }
