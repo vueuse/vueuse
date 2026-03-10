@@ -15,7 +15,7 @@ export function toRef<T extends object, K extends keyof T>(object: T, key: K): T
 export function toRef<T extends object, K extends keyof T>(object: T, key: K, defaultValue: T[K]): ToRef<Exclude<T[K], undefined>>
 export function toRef(...args: any[]) {
   if (args.length !== 1)
-    return vueToRef(...args as [any, any])
+    return vueToRef(...args as [any, any, any?])
   const r = args[0]
   return typeof r === 'function'
     ? readonly(customRef(() => ({ get: r as any, set: noop })))
