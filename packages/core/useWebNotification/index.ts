@@ -1,9 +1,9 @@
 import type { EventHookOn } from '@vueuse/shared'
-import type { Ref, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Supportable } from '../types'
 import { createEventHook, tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -94,7 +94,7 @@ export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotifi
 }
 
 export interface UseWebNotificationReturn extends Supportable {
-  notification: Ref<Notification | null>
+  notification: ShallowRef<Notification | null>
   ensurePermissions: () => Promise<boolean | undefined>
   permissionGranted: ShallowRef<boolean>
   show: (overrides?: WebNotificationOptions) => Promise<Notification | undefined>
@@ -146,7 +146,7 @@ export function useWebNotification(
 
   const permissionGranted = shallowRef(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
 
-  const notification: Ref<Notification | null> = deepRef(null)
+  const notification = shallowRef<Notification | null>(null)
 
   const ensurePermissions = async () => {
     if (!isSupported.value)

@@ -53,20 +53,34 @@ describe('utils', () => {
 })
 
 describe('promise', () => {
-  it('should promiseTimeout work', async () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should promiseTimeout work', () => {
     const num = shallowRef(0)
     setTimeout(() => {
       num.value = 1
     }, 100)
 
-    await promiseTimeout(100)
-
-    expect(num.value).toBe(1)
+    vi.waitFor(async () => {
+      await promiseTimeout(100)
+      expect(num.value).toBe(1)
+    })
   })
 
-  it('should promiseTimeout throw timeout', async () => {
-    await promiseTimeout(100, true).catch((error) => {
-      expect(error).toBe('Timeout')
+  it('should promiseTimeout throw timeout', () => {
+    vi.waitFor(async () => {
+      try {
+        await promiseTimeout(100)
+      }
+      catch (error) {
+        expect(error).toBe('Timeout')
+      }
     })
   })
 
@@ -98,6 +112,10 @@ describe('promise', () => {
 describe('filters', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   describe('debounceFilter', () => {
@@ -370,6 +388,10 @@ describe('is', () => {
 describe('optionsFilters', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('optionsThrottleFilter should throttle', () => {

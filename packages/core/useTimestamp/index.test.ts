@@ -1,9 +1,15 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef } from 'vue'
 import { useTimestamp } from './index'
 
 describe('useTimestamp', () => {
-  vi.useFakeTimers()
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 
   it('starts immediately by default', async () => {
     const timestamp = useTimestamp()

@@ -60,14 +60,14 @@
 
   button.orange {
     --vp-c-brand: #db8742;
-    --vp-c-brand-dark: #ad6e39;
-    --vp-c-brand-active: #d67e36;
+    --vp-c-brand-2: #ad6e39;
+    --vp-c-brand-3: #d67e36;
   }
 
   button.red {
     --vp-c-brand: #f56c6c;
-    --vp-c-brand-dark: #e41c1c;
-    --vp-c-brand-active: #e94c4c;
+    --vp-c-brand-2: #e41c1c;
+    --vp-c-brand-3: #e94c4c;
   }
 
   button:hover {
