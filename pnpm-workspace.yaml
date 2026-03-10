@@ -60,6 +60,7 @@ catalogs:
     unplugin-vue-components: ^31.0.0
     vite-plugin-pwa: ^1.2.0
     vitepress: ^2.0.0-alpha.15
+    vitepress-plugin-llms: ^1.11.0
     yaml: ^2.8.2
   integrations:
     '@nuxt/kit': ^4.3.0
