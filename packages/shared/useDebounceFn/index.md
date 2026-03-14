@@ -35,6 +35,22 @@ const debouncedFn = useDebounceFn(() => {
 useEventListener(window, 'resize', debouncedFn)
 ```
 
+Similar to [lodash debounce](https://lodash.com/docs/4.17.15#debounce), you can use `leading` and `trailing` options to control when the function is invoked:
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+// Invoke on the leading edge (immediately), skip trailing
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000, { leading: true, trailing: false })
+
+// Invoke on both leading and trailing edges
+const debouncedFn2 = useDebounceFn(() => {
+  // do something
+}, 1000, { leading: true, trailing: true })
+```
+
 Optionally, you can get the return value of the function using promise operations.
 
 ```ts
