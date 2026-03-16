@@ -1,5 +1,5 @@
 import type { ConfigurableEventFilter } from '@vueuse/shared'
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
 import { shallowRef } from 'vue'
@@ -52,6 +52,12 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   initialValue?: Position
 }
 
+export interface UseMouseReturn {
+  x: ShallowRef<number>
+  y: ShallowRef<number>
+  sourceType: ShallowRef<UseMouseSourceType>
+}
+
 const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
   page: event => [event.pageX, event.pageY],
   client: event => [event.clientX, event.clientY],
@@ -68,7 +74,7 @@ const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtracto
  * @see https://vueuse.org/useMouse
  * @param options
  */
-export function useMouse(options: UseMouseOptions = {}) {
+export function useMouse(options: UseMouseOptions = {}): UseMouseReturn {
   const {
     type = 'page',
     touch = true,
@@ -163,5 +169,3 @@ export function useMouse(options: UseMouseOptions = {}) {
     sourceType,
   }
 }
-
-export type UseMouseReturn = ReturnType<typeof useMouse>

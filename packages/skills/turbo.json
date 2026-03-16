@@ -1,0 +1,10 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "update": {
+      "outputs": [
+        "skills/**"
+      ]
+    }
+  }
+}

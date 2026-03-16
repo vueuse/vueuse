@@ -24,6 +24,34 @@ watchEffect(() => {
 })
 ```
 
+::: tip NOTE
+If you're using TypeScript with `noUncheckedIndexedAccess` enabled in your `tsconfig.json` (or using Nuxt which enables it by default), the destructured keys will have the type `ComputedRef<boolean> | undefined`.
+
+The `noUncheckedIndexedAccess` TypeScript option adds `undefined` to any un-declared field accessed via index signatures. Since `useMagicKeys()` uses an index signature to allow accessing any key dynamically, TypeScript will treat destructured properties as potentially undefined for type safety.
+
+You'll need to use optional chaining or wrap with a getter function:
+
+```ts
+const { shift, space, a } = useMagicKeys()
+
+watch(
+  () => space?.value,
+  (v) => {
+    if (v)
+      console.log('space has been pressed')
+  },
+)
+
+watchEffect(() => {
+  if (shift?.value && a?.value)
+    console.log('Shift + A have been pressed')
+})
+```
+
+Check the [TypeScript documentation](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess) for more details about `noUncheckedIndexedAccess`.
+
+:::
+
 Check out [all the possible keycodes](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values).
 
 ### Combinations

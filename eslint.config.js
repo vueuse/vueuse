@@ -38,6 +38,7 @@ export default antfu(
     ignores: [
       'patches',
       'playgrounds',
+      '**/skills/**',
       '**/types',
       '**/cache',
       '**/*.svg',
