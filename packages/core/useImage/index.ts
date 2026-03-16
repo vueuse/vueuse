@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { UseAsyncStateOptions } from '../useAsyncState'
+import type { UseAsyncStateOptions, UseAsyncStateReturn } from '../useAsyncState'
 import { toValue, watch } from 'vue'
 import { useAsyncState } from '../useAsyncState'
 
@@ -33,6 +33,8 @@ export interface UseImageOptions {
   /** The partial URL (starting with #) of an image map associated with the element */
   usemap?: HTMLImageElement['useMap']
 }
+
+export type UseImageReturn = UseAsyncStateReturn<HTMLImageElement | undefined, any[], true>
 
 async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -78,7 +80,7 @@ async function loadImage(options: UseImageOptions): Promise<HTMLImageElement> {
  * @param options Image attributes, as used in the <img> tag
  * @param asyncStateOptions
  */
-export function useImage<Shallow extends true>(options: MaybeRefOrGetter<UseImageOptions>, asyncStateOptions: UseAsyncStateOptions<Shallow> = {}) {
+export function useImage<Shallow extends true>(options: MaybeRefOrGetter<UseImageOptions>, asyncStateOptions: UseAsyncStateOptions<Shallow> = {}): UseImageReturn {
   const state = useAsyncState<HTMLImageElement | undefined>(
     () => loadImage(toValue(options)),
     undefined,
@@ -96,5 +98,3 @@ export function useImage<Shallow extends true>(options: MaybeRefOrGetter<UseImag
 
   return state
 }
-
-export type UseImageReturn = ReturnType<typeof useImage>

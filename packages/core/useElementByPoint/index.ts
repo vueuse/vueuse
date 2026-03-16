@@ -1,6 +1,7 @@
 import type { AnyFn, Pausable } from '@vueuse/shared'
-import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument, ConfigurableScheduler } from '../_configurable'
+import type { Supportable } from '../types'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
@@ -32,8 +33,7 @@ export interface UseElementByPointOptions<Multiple extends boolean = false> exte
   interval?: 'requestAnimationFrame' | number
 }
 
-export interface UseElementByPointReturn<Multiple extends boolean = false> extends Pausable {
-  isSupported: ComputedRef<boolean>
+export interface UseElementByPointReturn<Multiple extends boolean = false> extends Supportable, Pausable {
   element: ShallowRef<Multiple extends true ? HTMLElement[] : HTMLElement | null>
 }
 

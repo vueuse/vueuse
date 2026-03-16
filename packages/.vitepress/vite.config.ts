@@ -45,7 +45,6 @@ export default defineConfig({
         }),
       ],
       dts: resolve(__dirname, 'components.d.mts'),
-      transformer: 'vue3',
     }),
     Icons({
       compiler: 'vue3',
