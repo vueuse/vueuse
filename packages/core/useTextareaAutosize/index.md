@@ -65,3 +65,28 @@ const { textarea, input } = useTextareaAutosize({ styleProp: 'minHeight' })
   />
 </template>
 ```
+
+### With `maxHeight`
+
+Use the `maxHeight` option to cap the textarea height in pixels while keeping autosize behavior.
+
+```vue
+<script setup lang="ts">
+import { useTextareaAutosize } from '@vueuse/core'
+
+const { textarea, input } = useTextareaAutosize({
+  maxHeight: 180,
+  styleProp: 'minHeight',
+})
+</script>
+
+<template>
+  <textarea
+    ref="textarea"
+    v-model="input"
+    class="resize-none"
+    placeholder="What's on your mind?"
+    rows="3"
+  />
+</template>
+```
