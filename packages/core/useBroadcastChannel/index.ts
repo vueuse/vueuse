@@ -1,8 +1,8 @@
-import type { Ref, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Supportable } from '../types'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -31,8 +31,8 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
   const isSupported = useSupported(() => window && 'BroadcastChannel' in window)
   const isClosed = shallowRef(false)
 
-  const channel = deepRef<BroadcastChannel | undefined>()
-  const data = deepRef()
+  const channel = shallowRef<BroadcastChannel | undefined>()
+  const data = shallowRef()
   const error = shallowRef<Event | null>(null)
 
   const post = (data: unknown) => {
@@ -85,8 +85,8 @@ export function useBroadcastChannel<D, P>(options: UseBroadcastChannelOptions): 
 }
 
 export interface UseBroadcastChannelReturn<D, P> extends Supportable {
-  channel: Ref<BroadcastChannel | undefined>
-  data: Ref<D>
+  channel: ShallowRef<BroadcastChannel | undefined>
+  data: ShallowRef<D>
   post: (data: P) => void
   close: () => void
   error: ShallowRef<Event | null>
