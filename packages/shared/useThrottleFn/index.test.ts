@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { effectScope } from 'vue'
 import { useThrottleFn } from './index'
 
 describe('useThrottleFn', () => {
@@ -74,14 +75,19 @@ describe('useThrottleFn', () => {
     expect(callback).toHaveBeenCalledTimes(0)
   })
 
-  it('should cancel pending trailing invocation in non-scope environment', async () => {
+  it('should cancel pending trailing invocation when scope gets disposed', async () => {
     const callback = vi.fn()
     const ms = 20
-    const run = useThrottleFn(callback, ms, true)
-    run()
-    run()
+    const scope = effectScope()
+
+    scope.run(() => {
+      const run = useThrottleFn(callback, ms, true)
+      run()
+      run()
+    })
+
     expect(callback).toHaveBeenCalledTimes(1)
-    run.cancel()
+    scope.stop()
     vi.advanceTimersByTime(ms + 10)
     expect(callback).toHaveBeenCalledTimes(1)
   })

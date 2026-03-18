@@ -1,5 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { FunctionArgs, PromisifyFn } from '../utils'
+import type { EventFilter, FunctionArgs, PromisifyFn } from '../utils'
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { createFilterWrapper, throttleFilter } from '../utils'
 
 /**
@@ -22,23 +23,16 @@ import { createFilterWrapper, throttleFilter } from '../utils'
  * @__NO_SIDE_EFFECTS__
  */
 
-export type CancelableFn<T extends FunctionArgs>
-  = PromisifyFn<T> & {
-    /**
-     * Cancel any pending throttled invocation.
-     */
-    cancel: () => void
-  }
-
 export function useThrottleFn<T extends FunctionArgs>(
   fn: T,
   ms: MaybeRefOrGetter<number> = 200,
   trailing = false,
   leading = true,
   rejectOnCancel = false,
-): CancelableFn<T> {
-  const filter = throttleFilter(ms, trailing, leading, rejectOnCancel)
-  const wrapper = createFilterWrapper(filter, fn) as CancelableFn<T>
-  wrapper.cancel = filter.clear
-  return wrapper
+): PromisifyFn<T> {
+  const filter = throttleFilter(ms, trailing, leading, rejectOnCancel) as EventFilter & { clear: () => void }
+
+  tryOnScopeDispose(filter.clear)
+
+  return createFilterWrapper(filter, fn)
 }

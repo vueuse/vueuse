@@ -141,7 +141,7 @@ export interface ThrottleFilterOptions {
 /**
  * Create an EventFilter that throttle the events
  */
-export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter & { clear: () => void }
+export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
 export function throttleFilter(options: ThrottleFilterOptions): EventFilter
 export function throttleFilter(...args: any[]) {
   let lastExec = 0
@@ -166,7 +166,7 @@ export function throttleFilter(...args: any[]) {
     }
   }
 
-  const filter: EventFilter = (_invoke) => {
+  const filter: EventFilter & { clear: () => void } = (_invoke) => {
     const duration = toValue(ms)
     const elapsed = Date.now() - lastExec
     const invoke = () => {
@@ -203,9 +203,7 @@ export function throttleFilter(...args: any[]) {
     return lastValue
   }
 
-  Object.assign(filter, {
-    clear,
-  })
+  filter.clear = clear
   return filter
 }
 
