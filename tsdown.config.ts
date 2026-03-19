@@ -102,7 +102,7 @@ export function createTsDownConfig(
     copy,
     attw: {
       level: 'error',
-      profile: 'node16',
+      profile: 'esm-only',
       ignoreRules: ['cjs-resolves-to-esm'],
     },
   })
