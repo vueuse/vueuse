@@ -48,9 +48,8 @@ export function useElementSize(
       if (window && isSVG.value) {
         const $elem = unrefElement(target)
         if ($elem) {
-          const rect = $elem.getBoundingClientRect()
-          width.value = rect.width
-          height.value = rect.height
+          width.value = $elem.clientWidth
+          height.value = $elem.clientHeight
         }
       }
       else {
