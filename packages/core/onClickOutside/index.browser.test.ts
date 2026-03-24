@@ -90,12 +90,7 @@ describe('onClickOutside', () => {
     shadowRoot.appendChild(iframe)
     document.body.appendChild(host)
 
-    // document.activeElement returns the shadow host (not the iframe inside shadow DOM)
-    // this is the browser's behavior when an iframe inside a shadow root gains focus
-    Object.defineProperty(document, 'activeElement', { get: () => host, configurable: true })
-    Object.defineProperty(shadowRoot, 'activeElement', { get: () => iframe, configurable: true })
-
-    window.dispatchEvent(new Event('blur'))
+    await userEvent.click(iframe)
     await vi.waitFor(() => {
       expect(handler).toHaveBeenCalledOnce()
     })
@@ -126,11 +121,8 @@ describe('onClickOutside', () => {
     outerShadow.appendChild(innerHost)
     document.body.appendChild(outerHost)
 
-    Object.defineProperty(document, 'activeElement', { get: () => outerHost, configurable: true })
-    Object.defineProperty(outerShadow, 'activeElement', { get: () => innerHost, configurable: true })
-    Object.defineProperty(innerShadow, 'activeElement', { get: () => iframe, configurable: true })
-
-    window.dispatchEvent(new Event('blur'))
+    // Playwright cannot click an iframe nested 2 levels deep in shadow DOM
+    iframe.focus()
     await vi.waitFor(() => {
       expect(handler).toHaveBeenCalledOnce()
     })
