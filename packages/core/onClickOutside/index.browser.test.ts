@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { page, userEvent } from 'vitest/browser'
 import { defineComponent, useTemplateRef } from 'vue'
 import { onClickOutside } from './index'
@@ -46,6 +46,10 @@ function getComplexComponent(useGetter = false) {
 }
 
 describe('onClickOutside', () => {
+  beforeEach(() => {
+    document.body.innerHTML = ''
+  })
+
   it('should work with ignored element', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     const screen = page.render(getComplexComponent())
@@ -88,20 +92,13 @@ describe('onClickOutside', () => {
 
     // document.activeElement returns the shadow host (not the iframe inside shadow DOM)
     // this is the browser's behavior when an iframe inside a shadow root gains focus
-    const originalDescriptor = Object.getOwnPropertyDescriptor(Document.prototype, 'activeElement')
     Object.defineProperty(document, 'activeElement', { get: () => host, configurable: true })
     Object.defineProperty(shadowRoot, 'activeElement', { get: () => iframe, configurable: true })
 
-    try {
-      window.dispatchEvent(new Event('blur'))
-      await new Promise(resolve => setTimeout(resolve, 50))
+    window.dispatchEvent(new Event('blur'))
+    await vi.waitFor(() => {
       expect(handler).toHaveBeenCalledOnce()
-    }
-    finally {
-      if (originalDescriptor)
-        Object.defineProperty(document, 'activeElement', originalDescriptor)
-      document.body.removeChild(host)
-    }
+    })
   })
 
   it('should detect iframe inside nested shadow DOM with detectIframe option', async () => {
@@ -129,21 +126,14 @@ describe('onClickOutside', () => {
     outerShadow.appendChild(innerHost)
     document.body.appendChild(outerHost)
 
-    const originalDescriptor = Object.getOwnPropertyDescriptor(Document.prototype, 'activeElement')
     Object.defineProperty(document, 'activeElement', { get: () => outerHost, configurable: true })
     Object.defineProperty(outerShadow, 'activeElement', { get: () => innerHost, configurable: true })
     Object.defineProperty(innerShadow, 'activeElement', { get: () => iframe, configurable: true })
 
-    try {
-      window.dispatchEvent(new Event('blur'))
-      await new Promise(resolve => setTimeout(resolve, 50))
+    window.dispatchEvent(new Event('blur'))
+    await vi.waitFor(() => {
       expect(handler).toHaveBeenCalledOnce()
-    }
-    finally {
-      if (originalDescriptor)
-        Object.defineProperty(document, 'activeElement', originalDescriptor)
-      document.body.removeChild(outerHost)
-    }
+    })
   })
 
   it('allow the value of target to be a getter', async () => {
