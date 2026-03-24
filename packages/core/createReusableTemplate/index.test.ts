@@ -1,8 +1,17 @@
-import type { Slot } from 'vue'
+import type { PropType, Slot } from 'vue'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { defineComponent, Fragment, h, renderSlot } from 'vue'
 import { createReusableTemplate } from './index'
+
+interface VueTypesLikeProp<T> {
+  type?: PropType<T> | true | null
+  required?: boolean
+}
+
+function func<T extends (...args: any[]) => any>(): VueTypesLikeProp<T> {
+  return null as never
+}
 
 describe('createReusableTemplate', () => {
   it('should work', () => {
@@ -112,5 +121,19 @@ describe('createReusableTemplate', () => {
     })
 
     expect(wrapper.text()).toBe('{"myMsg":"Foo"}{"myMsg":"Bar"}')
+  })
+
+  it('infers function prop types from vue-types', () => {
+    const [Define, Reuse] = createReusableTemplate({
+      props: {
+        onClick: func<(i: number) => void>(),
+      },
+    })
+
+    type DefineBindings = Parameters<NonNullable<InstanceType<typeof Define>['$slots']['default']>>[0]
+    type ReuseProps = InstanceType<typeof Reuse>['$props']
+
+    expectTypeOf<DefineBindings['onClick']>().toEqualTypeOf<((i: number) => void) | undefined>()
+    expectTypeOf<ReuseProps['onClick']>().toEqualTypeOf<((i: number) => void) | undefined>()
   })
 })
