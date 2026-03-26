@@ -1,10 +1,17 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
 import { useThrottledRefHistory } from './index'
 
 describe('useThrottledRefHistory - sync', () => {
-  it('take first snapshot right after data was changed and second after given time', async () => {
+  beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('take first snapshot right after data was changed and second after given time', async () => {
     const ms = 10
     const v = shallowRef(0)
 

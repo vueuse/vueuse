@@ -343,7 +343,7 @@ describe('useOffsetPagination', () => {
 
       page.value = 2
       await nextTick()
-      expect(onPageChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageChange).toBeCalledWith({
         currentPage: 2,
         currentPageSize: 10,
         isFirstPage: false,
@@ -351,11 +351,11 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 4,
         prev: expect.any(Function),
-      }))
+      })
 
       page.value = 3
       await nextTick()
-      expect(onPageChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageChange).toBeCalledWith({
         currentPage: 3,
         currentPageSize: 10,
         isFirstPage: false,
@@ -363,11 +363,11 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 4,
         prev: expect.any(Function),
-      }))
+      })
 
       page.value = 4
       await nextTick()
-      expect(onPageChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageChange).toBeCalledWith({
         currentPage: 4,
         currentPageSize: 10,
         isFirstPage: false,
@@ -375,11 +375,11 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 4,
         prev: expect.any(Function),
-      }))
+      })
 
       page.value = 1
       await nextTick()
-      expect(onPageChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageChange).toBeCalledWith({
         currentPage: 1,
         currentPageSize: 10,
         isFirstPage: true,
@@ -387,7 +387,7 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 4,
         prev: expect.any(Function),
-      }))
+      })
     })
   })
 
@@ -423,7 +423,7 @@ describe('useOffsetPagination', () => {
 
       pageSize.value = 3
       await nextTick()
-      expect(onPageSizeChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageSizeChange).toBeCalledWith({
         currentPage: 1,
         currentPageSize: 3,
         isFirstPage: true,
@@ -431,11 +431,11 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 12,
         prev: expect.any(Function),
-      }))
+      })
 
       pageSize.value = 30
       await nextTick()
-      expect(onPageSizeChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageSizeChange).toBeCalledWith({
         currentPage: 1,
         currentPageSize: 30,
         isFirstPage: true,
@@ -443,7 +443,7 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 2,
         prev: expect.any(Function),
-      }))
+      })
     })
   })
 
@@ -479,7 +479,7 @@ describe('useOffsetPagination', () => {
 
       pageSize.value = 3
       await nextTick()
-      expect(onPageCountChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageCountChange).toBeCalledWith({
         currentPage: 1,
         currentPageSize: 3,
         isFirstPage: true,
@@ -487,11 +487,11 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 12,
         prev: expect.any(Function),
-      }))
+      })
 
       pageSize.value = 30
       await nextTick()
-      expect(onPageCountChange).toBeCalledWith(expect.objectContaining({
+      expect(onPageCountChange).toBeCalledWith({
         currentPage: 1,
         currentPageSize: 30,
         isFirstPage: true,
@@ -499,7 +499,7 @@ describe('useOffsetPagination', () => {
         next: expect.any(Function),
         pageCount: 2,
         prev: expect.any(Function),
-      }))
+      })
     })
   })
 })

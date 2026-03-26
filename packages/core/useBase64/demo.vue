@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useBase64 } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const text = shallowRef('')
 const file = shallowRef<File>()
-const image = shallowRef<HTMLImageElement>()
+const image = useTemplateRef('image')
 
 const { base64: textBase64 } = useBase64(text)
 const { base64: fileBase64 } = useBase64(file)

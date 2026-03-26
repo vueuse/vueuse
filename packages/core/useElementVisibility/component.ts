@@ -1,19 +1,37 @@
-import type { RenderableComponent } from '../types'
+import type { RenderableComponent, UseElementVisibilityOptions, UseElementVisibilityReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
 import { defineComponent, h, reactive, shallowRef } from 'vue'
 
-export const UseElementVisibility = /* #__PURE__ */ defineComponent<RenderableComponent>({
-  name: 'UseElementVisibility',
-  props: ['as'] as unknown as undefined,
-  setup(props, { slots }) {
+export interface UseElementVisibilityProps extends Omit<UseElementVisibilityOptions<true>, 'controls'>, RenderableComponent {}
+interface UseElementVisibilitySlots {
+  default: (data: Reactive<UseElementVisibilityReturn<true>>) => any
+}
+
+export const UseElementVisibility = /* #__PURE__ */ defineComponent<
+  UseElementVisibilityProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseElementVisibilitySlots>
+>(
+  (props, { slots }) => {
     const target = shallowRef<HTMLDivElement>()
-    const data = reactive({
-      isVisible: useElementVisibility(target),
-    })
+    const data = reactive(useElementVisibility(target, { ...props, controls: true }))
 
     return () => {
       if (slots.default)
         return h(props.as || 'div', { ref: target }, slots.default(data))
     }
   },
-})
+  {
+    name: 'UseElementVisibility',
+    props: [
+      'as',
+      'once',
+      'rootMargin',
+      'scrollTarget',
+      'threshold',
+      'window',
+    ],
+  },
+)

@@ -1,6 +1,6 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { pausableWatch } from '@vueuse/shared'
-import { reactive } from 'vue'
+import { watchPausable } from '@vueuse/shared'
+import { nextTick, reactive } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -115,7 +115,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     Array.from(unusedKeys).forEach(key => delete state[key])
   }
 
-  const { pause, resume } = pausableWatch(
+  const { pause, resume } = watchPausable(
     state,
     () => {
       const params = new URLSearchParams('')
@@ -135,7 +135,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     { deep: true },
   )
 
-  function write(params: URLSearchParams, shouldUpdate: boolean) {
+  function write(params: URLSearchParams, shouldUpdate: boolean, shouldWriteHistory = true) {
     pause()
 
     if (shouldUpdate)
@@ -149,21 +149,23 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
       )
     }
     else {
-      window.history.pushState(
-        window.history.state,
-        window.document.title,
-        window.location.pathname + constructQuery(params),
-      )
+      if (shouldWriteHistory) {
+        window.history.pushState(
+          window.history.state,
+          window.document.title,
+          window.location.pathname + constructQuery(params),
+        )
+      }
     }
 
-    resume()
+    nextTick(() => resume())
   }
 
   function onChanged() {
     if (!enableWrite)
       return
 
-    write(read(), true)
+    write(read(), true, false)
   }
 
   const listenerOptions = { passive: true }

@@ -1,11 +1,20 @@
-import type { UseNowOptions } from '@vueuse/core'
+import type { UseNowOptions, UseNowReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useNow } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-export const UseNow = /* #__PURE__ */ defineComponent<Omit<UseNowOptions<true>, 'controls'>>({
-  name: 'UseNow',
-  props: ['interval'] as unknown as undefined,
-  setup(props, { slots }) {
+export interface UseNowProps extends Omit<UseNowOptions<true>, 'controls'> {}
+interface UseNowSlots {
+  default: (data: Reactive<UseNowReturn<true>>) => any
+}
+
+export const UseNow = /* #__PURE__ */ defineComponent<
+  UseNowProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseNowSlots>
+>(
+  (props, { slots }) => {
     const data = reactive(useNow({ ...props, controls: true }))
 
     return () => {
@@ -13,4 +22,12 @@ export const UseNow = /* #__PURE__ */ defineComponent<Omit<UseNowOptions<true>, 
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseNow',
+    props: [
+      'scheduler',
+      'immediate',
+      'interval',
+    ],
+  },
+)

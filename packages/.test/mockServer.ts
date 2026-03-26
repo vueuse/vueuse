@@ -8,7 +8,7 @@ import { afterAll, afterEach, beforeAll } from 'vitest'
 
 const defaultJsonMessage = { hello: 'world' }
 const defaultTextMessage = 'Hello World'
-const baseUrl = 'https://example.com'
+export const baseUrl = 'https://example.com'
 
 async function commonTransformers(req: Request) {
   const url = new URL(req.url)
@@ -69,6 +69,37 @@ const server = setupServer(
   // Another duplicate route for the sole purpose of re-triggering requests on url change.
   http.get(`${baseUrl}/test`, ({ request }) => {
     return commonTransformers(request)
+  }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/1', () => {
+    return HttpResponse.json({
+      userId: 1,
+      id: 1,
+      title: 'delectus aut autem',
+      completed: false,
+    })
+  }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/2', () => {
+    return HttpResponse.json({
+      userId: 2,
+      id: 2,
+      title: 'quis ut nam facilis et officia qui',
+      completed: false,
+    })
+  }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/3', () => {
+    return HttpResponse.json({
+      userId: 3,
+      id: 3,
+      title: 'fugiat veniam minus',
+      completed: false,
+    })
+  }),
+
+  http.get('https://jsonplaceholder.typicode.com/todos/1/wrong-url', () => {
+    return HttpResponse.json({}, { status: 404 })
   }),
 )
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onStartTyping } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const input = shallowRef<HTMLInputElement | null>(null)
+const input = useTemplateRef('input')
 
 onStartTyping(() => {
   if (input.value !== document.activeElement)

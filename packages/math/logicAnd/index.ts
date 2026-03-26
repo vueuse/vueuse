@@ -12,5 +12,5 @@ export function logicAnd(...args: MaybeRefOrGetter<any>[]): ComputedRef<boolean>
   return computed(() => args.every(i => toValue(i)))
 }
 
-// alias
-export { logicAnd as and }
+/** @deprecated use `logicAnd` instead */
+export const and = logicAnd

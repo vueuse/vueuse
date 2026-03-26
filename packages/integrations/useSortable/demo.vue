@@ -2,7 +2,7 @@
 import { useSortable } from '@vueuse/integrations/useSortable'
 import { shallowRef, useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const list = shallowRef([{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }])
 
 const { option } = useSortable(el, list, {

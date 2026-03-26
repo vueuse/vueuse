@@ -16,7 +16,7 @@ const stringify = reactify(
   }),
 )
 
-const target = useTemplateRef<HTMLElement>('target')
+const target = useTemplateRef('target')
 const isMobile = useMediaQuery('(max-width: 700px)')
 
 const parallax = reactive(useParallax(target))

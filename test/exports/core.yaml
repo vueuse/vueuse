@@ -100,10 +100,9 @@
   refAutoReset: function
   refDebounced: function
   refDefault: function
+  refManualReset: function
   refThrottled: function
   refWithControl: function
-  resolveRef: function
-  resolveUnref: function
   set: function
   setSSRHandler: function
   StorageSerializers: object
@@ -118,7 +117,7 @@
   toReactive: function
   toRef: function
   toRefs: function
-  toValue: function
+  transition: function
   TransitionPresets: object
   tryOnBeforeMount: function
   tryOnBeforeUnmount: function
@@ -157,6 +156,7 @@
   useConfirmDialog: function
   useCountdown: function
   useCounter: function
+  useCssSupports: function
   useCssVar: function
   useCurrentElement: function
   useCycleList: function

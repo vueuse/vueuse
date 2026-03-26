@@ -1,6 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import { beforeEach, describe, expect, expectTypeOf, it } from 'vitest'
-import { computed, ref as deepRef, isReadonly, shallowRef } from 'vue'
+import { computed, ref as deepRef, isReadonly, nextTick, shallowRef } from 'vue'
+import { useSetup } from '../../.test'
 import { useTitle } from './index'
 
 const defaultTitle = 'VueUse testing'
@@ -126,6 +127,92 @@ describe('useTitle', () => {
       const title = useTitle(undefined)
       expect(isReadonly(title)).toBeFalsy()
       expectTypeOf(title).toEqualTypeOf<Ref<string | null | undefined>>()
+    })
+  })
+
+  describe('options params', () => {
+    describe('titleTemplate', () => {
+      it('string', () => {
+        const title = useTitle('old title', { titleTemplate: '%s | My Website' })
+        expect(document.title).toBe('old title | My Website')
+        expect(title.value).toBe('old title')
+      })
+
+      it('empty string', () => {
+        const title = useTitle('old title', { titleTemplate: '' })
+        expect(document.title).toBe('old title')
+        expect(title.value).toBe('old title')
+      })
+
+      it('function', async () => {
+        const title = useTitle('old title', { titleTemplate: (title: string) => `${title} | My Website` })
+        expect(document.title).toBe('old title | My Website')
+        expect(title.value).toBe('old title')
+
+        title.value = 'new title'
+        await nextTick()
+        expect(document.title).toBe('new title | My Website')
+        expect(title.value).toBe('new title')
+      })
+    })
+
+    describe('observe', () => {
+      it('should not be updated if used default value', async () => {
+        const title = useTitle('old title')
+
+        document.title = 'new title'
+        await nextTick()
+        expect(title.value).toBe('old title')
+      })
+
+      it('should not be updated if observe is false', async () => {
+        const title = useTitle('old title', { observe: false })
+
+        document.title = 'new title'
+        await nextTick()
+        expect(title.value).toBe('old title')
+      })
+
+      it('should be update if document.title changes', async () => {
+        const title = useTitle('old title', { observe: true })
+
+        document.title = 'new title'
+        await nextTick()
+        expect(title.value).toBe('new title')
+      })
+    })
+
+    describe('restoreOnUnmount', () => {
+      it('should be new value if restoreOnUnmount is false', () => {
+        const Comp = useSetup(() => {
+          const title = useTitle('origin title', { restoreOnUnmount: false })
+          title.value = 'new title'
+          expect(title.value).toBe('new title')
+        })
+
+        Comp.unmount()
+        expect(document.title).toBe('new title')
+      })
+
+      it('should be restored if title not modified and restoreOnUnmount return null', () => {
+        const Comp = useSetup(() => {
+          useTitle('origin title', { restoreOnUnmount: () => null })
+        })
+
+        Comp.unmount()
+        expect(document.title).toBe('origin title')
+      })
+
+      it('should be restored if restoreOnUnmount has return value', () => {
+        const Comp = useSetup(() => {
+          const title = useTitle('origin title', { restoreOnUnmount: () => 'restored title' })
+          title.value = 'new title'
+          expect(title.value).toBe('new title')
+        })
+
+        Comp.unmount()
+        expect(document.title).toBe('restored title')
+      })
     })
   })
 })

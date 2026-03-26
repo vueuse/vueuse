@@ -4,6 +4,11 @@ import { shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
+export interface UseDocumentVisibilityOptions extends ConfigurableDocument {
+}
+
+export type UseDocumentVisibilityReturn = ShallowRef<DocumentVisibilityState>
+
 /**
  * Reactively track `document.visibilityState`.
  *
@@ -11,10 +16,10 @@ import { useEventListener } from '../useEventListener'
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useDocumentVisibility(options: ConfigurableDocument = {}): ShallowRef<DocumentVisibilityState> {
+export function useDocumentVisibility(options: UseDocumentVisibilityOptions = {}): UseDocumentVisibilityReturn {
   const { document = defaultDocument } = options
   if (!document)
-    return shallowRef('visible')
+    return shallowRef<DocumentVisibilityState>('visible')
 
   const visibility = shallowRef(document.visibilityState)
 

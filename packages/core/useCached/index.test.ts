@@ -67,6 +67,7 @@ describe('useCached', () => {
       const cachedValue = useCached(value, vi.fn())
       expect(isShallow(cachedValue)).toBe(true)
     })
+
     it('should return deepRef if true', () => {
       const value = deepRef(1)
 

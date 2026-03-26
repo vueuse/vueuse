@@ -27,9 +27,9 @@ It can also accept a `ref` as the first argument.
 ```vue
 <script setup lang="ts">
 import { useParentElement } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { useTemplateRef } from 'vue'
 
-const tooltip = shallowRef<HTMLElement | undefined>()
+const tooltip = useTemplateRef('tooltip')
 
 const tooltipWrapper = useParentElement(tooltip)
 

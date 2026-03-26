@@ -60,10 +60,9 @@
   refAutoReset: function
   refDebounced: function
   refDefault: function
+  refManualReset: function
   refThrottled: function
   refWithControl: function
-  resolveRef: function
-  resolveUnref: function
   set: function
   syncRef: function
   syncRefs: function
@@ -75,7 +74,6 @@
   toReactive: function
   toRef: function
   toRefs: function
-  toValue: function
   tryOnBeforeMount: function
   tryOnBeforeUnmount: function
   tryOnMounted: function

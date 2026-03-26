@@ -21,8 +21,3 @@ export function toRef(...args: any[]) {
     ? readonly(customRef(() => ({ get: r as any, set: noop })))
     : deepRef(r)
 }
-
-/**
- * @deprecated use `toRef` instead
- */
-export const resolveRef = toRef

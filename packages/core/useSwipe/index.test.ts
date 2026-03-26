@@ -94,20 +94,17 @@ describe('useSwipe', () => {
     target.dispatchEvent(mockTouchEnd(threshold, 5))
   })
 
-  ;([
+  it.each([
     ['up', [[0, 2 * threshold], [0, threshold], [0, threshold]]],
     ['down', [[0, 0], [0, threshold], [0, threshold]]],
     ['left', [[2 * threshold, 0], [threshold, 0], [threshold, 0]]],
     ['right', [[0, 0], [threshold, 0], [threshold, 0]]],
-  ] as [string, number[][]][])
-    .forEach(([expected, coords]) => {
-      it(`swipe ${expected}`, () => {
-        const { direction } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
+  ] as [string, number[][]][])('swipe %s', (expected, coords) => {
+    const { direction } = useSwipe(target, { threshold, onSwipe, onSwipeEnd })
 
-        mockTouchEvents(target, coords)
+    mockTouchEvents(target, coords)
 
-        expect(direction.value).toBe(expected)
-        expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)
-      })
-    })
+    expect(direction.value).toBe(expected)
+    expect(onSwipeEnd.mock.calls[0][1]).toBe(expected)
+  })
 })

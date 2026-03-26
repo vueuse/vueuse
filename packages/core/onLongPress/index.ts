@@ -14,7 +14,7 @@ export interface OnLongPressOptions {
    *
    * @default 500
    */
-  delay?: number
+  delay?: number | ((ev: PointerEvent) => number)
 
   modifiers?: OnLongPressModifiers
 
@@ -30,8 +30,9 @@ export interface OnLongPressOptions {
    * @param duration how long the element was pressed in ms
    * @param distance distance from the pointerdown position
    * @param isLongPress whether the action was a long press or not
+   * @param pointerEvent the native {@link PointerEvent} triggered by the browser
    */
-  onMouseUp?: (duration: number, distance: number, isLongPress: boolean) => void
+  onMouseUp?: (duration: number, distance: number, isLongPress: boolean, pointerEvent: PointerEvent) => void
 }
 
 export interface OnLongPressModifiers {
@@ -42,11 +43,15 @@ export interface OnLongPressModifiers {
   self?: boolean
 }
 
+export type OnLongPressReturn = () => void
+/** @deprecated use {@link OnLongPressReturn} instead */
+export type UseOnLongPressReturn = OnLongPressReturn
+
 export function onLongPress(
   target: MaybeElementRef,
   handler: (evt: PointerEvent) => void,
   options?: OnLongPressOptions,
-) {
+): OnLongPressReturn {
   const elementRef = computed(() => unrefElement(target))
 
   let timeout: TimerHandle
@@ -62,6 +67,14 @@ export function onLongPress(
     posStart = undefined
     startTimestamp = undefined
     hasLongPressed = false
+  }
+
+  function getDelay(ev: PointerEvent): number {
+    const delay = options?.delay
+    if (typeof delay === 'function') {
+      return delay(ev)
+    }
+    return delay ?? DEFAULT_DELAY
   }
 
   function onRelease(ev: PointerEvent) {
@@ -83,7 +96,7 @@ export function onLongPress(
     const dx = ev.x - _posStart.x
     const dy = ev.y - _posStart.y
     const distance = Math.sqrt(dx * dx + dy * dy)
-    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed)
+    options.onMouseUp(ev.timeStamp - _startTimestamp, distance, _hasLongPressed, ev)
   }
 
   function onDown(ev: PointerEvent) {
@@ -108,7 +121,7 @@ export function onLongPress(
         hasLongPressed = true
         handler(ev)
       },
-      options?.delay ?? DEFAULT_DELAY,
+      getDelay(ev),
     )
   }
 

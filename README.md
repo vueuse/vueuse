@@ -12,6 +12,7 @@ Collection of essential Vue Composition Utilities
 <p align="center">
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
+<a href="https://app.codecov.io/gh/vueuse/vueuse"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/vueuse/vueuse?color=42b883&labelColor=354a5e"></a>
 <a href="https://vueuse.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
 <img alt="Function Count" src="https://vueuse.org/badge-function-count.svg">
 <br>
@@ -58,8 +59,9 @@ Refer to [functions list](https://vueuse.org/functions) or [documentations](http
 
 ## 📦 Install
 
-> From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
+> From v14.0, VueUse requires Vue v3.5+
 > From v13.0, VueUse requires Vue v3.3+
+> From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
 
 ```bash
 npm i @vueuse/core

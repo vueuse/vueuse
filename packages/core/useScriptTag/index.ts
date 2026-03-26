@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { noop, tryOnMounted, tryOnUnmounted } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
@@ -53,6 +53,12 @@ export interface UseScriptTagOptions extends ConfigurableDocument {
   nonce?: string
 }
 
+export interface UseScriptTagReturn {
+  scriptTag: ShallowRef<HTMLScriptElement | null>
+  load: (waitForScriptLoad?: boolean) => Promise<HTMLScriptElement | boolean>
+  unload: () => void
+}
+
 /**
  * Async script tag loading.
  *
@@ -65,7 +71,7 @@ export function useScriptTag(
   src: MaybeRefOrGetter<string>,
   onLoaded: (el: HTMLScriptElement) => void = noop,
   options: UseScriptTagOptions = {},
-) {
+): UseScriptTagReturn {
   const {
     immediate = true,
     manual = false,
@@ -197,5 +203,3 @@ export function useScriptTag(
 
   return { scriptTag, load, unload }
 }
-
-export type UseScriptTagReturn = ReturnType<typeof useScriptTag>

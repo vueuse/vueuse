@@ -6,6 +6,7 @@ describe('useArrayDifference', () => {
   it('should be defined', () => {
     expect(useArrayDifference).toBeDefined()
   })
+
   it('should return the difference of two array', () => {
     const list1 = deepRef([1, 2, 3, 4, 5])
     const list2 = deepRef([4, 5, 6])

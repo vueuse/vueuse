@@ -23,7 +23,7 @@ Functions can be used on the template, and hooks are a handy skeleton for the bu
 import { useConfirmDialog } from '@vueuse/core'
 
 const { isRevealed, reveal, confirm, cancel, onReveal, onConfirm, onCancel }
-    = useConfirmDialog()
+  = useConfirmDialog()
 </script>
 
 <template>

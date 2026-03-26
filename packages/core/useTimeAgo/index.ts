@@ -1,5 +1,7 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
+import { useIntervalFn } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
@@ -56,7 +58,7 @@ export interface FormatTimeAgoOptions<UnitNames extends string = UseTimeAgoUnitN
   units?: UseTimeAgoUnit<UnitNames>[]
 }
 
-export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> extends FormatTimeAgoOptions<UnitNames> {
+export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> extends FormatTimeAgoOptions<UnitNames>, ConfigurableScheduler {
   /**
    * Expose more controls
    *
@@ -67,6 +69,7 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
   /**
    * Intervals to update, set 0 to disable auto update
    *
+   * @deprecated Please use `scheduler` option instead
    * @default 30_000
    */
   updateInterval?: number
@@ -124,6 +127,15 @@ function DEFAULT_FORMATTER(date: Date) {
 
 export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgo: ComputedRef<string> } & Pausable : ComputedRef<string>
 
+function getDefaultScheduler(options: UseTimeAgoOptions<boolean, string>) {
+  if ('updateInterval' in options) {
+    const { updateInterval = 30_000 } = options
+    return (cb: AnyFn) => useIntervalFn(cb, updateInterval)
+  }
+
+  return (cb: AnyFn) => useIntervalFn(cb, 30_000)
+}
+
 /**
  * Reactive time ago formatter.
  *
@@ -144,10 +156,14 @@ export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
   const {
     controls: exposeControls = false,
-    updateInterval = 30_000,
+    scheduler = getDefaultScheduler(options),
   } = options
 
-  const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
+  const { now, ...controls } = useNow({
+    scheduler,
+    controls: true,
+  })
+
   const timeAgo = computed(() => formatTimeAgo(new Date(toValue(time)), options, toValue(now)))
 
   if (exposeControls) {

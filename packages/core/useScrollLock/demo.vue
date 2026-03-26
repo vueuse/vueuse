@@ -2,7 +2,7 @@
 import { useScroll, useScrollLock, useToggle } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 useScroll(el)
 const isLocked = useScrollLock(el)
 const toggleLock = useToggle(isLocked)

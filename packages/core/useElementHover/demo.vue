@@ -3,7 +3,7 @@ import { vElementHover } from '@vueuse/components'
 import { useElementHover } from '@vueuse/core'
 import { shallowRef, useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLButtonElement>('el')
+const el = useTemplateRef('el')
 const isDirectiveHovered = shallowRef(false)
 const isHovered = useElementHover(el, { delayEnter: 200, delayLeave: 600 })
 function onHover(hovered: boolean) {

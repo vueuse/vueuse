@@ -43,5 +43,5 @@ export function refAutoReset<T>(defaultValue: MaybeRefOrGetter<T>, afterMs: Mayb
   })
 }
 
-// alias
-export { refAutoReset as autoResetRef }
+/** @deprecated use `refAutoReset` instead */
+export const autoResetRef = refAutoReset

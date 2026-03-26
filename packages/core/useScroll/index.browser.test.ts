@@ -1,5 +1,5 @@
-import { page } from '@vitest/browser/context'
 import { describe, expect, it } from 'vitest'
+import { page } from 'vitest/browser'
 import { computed, defineComponent, shallowRef, useTemplateRef } from 'vue'
 import { useScroll } from '.'
 
@@ -109,6 +109,7 @@ describe('useScroll', () => {
       }"
     `)
   })
+
   it('should correctly detect topArrived and bottomArrived states when reaching the Y-axis boundaries', async () => {
     const screen = page.render(Component, { props: { observe: true } })
     expect(screen).toBeDefined()
@@ -137,6 +138,7 @@ describe('useScroll', () => {
       }"
     `)
   })
+
   describe('observe DOM mutations when observe is enabled', () => {
     it('should detect boundary changes when child element size is modified', async () => {
       const screen = page.render(Component, { props: { observe: true } })
@@ -168,6 +170,7 @@ describe('useScroll', () => {
         }"
       `)
     })
+
     it('should detect boundary changes when child element is added or removed', async () => {
       const screen = page.render(Component, { props: { observe: true } })
       expect(screen).toBeDefined()

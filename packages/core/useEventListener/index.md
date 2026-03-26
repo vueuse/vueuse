@@ -16,7 +16,22 @@ useEventListener(document, 'visibilitychange', (evt) => {
 })
 ```
 
-You can also pass a ref as the event target, `useEventListener` will unregister the previous event and register the new one when you change the target.
+### Default Target
+
+When the target is omitted, it defaults to `window`:
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+// Listens on window
+useEventListener('resize', (evt) => {
+  console.log(evt)
+})
+```
+
+### Reactive Target
+
+You can pass a ref as the event target, `useEventListener` will unregister the previous event and register the new one when the target changes.
 
 ```vue
 <script setup lang="ts">
@@ -39,7 +54,34 @@ useEventListener(element, 'keydown', (e) => {
 </template>
 ```
 
-You can also call the returned to unregister the listener.
+### Multiple Events
+
+You can pass an array of events to listen to multiple events at once:
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+useEventListener(document, ['mouseenter', 'mouseleave'], (evt) => {
+  console.log(evt.type)
+})
+```
+
+### Multiple Targets
+
+You can also pass an array of targets:
+
+```ts
+import { useEventListener } from '@vueuse/core'
+
+const buttons = document.querySelectorAll('button')
+useEventListener(buttons, 'click', (evt) => {
+  console.log('Button clicked')
+})
+```
+
+### Cleanup
+
+Returns a cleanup function to manually unregister the listener:
 
 ```ts
 import { useEventListener } from '@vueuse/core'

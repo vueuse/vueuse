@@ -6,4 +6,7 @@ let command = 'pnpm publish -r --access public --no-git-checks'
 if (version.includes('beta'))
   command += ' --tag beta'
 
+if (version.includes('alpha'))
+  command += ' --tag alpha'
+
 execSync(command, { stdio: 'inherit' })

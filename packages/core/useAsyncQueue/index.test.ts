@@ -135,4 +135,14 @@ describe('useAsyncQueue', () => {
       expect(finalTaskSpy).not.toHaveBeenCalled()
     })
   })
+
+  it('should trigger onFinished when the last task is rejected', async () => {
+    const onFinishedSpy = vi.fn()
+    useAsyncQueue([p1, p2, pError], {
+      onFinished: onFinishedSpy,
+    })
+    await vi.waitFor(() => {
+      expect(onFinishedSpy).toHaveBeenCalledOnce()
+    })
+  })
 })

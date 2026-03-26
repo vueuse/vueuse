@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef, WritableComputedRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 import { computed, reactive, shallowRef, toValue } from 'vue'
@@ -78,6 +78,25 @@ export interface UseScrollOptions extends ConfigurableWindow {
   onError?: (error: unknown) => void
 }
 
+export interface UseScrollReturn {
+  x: WritableComputedRef<number>
+  y: WritableComputedRef<number>
+  isScrolling: ShallowRef<boolean>
+  arrivedState: {
+    left: boolean
+    right: boolean
+    top: boolean
+    bottom: boolean
+  }
+  directions: {
+    left: boolean
+    right: boolean
+    top: boolean
+    bottom: boolean
+  }
+  measure: () => void
+}
+
 /**
  * We have to check if the scroll amount is close enough to some threshold in order to
  * more accurately calculate arrivedState. This is because scrollTop/scrollLeft are non-rounded
@@ -96,7 +115,7 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
 export function useScroll(
   element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
   options: UseScrollOptions = {},
-) {
+): UseScrollReturn {
   const {
     throttle = 0,
     idle = 200,
@@ -210,7 +229,7 @@ export function useScroll(
       || unrefElement(target as HTMLElement | SVGElement)
     ) as Element
 
-    const { display, flexDirection, direction } = getComputedStyle(el)
+    const { display, flexDirection, direction } = window.getComputedStyle(el)
     const directionMultipler = direction === 'rtl' ? -1 : 1
 
     const scrollLeft = el.scrollLeft
@@ -336,5 +355,3 @@ export function useScroll(
     },
   }
 }
-
-export type UseScrollReturn = ReturnType<typeof useScroll>

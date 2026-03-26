@@ -7,7 +7,7 @@ related: useThrottleFn
 
 Debounce execution of a function.
 
-> Debounce is an overloaded waiter: if you keep asking him your requests will be ignored until you stop and give him some time to think about your latest inquiry.
+> Debounce is an overloaded waiter: if you keep asking, your requests will be ignored until you stop and give them some time to think about your latest inquiry.
 
 ## Usage
 

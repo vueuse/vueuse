@@ -1,4 +1,5 @@
-import { getCurrentInstance, hasInjectionContext, inject } from 'vue'
+import type { InjectionKey } from 'vue'
+import { getCurrentInstance, getCurrentScope, hasInjectionContext, inject } from 'vue'
 import { localProvidedStateMap } from '../provideLocal/map'
 
 /**
@@ -13,14 +14,16 @@ import { localProvidedStateMap } from '../provideLocal/map'
  * @__NO_SIDE_EFFECTS__
  */
 // @ts-expect-error overloads are not compatible
-export const injectLocal: typeof inject = (...args) => {
-  const key = args[0] as string | symbol
+export const injectLocal: typeof inject = <T>(...args) => {
+  const key = args[0] as InjectionKey<T> | string | number
   const instance = getCurrentInstance()?.proxy
-  if (instance == null && !hasInjectionContext())
+  const owner = instance ?? getCurrentScope()
+
+  if (owner == null && !hasInjectionContext())
     throw new Error('injectLocal must be called in setup')
 
-  if (instance && localProvidedStateMap.has(instance) && key in localProvidedStateMap.get(instance)!)
-    return localProvidedStateMap.get(instance)![key]
+  if (owner && localProvidedStateMap.has(owner) && key in localProvidedStateMap.get(owner)!)
+    return localProvidedStateMap.get(owner)![key]
 
   // @ts-expect-error overloads are not compatible
   return inject(...args)
