@@ -1,6 +1,6 @@
 import type { WakeLockSentinel } from './index'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { effectScope, nextTick } from 'vue'
 import { useWakeLock } from './index'
 
 class MockWakeLockSentinel extends EventTarget {
@@ -121,6 +121,32 @@ describe('useWakeLock', () => {
     await nextTick()
 
     expect(isActive.value).toBeFalsy()
+  })
+
+  it('should release wake lock when scope is disposed', async () => {
+    const sentinel = defineWakeLockAPI()
+    const mockDocument = new MockDocument()
+    mockDocument.visibilityState = 'visible'
+
+    const scope = effectScope()
+
+    let isActive: ReturnType<typeof useWakeLock>['isActive']
+    let request: ReturnType<typeof useWakeLock>['request']
+
+    scope.run(() => {
+      const result = useWakeLock({ document: mockDocument as Document })
+      isActive = result.isActive
+      request = result.request
+    })
+
+    await request!('screen')
+
+    expect(isActive!.value).toBeTruthy()
+    expect(sentinel.released).toBeFalsy()
+
+    scope.stop()
+
+    expect(sentinel.released).toBeTruthy()
   })
 
   it('it should be inactive if wake lock is released for some reasons', async () => {
