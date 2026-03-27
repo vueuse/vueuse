@@ -45,24 +45,22 @@ export function useElementSize(
           ? entry.contentBoxSize
           : entry.devicePixelContentBoxSize
 
-      if (window && isSVG.value) {
+      if (boxSize) {
+        const formatBoxSize = toArray(boxSize)
+        width.value = formatBoxSize.reduce((acc, { inlineSize }) => acc + inlineSize, 0)
+        height.value = formatBoxSize.reduce((acc, { blockSize }) => acc + blockSize, 0)
+      }
+      else if (entry.contentRect) {
+        // fallback
+        width.value = entry.contentRect.width
+        height.value = entry.contentRect.height
+      }
+      else if (window && isSVG.value) {
         const $elem = unrefElement(target)
         if ($elem) {
           const rect = $elem.getBoundingClientRect()
           width.value = rect.width
           height.value = rect.height
-        }
-      }
-      else {
-        if (boxSize) {
-          const formatBoxSize = toArray(boxSize)
-          width.value = formatBoxSize.reduce((acc, { inlineSize }) => acc + inlineSize, 0)
-          height.value = formatBoxSize.reduce((acc, { blockSize }) => acc + blockSize, 0)
-        }
-        else {
-          // fallback
-          width.value = entry.contentRect.width
-          height.value = entry.contentRect.height
         }
       }
     },
