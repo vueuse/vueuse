@@ -78,8 +78,9 @@ export function useElementSize(
   const stop2 = watch(
     () => unrefElement(target),
     (ele) => {
-      width.value = ele ? initialSize.width : 0
-      height.value = ele ? initialSize.height : 0
+      // todo: margin and padding handling
+      width.value = ele?.clientWidth ?? initialSize.width
+      height.value = ele?.clientHeight ?? initialSize.height
     },
   )
 
