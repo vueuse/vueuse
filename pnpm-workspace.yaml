@@ -37,7 +37,7 @@ catalogs:
     simple-git-hooks: ^2.13.1
     taze: ^19.9.2
     tinyglobby: ^0.2.15
-    tsdown: ^0.15.12
+    tsdown: ^0.21.5
     tsx: ^4.21.0
     turbo: ^2.8.1
     typescript: ^5.9.3
@@ -82,7 +82,7 @@ catalogs:
     universal-cookie: ^8.0.1
     vue-router: ^5.0.1
   test:
-    '@arethetypeswrong/cli': ^0.18.2
+    '@arethetypeswrong/core': ^0.18.2
     '@vitest/browser-playwright': ^4.0.18
     '@vitest/coverage-v8': ^4.0.18
     '@vitest/ui': ^4.0.18
