@@ -84,6 +84,21 @@ describe('useFileDialog', () => {
     expect(inputEl2.click).toHaveBeenCalledTimes(1)
   })
 
+  it('should work with input element passed as template ref that is initialised late', async () => {
+    const inputEl = document.createElement('input')
+    inputEl.click = vi.fn()
+
+    const inputRef = shallowRef<HTMLInputElement>()
+
+    const { open } = useFileDialog({ input: inputRef })
+    inputRef.value = inputEl
+    await nextTick()
+
+    open()
+    expect(inputEl.type).toBe('file')
+    expect(inputEl.click).toHaveBeenCalled()
+  })
+
   it('should trigger onchange and update files when file is selected', async () => {
     const input = document.createElement('input')
     const file = new File(['dummy content'], 'example.txt', { type: 'text/plain' })
