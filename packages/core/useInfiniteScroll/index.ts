@@ -1,8 +1,8 @@
 import type { Awaitable } from '@vueuse/shared'
-import type { MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
-import type { UseScrollOptions } from '../useScroll'
+import type { ComputedRef, MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
+import type { UseScrollOptions, UseScrollReturn } from '../useScroll'
 import { tryOnUnmounted } from '@vueuse/shared'
-import { computed, ref as deepRef, nextTick, reactive, toValue, watch } from 'vue'
+import { computed, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { resolveElement } from '../_resolve-element'
 import { useElementVisibility } from '../useElementVisibility'
 import { useScroll } from '../useScroll'
@@ -39,6 +39,11 @@ export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement = Infi
   canLoadMore?: (el: T) => boolean
 }
 
+export interface UseInfiniteScrollReturn {
+  isLoading: ComputedRef<boolean>
+  reset: () => void
+}
+
 /**
  * Reactive infinite scroll.
  *
@@ -46,9 +51,9 @@ export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement = Infi
  */
 export function useInfiniteScroll<T extends InfiniteScrollElement>(
   element: MaybeRefOrGetter<T>,
-  onLoadMore: (state: UnwrapNestedRefs<ReturnType<typeof useScroll>>) => Awaitable<void>,
+  onLoadMore: (state: UnwrapNestedRefs<UseScrollReturn>) => Awaitable<void>,
   options: UseInfiniteScrollOptions<T> = {},
-) {
+): UseInfiniteScrollReturn {
   const {
     direction = 'bottom',
     interval = 100,
@@ -66,7 +71,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
     },
   ))
 
-  const promise = deepRef<any>()
+  const promise = shallowRef<Promise<unknown> | null>()
   const isLoading = computed(() => !!promise.value)
 
   // Document and Window cannot be observed by IntersectionObserver

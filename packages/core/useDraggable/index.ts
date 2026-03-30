@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { PointerType, Position } from '../types'
 import { isClient, toRefs } from '@vueuse/shared'
 import { computed, ref as deepRef, toValue, watch } from 'vue'
@@ -151,6 +151,14 @@ export interface UseDraggableOptions {
   }>
 }
 
+export interface UseDraggableReturn {
+  x: Ref<number>
+  y: Ref<number>
+  position: Ref<Position>
+  isDragging: ComputedRef<boolean>
+  style: ComputedRef<string>
+}
+
 const defaultScrollConfig = { speed: 2, margin: 30, direction: 'both' }
 
 function clampContainerScroll(container: HTMLElement) {
@@ -170,7 +178,7 @@ function clampContainerScroll(container: HTMLElement) {
 export function useDraggable(
   target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>,
   options: UseDraggableOptions = {},
-) {
+): UseDraggableReturn {
   const {
     pointerTypes,
     preventDefault,
@@ -421,5 +429,3 @@ export function useDraggable(
     `),
   }
 }
-
-export type UseDraggableReturn = ReturnType<typeof useDraggable>

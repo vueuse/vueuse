@@ -1,8 +1,9 @@
 import type { AnyFn } from '@vueuse/shared'
-import type { ComputedRef, Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableScheduler } from '../_configurable'
+import type { Supportable } from '../types'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref as deepRef } from 'vue'
+import { shallowRef } from 'vue'
 import { useSupported } from '../useSupported'
 
 function getDefaultScheduler(options: UseMemoryOptions) {
@@ -65,9 +66,8 @@ export interface UseMemoryOptions extends ConfigurableScheduler {
   interval?: number
 }
 
-export interface UseMemoryReturn {
-  isSupported: ComputedRef<boolean>
-  memory: Ref<MemoryInfo | undefined>
+export interface UseMemoryReturn extends Supportable {
+  memory: ShallowRef<MemoryInfo | undefined>
 }
 
 type PerformanceMemory = Performance & {
@@ -83,7 +83,7 @@ type PerformanceMemory = Performance & {
  * @__NO_SIDE_EFFECTS__
  */
 export function useMemory(options: UseMemoryOptions = {}): UseMemoryReturn {
-  const memory = deepRef<MemoryInfo>()
+  const memory = shallowRef<MemoryInfo>()
   const isSupported = useSupported(() => typeof performance !== 'undefined' && 'memory' in performance)
 
   if (isSupported.value) {

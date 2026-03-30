@@ -1,6 +1,7 @@
 import type { AnyFn, Arrayable, Pausable } from '@vueuse/shared'
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator, ConfigurableScheduler } from '../_configurable'
+import type { Supportable } from '../types'
 import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -46,8 +47,7 @@ export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableSc
   interval: number
 }
 
-export interface UseVibrateReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseVibrateReturn extends Supportable {
   pattern: MaybeRefOrGetter<Arrayable<number>>
   intervalControls?: Pausable
   vibrate: (pattern?: Arrayable<number>) => void
