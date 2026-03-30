@@ -38,7 +38,8 @@
     "./useNProgress": "./dist/useNProgress.js",
     "./useQRCode": "./dist/useQRCode.js",
     "./useSortable": "./dist/useSortable.js",
-    "./useSortable/component": "./dist/useSortable/component.js"
+    "./useSortable/component": "./dist/useSortable/component.js",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",

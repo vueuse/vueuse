@@ -28,7 +28,8 @@
     "./*": "./dist/*",
     "./useAuth": "./dist/useAuth.js",
     "./useFirestore": "./dist/useFirestore.js",
-    "./useRTDB": "./dist/useRTDB.js"
+    "./useRTDB": "./dist/useRTDB.js",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
