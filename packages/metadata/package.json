@@ -33,7 +33,6 @@
   "scripts": {
     "update": "tsx scripts/update.ts",
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   }
 }

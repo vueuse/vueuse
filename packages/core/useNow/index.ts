@@ -1,8 +1,8 @@
 import type { AnyFn, Pausable } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
-import { ref as deepRef } from 'vue'
+import { shallowRef } from 'vue'
 import { useRafFn } from '../useRafFn'
 
 function getDefaultScheduler(options: UseNowOptions<boolean>) {
@@ -45,7 +45,7 @@ export interface UseNowOptions<Controls extends boolean> extends ConfigurableSch
   interval?: 'requestAnimationFrame' | number
 }
 
-export type UseNowReturn<Controls extends boolean> = Controls extends true ? ({ now: Ref<Date> } & Pausable) : Ref<Date>
+export type UseNowReturn<Controls extends boolean> = Controls extends true ? ({ now: ShallowRef<Date> } & Pausable) : ShallowRef<Date>
 
 /**
  * Reactive current Date instance.
@@ -55,8 +55,8 @@ export type UseNowReturn<Controls extends boolean> = Controls extends true ? ({ 
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNow(options?: UseNowOptions<false>): Ref<Date>
-export function useNow(options: UseNowOptions<true>): { now: Ref<Date> } & Pausable
+export function useNow(options?: UseNowOptions<false>): ShallowRef<Date>
+export function useNow(options: UseNowOptions<true>): { now: ShallowRef<Date> } & Pausable
 
 /**
  * Reactive current Date instance.
@@ -72,7 +72,7 @@ export function useNow(options: UseNowOptions<boolean> = {}): UseNowReturn<boole
     scheduler = getDefaultScheduler(options),
   } = options
 
-  const now = deepRef(new Date())
+  const now = shallowRef(new Date())
 
   const update = () => now.value = new Date()
 
