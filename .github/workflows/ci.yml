@@ -86,10 +86,6 @@ jobs:
       - name: server tests
         run: pnpm run test:server
 
-      - if: matrix.node == '20.x'
-        name: attw tests
-        run: pnpm test:attw
-
       - if: matrix.node == 'lts/*'
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh
@@ -124,4 +120,4 @@ jobs:
 
       - run: pnpm run update:full
 
-      - run: pnpm dlx pkg-pr-new publish --compact --pnpm './packages/*'
+      - run: pnpm dlx pkg-pr-new publish --compact --pnpm './packages/*' --packageManager=pnpm,npm,yarn

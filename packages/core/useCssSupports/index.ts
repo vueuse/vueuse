@@ -30,11 +30,7 @@ export function useCssSupports(...args: any[]): UseCssSupportsReturn {
 
   return {
     isSupported: computed(() => {
-      // to trigger the ref
-      // eslint-disable-next-line ts/no-unused-expressions
-      isMounted.value
-
-      if (!isClient) {
+      if (!isClient || !isMounted.value) {
         return ssrValue
       }
 
