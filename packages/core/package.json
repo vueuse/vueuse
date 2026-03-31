@@ -24,7 +24,8 @@
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*",
-    "./metadata": "./dist/metadata.mjs"
+    "./metadata": "./dist/metadata.mjs",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
