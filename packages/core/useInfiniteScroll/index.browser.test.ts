@@ -1,5 +1,5 @@
 import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import { ref as deepRef, defineComponent, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from './index'
@@ -75,6 +75,14 @@ describe('useInfiniteScroll', () => {
   })
 
   describe('trigger option', () => {
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
     it('should trigger onLoadMore when trigger element becomes visible', async () => {
       const onLoadMore = vi.fn(() => Promise.resolve())
 
@@ -94,7 +102,7 @@ describe('useInfiniteScroll', () => {
 
       page.render(Component)
 
-      await new Promise(resolve => setTimeout(resolve, 150))
+      await vi.advanceTimersByTimeAsync(150)
       expect(onLoadMore).not.toHaveBeenCalled()
 
       // Scroll to make trigger visible
@@ -126,7 +134,7 @@ describe('useInfiniteScroll', () => {
       page.render(Component)
 
       // Wait without scrolling - trigger should not be visible
-      await new Promise(resolve => setTimeout(resolve, 300))
+      await vi.advanceTimersByTimeAsync(300)
       expect(onLoadMore).not.toHaveBeenCalled()
     })
 
@@ -178,7 +186,7 @@ describe('useInfiniteScroll', () => {
 
       page.render(Component)
 
-      await new Promise(resolve => setTimeout(resolve, 150))
+      await vi.advanceTimersByTimeAsync(150)
       expect(onLoadMore).not.toHaveBeenCalled()
 
       resetFn!()
