@@ -6,6 +6,34 @@ import { useIDBKeyval } from './index'
 
 const cache = new Map<string, unknown>()
 
+// --- BroadcastChannel mock ---
+const mockChannels = new Map<string, MockBroadcastChannel>()
+
+class MockBroadcastChannel {
+  name: string
+  postMessage = vi.fn()
+  close = vi.fn()
+  private listeners = new Map<string, ((event: any) => void)[]>()
+
+  constructor(name: string) {
+    this.name = name
+    mockChannels.set(name, this)
+  }
+
+  addEventListener(type: string, listener: (event: any) => void) {
+    if (!this.listeners.has(type))
+      this.listeners.set(type, [])
+    this.listeners.get(type)!.push(listener)
+  }
+
+  simulateMessage(data: any) {
+    for (const listener of this.listeners.get('message') ?? [])
+      listener({ data })
+  }
+}
+
+vi.stubGlobal('BroadcastChannel', MockBroadcastChannel)
+
 vi.mock('idb-keyval', () => ({
   get: (key: string) => Promise.resolve(cache.get(key)),
   set: vi.fn((key: string, value: any) => new Promise((resolve, reject) => {
@@ -161,5 +189,109 @@ describe('useIDBKeyval', () => {
 
     expect(data.value).toEqual('bar')
     expect(await get(KEY4)).toEqual(0)
+  })
+
+  describe('cross-tab syncing', () => {
+    const KEY5 = 'vue-use-idb-keyval-5'
+    const channelName = `vueuse-idb-${JSON.stringify(KEY5)}`
+
+    beforeEach(() => {
+      mockChannels.clear()
+    })
+
+    it('creates a BroadcastChannel by default', async () => {
+      useIDBKeyval(KEY5, 'initial')
+
+      expect(mockChannels.has(channelName)).toBe(true)
+    })
+
+    it('does not create a BroadcastChannel when listenToStorageChanges is false', () => {
+      useIDBKeyval(KEY5, 'initial', { listenToStorageChanges: false })
+
+      expect(mockChannels.has(channelName)).toBe(false)
+    })
+
+    it('broadcasts set message when data changes', async () => {
+      const { data } = useIDBKeyval(KEY5, 'initial')
+      await nextTick()
+
+      const channel = mockChannels.get(channelName)!
+      channel.postMessage.mockClear()
+
+      data.value = 'updated'
+      await nextTick()
+
+      expect(channel.postMessage).toHaveBeenCalledWith({ type: 'set', value: 'updated' })
+    })
+
+    it('broadcasts delete message when data is set to null', async () => {
+      const { data } = useIDBKeyval<string | null>(KEY5, 'initial')
+      await nextTick()
+
+      const channel = mockChannels.get(channelName)!
+      channel.postMessage.mockClear()
+
+      data.value = null
+      await nextTick()
+
+      expect(channel.postMessage).toHaveBeenCalledWith({ type: 'delete' })
+    })
+
+    it('updates data when receiving a set message from another tab', async () => {
+      const { data } = useIDBKeyval(KEY5, 'initial')
+      await nextTick()
+
+      mockChannels.get(channelName)!.simulateMessage({ type: 'set', value: 'from-other-tab' })
+
+      expect(data.value).toBe('from-other-tab')
+    })
+
+    it('resets data to initial value when receiving a delete message from another tab', async () => {
+      const { data } = useIDBKeyval(KEY5, 'initial')
+      await nextTick()
+
+      mockChannels.get(channelName)!.simulateMessage({ type: 'delete' })
+
+      expect(data.value).toBe('initial')
+    })
+
+    it('calls onError and keeps watcher active if serializer.read throws on incoming message', async () => {
+      const onError = vi.fn()
+      const serializer = {
+        read: vi.fn(() => { throw new Error('read error') }),
+        write: (v: string) => v,
+      }
+      const { data } = useIDBKeyval<string>(KEY5, 'initial', { serializer, onError })
+      await nextTick()
+
+      const channel = mockChannels.get(channelName)!
+      channel.simulateMessage({ type: 'set', value: 'from-other-tab' })
+      await nextTick()
+
+      expect(onError).toHaveBeenCalledTimes(1)
+      expect(data.value).toBe('initial')
+
+      // watcher should still be active — a subsequent local write should broadcast
+      channel.postMessage.mockClear()
+      data.value = 'local-update'
+      await nextTick()
+      expect(channel.postMessage).toHaveBeenCalledWith({ type: 'set', value: 'local-update' })
+    })
+
+    it('does not write back to IDB or re-broadcast when receiving a message from another tab', async () => {
+      const { data } = useIDBKeyval(KEY5, 'initial')
+      await nextTick()
+
+      const channel = mockChannels.get(channelName)!
+      channel.postMessage.mockClear()
+      const idbValueBefore = cache.get(KEY5)
+
+      channel.simulateMessage({ type: 'set', value: 'from-other-tab' })
+      await nextTick()
+
+      expect(data.value).toBe('from-other-tab')
+      expect(cache.get(KEY5)).toBe(idbValueBefore)
+      expect(channel.postMessage).not.toHaveBeenCalled()
+    })
   })
 })
