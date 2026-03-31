@@ -35,8 +35,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "electron": ">=9.0.0",

@@ -37,8 +37,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0",
