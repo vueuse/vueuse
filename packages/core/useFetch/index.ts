@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, shallowRef, toValue, watch } from 'vue'
+import { computed, isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -550,8 +550,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   )
 
   const shell: UseFetchReturn<T> = {
-    isFinished: readonly(isFinished),
-    isFetching: readonly(isFetching),
+    isFinished: shallowReadonly(isFinished),
+    isFetching: shallowReadonly(isFetching),
     statusCode,
     response,
     error,
