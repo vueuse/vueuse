@@ -40,6 +40,7 @@ export const packages: PackageManifest[] = [
     target: 'node14',
     external: [
       '@nuxt/kit',
+      '@nuxt/schema',
       'local-pkg',
       'fs',
       'path',

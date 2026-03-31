@@ -35,8 +35,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "nuxt": "^3.0.0 || ^4.0.0-0",
