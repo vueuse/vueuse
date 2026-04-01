@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import { vElementSize } from './directive'
 
 const App = defineComponent({
@@ -45,6 +45,14 @@ describe('vElementSize', () => {
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
     })
+
+    it('should call handler immediately on mount', async () => {
+      await nextTick()
+      expect(onResize).toHaveBeenCalled()
+      expect(onResize).toHaveBeenCalledWith(
+        expect.objectContaining({ width: expect.any(Number), height: expect.any(Number) }),
+      )
+    })
   })
 
   describe('given options', () => {
@@ -67,6 +75,38 @@ describe('vElementSize', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should call handler immediately on mount with options', async () => {
+      await nextTick()
+      expect(onResize).toHaveBeenCalled()
+    })
+  })
+
+  describe('given border-box option', () => {
+    beforeEach(() => {
+      onResize = vi.fn()
+      const options = [{ width: 0, height: 0 }, { box: 'border-box' }]
+
+      wrapper = mount(App, {
+        props: {
+          onResize,
+          options,
+        },
+        global: {
+          directives: {
+            ElementSize: vElementSize,
+          },
+        },
+      })
+    })
+
+    it('should call handler with border-box option', async () => {
+      await nextTick()
+      expect(onResize).toHaveBeenCalled()
+      expect(onResize).toHaveBeenCalledWith(
+        expect.objectContaining({ width: expect.any(Number), height: expect.any(Number) }),
+      )
     })
   })
 })
