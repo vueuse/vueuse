@@ -4,7 +4,7 @@ category: Elements
 
 # useIntersectionObserver
 
-Detects that a target element's visibility.
+Detects changes to a target element's visibility.
 
 ## Usage
 
