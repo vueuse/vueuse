@@ -90,21 +90,13 @@ Clicks inside an iframe are not detected by default. Enable `detectIframe` to al
 onClickOutside(target, handler, { detectIframe: true })
 ```
 
-## Component Usage
+### Component Usage
 
-```vue
-<template>
-  <OnClickOutside :options="{ ignore: [/* ... */] }" @trigger="count++">
-    <div>
-      Click Outside of Me
-    </div>
-  </OnClickOutside>
-</template>
-```
+> [!NOTE]
+> This component renders a wrapper element (`<div>` by default).
+> Use the `as` prop to customize the wrapper tag.
 
-## Directive Usage
-
-```vue
+````vue
 <script setup lang="ts">
 import { vOnClickOutside } from '@vueuse/components'
 import { shallowRef } from 'vue'
@@ -115,6 +107,17 @@ function closeModal() {
 }
 </script>
 
+## Directive Usage
+
+```vue
+<template>
+  <OnClickOutside as="section" :options="{ ignore: [/* ... */] }" @trigger="count++">
+    <div>
+      Click Outside of Me
+    </div>
+  </OnClickOutside>
+</template>
+
 <template>
   <button @click="modal = true">
     Open Modal
@@ -123,7 +126,7 @@ function closeModal() {
     Hello World
   </div>
 </template>
-```
+````
 
 You can also set the handler as an array to set the configuration items of the instruction.
 
