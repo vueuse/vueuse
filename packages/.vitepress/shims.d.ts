@@ -5,3 +5,5 @@ declare module 'virtual:pwa' {
   }
   export const packageNames: [path: string, NormalizedPath][]
 }
+
+declare module 'vitepress-plugin-llms'
