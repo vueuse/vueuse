@@ -109,3 +109,64 @@ import { StorageSerializers, useStorage } from '@vueuse/core'
 const objectLike = useStorage('key', null, undefined, { serializer: StorageSerializers.object })
 objectLike.value = { foo: 'bar' }
 ```
+
+### Built-in Serializers
+
+The following serializers are available via `StorageSerializers`:
+
+| Type      | Description                           |
+| --------- | ------------------------------------- |
+| `string`  | Plain string                          |
+| `number`  | Number (via `parseFloat`)             |
+| `boolean` | Boolean                               |
+| `object`  | JSON object/array                     |
+| `map`     | JavaScript `Map`                      |
+| `set`     | JavaScript `Set`                      |
+| `date`    | JavaScript `Date` (via `toISOString`) |
+| `any`     | Raw string passthrough                |
+
+```ts
+import { StorageSerializers, useStorage } from '@vueuse/core'
+
+const myMap = useStorage('my-map', new Map(), undefined, {
+  serializer: StorageSerializers.map,
+})
+```
+
+## Options
+
+```ts
+useStorage('key', defaults, storage, {
+  // Watch for deep changes in objects/arrays (default: true)
+  deep: true,
+  // Sync across tabs via storage events (default: true)
+  listenToStorageChanges: true,
+  // Write default value to storage if not present (default: true)
+  writeDefaults: true,
+  // Use shallowRef instead of ref (default: false)
+  shallow: false,
+  // Initialize only after component is mounted (default: false)
+  initOnMounted: false,
+  // Custom error handler (default: console.error)
+  onError: e => console.error(e),
+  // Watch flush timing (default: 'pre')
+  flush: 'pre',
+})
+```
+
+## Reactive Key
+
+The storage key can be a ref or getter, and the data will be updated when the key changes:
+
+```ts
+import { useStorage } from '@vueuse/core'
+
+const userId = ref('user-1')
+const userData = useStorage(
+  () => `user-data-${userId.value}`,
+  { name: '' },
+)
+
+// Changing the key will read from the new storage location
+userId.value = 'user-2'
+```

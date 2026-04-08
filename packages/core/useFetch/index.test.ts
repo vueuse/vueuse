@@ -112,11 +112,12 @@ describe('useFetch', () => {
   it('should throw error', async () => {
     const options = { immediate: false }
     const error1 = await useFetch(`${baseUrl}?status=400`, options).execute(true).catch(err => err)
-    const error2 = await useFetch(`${baseUrl}?status=600`, options).execute(true).catch(err => err)
+    const error2 = await useFetch(`${baseUrl}?status=500`, options).execute(true).catch(err => err)
 
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
     expect(error2.name).toBe('Error')
+    expect(error2.message).toBe('Internal Server Error')
   })
 
   it('should abort request and set aborted to true', async () => {

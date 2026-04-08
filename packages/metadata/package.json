@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/metadata",
   "type": "module",
-  "version": "14.1.0",
+  "version": "14.2.1",
   "description": "Metadata for VueUse functions",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -22,7 +22,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.js",
-    "./*": "./dist/*"
+    "./*": "./dist/*",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -33,7 +34,6 @@
   "scripts": {
     "update": "tsx scripts/update.ts",
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   }
 }

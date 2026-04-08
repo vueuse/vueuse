@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/electron",
   "type": "module",
-  "version": "14.1.0",
+  "version": "14.2.1",
   "description": "Electron renderer process modules for VueUse",
   "author": "Archer Gu<https://github.com/ArcherGu>",
   "license": "MIT",
@@ -25,7 +25,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.js",
-    "./*": "./dist/*"
+    "./*": "./dist/*",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -35,8 +36,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "electron": ">=9.0.0",

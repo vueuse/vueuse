@@ -10,7 +10,7 @@ Reactive [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/W
 
 ### Basic Usage
 
-The `useAnimate` function will return the animate and its control function.
+The `useAnimate` function returns the animation instance and control functions.
 
 ```vue
 <script setup lang="ts">
@@ -69,4 +69,46 @@ const keyframes = ref([
 ])
 
 useAnimate(el, keyframes, 1000)
+```
+
+### Options
+
+The third argument accepts a duration number or an options object with the following additional properties on top of [KeyframeAnimationOptions](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate#parameters):
+
+```ts
+import { useAnimate } from '@vueuse/core'
+
+useAnimate(el, keyframes, {
+  duration: 1000,
+  // Start playing immediately (default: true)
+  immediate: true,
+  // Commit the end styling state to the element (default: false)
+  commitStyles: false,
+  // Persist the animation (default: false)
+  persist: false,
+  // Callback when animation is initialized
+  onReady(animate) {
+    console.log('Animation ready', animate)
+  },
+  // Callback when an error occurs
+  onError(e) {
+    console.error('Animation error', e)
+  },
+})
+```
+
+### Delaying Start
+
+Set `immediate: false` to prevent the animation from starting automatically.
+
+```ts
+import { useAnimate } from '@vueuse/core'
+
+const { play } = useAnimate(el, keyframes, {
+  duration: 1000,
+  immediate: false,
+})
+
+// Start the animation manually
+play()
 ```

@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
-import { shallowRef, useTemplateRef } from 'vue'
+import { computed, shallowRef, useTemplateRef } from 'vue'
 
 const root = useTemplateRef('root')
 const target = useTemplateRef('target')
 const isVisible = shallowRef(false)
+
+const rootMarginTop = shallowRef(0)
+const rootMarginRight = shallowRef(0)
+const rootMarginBottom = shallowRef(0)
+const rootMarginLeft = shallowRef(0)
+const rootMargin = computed(() => `${rootMarginTop.value || 0}px ${rootMarginRight.value || 0}px ${rootMarginBottom.value || 0}px ${rootMarginLeft.value || 0}px`)
 
 const { isActive, pause, resume } = useIntersectionObserver(
   target,
   ([entry]) => {
     isVisible.value = entry?.isIntersecting || false
   },
-  { root },
+  { root, rootMargin },
 )
 </script>
 
@@ -24,6 +30,34 @@ const { isActive, pause, resume } = useIntersectionObserver(
       >
       <span>Enable</span>
     </label>
+  </div>
+  <note class="mb-2">
+    {{ `RootMargin: ${rootMargin}` }}
+  </note>
+  <div
+    grid="~ cols-4 "
+    gap-2
+  >
+    <input
+      v-model="rootMarginTop"
+      type="text"
+      placeholder="Top"
+    >
+    <input
+      v-model="rootMarginRight"
+      type="text"
+      placeholder="Right"
+    >
+    <input
+      v-model="rootMarginBottom"
+      type="text"
+      placeholder="Bottom"
+    >
+    <input
+      v-model="rootMarginLeft"
+      type="text"
+      placeholder="Left"
+    >
   </div>
   <div ref="root" class="root">
     <p class="notice">

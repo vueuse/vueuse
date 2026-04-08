@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/router",
   "type": "module",
-  "version": "14.1.0",
+  "version": "14.2.1",
   "description": "Utilities for vue-router",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -24,7 +24,8 @@
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.js",
-    "./*": "./dist/*"
+    "./*": "./dist/*",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -36,12 +37,11 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "vue": "^3.5.0",
-    "vue-router": "^4.0.0"
+    "vue-router": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
     "@vueuse/shared": "workspace:*"

@@ -1,5 +1,5 @@
 import type { ConfigurableWindow } from '../_configurable'
-import { pausableWatch } from '@vueuse/shared'
+import { watchPausable } from '@vueuse/shared'
 import { nextTick, reactive } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -115,7 +115,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     Array.from(unusedKeys).forEach(key => delete state[key])
   }
 
-  const { pause, resume } = pausableWatch(
+  const { pause, resume } = watchPausable(
     state,
     () => {
       const params = new URLSearchParams('')
