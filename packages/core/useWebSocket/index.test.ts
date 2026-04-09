@@ -437,6 +437,46 @@ describe('useWebSocket', () => {
       expect(mockWebSocket.prototype.close).not.toHaveBeenCalled()
     })
 
+    it('should not pause heartbeat when old ws.onclose fires after new ws.onopen on URL change', async () => {
+      const url = shallowRef('ws://server1')
+      const messageSpy = vi.fn(() => 'ping')
+
+      vm = useSetup(() => {
+        const ref = useWebSocket(url, {
+          heartbeat: {
+            message: messageSpy,
+            interval: 500,
+            pongTimeout: 1000,
+          },
+        })
+        return { ref }
+      })
+
+      const oldWs = vm.ref.ws.value!
+      oldWs.onopen?.(new Event('open'))
+      expect(vm.ref.status.value).toBe('OPEN')
+
+      await vi.advanceTimersByTimeAsync(500)
+      expect(messageSpy).toHaveBeenCalledTimes(1)
+      messageSpy.mockClear()
+
+      url.value = 'ws://server2'
+      await nextTick()
+
+      const newWs = vm.ref.ws.value!
+      expect(newWs).not.toBe(oldWs)
+
+      newWs.onopen?.(new Event('open'))
+      expect(vm.ref.status.value).toBe('OPEN')
+
+      oldWs.onclose?.(new CloseEvent('close'))
+
+      expect(vm.ref.status.value).toBe('OPEN')
+
+      await vi.advanceTimersByTimeAsync(500)
+      expect(messageSpy).toHaveBeenCalledTimes(1)
+    })
+
     it('should not send a heartbeat if the connection is closed', async () => {
       const messageSpy = vi.fn(() => 'ping')
       vm = useSetup(() => {
