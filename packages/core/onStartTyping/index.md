@@ -4,7 +4,7 @@ category: Sensors
 
 # onStartTyping
 
-Fires when users start typing on non-editable elements.
+Fires when users start typing on non-editable elements. Useful for auto-focusing an input field when the user starts typing anywhere on the page.
 
 ## Usage
 
@@ -25,3 +25,13 @@ onStartTyping(() => {
   <input ref="input" type="text" placeholder="Start typing to focus">
 </template>
 ```
+
+## How It Works
+
+The callback only fires when:
+
+- No editable element (`<input>`, `<textarea>`, or `contenteditable`) is focused
+- The pressed key is alphanumeric (A-Z, 0-9)
+- No modifier keys (Ctrl, Alt, Meta) are held
+
+This allows users to start typing anywhere on the page without accidentally triggering the callback when using keyboard shortcuts or interacting with form fields.

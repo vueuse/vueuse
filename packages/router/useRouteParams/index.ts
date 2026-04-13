@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router'
 const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteParams(
-  name: string
+  name: string,
 ): Ref<null | string | string[]>
 
 export function useRouteParams<
@@ -17,7 +17,7 @@ export function useRouteParams<
 >(
   name: string,
   defaultValue?: MaybeRefOrGetter<T>,
-  options?: ReactiveRouteOptionsWithTransform<T, K>
+  options?: ReactiveRouteOptionsWithTransform<T, K>,
 ): Ref<K>
 
 export function useRouteParams<

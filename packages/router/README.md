@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm i @vueuse/router vue-router@4
+npm i @vueuse/router vue-router@5
 ```
 
 ## Functions

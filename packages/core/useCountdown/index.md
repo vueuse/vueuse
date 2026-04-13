@@ -4,7 +4,7 @@ category: Time
 
 # useCountdown
 
-Wrapper for `useIntervalFn` that provides a countdown timer.
+Reactive countdown timer in seconds.
 
 ## Usage
 

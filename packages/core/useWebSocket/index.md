@@ -11,7 +11,37 @@ Reactive [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/
 ```ts
 import { useWebSocket } from '@vueuse/core'
 
-const { status, data, send, open, close } = useWebSocket('ws://websocketurl')
+const { status, data, send, open, close, ws } = useWebSocket('ws://websocketurl')
+```
+
+### Return Values
+
+| Property | Type                                      | Description                          |
+| -------- | ----------------------------------------- | ------------------------------------ |
+| `data`   | `Ref<any>`                                | Latest received data                 |
+| `status` | `Ref<'OPEN' \| 'CONNECTING' \| 'CLOSED'>` | Connection status                    |
+| `ws`     | `Ref<WebSocket>`                          | WebSocket instance                   |
+| `send`   | `(data, useBuffer?) => boolean`           | Send data (buffers if not connected) |
+| `open`   | `() => void`                              | Open/reconnect the connection        |
+| `close`  | `(code?, reason?) => void`                | Close the connection                 |
+
+### Callbacks
+
+```ts
+const { data } = useWebSocket('ws://websocketurl', {
+  onConnected(ws) {
+    console.log('Connected!')
+  },
+  onDisconnected(ws, event) {
+    console.log('Disconnected!', event.code)
+  },
+  onError(ws, event) {
+    console.error('Error:', event)
+  },
+  onMessage(ws, event) {
+    console.log('Message:', event.data)
+  },
+})
 ```
 
 See the [Type Declarations](#type-declarations) for more options.
@@ -110,7 +140,7 @@ import { useWebSocket } from '@vueuse/core'
 const { status, data, close } = useWebSocket('ws://websocketurl', {
   heartbeat: {
     message: 'ping',
-    interval: 1000,
+    scheduler: cb => useIntervalFn(cb, 2000),
     pongTimeout: 1000,
   },
 })

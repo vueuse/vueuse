@@ -1,6 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { noop, notNullish, toArray, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
@@ -33,13 +34,12 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   threshold?: number | number[]
 }
 
-export interface UseIntersectionObserverReturn extends Pausable {
-  isSupported: ComputedRef<boolean>
+export interface UseIntersectionObserverReturn extends Supportable, Pausable {
   stop: () => void
 }
 
 /**
- * Detects that a target element's visibility.
+ * Detects changes to a target element's visibility.
  *
  * @see https://vueuse.org/useIntersectionObserver
  * @param target

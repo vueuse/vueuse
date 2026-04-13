@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/firebase",
   "type": "module",
-  "version": "14.1.0",
+  "version": "14.2.1",
   "description": "Enables realtime bindings for Firebase",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -28,7 +28,8 @@
     "./*": "./dist/*",
     "./useAuth": "./dist/useAuth.js",
     "./useFirestore": "./dist/useFirestore.js",
-    "./useRTDB": "./dist/useRTDB.js"
+    "./useRTDB": "./dist/useRTDB.js",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -40,8 +41,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "firebase": ">=9.0.0",

@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify, TimerHandle } from './types'
-import { isRef, readonly, toValue } from 'vue'
+import { isRef, shallowReadonly, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'
 
@@ -14,7 +14,7 @@ export interface FunctionWrapperOptions<Args extends any[] = any[], This = any> 
 
 export type EventFilter<Args extends any[] = any[], This = any, Invoke extends AnyFn = AnyFn> = (
   invoke: Invoke,
-  options: FunctionWrapperOptions<Args, This>
+  options: FunctionWrapperOptions<Args, This>,
 ) => ReturnType<Invoke> | Promisify<ReturnType<Invoke>>
 
 export interface ConfigurableEventFilter {
@@ -240,5 +240,5 @@ export function pausableFilter(extendFilter: EventFilter = bypassFilter, options
       extendFilter(...args)
   }
 
-  return { isActive: readonly(isActive), pause, resume, eventFilter }
+  return { isActive: shallowReadonly(isActive), pause, resume, eventFilter }
 }

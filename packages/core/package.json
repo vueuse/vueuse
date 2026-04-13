@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/core",
   "type": "module",
-  "version": "14.1.0",
+  "version": "14.2.1",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -24,7 +24,8 @@
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*",
-    "./metadata": "./dist/metadata.mjs"
+    "./metadata": "./dist/metadata.mjs",
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -36,8 +37,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

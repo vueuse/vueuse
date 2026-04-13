@@ -130,9 +130,13 @@ export default defineNuxtModule<VueUseNuxtOptions>({
 
           const imports = metadata
             .functions
-            .filter(i => i.package === pkg && !i.internal)
+            .filter(i => i.package === pkg
+              && !i.internal
+              && i.name.length >= 4
+              && !disabledFunctions.includes(i.name),
+            )
             .flatMap((i): Import[] => {
-              const names = [i.name, ...i.alias || []]
+              const names = [i.name, ...i.alias || [], ...i.variants || []]
               return names.map(n => ({
                 from: `@vueuse/${i.importPath || i.package}`,
                 name: n,
@@ -145,7 +149,6 @@ export default defineNuxtModule<VueUseNuxtOptions>({
                 },
               }))
             })
-            .filter(i => i.name.length >= 4 && !disabledFunctions.includes(i.name))
 
           sources.push({
             from: '@vueuse/core',

@@ -1,5 +1,6 @@
-import type { MaybeRef, MaybeRefOrGetter } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -42,6 +43,16 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
   onBoundary?: (event: SpeechSynthesisEvent) => void
 }
 
+export interface UseSpeechSynthesisReturn extends Supportable {
+  isPlaying: ShallowRef<boolean>
+  status: ShallowRef<UseSpeechSynthesisStatus>
+  utterance: ComputedRef<SpeechSynthesisUtterance>
+  error: ShallowRef<SpeechSynthesisErrorEvent | undefined>
+  stop: () => void
+  toggle: (value?: boolean) => void
+  speak: () => void
+}
+
 /**
  * Reactive SpeechSynthesis.
  *
@@ -51,7 +62,7 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
 export function useSpeechSynthesis(
   text: MaybeRefOrGetter<string>,
   options: UseSpeechSynthesisOptions = {},
-) {
+): UseSpeechSynthesisReturn {
   const {
     pitch = 1,
     rate = 1,
@@ -167,5 +178,3 @@ export function useSpeechSynthesis(
     speak,
   }
 }
-
-export type UseSpeechSynthesisReturn = ReturnType<typeof useSpeechSynthesis>
