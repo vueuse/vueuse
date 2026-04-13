@@ -20,22 +20,22 @@ export const vElementVisibility = createDisposableDirective<
 >(
   {
     mounted(el, binding) {
-       if (typeof binding.value === 'function') {
-      const handler = binding.value
-      const isVisible = useElementVisibility(el)
-      watch(isVisible, v => handler(v), { immediate: true })
-    }
-    else {
-      const [handler, options] = binding.value
-      if (options?.controls) {
-        const state = useElementVisibility(el, options)
-        watch(state.isVisible, () => (handler as BindingValueFunctionWithControls)(state), { immediate: true })
+      if (typeof binding.value === 'function') {
+        const handler = binding.value
+        const isVisible = useElementVisibility(el)
+        watch(isVisible, v => handler(v), { immediate: true })
       }
       else {
-        const isVisible = useElementVisibility(el, options as UseElementVisibilityOptions<false>)
-        watch(isVisible, v => (handler as BindingValueFunctionWithoutControls)(v), { immediate: true })
+        const [handler, options] = binding.value
+        if (options?.controls) {
+          const state = useElementVisibility(el, options)
+          watch(state.isVisible, () => (handler as BindingValueFunctionWithControls)(state), { immediate: true })
+        }
+        else {
+          const isVisible = useElementVisibility(el, options as UseElementVisibilityOptions<false>)
+          watch(isVisible, v => (handler as BindingValueFunctionWithoutControls)(v), { immediate: true })
+        }
       }
-    }
-    }
-  }
+    },
+  },
 )
