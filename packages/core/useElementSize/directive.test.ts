@@ -45,6 +45,10 @@ describe('vElementSize', () => {
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
     })
+
+    it('should call handler immediately on mount', () => {
+      expect(onResize).toHaveBeenCalledWith({ width: expect.any(Number), height: expect.any(Number) })
+    })
   })
 
   describe('given options', () => {
