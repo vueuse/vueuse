@@ -23,7 +23,7 @@ export interface UseSortableReturn {
   option: (<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]) => void) & (<K extends keyof Sortable.Options>(name: K) => Sortable.Options[K])
 }
 
-export interface UseSortableOptions extends Options, ConfigurableDocument {
+export type UseSortableOptions = Options & ConfigurableDocument & {
   /**
    * Watch the element reference for changes and automatically reinitialize Sortable
    * when the element changes.
