@@ -61,11 +61,11 @@ describe('vElementBounding', () => {
 
     it('should clear directive when component is unmounted', async () => {
       HTMLElement.prototype.getBoundingClientRect = mockGetBoundingClientRect
-      const element = wrapper.element.querySelector('div')
+      const element = wrapper.element.querySelector('div')!
 
-      wrapper.unmount()
-      await nextTick()
-      if (element) {
+      try {
+        wrapper.unmount()
+        await nextTick()
         element.style.width = '300px'
         mockGetBoundingClientRect.mockReturnValue({
           width: 300,
@@ -82,7 +82,9 @@ describe('vElementBounding', () => {
         await nextTick()
         expect(onBounding).toBeCalledTimes(0)
       }
-      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect
+      finally {
+        HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect
+      }
     })
   })
 
@@ -116,11 +118,11 @@ describe('vElementBounding', () => {
 
     it('should clear directive when component is unmounted', async () => {
       HTMLElement.prototype.getBoundingClientRect = mockGetBoundingClientRect
-      const element = wrapper.element.querySelector('div')
+      const element = wrapper.element.querySelector('div')!
 
-      wrapper.unmount()
-      await nextTick()
-      if (element) {
+      try {
+        wrapper.unmount()
+        await nextTick()
         element.style.width = '300px'
         mockGetBoundingClientRect.mockReturnValue({
           width: 300,
@@ -137,7 +139,9 @@ describe('vElementBounding', () => {
         await nextTick()
         expect(onBounding).toBeCalledTimes(0)
       }
-      HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect
+      finally {
+        HTMLElement.prototype.getBoundingClientRect = originalGetBoundingClientRect
+      }
     })
   })
 })

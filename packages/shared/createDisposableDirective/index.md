@@ -11,7 +11,8 @@ Utility for createing a disposable directive
 Creating a directive that uses `createDisposableDirective`
 
 ```ts
-import { createDisposableDirective, useMouse } from '@/vueuse/core'
+import { useMouse } from '@vueuse/core'
+import { createDisposableDirective } from '@vueuse/shared'
 
 export const VDirective = createDisposableDirective({
   mounted(el, binding) {

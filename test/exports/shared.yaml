@@ -9,6 +9,7 @@
   containsProp: function
   controlledComputed: function
   controlledRef: function
+  createDisposableDirective: function
   createEventHook: function
   createFilterWrapper: function
   createGlobalState: function

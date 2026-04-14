@@ -55,14 +55,14 @@ describe('vOnLongPress', () => {
     })
 
     it('should trigger longpress after 500ms', async () => {
-      const element = wrapper.get('[data-test=element]')
+      const element = wrapper.get('[data-test=element]')!
       await element.trigger('pointerdown')
       await promiseTimeout(500)
       expect(onLongPress).toHaveBeenCalledTimes(1)
     })
 
     it('should clear directive when component is unmounted', async () => {
-      const element = wrapper.get('[data-test=element]')
+      const element = wrapper.get('[data-test=element]')!
       wrapper.unmount()
       await element.trigger('pointerdown')
       await promiseTimeout(500)
@@ -94,7 +94,7 @@ describe('vOnLongPress', () => {
     })
 
     it('should trigger longpress after 500ms', async () => {
-      const element = wrapper.get('[data-test=element]')
+      const element = wrapper.get('[data-test=element]')!
       await element.trigger('pointerdown')
       await promiseTimeout(500)
       expect(onLongPress).toHaveBeenCalledTimes(0)
@@ -103,7 +103,7 @@ describe('vOnLongPress', () => {
     })
 
     it('should clear directive when component is unmounted', async () => {
-      const element = wrapper.get('[data-test=element]')
+      const element = wrapper.get('[data-test=element]')!
       wrapper.unmount()
       await element.trigger('pointerdown')
       await promiseTimeout(500)

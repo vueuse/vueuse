@@ -48,20 +48,18 @@ describe('vOnKeyStroke', () => {
     })
 
     it('should clear directive when component is unmounted', async () => {
-      const element = wrapper.element.querySelector('div')
-      if (element) {
-        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
-        await nextTick()
-        expect(onUpdate).toBeCalledTimes(1)
-        wrapper.unmount()
-        onUpdate.mockClear()
-        await nextTick()
+      const element = wrapper.element.querySelector('div')!
+      element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+      await nextTick()
+      expect(onUpdate).toBeCalledTimes(1)
+      wrapper.unmount()
+      onUpdate.mockClear()
+      await nextTick()
 
-        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
-        await nextTick()
+      element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+      await nextTick()
 
-        expect(onUpdate).toBeCalledTimes(0)
-      }
+      expect(onUpdate).toBeCalledTimes(0)
     })
   })
 
@@ -89,20 +87,18 @@ describe('vOnKeyStroke', () => {
     })
 
     it('should clear directive when component is unmounted', async () => {
-      const element = wrapper.element.querySelector('div')
-      if (element) {
-        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
-        await nextTick()
-        expect(onUpdate).toBeCalledTimes(1)
-        wrapper.unmount()
-        onUpdate.mockClear()
-        await nextTick()
+      const element = wrapper.element.querySelector('div')!
+      element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+      await nextTick()
+      expect(onUpdate).toBeCalledTimes(1)
+      wrapper.unmount()
+      onUpdate.mockClear()
+      await nextTick()
 
-        element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
-        await nextTick()
+      element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+      await nextTick()
 
-        expect(onUpdate).toBeCalledTimes(0)
-      }
+      expect(onUpdate).toBeCalledTimes(0)
     })
   })
 })
