@@ -48,10 +48,8 @@ describe('vElementHover', () => {
   it('should clear directive when component is unmounted', async () => {
     const element = wrapper.element.querySelector('div')!
     wrapper.unmount()
-    if (element) {
-      element.dispatchEvent(mockMouseEnterEvent)
-      await nextTick()
-      expect(onHover).toBeCalledTimes(0)
-    }
+    element.dispatchEvent(mockMouseEnterEvent)
+    await nextTick()
+    expect(onHover).toBeCalledTimes(0)
   })
 })
