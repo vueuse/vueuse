@@ -4,7 +4,7 @@ category: Utilities
 
 # createDisposableDirective
 
-Utility for createing a disposable directive
+Utility for authoring disposable directives. Reactive effects created within `mounted` directive hook will be tracked and automatically disposed when directive is unmounted.
 
 ## Usage
 
