@@ -18,6 +18,7 @@ export const VDirective = createDisposableDirective({
   mounted(el, binding) {
     const value = binding.value
     if (typeof value === 'function') {
+      // `useMouse` event listener will be removed automatically when directive is unmounted
       const { x, y } = useMouse()
       watch(x, val => value(val))
     }
