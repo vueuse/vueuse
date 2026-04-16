@@ -8,7 +8,7 @@ type originDirective<H, V, A> = FunctionDirective<H, V, string, A> | ObjectDirec
  *
  * @see https://vueuse.org/createDisposableDirective
  *
- * @__NO_SIDE_EFFECTES__
+ * @__NO_SIDE_EFFECTS__
  */
 export function createDisposableDirective<H extends HTMLElement, V, A = any>(origin: originDirective<H, V, A> = {}): originDirective<H, V, A> {
   function isFunc(fn: unknown) {
