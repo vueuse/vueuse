@@ -7,6 +7,6 @@ export interface UseSortableProps extends RenderableComponent {
 }
 
 // Variables
-export declare const UseSortable: vue.DefineSetupFnComponent<UseSortableProps, Record<string, never>, SlotsType<UseSortableSlots>, UseSortableProps & {
+export declare const UseSortable: _$vue.DefineSetupFnComponent<UseSortableProps, Record<string, never>, SlotsType<UseSortableSlots>, UseSortableProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
+}, _$vue.PublicProps>;

@@ -8,12 +8,12 @@ export declare function createCookies(_?: IncomingMessage): (_?: string[] | null
   doNotParse?: boolean | undefined;
   autoUpdateDependencies?: boolean | undefined;
 }) => {
-  get: <T = any>(_: string, _?: universal_cookie0.CookieGetOptions | undefined) => T;
-  getAll: <T = any>(_?: universal_cookie0.CookieGetOptions | undefined) => T;
-  set: (_: string, _: any, _?: universal_cookie0.CookieSetOptions | undefined) => void;
-  remove: (_: string, _?: universal_cookie0.CookieSetOptions | undefined) => void;
-  addChangeListener: (_: universal_cookie0.CookieChangeListener) => void;
-  removeChangeListener: (_: universal_cookie0.CookieChangeListener) => void;
+  get: <T = any>(_: string, _?: _$universal_cookie0.CookieGetOptions | undefined) => T;
+  getAll: <T = any>(_?: _$universal_cookie0.CookieGetOptions | undefined) => T;
+  set: (_: string, _: any, _?: _$universal_cookie0.CookieSetOptions | undefined) => void;
+  remove: (_: string, _?: _$universal_cookie0.CookieSetOptions | undefined) => void;
+  addChangeListener: (_: _$universal_cookie0.CookieChangeListener) => void;
+  removeChangeListener: (_: _$universal_cookie0.CookieChangeListener) => void;
 };
 export declare function useCookies(_?: string[] | null, {
   doNotParse,
@@ -22,10 +22,10 @@ export declare function useCookies(_?: string[] | null, {
   doNotParse?: boolean | undefined;
   autoUpdateDependencies?: boolean | undefined;
 }, _?: Cookie): {
-  get: <T = any>(_: string, _?: universal_cookie0.CookieGetOptions | undefined) => T;
-  getAll: <T = any>(_?: universal_cookie0.CookieGetOptions | undefined) => T;
-  set: (_: string, _: any, _?: universal_cookie0.CookieSetOptions | undefined) => void;
-  remove: (_: string, _?: universal_cookie0.CookieSetOptions | undefined) => void;
-  addChangeListener: (_: universal_cookie0.CookieChangeListener) => void;
-  removeChangeListener: (_: universal_cookie0.CookieChangeListener) => void;
+  get: <T = any>(_: string, _?: _$universal_cookie0.CookieGetOptions | undefined) => T;
+  getAll: <T = any>(_?: _$universal_cookie0.CookieGetOptions | undefined) => T;
+  set: (_: string, _: any, _?: _$universal_cookie0.CookieSetOptions | undefined) => void;
+  remove: (_: string, _?: _$universal_cookie0.CookieSetOptions | undefined) => void;
+  addChangeListener: (_: _$universal_cookie0.CookieChangeListener) => void;
+  removeChangeListener: (_: _$universal_cookie0.CookieChangeListener) => void;
 };

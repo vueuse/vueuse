@@ -83,91 +83,91 @@ export type UseOffsetPaginationEmits = {
 };
 
 // Variables
-export declare const OnClickOutside: vue.DefineSetupFnComponent<OnClickOutsideProps, OnClickOutsideEmits, {}, OnClickOutsideProps & {
+export declare const OnClickOutside: _$vue.DefineSetupFnComponent<OnClickOutsideProps, OnClickOutsideEmits, {}, OnClickOutsideProps & {
   onTrigger?: ((event: Event) => any) | undefined;
-}, vue.PublicProps>;
-export declare const OnLongPress: vue.DefineSetupFnComponent<OnLongPressProps, OnLongPressEmits, SlotsType<OnLongPressSlots>, OnLongPressProps & {
+}, _$vue.PublicProps>;
+export declare const OnLongPress: _$vue.DefineSetupFnComponent<OnLongPressProps, OnLongPressEmits, SlotsType<OnLongPressSlots>, OnLongPressProps & {
   onTrigger?: ((event: PointerEvent) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseActiveElement: vue.DefineSetupFnComponent<UseActiveElementProps, Record<string, never>, SlotsType<UseActiveElementSlots>, UseActiveElementProps & {
+}, _$vue.PublicProps>;
+export declare const UseActiveElement: _$vue.DefineSetupFnComponent<UseActiveElementProps, Record<string, never>, SlotsType<UseActiveElementSlots>, UseActiveElementProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseBattery: vue.DefineSetupFnComponent<UseBatteryProps, Record<string, never>, SlotsType<UseBatterySlots>, UseBatteryProps & {
+}, _$vue.PublicProps>;
+export declare const UseBattery: _$vue.DefineSetupFnComponent<UseBatteryProps, Record<string, never>, SlotsType<UseBatterySlots>, UseBatteryProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseBrowserLocation: vue.DefineSetupFnComponent<UseBrowserLocationProps, Record<string, never>, SlotsType<UseBrowserLocationSlots>, UseBrowserLocationProps & {
+}, _$vue.PublicProps>;
+export declare const UseBrowserLocation: _$vue.DefineSetupFnComponent<UseBrowserLocationProps, Record<string, never>, SlotsType<UseBrowserLocationSlots>, UseBrowserLocationProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseClipboard: vue.DefineSetupFnComponent<UseClipboardProps<string>, Record<string, never>, SlotsType<UseClipboardSlots>, UseClipboardProps<string> & {
+}, _$vue.PublicProps>;
+export declare const UseClipboard: _$vue.DefineSetupFnComponent<UseClipboardProps<string>, Record<string, never>, SlotsType<UseClipboardSlots>, UseClipboardProps<string> & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseColorMode: vue.DefineSetupFnComponent<UseColorModeProps, Record<string, never>, SlotsType<UseColorModeSlots>, UseColorModeProps & {
+}, _$vue.PublicProps>;
+export declare const UseColorMode: _$vue.DefineSetupFnComponent<UseColorModeProps, Record<string, never>, SlotsType<UseColorModeSlots>, UseColorModeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseDark: vue.DefineSetupFnComponent<UseDarkProps, Record<string, never>, SlotsType<UseDarkSlots>, UseDarkProps & {
+}, _$vue.PublicProps>;
+export declare const UseDark: _$vue.DefineSetupFnComponent<UseDarkProps, Record<string, never>, SlotsType<UseDarkSlots>, UseDarkProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseDeviceMotion: vue.DefineSetupFnComponent<UseDeviceMotionProps, Record<string, never>, SlotsType<UseDeviceMotionSlots>, UseDeviceMotionProps & {
+}, _$vue.PublicProps>;
+export declare const UseDeviceMotion: _$vue.DefineSetupFnComponent<UseDeviceMotionProps, Record<string, never>, SlotsType<UseDeviceMotionSlots>, UseDeviceMotionProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseDeviceOrientation: vue.DefineSetupFnComponent<UseDeviceOrientationProps, Record<string, never>, SlotsType<UseDeviceOrientationSlots>, UseDeviceOrientationProps & {
+}, _$vue.PublicProps>;
+export declare const UseDeviceOrientation: _$vue.DefineSetupFnComponent<UseDeviceOrientationProps, Record<string, never>, SlotsType<UseDeviceOrientationSlots>, UseDeviceOrientationProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseDevicePixelRatio: vue.DefineSetupFnComponent<UseDevicePixelRatioProps, Record<string, never>, SlotsType<UseDevicePixelRatioSlots>, UseDevicePixelRatioProps & {
+}, _$vue.PublicProps>;
+export declare const UseDevicePixelRatio: _$vue.DefineSetupFnComponent<UseDevicePixelRatioProps, Record<string, never>, SlotsType<UseDevicePixelRatioSlots>, UseDevicePixelRatioProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseDevicesList: vue.DefineSetupFnComponent<UseDevicesListProps, Record<string, never>, SlotsType<UseDevicesListSlots>, UseDevicesListProps & {
+}, _$vue.PublicProps>;
+export declare const UseDevicesList: _$vue.DefineSetupFnComponent<UseDevicesListProps, Record<string, never>, SlotsType<UseDevicesListSlots>, UseDevicesListProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseDocumentVisibility: vue.DefineSetupFnComponent<UseDocumentVisibilityProps, Record<string, never>, SlotsType<UseDocumentVisibilitySlots>, UseDocumentVisibilityProps & {
+}, _$vue.PublicProps>;
+export declare const UseDocumentVisibility: _$vue.DefineSetupFnComponent<UseDocumentVisibilityProps, Record<string, never>, SlotsType<UseDocumentVisibilitySlots>, UseDocumentVisibilityProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseDraggable: vue.DefineSetupFnComponent<UseDraggableProps, Record<string, never>, SlotsType<any>, UseDraggableProps & {
+}, _$vue.PublicProps>;
+export declare const UseDraggable: _$vue.DefineSetupFnComponent<UseDraggableProps, Record<string, never>, SlotsType<any>, UseDraggableProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseElementBounding: vue.DefineSetupFnComponent<UseElementBoundingProps, Record<string, never>, SlotsType<UseElementBoundingSlots>, UseElementBoundingProps & {
+}, _$vue.PublicProps>;
+export declare const UseElementBounding: _$vue.DefineSetupFnComponent<UseElementBoundingProps, Record<string, never>, SlotsType<UseElementBoundingSlots>, UseElementBoundingProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseElementSize: vue.DefineSetupFnComponent<UseElementSizeProps, Record<string, never>, SlotsType<UseElementSizeSlots>, UseElementSizeProps & {
+}, _$vue.PublicProps>;
+export declare const UseElementSize: _$vue.DefineSetupFnComponent<UseElementSizeProps, Record<string, never>, SlotsType<UseElementSizeSlots>, UseElementSizeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseElementVisibility: vue.DefineSetupFnComponent<UseElementVisibilityProps, Record<string, never>, SlotsType<UseElementVisibilitySlots>, UseElementVisibilityProps & {
+}, _$vue.PublicProps>;
+export declare const UseElementVisibility: _$vue.DefineSetupFnComponent<UseElementVisibilityProps, Record<string, never>, SlotsType<UseElementVisibilitySlots>, UseElementVisibilityProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseEyeDropper: vue.DefineSetupFnComponent<UseEyeDropperProps, Record<string, never>, SlotsType<UseEyeDropperSlots>, UseEyeDropperProps & {
+}, _$vue.PublicProps>;
+export declare const UseEyeDropper: _$vue.DefineSetupFnComponent<UseEyeDropperProps, Record<string, never>, SlotsType<UseEyeDropperSlots>, UseEyeDropperProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseFullscreen: vue.DefineSetupFnComponent<UseFullscreenProps, Record<string, never>, SlotsType<UseFullscreenSlots>, UseFullscreenProps & {
+}, _$vue.PublicProps>;
+export declare const UseFullscreen: _$vue.DefineSetupFnComponent<UseFullscreenProps, Record<string, never>, SlotsType<UseFullscreenSlots>, UseFullscreenProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseGeolocation: vue.DefineSetupFnComponent<UseGeolocationProps, Record<string, never>, SlotsType<UseGeolocationSlots>, UseGeolocationProps & {
+}, _$vue.PublicProps>;
+export declare const UseGeolocation: _$vue.DefineSetupFnComponent<UseGeolocationProps, Record<string, never>, SlotsType<UseGeolocationSlots>, UseGeolocationProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseIdle: vue.DefineSetupFnComponent<UseIdleProps, Record<string, never>, SlotsType<UseIdleSlots>, UseIdleProps & {
+}, _$vue.PublicProps>;
+export declare const UseIdle: _$vue.DefineSetupFnComponent<UseIdleProps, Record<string, never>, SlotsType<UseIdleSlots>, UseIdleProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseImage: vue.DefineSetupFnComponent<UseImageProps, Record<string, never>, SlotsType<UseImageSlots>, UseImageProps & {
+}, _$vue.PublicProps>;
+export declare const UseImage: _$vue.DefineSetupFnComponent<UseImageProps, Record<string, never>, SlotsType<UseImageSlots>, UseImageProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseMouse: vue.DefineSetupFnComponent<UseMouseProps, Record<string, never>, SlotsType<UseMouseSlots>, UseMouseProps & {
+}, _$vue.PublicProps>;
+export declare const UseMouse: _$vue.DefineSetupFnComponent<UseMouseProps, Record<string, never>, SlotsType<UseMouseSlots>, UseMouseProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseMouseInElement: vue.DefineSetupFnComponent<UseMouseInElementProps, Record<string, never>, SlotsType<UseMouseInElementSlots>, UseMouseInElementProps & {
+}, _$vue.PublicProps>;
+export declare const UseMouseInElement: _$vue.DefineSetupFnComponent<UseMouseInElementProps, Record<string, never>, SlotsType<UseMouseInElementSlots>, UseMouseInElementProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseMousePressed: vue.DefineSetupFnComponent<UseMousePressedProps, Record<string, never>, SlotsType<UseMousePressedSlots>, UseMousePressedProps & {
+}, _$vue.PublicProps>;
+export declare const UseMousePressed: _$vue.DefineSetupFnComponent<UseMousePressedProps, Record<string, never>, SlotsType<UseMousePressedSlots>, UseMousePressedProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseNetwork: vue.DefineSetupFnComponent<UseNetworkProps, Record<string, never>, SlotsType<UseNetworkSlots>, UseNetworkProps & {
+}, _$vue.PublicProps>;
+export declare const UseNetwork: _$vue.DefineSetupFnComponent<UseNetworkProps, Record<string, never>, SlotsType<UseNetworkSlots>, UseNetworkProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseNow: vue.DefineSetupFnComponent<UseNowProps, Record<string, never>, SlotsType<UseNowSlots>, UseNowProps & {
+}, _$vue.PublicProps>;
+export declare const UseNow: _$vue.DefineSetupFnComponent<UseNowProps, Record<string, never>, SlotsType<UseNowSlots>, UseNowProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseObjectUrl: vue.DefineSetupFnComponent<UseObjectUrlProps, Record<string, never>, SlotsType<UseObjectUrlSlots>, UseObjectUrlProps & {
+}, _$vue.PublicProps>;
+export declare const UseObjectUrl: _$vue.DefineSetupFnComponent<UseObjectUrlProps, Record<string, never>, SlotsType<UseObjectUrlSlots>, UseObjectUrlProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseOffsetPagination: vue.DefineSetupFnComponent<UseOffsetPaginationProps, UseOffsetPaginationEmits, SlotsType<UseOffsetPaginationSlots>, UseOffsetPaginationProps & {
+}, _$vue.PublicProps>;
+export declare const UseOffsetPagination: _$vue.DefineSetupFnComponent<UseOffsetPaginationProps, UseOffsetPaginationEmits, SlotsType<UseOffsetPaginationSlots>, UseOffsetPaginationProps & {
   "onPage-change"?: ((returnValue: {
     currentPage: number;
     currentPageSize: number;
@@ -195,53 +195,53 @@ export declare const UseOffsetPagination: vue.DefineSetupFnComponent<UseOffsetPa
     prev: () => void;
     next: () => void;
   }) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseOnline: vue.DefineSetupFnComponent<UseOnlineProps, Record<string, never>, SlotsType<UseOnlineSlots>, UseOnlineProps & {
+}, _$vue.PublicProps>;
+export declare const UseOnline: _$vue.DefineSetupFnComponent<UseOnlineProps, Record<string, never>, SlotsType<UseOnlineSlots>, UseOnlineProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePageLeave: vue.DefineSetupFnComponent<UsePageLeaveProps, Record<string, never>, SlotsType<UsePageLeaveSlots>, UsePageLeaveProps & {
+}, _$vue.PublicProps>;
+export declare const UsePageLeave: _$vue.DefineSetupFnComponent<UsePageLeaveProps, Record<string, never>, SlotsType<UsePageLeaveSlots>, UsePageLeaveProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePointer: vue.DefineSetupFnComponent<UsePointerProps, Record<string, never>, SlotsType<UsePointerSlots>, UsePointerProps & {
+}, _$vue.PublicProps>;
+export declare const UsePointer: _$vue.DefineSetupFnComponent<UsePointerProps, Record<string, never>, SlotsType<UsePointerSlots>, UsePointerProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePointerLock: vue.DefineSetupFnComponent<UsePointerLockProps, Record<string, never>, SlotsType<UsePointerLockSlots>, UsePointerLockProps & {
+}, _$vue.PublicProps>;
+export declare const UsePointerLock: _$vue.DefineSetupFnComponent<UsePointerLockProps, Record<string, never>, SlotsType<UsePointerLockSlots>, UsePointerLockProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePreferredColorScheme: vue.DefineSetupFnComponent<UsePreferredColorSchemeProps, Record<string, never>, SlotsType<UsePreferredColorSchemeSlots>, UsePreferredColorSchemeProps & {
+}, _$vue.PublicProps>;
+export declare const UsePreferredColorScheme: _$vue.DefineSetupFnComponent<UsePreferredColorSchemeProps, Record<string, never>, SlotsType<UsePreferredColorSchemeSlots>, UsePreferredColorSchemeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePreferredContrast: vue.DefineSetupFnComponent<UsePreferredContrastProps, Record<string, never>, SlotsType<UsePreferredContrastSlots>, UsePreferredContrastProps & {
+}, _$vue.PublicProps>;
+export declare const UsePreferredContrast: _$vue.DefineSetupFnComponent<UsePreferredContrastProps, Record<string, never>, SlotsType<UsePreferredContrastSlots>, UsePreferredContrastProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePreferredDark: vue.DefineSetupFnComponent<UsePreferredDarkProps, Record<string, never>, SlotsType<UsePreferredDarkSlots>, UsePreferredDarkProps & {
+}, _$vue.PublicProps>;
+export declare const UsePreferredDark: _$vue.DefineSetupFnComponent<UsePreferredDarkProps, Record<string, never>, SlotsType<UsePreferredDarkSlots>, UsePreferredDarkProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePreferredLanguages: vue.DefineSetupFnComponent<UsePreferredLanguagesProps, Record<string, never>, SlotsType<UsePreferredLanguagesSlots>, UsePreferredLanguagesProps & {
+}, _$vue.PublicProps>;
+export declare const UsePreferredLanguages: _$vue.DefineSetupFnComponent<UsePreferredLanguagesProps, Record<string, never>, SlotsType<UsePreferredLanguagesSlots>, UsePreferredLanguagesProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePreferredReducedMotion: vue.DefineSetupFnComponent<UsePreferredReducedMotionProps, Record<string, never>, SlotsType<UsePreferredReducedMotionSlots>, UsePreferredReducedMotionProps & {
+}, _$vue.PublicProps>;
+export declare const UsePreferredReducedMotion: _$vue.DefineSetupFnComponent<UsePreferredReducedMotionProps, Record<string, never>, SlotsType<UsePreferredReducedMotionSlots>, UsePreferredReducedMotionProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UsePreferredReducedTransparency: vue.DefineComponent<{}, () => vue.VNode<vue.RendererNode, vue.RendererElement, {
+}, _$vue.PublicProps>;
+export declare const UsePreferredReducedTransparency: _$vue.DefineComponent<{}, () => _$vue.VNode<_$vue.RendererNode, _$vue.RendererElement, {
   [key: string]: any;
-}>[] | undefined, {}, {}, {}, vue.ComponentOptionsMixin, vue.ComponentOptionsMixin, {}, string, vue.PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, vue.ComponentProvideOptions, true, {}, any>;
-export declare const UseScreenSafeArea: vue.DefineSetupFnComponent<UseScreenSafeAreaProps, Record<string, never>, SlotsType<UseScreenSafeAreaSlots>, UseScreenSafeAreaProps & {
+}>[] | undefined, {}, {}, {}, _$vue.ComponentOptionsMixin, _$vue.ComponentOptionsMixin, {}, string, _$vue.PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, _$vue.ComponentProvideOptions, true, {}, any>;
+export declare const UseScreenSafeArea: _$vue.DefineSetupFnComponent<UseScreenSafeAreaProps, Record<string, never>, SlotsType<UseScreenSafeAreaSlots>, UseScreenSafeAreaProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseTimeAgo: vue.DefineSetupFnComponent<UseTimeAgoProps, Record<string, never>, SlotsType<UseTimeAgoSlots>, UseTimeAgoProps & {
+}, _$vue.PublicProps>;
+export declare const UseTimeAgo: _$vue.DefineSetupFnComponent<UseTimeAgoProps, Record<string, never>, SlotsType<UseTimeAgoSlots>, UseTimeAgoProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseTimestamp: vue.DefineSetupFnComponent<UseTimestampProps, Record<string, never>, SlotsType<UseTimestampSlots>, UseTimestampProps & {
+}, _$vue.PublicProps>;
+export declare const UseTimestamp: _$vue.DefineSetupFnComponent<UseTimestampProps, Record<string, never>, SlotsType<UseTimestampSlots>, UseTimestampProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseVirtualList: vue.DefineSetupFnComponent<UseVirtualListProps, {}, {}, UseVirtualListProps & {}, vue.PublicProps>;
-export declare const UseWindowFocus: vue.DefineSetupFnComponent<UseWindowFocusProps, Record<string, never>, SlotsType<UseWindowFocusSlots>, UseWindowFocusProps & {
+}, _$vue.PublicProps>;
+export declare const UseVirtualList: _$vue.DefineSetupFnComponent<UseVirtualListProps, {}, {}, UseVirtualListProps & {}, _$vue.PublicProps>;
+export declare const UseWindowFocus: _$vue.DefineSetupFnComponent<UseWindowFocusProps, Record<string, never>, SlotsType<UseWindowFocusSlots>, UseWindowFocusProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
-export declare const UseWindowSize: vue.DefineSetupFnComponent<UseWindowSizeProps, Record<string, never>, SlotsType<UseWindowSizeSlots>, UseWindowSizeProps & {
+}, _$vue.PublicProps>;
+export declare const UseWindowSize: _$vue.DefineSetupFnComponent<UseWindowSizeProps, Record<string, never>, SlotsType<UseWindowSizeSlots>, UseWindowSizeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
+}, _$vue.PublicProps>;
 export declare const vElementBounding: ObjectDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$7>;
 export declare const vElementHover: ObjectDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions]>;
 export declare const vElementSize: ObjectDirective<HTMLElement, BindingValueFunction$5 | BindingValueArray$6>;

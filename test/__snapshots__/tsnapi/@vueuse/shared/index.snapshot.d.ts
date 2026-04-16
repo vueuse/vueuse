@@ -328,17 +328,17 @@ export declare function refDebounced<T>(_: Ref<T>, _?: MaybeRefOrGetter<number>,
 export declare function refDefault<T>(_: Ref<T | undefined | null>, _: T): Ref<T>;
 export declare function refManualReset<T>(_: MaybeRefOrGetter<T>): ManualResetRefReturn<T>;
 export declare function refThrottled<T = any>(_: Ref<T>, _?: number, _?: boolean, _?: boolean): RefThrottledReturn<T>;
-export declare function refWithControl<T>(_: T, _?: ControlledRefOptions<T>): vue.ShallowUnwrapRef<{
+export declare function refWithControl<T>(_: T, _?: ControlledRefOptions<T>): _$vue.ShallowUnwrapRef<{
   get: (tracking?: boolean) => T;
   set: (value: T, triggering?: boolean) => void;
   untrackedGet: () => T;
   silentSet: (v: T) => void;
   peek: () => T;
   lay: (v: T) => void;
-}> & vue.Ref<T, T>;
+}> & _$vue.Ref<T, T>;
 export declare function set<O extends object, K extends keyof O>(_: O, _: K, _: O[K]): void;
 export declare function syncRef<L, R, D extends Direction = 'both'>(_: Ref<L>, _: Ref<R>, ...[options]: Equal<L, R> extends true ? [options?: SyncRefOptions<L, R, D>] : [options: SyncRefOptions<L, R, D>]): () => void;
-export declare function syncRefs<T>(_: WatchSource<T>, _: Ref<T> | Ref<T>[], _?: SyncRefsOptions): vue.WatchHandle;
+export declare function syncRefs<T>(_: WatchSource<T>, _: Ref<T> | Ref<T>[], _?: SyncRefsOptions): _$vue.WatchHandle;
 export declare function throttleFilter(_: ThrottleFilterOptions): EventFilter;
 export declare function toArray<T>(_: T | T[]): T[];
 export declare function toReactive<T extends object>(_: MaybeRef<T>): UnwrapNestedRefs<T>;
@@ -363,7 +363,7 @@ export declare function useArrayReduce<T, U>(_: MaybeRefOrGetter<MaybeRefOrGette
 export declare function useArraySome<T>(_: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>, _: (_: T, _: number, _: MaybeRefOrGetter<T>[]) => unknown): UseArraySomeReturn;
 export declare function useArrayUnique<T>(_: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>, _?: (_: T, _: T, _: T[]) => boolean): UseArrayUniqueReturn<T>;
 export declare function useCounter(_?: MaybeRef<number>, _?: UseCounterOptions): {
-  count: Readonly<Ref<number, number> | vue.ShallowRef<number, number> | vue.WritableComputedRef<number, number>>;
+  count: Readonly<Ref<number, number> | _$vue.ShallowRef<number, number> | _$vue.WritableComputedRef<number, number>>;
   inc: (_?: number) => number;
   dec: (_?: number) => number;
   get: () => number;
@@ -383,7 +383,7 @@ export declare function useTimeoutFn<CallbackFn extends AnyFn>(_: CallbackFn, _:
 export declare function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(_?: T, _?: UseToggleOptions<Truthy, Falsy>): [ShallowRef<T>, (value?: T) => T];
 export declare function useToNumber(_: MaybeRefOrGetter<number | string>, _?: UseToNumberOptions): ComputedRef<number>;
 export declare function useToString(_: MaybeRefOrGetter<unknown>): ComputedRef<string>;
-export declare function watchArray<T, Immediate extends Readonly<boolean> = false>(_: WatchSource<T[]> | T[], _: WatchArrayCallback<T[], Immediate extends true ? T[] | undefined : T[]>, _?: WatchOptions<Immediate>): vue.WatchHandle;
+export declare function watchArray<T, Immediate extends Readonly<boolean> = false>(_: WatchSource<T[]> | T[], _: WatchArrayCallback<T[], Immediate extends true ? T[] | undefined : T[]>, _?: WatchOptions<Immediate>): _$vue.WatchHandle;
 export declare function watchAtMost<T extends object, Immediate extends Readonly<boolean> = false>(_: T, _: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, _: WatchAtMostOptions<Immediate>): WatchAtMostReturn;
 export declare function watchDebounced<T extends object, Immediate extends Readonly<boolean> = false>(_: T, _: WatchCallback<T, Immediate extends true ? T | undefined : T>, _?: WatchDebouncedOptions<Immediate>): WatchHandle;
 export declare function watchDeep<T extends object, Immediate extends Readonly<boolean> = false>(_: T, _: WatchCallback<T, Immediate extends true ? T | undefined : T>, _?: Omit<WatchOptions<Immediate>, 'deep'>): WatchHandle;

@@ -1681,7 +1681,7 @@ export declare function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitN
 export declare function formatTimeAgoIntl(_: Date, _?: FormatTimeAgoIntlOptions, _?: Date | number): string;
 export declare function formatTimeAgoIntlParts(_: Intl.RelativeTimeFormatPart[], _?: FormatTimeAgoIntlOptions): string;
 export declare function getSSRHandler<T extends keyof SSRHandlersMap>(_: T, _: SSRHandlersMap[T] | undefined): SSRHandlersMap[T] | undefined;
-export declare function mapGamepadToXbox360Controller(_: Ref<Gamepad | undefined>): vue.ComputedRef<{
+export declare function mapGamepadToXbox360Controller(_: Ref<Gamepad | undefined>): _$vue.ComputedRef<{
   buttons: {
     a: GamepadButton;
     b: GamepadButton;
@@ -1752,8 +1752,8 @@ export declare function useColorMode<T extends string = BasicColorMode>(_?: UseC
 export declare function useConfirmDialog<RevealData = any, ConfirmData = any, CancelData = any>(_?: ShallowRef<boolean>): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData>;
 export declare function useCountdown(_: MaybeRefOrGetter<number>, _?: UseCountdownOptions): UseCountdownReturn;
 export declare function useCssSupports(_: MaybeRefOrGetter<string>, _?: UseCssSupportsOptions): UseCssSupportsReturn;
-export declare function useCssVar(_: MaybeRefOrGetter<string | null | undefined>, _?: MaybeElementRef, _?: UseCssVarOptions): vue.ShallowRef<string | undefined, string | undefined>;
-export declare function useCurrentElement<T extends MaybeElement = MaybeElement, R extends VueInstance = VueInstance, E extends MaybeElement = (MaybeElement extends T ? IsAny<R['$el']> extends false ? R['$el'] : T : T)>(_?: MaybeElementRef<R>): _vueuse_shared0.ComputedRefWithControl<E>;
+export declare function useCssVar(_: MaybeRefOrGetter<string | null | undefined>, _?: MaybeElementRef, _?: UseCssVarOptions): _$vue.ShallowRef<string | undefined, string | undefined>;
+export declare function useCurrentElement<T extends MaybeElement = MaybeElement, R extends VueInstance = VueInstance, E extends MaybeElement = (MaybeElement extends T ? IsAny<R['$el']> extends false ? R['$el'] : T : T)>(_?: MaybeElementRef<R>): _$_vueuse_shared0.ComputedRefWithControl<E>;
 export declare function useCycleList<T>(_: MaybeRefOrGetter<T[]>, _?: UseCycleListOptions<T>): UseCycleListReturn<T>;
 export declare function useDark(_?: UseDarkOptions): UseDarkReturn;
 export declare function useDebouncedRefHistory<Raw, Serialized = Raw>(_: Ref<Raw>, _?: Omit<UseRefHistoryOptions<Raw, Serialized>, 'eventFilter'> & {
@@ -1797,10 +1797,10 @@ export declare function useManualRefHistory<Raw, Serialized = Raw>(_: Ref<Raw>, 
 export declare function useMediaControls(_: MaybeRef<HTMLMediaElement | null | undefined>, _?: UseMediaControlsOptions): UseMediaControlsReturn;
 export declare function useMediaQuery(_: MaybeRefOrGetter<string>, _?: ConfigurableWindow & {
   ssrWidth?: number;
-}): vue.ComputedRef<boolean>;
+}): _$vue.ComputedRef<boolean>;
 export declare function useMemoize<Result, Args extends unknown[]>(_: (..._: Args) => Result, _?: UseMemoizeOptions<Result, Args>): UseMemoizeReturn<Result, Args>;
 export declare function useMemory(_?: UseMemoryOptions): UseMemoryReturn;
-export declare function useMounted(): vue.ShallowRef<boolean, boolean>;
+export declare function useMounted(): _$vue.ShallowRef<boolean, boolean>;
 export declare function useMouse(_?: UseMouseOptions): UseMouseReturn;
 export declare function useMouseInElement(_?: MaybeElementRef, _?: MouseInElementOptions): {
   x: ShallowRef<number>;
@@ -1822,9 +1822,9 @@ export declare function useNetwork(_?: UseNetworkOptions): UseNetworkReturn;
 export declare function useNow(_: UseNowOptions<true>): {
   now: ShallowRef<Date>;
 } & Pausable;
-export declare function useObjectUrl(_: MaybeRefOrGetter<Blob | MediaSource | null | undefined>): Readonly<vue.ShallowRef<string | undefined, string | undefined>>;
+export declare function useObjectUrl(_: MaybeRefOrGetter<Blob | MediaSource | null | undefined>): Readonly<_$vue.ShallowRef<string | undefined, string | undefined>>;
 export declare function useOffsetPagination(_: UseOffsetPaginationOptions): UseOffsetPaginationReturn;
-export declare function useOnline(_?: ConfigurableWindow): Readonly<vue.ShallowRef<boolean>>;
+export declare function useOnline(_?: ConfigurableWindow): Readonly<_$vue.ShallowRef<boolean>>;
 export declare function usePageLeave(_?: UsePageLeaveOptions): UsePageLeaveReturn;
 export declare function useParallax(_: MaybeElementRef, _?: UseParallaxOptions): UseParallaxReturn;
 export declare function useParentElement(_?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>): Readonly<ShallowRef<HTMLElement | SVGElement | null | undefined>>;
@@ -1837,12 +1837,12 @@ export declare function usePermission(_: GeneralPermissionDescriptor | GeneralPe
 export declare function usePointer(_?: UsePointerOptions): UsePointerReturn;
 export declare function usePointerLock(_?: MaybeElementRef, _?: UsePointerLockOptions): UsePointerLockReturn;
 export declare function usePointerSwipe(_: MaybeRefOrGetter<HTMLElement | null | undefined>, _?: UsePointerSwipeOptions): UsePointerSwipeReturn;
-export declare function usePreferredColorScheme(_?: ConfigurableWindow): vue.ComputedRef<ColorSchemeType>;
-export declare function usePreferredContrast(_?: ConfigurableWindow): vue.ComputedRef<ContrastType>;
-export declare function usePreferredDark(_?: ConfigurableWindow): vue.ComputedRef<boolean>;
+export declare function usePreferredColorScheme(_?: ConfigurableWindow): _$vue.ComputedRef<ColorSchemeType>;
+export declare function usePreferredContrast(_?: ConfigurableWindow): _$vue.ComputedRef<ContrastType>;
+export declare function usePreferredDark(_?: ConfigurableWindow): _$vue.ComputedRef<boolean>;
 export declare function usePreferredLanguages(_?: ConfigurableWindow): ShallowRef<readonly string[]>;
-export declare function usePreferredReducedMotion(_?: ConfigurableWindow): vue.ComputedRef<ReducedMotionType>;
-export declare function usePreferredReducedTransparency(_?: ConfigurableWindow): vue.ComputedRef<ReducedTransparencyType>;
+export declare function usePreferredReducedMotion(_?: ConfigurableWindow): _$vue.ComputedRef<ReducedMotionType>;
+export declare function usePreferredReducedTransparency(_?: ConfigurableWindow): _$vue.ComputedRef<ReducedTransparencyType>;
 export declare function usePrevious<T>(_: MaybeRefOrGetter<T>, _: T): Readonly<ShallowRef<T>>;
 export declare function useRafFn(_: (_: UseRafFnCallbackArguments) => void, _?: UseRafFnOptions): Pausable;
 export declare function useRefHistory<Raw, Serialized = Raw>(_: Ref<Raw>, _?: UseRefHistoryOptions<Raw, Serialized>): UseRefHistoryReturn<Raw, Serialized>;
@@ -1851,7 +1851,7 @@ export declare function useScreenOrientation(_?: UseScreenOrientationOptions): U
 export declare function useScreenSafeArea(): UseScreenSafeAreaReturn;
 export declare function useScriptTag(_: MaybeRefOrGetter<string>, _?: (_: HTMLScriptElement) => void, _?: UseScriptTagOptions): UseScriptTagReturn;
 export declare function useScroll(_: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>, _?: UseScrollOptions): UseScrollReturn;
-export declare function useScrollLock(_: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>, _?: boolean): vue.WritableComputedRef<boolean, boolean>;
+export declare function useScrollLock(_: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>, _?: boolean): _$vue.WritableComputedRef<boolean, boolean>;
 export declare function useSessionStorage<T = unknown>(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<null>, _?: UseStorageOptions<T>): RemovableRef<T>;
 export declare function useShare(_?: MaybeRefOrGetter<UseShareOptions>, _?: ConfigurableNavigator): UseShareReturn;
 export declare function useSorted<T = any>(_: MaybeRefOrGetter<T[]>, _?: UseSortedCompareFn<T>, _?: Omit<UseSortedOptions<T>, 'compareFn'>): Ref<T[]>;
@@ -1866,7 +1866,7 @@ export declare function useSupported(_: () => unknown): UseSupportedReturn;
 export declare function useSwipe(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseSwipeOptions): UseSwipeReturn;
 export declare function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>>;
 export declare function useTextareaAutosize(_?: UseTextareaAutosizeOptions): UseTextareaAutosizeReturn;
-export declare function useTextDirection(_?: UseTextDirectionOptions): vue.WritableComputedRef<UseTextDirectionValue, UseTextDirectionValue>;
+export declare function useTextDirection(_?: UseTextDirectionOptions): _$vue.WritableComputedRef<UseTextDirectionValue, UseTextDirectionValue>;
 export declare function useTextSelection(_?: UseTextSelectionOptions): UseTextSelectionReturn;
 export declare function useThrottledRefHistory<Raw, Serialized = Raw>(_: Ref<Raw>, _?: UseThrottledRefHistoryOptions<Raw, Serialized>): UseThrottledRefHistoryReturn<Raw, Serialized>;
 export declare function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(_: MaybeRefOrGetter<Date | number | string>, _: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>;

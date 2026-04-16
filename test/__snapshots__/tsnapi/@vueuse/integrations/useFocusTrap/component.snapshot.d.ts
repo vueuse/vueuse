@@ -7,6 +7,6 @@ export interface UseFocusTrapProps extends RenderableComponent {
 }
 
 // Variables
-export declare const UseFocusTrap: vue.DefineSetupFnComponent<UseFocusTrapProps, Record<string, never>, SlotsType<UseFocusTrapSlots>, UseFocusTrapProps & {
+export declare const UseFocusTrap: _$vue.DefineSetupFnComponent<UseFocusTrapProps, Record<string, never>, SlotsType<UseFocusTrapSlots>, UseFocusTrapProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
+}, _$vue.PublicProps>;

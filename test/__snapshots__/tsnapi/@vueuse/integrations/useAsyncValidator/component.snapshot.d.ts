@@ -8,6 +8,6 @@ export interface UseAsyncValidatorProps {
 }
 
 // Variables
-export declare const UseAsyncValidator: vue.DefineSetupFnComponent<UseAsyncValidatorProps, Record<string, never>, SlotsType<UseAsyncValidatorSlots>, UseAsyncValidatorProps & {
+export declare const UseAsyncValidator: _$vue.DefineSetupFnComponent<UseAsyncValidatorProps, Record<string, never>, SlotsType<UseAsyncValidatorSlots>, UseAsyncValidatorProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, vue.PublicProps>;
+}, _$vue.PublicProps>;

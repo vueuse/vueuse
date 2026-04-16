@@ -7,5 +7,5 @@ export interface VueUseNuxtOptions {
 }
 
 // Default Export
-declare const _default: _nuxt_schema0.NuxtModule<VueUseNuxtOptions, VueUseNuxtOptions, false>;
+declare const _default: _$_nuxt_schema0.NuxtModule<VueUseNuxtOptions, VueUseNuxtOptions, false>;
 export default _default

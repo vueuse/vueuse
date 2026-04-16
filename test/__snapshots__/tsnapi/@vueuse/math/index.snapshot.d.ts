@@ -26,7 +26,7 @@ export declare function useMath<K extends keyof Math>(_: K, ..._: ArgumentsType<
 export declare function useMax(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
 export declare function useMin(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
 export declare function usePrecision(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<number>, _?: MaybeRefOrGetter<UsePrecisionOptions>): ComputedRef<number>;
-export declare function useProjection(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<readonly [number, number]>, _: MaybeRefOrGetter<readonly [number, number]>, _?: ProjectorFunction<number, number>): vue.ComputedRef<number>;
+export declare function useProjection(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<readonly [number, number]>, _: MaybeRefOrGetter<readonly [number, number]>, _?: ProjectorFunction<number, number>): _$vue.ComputedRef<number>;
 export declare function useRound(_: MaybeRefOrGetter<number>): ComputedRef<number>;
 export declare function useSum(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
 export declare function useTrunc(_: MaybeRefOrGetter<number>): ComputedRef<number>;

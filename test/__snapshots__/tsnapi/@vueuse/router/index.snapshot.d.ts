@@ -5,6 +5,6 @@ export declare function useRouteHash(_?: MaybeRefOrGetter<RouteHashValueRaw>, {
   mode,
   route,
   router
-}?: ReactiveRouteOptions): vue.Ref<RouteHashValueRaw, RouteHashValueRaw>;
+}?: ReactiveRouteOptions): _$vue.Ref<RouteHashValueRaw, RouteHashValueRaw>;
 export declare function useRouteParams<T extends RouteParamValueRaw = RouteParamValueRaw, K = T>(_: string, _?: MaybeRefOrGetter<T>, _?: ReactiveRouteOptionsWithTransform<T, K>): Ref<K>;
 export declare function useRouteQuery<T extends RouteQueryValueRaw = RouteQueryValueRaw, K = T>(_: string, _?: MaybeRefOrGetter<T>, _?: ReactiveRouteOptionsWithTransform<T, K>): Ref<K>;
