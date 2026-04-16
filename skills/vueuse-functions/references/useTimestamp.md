@@ -73,6 +73,11 @@ export interface UseTimestampOptions<
    */
   callback?: (timestamp: number) => void
 }
+export type UseTimestampReturn<Controls extends boolean> = Controls extends true
+  ? {
+      timestamp: ShallowRef<number>
+    } & Pausable
+  : ShallowRef<number>
 /**
  * Reactive current timestamp.
  *
@@ -85,5 +90,4 @@ export declare function useTimestamp(
 export declare function useTimestamp(options: UseTimestampOptions<true>): {
   timestamp: ShallowRef<number>
 } & Pausable
-export type UseTimestampReturn = ReturnType<typeof useTimestamp>
 ```

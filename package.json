@@ -96,6 +96,8 @@
     "taze": "catalog:dev",
     "tinyglobby": "catalog:dev",
     "tsdown": "catalog:dev",
+    "tsdown-lock": "catalog:dev",
+    "tsnapi": "catalog:test",
     "tsx": "catalog:dev",
     "turbo": "catalog:dev",
     "typescript": "catalog:dev",
@@ -108,7 +110,6 @@
     "vitepress": "catalog:docs",
     "vitest": "catalog:test",
     "vitest-browser-vue": "catalog:test",
-    "vitest-package-exports": "catalog:test",
     "vue": "catalog:dev",
     "vue-tsc": "catalog:dev",
     "yaml": "catalog:docs"

@@ -65,8 +65,7 @@ export interface UseVibrateOptions
    */
   interval: number
 }
-export interface UseVibrateReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseVibrateReturn extends Supportable {
   pattern: MaybeRefOrGetter<Arrayable<number>>
   intervalControls?: Pausable
   vibrate: (pattern?: Arrayable<number>) => void

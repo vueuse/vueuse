@@ -15,11 +15,18 @@ import { useTemplateRef } from 'vue'
 
 const target = useTemplateRef('target')
 const targetIsVisible = useElementVisibility(target)
+
+const target2 = useTemplateRef('target2')
+const targetVisibilityController = useElementVisibility(target2, { controls: true })
 </script>
 
 <template>
   <div ref="target">
     <h1>Hello world</h1>
+  </div>
+
+  <div ref="target2">
+    <h1>Hi there</h1>
   </div>
 </template>
 ```
@@ -70,6 +77,16 @@ const isVisible = shallowRef(false)
 function onElementVisibility(state) {
   isVisible.value = state
 }
+
+const target2 = useTemplateRef('target2')
+const isVisible2 = shallowRef(false)
+
+function onElementVisibilityWithControls(state) {
+  isVisible2.value = state.isVisible.value
+  if (state.isVisible.value) {
+    state.stop()
+  }
+}
 </script>
 
 <template>
@@ -83,13 +100,20 @@ function onElementVisibility(state) {
       {{ isVisible ? 'inside' : 'outside' }}
     </div>
   </div>
+
+  <!-- with controls -->
+  <div ref="target2">
+    <div v-element-visibility="[onElementVisibilityWithControls, { controls: true }]">
+      {{ isVisible2 ? 'inside' : 'outside' }}
+    </div>
+  </div>
 </template>
 ```
 
 ## Type Declarations
 
 ```ts
-export interface UseElementVisibilityOptions
+export interface UseElementVisibilityOptions<Controls extends boolean = false>
   extends
     ConfigurableWindow,
     Pick<UseIntersectionObserverOptions, "rootMargin" | "threshold"> {
@@ -109,6 +133,19 @@ export interface UseElementVisibilityOptions
    * @default false
    */
   once?: boolean
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
+export type UseElementVisibilityReturn<Controls extends boolean = false> =
+  Controls extends true
+    ? UseElementVisibilityReturnWithControls
+    : ShallowRef<boolean>
+export interface UseElementVisibilityReturnWithControls extends UseIntersectionObserverReturn {
+  isVisible: ShallowRef<boolean>
 }
 /**
  * Tracks the visibility of an element within the viewport.
@@ -117,7 +154,10 @@ export interface UseElementVisibilityOptions
  */
 export declare function useElementVisibility(
   element: MaybeComputedElementRef,
-  options?: UseElementVisibilityOptions,
-): ShallowRef<boolean, boolean>
-export type UseElementVisibilityReturn = ReturnType<typeof useElementVisibility>
+  options?: UseElementVisibilityOptions<false>,
+): UseElementVisibilityReturn<false>
+export declare function useElementVisibility(
+  element: MaybeComputedElementRef,
+  options?: UseElementVisibilityOptions<true>,
+): UseElementVisibilityReturn<true>
 ```

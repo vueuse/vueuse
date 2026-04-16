@@ -68,8 +68,7 @@ export interface UseClipboardItemsOptions<
    */
   copiedDuring?: number
 }
-export interface UseClipboardItemsReturn<Optional> {
-  isSupported: ComputedRef<boolean>
+export interface UseClipboardItemsReturn<Optional> extends Supportable {
   content: Readonly<Ref<ClipboardItems>>
   copied: Readonly<ShallowRef<boolean>>
   copy: Optional extends true

@@ -54,6 +54,12 @@ export interface UseFullscreenOptions extends ConfigurableDocument {
    */
   autoExit?: boolean
 }
+export interface UseFullscreenReturn extends Supportable {
+  isFullscreen: ShallowRef<boolean>
+  enter: () => Promise<void>
+  exit: () => Promise<void>
+  toggle: () => Promise<void>
+}
 /**
  * Reactive Fullscreen API.
  *
@@ -64,12 +70,5 @@ export interface UseFullscreenOptions extends ConfigurableDocument {
 export declare function useFullscreen(
   target?: MaybeElementRef,
   options?: UseFullscreenOptions,
-): {
-  isSupported: ComputedRef<boolean>
-  isFullscreen: ShallowRef<boolean, boolean>
-  enter: () => Promise<void>
-  exit: () => Promise<void>
-  toggle: () => Promise<void>
-}
-export type UseFullscreenReturn = ReturnType<typeof useFullscreen>
+): UseFullscreenReturn
 ```

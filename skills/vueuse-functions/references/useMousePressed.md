@@ -55,7 +55,7 @@ const { pressed } = useMousePressed({ target: el })
 ## Type Declarations
 
 ```ts
-export interface MousePressedOptions extends ConfigurableWindow {
+export interface UseMousePressedOptions extends ConfigurableWindow {
   /**
    * Listen to `touchstart` `touchend` events
    *
@@ -98,15 +98,19 @@ export interface MousePressedOptions extends ConfigurableWindow {
    */
   onReleased?: (event: MouseEvent | TouchEvent | DragEvent) => void
 }
+/** @deprecated use {@link UseMousePressedOptions} instead */
+export type MousePressedOptions = UseMousePressedOptions
+export interface UseMousePressedReturn {
+  pressed: ShallowRef<boolean>
+  sourceType: ShallowRef<UseMouseSourceType>
+}
 /**
  * Reactive mouse pressing state.
  *
  * @see https://vueuse.org/useMousePressed
  * @param options
  */
-export declare function useMousePressed(options?: MousePressedOptions): {
-  pressed: ShallowRef<boolean, boolean>
-  sourceType: ShallowRef<UseMouseSourceType, UseMouseSourceType>
-}
-export type UseMousePressedReturn = ReturnType<typeof useMousePressed>
+export declare function useMousePressed(
+  options?: UseMousePressedOptions,
+): UseMousePressedReturn
 ```

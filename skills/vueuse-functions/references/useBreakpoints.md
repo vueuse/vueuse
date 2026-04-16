@@ -142,6 +142,26 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
   strategy?: "min-width" | "max-width"
   ssrWidth?: number
 }
+export type UseBreakpointReturn<K extends string = string> = Record<
+  K,
+  ComputedRef<boolean>
+> & {
+  greaterOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  smallerOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  greater: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  smaller: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  between: (
+    a: MaybeRefOrGetter<K>,
+    b: MaybeRefOrGetter<K>,
+  ) => ComputedRef<boolean>
+  isGreater: (k: MaybeRefOrGetter<K>) => boolean
+  isGreaterOrEqual: (k: MaybeRefOrGetter<K>) => boolean
+  isSmaller: (k: MaybeRefOrGetter<K>) => boolean
+  isSmallerOrEqual: (k: MaybeRefOrGetter<K>) => boolean
+  isInBetween: (a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) => boolean
+  current: () => ComputedRef<K[]>
+  active: () => ComputedRef<K | "">
+}
 /**
  * Reactively viewport breakpoints
  *
@@ -152,21 +172,5 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
 export declare function useBreakpoints<K extends string>(
   breakpoints: Breakpoints<K>,
   options?: UseBreakpointsOptions,
-): Record<K, ComputedRef<boolean>> & {
-  greaterOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  smallerOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  greater(k: MaybeRefOrGetter<K>): ComputedRef<boolean>
-  smaller(k: MaybeRefOrGetter<K>): ComputedRef<boolean>
-  between(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>): ComputedRef<boolean>
-  isGreater(k: MaybeRefOrGetter<K>): boolean
-  isGreaterOrEqual(k: MaybeRefOrGetter<K>): boolean
-  isSmaller(k: MaybeRefOrGetter<K>): boolean
-  isSmallerOrEqual(k: MaybeRefOrGetter<K>): boolean
-  isInBetween(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>): boolean
-  current: () => ComputedRef<K[]>
-  active(): ComputedRef<"" | K>
-}
-export type UseBreakpointsReturn<K extends string = string> = ReturnType<
-  typeof useBreakpoints<K>
->
+): UseBreakpointReturn<K>
 ```

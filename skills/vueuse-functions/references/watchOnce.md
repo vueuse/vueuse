@@ -23,14 +23,14 @@ watchOnce(source, () => {
 ## Type Declarations
 
 ```ts
-export declare function watchOnce<T extends Readonly<MultiWatchSources>>(
-  source: [...T],
-  cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
-  options?: Omit<WatchOptions<true>, "once">,
-): WatchHandle
 export declare function watchOnce<T>(
   source: WatchSource<T>,
   cb: WatchCallback<T, T | undefined>,
+  options?: Omit<WatchOptions<true>, "once">,
+): WatchHandle
+export declare function watchOnce<T extends Readonly<MultiWatchSources>>(
+  source: [...T],
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
   options?: Omit<WatchOptions<true>, "once">,
 ): WatchHandle
 export declare function watchOnce<T extends object>(

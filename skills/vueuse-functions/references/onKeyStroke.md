@@ -1,5 +1,6 @@
 ---
 category: Sensors
+variants: onKeyDown, onKeyUp, onKeyPressed
 ---
 
 # onKeyStroke

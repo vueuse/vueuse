@@ -180,7 +180,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
   /**
    * Reference to the current EventSource instance.
    */
-  eventSource: Ref<EventSource | null>
+  eventSource: ShallowRef<EventSource | null>
   /**
    * The last event ID string, for server-sent events.
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId

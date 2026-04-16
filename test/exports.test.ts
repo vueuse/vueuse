@@ -1,29 +1,40 @@
-import type { PackageExportsManifest } from 'vitest-package-exports'
+import { existsSync, readFileSync } from 'node:fs'
+import { join, resolve } from 'node:path'
 import { x } from 'tinyexec'
-import { describe, expect, it } from 'vitest'
-import { getPackageExportsManifest } from 'vitest-package-exports'
-import yaml from 'yaml'
+import { globSync } from 'tinyglobby'
+import { checkBuildFreshness } from 'tsdown-lock'
+import { describePackagesApiSnapshots } from 'tsnapi/vitest'
+import { beforeAll } from 'vitest'
 
-describe('exports-snapshot', async () => {
-  const packages: { name: string, path: string, private?: boolean }[] = JSON.parse(
-    await x('pnpm', ['ls', '--only-projects', '-r', '--json']).then(r => r.stdout),
-  )
+const root = resolve(import.meta.dirname, '..')
 
-  for (const pkg of packages) {
-    if (pkg.private)
-      continue
-
-    it(`${pkg.name}`, async () => {
-      let manifest: PackageExportsManifest | undefined
-      try {
-        manifest = await getPackageExportsManifest({
-          importMode: 'dist',
-          cwd: pkg.path,
-        })
-      }
-      catch {}
-      await expect(yaml.stringify(manifest?.exports ?? null, { sortMapEntries: (a, b) => String(a.key).localeCompare(String(b.key)) }))
-        .toMatchFileSnapshot(`./exports/${pkg.name.split('/').pop()}.yaml`)
-    })
+function resolveWorkspacePackages() {
+  const dirs: string[] = []
+  for (const match of globSync('packages/*', { cwd: root })) {
+    const abs = resolve(root, match)
+    if (existsSync(join(abs, 'package.json'))) {
+      const pkg = JSON.parse(readFileSync(join(abs, 'package.json'), 'utf-8'))
+      if (!pkg.private)
+        dirs.push(abs)
+    }
   }
-})
+  return dirs
+}
+
+beforeAll(async () => {
+  const packages = resolveWorkspacePackages()
+  const stale = (await Promise.all(
+    packages.map(async (dir) => {
+      const result = await checkBuildFreshness({ root: dir })
+      return result.fresh ? null : dir
+    }),
+  )).filter(Boolean) as string[]
+
+  if (stale.length) {
+    const names = stale.map(dir => JSON.parse(readFileSync(join(dir, 'package.json'), 'utf-8')).name)
+    const filters = names.flatMap(n => ['-F', n])
+    await x('pnpm', ['run', '-r', 'build', ...filters], { nodeOptions: { cwd: root } })
+  }
+}, 120_000)
+
+describePackagesApiSnapshots({ cwd: root })
