@@ -92,7 +92,7 @@ catalogs:
     jsdom: ^27.4.0
     msw: ^2.12.7
     playwright: 1.49.0
-    tsnapi: ^0.2.1
+    tsnapi: ^0.2.2
     vitest: ^4.0.18
     vitest-browser-vue: ^2.0.2
   types:

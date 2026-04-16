@@ -226,8 +226,8 @@ catalogs:
       specifier: 1.49.0
       version: 1.49.0
     tsnapi:
-      specifier: ^0.2.1
-      version: 0.2.1
+      specifier: ^0.2.2
+      version: 0.2.2
     vitest:
       specifier: ^4.0.18
       version: 4.0.18
@@ -460,7 +460,7 @@ importers:
         version: 0.0.0
       tsnapi:
         specifier: catalog:test
-        version: 0.2.1(vitest@4.0.18)
+        version: 0.2.2(vitest@4.0.18)
       tsx:
         specifier: catalog:dev
         version: 4.21.0
@@ -8289,8 +8289,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tsnapi@0.2.1:
-    resolution: {integrity: sha512-jh1jnznThPPklMqHDS5lusg6+8VT6teKbi25N6tDI2I3FAotkK5YJyhnTe8BWRK3qKfuE81OsNNp2RtIp7VTfA==}
+  tsnapi@0.2.2:
+    resolution: {integrity: sha512-DRv8206/u6bnzX/KQfN778bJzB9xga24BjYhPsKpGrM3SEBDrKWBmDrdbDRxqudOfAbFinwJkFT1uFhwIJEH0w==}
     hasBin: true
     peerDependencies:
       vitest: '>=4.0.0'
@@ -17719,7 +17719,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsnapi@0.2.1(vitest@4.0.18):
+  tsnapi@0.2.2(vitest@4.0.18):
     dependencies:
       '@vitest/utils': 4.1.4
       cac: 7.0.0
