@@ -98,16 +98,16 @@ export interface UseMouseOptions
    */
   initialValue?: Position
 }
+export interface UseMouseReturn {
+  x: ShallowRef<number>
+  y: ShallowRef<number>
+  sourceType: ShallowRef<UseMouseSourceType>
+}
 /**
  * Reactive mouse position.
  *
  * @see https://vueuse.org/useMouse
  * @param options
  */
-export declare function useMouse(options?: UseMouseOptions): {
-  x: ShallowRef<number, number>
-  y: ShallowRef<number, number>
-  sourceType: ShallowRef<UseMouseSourceType, UseMouseSourceType>
-}
-export type UseMouseReturn = ReturnType<typeof useMouse>
+export declare function useMouse(options?: UseMouseOptions): UseMouseReturn
 ```

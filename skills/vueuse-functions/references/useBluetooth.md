@@ -164,8 +164,7 @@ export interface UseBluetoothOptions
 export declare function useBluetooth(
   options?: UseBluetoothOptions,
 ): UseBluetoothReturn
-export interface UseBluetoothReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseBluetoothReturn extends Supportable {
   isConnected: Readonly<ShallowRef<boolean>>
   device: ShallowRef<BluetoothDevice | undefined>
   requestDevice: () => Promise<void>

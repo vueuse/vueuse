@@ -63,45 +63,13 @@ export interface UseFuseOptions<T> {
   resultLimit?: number
   matchAllWhenSearchEmpty?: boolean
 }
+export interface UseFuseReturn<DataItem> {
+  fuse: Ref<Fuse<DataItem>>
+  results: ComputedRef<FuseResult<DataItem>[]>
+}
 export declare function useFuse<DataItem>(
   search: MaybeRefOrGetter<string>,
   data: MaybeRefOrGetter<DataItem[]>,
   options?: MaybeRefOrGetter<UseFuseOptions<DataItem>>,
-): {
-  fuse: Ref<
-    {
-      search: <R = DataItem>(
-        pattern: string | Expression,
-        options?: FuseSearchOptions,
-      ) => FuseResult<R>[]
-      setCollection: (
-        docs: readonly DataItem[],
-        index?: FuseIndex<DataItem> | undefined,
-      ) => void
-      add: (doc: DataItem) => void
-      remove: (predicate: (doc: DataItem, idx: number) => boolean) => DataItem[]
-      removeAt: (idx: number) => void
-      getIndex: () => FuseIndex<DataItem>
-    },
-    | Fuse<DataItem>
-    | {
-        search: <R = DataItem>(
-          pattern: string | Expression,
-          options?: FuseSearchOptions,
-        ) => FuseResult<R>[]
-        setCollection: (
-          docs: readonly DataItem[],
-          index?: FuseIndex<DataItem> | undefined,
-        ) => void
-        add: (doc: DataItem) => void
-        remove: (
-          predicate: (doc: DataItem, idx: number) => boolean,
-        ) => DataItem[]
-        removeAt: (idx: number) => void
-        getIndex: () => FuseIndex<DataItem>
-      }
-  >
-  results: ComputedRef<FuseResult<DataItem>[]>
-}
-export type UseFuseReturn = ReturnType<typeof useFuse>
+): UseFuseReturn<DataItem>
 ```

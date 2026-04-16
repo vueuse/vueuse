@@ -66,24 +66,26 @@ export interface UsePointerOptions extends ConfigurableWindow {
    */
   target?: MaybeRef<EventTarget | null | undefined> | Document | Window
 }
+export interface UsePointerReturn {
+  pressure: Ref<number>
+  pointerId: Ref<number>
+  tiltX: Ref<number>
+  tiltY: Ref<number>
+  width: Ref<number>
+  height: Ref<number>
+  twist: Ref<number>
+  pointerType: Ref<PointerType | null>
+  x: Ref<number>
+  y: Ref<number>
+  isInside: ShallowRef<boolean>
+}
 /**
  * Reactive pointer state.
  *
  * @see https://vueuse.org/usePointer
  * @param options
  */
-export declare function usePointer(options?: UsePointerOptions): {
-  isInside: ShallowRef<boolean, boolean>
-  pressure: Ref<number, number>
-  pointerId: Ref<number, number>
-  tiltX: Ref<number, number>
-  tiltY: Ref<number, number>
-  width: Ref<number, number>
-  height: Ref<number, number>
-  twist: Ref<number, number>
-  pointerType: Ref<PointerType | null, PointerType | null>
-  x: Ref<number, number>
-  y: Ref<number, number>
-}
-export type UsePointerReturn = ReturnType<typeof usePointer>
+export declare function usePointer(
+  options?: UsePointerOptions,
+): UsePointerReturn
 ```

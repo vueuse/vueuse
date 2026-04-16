@@ -54,6 +54,13 @@ Our applications normally are not empathetic to battery level, we can make a few
 ## Type Declarations
 
 ```ts
+export interface UseBatteryOptions extends ConfigurableNavigator {}
+export interface UseBatteryReturn extends Supportable {
+  charging: ShallowRef<boolean>
+  chargingTime: ShallowRef<number>
+  dischargingTime: ShallowRef<number>
+  level: ShallowRef<number>
+}
 export interface BatteryManager extends EventTarget {
   charging: boolean
   chargingTime: number
@@ -67,12 +74,7 @@ export interface BatteryManager extends EventTarget {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export declare function useBattery(options?: ConfigurableNavigator): {
-  isSupported: ComputedRef<boolean>
-  charging: ShallowRef<boolean, boolean>
-  chargingTime: ShallowRef<number, number>
-  dischargingTime: ShallowRef<number, number>
-  level: ShallowRef<number, number>
-}
-export type UseBatteryReturn = ReturnType<typeof useBattery>
+export declare function useBattery(
+  options?: UseBatteryOptions,
+): UseBatteryReturn
 ```

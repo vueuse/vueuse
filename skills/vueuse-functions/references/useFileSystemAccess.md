@@ -145,8 +145,7 @@ export declare function useFileSystemAccess(
 export declare function useFileSystemAccess(
   options: UseFileSystemAccessOptions,
 ): UseFileSystemAccessReturn<string | ArrayBuffer | Blob>
-export interface UseFileSystemAccessReturn<T = string> {
-  isSupported: ComputedRef<boolean>
+export interface UseFileSystemAccessReturn<T = string> extends Supportable {
   data: ShallowRef<T | undefined>
   file: ShallowRef<File | undefined>
   fileName: ComputedRef<string>

@@ -52,9 +52,8 @@ export interface UsePermissionOptions<
 export type UsePermissionReturn = Readonly<
   ShallowRef<PermissionState | undefined>
 >
-export interface UsePermissionReturnWithControls {
+export interface UsePermissionReturnWithControls extends Supportable {
   state: UsePermissionReturn
-  isSupported: ComputedRef<boolean>
   query: () => Promise<PermissionStatus | undefined>
 }
 /**
