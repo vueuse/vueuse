@@ -58,4 +58,4 @@
   VOnLongPress: object
   vResizeObserver: object
   vScroll: object
-  vScrollLock: function
+  vScrollLock: object
