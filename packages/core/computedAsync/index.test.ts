@@ -204,7 +204,7 @@ describe('computedAsync', () => {
     const evaluating = shallowRef(false)
 
     const data = computedAsync(
-      () => new Promise(resolve => setTimeout(() => resolve('data'), 0)),
+      () => new Promise(resolve => setTimeout(resolve, 0, 'data')),
       undefined,
       evaluating,
     )
@@ -258,7 +258,7 @@ describe('computedAsync', () => {
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 5)
+        setTimeout(resolve, 5, uppercased)
       })
     }, '', evaluating)
 
@@ -291,7 +291,7 @@ describe('computedAsync', () => {
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 5)
+        setTimeout(resolve, 5, uppercased)
       })
     }, '', { lazy: true })
 

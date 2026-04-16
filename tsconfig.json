@@ -3,7 +3,6 @@
     "target": "es2020",
     "jsx": "preserve",
     "lib": ["ESNext", "DOM", "DOM.Iterable", "webworker"],
-    "baseUrl": ".",
     "rootDir": ".",
     "module": "esnext",
     "moduleResolution": "Bundler",

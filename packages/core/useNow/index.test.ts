@@ -15,11 +15,11 @@ describe('useNow', () => {
   it('should get now timestamp by default', async () => {
     const now = useNow()
 
-    expect(+now.value).toBeLessThanOrEqual(+new Date())
+    expect(+now.value).toBeLessThanOrEqual(Date.now())
   })
 
   it('starts lazily if immediate is false', () => {
-    const initial = +new Date()
+    const initial = Date.now()
     const { now, resume } = useNow({ controls: true, immediate: false })
 
     expect(+now.value).toBe(initial)
@@ -36,12 +36,12 @@ describe('useNow', () => {
       components: { UseNow },
       template: '<UseNow v-slot="{ now }">{{ +now }}</UseNow>',
     })
-    expect(Number.parseInt(wrapper.text(), 10)).toBeLessThanOrEqual(+new Date())
+    expect(Number.parseInt(wrapper.text(), 10)).toBeLessThanOrEqual(Date.now())
   })
 
   function testControl(interval: any) {
     it(`should control now timestamp by ${interval}`, async () => {
-      let initial = +new Date()
+      let initial = Date.now()
       const { now, pause, resume } = useNow({ controls: true, interval })
 
       expect(+now.value).toBeGreaterThanOrEqual(initial)

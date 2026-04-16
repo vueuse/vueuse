@@ -8,9 +8,6 @@ Extended [`toRefs`](https://vuejs.org/api/reactivity-utilities.html#torefs) that
 
 ## Usage
 
-<!-- eslint-disable array-bracket-spacing -->
-<!-- eslint-disable ts/no-redeclare -->
-
 ```ts
 import { toRefs } from '@vueuse/core'
 import { reactive, ref } from 'vue'
