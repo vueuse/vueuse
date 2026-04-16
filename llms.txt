@@ -1,0 +1,49 @@
+# VueUse
+
+> VueUse is a collection of essential Vue Composition Utilities. It provides over 200+ functions for Vue 3 and Vue 2, covering browser, state, sensor, animation, and many other categories.
+
+## Quick Links
+
+- [Documentation](https://vueuse.org): Full documentation with interactive demos
+- [GitHub](https://github.com/vueuse/vueuse): Source code and contribution guide
+- [Functions List](https://vueuse.org/functions): Complete list of all available functions
+
+## Categories
+
+- **Browser**: `useLocalStorage`, `useSessionStorage`, `useEventListener`, `useMediaQuery`, etc.
+- **State**: `useStorage`, `useCounter`, `useOffsetPagination`, etc.
+- **Sensors**: `useMouse`, `useWindowSize`, `useScroll`, `useIntersectionObserver`, etc.
+- **Animation**: `useTransition`, `useInterval`, `useTimeout`, etc.
+- **Network**: `useFetch`, `useAxios`, `useWebSocket`, etc.
+- **Utilities**: `useToggle`, `useClipboard`, `useDebounceFn`, `useThrottleFn`, etc.
+
+## Usage
+
+```ts
+import { useLocalStorage, useMouse, usePreferredDark } from '@vueuse/core'
+
+const { x, y } = useMouse()
+const isDark = usePreferredDark()
+const store = useLocalStorage('my-key', 'default-value')
+```
+
+## Installation
+
+```bash
+npm install @vueuse/core
+# or
+yarn add @vueuse/core
+# or
+pnpm add @vueuse/core
+```
+
+## Optional Add-ons
+
+- `@vueuse/router` - Vue Router integrations
+- `@vueuse/firebase` - Firebase integrations
+- `@vueuse/rxjs` - RxJS integrations
+- `@vueuse/integrations` - Third-party library integrations
+
+## Contributing
+
+See [Contributing Guide](https://github.com/vueuse/vueuse/blob/main/CONTRIBUTING.md)
