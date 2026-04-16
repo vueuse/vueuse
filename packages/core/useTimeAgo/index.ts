@@ -93,8 +93,8 @@ const DEFAULT_UNITS: UseTimeAgoUnit<UseTimeAgoUnitNamesDefault>[] = [
 
 const DEFAULT_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
   justNow: 'just now',
-  past: n => n.match(/\d/) ? `${n} ago` : n,
-  future: n => n.match(/\d/) ? `in ${n}` : n,
+  past: n => /\d/.test(n) ? `${n} ago` : n,
+  future: n => /\d/.test(n) ? `in ${n}` : n,
   month: (n, past) => n === 1
     ? past
       ? 'last month'

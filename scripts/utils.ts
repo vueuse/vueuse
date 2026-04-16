@@ -140,7 +140,7 @@ export function replacer(code: string, value: string, key: string, insert: 'head
 
   const target = value ? `${START}\n\n${value.trim()}\n\n${END}` : `${START}${END}`
 
-  if (!code.match(regex)) {
+  if (!regex.test(code)) {
     if (insert === 'none')
       return code
     else if (insert === 'head')
