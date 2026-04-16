@@ -77,6 +77,9 @@ export default withPwa(defineConfig({
     codeTransformers: [
       transformerTwoslash({
         twoslashOptions: {
+          compilerOptions: {
+            ignoreDeprecations: '6.0',
+          },
           handbookOptions: {
             noErrors: true,
           },
