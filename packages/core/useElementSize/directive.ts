@@ -20,6 +20,6 @@ export const vElementSize: ObjectDirective<
     const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
 
     const { width, height } = useElementSize(el, ...options)
-    watch([width, height], ([width, height]) => handler({ width, height }))
+    watch([width, height], ([width, height]) => handler({ width, height }), { immediate: true })
   },
 }
