@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { globSync } from 'tinyglobby'
 import { checkBuildFreshness } from 'tsdown-stale-guard'
@@ -8,7 +8,12 @@ const root = resolve(import.meta.dirname, '..')
 
 const packages = globSync('packages/*', { cwd: root, onlyDirectories: true })
   .map(p => resolve(root, p))
-  .filter(p => existsSync(join(p, 'package.json')))
+  .filter((p) => {
+    if (!existsSync(join(p, 'package.json')))
+      return false
+    const pkg = JSON.parse(readFileSync(join(p, 'package.json'), 'utf-8'))
+    return !pkg.private && pkg.exports
+  })
   .sort()
 
 describePackagesApiSnapshots({
