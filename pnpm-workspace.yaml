@@ -38,7 +38,7 @@ catalogs:
     taze: ^19.11.0
     tinyglobby: ^0.2.16
     tsdown: ^0.21.8
-    tsdown-lock: ^0.0.0
+    tsdown-stale-guard: ^0.0.0
     tsx: ^4.21.0
     turbo: ^2.9.6
     typescript: ^6.0.2

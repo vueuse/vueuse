@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { checkBuildFreshness } from 'tsdown-lock'
+import { checkBuildFreshness } from 'tsdown-stale-guard'
 import { describePackagesApiSnapshots } from 'tsnapi/vitest'
 
 const root = resolve(import.meta.dirname, '..')

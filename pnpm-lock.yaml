@@ -78,7 +78,7 @@ catalogs:
     tsdown:
       specifier: ^0.21.8
       version: 0.21.8
-    tsdown-lock:
+    tsdown-stale-guard:
       specifier: ^0.0.0
       version: 0.0.0
     tsx:
@@ -455,7 +455,7 @@ importers:
       tsdown:
         specifier: catalog:dev
         version: 0.21.8(@arethetypeswrong/core@0.18.2)(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2))
-      tsdown-lock:
+      tsdown-stale-guard:
         specifier: catalog:dev
         version: 0.0.0
       tsnapi:
@@ -8679,8 +8679,8 @@ packages:
     peerDependencies:
       typescript: '>=4.0.0'
 
-  tsdown-lock@0.0.0:
-    resolution: {integrity: sha512-XGyu/n02C7zSpsdk/WlbKpAT6Ilq27BQm2sGCZOzUIEa+rJtTW5UQqRVfeIxhJgwrnNYkCTvw92r8PVIANQJXQ==}
+  tsdown-stale-guard@0.0.0:
+    resolution: {integrity: sha512-jlQCs+MAA3Fk198/8oXJDnl8FBvxWNU3k2Na+gpQLfG99VCrl8fG/S5qj7z831gG+zvF21iTRDQoVG5XZWPVcA==}
     hasBin: true
 
   tsdown@0.21.8:
@@ -18708,7 +18708,7 @@ snapshots:
       picomatch: 4.0.4
       typescript: 6.0.2
 
-  tsdown-lock@0.0.0:
+  tsdown-stale-guard@0.0.0:
     dependencies:
       yaml: 2.8.3
 

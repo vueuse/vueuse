@@ -98,7 +98,7 @@
     "taze": "catalog:dev",
     "tinyglobby": "catalog:dev",
     "tsdown": "catalog:dev",
-    "tsdown-lock": "catalog:dev",
+    "tsdown-stale-guard": "catalog:dev",
     "tsnapi": "catalog:test",
     "tsx": "catalog:dev",
     "turbo": "catalog:dev",

@@ -28,4 +28,3 @@ coverage
 .eslintcache
 .vitepress/cache
 packages/**/__screenshots__
-tsdown.lock.yaml
