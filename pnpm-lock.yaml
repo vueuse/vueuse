@@ -79,8 +79,8 @@ catalogs:
       specifier: ^0.21.9
       version: 0.21.9
     tsdown-stale-guard:
-      specifier: ^0.1.0
-      version: 0.1.0
+      specifier: ^0.1.1
+      version: 0.1.1
     tsx:
       specifier: ^4.21.0
       version: 4.21.0
@@ -226,8 +226,8 @@ catalogs:
       specifier: 1.49.0
       version: 1.49.0
     tsnapi:
-      specifier: ^0.3.1
-      version: 0.3.1
+      specifier: ^0.3.2
+      version: 0.3.2
     vitest:
       specifier: ^4.1.4
       version: 4.1.4
@@ -457,10 +457,10 @@ importers:
         version: 0.21.9(@arethetypeswrong/core@0.18.2)(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2))
       tsdown-stale-guard:
         specifier: catalog:dev
-        version: 0.1.0(tsdown@0.21.9(@arethetypeswrong/core@0.18.2)(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2)))
+        version: 0.1.1(tsdown@0.21.9(@arethetypeswrong/core@0.18.2)(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2)))
       tsnapi:
         specifier: catalog:test
-        version: 0.3.1(vitest@4.1.4)
+        version: 0.3.2(vitest@4.1.4)
       tsx:
         specifier: catalog:dev
         version: 4.21.0
@@ -7013,6 +7013,9 @@ packages:
     resolution: {integrity: sha512-9ie8ItPR6tjY5uYJh8K/Zrv/RMZ5VOlOWvtZdEHYSTFKZfIBPQa9tOAEeAWhd+AnIneLJ22w5fjOYtoutpWq5w==}
     engines: {node: '>=18'}
 
+  logs-sdk@0.0.6:
+    resolution: {integrity: sha512-G4M1C9aLLBOIWpmw/Lqk4zrap/T2IJsoUOuUDjRcVSLy6lHQqxr3wCqIT1FvvpYTUYpEwvu4utsMY42jTNvx8Q==}
+
   long@5.2.3:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
 
@@ -8785,8 +8788,8 @@ packages:
     peerDependencies:
       typescript: '>=4.0.0'
 
-  tsdown-stale-guard@0.1.0:
-    resolution: {integrity: sha512-6YOe1cgZeRsW9Pt7GSE9QOC7uP9HSHVcfeo60ALRJ0dlq4MDNmsUJZr0/I1UGFXrs/ZeU7Hmt9tdcywSE3V+ig==}
+  tsdown-stale-guard@0.1.1:
+    resolution: {integrity: sha512-LeWJSseF0O4qZin0fCPfoO+8+LdbpMIP5LyVfpNy9WgvhWGPwxmn2W/9iWnY6IdXPZ1JfBp0pHTe2Bts8VVFWA==}
     hasBin: true
     peerDependencies:
       tsdown: ^0.21.9
@@ -8825,8 +8828,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tsnapi@0.3.1:
-    resolution: {integrity: sha512-FXCWYbUxxThvqmXi9FU8M6ITmQHriq8nyNyVw2yGHG4nBDvI+nvK2mSmKjgIWUy3+tESp88gkFwMH1dZuLXmLg==}
+  tsnapi@0.3.2:
+    resolution: {integrity: sha512-+a45/+CAyrxkn/m5DRthOcM0gBGaUe5scjVwiue4IKU/55ikL+o8MPZh11CSPZIzewyfh1xJPmrjyd1Sydr03g==}
     hasBin: true
     peerDependencies:
       vitest: '>=4.0.0'
@@ -16475,6 +16478,12 @@ snapshots:
       strip-ansi: 7.1.0
       wrap-ansi: 9.0.0
 
+  logs-sdk@0.0.6:
+    dependencies:
+      magic-string: 0.30.21
+      oxc-parser: 0.126.0
+      unplugin: 3.0.0
+
   long@5.2.3: {}
 
   longest-streak@3.1.0: {}
@@ -18898,9 +18907,10 @@ snapshots:
       picomatch: 4.0.4
       typescript: 6.0.2
 
-  tsdown-stale-guard@0.1.0(tsdown@0.21.9(@arethetypeswrong/core@0.18.2)(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2))):
+  tsdown-stale-guard@0.1.1(tsdown@0.21.9(@arethetypeswrong/core@0.18.2)(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2))):
     dependencies:
       cac: 7.0.0
+      logs-sdk: 0.0.6
       tsdown: 0.21.9(@arethetypeswrong/core@0.18.2)(synckit@0.11.12)(typescript@6.0.2)(vue-tsc@3.2.6(typescript@6.0.2))
       yaml: 2.8.3
 
@@ -18936,7 +18946,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsnapi@0.3.1(vitest@4.1.4):
+  tsnapi@0.3.2(vitest@4.1.4):
     dependencies:
       '@vitest/utils': 4.1.4
       cac: 7.0.0
