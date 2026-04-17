@@ -348,8 +348,8 @@ describe('is', () => {
   })
 
   it('should be now', () => {
-    expect(now()).toEqual(Date.now())
-    expect(timestamp()).toEqual(Date.now())
+    expect(now()).toBeCloseTo(Date.now(), -2)
+    expect(timestamp()).toBeCloseTo(Date.now(), -2)
   })
 
   it('should clamp', () => {

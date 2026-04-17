@@ -37,7 +37,8 @@ catalogs:
     simple-git-hooks: ^2.13.1
     taze: ^19.11.0
     tinyglobby: ^0.2.16
-    tsdown: ^0.21.8
+    tsdown: ^0.21.9
+    tsdown-stale-guard: ^0.1.1
     tsx: ^4.21.0
     turbo: ^2.9.6
     typescript: ^6.0.2
@@ -91,9 +92,9 @@ catalogs:
     jsdom: ^29.0.2
     msw: ^2.13.3
     playwright: 1.49.0
+    tsnapi: ^0.3.2
     vitest: ^4.1.4
     vitest-browser-vue: ^2.1.0
-    vitest-package-exports: ^1.2.0
   types:
     '@type-challenges/utils': ^0.1.1
     '@types/md5': ^2.3.6
