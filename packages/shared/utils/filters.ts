@@ -166,7 +166,7 @@ export function throttleFilter(...args: any[]) {
     }
   }
 
-  const filter: EventFilter = (_invoke) => {
+  const filter: EventFilter & { clear: () => void } = (_invoke) => {
     const duration = toValue(ms)
     const elapsed = Date.now() - lastExec
     const invoke = () => {
@@ -203,6 +203,7 @@ export function throttleFilter(...args: any[]) {
     return lastValue
   }
 
+  filter.clear = clear
   return filter
 }
 
