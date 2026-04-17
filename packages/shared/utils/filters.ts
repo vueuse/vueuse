@@ -39,6 +39,20 @@ export interface DebounceFilterOptions {
    * @default false
    */
   rejectOnCancel?: boolean
+
+  /**
+   * Whether to invoke on the leading edge of the timeout.
+   *
+   * @default false
+   */
+  leading?: boolean
+
+  /**
+   * Whether to invoke on the trailing edge of the timeout.
+   *
+   * @default true
+   */
+  trailing?: boolean
 }
 
 /**
@@ -65,6 +79,7 @@ export const bypassFilter: EventFilter = (invoke) => {
  * Create an EventFilter that debounce the events
  */
 export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}) {
+  const { leading = false, trailing = true } = options
   let timer: TimerHandle
   let maxTimer: TimerHandle
   let lastRejector: AnyFn = noop
@@ -81,6 +96,8 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
     const duration = toValue(ms)
     const maxDuration = toValue(options.maxWait)
 
+    const shouldLeadingInvoke = leading && !timer
+
     if (timer)
       _clearTimeout(timer)
 
@@ -93,6 +110,9 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
     }
 
     return new Promise((resolve, reject) => {
+      if (shouldLeadingInvoke)
+        resolve(invoke())
+
       lastRejector = options.rejectOnCancel ? reject : resolve
       lastInvoker = invoke
       // Create the maxTimer. Clears the regular timer on invoke
@@ -100,6 +120,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
         maxTimer = setTimeout(() => {
           if (timer)
             _clearTimeout(timer)
+          timer = undefined
           maxTimer = undefined
           resolve(lastInvoker())
         }, maxDuration)
@@ -109,8 +130,10 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
       timer = setTimeout(() => {
         if (maxTimer)
           _clearTimeout(maxTimer)
+        timer = undefined
         maxTimer = undefined
-        resolve(invoke())
+        if (trailing && !shouldLeadingInvoke)
+          resolve(invoke())
       }, duration)
     })
   }
