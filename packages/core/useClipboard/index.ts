@@ -157,7 +157,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   }
 
   return {
-    copyPending,
+    copyPending: shallowReadonly(copyPending),
     isSupported,
     text: shallowReadonly(text),
     copied: shallowReadonly(copied),
