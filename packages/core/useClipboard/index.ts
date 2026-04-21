@@ -108,6 +108,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
         }
         catch {
           useLegacy = true
+        }
+        finally {
           copyPending.value = false
         }
       }
