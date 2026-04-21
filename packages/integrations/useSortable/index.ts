@@ -3,7 +3,7 @@ import type { Options } from 'sortablejs'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import { computed, isRef, nextTick, toValue, watch } from 'vue'
+import { isRef, nextTick, toValue, watch } from 'vue'
 
 export interface UseSortableReturn {
   /**
@@ -65,8 +65,6 @@ export function useSortable<T>(
     },
   }
 
-  const element = computed(() => (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el)))
-
   const cleanup = () => {
     sortable?.destroy()
     sortable = undefined
@@ -79,7 +77,7 @@ export function useSortable<T>(
   }
 
   const start = () => {
-    const target = element.value
+    const target = typeof el === 'string' ? document?.querySelector(el) : unrefElement(el)
     if (target)
       initSortable(target)
   }
@@ -97,7 +95,7 @@ export function useSortable<T>(
   if (watchElement && typeof el !== 'string') {
     // New behavior: watch element changes and auto-reinitialize
     stopWatch = watch(
-      element,
+      () => unrefElement(el),
       (newElement) => {
         cleanup()
         if (newElement)
