@@ -96,6 +96,10 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     useEventListener(['copy', 'cut'], updateText, { passive: true })
 
   async function copy(value?: ClipboardValue) {
+    if (copyPending.value) {
+      return
+    }
+
     const resolvedValue = value ?? toValue(source)
     if (isSupported.value && resolvedValue != null) {
       let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
