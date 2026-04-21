@@ -96,34 +96,42 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     useEventListener(['copy', 'cut'], updateText, { passive: true })
 
   async function copy(value?: ClipboardValue) {
-    if (copyPending.value) {
+    if (copyPending.value)
       return
-    }
 
     const resolvedValue = value ?? toValue(source)
     if (isSupported.value && resolvedValue != null) {
+      copyPending.value = true
       let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
+
       if (!useLegacy) {
         try {
-          copyPending.value = true
           const clipboardItem = createClipboardItem(resolvedValue)
           await navigator!.clipboard.write([clipboardItem])
-          copyPending.value = false
         }
         catch {
           useLegacy = true
         }
-        finally {
-          copyPending.value = false
-        }
       }
 
-      if (useLegacy && typeof resolvedValue === 'string') {
-        legacyCopy(resolvedValue)
+      if (useLegacy) {
+        if (typeof resolvedValue === 'string') {
+          text.value = resolvedValue
+          legacyCopy(resolvedValue)
+        }
+        else {
+          // For async functions in legacy mode, resolve and copy
+          const resolvedText = await resolvedValue()
+          if (resolvedText != null) {
+            text.value = resolvedText
+            legacyCopy(resolvedText)
+          }
+        }
       }
 
       copied.value = true
       timeout.start()
+      copyPending.value = false
     }
   }
 
