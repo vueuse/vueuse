@@ -109,7 +109,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     if (options.autoImports) {
       // auto import
       nuxt.hook('imports:sources', (sources: (Import | Preset)[]) => {
-        if (sources.find(i => fullPackages.includes((i as Import).from)))
+        if (sources.some(i => fullPackages.includes((i as Import).from)))
           return
 
         metadata.functions.forEach((i) => {

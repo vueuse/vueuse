@@ -44,42 +44,20 @@ export interface UseGeolocationOptions
   extends Partial<PositionOptions>, ConfigurableNavigator {
   immediate?: boolean
 }
+export interface UseGeolocationReturn extends Supportable {
+  coords: ShallowRef<Omit<GeolocationPosition["coords"], "toJSON">>
+  locatedAt: ShallowRef<number | null>
+  error: ShallowRef<GeolocationPositionError | null>
+  resume: () => void
+  pause: () => void
+}
 /**
  * Reactive Geolocation API.
  *
  * @see https://vueuse.org/useGeolocation
  * @param options
  */
-export declare function useGeolocation(options?: UseGeolocationOptions): {
-  isSupported: ComputedRef<boolean>
-  coords: Ref<
-    {
-      readonly accuracy: number
-      readonly altitude: number | null
-      readonly altitudeAccuracy: number | null
-      readonly heading: number | null
-      readonly latitude: number
-      readonly longitude: number
-      readonly speed: number | null
-    },
-    | Omit<GeolocationCoordinates, "toJSON">
-    | {
-        readonly accuracy: number
-        readonly altitude: number | null
-        readonly altitudeAccuracy: number | null
-        readonly heading: number | null
-        readonly latitude: number
-        readonly longitude: number
-        readonly speed: number | null
-      }
-  >
-  locatedAt: ShallowRef<number | null, number | null>
-  error: ShallowRef<
-    GeolocationPositionError | null,
-    GeolocationPositionError | null
-  >
-  resume: () => void
-  pause: () => void
-}
-export type UseGeolocationReturn = ReturnType<typeof useGeolocation>
+export declare function useGeolocation(
+  options?: UseGeolocationOptions,
+): UseGeolocationReturn
 ```

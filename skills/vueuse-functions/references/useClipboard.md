@@ -98,8 +98,7 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
    */
   legacy?: boolean
 }
-export interface UseClipboardReturn<Optional> {
-  isSupported: ComputedRef<boolean>
+export interface UseClipboardReturn<Optional> extends Supportable {
   text: Readonly<ShallowRef<string>>
   copied: Readonly<ShallowRef<boolean>>
   copy: Optional extends true

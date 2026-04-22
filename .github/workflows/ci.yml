@@ -86,6 +86,9 @@ jobs:
       - name: server tests
         run: pnpm run test:server
 
+      - name: exports tests
+        run: pnpm run test:exports
+
       - if: matrix.node == 'lts/*'
         name: Playground Smoke Test
         run: cd playgrounds && bash ./build.sh

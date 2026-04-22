@@ -35,7 +35,7 @@ await ensurePermissions()
 console.log(permissionsGranted.value)
 ```
 
-# Component
+## Component
 
 ```vue
 <template>

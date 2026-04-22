@@ -27,6 +27,7 @@ const location = useBrowserLocation()
 ## Type Declarations
 
 ```ts
+export interface UseBrowserLocationOptions extends ConfigurableWindow {}
 export interface BrowserLocationState {
   readonly trigger: string
   readonly state?: any
@@ -41,6 +42,7 @@ export interface BrowserLocationState {
   protocol?: string
   search?: string
 }
+export type UseBrowserLocationReturn = Ref<BrowserLocationState>
 /**
  * Reactive browser location.
  *
@@ -48,36 +50,7 @@ export interface BrowserLocationState {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export declare function useBrowserLocation(options?: ConfigurableWindow): Ref<
-  {
-    readonly trigger: string
-    readonly state?: any
-    readonly length?: number | undefined
-    readonly origin?: string | undefined
-    hash?: string | undefined
-    host?: string | undefined
-    hostname?: string | undefined
-    href?: string | undefined
-    pathname?: string | undefined
-    port?: string | undefined
-    protocol?: string | undefined
-    search?: string | undefined
-  },
-  | BrowserLocationState
-  | {
-      readonly trigger: string
-      readonly state?: any
-      readonly length?: number | undefined
-      readonly origin?: string | undefined
-      hash?: string | undefined
-      host?: string | undefined
-      hostname?: string | undefined
-      href?: string | undefined
-      pathname?: string | undefined
-      port?: string | undefined
-      protocol?: string | undefined
-      search?: string | undefined
-    }
->
-export type UseBrowserLocationReturn = ReturnType<typeof useBrowserLocation>
+export declare function useBrowserLocation(
+  options?: UseBrowserLocationOptions,
+): UseBrowserLocationReturn
 ```

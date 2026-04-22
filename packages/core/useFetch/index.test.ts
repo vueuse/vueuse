@@ -122,7 +122,7 @@ describe('useFetch', () => {
 
   it('should abort request and set aborted to true', async () => {
     const { aborted, abort, execute } = useFetch(baseUrl)
-    setTimeout(() => abort(), 0)
+    setTimeout(abort, 0)
     await vi.waitFor(() => {
       expect(aborted.value).toBe(true)
     })

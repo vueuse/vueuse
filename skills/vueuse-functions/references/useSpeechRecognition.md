@@ -67,6 +67,16 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
    */
   maxAlternatives?: number
 }
+export interface UseSpeechRecognitionReturn extends Supportable {
+  isListening: ShallowRef<boolean>
+  isFinal: ShallowRef<boolean>
+  recognition: SpeechRecognition | undefined
+  result: ShallowRef<string>
+  error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>
+  toggle: (value?: boolean) => void
+  start: () => void
+  stop: () => void
+}
 /**
  * Reactive SpeechRecognition.
  *
@@ -76,19 +86,5 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
  */
 export declare function useSpeechRecognition(
   options?: UseSpeechRecognitionOptions,
-): {
-  isSupported: ComputedRef<boolean>
-  isListening: ShallowRef<boolean, boolean>
-  isFinal: ShallowRef<boolean, boolean>
-  recognition: SpeechRecognition | undefined
-  result: ShallowRef<string, string>
-  error: ShallowRef<
-    Error | SpeechRecognitionErrorEvent | undefined,
-    Error | SpeechRecognitionErrorEvent | undefined
-  >
-  toggle: (value?: boolean) => void
-  start: () => void
-  stop: () => void
-}
-export type UseSpeechRecognitionReturn = ReturnType<typeof useSpeechRecognition>
+): UseSpeechRecognitionReturn
 ```

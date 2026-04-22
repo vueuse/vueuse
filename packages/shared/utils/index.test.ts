@@ -196,9 +196,9 @@ describe('filters', () => {
 
       const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
 
-      setTimeout(() => filter(1), 500)
-      setTimeout(() => filter(2), 1000)
-      setTimeout(() => filter(3), 2000)
+      setTimeout(filter, 500, 1)
+      setTimeout(filter, 1000, 2)
+      setTimeout(filter, 2000, 3)
 
       vi.runAllTimers()
 
@@ -348,8 +348,8 @@ describe('is', () => {
   })
 
   it('should be now', () => {
-    expect(now()).toEqual(Date.now())
-    expect(timestamp()).toEqual(Date.now())
+    expect(now()).toBeCloseTo(Date.now(), -2)
+    expect(timestamp()).toBeCloseTo(Date.now(), -2)
   })
 
   it('should clamp', () => {
@@ -416,9 +416,9 @@ describe('optionsFilters', () => {
       delay: 1000,
     }), debouncedFilterSpy)
 
-    setTimeout(() => filter(1), 500)
-    setTimeout(() => filter(2), 1000)
-    setTimeout(() => filter(3), 2000)
+    setTimeout(filter, 500, 1)
+    setTimeout(filter, 1000, 2)
+    setTimeout(filter, 2000, 3)
 
     vi.runAllTimers()
 

@@ -85,8 +85,8 @@ You can provide an `onMouseUp` callback to be notified when the pointer is relea
 import { onLongPress } from '@vueuse/core'
 
 onLongPress(target, handler, {
-  onMouseUp(duration, distance, isLongPress) {
-    console.log(`Held for ${duration}ms, moved ${distance}px, long press: ${isLongPress}`)
+  onMouseUp(duration, distance, isLongPress, pointerEvent) {
+    console.log(`Held for ${duration}ms, moved ${distance}px, long press: ${isLongPress}, x: ${pointerEvent.clientX}`)
   },
 })
 ```
@@ -208,8 +208,14 @@ export interface OnLongPressOptions {
    * @param duration how long the element was pressed in ms
    * @param distance distance from the pointerdown position
    * @param isLongPress whether the action was a long press or not
+   * @param pointerEvent the native {@link PointerEvent} triggered by the browser
    */
-  onMouseUp?: (duration: number, distance: number, isLongPress: boolean) => void
+  onMouseUp?: (
+    duration: number,
+    distance: number,
+    isLongPress: boolean,
+    pointerEvent: PointerEvent,
+  ) => void
 }
 export interface OnLongPressModifiers {
   stop?: boolean
@@ -218,10 +224,12 @@ export interface OnLongPressModifiers {
   capture?: boolean
   self?: boolean
 }
+export type OnLongPressReturn = () => void
+/** @deprecated use {@link OnLongPressReturn} instead */
+export type UseOnLongPressReturn = OnLongPressReturn
 export declare function onLongPress(
   target: MaybeElementRef,
   handler: (evt: PointerEvent) => void,
   options?: OnLongPressOptions,
-): () => void
-export type UseOnLongPressReturn = ReturnType<typeof onLongPress>
+): OnLongPressReturn
 ```
