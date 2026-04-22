@@ -76,6 +76,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const copied = shallowRef(false)
   const copyPending = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
+  let lastLegacyId = 0
 
   async function updateText() {
     let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
@@ -96,9 +97,6 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     useEventListener(['copy', 'cut'], updateText, { passive: true })
 
   async function copy(value?: ClipboardValue) {
-    if (copyPending.value)
-      return
-
     const resolvedValue = value ?? toValue(source)
     if (isSupported.value && resolvedValue != null) {
       copyPending.value = true
@@ -121,8 +119,9 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
         }
         else {
           // For async functions in legacy mode, resolve and copy
+          const currentId = ++lastLegacyId
           const resolvedText = await resolvedValue()
-          if (resolvedText != null) {
+          if (resolvedText != null && currentId === lastLegacyId) {
             text.value = resolvedText
             legacyCopy(resolvedText)
           }
