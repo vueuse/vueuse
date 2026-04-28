@@ -38,10 +38,15 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
   legacy?: boolean
 }
 
+type ClipboardValue = string | (() => Promise<string | undefined>)
+
 export interface UseClipboardReturn<Optional> extends Supportable {
   text: Readonly<ShallowRef<string>>
   copied: Readonly<ShallowRef<boolean>>
-  copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>
+  copyPending: Readonly<ShallowRef<boolean>>
+  copy: Optional extends true
+    ? (text?: ClipboardValue) => Promise<void>
+    : (text: ClipboardValue) => Promise<void>
 }
 
 /**
@@ -69,7 +74,9 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = shallowRef('')
   const copied = shallowRef(false)
+  const copyPending = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
+  let lastLegacyId = 0
 
   async function updateText() {
     let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
@@ -89,23 +96,56 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   if (isSupported.value && read)
     useEventListener(['copy', 'cut'], updateText, { passive: true })
 
-  async function copy(value = toValue(source)) {
-    if (isSupported.value && value != null) {
+  async function copy(value?: ClipboardValue) {
+    const resolvedValue = value ?? toValue(source)
+    if (isSupported.value && resolvedValue != null) {
+      copyPending.value = true
       let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
+
       if (!useLegacy) {
         try {
-          await navigator!.clipboard.writeText(value)
+          const clipboardItem = createClipboardItem(resolvedValue)
+          await navigator!.clipboard.write([clipboardItem])
         }
         catch {
           useLegacy = true
         }
       }
-      if (useLegacy)
-        legacyCopy(value)
 
-      text.value = value
+      if (useLegacy) {
+        if (typeof resolvedValue === 'string') {
+          text.value = resolvedValue
+          legacyCopy(resolvedValue)
+        }
+        else {
+          // For async functions in legacy mode, resolve and copy
+          const currentId = ++lastLegacyId
+          const resolvedText = await resolvedValue()
+          if (resolvedText != null && currentId === lastLegacyId) {
+            text.value = resolvedText
+            legacyCopy(resolvedText)
+          }
+        }
+      }
+
       copied.value = true
       timeout.start()
+      copyPending.value = false
+    }
+  }
+
+  function createClipboardItem(value: ClipboardValue): ClipboardItem {
+    if (typeof value === 'string') {
+      text.value = value
+      return new ClipboardItem({ 'text/plain': value })
+    }
+    else {
+      return new ClipboardItem({
+        'text/plain': value().then((resolvedText = '') => {
+          text.value = resolvedText
+          return new Blob([resolvedText], { type: 'text/plain' })
+        }),
+      })
     }
   }
 
@@ -130,6 +170,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   }
 
   return {
+    copyPending: shallowReadonly(copyPending),
     isSupported,
     text: shallowReadonly(text),
     copied: shallowReadonly(copied),

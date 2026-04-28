@@ -396,7 +396,8 @@ export interface UseClipboardOptions<Source> extends ConfigurableNavigator {
 export interface UseClipboardReturn<Optional> extends Supportable {
   text: Readonly<ShallowRef<string>>;
   copied: Readonly<ShallowRef<boolean>>;
-  copy: Optional extends true ? (text?: string) => Promise<void> : (text: string) => Promise<void>;
+  copyPending: Readonly<ShallowRef<boolean>>;
+  copy: Optional extends true ? (text?: ClipboardValue) => Promise<void> : (text: ClipboardValue) => Promise<void>;
 }
 export interface UseClonedOptions<T = any> extends WatchOptions {
   clone?: (_: T) => T;
