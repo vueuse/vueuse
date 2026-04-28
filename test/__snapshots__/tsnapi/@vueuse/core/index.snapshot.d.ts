@@ -1256,6 +1256,7 @@ export interface UseSwipeReturn {
 export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   element?: MaybeRef<HTMLTextAreaElement | undefined | null>;
   input?: MaybeRef<string>;
+  maxHeight?: number;
   watch?: WatchSource | MultiWatchSources;
   onResize?: () => void;
   styleTarget?: MaybeRef<HTMLElement | undefined>;
