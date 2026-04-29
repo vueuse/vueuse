@@ -153,6 +153,16 @@ export function usePointerSwipe(
       isPointerDown.value = false
       isSwiping.value = false
     }, listenerOptions),
+
+    useEventListener(target, 'pointercancel', (e: PointerEvent) => {
+      if (!eventIsAllowed(e))
+        return
+      if (isSwiping.value)
+        onSwipeEnd?.(e, direction.value)
+
+      isPointerDown.value = false
+      isSwiping.value = false
+    }, listenerOptions),
   ]
 
   tryOnMounted(() => {
