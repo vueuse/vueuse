@@ -59,11 +59,11 @@ export interface CreateReusableTemplateOptions<Props extends Record<string, any>
  * @__NO_SIDE_EFFECTS__
  */
 export function createReusableTemplate<
-  Bindings extends Record<string, any>,
+  Bindings = Record<string, never>,
   MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals = Record<'default', undefined>,
 >(
-  options: CreateReusableTemplateOptions<Bindings> = {},
-): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps> {
+  options: CreateReusableTemplateOptions<Bindings & Record<string, any>> = {},
+): ReusableTemplatePair<Bindings & Record<string, any>, MapSlotNameToSlotProps> {
   const {
     inheritAttrs = true,
     name = 'ReusableTemplate',
@@ -78,7 +78,7 @@ export function createReusableTemplate<
         render.value = slots.default
       }
     },
-  }) as unknown as DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>
+  }) as unknown as DefineTemplateComponent<Bindings & Record<string, any>, MapSlotNameToSlotProps>
 
   const reuse = defineComponent({
     inheritAttrs,
@@ -98,12 +98,12 @@ export function createReusableTemplate<
         return (inheritAttrs && vnode?.length === 1) ? vnode[0] : vnode
       }
     },
-  }) as unknown as ReuseTemplateComponent<Bindings, MapSlotNameToSlotProps>
+  }) as unknown as ReuseTemplateComponent<Bindings & Record<string, any>, MapSlotNameToSlotProps>
 
   return makeDestructurable(
     { define, reuse },
     [define, reuse],
-  ) as ReusableTemplatePair<Bindings, MapSlotNameToSlotProps>
+  ) as ReusableTemplatePair<Bindings & Record<string, any>, MapSlotNameToSlotProps>
 }
 
 function keysToCamelKebabCase(obj: Record<string, any>) {
