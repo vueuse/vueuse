@@ -11,10 +11,10 @@ Detects changes to a target element's visibility.
 ```vue
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
-import { shallowRef, useTemplateRef } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
 const target = useTemplateRef('target')
-const targetIsVisible = shallowRef(false)
+const targetIsVisible = ref(false)
 
 const { stop } = useIntersectionObserver(
   target,
@@ -36,11 +36,11 @@ const { stop } = useIntersectionObserver(
 ```vue
 <script setup lang="ts">
 import { vIntersectionObserver } from '@vueuse/components'
-import { shallowRef, useTemplateRef } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
 const root = useTemplateRef('root')
 
-const isVisible = shallowRef(false)
+const isVisible = ref(false)
 
 function onIntersectionObserver([entry]: IntersectionObserverEntry[]) {
   isVisible.value = entry?.isIntersecting || false
