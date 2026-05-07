@@ -33,3 +33,35 @@ useSubscription(
     .subscribe(toObserver(count)), // same as ).subscribe(val => (count.value = val))
 )
 ```
+
+## from
+
+The `from` function can accept either a standard RxJS `ObservableInput` or a Vue `ref`. When passed a ref, it creates an Observable that emits whenever the ref's value changes.
+
+### Watch Options
+
+When using `from` with a ref, you can pass Vue's `WatchOptions`:
+
+| Option      | Type                        | Description                        |
+| ----------- | --------------------------- | ---------------------------------- |
+| `immediate` | `boolean`                   | Emit the current value immediately |
+| `deep`      | `boolean`                   | Deeply watch nested objects        |
+| `flush`     | `'pre' \| 'post' \| 'sync'` | Timing of the callback flush       |
+
+## fromEvent
+
+The `fromEvent` function extends RxJS's `fromEvent` to accept a ref to an element. When the ref's value changes (e.g., after the component mounts), it automatically subscribes to the new element.
+
+```ts no-twoslash
+import { fromEvent, useSubscription } from '@vueuse/rxjs'
+import { useTemplateRef } from 'vue'
+
+const button = useTemplateRef('buttonRef')
+
+// Will automatically subscribe when the button element becomes available
+useSubscription(
+  fromEvent(button, 'click').subscribe(() => {
+    console.log('clicked!')
+  })
+)
+```

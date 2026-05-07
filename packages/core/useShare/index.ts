@@ -1,5 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -9,6 +10,10 @@ export interface UseShareOptions {
   files?: File[]
   text?: string
   url?: string
+}
+
+export interface UseShareReturn extends Supportable {
+  share: (overrideOptions?: MaybeRefOrGetter<UseShareOptions>) => Promise<void>
 }
 
 interface NavigatorWithShare {
@@ -25,7 +30,7 @@ interface NavigatorWithShare {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useShare(shareOptions: MaybeRefOrGetter<UseShareOptions> = {}, options: ConfigurableNavigator = {}) {
+export function useShare(shareOptions: MaybeRefOrGetter<UseShareOptions> = {}, options: ConfigurableNavigator = {}): UseShareReturn {
   const { navigator = defaultNavigator } = options
 
   const _navigator = navigator as NavigatorWithShare
@@ -52,5 +57,3 @@ export function useShare(shareOptions: MaybeRefOrGetter<UseShareOptions> = {}, o
     share,
   }
 }
-
-export type UseShareReturn = ReturnType<typeof useShare>

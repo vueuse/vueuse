@@ -3,6 +3,7 @@
     class="el"
     w="40"
     h="40"
+    p="4"
     bg="gray-400/20"
     border="rounded"
     flex="~"
@@ -10,7 +11,7 @@
     select="none"
   >
     <div m="auto">
-      Hover me
+      <slot />
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
-import { page } from '@vitest/browser/context'
 import { describe, expect, it } from 'vitest'
+import { page } from 'vitest/browser'
 import { computed, defineComponent, shallowRef, useTemplateRef } from 'vue'
 import { useScroll } from '.'
 

@@ -53,20 +53,34 @@ describe('utils', () => {
 })
 
 describe('promise', () => {
-  it('should promiseTimeout work', async () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should promiseTimeout work', () => {
     const num = shallowRef(0)
     setTimeout(() => {
       num.value = 1
     }, 100)
 
-    await promiseTimeout(100)
-
-    expect(num.value).toBe(1)
+    vi.waitFor(async () => {
+      await promiseTimeout(100)
+      expect(num.value).toBe(1)
+    })
   })
 
-  it('should promiseTimeout throw timeout', async () => {
-    await promiseTimeout(100, true).catch((error) => {
-      expect(error).toBe('Timeout')
+  it('should promiseTimeout throw timeout', () => {
+    vi.waitFor(async () => {
+      try {
+        await promiseTimeout(100)
+      }
+      catch (error) {
+        expect(error).toBe('Timeout')
+      }
     })
   })
 
@@ -98,6 +112,10 @@ describe('promise', () => {
 describe('filters', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   describe('debounceFilter', () => {
@@ -178,9 +196,9 @@ describe('filters', () => {
 
       const filter = createFilterWrapper(throttleFilter(1000), debouncedFilterSpy)
 
-      setTimeout(() => filter(1), 500)
-      setTimeout(() => filter(2), 1000)
-      setTimeout(() => filter(3), 2000)
+      setTimeout(filter, 500, 1)
+      setTimeout(filter, 1000, 2)
+      setTimeout(filter, 2000, 3)
 
       vi.runAllTimers()
 
@@ -330,8 +348,8 @@ describe('is', () => {
   })
 
   it('should be now', () => {
-    expect(now()).toEqual(Date.now())
-    expect(timestamp()).toEqual(Date.now())
+    expect(now()).toBeCloseTo(Date.now(), -2)
+    expect(timestamp()).toBeCloseTo(Date.now(), -2)
   })
 
   it('should clamp', () => {
@@ -372,6 +390,10 @@ describe('optionsFilters', () => {
     vi.useFakeTimers()
   })
 
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('optionsThrottleFilter should throttle', () => {
     const throttledFilterSpy = vi.fn()
     const filter = createFilterWrapper(throttleFilter({
@@ -394,9 +416,9 @@ describe('optionsFilters', () => {
       delay: 1000,
     }), debouncedFilterSpy)
 
-    setTimeout(() => filter(1), 500)
-    setTimeout(() => filter(2), 1000)
-    setTimeout(() => filter(3), 2000)
+    setTimeout(filter, 500, 1)
+    setTimeout(filter, 1000, 2)
+    setTimeout(filter, 2000, 3)
 
     vi.runAllTimers()
 

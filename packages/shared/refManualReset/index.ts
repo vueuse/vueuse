@@ -18,7 +18,7 @@ export interface ManualResetRefReturn<T> extends Ref<T> {
  * @see https://vueuse.org/refManualReset
  * @param defaultValue The value which will be set.
  */
-export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>) {
+export function refManualReset<T>(defaultValue: MaybeRefOrGetter<T>): ManualResetRefReturn<T> {
   let value: T = toValue(defaultValue)
   let trigger: Fn
 

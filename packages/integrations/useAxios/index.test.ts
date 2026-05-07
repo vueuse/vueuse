@@ -3,11 +3,9 @@ import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialDa
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { isBelowNode18 } from '../../.test'
 import { useAxios } from './index'
 
-// The tests does not run properly below node 18
-describe.skipIf(isBelowNode18)('useAxios', () => {
+describe('useAxios', () => {
   const url = 'https://jsonplaceholder.typicode.com/todos/1'
   const config: RawAxiosRequestConfig = {
     method: 'GET',

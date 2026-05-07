@@ -34,6 +34,31 @@ const userQuery = computed(() => userId.value && doc(db, 'users', userId.value))
 const userData = useFirestore(userQuery, null)
 ```
 
+### Return Value
+
+- For **Document Reference**: Returns `Ref<T | null>` (single document with `id` property)
+- For **Query**: Returns `Ref<T[]>` (array of documents, each with `id` property)
+
+The document `id` is automatically added as a read-only property to each returned document.
+
+### Options
+
+| Option         | Type                   | Default         | Description                                                                |
+| -------------- | ---------------------- | --------------- | -------------------------------------------------------------------------- |
+| `errorHandler` | `(err: Error) => void` | `console.error` | Custom error handler                                                       |
+| `autoDispose`  | `boolean \| number`    | `true`          | Auto-unsubscribe on scope dispose. Pass a number for delayed dispose (ms). |
+
+### Error Handling
+
+```ts
+const todos = useFirestore(collection(db, 'todos'), [], {
+  errorHandler: (err) => {
+    console.error('Firestore error:', err)
+    // Handle error (e.g., show notification)
+  },
+})
+```
+
 ## Share across instances
 
 You can reuse the db reference by passing `autoDispose: false`. You can also set an amount of milliseconds before auto disposing the db reference.

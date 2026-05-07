@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener, useMouseInElement, useVModel } from '@vueuse/core'
-import { shallowRef, watch } from 'vue'
+import { shallowRef, useTemplateRef, watch } from 'vue'
 
 const props = defineProps({
   min: { type: Number, default: 0 },
@@ -11,7 +11,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const scrubber = shallowRef<HTMLDivElement>()
+const scrubber = useTemplateRef('scrubber')
 const scrubbing = shallowRef(false)
 const pendingValue = shallowRef(0)
 

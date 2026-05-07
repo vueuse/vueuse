@@ -1,8 +1,16 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, shallowRef } from 'vue'
 import { debouncedWatch, watchDebounced } from './index'
 
 describe('watchDebounced', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should export module', () => {
     expect(watchDebounced).toBeDefined()
     expect(debouncedWatch).toBeDefined()
@@ -19,7 +27,6 @@ describe('watchDebounced', () => {
   })
 
   it('should work when set debounce and maxWait', async () => {
-    vi.useFakeTimers()
     const num = shallowRef(0)
     const cb = vi.fn()
     watchDebounced(num, cb, { debounce: 100, maxWait: 150 })
@@ -46,7 +53,6 @@ describe('watchDebounced', () => {
   })
 
   it('should work with constant changes over multiple maxWaits', async () => {
-    vi.useFakeTimers()
     const num = shallowRef(0)
     const cb = vi.fn()
 

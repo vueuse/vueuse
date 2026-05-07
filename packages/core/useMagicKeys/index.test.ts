@@ -154,4 +154,31 @@ describe('useMagicKeys', () => {
     window.dispatchEvent(new Event('focus'))
     expect(alt_tab.value).toBe(false)
   })
+
+  it('should handle empty or undefined key events without errors', async () => {
+    const { a } = useMagicKeys({ target })
+
+    // Test empty key
+    expect(() => {
+      target.dispatchEvent(new KeyboardEvent('keyup', {}))
+    }).not.toThrow()
+
+    // Test empty string key
+    expect(() => {
+      target.dispatchEvent(new KeyboardEvent('keyup', { key: '' }))
+    }).not.toThrow()
+
+    expect(a.value).toBe(false)
+  })
+
+  it('should be robust when key is explicitly undefined', () => {
+    useMagicKeys({ target })
+
+    const event = new KeyboardEvent('keyup', {})
+    Object.defineProperty(event, 'key', { value: undefined })
+
+    expect(() => {
+      target.dispatchEvent(event)
+    }).not.toThrow()
+  })
 })

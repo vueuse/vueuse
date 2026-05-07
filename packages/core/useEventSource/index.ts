@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
-import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
@@ -94,7 +94,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
   /**
    * Reference to the current EventSource instance.
    */
-  eventSource: Ref<EventSource | null>
+  eventSource: ShallowRef<EventSource | null>
   /**
    * The last event ID string, for server-sent events.
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
@@ -125,7 +125,7 @@ export function useEventSource<Events extends string[], Data = any>(
   const event: ShallowRef<string | null> = shallowRef(null)
   const data: ShallowRef<Data | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
-  const eventSource = deepRef<EventSource | null>(null)
+  const eventSource = shallowRef<EventSource | null>(null)
   const error = shallowRef<Event | null>(null)
   const urlRef = toRef(url)
   const lastEventId = shallowRef<string | null>(null)

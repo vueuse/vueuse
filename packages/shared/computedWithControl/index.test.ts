@@ -108,4 +108,17 @@ describe('computedWithControl', () => {
 
     expect(computed.value).toBe(42)
   })
+
+  it('can watch an array of multiple sources', () => {
+    const trigger1 = shallowRef(1)
+    const trigger2 = shallowRef('2')
+
+    const computed = computedWithControl([trigger1, trigger2], () => trigger1.value + trigger2.value)
+
+    expect(computed.value).toBe('12')
+
+    trigger1.value = 2
+
+    expect(computed.value).toBe('22')
+  })
 })

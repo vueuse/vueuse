@@ -1,8 +1,9 @@
 /* this implementation is a vue port of https://github.com/alewin/useWorker by Alessio Koci */
 
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import createWorkerBlobUrl from './lib/createWorkerBlobUrl'
 
@@ -30,6 +31,12 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
   localDependencies?: Function[]
 }
 
+export interface UseWebWorkerFnReturn<T extends (...fnArgs: any[]) => any> {
+  workerFn: (...fnArgs: Parameters<T>) => Promise<ReturnType<T>>
+  workerStatus: ShallowRef<WebWorkerStatus>
+  workerTerminate: (status?: WebWorkerStatus) => void
+}
+
 /**
  * Run expensive function without blocking the UI, using a simple syntax that makes use of Promise.
  *
@@ -37,7 +44,7 @@ export interface UseWebWorkerOptions extends ConfigurableWindow {
  * @param fn
  * @param options
  */
-export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, options: UseWebWorkerOptions = {}) {
+export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, options: UseWebWorkerOptions = {}): UseWebWorkerFnReturn<T> {
   const {
     dependencies = [],
     localDependencies = [],
@@ -45,17 +52,17 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     window = defaultWindow,
   } = options
 
-  const worker = deepRef<(Worker & { _url?: string }) | undefined>()
+  let worker: (Worker & { _url?: string }) | undefined
   const workerStatus = shallowRef<WebWorkerStatus>('PENDING')
-  const promise = deepRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
+  const promise = shallowRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
   const timeoutId = shallowRef<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
-    if (worker.value && worker.value._url && window) {
-      worker.value.terminate()
-      URL.revokeObjectURL(worker.value._url)
+    if (worker && worker._url && window) {
+      worker.terminate()
+      URL.revokeObjectURL(worker._url)
       promise.value = {}
-      worker.value = undefined
+      worker = undefined
       window.clearTimeout(timeoutId.value)
       workerStatus.value = status
     }
@@ -94,10 +101,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     }
 
     if (timeout) {
-      timeoutId.value = setTimeout(
-        () => workerTerminate('TIMEOUT_EXPIRED'),
-        timeout,
-      ) as any
+      timeoutId.value = setTimeout(workerTerminate, timeout, 'TIMEOUT_EXPIRED') as any
     }
     return newWorker
   }
@@ -107,7 +111,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
       resolve,
       reject,
     }
-    worker.value?.postMessage([[...fnArgs]])
+    worker?.postMessage([[...fnArgs]])
 
     workerStatus.value = 'RUNNING'
   })
@@ -121,7 +125,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
       return Promise.reject()
     }
 
-    worker.value = generateWorker()
+    worker = generateWorker()
     return callWorker(...fnArgs)
   }
 
@@ -131,5 +135,3 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     workerTerminate,
   }
 }
-
-export type UseWebWorkerFnReturn = ReturnType<typeof useWebWorkerFn>

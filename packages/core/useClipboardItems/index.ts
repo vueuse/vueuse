@@ -1,7 +1,8 @@
-import type { ComputedRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { useTimeoutFn } from '@vueuse/shared'
-import { ref as deepRef, readonly, shallowReadonly, shallowRef, toValue } from 'vue'
+import { shallowReadonly, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -27,8 +28,7 @@ export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator 
   copiedDuring?: number
 }
 
-export interface UseClipboardItemsReturn<Optional> {
-  isSupported: ComputedRef<boolean>
+export interface UseClipboardItemsReturn<Optional> extends Supportable {
   content: Readonly<Ref<ClipboardItems>>
   copied: Readonly<ShallowRef<boolean>>
   copy: Optional extends true ? (content?: ClipboardItems) => Promise<void> : (text: ClipboardItems) => Promise<void>
@@ -54,7 +54,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   } = options
 
   const isSupported = useSupported(() => (navigator && 'clipboard' in navigator))
-  const content = deepRef<ClipboardItems>([])
+  const content = shallowRef<ClipboardItems>([])
   const copied = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
 
@@ -83,7 +83,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   return {
     isSupported,
     content: shallowReadonly(content),
-    copied: readonly(copied),
+    copied: shallowReadonly(copied),
     copy,
     read: updateContent,
   }

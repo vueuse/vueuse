@@ -1,3 +1,5 @@
+import type { ComputedRef } from 'vue'
+
 export * from './_configurable'
 
 // common types
@@ -17,3 +19,7 @@ export interface RenderableComponent {
 }
 
 export type PointerType = 'mouse' | 'touch' | 'pen'
+
+export interface Supportable {
+  isSupported: ComputedRef<boolean>
+}

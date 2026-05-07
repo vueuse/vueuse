@@ -26,6 +26,7 @@ const {
   device,
   requestDevice,
   server,
+  error,
 } = useBluetooth({
   acceptAllDevices: true,
 })
@@ -35,8 +36,22 @@ const {
   <button @click="requestDevice()">
     Request Bluetooth Device
   </button>
+  <div v-if="error">
+    Error: {{ error }}
+  </div>
 </template>
 ```
+
+### Return Values
+
+| Property        | Type                             | Description                                |
+| --------------- | -------------------------------- | ------------------------------------------ |
+| `isSupported`   | `ComputedRef<boolean>`           | Whether the Web Bluetooth API is supported |
+| `isConnected`   | `Ref<boolean>`                   | Whether a device is currently connected    |
+| `device`        | `Ref<BluetoothDevice>`           | The connected Bluetooth device             |
+| `server`        | `Ref<BluetoothRemoteGATTServer>` | The GATT server for the connected device   |
+| `error`         | `Ref<unknown>`                   | Any error that occurred during connection  |
+| `requestDevice` | `() => Promise<void>`            | Function to request a Bluetooth device     |
 
 When the device has paired and is connected, you can then work with the server object as you wish.
 

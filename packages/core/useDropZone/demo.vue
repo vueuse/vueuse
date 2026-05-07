@@ -29,8 +29,8 @@ function onImageDrop(files: File[] | null) {
   }
 }
 
-const dropZoneRef = useTemplateRef<HTMLElement>('dropZoneRef')
-const imageDropZoneRef = useTemplateRef<HTMLElement>('imageDropZoneRef')
+const dropZoneRef = useTemplateRef('dropZoneRef')
+const imageDropZoneRef = useTemplateRef('imageDropZoneRef')
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
