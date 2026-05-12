@@ -33,6 +33,7 @@ export interface VueUseFunction {
   external?: string
   alias?: string[]
   related?: string[]
+  variants?: string[]
 }
 
 export interface VueUsePackage extends PackageManifest {

@@ -8,7 +8,9 @@ Use an RxJS [`Subscription`](https://rxjs.dev/guide/subscription) without worryi
 
 ## Usage
 
-```ts
+<!-- TODO: import rxjs error if enable twoslash -->
+
+```ts no-twoslash
 import { useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 

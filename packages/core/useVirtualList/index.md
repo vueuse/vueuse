@@ -5,7 +5,7 @@ category: Component
 # useVirtualList
 
 ::: warning
-Consider using [`vue-virtual-scroller`](https://github.com/Akryum/vue-virtual-scroller) instead, if you are looking for more features.
+Consider using [`@tanstack/vue-virtual`](https://tanstack.com/virtual/v3/docs/framework/vue/vue-virtual) instead, if you are looking for more features.
 :::
 
 Create virtual lists with ease. Virtual lists (sometimes called [_virtual scrollers_](https://vue-virtual-scroller-demo.netlify.app/)) allow you to render a large number of items performantly. They only render the minimum number of DOM nodes necessary to show the items within the `container` element by using the `wrapper` element to emulate the container element's full height.
@@ -14,7 +14,7 @@ Create virtual lists with ease. Virtual lists (sometimes called [_virtual scroll
 
 ### Simple list
 
-```typescript
+```ts
 import { useVirtualList } from '@vueuse/core'
 
 const { list, containerProps, wrapperProps } = useVirtualList(
@@ -38,7 +38,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 
 ### Reactive list
 
-```typescript
+```ts
 import { useToggle, useVirtualList } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -72,7 +72,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 
 ### Horizontal list
 
-```typescript
+```ts
 import { useVirtualList } from '@vueuse/core'
 
 const allItems = Array.from(Array.from({ length: 99999 }).keys())

@@ -16,7 +16,7 @@ const formatted = useDateFormat(useNow(), formatter, { locales: lang })
       Formatter Editor :
     </span>
     <input v-model="formatter" type="text">
-    <div space-x-4>
+    <div flex="~ items-center gap-x-4 wrap">
       <label class="radio">
         <input v-model="lang" value="en-US" type="radio">
         <span>English (US)</span>

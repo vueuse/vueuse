@@ -8,9 +8,9 @@ Manipulate CSS variables
 
 ## Usage
 
-```js
-import { useTemplateRef } from 'vue'
+```ts
 import { useCssVar } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
 const el = useTemplateRef('el')
 const color1 = useCssVar('--color', el)

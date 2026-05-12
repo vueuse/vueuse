@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useJwt } from '@vueuse/integrations'
+import { useJwt } from '@vueuse/integrations/useJwt'
 import { shallowRef } from 'vue'
 
 const encodedJwt = shallowRef('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.L8i6g3PfcHlioHCCPURC9pmXT7gdJpx3kOoyAfNUwCc')

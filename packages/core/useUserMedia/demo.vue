@@ -6,14 +6,14 @@ const currentCamera = shallowRef<string>()
 const { videoInputs: cameras } = useDevicesList({
   requestPermissions: true,
   onUpdated() {
-    if (!cameras.value.find(i => i.deviceId === currentCamera.value))
+    if (!cameras.value.some(i => i.deviceId === currentCamera.value))
       currentCamera.value = cameras.value[0]?.deviceId
   },
 })
 
-const video = useTemplateRef<HTMLVideoElement>('video')
+const video = useTemplateRef('video')
 const { stream, enabled } = useUserMedia({
-  constraints: reactive({ video: { deviceId: currentCamera } }),
+  constraints: reactive({ video: { deviceId: { exact: currentCamera } } }),
 })
 
 watchEffect(() => {

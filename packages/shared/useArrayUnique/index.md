@@ -10,7 +10,7 @@ reactive unique array
 
 ### Use with array of multiple refs
 
-```js
+```ts
 import { useArrayUnique } from '@vueuse/core'
 
 const item1 = ref(0)
@@ -27,7 +27,7 @@ item5.value = 1
 
 ### Use with reactive array
 
-```js
+```ts
 import { useArrayUnique } from '@vueuse/core'
 
 const list = reactive([1, 2, 2, 3])
@@ -40,7 +40,7 @@ list.push(1)
 
 ### Use with custom function
 
-```js
+```ts
 import { useArrayUnique } from '@vueuse/core'
 
 const list = reactive([

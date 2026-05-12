@@ -1,0 +1,15 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "//#docs:build:vitepress": {
+      "outputs": [
+        "packages/.vitepress/dist/**"
+      ]
+    }
+  }
+}

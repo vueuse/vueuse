@@ -2,7 +2,7 @@
 
 These show the general configurations for most of the functions in VueUse.
 
-### Event Filters
+## Event Filters
 
 From v4.0, we provide the Event Filters system to give the flexibility to control when events will get triggered. For example, you can use `throttleFilter` and `debounceFilter` to control the event trigger rate:
 
@@ -32,20 +32,20 @@ motionControl.resume()
 // motion updates resumed
 ```
 
-### Reactive Timing
+## Reactive Timing
 
 VueUse's functions follow Vue's reactivity system defaults for [flush timing](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing) where possible.
 
-For `watch`-like composables (e.g. `pausableWatch`, `whenever`, `useStorage`, `useRefHistory`) the default is `{ flush: 'pre' }`. Which means they will buffer invalidated effects and flush them asynchronously. This avoids unnecessary duplicate invocation when there are multiple state mutations happening in the same "tick".
+For `watch`-like composables (e.g. `watchPausable`, `whenever`, `useStorage`, `useRefHistory`) the default is `{ flush: 'pre' }`. Which means they will buffer invalidated effects and flush them asynchronously. This avoids unnecessary duplicate invocation when there are multiple state mutations happening in the same "tick".
 
 In the same way as with `watch`, VueUse allows you to configure the timing by passing the `flush` option:
 
 ```ts twoslash
-import { pausableWatch } from '@vueuse/core'
+import { watchPausable } from '@vueuse/core'
 import { ref } from 'vue'
 
 const counter = ref(0)
-const { pause, resume } = pausableWatch(
+const { pause, resume } = watchPausable(
   counter,
   () => {
     // Safely access updated DOM
@@ -60,9 +60,9 @@ const { pause, resume } = pausableWatch(
 - `'post'`: async like 'pre' but fires after component updates so you can access the updated DOM
 - `'sync'`: forces the effect to always trigger synchronously
 
-**Note:** For `computed`-like composables (e.g. `syncRef`, `controlledComputed`), when flush timing is configurable, the default is changed to `{ flush: 'sync' }` to align them with the way computed refs works in Vue.
+**Note:** For `computed`-like composables (e.g. `syncRef`, `computedWithControl`), when flush timing is configurable, the default is changed to `{ flush: 'sync' }` to align them with the way computed refs works in Vue.
 
-### Configurable Global Dependencies
+## Global Dependencies
 
 From v4.0, functions that access the browser APIs will provide an option fields for you to specify the global dependencies (e.g. `window`, `document` and `navigator`). It will use the global instance by default, so for most of the time, you don't need to worry about it. This configure is useful when working with iframes and testing environments.
 
@@ -85,4 +85,19 @@ const childMousePos = useMouse({ window: iframe.contentWindow })
 const mockWindow = { /* ... */ }
 
 const { x, y } = useMouse({ window: mockWindow })
+```
+
+## Custom Scheduler
+
+From v14.1.0, VueUse introduces a custom scheduler system that allows you to control how time-based functions update internally. For example, to align with `useRafFn`, slow down updates, or run inside a Web Worker.
+
+When a composable supports timing (such as `useNow`, `useCountdown`, etc.), you can pass a `scheduler` function in its options. The `scheduler` receives a callback and is responsible for scheduling its repeated execution.
+
+```ts twoslash
+import { useNow, useRafFn } from '@vueuse/core'
+
+const { now, pause, resume } = useNow({
+  controls: true,
+  scheduler: cb => useRafFn(cb),
+})
 ```

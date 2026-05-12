@@ -13,7 +13,7 @@ Reactive scroll position and state.
 import { useScroll } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 </script>
 
@@ -24,7 +24,9 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(el)
 
 ### With offsets
 
-```js
+```ts
+import { useScroll } from '@vueuse/core'
+// ---cut---
 const { x, y, isScrolling, arrivedState, directions } = useScroll(el, {
   offset: { top: 30, bottom: 30, right: 30, left: 30 },
 })
@@ -39,7 +41,7 @@ Set the `x` and `y` values to make the element scroll to that position.
 import { useScroll } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const { x, y } = useScroll(el)
 </script>
 
@@ -62,7 +64,7 @@ Set `behavior: smooth` to enable smooth scrolling. The `behavior` option default
 import { useScroll } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const { x, y } = useScroll(el, { behavior: 'smooth' })
 
 // Or as a `ref`:
@@ -81,7 +83,7 @@ This is useful, for example, after dynamic content changes or when you want to r
 import { useScroll } from '@vueuse/core'
 import { nextTick, onMounted, useTemplateRef, watch } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const reactiveValue = shallowRef(false)
 
 const { measure } = useScroll(el)

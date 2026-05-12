@@ -9,7 +9,7 @@ Reports changes to the dimensions of an Element's content or the border-box
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core'
 import { ref, useTemplateRef } from 'vue'
 

@@ -42,10 +42,16 @@ console.log(doubled.value) // 100 (updated again since it's a reactive set)
 We also provide some shorthands for doing the get/set without track/triggering the reactivity system. The following lines are equivalent.
 
 ```ts
+import { refWithControl } from '@vueuse/core'
+// ---cut---
 const foo = refWithControl('foo')
 ```
 
 ```ts
+import { refWithControl } from '@vueuse/core'
+
+const foo = refWithControl('foo')
+// ---cut---
 // getting
 foo.get(false)
 foo.untrackedGet()
@@ -53,6 +59,10 @@ foo.peek() // an alias for `untrackedGet`
 ```
 
 ```ts
+import { refWithControl } from '@vueuse/core'
+
+const foo = refWithControl('foo')
+// ---cut---
 // setting
 foo.set('bar', false)
 foo.silentSet('bar')
@@ -66,6 +76,8 @@ foo.lay('bar') // an alias for `silentSet`
 `onBeforeChange` option is offered to give control over if a new value should be accepted. For example:
 
 ```ts
+import { refWithControl } from '@vueuse/core'
+// ---cut---
 const num = refWithControl(0, {
   onBeforeChange(value, oldValue) {
     // disallow changes larger then ±5 in one operation
@@ -86,6 +98,8 @@ console.log(num.value) // 1 (change been dismissed)
 `onChanged` option offers a similar functionally as Vue's `watch` but being synchronized with less overhead compared to `watch`.
 
 ```ts
+import { refWithControl } from '@vueuse/core'
+// ---cut---
 const num = refWithControl(0, {
   onChanged(value, oldValue) {
     console.log(value)

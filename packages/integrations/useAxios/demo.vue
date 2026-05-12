@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAxios } from '@vueuse/integrations'
+import { useAxios } from '@vueuse/integrations/useAxios'
 import { reactify } from '@vueuse/shared'
 import YAML from 'yaml'
 

@@ -27,6 +27,8 @@ export interface UseToNumberOptions {
 
 /**
  * Reactively convert a string ref to number.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useToNumber(
   value: MaybeRefOrGetter<number | string>,

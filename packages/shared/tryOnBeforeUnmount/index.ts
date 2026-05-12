@@ -1,3 +1,4 @@
+import type { ComponentInternalInstance } from 'vue'
 import type { Fn } from '../utils'
 import { onBeforeUnmount } from 'vue'
 import { getLifeCycleTarget } from '../utils'
@@ -8,7 +9,7 @@ import { getLifeCycleTarget } from '../utils'
  * @param fn
  * @param target
  */
-export function tryOnBeforeUnmount(fn: Fn, target?: any) {
+export function tryOnBeforeUnmount(fn: Fn, target?: ComponentInternalInstance | null) {
   const instance = getLifeCycleTarget(target)
   if (instance)
     onBeforeUnmount(fn, target)

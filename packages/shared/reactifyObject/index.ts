@@ -17,10 +17,17 @@ export interface ReactifyObjectOptions<T extends boolean> extends ReactifyOption
 
 /**
  * Apply `reactify` to an object
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function reactifyObject<T extends object, Keys extends keyof T>(obj: T, keys?: (keyof T)[]): ReactifyObjectReturn<T, Keys, true>
 export function reactifyObject<T extends object, S extends boolean = true>(obj: T, options?: ReactifyObjectOptions<S>): ReactifyObjectReturn<T, keyof T, S>
 
+/**
+ * Apply `reactify` to an object
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function reactifyObject<T extends object, S extends boolean = true>(obj: T, optionsOrKeys: ReactifyObjectOptions<S> | (keyof T)[] = {}): ReactifyObjectReturn<T, keyof T, S> {
   let keys: string[] = []
   let options: ReactifyOptions<S> | undefined

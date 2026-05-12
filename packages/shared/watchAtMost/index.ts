@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter, ShallowRef, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
+import type { MaybeRefOrGetter, MultiWatchSources, ShallowRef, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { nextTick, shallowRef, toValue } from 'vue'
@@ -10,13 +10,35 @@ export interface WatchAtMostOptions<Immediate> extends WatchWithFilterOptions<Im
 
 export interface WatchAtMostReturn {
   stop: WatchStopHandle
+  pause: () => void
+  resume: () => void
   count: ShallowRef<number>
 }
 
 // overloads
-export function watchAtMost<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options: WatchAtMostOptions<Immediate>): WatchAtMostReturn
+export function watchAtMost<T, Immediate extends Readonly<boolean> = false>(
+  sources: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options: WatchAtMostOptions<Immediate>,
+): WatchAtMostReturn
 
-export function watchAtMost<T, Immediate extends Readonly<boolean> = false>(sources: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options: WatchAtMostOptions<Immediate>): WatchAtMostReturn
+export function watchAtMost<
+  T extends Readonly<MultiWatchSources>,
+  Immediate extends Readonly<boolean> = false,
+>(
+  sources: [...T],
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options: WatchAtMostOptions<Immediate>,
+): WatchAtMostReturn
+
+export function watchAtMost<
+  T extends object,
+  Immediate extends Readonly<boolean> = false,
+>(
+  sources: T,
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options: WatchAtMostOptions<Immediate>,
+): WatchAtMostReturn
 
 // implementation
 export function watchAtMost<Immediate extends Readonly<boolean> = false>(
@@ -31,7 +53,7 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
 
   const current = shallowRef(0)
 
-  const stop = watchWithFilter(
+  const { stop, resume, pause } = watchWithFilter(
     source,
     (...args) => {
       current.value += 1
@@ -43,5 +65,5 @@ export function watchAtMost<Immediate extends Readonly<boolean> = false>(
     watchOptions,
   )
 
-  return { count: current, stop }
+  return { count: current, stop, resume, pause }
 }

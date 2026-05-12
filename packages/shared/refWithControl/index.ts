@@ -20,6 +20,8 @@ export interface ControlledRefOptions<T> {
 
 /**
  * Fine-grained controls over ref and its reactivity.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function refWithControl<T>(
   initial: T,
@@ -102,7 +104,5 @@ export function refWithControl<T>(
   )
 }
 
-/**
- * Alias for `refWithControl`
- */
+/** @deprecated use `refWithControl` instead */
 export const controlledRef = refWithControl

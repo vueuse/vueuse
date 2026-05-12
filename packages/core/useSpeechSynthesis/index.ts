@@ -1,5 +1,6 @@
-import type { MaybeRef, MaybeRefOrGetter } from 'vue'
+import type { ComputedRef, MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -35,7 +36,21 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
    *
    * @default 1
    */
-  volume?: SpeechSynthesisUtterance['volume']
+  volume?: MaybeRefOrGetter<SpeechSynthesisUtterance['volume']>
+  /**
+   * Callback function that is called when the boundary event is triggered.
+   */
+  onBoundary?: (event: SpeechSynthesisEvent) => void
+}
+
+export interface UseSpeechSynthesisReturn extends Supportable {
+  isPlaying: ShallowRef<boolean>
+  status: ShallowRef<UseSpeechSynthesisStatus>
+  utterance: ComputedRef<SpeechSynthesisUtterance>
+  error: ShallowRef<SpeechSynthesisErrorEvent | undefined>
+  stop: () => void
+  toggle: (value?: boolean) => void
+  speak: () => void
 }
 
 /**
@@ -47,12 +62,13 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
 export function useSpeechSynthesis(
   text: MaybeRefOrGetter<string>,
   options: UseSpeechSynthesisOptions = {},
-) {
+): UseSpeechSynthesisReturn {
   const {
     pitch = 1,
     rate = 1,
     volume = 1,
     window = defaultWindow,
+    onBoundary,
   } = options
 
   const synth = window && (window as any).speechSynthesis as SpeechSynthesis
@@ -74,7 +90,7 @@ export function useSpeechSynthesis(
     utterance.voice = toValue(options.voice) || null
     utterance.pitch = toValue(pitch)
     utterance.rate = toValue(rate)
-    utterance.volume = volume
+    utterance.volume = toValue(volume)
 
     utterance.onstart = () => {
       isPlaying.value = true
@@ -98,6 +114,10 @@ export function useSpeechSynthesis(
 
     utterance.onerror = (event) => {
       error.value = event
+    }
+
+    utterance.onboundary = (event) => {
+      onBoundary?.(event)
     }
   }
 
@@ -158,5 +178,3 @@ export function useSpeechSynthesis(
     speak,
   }
 }
-
-export type UseSpeechSynthesisReturn = ReturnType<typeof useSpeechSynthesis>

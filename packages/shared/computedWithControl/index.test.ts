@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { shallowRef } from 'vue'
+import { ref as deepRef, shallowRef } from 'vue'
 import { computedWithControl, controlledComputed } from './index'
 
 describe('computedWithControl', () => {
@@ -83,5 +83,42 @@ describe('computedWithControl', () => {
     computed.value = 'BAZ'
 
     expect(data.value).toBe('BAZ')
+  })
+
+  it('shallow watches by default', () => {
+    const trigger = deepRef({ a: 1 })
+
+    const computed = computedWithControl(trigger, () => trigger.value.a)
+
+    expect(computed.value).toBe(1)
+
+    trigger.value.a = 42
+
+    expect(computed.value).toBe(1)
+  })
+
+  it('can deep watch if specified', () => {
+    const trigger = deepRef({ a: 1 })
+
+    const computed = computedWithControl(trigger, () => trigger.value.a, { deep: true })
+
+    expect(computed.value).toBe(1)
+
+    trigger.value.a = 42
+
+    expect(computed.value).toBe(42)
+  })
+
+  it('can watch an array of multiple sources', () => {
+    const trigger1 = shallowRef(1)
+    const trigger2 = shallowRef('2')
+
+    const computed = computedWithControl([trigger1, trigger2], () => trigger1.value + trigger2.value)
+
+    expect(computed.value).toBe('12')
+
+    trigger1.value = 2
+
+    expect(computed.value).toBe('22')
   })
 })

@@ -4,7 +4,7 @@ category: Sensors
 
 # onElementRemoval
 
-Fires when the element or any element containing it is removed.
+Fires when the element or any element containing it is removed from the DOM.
 
 ## Usage
 
@@ -13,7 +13,7 @@ Fires when the element or any element containing it is removed.
 import { onElementRemoval } from '@vueuse/core'
 import { shallowRef, useTemplateRef } from 'vue'
 
-const btnRef = useTemplateRef<HTMLElement>('btn')
+const btnRef = useTemplateRef('btn')
 const btnState = shallowRef(true)
 const removedCount = shallowRef(0)
 
@@ -40,4 +40,27 @@ onElementRemoval(btnRef, () => ++removedCount.value)
   </button>
   <b>removed times: {{ removedCount }}</b>
 </template>
+```
+
+### Callback with Mutation Records
+
+The callback receives an array of `MutationRecord` objects that triggered the removal.
+
+```ts
+import { onElementRemoval } from '@vueuse/core'
+
+onElementRemoval(targetRef, (mutationRecords) => {
+  console.log('Element removed', mutationRecords)
+})
+```
+
+### Return Value
+
+Returns a stop function to stop observing.
+
+```ts
+const stop = onElementRemoval(targetRef, callback)
+
+// Later, stop observing
+stop()
 ```

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { ConfigurableFlushSync } from '../utils'
 import type { WatchPausableReturn } from '../watchPausable'
-import { pausableWatch } from '../watchPausable'
+import { watchPausable } from '../watchPausable'
 
 type Direction = 'ltr' | 'rtl' | 'both'
 type SpecificFieldPartial<T, K extends keyof T> = Partial<Pick<T, K>> & Omit<T, K>
@@ -151,7 +151,7 @@ export function syncRef<L, R, D extends Direction = 'both'>(
   const transformRTL = ('rtl' in transform && transform.rtl) || (v => v)
 
   if (direction === 'both' || direction === 'ltr') {
-    watchers.push(pausableWatch(
+    watchers.push(watchPausable(
       left,
       (newValue) => {
         watchers.forEach(w => w.pause())
@@ -163,7 +163,7 @@ export function syncRef<L, R, D extends Direction = 'both'>(
   }
 
   if (direction === 'both' || direction === 'rtl') {
-    watchers.push(pausableWatch(
+    watchers.push(watchPausable(
       right,
       (newValue) => {
         watchers.forEach(w => w.pause())

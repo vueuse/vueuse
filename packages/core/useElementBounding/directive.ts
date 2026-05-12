@@ -1,29 +1,31 @@
-import type { ObjectDirective } from 'vue'
-import type { UseElementBoundingOptions, UseElementBoundingReturn } from './index'
+import type { UseElementBoundingOptions, UseElementBoundingReturn } from '@vueuse/core'
+import { useElementBounding } from '@vueuse/core'
+import { createDisposableDirective } from '@vueuse/shared'
 import { watch } from 'vue'
-import { useElementBounding } from './index'
 
 type ElementBounding = Omit<UseElementBoundingReturn, 'update'>
 type BindingValueFunction = (bounding: ElementBounding) => void
 type BindingValueArray = [BindingValueFunction, UseElementBoundingOptions]
 
-export const vElementBounding: ObjectDirective<
+export const vElementBounding = createDisposableDirective<
   HTMLElement,
   BindingValueFunction | BindingValueArray
-> = {
-  mounted(el, binding) {
-    const [handler, options] = (typeof binding.value === 'function' ? [binding.value, {}] : binding.value) as BindingValueArray
+> (
+  {
+    mounted(el, binding) {
+      const [handler, options] = (typeof binding.value === 'function' ? [binding.value, {}] : binding.value) as BindingValueArray
 
-    const {
-      height,
-      bottom,
-      left,
-      right,
-      top,
-      width,
-      x,
-      y,
-    } = useElementBounding(el, options)
-    watch([height, bottom, left, right, top, width, x, y], () => handler({ height, bottom, left, right, top, width, x, y }))
+      const {
+        height,
+        bottom,
+        left,
+        right,
+        top,
+        width,
+        x,
+        y,
+      } = useElementBounding(el, options)
+      watch([height, bottom, left, right, top, width, x, y], () => handler({ height, bottom, left, right, top, width, x, y }))
+    },
   },
-}
+)

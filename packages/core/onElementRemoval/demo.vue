@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onElementRemoval } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 // demo1: recreate new element
-const demo1Ref = shallowRef<HTMLElement | null>(null)
+const demo1Ref = useTemplateRef('demo1Ref')
 const demo1State = shallowRef(true)
 const demo1Count = shallowRef(0)
 
@@ -14,8 +14,8 @@ function demo1BtnOnClick() {
 onElementRemoval(demo1Ref, () => demo1Count.value++)
 
 // demo2: reuse same element
-const demo2ParentRef = shallowRef<HTMLElement | null>(null)
-const demo2Ref = shallowRef<HTMLElement | null>(null)
+const demo2ParentRef = useTemplateRef('demo2ParentRef')
+const demo2Ref = useTemplateRef('demo2Ref')
 const demo2State = shallowRef(true)
 const demo2Count = shallowRef(0)
 

@@ -21,6 +21,8 @@ export type UseArrayIncludesReturn = ComputedRef<boolean>
  * @see https://vueuse.org/useArrayIncludes
  *
  * @returns true if the `value` is found in the array. Otherwise, false.
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useArrayIncludes<T, V = any>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
@@ -37,6 +39,16 @@ export function useArrayIncludes<T, V = any>(
   value: MaybeRefOrGetter<V>,
   options?: UseArrayIncludesOptions<T, V>,
 ): UseArrayIncludesReturn
+
+/**
+ * Reactive `Array.includes`
+ *
+ * @see https://vueuse.org/useArrayIncludes
+ *
+ * @returns true if the `value` is found in the array. Otherwise, false.
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useArrayIncludes<T, V = any>(
   ...args: any[]
 ): UseArrayIncludesReturn {

@@ -45,6 +45,7 @@ describe('reactivePick', () => {
       bar: 'bar2',
     })
   })
+
   it('should work with predicate', () => {
     const source = reactive({
       foo: 'foo',

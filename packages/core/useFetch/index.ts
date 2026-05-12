@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, shallowRef, toValue, watch } from 'vue'
+import { computed, isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -48,7 +48,7 @@ export interface UseFetchReturn<T> {
   /**
    * Abort the fetch request
    */
-  abort: Fn
+  abort: (reason?: any) => void
 
   /**
    * Manually call the fetch
@@ -371,7 +371,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   const {
-    fetch = defaultWindow?.fetch,
+    fetch = defaultWindow?.fetch ?? globalThis?.fetch,
     initialData,
     timeout,
   } = options
@@ -394,9 +394,9 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   let controller: AbortController | undefined
   let timer: Stoppable | undefined
 
-  const abort = () => {
+  const abort = (reason?: any) => {
     if (supportsAbort) {
-      controller?.abort()
+      controller?.abort(reason)
       controller = new AbortController()
       controller.signal.onabort = () => aborted.value = true
       fetchOptions = {
@@ -550,8 +550,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   )
 
   const shell: UseFetchReturn<T> = {
-    isFinished: readonly(isFinished),
-    isFetching: readonly(isFetching),
+    isFinished: shallowReadonly(isFinished),
+    isFetching: shallowReadonly(isFetching),
     statusCode,
     response,
     error,

@@ -70,6 +70,7 @@ describe('reactiveComputed', () => {
     `)
 
     test.value = 1
+
     expect(obj).toMatchInlineSnapshot(`
       {
         "num": 5,

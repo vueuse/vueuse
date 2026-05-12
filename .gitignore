@@ -1,7 +1,9 @@
 .DS_Store
 .idea
 .nuxt
+.ghfs
 .temp
+.turbo
 *.log
 *.tgz
 components.d.ts
@@ -18,10 +20,11 @@ packages/**/*.js
 packages/**/*.[cm]js
 packages/**/*.d.ts
 packages/**/*.d.[cm]ts
+!packages/.vitepress/
+!packages/.vitepress/shims.d.ts
 playgrounds/*/pnpm-lock.yaml
 types
 coverage
 .eslintcache
 .vitepress/cache
-
 packages/**/__screenshots__

@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/rxjs",
   "type": "module",
-  "version": "13.2.0",
+  "version": "14.3.0",
   "description": "Enables RxJS reactive functions in Vue",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -24,23 +24,21 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./index.mjs",
-    "./*": "./*"
+    ".": "./dist/index.js",
+    "./*": "./dist/*",
+    "./package.json": "./package.json"
   },
-  "main": "./index.mjs",
-  "module": "./index.mjs",
-  "unpkg": "./index.iife.min.js",
-  "jsdelivr": "./index.iife.min.js",
-  "types": "./index.d.mts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "unpkg": "./dist/index.iife.min.js",
+  "jsdelivr": "./dist/index.iife.min.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "*.d.mts",
-    "*.js",
-    "*.mjs"
+    "dist"
   ],
   "scripts": {
-    "build": "rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
-    "prepack": "pnpm run build",
-    "test:attw": "attw --pack --config-path ../../.attw.json ."
+    "build": "tsdown",
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0",

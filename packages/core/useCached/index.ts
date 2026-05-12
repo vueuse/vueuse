@@ -8,7 +8,7 @@ export interface UseCachedOptions<D extends boolean = true> extends Configurable
 
 export function useCached<T, D extends boolean = true>(
   refValue: Ref<T>,
-  comparator: (a: T, b: T) => boolean = (a, b) => a === b,
+  comparator: (newSourceValue: T, cachedValue: T) => boolean = (newSourceValue, cachedValue) => newSourceValue === cachedValue,
   options?: UseCachedOptions<D>,
 ): UseCachedReturn<T, D> {
   const { deepRefs = true as D, ...watchOptions } = options || {}

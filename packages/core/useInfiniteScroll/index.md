@@ -13,7 +13,7 @@ Infinite scrolling of the element.
 import { useInfiniteScroll } from '@vueuse/core'
 import { ref, useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
+const el = useTemplateRef('el')
 const data = ref([1, 2, 3, 4, 5, 6])
 
 const { reset } = useInfiniteScroll(

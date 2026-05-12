@@ -25,6 +25,11 @@ describe('useElementVisibility', () => {
     expect(visible.value).toBeFalsy()
   })
 
+  it('should allow set initial value', () => {
+    const visible = useElementVisibility(el, { initialValue: true })
+    expect(visible.value).toBeTruthy()
+  })
+
   describe('when internally using useIntersectionObserver', async () => {
     beforeAll(() => {
       vi.resetAllMocks()
@@ -68,6 +73,19 @@ describe('useElementVisibility', () => {
       // And it should become false again if isIntersecting = false
       callMockCallbackWithIsIntersectingValue(false)
       expect(isVisible.value).toBe(false)
+    })
+
+    it('should control visibility observer', () => {
+      const visibilityState = useElementVisibility(el, { controls: true })
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+
+      // It should be false initially
+      expect(visibilityState.isVisible.value).toBe(false)
+
+      // It should become true if the callback gets an isIntersecting = true
+      callMockCallbackWithIsIntersectingValue(true)
+      expect(visibilityState.isVisible.value).toBe(true)
     })
 
     it('uses the latest version of isIntersecting when multiple intersection entries are given', () => {

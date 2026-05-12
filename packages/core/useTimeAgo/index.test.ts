@@ -30,16 +30,12 @@ describe('useTimeAgo', () => {
   const changeValue = shallowRef(0)
   let changeTime: ComputedRef<number>
 
-  function reset() {
+  beforeEach(() => {
     vi.useFakeTimers()
     baseTime = timestamp()
     vi.setSystemTime(baseTime)
     changeValue.value = 0
     changeTime = computed(() => baseTime + changeValue.value)
-  }
-
-  beforeEach(() => {
-    reset()
   })
 
   afterEach(() => {
@@ -79,6 +75,7 @@ describe('useTimeAgo', () => {
     function testSecond(isFuture: boolean) {
       const text = isFuture ? 'future' : 'past'
       const nextTime = getNeededTimeChange('minute', 1, -1) * (isFuture ? 1 : -1)
+
       it(`${text}: less than 1 minute`, () => {
         changeValue.value = nextTime
         expect(useTimeAgo(changeTime).value).toBe('just now')

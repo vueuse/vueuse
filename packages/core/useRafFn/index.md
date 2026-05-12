@@ -8,7 +8,7 @@ Call function on every `requestAnimationFrame`. With controls of pausing and res
 
 ## Usage
 
-```js
+```ts
 import { useRafFn } from '@vueuse/core'
 import { shallowRef } from 'vue'
 

@@ -1,7 +1,7 @@
 import type { Equal, Expect } from '@type-challenges/utils'
 import type { Ref, ShallowRef } from 'vue'
 import { invoke } from '@vueuse/shared'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, shallowRef } from 'vue'
 import { until } from './index'
 
@@ -9,6 +9,11 @@ describe('until', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should toBe', () => {
     return new Promise<void>((resolve, reject) => {
       const r1 = shallowRef(0)

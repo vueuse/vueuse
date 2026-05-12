@@ -1,4 +1,5 @@
-import { isClient, useDebounceFn } from '@vueuse/shared'
+import type { ShallowRef } from 'vue'
+import { isClient, tryOnMounted, useDebounceFn } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { useCssVar } from '../useCssVar'
 import { useEventListener } from '../useEventListener'
@@ -8,12 +9,20 @@ const rightVarName = '--vueuse-safe-area-right'
 const bottomVarName = '--vueuse-safe-area-bottom'
 const leftVarName = '--vueuse-safe-area-left'
 
+export interface UseScreenSafeAreaReturn {
+  top: ShallowRef<string>
+  right: ShallowRef<string>
+  bottom: ShallowRef<string>
+  left: ShallowRef<string>
+  update: () => void
+}
+
 /**
  * Reactive `env(safe-area-inset-*)`
  *
  * @see https://vueuse.org/useScreenSafeArea
  */
-export function useScreenSafeArea() {
+export function useScreenSafeArea(): UseScreenSafeAreaReturn {
   const top = shallowRef('')
   const right = shallowRef('')
   const bottom = shallowRef('')
@@ -30,7 +39,7 @@ export function useScreenSafeArea() {
     bottomCssVar.value = 'env(safe-area-inset-bottom, 0px)'
     leftCssVar.value = 'env(safe-area-inset-left, 0px)'
 
-    update()
+    tryOnMounted(update)
 
     useEventListener('resize', useDebounceFn(update), { passive: true })
   }

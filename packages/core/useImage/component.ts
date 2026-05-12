@@ -1,29 +1,23 @@
+import type { UseImageOptions, UseImageReturn } from '@vueuse/core'
+import type { Reactive, SlotsType, UnwrapRef } from 'vue'
 import type { RenderableComponent } from '../types'
-import type { UseImageOptions } from '../useImage'
+import { useImage } from '@vueuse/core'
 import { defineComponent, h, reactive } from 'vue'
 
-import { useImage } from '../useImage'
+export interface UseImageProps extends UseImageOptions, RenderableComponent {}
+interface UseImageSlots {
+  default: (data: Reactive<UseImageReturn>) => any
+  loading: (data: Reactive<UseImageReturn>) => any
+  error: (data: UnwrapRef<UseImageReturn['error']>) => any
+}
 
-export const UseImage = /* #__PURE__ */ defineComponent<UseImageOptions & RenderableComponent>({
-  name: 'UseImage',
-  props: [
-    'src',
-    'srcset',
-    'sizes',
-    'as',
-    'alt',
-    'class',
-    'loading',
-    'crossorigin',
-    'referrerPolicy',
-    'width',
-    'height',
-    'decoding',
-    'fetchPriority',
-    'ismap',
-    'usemap',
-  ] as unknown as undefined,
-  setup(props, { slots }) {
+export const UseImage = /* #__PURE__ */ defineComponent<
+  UseImageProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseImageSlots>
+>(
+  (props, { slots }) => {
     const data = reactive(useImage(props))
 
     return () => {
@@ -39,4 +33,24 @@ export const UseImage = /* #__PURE__ */ defineComponent<UseImageOptions & Render
       return h(props.as || 'img', props)
     }
   },
-})
+  {
+    name: 'UseImage',
+    props: [
+      'alt',
+      'as',
+      'class',
+      'crossorigin',
+      'decoding',
+      'fetchPriority',
+      'height',
+      'ismap',
+      'loading',
+      'referrerPolicy',
+      'sizes',
+      'src',
+      'srcset',
+      'usemap',
+      'width',
+    ],
+  },
+)

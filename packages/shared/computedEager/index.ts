@@ -2,13 +2,16 @@
 // by @linusborg https://github.com/LinusBorg
 
 import type { ShallowRef, WatchOptionsBase } from 'vue'
-import { readonly, shallowRef, watchEffect } from 'vue'
+import { readonly as deepReadonly, shallowRef, watchEffect } from 'vue'
 
 export type ComputedEagerOptions = WatchOptionsBase
 
 export type ComputedEagerReturn<T = any> = Readonly<ShallowRef<T>>
 
 /**
+ *
+ * @deprecated This function will be removed in future version.
+ *
  * Note: If you are using Vue 3.4+, you can straight use computed instead.
  * Because in Vue 3.4+, if computed new value does not change,
  * computed, effect, watch, watchEffect, render dependencies will not be triggered.
@@ -28,8 +31,8 @@ export function computedEager<T>(fn: () => T, options?: ComputedEagerOptions): C
     flush: options?.flush ?? 'sync',
   })
 
-  return readonly(result)
+  return deepReadonly(result)
 }
 
-// alias
-export { computedEager as eagerComputed }
+/** @deprecated use `computedEager` instead */
+export const eagerComputed = computedEager

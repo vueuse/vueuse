@@ -1,3 +1,4 @@
+/* @__NO_SIDE_EFFECTS__ */
 export function makeDestructurable<
   T extends Record<string, unknown>,
   A extends readonly any[],

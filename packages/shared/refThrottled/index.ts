@@ -28,8 +28,7 @@ export function refThrottled<T = any>(value: Ref<T>, delay = 200, trailing = tru
   return throttled as Ref<T>
 }
 
-// alias
-export {
-  refThrottled as throttledRef,
-  refThrottled as useThrottle,
-}
+/** @deprecated use `refThrottled` instead */
+export const throttledRef = refThrottled
+/** @deprecated use `refThrottled` instead */
+export const useThrottle = refThrottled
