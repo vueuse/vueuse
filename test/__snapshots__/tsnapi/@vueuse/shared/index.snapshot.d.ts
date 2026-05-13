@@ -332,14 +332,14 @@ export declare function refDebounced<T>(_: Ref<T>, _?: MaybeRefOrGetter<number>,
 export declare function refDefault<T>(_: Ref<T | undefined | null>, _: T): Ref<T>;
 export declare function refManualReset<T>(_: MaybeRefOrGetter<T>): ManualResetRefReturn<T>;
 export declare function refThrottled<T = any>(_: Ref<T>, _?: number, _?: boolean, _?: boolean): RefThrottledReturn<T>;
-export declare function refWithControl<T>(_: T, _?: ControlledRefOptions<T>): _$vue.ShallowUnwrapRef<{
-  get: (tracking?: boolean) => T;
-  set: (value: T, triggering?: boolean) => void;
+export declare function refWithControl<T>(_: T, _?: ControlledRefOptions<T>): {
+  get: (_?: boolean) => T;
+  set: (_: T, _?: boolean) => void;
   untrackedGet: () => T;
-  silentSet: (v: T) => void;
+  silentSet: (_: T) => void;
   peek: () => T;
-  lay: (v: T) => void;
-}> & _$vue.Ref<T, T>;
+  lay: (_: T) => void;
+} & _$vue.Ref<T, T>;
 export declare function set<O extends object, K extends keyof O>(_: O, _: K, _: O[K]): void;
 export declare function syncRef<L, R, D extends Direction = 'both'>(_: Ref<L>, _: Ref<R>, ...[options]: Equal<L, R> extends true ? [options?: SyncRefOptions<L, R, D>] : [options: SyncRefOptions<L, R, D>]): () => void;
 export declare function syncRefs<T>(_: WatchSource<T>, _: Ref<T> | Ref<T>[], _?: SyncRefsOptions): _$vue.WatchHandle;

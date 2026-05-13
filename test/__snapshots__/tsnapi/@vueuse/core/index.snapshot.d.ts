@@ -592,6 +592,10 @@ export interface UseElementHoverOptions extends ConfigurableWindow {
   delayLeave?: number;
   triggerOnRemoval?: boolean;
 }
+export interface UseElementOverflowOptions extends ConfigurableWindow {
+  observeMutation?: boolean | MutationObserverInit;
+  onUpdated?: ResizeObserverCallback | MutationCallback;
+}
 export interface UseElementSizeOptions extends UseResizeObserverOptions {}
 export interface UseElementSizeReturn {
   width: ShallowRef<number>;
@@ -1610,6 +1614,7 @@ export type UseConfirmDialogRevealResult<C, D> = {
 };
 export type UseDarkReturn = WritableComputedRef<boolean>;
 export type UseDocumentVisibilityReturn = ShallowRef<DocumentVisibilityState>;
+export type UseElementOverflowReturn = ReturnType<typeof useElementOverflow>;
 export type UseElementVisibilityReturn<Controls extends boolean = false> = Controls extends true ? UseElementVisibilityReturnWithControls : ShallowRef<boolean>;
 export type UseFaviconReturn = ComputedRef<string | null | undefined> | Ref<string | null | undefined>;
 export type UseFileSystemAccessCommonOptions = Pick<FileSystemAccessShowOpenFileOptions, 'types' | 'excludeAcceptAllOption'>;
@@ -1775,6 +1780,12 @@ export declare function useDropZone(_: MaybeRefOrGetter<HTMLElement | Document |
 export declare function useElementBounding(_: MaybeComputedElementRef, _?: UseElementBoundingOptions): UseElementBoundingReturn;
 export declare function useElementByPoint<M extends boolean = false>(_: UseElementByPointOptions<M>): UseElementByPointReturn<M>;
 export declare function useElementHover(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseElementHoverOptions): ShallowRef<boolean>;
+export declare function useElementOverflow(_: MaybeComputedElementRef, _?: UseElementOverflowOptions): {
+  isXOverflowed: _$vue.ShallowRef<boolean, boolean>;
+  isYOverflowed: _$vue.ShallowRef<boolean, boolean>;
+  stop: () => void;
+  update: () => void;
+};
 export declare function useElementSize(_: MaybeComputedElementRef, _?: ElementSize, _?: UseElementSizeOptions): UseElementSizeReturn;
 export declare function useElementVisibility(_: MaybeComputedElementRef, _?: UseElementVisibilityOptions<true>): UseElementVisibilityReturn<true>;
 export declare function useEventBus<T = unknown, P = any>(_: EventBusIdentifier<T>): UseEventBusReturn<T, P>;

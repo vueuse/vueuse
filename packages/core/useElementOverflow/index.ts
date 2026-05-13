@@ -1,4 +1,4 @@
-import type { ConfigurableWindow } from '@vueuse/core/_configurable'
+import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { ResizeObserverCallback } from '../useResizeObserver'
 import {
