@@ -1166,6 +1166,7 @@ export interface UseSpeechRecognitionReturn extends Supportable {
   isFinal: ShallowRef<boolean>;
   recognition: SpeechRecognition | undefined;
   result: ShallowRef<string>;
+  confidence: ShallowRef<number>;
   error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>;
   toggle: (_?: boolean) => void;
   start: () => void;

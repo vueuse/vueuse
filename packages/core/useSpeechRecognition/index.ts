@@ -43,6 +43,12 @@ export interface UseSpeechRecognitionReturn extends Supportable {
   isFinal: ShallowRef<boolean>
   recognition: SpeechRecognition | undefined
   result: ShallowRef<string>
+  /**
+   * Confidence value of the latest result, between 0 and 1.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionAlternative/confidence
+   */
+  confidence: ShallowRef<number>
   error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>
   toggle: (value?: boolean) => void
   start: () => void
@@ -68,6 +74,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}):
   const isListening = shallowRef(false)
   const isFinal = shallowRef(false)
   const result = shallowRef('')
+  const confidence = shallowRef(0)
   const error = shallowRef<SpeechRecognitionErrorEvent | Error | undefined>(undefined)
 
   let recognition: SpeechRecognition | undefined
@@ -112,10 +119,11 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}):
 
     recognition.onresult = (event) => {
       const currentResult = event.results[event.resultIndex]
-      const { transcript } = currentResult[0]
+      const { transcript, confidence: alternativeConfidence } = currentResult[0]
 
       isFinal.value = currentResult.isFinal
       result.value = transcript
+      confidence.value = alternativeConfidence
       error.value = undefined
     }
 
@@ -156,6 +164,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}):
     isFinal,
     recognition,
     result,
+    confidence,
     error,
 
     toggle,
