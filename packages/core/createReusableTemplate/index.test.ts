@@ -97,6 +97,52 @@ describe('createReusableTemplate', () => {
     expect(wrapper.text()).toBe('GoodbyeHi')
   })
 
+  it('does not leak slot definitions across component instances', async () => {
+    const [DefineFoo, ReuseFoo] = createReusableTemplate<{ msg: string }>()
+
+    const TemplateInstance = defineComponent({
+      name: 'TemplateInstance',
+      props: {
+        label: {
+          type: String,
+          required: true,
+        },
+        msg: {
+          type: String,
+          required: true,
+        },
+      },
+      components: {
+        DefineFoo,
+        ReuseFoo,
+      },
+      template: `
+        <DefineFoo v-slot="{ msg }">{{ label }}:{{ msg }}</DefineFoo>
+        <ReuseFoo :msg="msg" />
+      `,
+    })
+
+    const wrapper = mount({
+      components: { TemplateInstance },
+      data() {
+        return {
+          first: 'first',
+          second: 'second',
+        }
+      },
+      template: `
+        <TemplateInstance label="A" :msg="first" />
+        <TemplateInstance label="B" :msg="second" />
+      `,
+    })
+
+    expect(wrapper.text()).toBe('A:firstB:second')
+
+    await wrapper.setData({ first: 'updated' })
+
+    expect(wrapper.text()).toBe('A:updatedB:second')
+  })
+
   it('hyphen props', () => {
     const [DefineFoo, ReuseFoo] = createReusableTemplate<{ myMsg: string }>()
 
