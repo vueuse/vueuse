@@ -97,6 +97,55 @@ describe('createReusableTemplate', () => {
     expect(wrapper.text()).toBe('GoodbyeHi')
   })
 
+  it('keeps slots scoped to each owner instance', async () => {
+    const [DefineFoo, ReuseFoo] = createReusableTemplate()
+
+    const Child = defineComponent({
+      data() {
+        return {
+          count: 0,
+        }
+      },
+      render() {
+        return h('button', {
+          onClick: () => {
+            this.count += 1
+          },
+        }, [String(this.count), h(ReuseFoo)])
+      },
+    })
+
+    const Host = defineComponent({
+      props: {
+        label: {
+          required: true,
+          type: String,
+        },
+      },
+      render() {
+        return h('section', [
+          h(DefineFoo, () => h('span', this.label)),
+          h(Child),
+        ])
+      },
+    })
+
+    const wrapper = mount({
+      render() {
+        return h(Fragment, null, [
+          h(Host, { label: 'A' }),
+          h(Host, { label: 'B' }),
+        ])
+      },
+    })
+
+    expect(wrapper.text()).toBe('0A0B')
+
+    await wrapper.findAll('button')[0].trigger('click')
+
+    expect(wrapper.text()).toBe('1A0B')
+  })
+
   it('hyphen props', () => {
     const [DefineFoo, ReuseFoo] = createReusableTemplate<{ myMsg: string }>()
 

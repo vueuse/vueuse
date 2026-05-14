@@ -1,6 +1,6 @@
-import type { ComponentObjectPropsOptions, DefineComponent, Slot } from 'vue'
+import type { ComponentInternalInstance, ComponentObjectPropsOptions, DefineComponent, Slot } from 'vue'
 import { camelize, makeDestructurable } from '@vueuse/shared'
-import { defineComponent, shallowRef } from 'vue'
+import { defineComponent, getCurrentInstance, shallowRef } from 'vue'
 
 type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>
 
@@ -70,12 +70,34 @@ export function createReusableTemplate<
   } = options
 
   const render = shallowRef<Slot | undefined>()
+  const renders = new WeakMap<ComponentInternalInstance, Slot | undefined>()
+
+  const setRender = (instance: ComponentInternalInstance | null, slot: Slot | undefined) => {
+    render.value = slot
+
+    if (instance?.parent)
+      renders.set(instance.parent, slot)
+  }
+
+  const getRender = (instance: ComponentInternalInstance | null) => {
+    let owner = instance?.parent
+
+    while (owner) {
+      if (renders.has(owner))
+        return renders.get(owner)
+      owner = owner.parent
+    }
+
+    return render.value
+  }
 
   const define = defineComponent({
     name: `${name}.define`,
     setup(_, { slots }) {
+      const instance = getCurrentInstance()
+
       return () => {
-        render.value = slots.default
+        setRender(instance, slots.default)
       }
     },
   }) as unknown as DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>
@@ -85,10 +107,14 @@ export function createReusableTemplate<
     name: `${name}.reuse`,
     props: options.props,
     setup(props, { attrs, slots }) {
+      const instance = getCurrentInstance()
+
       return () => {
-        if (!render.value && process.env.NODE_ENV !== 'production')
+        const renderSlot = getRender(instance)
+
+        if (!renderSlot && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        const vnode = render.value?.({
+        const vnode = renderSlot?.({
           ...(options.props == null
             ? keysToCamelKebabCase(attrs)
             : props),
