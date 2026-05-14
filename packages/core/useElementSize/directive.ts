@@ -22,6 +22,9 @@ export const vElementSize = createDisposableDirective<
 
       const { width, height } = useElementSize(el, ...options)
       watch([width, height], ([width, height]) => handler({ width, height }))
+
+      if (options[1]?.box === 'border-box')
+        handler({ width: width.value, height: height.value })
     },
   },
 )
