@@ -118,6 +118,7 @@ export function useDropZone(
           _options.onEnter?.(null, event)
           break
         case 'over':
+          counter = 1
           _options.onOver?.(null, event)
           break
         case 'leave':
