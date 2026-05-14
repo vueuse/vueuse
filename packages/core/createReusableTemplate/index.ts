@@ -1,6 +1,6 @@
 import type { ComponentObjectPropsOptions, DefineComponent, Slot } from 'vue'
 import { camelize, makeDestructurable } from '@vueuse/shared'
-import { defineComponent, shallowRef } from 'vue'
+import { defineComponent, getCurrentInstance } from 'vue'
 
 type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>
 
@@ -69,13 +69,27 @@ export function createReusableTemplate<
     name = 'ReusableTemplate',
   } = options
 
-  const render = shallowRef<Slot | undefined>()
+  const renderMap = new WeakMap<object, Slot | undefined>()
+
+  const getReusableTemplateRegistrationInstance = () => {
+    const instance = getCurrentInstance()
+    return instance?.parent ?? instance
+  }
+
+  const getReusableTemplateInstance = () => {
+    let instance = getCurrentInstance()
+    while (instance && !renderMap.has(instance))
+      instance = instance.parent
+    return instance
+  }
 
   const define = defineComponent({
     name: `${name}.define`,
     setup(_, { slots }) {
       return () => {
-        render.value = slots.default
+        const instance = getReusableTemplateRegistrationInstance()
+        if (instance)
+          renderMap.set(instance, slots.default)
       }
     },
   }) as unknown as DefineTemplateComponent<Bindings, MapSlotNameToSlotProps>
@@ -86,9 +100,11 @@ export function createReusableTemplate<
     props: options.props,
     setup(props, { attrs, slots }) {
       return () => {
-        if (!render.value && process.env.NODE_ENV !== 'production')
+        const instance = getReusableTemplateInstance()
+        const render = instance ? renderMap.get(instance) : undefined
+        if (!render && process.env.NODE_ENV !== 'production')
           throw new Error('[VueUse] Failed to find the definition of reusable template')
-        const vnode = render.value?.({
+        const vnode = render?.({
           ...(options.props == null
             ? keysToCamelKebabCase(attrs)
             : props),

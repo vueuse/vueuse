@@ -80,6 +80,45 @@ describe('createReusableTemplate', () => {
     expect(wrapper.get('#bar').classes()).toEqual(['foo', 'bar'])
   })
 
+  it('is isolated between component instances', async () => {
+    const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
+
+    const Item = defineComponent({
+      props: {
+        text: String,
+        reuse: Boolean,
+      },
+      render() {
+        return h(Fragment, null, [
+          this.reuse
+            ? h(ReuseTemplate)
+            : h(DefineTemplate, () => this.text),
+        ])
+      },
+    })
+
+    const App = defineComponent({
+      data: () => ({
+        reuse: false,
+      }),
+      render() {
+        return h(Fragment, null, [
+          h(Item, { text: 'A', reuse: this.reuse }),
+          h(Item, { text: 'B', reuse: this.reuse }),
+        ])
+      },
+    })
+
+    const wrapper = mount(App)
+
+    expect(wrapper.text()).toBe('')
+
+    wrapper.vm.reuse = true
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.text()).toBe('AB')
+  })
+
   it('slots', () => {
     const [DefineFoo, ReuseFoo] = createReusableTemplate<{ msg: string }, { default: Slot }>()
 
