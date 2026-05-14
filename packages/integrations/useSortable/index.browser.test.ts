@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, shallowRef, useTemplateRef } from 'vue'
+import { defineComponent, nextTick, shallowRef, useTemplateRef } from 'vue'
 import { useSortable } from './index'
 
 describe('useSortable', () => {
@@ -151,6 +151,45 @@ describe('useSortable', () => {
         wrapper.unmount()
       }
     })
+  })
+
+  it('updates the list before calling user update and end callbacks', async () => {
+    const wrapper = mount(defineComponent({
+      template: '<ul ref="el"><li v-for="item in list" :key="item">{{ item }}</li></ul>',
+      setup() {
+        const el = useTemplateRef<HTMLElement>('el')
+        const list = shallowRef(['a', 'b', 'c'])
+        const calls: string[] = []
+        const result = useSortable(el, list, {
+          onUpdate: () => calls.push(`update:${list.value.join(',')}`),
+          onEnd: () => calls.push(`end:${list.value.join(',')}`),
+        })
+
+        return { ...result, calls, el, list }
+      },
+    }))
+    const vm = wrapper.vm
+    try {
+      const sortable = Sortable.get(vm.el!)!
+      const event = {
+        from: vm.el!,
+        item: vm.el!.children[0],
+        newIndex: 2,
+        oldIndex: 0,
+      } as unknown as Sortable.SortableEvent
+
+      ;(sortable.option('onUpdate') as (e: Sortable.SortableEvent) => void)(event)
+      ;(sortable.option('onEnd') as (e: Sortable.SortableEvent) => void)(event)
+
+      await nextTick()
+      await Promise.resolve()
+
+      expect(vm.list).toEqual(['b', 'c', 'a'])
+      expect(vm.calls).toEqual(['update:b,c,a', 'end:b,c,a'])
+    }
+    finally {
+      wrapper.unmount()
+    }
   })
 
   it('accepts component refs', () => {

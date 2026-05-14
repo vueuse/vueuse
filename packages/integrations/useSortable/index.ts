@@ -59,9 +59,31 @@ export function useSortable<T>(
 
   const { document = defaultDocument, watchElement = false, ...resetOptions } = options
 
+  let lastUpdate: Promise<void> | undefined
+
+  const runAfterUpdate = (callback: ((e: Sortable.SortableEvent) => void) | undefined, e: Sortable.SortableEvent) => {
+    if (!callback)
+      return
+
+    if (lastUpdate != null)
+      void lastUpdate.then(() => callback(e))
+    else
+      callback(e)
+  }
+
   const defaultOptions: Options = {
+    ...resetOptions,
     onUpdate: (e) => {
-      moveArrayElement(list, e.oldIndex!, e.newIndex!, e)
+      lastUpdate = moveArrayElementOnNextTick(list, e.oldIndex!, e.newIndex!, e)
+      const update = lastUpdate
+      void update.finally(() => {
+        if (lastUpdate === update)
+          lastUpdate = undefined
+      })
+      runAfterUpdate(resetOptions.onUpdate, e)
+    },
+    onEnd: (e) => {
+      runAfterUpdate(resetOptions.onEnd, e)
     },
   }
 
@@ -73,7 +95,7 @@ export function useSortable<T>(
   const initSortable = (target: Element) => {
     if (!target || sortable !== undefined)
       return
-    sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
+    sortable = new Sortable(target as HTMLElement, defaultOptions)
   }
 
   const start = () => {
@@ -157,6 +179,15 @@ export function moveArrayElement<T>(
   to: number,
   e: Sortable.SortableEvent | null = null,
 ): void {
+  void moveArrayElementOnNextTick(list, from, to, e)
+}
+
+function moveArrayElementOnNextTick<T>(
+  list: MaybeRef<T[]>,
+  from: number,
+  to: number,
+  e: Sortable.SortableEvent | null = null,
+): Promise<void> {
   if (e != null) {
     removeNode(e.item)
     insertNodeAt(e.from, e.item, from)
@@ -168,11 +199,13 @@ export function moveArrayElement<T>(
 
   if (to >= 0 && to < array.length) {
     const element = array.splice(from, 1)[0]
-    nextTick(() => {
+    return nextTick(() => {
       array.splice(to, 0, element)
       // When list is ref, assign array to list.value
       if (_valueIsRef)
         (list as MaybeRef).value = array
     })
   }
+
+  return Promise.resolve()
 }
