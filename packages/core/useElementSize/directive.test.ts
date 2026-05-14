@@ -69,4 +69,35 @@ describe('vElementSize', () => {
       expect(wrapper).toBeDefined()
     })
   })
+
+  it('should call handler on mount with border-box sizes', () => {
+    onResize = vi.fn()
+    const offsetWidthSpy = vi
+      .spyOn(HTMLElement.prototype, 'offsetWidth', 'get')
+      .mockReturnValue(45)
+    const offsetHeightSpy = vi
+      .spyOn(HTMLElement.prototype, 'offsetHeight', 'get')
+      .mockReturnValue(30)
+
+    try {
+      wrapper = mount(App, {
+        props: {
+          onResize,
+          options: [{ width: 0, height: 0 }, { box: 'border-box' }],
+        },
+        global: {
+          directives: {
+            ElementSize: vElementSize,
+          },
+        },
+      })
+
+      expect(wrapper).toBeDefined()
+      expect(onResize).toHaveBeenCalledWith({ width: 45, height: 30 })
+    }
+    finally {
+      offsetWidthSpy.mockRestore()
+      offsetHeightSpy.mockRestore()
+    }
+  })
 })
