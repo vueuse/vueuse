@@ -425,9 +425,9 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   reveal: (_?: RevealData) => Promise<UseConfirmDialogRevealResult<ConfirmData, CancelData>>;
   confirm: (_?: ConfirmData) => void;
   cancel: (_?: CancelData) => void;
-  onReveal: EventHookOn<RevealData>;
-  onConfirm: EventHookOn<ConfirmData>;
-  onCancel: EventHookOn<CancelData>;
+  onReveal: EventHookOn<[RevealData]>;
+  onConfirm: EventHookOn<[ConfirmData]>;
+  onCancel: EventHookOn<[CancelData]>;
 }
 export interface UseCountdownOptions extends ConfigurableScheduler {
   interval?: MaybeRefOrGetter<number>;

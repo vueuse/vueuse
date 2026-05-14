@@ -1,4 +1,4 @@
-import type { EventHook, EventHookOn } from '@vueuse/shared'
+import type { EventHookOn } from '@vueuse/shared'
 import type { ComputedRef, ShallowRef } from 'vue'
 import { createEventHook, noop } from '@vueuse/shared'
 import { computed, shallowRef } from 'vue'
@@ -41,19 +41,19 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   /**
    * Event Hook to be triggered right before dialog creating.
    */
-  onReveal: EventHookOn<RevealData>
+  onReveal: EventHookOn<[RevealData]>
 
   /**
    * Event Hook to be called on `confirm()`.
    * Gets data object from `confirm` function.
    */
-  onConfirm: EventHookOn<ConfirmData>
+  onConfirm: EventHookOn<[ConfirmData]>
 
   /**
    * Event Hook to be called on `cancel()`.
    * Gets data object from `cancel` function.
    */
-  onCancel: EventHookOn<CancelData>
+  onCancel: EventHookOn<[CancelData]>
 }
 
 /**
@@ -71,14 +71,14 @@ export function useConfirmDialog<
 >(
   revealed: ShallowRef<boolean> = shallowRef(false),
 ): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
-  const confirmHook: EventHook = createEventHook<ConfirmData>()
-  const cancelHook: EventHook = createEventHook<CancelData>()
-  const revealHook: EventHook = createEventHook<RevealData>()
+  const confirmHook = createEventHook<[ConfirmData]>()
+  const cancelHook = createEventHook<[CancelData]>()
+  const revealHook = createEventHook<[RevealData]>()
 
   let _resolve: (arg0: UseConfirmDialogRevealResult<ConfirmData, CancelData>) => void = noop
 
   const reveal = (data?: RevealData) => {
-    revealHook.trigger(data)
+    revealHook.trigger(data as RevealData)
     revealed.value = true
 
     return new Promise<UseConfirmDialogRevealResult<ConfirmData, CancelData>>((resolve) => {
@@ -88,14 +88,14 @@ export function useConfirmDialog<
 
   const confirm = (data?: ConfirmData) => {
     revealed.value = false
-    confirmHook.trigger(data)
+    confirmHook.trigger(data as ConfirmData)
 
     _resolve({ data, isCanceled: false })
   }
 
   const cancel = (data?: CancelData) => {
     revealed.value = false
-    cancelHook.trigger(data)
+    cancelHook.trigger(data as CancelData)
     _resolve({ data, isCanceled: true })
   }
 
