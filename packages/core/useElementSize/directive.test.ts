@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent } from 'vue'
 import { vElementSize } from './directive'
 
@@ -17,7 +17,7 @@ const App = defineComponent({
   },
 
   template: `<template>
-  <div v-if="options" v-element-size="[onResize,options]">Hello world!</div>
+  <div v-if="options" v-element-size="[onResize,...options]">Hello world!</div>
   <div v-else v-element-size="onResize">Hello world!</div>
   </template>
   `,
@@ -26,6 +26,10 @@ const App = defineComponent({
 describe('vElementSize', () => {
   let onResize = vi.fn()
   let wrapper: VueWrapper<any>
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
 
   describe('given no options', () => {
     beforeEach(() => {
@@ -67,6 +71,34 @@ describe('vElementSize', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+  })
+
+  describe('given border-box options', () => {
+    beforeEach(() => {
+      vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(45)
+      vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(35)
+
+      onResize = vi.fn()
+      const options = [{ width: 0, height: 0 }, { box: 'border-box' }]
+
+      wrapper = mount(App, {
+        props: {
+          onResize,
+          options,
+        },
+        global: {
+          directives: {
+            ElementSize: vElementSize,
+          },
+        },
+      })
+    })
+
+    it('calls the handler with the mounted border-box size', () => {
+      expect(wrapper).toBeDefined()
+      expect(onResize).toHaveBeenCalledTimes(1)
+      expect(onResize).toHaveBeenCalledWith({ width: 45, height: 35 })
     })
   })
 })
