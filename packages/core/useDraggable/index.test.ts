@@ -70,6 +70,59 @@ describe('useDraggable', () => {
     expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
   })
 
+  it('passes the current position to onStart', async () => {
+    const initialValue = { x: 40, y: 50 }
+    const onStart = vi.fn()
+    const onMove = vi.fn()
+
+    const wrapper = mount({
+      setup() {
+        const el = useTemplateRef<HTMLElement>('el')
+
+        const { style } = useDraggable(el, {
+          initialValue,
+          onStart,
+          onMove,
+        })
+
+        return () => h('div', {
+          ref: 'el',
+          style: style.value,
+        })
+      },
+    })
+
+    await nextTick()
+
+    const el = wrapper.get('div').element
+    vi.spyOn(el, 'getBoundingClientRect').mockReturnValue({
+      bottom: 60,
+      height: 10,
+      left: initialValue.x,
+      right: 50,
+      top: initialValue.y,
+      width: 10,
+      x: initialValue.x,
+      y: initialValue.y,
+      toJSON: () => undefined,
+    })
+
+    el.dispatchEvent(new PointerEvent('pointerdown', {
+      clientX: 45,
+      clientY: 65,
+    }))
+    await nextTick()
+
+    window.dispatchEvent(new PointerEvent('pointermove', {
+      clientX: 55,
+      clientY: 75,
+    }))
+    await nextTick()
+
+    expect(onStart.mock.calls[0][0]).toEqual(initialValue)
+    expect(onMove.mock.calls[0][0]).toEqual({ x: 50, y: 60 })
+  })
+
   it('component', async () => {
     const onStart = vi.fn()
     const onMove = vi.fn()
