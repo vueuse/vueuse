@@ -273,6 +273,10 @@ function combineCallbacks<T = any>(combination: Combination, ...callbacks: (((ct
   }
 }
 
+function attachErrorPayload<T>(error: Error, data: T | null, response: Response) {
+  return Object.assign(error, { data, response })
+}
+
 export function createFetch(config: CreateFetchOptions = {}) {
   const _combination = config.combination || 'chain' as Combination
   const _options = config.options || {}
@@ -492,7 +496,11 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
           data.value = initialData || null
-          throw new Error(fetchResponse.statusText)
+          throw attachErrorPayload(
+            new Error(fetchResponse.statusText),
+            responseData,
+            fetchResponse,
+          )
         }
 
         if (options.afterFetch) {

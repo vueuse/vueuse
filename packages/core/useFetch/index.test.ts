@@ -632,6 +632,22 @@ describe('useFetch', () => {
     })
   })
 
+  it('should expose response data on fetch error event', async () => {
+    let fetchError: any
+    const { onFetchError, statusCode } = useFetch(`${baseUrl}?status=400&json`).json()
+
+    onFetchError((error) => {
+      fetchError = error
+    })
+
+    await vi.waitFor(() => {
+      expect(statusCode.value).toBe(400)
+      expect(fetchError.message).toBe('Bad Request')
+      expect(fetchError.data).toEqual(jsonMessage)
+      expect(fetchError.response.status).toBe(400)
+    })
+  })
+
   it('setting the request method w/ get and return type w/ json', async () => {
     const { data } = useFetch(jsonUrl).get().json()
     await vi.waitFor(() => {
