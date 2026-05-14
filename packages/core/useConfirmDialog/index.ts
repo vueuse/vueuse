@@ -1,4 +1,4 @@
-import type { EventHook, EventHookOn } from '@vueuse/shared'
+import type { EventHookOn } from '@vueuse/shared'
 import type { ComputedRef, ShallowRef } from 'vue'
 import { createEventHook, noop } from '@vueuse/shared'
 import { computed, shallowRef } from 'vue'
@@ -41,19 +41,19 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   /**
    * Event Hook to be triggered right before dialog creating.
    */
-  onReveal: EventHookOn<RevealData>
+  onReveal: EventHookOn<[data?: RevealData]>
 
   /**
    * Event Hook to be called on `confirm()`.
    * Gets data object from `confirm` function.
    */
-  onConfirm: EventHookOn<ConfirmData>
+  onConfirm: EventHookOn<[data?: ConfirmData]>
 
   /**
    * Event Hook to be called on `cancel()`.
    * Gets data object from `cancel` function.
    */
-  onCancel: EventHookOn<CancelData>
+  onCancel: EventHookOn<[data?: CancelData]>
 }
 
 /**
@@ -71,9 +71,9 @@ export function useConfirmDialog<
 >(
   revealed: ShallowRef<boolean> = shallowRef(false),
 ): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
-  const confirmHook: EventHook = createEventHook<ConfirmData>()
-  const cancelHook: EventHook = createEventHook<CancelData>()
-  const revealHook: EventHook = createEventHook<RevealData>()
+  const confirmHook = createEventHook<[data?: ConfirmData]>()
+  const cancelHook = createEventHook<[data?: CancelData]>()
+  const revealHook = createEventHook<[data?: RevealData]>()
 
   let _resolve: (arg0: UseConfirmDialogRevealResult<ConfirmData, CancelData>) => void = noop
 
