@@ -118,4 +118,33 @@ describe('useDraggable', () => {
     expect(onMove).toHaveBeenCalledOnce()
     expect(onEnd).toHaveBeenCalledOnce()
   })
+
+  it('should call onStart with current position instead of pointer offset', async () => {
+    const onStart = vi.fn()
+
+    const wrapper = mount({
+      setup() {
+        const el = useTemplateRef<HTMLElement>('el')
+
+        useDraggable(el, {
+          initialValue: { x: 40, y: 80 },
+          onStart,
+        })
+
+        return () => h('div', { ref: 'el' })
+      },
+    })
+
+    await nextTick()
+
+    wrapper.get('div').element.dispatchEvent(new PointerEvent('pointerdown', {
+      clientX: 10,
+      clientY: 20,
+    }))
+
+    expect(onStart).toHaveBeenCalledWith(
+      { x: 40, y: 80 },
+      expect.any(PointerEvent),
+    )
+  })
 })

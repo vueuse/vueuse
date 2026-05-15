@@ -336,7 +336,7 @@ export function useDraggable(
       x: e.clientX - (container ? targetRect.left - containerRect!.left + (autoScroll ? 0 : container.scrollLeft) : targetRect.left),
       y: e.clientY - (container ? targetRect.top - containerRect!.top + (autoScroll ? 0 : container.scrollTop) : targetRect.top),
     }
-    if (onStart?.(pos, e) === false)
+    if (onStart?.(position.value, e) === false)
       return
     pressedDelta.value = pos
     handleEvent(e)
