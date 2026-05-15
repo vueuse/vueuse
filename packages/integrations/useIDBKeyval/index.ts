@@ -79,6 +79,18 @@ export function useIDBKeyval<T>(
 
   const rawInit: T = toValue(initialValue)
 
+  if (typeof indexedDB === 'undefined') {
+    isFinished.value = true
+
+    return {
+      set: async (value: T) => {
+        data.value = value
+      },
+      isFinished,
+      data: data as RemovableRef<T>,
+    }
+  }
+
   async function read() {
     try {
       const rawValue = await get<T>(key)
