@@ -3,7 +3,7 @@ import type { ComponentPublicInstance } from 'vue'
 import type { UseDraggableOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { useDraggable } from '@vueuse/core'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, nextTick, shallowRef, useTemplateRef } from 'vue'
 
 interface DraggableAutoScrollOptions {
@@ -324,6 +324,48 @@ describe('useDraggable', () => {
       })
 
       await endDrag(wrapper)
+    })
+
+    it('should pass the current draggable position to onStart when using a container', async () => {
+      const onStart = vi.fn()
+      const initialValue = { x: 120, y: 80 }
+
+      const wrapper = mount(defineComponent({
+        template: `
+          <div ref="container" style="position: relative; width: 300px; height: 200px;">
+            <div ref="el" :style="style" style="position: absolute; width: 40px; height: 30px;" />
+          </div>
+        `,
+        setup() {
+          const el = useTemplateRef<HTMLElement>('el')
+          const container = useTemplateRef<HTMLElement>('container')
+          const draggable = useDraggable(el, {
+            initialValue,
+            containerElement: container,
+            onStart,
+          })
+
+          return { el, container, ...draggable }
+        },
+      }), {
+        attachTo: document.body,
+      })
+
+      await nextTick()
+
+      const rect = wrapper.vm.el!.getBoundingClientRect()
+      wrapper.vm.el!.dispatchEvent(new PointerEvent('pointerdown', {
+        clientX: rect.left + 10,
+        clientY: rect.top + 15,
+        ...baseMousePointerEventOptions,
+      }))
+
+      expect(onStart).toHaveBeenCalledWith(
+        initialValue,
+        expect.any(PointerEvent),
+      )
+
+      wrapper.unmount()
     })
 
     it('should disabled dragging behaviour', async () => {
