@@ -81,9 +81,7 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     if (permissionGranted.value)
       return true
 
-    const { state, query } = usePermission(deviceName, { controls: true })
-    await query()
-    if (state.value !== 'granted') {
+    const requestMediaStream = async () => {
       let granted = true
       try {
         const allDevices = await navigator!.mediaDevices.enumerateDevices()
@@ -91,18 +89,23 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
         const hasMicrophone = allDevices.some(device => device.kind === 'audioinput' || device.kind === 'audiooutput')
         constraints.video = hasCamera ? constraints.video : false
         constraints.audio = hasMicrophone ? constraints.audio : false
-        stream = await navigator!.mediaDevices.getUserMedia(constraints)
+        if (constraints.video || constraints.audio)
+          stream = await navigator!.mediaDevices.getUserMedia(constraints)
+        else
+          granted = false
       }
       catch {
         stream = null
         granted = false
       }
-      update()
-      permissionGranted.value = granted
+      return granted
     }
-    else {
-      permissionGranted.value = true
-    }
+
+    const { state, query } = usePermission(deviceName, { controls: true, navigator })
+    await query()
+    const granted = await requestMediaStream()
+    await update()
+    permissionGranted.value = granted || state.value === 'granted'
 
     return permissionGranted.value
   }
