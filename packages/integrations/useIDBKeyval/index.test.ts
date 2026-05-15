@@ -46,6 +46,7 @@ describe('useIDBKeyval', () => {
 
   beforeEach(async () => {
     console.error = vi.fn()
+    vi.stubGlobal('indexedDB', {})
 
     await set(KEY3, 'hello');
 
@@ -56,6 +57,7 @@ describe('useIDBKeyval', () => {
 
   afterEach(() => {
     vi.clearAllMocks()
+    vi.unstubAllGlobals()
     cache.clear()
   })
 
