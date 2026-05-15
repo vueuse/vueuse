@@ -12,6 +12,8 @@ export type UseConfirmDialogRevealResult<C, D>
     isCanceled: true
   }
 
+type EventHookOnPayload<T> = EventHookOn<[T]>
+
 export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   /**
    * Revealing state
@@ -41,19 +43,19 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   /**
    * Event Hook to be triggered right before dialog creating.
    */
-  onReveal: EventHookOn<RevealData>
+  onReveal: EventHookOnPayload<RevealData>
 
   /**
    * Event Hook to be called on `confirm()`.
    * Gets data object from `confirm` function.
    */
-  onConfirm: EventHookOn<ConfirmData>
+  onConfirm: EventHookOnPayload<ConfirmData>
 
   /**
    * Event Hook to be called on `cancel()`.
    * Gets data object from `cancel` function.
    */
-  onCancel: EventHookOn<CancelData>
+  onCancel: EventHookOnPayload<CancelData>
 }
 
 /**

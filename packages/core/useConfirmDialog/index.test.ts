@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { nextTick, shallowRef } from 'vue'
 import { useConfirmDialog } from './index'
 
@@ -139,6 +139,24 @@ describe('useConfirmDialog', () => {
     cancel(data)
 
     expect(message.value).toBe('confirm')
+  })
+
+  it('should type array payloads as a single event argument', () => {
+    const {
+      onReveal,
+      onConfirm,
+      onCancel,
+    } = useConfirmDialog<number[], string[], boolean[]>()
+
+    onReveal((data) => {
+      expectTypeOf(data).toEqualTypeOf<number[]>()
+    })
+    onConfirm((data) => {
+      expectTypeOf(data).toEqualTypeOf<string[]>()
+    })
+    onCancel((data) => {
+      expectTypeOf(data).toEqualTypeOf<boolean[]>()
+    })
   })
 
   it('should return promise that will be resolved on `confirm()`', async () => {
