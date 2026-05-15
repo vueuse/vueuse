@@ -70,6 +70,55 @@ describe('useDraggable', () => {
     expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
   })
 
+  it('should capture the active pointer on the drag handle', async () => {
+    const setPointerCapture = vi.fn()
+    const hasPointerCapture = vi.fn(() => true)
+    const releasePointerCapture = vi.fn()
+
+    const wrapper = mount({
+      setup() {
+        const el = useTemplateRef<HTMLElement>('el')
+
+        const { isDragging } = useDraggable(el)
+
+        return () => h('div', {
+          'data-is-dragging': isDragging.value,
+          'ref': 'el',
+        })
+      },
+    })
+
+    await nextTick()
+
+    const el = wrapper.get('div').element as unknown as HTMLElement & {
+      setPointerCapture: typeof setPointerCapture
+      hasPointerCapture: typeof hasPointerCapture
+      releasePointerCapture: typeof releasePointerCapture
+    }
+    el.setPointerCapture = setPointerCapture
+    el.hasPointerCapture = hasPointerCapture
+    el.releasePointerCapture = releasePointerCapture
+
+    el.dispatchEvent(new PointerEvent('pointerdown', {
+      clientX: 0,
+      clientY: 0,
+      pointerId: 42,
+    }))
+    await nextTick()
+
+    expect(setPointerCapture).toHaveBeenCalledWith(42)
+    expect(wrapper.get('div').element.dataset.isDragging).toBe('true')
+
+    window.dispatchEvent(new PointerEvent('pointerup', {
+      pointerId: 42,
+    }))
+    await nextTick()
+
+    expect(hasPointerCapture).toHaveBeenCalledWith(42)
+    expect(releasePointerCapture).toHaveBeenCalledWith(42)
+    expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
+  })
+
   it('component', async () => {
     const onStart = vi.fn()
     const onMove = vi.fn()

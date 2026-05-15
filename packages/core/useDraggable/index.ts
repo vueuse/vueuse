@@ -202,6 +202,8 @@ export function useDraggable(
   )
 
   const pressedDelta = deepRef<Position>()
+  let capturedPointerTarget: HTMLElement | SVGElement | null = null
+  let capturedPointerId: number | null = null
 
   const filterEvent = (e: PointerEvent) => {
     if (pointerTypes)
@@ -321,6 +323,38 @@ export function useDraggable(
     watch(position, checkAutoScroll)
   }
 
+  function capturePointer(e: PointerEvent) {
+    const handle = toValue(draggingHandle)
+    if (!handle || !('setPointerCapture' in handle))
+      return
+
+    try {
+      handle.setPointerCapture(e.pointerId)
+      capturedPointerTarget = handle
+      capturedPointerId = e.pointerId
+    }
+    catch {}
+  }
+
+  function releasePointer() {
+    if (!capturedPointerTarget || capturedPointerId == null)
+      return
+
+    try {
+      if (
+        'releasePointerCapture' in capturedPointerTarget
+        && (!('hasPointerCapture' in capturedPointerTarget) || capturedPointerTarget.hasPointerCapture(capturedPointerId))
+      ) {
+        capturedPointerTarget.releasePointerCapture(capturedPointerId)
+      }
+    }
+    catch {}
+    finally {
+      capturedPointerTarget = null
+      capturedPointerId = null
+    }
+  }
+
   const start = (e: PointerEvent) => {
     if (!toValue(buttons).includes(e.button))
       return
@@ -339,6 +373,7 @@ export function useDraggable(
     if (onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
+    capturePointer(e)
     handleEvent(e)
   }
 
@@ -402,6 +437,7 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
     pressedDelta.value = undefined
+    releasePointer()
     if (autoScroll)
       stopAutoScroll()
     onEnd?.(position.value, e)
