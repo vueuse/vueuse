@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const { input } = useTextareaAutosize()
+const textarea = useTemplateRef('textarea')
+const { input } = useTextareaAutosize({ element: textarea })
 </script>
 
 <template>
