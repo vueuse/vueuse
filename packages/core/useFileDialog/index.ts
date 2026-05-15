@@ -20,7 +20,7 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
    * Select the input source for the capture file.
    * @see [HTMLInputElement Capture](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture)
    */
-  capture?: MaybeRef<string>
+  capture?: MaybeRef<string | false | null | undefined>
   /**
    * Reset when open file dialog.
    * @default false
@@ -124,8 +124,16 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     el.accept = toValue(options.accept)!
     // webkitdirectory key is not stabled, maybe replaced in the future.
     el.webkitdirectory = toValue(options.directory)!
-    if (hasOwn(options, 'capture'))
-      el.capture = toValue(options.capture)!
+    if (hasOwn(options, 'capture')) {
+      const capture = toValue(options.capture)
+      if (capture) {
+        el.capture = capture
+      }
+      else {
+        el.capture = ''
+        el.removeAttribute('capture')
+      }
+    }
   }
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {

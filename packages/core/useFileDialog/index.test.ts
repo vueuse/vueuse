@@ -206,7 +206,7 @@ describe('useFileDialog', () => {
     const input = document.createElement('input')
     input.click = vi.fn()
 
-    const captureRef = shallowRef('user')
+    const captureRef = shallowRef<string | undefined>('user')
 
     const { open } = useFileDialog({
       input,
@@ -227,5 +227,20 @@ describe('useFileDialog', () => {
     open()
 
     expect(input.capture).toBe('environment')
+
+    captureRef.value = undefined
+    await nextTick()
+
+    expect(input.hasAttribute('capture')).toBe(false)
+    expect(input.capture).toBe('')
+
+    open({ capture: 'user' })
+
+    expect(input.capture).toBe('user')
+
+    open({ capture: '' })
+
+    expect(input.hasAttribute('capture')).toBe(false)
+    expect(input.capture).toBe('')
   })
 })
