@@ -1163,10 +1163,10 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
 }
 export interface UseSpeechRecognitionReturn extends Supportable {
   isListening: ShallowRef<boolean>;
-  isFinal: ShallowRef<boolean>;
+  isFinal: Readonly<ShallowRef<boolean>>;
   recognition: SpeechRecognition | undefined;
-  result: ShallowRef<string>;
-  confidence: ShallowRef<number>;
+  result: Readonly<ShallowRef<string>>;
+  confidence: Readonly<ShallowRef<number>>;
   error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>;
   toggle: (_?: boolean) => void;
   start: () => void;

@@ -1,7 +1,7 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import type { DeepReadonly, MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Supportable } from '../types'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
@@ -40,15 +40,15 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
 
 export interface UseSpeechRecognitionReturn extends Supportable {
   isListening: ShallowRef<boolean>
-  isFinal: DeepReadonly<ShallowRef<boolean>>
+  isFinal: Readonly<ShallowRef<boolean>>
   recognition: SpeechRecognition | undefined
-  result: DeepReadonly<ShallowRef<string>>
+  result: Readonly<ShallowRef<string>>
   /**
    * Confidence value of the latest result, between 0 and 1.
    *
    * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionAlternative/confidence
    */
-  confidence: DeepReadonly<ShallowRef<number>>
+  confidence: Readonly<ShallowRef<number>>
   error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>
   toggle: (value?: boolean) => void
   start: () => void
