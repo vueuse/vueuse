@@ -487,12 +487,30 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         response.value = fetchResponse
         statusCode.value = fetchResponse.status
 
-        responseData = await fetchResponse.clone()[config.type]()
+        try {
+          responseData = await fetchResponse.clone()[config.type]()
+        }
+        catch (error) {
+          if (!fetchResponse.ok) {
+            try {
+              responseData = await fetchResponse.clone().text()
+            }
+            catch {
+              responseData = null
+            }
+          }
+          else {
+            throw error
+          }
+        }
 
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
           data.value = initialData || null
-          throw new Error(fetchResponse.statusText)
+          const error = new Error(fetchResponse.statusText)
+          ;(error as any).data = responseData
+          ;(error as any).response = fetchResponse
+          throw error
         }
 
         if (options.afterFetch) {

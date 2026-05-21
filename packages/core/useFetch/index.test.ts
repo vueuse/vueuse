@@ -572,6 +572,52 @@ describe('useFetch', () => {
     })
   })
 
+  it('should provide response body in onFetchError when request fails', async () => {
+    const errorBody = { title: 'Invalid request' }
+    let ctxData: unknown
+
+    const { data, error, statusCode } = useFetch(`${baseUrl}?status=400&json=${encodeURI(JSON.stringify(errorBody))}`, {
+      onFetchError(ctx) {
+        ctxData = ctx.data
+        return ctx
+      },
+    }).json()
+
+    await vi.waitFor(() => {
+      expect(statusCode.value).toEqual(400)
+      expect(error.value.message).toEqual('Bad Request')
+      expect(data.value).toBeNull()
+      expect(ctxData).toEqual(errorBody)
+    })
+  })
+
+  it('should fallback to text body on failed response when configured parser fails', async () => {
+    let ctxData: unknown
+
+    const { error, statusCode } = useFetch(`${baseUrl}?status=500&text=problem`, {
+      onFetchError(ctx) {
+        ctxData = ctx.data
+        return ctx
+      },
+    }).json()
+
+    await vi.waitFor(() => {
+      expect(statusCode.value).toEqual(500)
+      expect(error.value.message).toEqual('Internal Server Error')
+      expect(ctxData).toBe('problem')
+    })
+  })
+
+  it('should not fallback to text body on successful response when configured parser fails', async () => {
+    const { data, error, statusCode } = useFetch(`${baseUrl}?text=not-json`).json()
+
+    await vi.waitFor(() => {
+      expect(statusCode.value).toEqual(200)
+      expect(data.value).toBeNull()
+      expect(error.value).toBeTruthy()
+    })
+  })
+
   it('should return data in onFetchError when updateDataOnError is true', async () => {
     const { data, error, statusCode } = useFetch(`${baseUrl}?status=400&json`, {
       updateDataOnError: true,
@@ -629,6 +675,21 @@ describe('useFetch', () => {
       expect(onFetchErrorSpy).toHaveBeenCalled()
       expect(onFetchResponseSpy).not.toHaveBeenCalled()
       expect(onFetchFinallySpy).toHaveBeenCalled()
+    })
+  })
+
+  it('should emit response body in onFetchError event when request fails', async () => {
+    const errorBody = { title: 'Invalid request' }
+    let eventError: any
+    const { onFetchError } = useFetch(`${baseUrl}?status=400&json=${encodeURI(JSON.stringify(errorBody))}`).json()
+
+    onFetchError((error) => {
+      eventError = error
+    })
+
+    await vi.waitFor(() => {
+      expect(eventError.data).toEqual(errorBody)
+      expect(eventError.response).toBeInstanceOf(Response)
     })
   })
 
