@@ -5,7 +5,7 @@ import {
   tryOnMounted,
   tryOnUnmounted,
 } from '@vueuse/shared'
-import { effectScope, shallowRef } from 'vue'
+import { effectScope, shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
@@ -56,16 +56,18 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
         return
       }
       const childEls = Array.from(el.children).filter(i => i instanceof HTMLElement)
+      const onResizeUpdated = onUpdated as ResizeObserverCallback | undefined
       useResizeObserver([el, ...childEls] as HTMLElement[], (entries, observer) => {
-        update(el);
-        (onUpdated as ResizeObserverCallback)?.(entries, observer)
+        update(el)
+        onResizeUpdated?.(entries, observer)
       })
       if (observeMutation) {
+        const onMutationUpdated = onUpdated as MutationCallback | undefined
         useMutationObserver(
           [el, ...childEls] as HTMLElement[],
           (entries, observer) => {
-            update(el);
-            (onUpdated as MutationCallback)?.(entries, observer)
+            update(el)
+            onMutationUpdated?.(entries, observer)
           },
           observeMutation === true
             ? {
@@ -80,8 +82,8 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
   })
   tryOnUnmounted(stop)
   return {
-    isXOverflowed,
-    isYOverflowed,
+    isXOverflowed: shallowReadonly(isXOverflowed),
+    isYOverflowed: shallowReadonly(isYOverflowed),
     // stop effectScope
     stop,
     // update overflow state immediately

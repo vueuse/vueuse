@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { h, nextTick, shallowRef } from 'vue'
+import { h, isReadonly, nextTick, shallowRef } from 'vue'
 import { UseElementOverflow } from './component'
 import { useElementOverflow } from './index'
 
@@ -17,6 +17,12 @@ describe('useElementOverflow', () => {
     const { isXOverflowed, isYOverflowed } = useElementOverflow(null)
     expect(isXOverflowed.value).toBeFalsy()
     expect(isYOverflowed.value).toBeFalsy()
+  })
+
+  it('should expose overflow state as readonly refs', () => {
+    const { isXOverflowed, isYOverflowed } = useElementOverflow(null)
+    expect(isReadonly(isXOverflowed)).toBe(true)
+    expect(isReadonly(isYOverflowed)).toBe(true)
   })
 
   it('should update overflow state when container\'s size ', async () => {

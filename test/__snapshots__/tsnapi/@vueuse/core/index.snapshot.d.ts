@@ -1792,8 +1792,8 @@ export declare function useElementBounding(_: MaybeComputedElementRef, _?: UseEl
 export declare function useElementByPoint<M extends boolean = false>(_: UseElementByPointOptions<M>): UseElementByPointReturn<M>;
 export declare function useElementHover(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseElementHoverOptions): ShallowRef<boolean>;
 export declare function useElementOverflow(_: MaybeComputedElementRef, _?: UseElementOverflowOptions): {
-  isXOverflowed: _$vue.ShallowRef<boolean, boolean>;
-  isYOverflowed: _$vue.ShallowRef<boolean, boolean>;
+  isXOverflowed: Readonly<_$vue.ShallowRef<boolean, boolean>>;
+  isYOverflowed: Readonly<_$vue.ShallowRef<boolean, boolean>>;
   stop: () => void;
   update: () => void;
 };
