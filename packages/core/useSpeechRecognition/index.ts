@@ -1,12 +1,12 @@
 // ported from https://www.reddit.com/r/vuejs/comments/jksizl/speech_recognition_as_a_vue_3_hook
 // by https://github.com/wobsoriano
 
-import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { DeepReadonly, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Supportable } from '../types'
 import type { SpeechRecognition, SpeechRecognitionErrorEvent } from './types'
 import { toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { shallowRef, toValue, watch } from 'vue'
+import { shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -40,15 +40,15 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
 
 export interface UseSpeechRecognitionReturn extends Supportable {
   isListening: ShallowRef<boolean>
-  isFinal: ShallowRef<boolean>
+  isFinal: DeepReadonly<ShallowRef<boolean>>
   recognition: SpeechRecognition | undefined
-  result: ShallowRef<string>
+  result: DeepReadonly<ShallowRef<string>>
   /**
    * Confidence value of the latest result, between 0 and 1.
    *
    * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionAlternative/confidence
    */
-  confidence: ShallowRef<number>
+  confidence: DeepReadonly<ShallowRef<number>>
   error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>
   toggle: (value?: boolean) => void
   start: () => void
@@ -161,10 +161,10 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}):
   return {
     isSupported,
     isListening,
-    isFinal,
+    isFinal: shallowReadonly(isFinal),
     recognition,
-    result,
-    confidence,
+    result: shallowReadonly(result),
+    confidence: shallowReadonly(confidence),
     error,
 
     toggle,
