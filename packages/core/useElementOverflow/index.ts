@@ -3,7 +3,7 @@ import type { MaybeComputedElementRef } from '../unrefElement'
 import type { ResizeObserverCallback } from '../useResizeObserver'
 import {
   tryOnMounted,
-  tryOnUnmounted,
+  tryOnScopeDispose,
 } from '@vueuse/shared'
 import { effectScope, shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -80,7 +80,7 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
       }
     })
   })
-  tryOnUnmounted(stop)
+  tryOnScopeDispose(stop)
   return {
     isXOverflowed: shallowReadonly(isXOverflowed),
     isYOverflowed: shallowReadonly(isYOverflowed),

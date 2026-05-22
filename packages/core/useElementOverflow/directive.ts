@@ -1,14 +1,14 @@
-import type { ObjectDirective } from 'vue'
 import type { UseElementOverflowOptions, UseElementOverflowReturn } from '.'
+import { createDisposableDirective } from '@vueuse/shared'
 import { watch } from 'vue'
 import { useElementOverflow } from '.'
 
 type VElementOverflowHandler = (info: UseElementOverflowReturn) => void
 
-export const vElementOverflow: ObjectDirective<
+export const vElementOverflow = createDisposableDirective<
   HTMLElement,
   VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions]
-> = {
+>({
   mounted(el, binding) {
     const bindingValue = typeof binding.value === 'function' ? [binding.value] as [VElementOverflowHandler] : binding.value
     const [handler, options] = bindingValue
@@ -16,4 +16,4 @@ export const vElementOverflow: ObjectDirective<
     const { isXOverflowed, isYOverflowed } = info
     watch([isXOverflowed, isYOverflowed], () => handler(info), { immediate: true })
   },
-}
+})
