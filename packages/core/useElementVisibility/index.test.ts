@@ -1,4 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useElementVisibility } from './index'
 
 describe('useElementVisibility', () => {
@@ -128,6 +129,43 @@ describe('useElementVisibility', () => {
 
       useElementVisibility(el, { scrollTarget: mockScrollTarget })
       expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.root).toBe(mockScrollTarget)
+    })
+
+    it('stops the observer after the first visibility change when once is true', async () => {
+      useElementVisibility(el, { once: true })
+      const stop = vi.mocked(useIntersectionObserver).mock.results.at(-1)?.value?.stop
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      const fire = (isIntersecting: boolean) =>
+        callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+
+      // No-change callbacks should not call stop
+      fire(false)
+      fire(false)
+      await nextTick()
+      expect(stop).not.toHaveBeenCalled()
+
+      // First visibility change should trigger stop exactly once
+      fire(true)
+      await nextTick()
+      expect(stop).toHaveBeenCalledTimes(1)
+
+      // Subsequent callbacks must not call stop again
+      fire(false)
+      fire(true)
+      await nextTick()
+      expect(stop).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not stop the observer when once is false (default)', async () => {
+      useElementVisibility(el)
+      const stop = vi.mocked(useIntersectionObserver).mock.results.at(-1)?.value?.stop
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      const fire = (isIntersecting: boolean) =>
+        callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+
+      fire(true)
+      await nextTick()
+      expect(stop).not.toHaveBeenCalled()
     })
   })
 })
