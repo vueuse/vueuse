@@ -129,5 +129,23 @@ describe('useElementVisibility', () => {
       useElementVisibility(el, { scrollTarget: mockScrollTarget })
       expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.root).toBe(mockScrollTarget)
     })
+
+    it('stops the observer after visibility changes once when once option is true', async () => {
+      useElementVisibility(el, { once: true })
+      const stopMock = vi.mocked(useIntersectionObserver).mock.results.at(-1)?.value?.stop
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+
+      expect(stopMock).not.toHaveBeenCalled()
+
+      // Trigger visibility change — observer should stop afterwards
+      callback?.([{ isIntersecting: true, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+      await Promise.resolve()
+      expect(stopMock).toHaveBeenCalledTimes(1)
+
+      // Subsequent intersection events must not trigger additional stop calls
+      callback?.([{ isIntersecting: false, time: 2 } as IntersectionObserverEntry], {} as IntersectionObserver)
+      await Promise.resolve()
+      expect(stopMock).toHaveBeenCalledTimes(1)
+    })
   })
 })
