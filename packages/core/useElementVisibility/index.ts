@@ -2,7 +2,7 @@ import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions, UseIntersectionObserverReturn } from '../useIntersectionObserver'
-import { watchOnce } from '@vueuse/shared'
+import { tryOnScopeDispose, watchOnce } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
@@ -92,9 +92,10 @@ export function useElementVisibility(
   )
 
   if (once) {
-    watchOnce(isVisible, () => {
+    const stopWatch = watchOnce(isVisible, () => {
       observerController.stop()
-    }, { flush: 'sync' })
+    }, { flush: 'post' })
+    tryOnScopeDispose(stopWatch)
   }
 
   return options.controls

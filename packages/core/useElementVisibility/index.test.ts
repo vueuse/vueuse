@@ -39,11 +39,22 @@ class MockIntersectionObserver {
   }
 
   trigger(...entries: Array<{ isIntersecting: boolean, time: number, target?: Element }>) {
+    const emptyRect: DOMRectReadOnly = {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      toJSON() { return {} },
+    }
     this.callback(
       entries.map(entry => ({
-        boundingClientRect: {} as DOMRectReadOnly,
+        boundingClientRect: emptyRect,
         intersectionRatio: entry.isIntersecting ? 1 : 0,
-        intersectionRect: {} as DOMRectReadOnly,
+        intersectionRect: emptyRect,
         isIntersecting: entry.isIntersecting,
         rootBounds: null,
         target: entry.target ?? this.observedElements[0] ?? document.createElement('div'),
@@ -207,10 +218,12 @@ describe('useElementVisibility', () => {
     expect(observer.disconnect).not.toHaveBeenCalled()
 
     observer.trigger({ isIntersecting: true, time: 3 })
+    await nextTick()
     expect(observer.disconnect).toHaveBeenCalledTimes(1)
 
     observer.trigger({ isIntersecting: false, time: 4 })
     observer.trigger({ isIntersecting: true, time: 5 })
+    await nextTick()
     expect(observer.disconnect).toHaveBeenCalledTimes(1)
   })
 
