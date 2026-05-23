@@ -1,5 +1,29 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useElementVisibility } from './index'
+
+vi.mock('../useIntersectionObserver', () => ({
+  useIntersectionObserver: vi.fn(() => {
+    const isActive = { value: true }
+    const stop = vi.fn(() => {
+      isActive.value = false
+    })
+    const pause = vi.fn(() => {
+      isActive.value = false
+    })
+    const resume = vi.fn(() => {
+      isActive.value = true
+    })
+
+    return {
+      isActive,
+      isSupported: { value: true },
+      pause,
+      resume,
+      stop,
+    }
+  }),
+}))
 
 describe('useElementVisibility', () => {
   let el: HTMLDivElement
@@ -32,13 +56,7 @@ describe('useElementVisibility', () => {
 
   describe('when internally using useIntersectionObserver', async () => {
     beforeAll(() => {
-      vi.resetAllMocks()
-      vi.mock('../useIntersectionObserver', () => ({
-        useIntersectionObserver: vi.fn((_target) => {
-          const stop = vi.fn()
-          return { stop }
-        }),
-      }))
+      vi.clearAllMocks()
     })
 
     const { useIntersectionObserver } = await import('../useIntersectionObserver')
@@ -82,10 +100,32 @@ describe('useElementVisibility', () => {
 
       // It should be false initially
       expect(visibilityState.isVisible.value).toBe(false)
+      expect(visibilityState.isActive.value).toBe(true)
 
       // It should become true if the callback gets an isIntersecting = true
       callMockCallbackWithIsIntersectingValue(true)
       expect(visibilityState.isVisible.value).toBe(true)
+
+      visibilityState.pause()
+      expect(visibilityState.isActive.value).toBe(false)
+
+      visibilityState.resume()
+      expect(visibilityState.isActive.value).toBe(true)
+    })
+
+    it('stops the visibility observer after the first visibility change when once is true', async () => {
+      const visibilityState = useElementVisibility(el, { controls: true, once: true })
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+
+      expect(visibilityState.isActive.value).toBe(true)
+
+      callMockCallbackWithIsIntersectingValue(true)
+      await nextTick()
+
+      expect(visibilityState.isVisible.value).toBe(true)
+      expect(visibilityState.isActive.value).toBe(false)
+      expect(visibilityState.stop).toHaveBeenCalledTimes(1)
     })
 
     it('uses the latest version of isIntersecting when multiple intersection entries are given', () => {

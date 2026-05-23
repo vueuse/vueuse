@@ -17,16 +17,28 @@ const target = useTemplateRef('target')
 const targetIsVisible = useElementVisibility(target)
 
 const target2 = useTemplateRef('target2')
-const targetVisibilityController = useElementVisibility(target2, { controls: true })
+const targetVisibility = useElementVisibility(target2, { controls: true })
+const { isVisible, isActive, pause, resume, stop } = targetVisibility
 </script>
 
 <template>
   <div ref="target">
     <h1>Hello world</h1>
+    <p>{{ targetIsVisible ? 'visible' : 'hidden' }}</p>
   </div>
 
   <div ref="target2">
     <h1>Hi there</h1>
+    <p>{{ isVisible ? 'visible' : 'hidden' }} / {{ isActive ? 'active' : 'inactive' }}</p>
+    <button @click="pause">
+      Pause
+    </button>
+    <button @click="resume">
+      Resume
+    </button>
+    <button @click="stop">
+      Stop
+    </button>
   </div>
 </template>
 ```
