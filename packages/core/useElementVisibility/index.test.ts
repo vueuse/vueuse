@@ -1,171 +1,248 @@
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import type { EffectScope } from 'vue'
+import type { UseElementVisibilityReturnWithControls } from './index'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { effectScope, nextTick, shallowRef } from 'vue'
 import { useElementVisibility } from './index'
+
+let observers: MockIntersectionObserver[]
+
+class MockIntersectionObserver {
+  readonly root: Element | Document | null
+  readonly rootMargin: string
+  readonly thresholds: ReadonlyArray<number>
+  readonly observe = vi.fn((element: Element) => {
+    this.observedElements.push(element)
+  })
+
+  readonly unobserve = vi.fn((element: Element) => {
+    this.observedElements = this.observedElements.filter(observed => observed !== element)
+  })
+
+  readonly disconnect = vi.fn(() => {
+    this.observedElements = []
+  })
+
+  readonly takeRecords = vi.fn((): IntersectionObserverEntry[] => [])
+
+  observedElements: Element[] = []
+
+  constructor(
+    private readonly callback: IntersectionObserverCallback,
+    options: IntersectionObserverInit = {},
+  ) {
+    this.root = options.root ?? null
+    this.rootMargin = options.rootMargin ?? ''
+    this.thresholds = Array.isArray(options.threshold)
+      ? options.threshold
+      : [options.threshold ?? 0]
+    observers.push(this)
+  }
+
+  trigger(...entries: Array<{ isIntersecting: boolean, time: number, target?: Element }>) {
+    this.callback(
+      entries.map(entry => ({
+        boundingClientRect: {} as DOMRectReadOnly,
+        intersectionRatio: entry.isIntersecting ? 1 : 0,
+        intersectionRect: {} as DOMRectReadOnly,
+        isIntersecting: entry.isIntersecting,
+        rootBounds: null,
+        target: entry.target ?? this.observedElements[0] ?? document.createElement('div'),
+        time: entry.time,
+      } as IntersectionObserverEntry)),
+      this as unknown as IntersectionObserver,
+    )
+  }
+}
+
+function runInScope<T>(fn: () => T) {
+  const scope = effectScope()
+  const result = scope.run(fn)
+
+  if (result === undefined)
+    throw new Error('Expected scoped function to return a value')
+
+  return {
+    result,
+    scope,
+  }
+}
+
+async function getObserver(index = 0) {
+  await nextTick()
+  expect(observers[index]).toBeDefined()
+  return observers[index]
+}
 
 describe('useElementVisibility', () => {
   let el: HTMLDivElement
+  let scopes: EffectScope[]
 
   beforeEach(() => {
     el = document.createElement('div')
+    scopes = []
+    observers = []
+    vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
   })
+
+  afterEach(() => {
+    scopes.forEach(scope => scope.stop())
+    vi.unstubAllGlobals()
+  })
+
+  function useScopedVisibility<T>(fn: () => T) {
+    const scoped = runInScope(fn)
+    scopes.push(scoped.scope)
+    return scoped.result
+  }
 
   it('should work when el is not an element', async () => {
-    const visible = useElementVisibility(null)
+    const visible = useScopedVisibility(() => useElementVisibility(null))
+
+    await nextTick()
+
     expect(visible.value).toBeFalsy()
+    expect(observers).toHaveLength(0)
   })
 
-  it('should work when window is undefined', () => {
+  it('should work when window is undefined', async () => {
     // @ts-expect-error set window null
-    const visible = useElementVisibility(el, { window: null })
+    const visible = useScopedVisibility(() => useElementVisibility(el, { window: null }))
+
+    await nextTick()
+
     expect(visible.value).toBeFalsy()
+    expect(observers).toHaveLength(0)
   })
 
-  it('should work when threshold is undefined', () => {
+  it('should work when threshold is undefined', async () => {
     // @ts-expect-error set threshold null
-    const visible = useElementVisibility(el, { threshold: null })
+    const visible = useScopedVisibility(() => useElementVisibility(el, { threshold: null }))
+
+    await getObserver()
+
     expect(visible.value).toBeFalsy()
   })
 
   it('should allow set initial value', () => {
-    const visible = useElementVisibility(el, { initialValue: true })
+    const visible = useScopedVisibility(() => useElementVisibility(el, { initialValue: true }))
+
     expect(visible.value).toBeTruthy()
   })
 
-  describe('when internally using useIntersectionObserver', async () => {
-    beforeAll(() => {
-      vi.resetAllMocks()
-      vi.mock('../useIntersectionObserver', () => ({
-        useIntersectionObserver: vi.fn((_target) => {
-          const stop = vi.fn()
-          return { stop }
-        }),
-      }))
-    })
+  it('observes the given element and updates visibility from intersection entries', async () => {
+    const visible = useScopedVisibility(() => useElementVisibility(el))
+    const observer = await getObserver()
 
-    const { useIntersectionObserver } = await import('../useIntersectionObserver')
+    expect(observer.observe).toHaveBeenCalledWith(el)
+    expect(visible.value).toBe(false)
 
-    it('should call useIntersectionObserver internally', () => {
-      expect(useIntersectionObserver).toHaveBeenCalledTimes(0)
-      useElementVisibility(el)
-      expect(useIntersectionObserver).toHaveBeenCalledTimes(1)
-    })
+    observer.trigger({ isIntersecting: false, time: 1 })
+    expect(visible.value).toBe(false)
 
-    it('passes the given element to useIntersectionObserver', () => {
-      useElementVisibility(el)
-      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[0]).toBe(el)
-    })
+    observer.trigger({ isIntersecting: true, time: 2 })
+    expect(visible.value).toBe(true)
 
-    it('passes a callback to useIntersectionObserver that sets visibility to false only when isIntersecting is false', () => {
-      const isVisible = useElementVisibility(el)
-      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+    observer.trigger({ isIntersecting: false, time: 3 })
+    expect(visible.value).toBe(false)
+  })
 
-      // It should be false initially
-      expect(isVisible.value).toBe(false)
+  it('should control visibility observer', async () => {
+    const visibilityState = useScopedVisibility(
+      () => useElementVisibility(el, { controls: true }) as UseElementVisibilityReturnWithControls,
+    )
+    const observer = await getObserver()
 
-      // It should still be false if the callback doesn't get an isIntersecting = true
-      callMockCallbackWithIsIntersectingValue(false)
-      expect(isVisible.value).toBe(false)
+    expect(visibilityState.isVisible.value).toBe(false)
+    expect(visibilityState.isActive.value).toBe(true)
 
-      // But it should become true if the callback gets an isIntersecting = true
-      callMockCallbackWithIsIntersectingValue(true)
-      expect(isVisible.value).toBe(true)
+    observer.trigger({ isIntersecting: true, time: 1 })
+    expect(visibilityState.isVisible.value).toBe(true)
+  })
 
-      // And it should become false again if isIntersecting = false
-      callMockCallbackWithIsIntersectingValue(false)
-      expect(isVisible.value).toBe(false)
-    })
+  it('uses the latest version of isIntersecting when multiple intersection entries are given', async () => {
+    const visible = useScopedVisibility(() => useElementVisibility(el))
+    const observer = await getObserver()
 
-    it('should control visibility observer', () => {
-      const visibilityState = useElementVisibility(el, { controls: true })
-      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const callMockCallbackWithIsIntersectingValue = (isIntersecting: boolean) => callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+    expect(visible.value).toBe(false)
 
-      // It should be false initially
-      expect(visibilityState.isVisible.value).toBe(false)
+    observer.trigger(
+      { isIntersecting: false, time: 1 },
+      { isIntersecting: false, time: 2 },
+      { isIntersecting: true, time: 3 },
+    )
+    expect(visible.value).toBe(true)
 
-      // It should become true if the callback gets an isIntersecting = true
-      callMockCallbackWithIsIntersectingValue(true)
-      expect(visibilityState.isVisible.value).toBe(true)
-    })
+    observer.trigger(
+      { isIntersecting: true, time: 1 },
+      { isIntersecting: false, time: 3 },
+      { isIntersecting: true, time: 2 },
+    )
+    expect(visible.value).toBe(false)
+  })
 
-    it('uses the latest version of isIntersecting when multiple intersection entries are given', () => {
-      const isVisible = useElementVisibility(el)
-      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const callMockCallbackWithIsIntersectingValues = (...entries: { isIntersecting: boolean, time: number }[]) => {
-        callback?.(entries as IntersectionObserverEntry[], {} as IntersectionObserver)
-      }
+  it('passes root, rootMargin, and threshold options to IntersectionObserver', async () => {
+    const scrollTarget = document.createElement('div')
+    const threshold = [0, 0.5, 1]
 
-      // It should be false initially
-      expect(isVisible.value).toBe(false)
+    useScopedVisibility(() =>
+      useElementVisibility(el, {
+        rootMargin: '0px 0px 100px 0px',
+        scrollTarget,
+        threshold,
+      }),
+    )
+    const observer = await getObserver()
 
-      // It should take the latest value of isIntersecting
-      callMockCallbackWithIsIntersectingValues(
-        { isIntersecting: false, time: 1 },
-        { isIntersecting: false, time: 2 },
-        { isIntersecting: true, time: 3 },
-      )
-      expect(isVisible.value).toBe(true)
+    expect(observer.root).toBe(scrollTarget)
+    expect(observer.rootMargin).toBe('0px 0px 100px 0px')
+    expect(observer.thresholds).toEqual(threshold)
+  })
 
-      // It should take the latest even when entries are out of order
-      callMockCallbackWithIsIntersectingValues(
-        { isIntersecting: true, time: 1 },
-        { isIntersecting: false, time: 3 },
-        { isIntersecting: true, time: 2 },
-      )
+  it('stops the observer after the first visibility change when once is true', async () => {
+    useScopedVisibility(() => useElementVisibility(el, { once: true }))
+    const observer = await getObserver()
 
-      expect(isVisible.value).toBe(false)
-    })
+    observer.trigger({ isIntersecting: false, time: 1 })
+    observer.trigger({ isIntersecting: false, time: 2 })
+    expect(observer.disconnect).not.toHaveBeenCalled()
 
-    it('passes the given window to useIntersectionObserver', () => {
-      const mockWindow = {} as Window
+    observer.trigger({ isIntersecting: true, time: 3 })
+    expect(observer.disconnect).toHaveBeenCalledTimes(1)
 
-      useElementVisibility(el, { window: mockWindow })
-      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.window).toBe(mockWindow)
-    })
+    observer.trigger({ isIntersecting: false, time: 4 })
+    observer.trigger({ isIntersecting: true, time: 5 })
+    expect(observer.disconnect).toHaveBeenCalledTimes(1)
+  })
 
-    it('uses the given scrollTarget as the root element in useIntersectionObserver', () => {
-      const mockScrollTarget = document.createElement('div')
+  it('does not stop the observer when once is false (default)', async () => {
+    useScopedVisibility(() => useElementVisibility(el))
+    const observer = await getObserver()
 
-      useElementVisibility(el, { scrollTarget: mockScrollTarget })
-      expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.root).toBe(mockScrollTarget)
-    })
+    observer.trigger({ isIntersecting: true, time: 1 })
 
-    it('stops the observer after the first visibility change when once is true', async () => {
-      useElementVisibility(el, { once: true })
-      const stop = vi.mocked(useIntersectionObserver).mock.results.at(-1)?.value?.stop
-      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const fire = (isIntersecting: boolean) =>
-        callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+    expect(observer.disconnect).not.toHaveBeenCalled()
+  })
 
-      // No-change callbacks should not call stop
-      fire(false)
-      fire(false)
-      await nextTick()
-      expect(stop).not.toHaveBeenCalled()
+  it('disconnects the observer when the active scope is disposed', async () => {
+    const scoped = runInScope(() => useElementVisibility(el))
+    const observer = await getObserver()
 
-      // First visibility change should trigger stop exactly once
-      fire(true)
-      await nextTick()
-      expect(stop).toHaveBeenCalledTimes(1)
+    scoped.scope.stop()
 
-      // Subsequent callbacks must not call stop again
-      fire(false)
-      fire(true)
-      await nextTick()
-      expect(stop).toHaveBeenCalledTimes(1)
-    })
+    expect(observer.disconnect).toHaveBeenCalledTimes(1)
+  })
 
-    it('does not stop the observer when once is false (default)', async () => {
-      useElementVisibility(el)
-      const stop = vi.mocked(useIntersectionObserver).mock.results.at(-1)?.value?.stop
-      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
-      const fire = (isIntersecting: boolean) =>
-        callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+  it('disconnects the previous observer when the target element changes', async () => {
+    const nextEl = document.createElement('div')
+    const target = shallowRef<HTMLElement | null>(el)
 
-      fire(true)
-      await nextTick()
-      expect(stop).not.toHaveBeenCalled()
-    })
+    useScopedVisibility(() => useElementVisibility(target))
+    const firstObserver = await getObserver()
+
+    target.value = nextEl
+    const secondObserver = await getObserver(1)
+
+    expect(firstObserver.disconnect).toHaveBeenCalledTimes(1)
+    expect(secondObserver.observe).toHaveBeenCalledWith(nextEl)
   })
 })

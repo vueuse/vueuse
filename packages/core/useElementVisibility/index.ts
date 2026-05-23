@@ -94,7 +94,7 @@ export function useElementVisibility(
   if (once) {
     watchOnce(isVisible, () => {
       observerController.stop()
-    })
+    }, { flush: 'sync' })
   }
 
   return options.controls
