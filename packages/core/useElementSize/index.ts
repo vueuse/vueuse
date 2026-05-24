@@ -45,13 +45,9 @@ export function useElementSize(
           ? entry.contentBoxSize
           : entry.devicePixelContentBoxSize
 
-      if (window && isSVG.value) {
-        const $elem = unrefElement(target)
-        if ($elem) {
-          const rect = $elem.getBoundingClientRect()
-          width.value = rect.width
-          height.value = rect.height
-        }
+      if (window && isSVG.value && entry.contentRect) {
+        width.value = entry.contentRect.width
+        height.value = entry.contentRect.height
       }
       else {
         if (boxSize) {
