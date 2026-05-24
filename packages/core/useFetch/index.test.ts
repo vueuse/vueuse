@@ -120,6 +120,31 @@ describe('useFetch', () => {
     expect(error2.message).toBe('Internal Server Error')
   })
 
+  it('should throw error when throwOnFailed option is true', async () => {
+    await expect(
+      useFetch(`${baseUrl}?status=400`, { throwOnFailed: true }),
+    ).rejects.toThrowError('Bad Request')
+  })
+
+  it('should use throwOnFailed option as execute default', async () => {
+    const { execute } = useFetch(`${baseUrl}?status=500`, {
+      immediate: false,
+      throwOnFailed: true,
+    })
+
+    await expect(execute()).rejects.toThrowError('Internal Server Error')
+  })
+
+  it('should allow execute argument to override throwOnFailed option', async () => {
+    const { error, execute } = useFetch(`${baseUrl}?status=400`, {
+      immediate: false,
+      throwOnFailed: true,
+    })
+
+    await expect(execute(false)).resolves.toBeNull()
+    expect(error.value).toBe('Bad Request')
+  })
+
   it('should abort request and set aborted to true', async () => {
     const { aborted, abort, execute } = useFetch(baseUrl)
     setTimeout(abort, 0)

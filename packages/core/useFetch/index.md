@@ -62,6 +62,21 @@ const { execute } = useFetch(url, { immediate: false })
 execute()
 ```
 
+### Throwing failed requests
+
+Setting the `throwOnFailed` option to true will reject the returned promise when the response status is not ok.
+
+```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
+try {
+  const { data } = await useFetch(url, { throwOnFailed: true })
+}
+catch (error) {
+  // handle the failed response
+}
+```
+
 ### Aborting a request
 
 A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates if the request can be aborted.
