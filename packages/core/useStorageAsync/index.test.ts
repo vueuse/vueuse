@@ -1,6 +1,7 @@
 import type { Awaitable, StorageLikeAsync } from '@vueuse/core'
 import { createEventHook, useStorageAsync } from '@vueuse/core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { isRef } from 'vue'
 
 const KEY = 'custom-key'
 const KEY2 = 'custom-key2'
@@ -65,7 +66,7 @@ describe('useStorageAsync', () => {
     )
 
     expect(storage.value).toBe('')
-    vi.waitFor(async () => {
+    await vi.waitFor(async () => {
       await expect(promise).resolves.toBe('CurrentValue')
     })
   })
@@ -81,9 +82,14 @@ describe('useStorageAsync', () => {
 
     expect(storage.value).toBe('')
 
-    vi.waitFor(async () => {
+    const result = await vi.waitFor(async () => {
       const result = await storage
+      expect(isRef(result)).toBe(true)
       expect(result.value).toBe('AnotherValue')
+      return result
     })
+
+    result.value = 'UpdatedValue'
+    expect(storage.value).toBe('UpdatedValue')
   })
 })

@@ -101,10 +101,12 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     }
   }
 
-  const promise = new Promise((resolve) => {
+  let awaitableData = data
+
+  const promise = new Promise<RemovableRef<T>>((resolve) => {
     read().then(() => {
       onReady?.(data.value)
-      resolve(data)
+      resolve(awaitableData)
     })
   })
 
@@ -132,6 +134,17 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       },
     )
   }
+
+  awaitableData = new Proxy(data, {
+    get(target, prop, receiver) {
+      // Promise resolution assimilates thenables. Hide the promise methods on
+      // the resolved ref so `await useStorageAsync()` can settle with the ref.
+      if (prop === 'then' || prop === 'catch')
+        return undefined
+
+      return Reflect.get(target, prop, receiver)
+    },
+  })
 
   Object.assign(data, {
     then: promise.then.bind(promise),
