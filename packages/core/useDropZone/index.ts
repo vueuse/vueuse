@@ -49,8 +49,10 @@ export function useDropZone(
     const multiple = _options.multiple ?? true
     const preventDefaultForUnhandled = _options.preventDefaultForUnhandled ?? false
 
+    const getFileList = (event: DragEvent) => Array.from(event.dataTransfer?.files ?? [])
+
     const getFiles = (event: DragEvent) => {
-      const list = Array.from(event.dataTransfer?.files ?? [])
+      const list = getFileList(event)
       return list.length === 0 ? null : (multiple ? list : [list[0]])
     }
 
@@ -84,6 +86,15 @@ export function useDropZone(
       return dataTypesValid && multipleFilesValid
     }
 
+    const checkFileListValidity = (list: File[]) => {
+      const types = list.map(file => file.type)
+
+      const dataTypesValid = checkDataTypes(types)
+      const multipleFilesValid = multiple || list.length <= 1
+
+      return dataTypesValid && multipleFilesValid
+    }
+
     const isSafari = () => (
       /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent)
       && !('chrome' in window)
@@ -92,6 +103,10 @@ export function useDropZone(
     const handleDragEvent = (event: DragEvent, eventType: 'enter' | 'over' | 'leave' | 'drop') => {
       const dataTransferItemList = event.dataTransfer?.items
       isValid = (dataTransferItemList && checkValidity(dataTransferItemList)) ?? false
+      const fileList = eventType === 'drop' ? getFileList(event) : []
+
+      if (eventType === 'drop' && !isValid && !_options.checkValidity && fileList.length > 0)
+        isValid = checkFileListValidity(fileList)
 
       if (preventDefaultForUnhandled) {
         event.preventDefault()
