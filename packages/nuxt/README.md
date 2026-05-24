@@ -41,6 +41,9 @@ The following utils are **disabled** from auto-import for Nuxt to avoid conflict
 - `useStorage`
 - `useImage`
 
+VueUse's extended `toRef` is auto-imported as `resolveRef` to avoid conflicting
+with Vue's built-in `toRef`.
+
 You can always use them by explicitly importing from `@vueuse/core`
 
 ## License

@@ -35,6 +35,20 @@ const packages = [
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
 
+const aliasedCoreImports: Import[] = [
+  {
+    from: '@vueuse/core',
+    name: 'toRef',
+    as: 'resolveRef',
+    priority: -1,
+    meta: {
+      description: 'Extended toRef that also accepts MaybeRefOrGetter values.',
+      docsUrl: 'https://vueuse.org/shared/toRef/',
+      category: 'Reactivity',
+    },
+  },
+]
+
 export interface VueUseNuxtOptions {
   /**
    * @default true
@@ -149,6 +163,9 @@ export default defineNuxtModule<VueUseNuxtOptions>({
                 },
               }))
             })
+
+          if (pkg === 'core')
+            imports.push(...aliasedCoreImports)
 
           sources.push({
             from: '@vueuse/core',
