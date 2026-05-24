@@ -70,6 +70,50 @@ describe('useDraggable', () => {
     expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
   })
 
+  it('captures pointer events on the drag handle', async () => {
+    const setPointerCapture = vi.fn()
+    const releasePointerCapture = vi.fn()
+
+    const wrapper = mount({
+      setup() {
+        const el = useTemplateRef<HTMLElement>('el')
+        const { isDragging } = useDraggable(el)
+
+        return () => h('div', {
+          'data-is-dragging': isDragging.value,
+          'ref': 'el',
+        })
+      },
+    })
+
+    await nextTick()
+
+    Object.assign(wrapper.get('div').element, {
+      releasePointerCapture,
+      setPointerCapture,
+    })
+
+    wrapper.get('div').element.dispatchEvent(new PointerEvent('pointerdown', {
+      clientX: 0,
+      clientY: 0,
+      pointerId: 12,
+    }))
+
+    await nextTick()
+
+    expect(setPointerCapture).toHaveBeenCalledWith(12)
+    expect(wrapper.get('div').element.dataset.isDragging).toBe('true')
+
+    window.dispatchEvent(new PointerEvent('pointerup', {
+      pointerId: 12,
+    }))
+
+    await nextTick()
+
+    expect(releasePointerCapture).toHaveBeenCalledWith(12)
+    expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
+  })
+
   it('component', async () => {
     const onStart = vi.fn()
     const onMove = vi.fn()

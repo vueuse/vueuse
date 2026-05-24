@@ -202,6 +202,7 @@ export function useDraggable(
   )
 
   const pressedDelta = deepRef<Position>()
+  let capturedPointer: { element: Element, pointerId: number } | undefined
 
   const filterEvent = (e: PointerEvent) => {
     if (pointerTypes)
@@ -214,6 +215,37 @@ export function useDraggable(
       e.preventDefault()
     if (toValue(stopPropagation))
       e.stopPropagation()
+  }
+
+  const capturePointer = (e: PointerEvent) => {
+    if (!(e.currentTarget instanceof Element))
+      return
+
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId)
+      capturedPointer = {
+        element: e.currentTarget,
+        pointerId: e.pointerId,
+      }
+    }
+    catch {
+      // Ignore browsers that reject capturing inactive pointers.
+    }
+  }
+
+  const releasePointer = () => {
+    if (!capturedPointer)
+      return
+
+    const { element, pointerId } = capturedPointer
+    capturedPointer = undefined
+
+    try {
+      element.releasePointerCapture(pointerId)
+    }
+    catch {
+      // The browser may already release capture before pointerup finishes.
+    }
   }
 
   const scrollConfig = toValue(autoScroll)
@@ -339,6 +371,7 @@ export function useDraggable(
     if (onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
+    capturePointer(e)
     handleEvent(e)
   }
 
@@ -404,7 +437,12 @@ export function useDraggable(
     pressedDelta.value = undefined
     if (autoScroll)
       stopAutoScroll()
-    onEnd?.(position.value, e)
+    try {
+      onEnd?.(position.value, e)
+    }
+    finally {
+      releasePointer()
+    }
     handleEvent(e)
   }
 
