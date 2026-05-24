@@ -40,7 +40,10 @@ export function watchDebounced<Immediate extends Readonly<boolean> = false>(
 ): WatchHandle {
   const {
     debounce = 0,
+    leading = false,
     maxWait = undefined,
+    rejectOnCancel = false,
+    trailing = true,
     ...watchOptions
   } = options
 
@@ -49,7 +52,7 @@ export function watchDebounced<Immediate extends Readonly<boolean> = false>(
     cb,
     {
       ...watchOptions,
-      eventFilter: debounceFilter(debounce, { maxWait }),
+      eventFilter: debounceFilter(debounce, { leading, maxWait, rejectOnCancel, trailing }),
     },
   )
 }

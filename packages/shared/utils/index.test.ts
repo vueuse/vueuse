@@ -175,6 +175,46 @@ describe('filters', () => {
 
       expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
     })
+
+    it('should support leading debounce', async () => {
+      const debouncedFilterSpy = vi.fn((value: number) => value)
+      const filter = createFilterWrapper(
+        debounceFilter(500, { leading: true }),
+        debouncedFilterSpy,
+      )
+
+      await expect(filter(1)).resolves.toBe(1)
+      expect(debouncedFilterSpy).toHaveBeenCalledOnce()
+
+      const second = filter(2)
+      vi.advanceTimersByTime(500)
+
+      await expect(second).resolves.toBe(2)
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+      expect(debouncedFilterSpy).toHaveBeenLastCalledWith(2)
+
+      await expect(filter(3)).resolves.toBe(3)
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(3)
+      expect(debouncedFilterSpy).toHaveBeenLastCalledWith(3)
+    })
+
+    it('should support leading-only debounce', async () => {
+      const debouncedFilterSpy = vi.fn((value: number) => value)
+      const filter = createFilterWrapper(
+        debounceFilter(500, { leading: true, trailing: false }),
+        debouncedFilterSpy,
+      )
+
+      await expect(filter(1)).resolves.toBe(1)
+      await expect(filter(2)).resolves.toBe(1)
+      vi.advanceTimersByTime(500)
+
+      expect(debouncedFilterSpy).toHaveBeenCalledOnce()
+
+      await expect(filter(3)).resolves.toBe(3)
+      expect(debouncedFilterSpy).toHaveBeenCalledTimes(2)
+      expect(debouncedFilterSpy).toHaveBeenLastCalledWith(3)
+    })
   })
 
   describe('throttleFilter', () => {

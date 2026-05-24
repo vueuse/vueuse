@@ -34,6 +34,20 @@ export interface DebounceFilterOptions {
   maxWait?: MaybeRefOrGetter<number>
 
   /**
+   * Whether to invoke on the leading edge of the timeout.
+   *
+   * @default false
+   */
+  leading?: boolean
+
+  /**
+   * Whether to invoke on the trailing edge of the timeout.
+   *
+   * @default true
+   */
+  trailing?: boolean
+
+  /**
    * Whether to reject the last call if it's been cancel.
    *
    * @default false
@@ -68,51 +82,95 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   let timer: TimerHandle
   let maxTimer: TimerHandle
   let lastRejector: AnyFn = noop
+  let lastResolver: AnyFn = noop
+  let lastValue: any
+  let leadingInvoked = false
+  let trailingPending = false
 
   const _clearTimeout = (timer: TimerHandle) => {
     clearTimeout(timer)
     lastRejector()
     lastRejector = noop
+    lastResolver = noop
   }
 
   let lastInvoker: () => void
 
+  const reset = () => {
+    if (timer) {
+      clearTimeout(timer)
+      timer = undefined
+    }
+    if (maxTimer) {
+      clearTimeout(maxTimer)
+      maxTimer = undefined
+    }
+    lastRejector = noop
+    lastResolver = noop
+    leadingInvoked = false
+    trailingPending = false
+  }
+
+  const invokeTrailing = () => {
+    if (timer) {
+      clearTimeout(timer)
+      timer = undefined
+    }
+    if (maxTimer) {
+      clearTimeout(maxTimer)
+      maxTimer = undefined
+    }
+
+    if (trailingPending) {
+      lastValue = lastInvoker()
+      lastResolver(lastValue)
+    }
+
+    lastRejector = noop
+    lastResolver = noop
+    leadingInvoked = false
+    trailingPending = false
+  }
+
   const filter: EventFilter = (invoke) => {
     const duration = toValue(ms)
     const maxDuration = toValue(options.maxWait)
+    const leading = options.leading ?? false
+    const trailing = options.trailing ?? true
+    const isLeadingCall = leading && !leadingInvoked
 
     if (timer)
       _clearTimeout(timer)
 
     if (duration <= 0 || (maxDuration !== undefined && maxDuration <= 0)) {
-      if (maxTimer) {
-        _clearTimeout(maxTimer)
-        maxTimer = undefined
-      }
+      reset()
       return Promise.resolve(invoke())
     }
 
-    return new Promise((resolve, reject) => {
-      lastRejector = options.rejectOnCancel ? reject : resolve
-      lastInvoker = invoke
-      // Create the maxTimer. Clears the regular timer on invoke
-      if (maxDuration && !maxTimer) {
-        maxTimer = setTimeout(() => {
-          if (timer)
-            _clearTimeout(timer)
-          maxTimer = undefined
-          resolve(lastInvoker())
-        }, maxDuration)
-      }
+    if (isLeadingCall) {
+      lastValue = invoke()
+      leadingInvoked = true
+      trailingPending = false
+    }
+    else {
+      trailingPending = trailing
+    }
 
-      // Create the regular timer. Clears the max timer on invoke
-      timer = setTimeout(() => {
-        if (maxTimer)
-          _clearTimeout(maxTimer)
-        maxTimer = undefined
-        resolve(invoke())
-      }, duration)
-    })
+    lastInvoker = invoke
+
+    if (maxDuration && !maxTimer)
+      maxTimer = setTimeout(invokeTrailing, maxDuration)
+
+    timer = setTimeout(invokeTrailing, duration)
+
+    if (trailingPending) {
+      return new Promise((resolve, reject) => {
+        lastRejector = options.rejectOnCancel ? reject : resolve
+        lastResolver = resolve
+      })
+    }
+
+    return Promise.resolve(lastValue)
   }
 
   return filter

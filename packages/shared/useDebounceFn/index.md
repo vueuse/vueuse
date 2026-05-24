@@ -35,6 +35,16 @@ const debouncedFn = useDebounceFn(() => {
 useEventListener(window, 'resize', debouncedFn)
 ```
 
+Set `leading: true` to invoke the function immediately on the first call, and keep `trailing` enabled to run the latest call at the end of the debounce window.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000, { leading: true })
+```
+
 Optionally, you can get the return value of the function using promise operations.
 
 ```ts
