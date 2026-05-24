@@ -132,8 +132,33 @@ export function onClickOutside(
     if (children == null || !Array.isArray(children))
       return false
 
-    // @ts-expect-error should be VNode
-    return children.some((child: VNode) => child.el === event.target || event.composedPath().includes(child.el))
+    return children.some((child) => {
+      const el = (child as VNode).el
+      return el === event.target || (el != null && event.composedPath().includes(el as EventTarget))
+    })
+  }
+
+  function isOutsideDialog(event: Event, el: Element) {
+    const HTMLDialogElement = (window as Window & typeof globalThis).HTMLDialogElement
+
+    if (
+      typeof HTMLDialogElement === 'undefined'
+      || !(el instanceof HTMLDialogElement)
+      || event.target !== el
+      || !('clientX' in event)
+      || !('clientY' in event)
+    ) {
+      return false
+    }
+
+    const rect = el.getBoundingClientRect()
+    const { clientX, clientY } = event as MouseEvent
+    return (
+      clientX < rect.left
+      || clientX > rect.right
+      || clientY < rect.top
+      || clientY > rect.bottom
+    )
   }
 
   const listener = (event: Event) => {
@@ -145,8 +170,13 @@ export function onClickOutside(
     if (!(el instanceof Element) && hasMultipleRoots(target) && checkMultipleRoots(target, event))
       return
 
-    if (!el || el === event.target || event.composedPath().includes(el))
+    if (
+      !el
+      || (!isOutsideDialog(event, el)
+        && (el === event.target || event.composedPath().includes(el)))
+    ) {
       return
+    }
 
     if ('detail' in event && event.detail === 0)
       shouldListen = !shouldIgnore(event)
@@ -173,7 +203,7 @@ export function onClickOutside(
     }, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
+      shouldListen = !shouldIgnore(e) && !!(el && (isOutsideDialog(e, el) || !e.composedPath().includes(el)))
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {

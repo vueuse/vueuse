@@ -142,4 +142,62 @@ describe('onClickOutside', () => {
     await userEvent.click(other)
     expect(consoleSpy).toHaveBeenCalled()
   })
+
+  it('should treat dialog backdrop clicks as outside', async () => {
+    const handler = vi.fn()
+
+    const component = defineComponent({
+      template: `
+        <dialog ref="target" open>
+          <button>Inside</button>
+        </dialog>
+      `,
+      setup() {
+        const target = useTemplateRef<HTMLDialogElement>('target')
+        onClickOutside(target, handler)
+        return { target }
+      },
+    })
+
+    const screen = page.render(component)
+    await expect.element(screen.getByText('Inside')).toBeInTheDocument()
+
+    const dialog = document.querySelector('dialog')!
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      bottom: 200,
+      height: 100,
+      left: 100,
+      right: 200,
+      top: 100,
+      width: 100,
+      x: 100,
+      y: 100,
+      toJSON: () => {},
+    })
+
+    dialog.dispatchEvent(
+      new MouseEvent('pointerdown', {
+        bubbles: true,
+        clientX: 150,
+        clientY: 150,
+      }),
+    )
+    dialog.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, clientX: 150, clientY: 150 }),
+    )
+    expect(handler).not.toHaveBeenCalled()
+    await new Promise(resolve => setTimeout(resolve, 0))
+
+    dialog.dispatchEvent(
+      new MouseEvent('pointerdown', {
+        bubbles: true,
+        clientX: 50,
+        clientY: 50,
+      }),
+    )
+    dialog.dispatchEvent(
+      new MouseEvent('click', { bubbles: true, clientX: 50, clientY: 50 }),
+    )
+    expect(handler).toHaveBeenCalledOnce()
+  })
 })
