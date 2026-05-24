@@ -41,7 +41,7 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   /**
    * Event Hook to be triggered right before dialog creating.
    */
-  onReveal: EventHookOn<RevealData>
+  onReveal: EventHookOn<[RevealData]>
 
   /**
    * Event Hook to be called on `confirm()`.
@@ -75,10 +75,17 @@ export function useConfirmDialog<
   const cancelHook: EventHook = createEventHook<CancelData>()
   const revealHook: EventHook = createEventHook<RevealData>()
 
+  const onReveal: EventHookOn<[RevealData]> = (callback) => {
+    return revealHook.on((...data: any[]) => callback(data[0] as RevealData))
+  }
+
   let _resolve: (arg0: UseConfirmDialogRevealResult<ConfirmData, CancelData>) => void = noop
 
   const reveal = (data?: RevealData) => {
-    revealHook.trigger(data)
+    if (data === undefined)
+      revealHook.trigger()
+    else
+      revealHook.trigger(data)
     revealed.value = true
 
     return new Promise<UseConfirmDialogRevealResult<ConfirmData, CancelData>>((resolve) => {
@@ -104,7 +111,7 @@ export function useConfirmDialog<
     reveal,
     confirm,
     cancel,
-    onReveal: revealHook.on,
+    onReveal,
     onConfirm: confirmHook.on,
     onCancel: cancelHook.on,
   }
