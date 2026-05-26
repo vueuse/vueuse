@@ -17,7 +17,7 @@ npm i @vueuse/core
 ###### Demos
 
 - [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
-- [Nuxt 4 + Vue 3](https://github.com/antfu/vitesse-nuxt3)
+- [Nuxt 4 + Vue 3](https://github.com/antfu/vitesse-nuxt)
 - [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
 
 ### CDN
