@@ -160,9 +160,11 @@ describe('useElementOverflow', () => {
     })
 
     content.data = 'overflowed'
-    await nextTick()
 
-    expect(wrapper.text()).toBe('overflowed')
+    await vi.waitFor(() => {
+      expect(wrapper.text()).toBe('overflowed')
+    })
+
     expect(onUpdated).toHaveBeenCalled()
   })
 

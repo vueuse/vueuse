@@ -1,11 +1,7 @@
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import type { ResizeObserverCallback } from '../useResizeObserver'
-import {
-  tryOnMounted,
-  tryOnScopeDispose,
-} from '@vueuse/shared'
-import { effectScope, shallowReadonly, shallowRef } from 'vue'
+
+import { computed, shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
@@ -35,52 +31,55 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
   const isXOverflowed = shallowRef(false)
   const isYOverflowed = shallowRef(false)
 
-  const scope = effectScope()
-
   function update(htmlEl: HTMLElement) {
     isXOverflowed.value = htmlEl.scrollWidth > htmlEl.offsetWidth
     isYOverflowed.value = htmlEl.scrollHeight > htmlEl.offsetHeight
   }
 
-  function stop() {
-    scope.stop()
+  const onResizeUpdated = onUpdated as ResizeObserverCallback | undefined
+
+  const targetEl = computed(() => {
+    const el = unrefElement(target)
+    if (!el || el instanceof SVGElement)
+      return undefined
+
+    return el
+  })
+
+  const targets = () => {
+    const el = targetEl.value
+    if (!el || el instanceof SVGElement)
+      return []
+    return [el, ...Array.from(el.children).filter(i => i instanceof HTMLElement)]
   }
 
-  tryOnMounted(() => {
-    const el = unrefElement(target)
-    if (!el || el instanceof SVGElement || !window) {
-      return
+  useResizeObserver(targets, (entries, observer) => {
+    const el = targetEl.value
+    if (el) {
+      update(el)
     }
-    scope.run(() => {
-      if (!el || el instanceof SVGElement) {
-        return
-      }
-      const childEls = Array.from(el.children).filter(i => i instanceof HTMLElement)
-      const onResizeUpdated = onUpdated as ResizeObserverCallback | undefined
-      useResizeObserver([el, ...childEls] as HTMLElement[], (entries, observer) => {
-        update(el)
-        onResizeUpdated?.(entries, observer)
-      })
-      if (observeMutation) {
-        const onMutationUpdated = onUpdated as MutationCallback | undefined
-        useMutationObserver(
-          [el, ...childEls] as HTMLElement[],
-          (entries, observer) => {
-            update(el)
-            onMutationUpdated?.(entries, observer)
-          },
-          observeMutation === true
-            ? {
-                childList: true,
-                subtree: true,
-                characterData: true,
-              }
-            : observeMutation,
-        )
-      }
-    })
-  })
-  tryOnScopeDispose(stop)
+    onResizeUpdated?.(entries, observer)
+  }, { window })
+
+  if (observeMutation) {
+    const onMutationUpdated = onUpdated as MutationCallback | undefined
+    useMutationObserver(
+      targets,
+      (entries, observer) => {
+        const el = targetEl.value
+        if (el) {
+          update(el)
+        }
+        onMutationUpdated?.(entries, observer)
+      },
+      {
+        window,
+        ...(typeof observeMutation === 'object'
+          ? observeMutation
+          : { childList: true, subtree: true, characterData: true }),
+      },
+    )
+  }
   return {
     isXOverflowed: shallowReadonly(isXOverflowed),
     isYOverflowed: shallowReadonly(isYOverflowed),
@@ -88,8 +87,8 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
     stop,
     // update overflow state immediately
     update: () => {
-      const el = unrefElement(target)
-      if (el instanceof HTMLElement && window) {
+      const el = targetEl.value
+      if (el && window) {
         update(el)
       }
     },
