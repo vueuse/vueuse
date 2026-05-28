@@ -51,7 +51,7 @@ describe('useStyleTag', () => {
     expect(() => unload()).not.toThrow()
   })
 
-  it('should not error when two instances share the same id and both unmount', async () => {
+  it('should keep style element when two instances share the same id and only one unmounts', async () => {
     const scope1 = effectScope()
     const scope2 = effectScope()
 
@@ -70,12 +70,13 @@ describe('useStyleTag', () => {
     await nextTick()
     expect(document.getElementById('shared-test')).not.toBeNull()
 
-    // First scope unmounts - should remove the element
+    // First scope unmounts - element should still exist (scope2 still holds it)
     scope1.stop()
-    expect(document.getElementById('shared-test')).toBeNull()
+    expect(document.getElementById('shared-test')).not.toBeNull()
 
-    // Second scope unmounts - should not error (element already gone)
-    expect(() => scope2.stop()).not.toThrow()
+    // Second scope unmounts - last reference, element should be removed
+    scope2.stop()
+    expect(document.getElementById('shared-test')).toBeNull()
   })
 
   it('should not error when one component unloads and the other stays loaded with shared id', async () => {
@@ -93,11 +94,13 @@ describe('useStyleTag', () => {
 
     await nextTick()
 
-    // First scope unmounts
+    // First scope unmounts - element should still exist
     scope1.stop()
+    expect(document.getElementById('shared-test-2')).not.toBeNull()
 
     // Second scope is still active, should not error
     expect(() => scope2.stop()).not.toThrow()
+    expect(document.getElementById('shared-test-2')).toBeNull()
   })
 
   it('should create element with media attribute', async () => {
