@@ -107,7 +107,9 @@ export function useStyleTag(
     if (!document || !isLoaded.value)
       return
     stop()
-    document.head.removeChild(document.getElementById(id) as HTMLStyleElement)
+    const el = document.getElementById(id)
+    if (el)
+      document.head.removeChild(el)
     isLoaded.value = false
   }
 
