@@ -129,6 +129,17 @@ describe('useAsyncState', () => {
     expect(state.value).toBe('bar')
   })
 
+  it('does not call `onSuccess` from an outdated execution', async () => {
+    const onSuccess = vi.fn()
+    const { execute } = useAsyncState((returnValue: string, timeout: number) => promiseTimeout(timeout).then(() => returnValue), '', { immediate: false, onSuccess })
+    await Promise.all([
+      execute(0, 'foo', 100),
+      execute(0, 'bar', 50),
+    ])
+    expect(onSuccess).toHaveBeenCalledOnce()
+    expect(onSuccess).toHaveBeenCalledWith('bar')
+  })
+
   it('does not set `isReady` from an outdated execution', async () => {
     const { execute, isReady } = useAsyncState(promiseTimeout, shallowRef<void>())
     void execute(0, 0)
@@ -152,5 +163,15 @@ describe('useAsyncState', () => {
       execute(0, 0),
     ])
     expect(error.value).toBeUndefined()
+  })
+
+  it('does not call `onError` from an outdated execution', async () => {
+    const onError = vi.fn()
+    const { execute } = useAsyncState(promiseTimeout, shallowRef<void>(), { immediate: false, onError })
+    await Promise.all([
+      execute(0, 100, true),
+      execute(0, 0),
+    ])
+    expect(onError).not.toHaveBeenCalled()
   })
 })
