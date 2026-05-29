@@ -229,7 +229,8 @@ describe('useVirtualList, horizontal', () => {
       scrollTo,
     } = useVirtualList(mutableInput, { itemHeight: () => 10 })
 
-    containerRef.value = { ...document.createElement('div'), clientHeight: 100 }
+    const div = createDiv({ clientHeight: 100 })
+    containerRef.value = div
     scrollTo(0)
 
     expect(list.value.map(i => i.data)).toEqual(['a', 'b'])
