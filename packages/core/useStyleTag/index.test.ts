@@ -4,7 +4,7 @@ import { useStyleTag } from './index'
 
 describe('useStyleTag', () => {
   it('should create a style element', async () => {
-    const { css, isLoaded } = useStyleTag('body { color: red; }', { id: 'test-1' })
+    const { isLoaded } = useStyleTag('body { color: red; }', { id: 'test-1' })
 
     await nextTick()
 
