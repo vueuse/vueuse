@@ -30,14 +30,8 @@ export function useFuse<DataItem>(
   const fuse = shallowRef(createFuse())
 
   watch(
-    () => toValue(options)?.fuseOptions,
+    [() => toValue(data), () => toValue(options)?.fuseOptions],
     () => { fuse.value = createFuse() },
-    { deep: true },
-  )
-
-  watch(
-    () => toValue(data),
-    (newData) => { fuse.value.setCollection(newData) },
     { deep: true },
   )
 
