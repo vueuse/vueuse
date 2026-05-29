@@ -1364,7 +1364,7 @@ export interface UseVirtualListOptionsBase {
 }
 export interface UseVirtualListReturn<T> {
   list: Ref<UseVirtualListItem<T>[]>;
-  scrollTo: (_: number) => void;
+  scrollTo: (_: number, _?: UseVirtualListScrollToOptions) => void;
   containerProps: {
     ref: Ref<HTMLElement | null>;
     onScroll: () => void;
@@ -1382,6 +1382,11 @@ export interface UseVirtualListReturn<T> {
       display: string;
     };
   }>;
+}
+export interface UseVirtualListScrollToOptions {
+  behavior?: ScrollBehavior;
+  block?: ScrollLogicalPosition;
+  inline?: ScrollLogicalPosition;
 }
 export interface UseVModelOptions<T, Passive extends boolean = false> {
   passive?: Passive;
