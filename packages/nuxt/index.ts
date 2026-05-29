@@ -35,11 +35,15 @@ const packages = [
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
 
+interface AutoImportOptions {
+  disableFunctions?: string[]
+}
+
 export interface VueUseNuxtOptions {
   /**
    * @default true
    */
-  autoImports?: boolean
+  autoImports?: boolean | AutoImportOptions
 
   /**
    * @experimental
@@ -116,6 +120,11 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (i.package === 'shared')
             i.package = 'core'
         })
+
+        // disable the functions specified in options provided by user
+        if (typeof options.autoImports === 'object') {
+          disabledFunctions.push(...(options.autoImports.disableFunctions || []))
+        }
 
         for (const pkg of packages) {
           if (pkg === 'shared')
