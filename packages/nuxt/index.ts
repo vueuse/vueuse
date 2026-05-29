@@ -46,6 +46,8 @@ export interface VueUseNuxtOptions {
    * @default false
    */
   ssrHandlers?: boolean
+
+  disableFunctions?: string[]
 }
 
 /**
@@ -116,6 +118,9 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (i.package === 'shared')
             i.package = 'core'
         })
+
+        // disable the functions specified in options provided by user
+        disabledFunctions.push(...(options.disableFunctions || []))
 
         for (const pkg of packages) {
           if (pkg === 'shared')
