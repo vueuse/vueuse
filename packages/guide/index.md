@@ -79,11 +79,13 @@ You may also disable certain functions if there are name conflicts with other nu
 // nuxt.config.ts
 export default defineNuxtConfig({
   vueuse: {
-    disableFunctions: [
-      'useColorMode',
-      'useDark',
-      // Any other VueUse functions
-    ],
+    autoImports: {
+      disableFunctions: [
+        'useColorMode',
+        'useDark',
+        // Any other VueUse functions
+      ],
+    }
   },
 })
 ```

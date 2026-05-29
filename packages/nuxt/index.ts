@@ -35,19 +35,21 @@ const packages = [
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
 
+interface AutoImportOptions {
+  disableFunctions?: string[]
+}
+
 export interface VueUseNuxtOptions {
   /**
    * @default true
    */
-  autoImports?: boolean
+  autoImports?: boolean | AutoImportOptions
 
   /**
    * @experimental
    * @default false
    */
   ssrHandlers?: boolean
-
-  disableFunctions?: string[]
 }
 
 /**
@@ -120,7 +122,9 @@ export default defineNuxtModule<VueUseNuxtOptions>({
         })
 
         // disable the functions specified in options provided by user
-        disabledFunctions.push(...(options.disableFunctions || []))
+        if (typeof options.autoImports === 'object') {
+          disabledFunctions.push(...(options.autoImports.disableFunctions || []))
+        }
 
         for (const pkg of packages) {
           if (pkg === 'shared')
