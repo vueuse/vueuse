@@ -40,7 +40,11 @@ export interface UseVirtualListItem<T> {
   index: number
 }
 
-export interface UseVirtualListScrollToOptions { behavior?: ScrollBehavior, block?: ScrollLogicalPosition, inline?: ScrollLogicalPosition }
+export interface UseVirtualListScrollToOptions {
+  behavior?: ScrollBehavior
+  block?: ScrollLogicalPosition
+  inline?: ScrollLogicalPosition
+}
 
 export interface UseVirtualListReturn<T> {
   list: Ref<UseVirtualListItem<T>[]>
@@ -162,7 +166,13 @@ function createGetOffset<T>(source: UseVirtualListResources<T>['source'], itemSi
   }
 }
 
-function createCalculateRange<T>(type: 'horizontal' | 'vertical', overscan: number, getOffset: ReturnType<typeof createGetOffset>, getViewCapacity: ReturnType<typeof createGetViewCapacity>, { containerRef, state, currentList, source }: UseVirtualListResources<T>) {
+function createCalculateRange<T>(
+  type: 'horizontal' | 'vertical',
+  overscan: number,
+  getOffset: ReturnType<typeof createGetOffset>,
+  getViewCapacity: ReturnType<typeof createGetViewCapacity>,
+  { containerRef, state, currentList, source }: UseVirtualListResources<T>,
+) {
   return () => {
     const element = containerRef.value
     if (element) {
@@ -229,7 +239,13 @@ const scrollToDictionaryForElementScrollToKey = {
 
 const defaultScrollToOptions: UseVirtualListScrollToOptions = { behavior: 'auto', block: 'start', inline: 'nearest' }
 
-function createScrollTo<T>(type: 'horizontal' | 'vertical', calculateRange: () => void, getDistance: ReturnType<typeof createGetDistance>, containerRef: UseVirtualListResources<T>['containerRef'], itemSize: UseVirtualListItemSize) {
+function createScrollTo<T>(
+  type: 'horizontal' | 'vertical',
+  calculateRange: () => void,
+  getDistance: ReturnType<typeof createGetDistance>,
+  containerRef: UseVirtualListResources<T>['containerRef'],
+  itemSize: UseVirtualListItemSize,
+) {
   return (index: number, options: UseVirtualListScrollToOptions = defaultScrollToOptions) => {
     if (!containerRef.value)
       return
