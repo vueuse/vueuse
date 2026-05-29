@@ -178,8 +178,11 @@ export function onClickOutside(
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {
         const el = unrefElement(target)
+        let activeEl: Element | null | undefined = window.document.activeElement
+        while (activeEl?.shadowRoot)
+          activeEl = activeEl.shadowRoot.activeElement
         if (
-          window.document.activeElement?.tagName === 'IFRAME'
+          activeEl?.tagName === 'IFRAME'
           && !el?.contains(window.document.activeElement)
         ) {
           handler(event as any)

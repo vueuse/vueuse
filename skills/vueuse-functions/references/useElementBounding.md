@@ -107,6 +107,17 @@ export interface UseElementBoundingOptions {
    */
   updateTiming?: "sync" | "next-frame"
 }
+export interface UseElementBoundingReturn {
+  height: ShallowRef<number>
+  bottom: ShallowRef<number>
+  left: ShallowRef<number>
+  right: ShallowRef<number>
+  top: ShallowRef<number>
+  width: ShallowRef<number>
+  x: ShallowRef<number>
+  y: ShallowRef<number>
+  update: () => void
+}
 /**
  * Reactive bounding box of an HTML element.
  *
@@ -116,16 +127,5 @@ export interface UseElementBoundingOptions {
 export declare function useElementBounding(
   target: MaybeComputedElementRef,
   options?: UseElementBoundingOptions,
-): {
-  height: ShallowRef<number, number>
-  bottom: ShallowRef<number, number>
-  left: ShallowRef<number, number>
-  right: ShallowRef<number, number>
-  top: ShallowRef<number, number>
-  width: ShallowRef<number, number>
-  x: ShallowRef<number, number>
-  y: ShallowRef<number, number>
-  update: () => void
-}
-export type UseElementBoundingReturn = ReturnType<typeof useElementBounding>
+): UseElementBoundingReturn
 ```

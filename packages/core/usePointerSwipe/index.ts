@@ -1,8 +1,8 @@
-import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { ComputedRef, DeepReadonly, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { PointerType, Position } from '../types'
 import type { UseSwipeDirection } from '../useSwipe'
 import { toRef, tryOnMounted } from '@vueuse/shared'
-import { computed, reactive, readonly, shallowRef } from 'vue'
+import { computed, readonly as deepReadonly, reactive, shallowReadonly, shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export interface UsePointerSwipeOptions {
@@ -44,8 +44,8 @@ export interface UsePointerSwipeOptions {
 export interface UsePointerSwipeReturn {
   readonly isSwiping: ShallowRef<boolean>
   direction: Readonly<ShallowRef<UseSwipeDirection>>
-  readonly posStart: Position
-  readonly posEnd: Position
+  readonly posStart: DeepReadonly<Position>
+  readonly posEnd: DeepReadonly<Position>
   distanceX: Readonly<ComputedRef<number>>
   distanceY: Readonly<ComputedRef<number>>
   stop: () => void
@@ -170,10 +170,10 @@ export function usePointerSwipe(
   const stop = () => stops.forEach(s => s())
 
   return {
-    isSwiping: readonly(isSwiping),
-    direction: readonly(direction),
-    posStart: readonly(posStart),
-    posEnd: readonly(posEnd),
+    isSwiping: shallowReadonly(isSwiping),
+    direction: shallowReadonly(direction),
+    posStart: deepReadonly(posStart),
+    posEnd: deepReadonly(posEnd),
     distanceX,
     distanceY,
     stop,

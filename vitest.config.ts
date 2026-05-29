@@ -104,13 +104,29 @@ export default defineConfig({
           ],
           exclude: [
             'packages/**/*.{browser,server}.{test,spec}.ts',
+            'test/exports.test.ts',
           ],
           server: {
             deps: {
               inline: [
                 'vue',
                 'msw',
-                'vitest-package-exports',
+              ],
+            },
+          },
+        },
+      },
+      {
+        extends: './vitest.config.ts',
+        test: {
+          name: 'exports',
+          environment: 'node',
+          include: ['test/exports.test.ts'],
+          testTimeout: 120_000,
+          server: {
+            deps: {
+              inline: [
+                'tsnapi',
               ],
             },
           },

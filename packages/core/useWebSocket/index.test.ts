@@ -13,11 +13,13 @@ describe('useWebSocket', () => {
 
   beforeEach(() => {
     vi.stubGlobal('WebSocket', mockWebSocket)
+    vi.useFakeTimers()
   })
 
   afterEach(() => {
     vm?.unmount()
     vi.unstubAllGlobals()
+    vi.useRealTimers()
   })
 
   it('should be defined', () => {
@@ -354,8 +356,6 @@ describe('useWebSocket', () => {
   })
 
   describe('heartbeat', () => {
-    vi.useFakeTimers()
-
     it('should send a heartbeat if heartbeat=true', async () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {

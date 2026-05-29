@@ -1,10 +1,10 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { Ref, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import type { Supportable } from '../types'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -13,7 +13,7 @@ export interface UseGeolocationOptions extends Partial<PositionOptions>, Configu
 }
 
 export interface UseGeolocationReturn extends Supportable {
-  coords: Ref<Omit<GeolocationPosition['coords'], 'toJSON'>>
+  coords: ShallowRef<Omit<GeolocationPosition['coords'], 'toJSON'>>
   locatedAt: ShallowRef<number | null>
   error: ShallowRef<GeolocationPositionError | null>
   resume: () => void
@@ -39,7 +39,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}): UseGeolocat
 
   const locatedAt = shallowRef<number | null>(null)
   const error = shallowRef<GeolocationPositionError | null>(null)
-  const coords = deepRef<Omit<GeolocationPosition['coords'], 'toJSON'>>({
+  const coords = shallowRef<Omit<GeolocationPosition['coords'], 'toJSON'>>({
     accuracy: 0,
     latitude: Number.POSITIVE_INFINITY,
     longitude: Number.POSITIVE_INFINITY,

@@ -1,8 +1,8 @@
 import type { EventHookOn, Fn } from '@vueuse/shared'
-import type { MaybeRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { createEventHook, isObject, toRef, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, toValue, watch, watchEffect } from 'vue'
+import { shallowRef, toValue, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -123,14 +123,14 @@ export interface UseMediaControlsReturn {
   seeking: ShallowRef<boolean>
   ended: ShallowRef<boolean>
   stalled: ShallowRef<boolean>
-  buffered: Ref<[number, number][]>
+  buffered: ShallowRef<[number, number][]>
   playing: ShallowRef<boolean>
   rate: ShallowRef<number>
   // Volume
   volume: ShallowRef<number>
   muted: ShallowRef<boolean>
   // Tracks
-  tracks: Ref<UseMediaTextTrack[]>
+  tracks: ShallowRef<UseMediaTextTrack[]>
   selectedTrack: ShallowRef<number>
   enableTrack: (track: number | UseMediaTextTrack, disableTracks?: boolean) => void
   disableTrack: (track?: number | UseMediaTextTrack) => void
@@ -198,8 +198,8 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const playing = shallowRef(false)
   const rate = shallowRef(1)
   const stalled = shallowRef(false)
-  const buffered = deepRef<[number, number][]>([])
-  const tracks = deepRef<UseMediaTextTrack[]>([])
+  const buffered = shallowRef<[number, number][]>([])
+  const tracks = shallowRef<UseMediaTextTrack[]>([])
   const selectedTrack = shallowRef<number>(-1)
   const isPictureInPicture = shallowRef(false)
   const muted = shallowRef(false)

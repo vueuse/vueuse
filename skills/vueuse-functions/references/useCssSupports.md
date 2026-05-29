@@ -20,9 +20,7 @@ const { isSupported } = useCssSupports('container-type', 'scroll-state')
 export interface UseCssSupportsOptions extends ConfigurableWindow {
   ssrValue?: boolean
 }
-export interface UseCssSupportsReturn {
-  isSupported: ComputedRef<boolean>
-}
+export interface UseCssSupportsReturn extends Supportable {}
 export declare function useCssSupports(
   property: MaybeRefOrGetter<string>,
   value: MaybeRefOrGetter<string>,

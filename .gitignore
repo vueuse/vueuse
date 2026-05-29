@@ -1,6 +1,7 @@
 .DS_Store
 .idea
 .nuxt
+.ghfs
 .temp
 .turbo
 *.log
@@ -26,5 +27,4 @@ types
 coverage
 .eslintcache
 .vitepress/cache
-
 packages/**/__screenshots__

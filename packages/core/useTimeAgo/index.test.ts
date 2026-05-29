@@ -30,16 +30,12 @@ describe('useTimeAgo', () => {
   const changeValue = shallowRef(0)
   let changeTime: ComputedRef<number>
 
-  function reset() {
+  beforeEach(() => {
     vi.useFakeTimers()
     baseTime = timestamp()
     vi.setSystemTime(baseTime)
     changeValue.value = 0
     changeTime = computed(() => baseTime + changeValue.value)
-  }
-
-  beforeEach(() => {
-    reset()
   })
 
   afterEach(() => {
