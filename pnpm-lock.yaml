@@ -223,8 +223,8 @@ catalogs:
       specifier: ^2.14.2
       version: 2.14.2
     playwright:
-      specifier: 1.49.0
-      version: 1.49.0
+      specifier: 1.60.0
+      version: 1.60.0
     tsnapi:
       specifier: ^0.3.2
       version: 0.3.2
@@ -325,7 +325,7 @@ importers:
         version: 6.0.6(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vue@3.5.33(typescript@6.0.3))
       '@vitest/browser-playwright':
         specifier: catalog:test
-        version: 4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(playwright@1.49.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vitest@4.1.5)
+        version: 4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(playwright@1.60.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vitest@4.1.5)
       '@vitest/coverage-v8':
         specifier: catalog:test
         version: 4.1.5(@vitest/browser@4.1.5)(vitest@4.1.5)
@@ -421,7 +421,7 @@ importers:
         version: 1.5.1
       playwright:
         specifier: catalog:test
-        version: 1.49.0
+        version: 1.60.0
       pnpm:
         specifier: catalog:dev
         version: 10.33.2
@@ -5084,14 +5084,6 @@ packages:
     resolution: {integrity: sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==}
     engines: {node: '>=18'}
 
-  c12@3.3.3:
-    resolution: {integrity: sha512-750hTRvgBy5kcMNPdh95Qo+XUBeGo8C7nsKSmedDmaQI+E0r82DwHeM6vBewDe4rGFbnxoa4V9pw+sPh5+Iz8Q==}
-    peerDependencies:
-      magicast: '*'
-    peerDependenciesMeta:
-      magicast:
-        optional: true
-
   c12@3.3.4:
     resolution: {integrity: sha512-cM0ApFQSBXuourJejzwv/AuPRvAxordTyParRVcHjjtXirtkzM0uK2L9TTn9s0cXZbG7E55jCivRQzoxYmRAlA==}
     peerDependencies:
@@ -5601,10 +5593,6 @@ packages:
   dot-prop@9.0.0:
     resolution: {integrity: sha512-1gxPBJpI/pcjQhKgIU91II6Wkay+dLcN3M6rf2uwP8hRur3HtQXjVrdAK3sjC0piaEuxzMwjXChcETiJl47lAQ==}
     engines: {node: '>=18'}
-
-  dotenv@17.2.3:
-    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
-    engines: {node: '>=12'}
 
   dotenv@17.4.2:
     resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
@@ -6334,10 +6322,6 @@ packages:
 
   get-tsconfig@4.14.0:
     resolution: {integrity: sha512-yTb+8DXzDREzgvYmh6s9vHsSVCHeC0G3PI5bEXNBHtmshPnO+S5O7qgLEOn0I5QvMy6kpZN8K1NKGyilLb93wA==}
-
-  giget@2.0.0:
-    resolution: {integrity: sha512-L5bGsVkxJbJgdnwyuheIunkGatUF/zssUoxxjACCseZYAVbaqdh9Tsmmlkl8vYan09H7sbvKt4pS8GqKLBrEzA==}
-    hasBin: true
 
   giget@3.2.0:
     resolution: {integrity: sha512-GvHTWcykIR/fP8cj8dMpuMMkvaeJfPvYnhq0oW+chSeIr+ldX21ifU2Ms6KBoyKZQZmVaUAAhQ2EZ68KJF8a7A==}
@@ -7545,11 +7529,6 @@ packages:
       '@types/node':
         optional: true
 
-  nypm@0.6.5:
-    resolution: {integrity: sha512-K6AJy1GMVyfyMXRVB88700BJqNUkByijGJM8kEHpLdcAt+vSQAVfkWWHYzuRXHSY6xA2sNc5RjTj0p9rE2izVQ==}
-    engines: {node: '>=18'}
-    hasBin: true
-
   nypm@0.6.6:
     resolution: {integrity: sha512-vRyr0r4cbBapw07Xw8xrj9Teq3o7MUD35rSaTcanDbW+aK2XHDgJFiU6ZTj2GBw7Q12ysdsyFss+Vdz4hQ0Y6Q==}
     engines: {node: '>=18'}
@@ -7798,13 +7777,13 @@ packages:
   pkg-types@2.3.1:
     resolution: {integrity: sha512-y+ichcgc2LrADuhLNAx8DFjVfgz91pRxfZdI3UDhxHvcVEZsenLO+7XaU5vOp0u/7V/wZ+plyuQxtrDlZJ+yeg==}
 
-  playwright-core@1.49.0:
-    resolution: {integrity: sha512-R+3KKTQF3npy5GTiKH/T+kdhoJfJojjHESR1YEWhYuEKRVfVaxH3+4+GvXE5xyCngCxhxnykk0Vlah9v8fs3jA==}
+  playwright-core@1.60.0:
+    resolution: {integrity: sha512-9bW6zvX/m0lEbgTKJ6YppOKx8H3VOPBMOCFh2irXFOT4BbHgrx5hPjwJYLT40Lu+4qtD36qKc/Hn56StUW57IA==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.49.0:
-    resolution: {integrity: sha512-eKpmys0UFDnfNb3vfsf8Vx2LEOtflgRebl0Im2eQQnYMA4Aqd+Zw8bEOB+7ZKvN76901mRnqdsiOGKxzVTbi7A==}
+  playwright@1.60.0:
+    resolution: {integrity: sha512-hheHdokM8cdqCb0lcE3s+zT4t4W+vvjpGxsZlDnikarzx8tSzMebh3UiFtgqwFwnTnjYQcsyMF8ei2mCO/tpeA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -12017,7 +11996,7 @@ snapshots:
 
   '@nuxt/kit@3.19.3(magicast@0.5.2)':
     dependencies:
-      c12: 3.3.3(magicast@0.5.2)
+      c12: 3.3.4(magicast@0.5.2)
       consola: 3.4.2
       defu: 6.1.7
       destr: 2.0.5
@@ -12030,13 +12009,13 @@ snapshots:
       mlly: 1.8.2
       ohash: 2.0.11
       pathe: 2.0.3
-      pkg-types: 2.3.0
+      pkg-types: 2.3.1
       rc9: 2.1.2
       scule: 1.3.0
       semver: 7.7.4
       std-env: 3.10.0
       tinyglobby: 0.2.16
-      ufo: 1.6.3
+      ufo: 1.6.4
       unctx: 2.5.0
       unimport: 5.6.0
       untyped: 2.0.0
@@ -13663,11 +13642,11 @@ snapshots:
       vite: 8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
       vue: 3.5.33(typescript@6.0.3)
 
-  '@vitest/browser-playwright@4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(playwright@1.49.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vitest@4.1.5)':
+  '@vitest/browser-playwright@4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(playwright@1.60.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vitest@4.1.5)':
     dependencies:
       '@vitest/browser': 4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vitest@4.1.5)
       '@vitest/mocker': 4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))
-      playwright: 1.49.0
+      playwright: 1.60.0
       tinyrainbow: 3.1.0
       vitest: 4.1.5(@opentelemetry/api@1.9.0)(@types/node@25.6.0)(@vitest/browser-playwright@4.1.5)(@vitest/coverage-v8@4.1.5)(@vitest/ui@4.1.5)(jsdom@29.1.1)(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))
     transitivePeerDependencies:
@@ -14318,24 +14297,6 @@ snapshots:
     dependencies:
       run-applescript: 7.0.0
 
-  c12@3.3.3(magicast@0.5.2):
-    dependencies:
-      chokidar: 5.0.0
-      confbox: 0.2.4
-      defu: 6.1.7
-      dotenv: 17.2.3
-      exsolve: 1.0.8
-      giget: 2.0.0
-      jiti: 2.6.1
-      ohash: 2.0.11
-      pathe: 2.0.3
-      perfect-debounce: 2.1.0
-      pkg-types: 2.3.0
-      rc9: 2.1.2
-    optionalDependencies:
-      magicast: 0.5.2
-    optional: true
-
   c12@3.3.4(magicast@0.5.2):
     dependencies:
       chokidar: 5.0.0
@@ -14811,9 +14772,6 @@ snapshots:
   dot-prop@9.0.0:
     dependencies:
       type-fest: 4.30.0
-    optional: true
-
-  dotenv@17.2.3:
     optional: true
 
   dotenv@17.4.2: {}
@@ -15761,16 +15719,6 @@ snapshots:
   get-tsconfig@4.14.0:
     dependencies:
       resolve-pkg-maps: 1.0.0
-
-  giget@2.0.0:
-    dependencies:
-      citty: 0.1.6
-      consola: 3.4.2
-      defu: 6.1.7
-      node-fetch-native: 1.6.7
-      nypm: 0.6.5
-      pathe: 2.0.3
-    optional: true
 
   giget@3.2.0: {}
 
@@ -17421,13 +17369,6 @@ snapshots:
       - xml2js
       - yaml
 
-  nypm@0.6.5:
-    dependencies:
-      citty: 0.2.2
-      pathe: 2.0.3
-      tinyexec: 1.1.1
-    optional: true
-
   nypm@0.6.6:
     dependencies:
       citty: 0.2.2
@@ -17797,11 +17738,11 @@ snapshots:
       exsolve: 1.0.8
       pathe: 2.0.3
 
-  playwright-core@1.49.0: {}
+  playwright-core@1.60.0: {}
 
-  playwright@1.49.0:
+  playwright@1.60.0:
     dependencies:
-      playwright-core: 1.49.0
+      playwright-core: 1.60.0
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -19552,7 +19493,7 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
       '@types/node': 25.6.0
-      '@vitest/browser-playwright': 4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(playwright@1.49.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vitest@4.1.5)
+      '@vitest/browser-playwright': 4.1.5(msw@2.14.2(@types/node@25.6.0)(typescript@6.0.3))(playwright@1.60.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(vitest@4.1.5)
       '@vitest/coverage-v8': 4.1.5(@vitest/browser@4.1.5)(vitest@4.1.5)
       '@vitest/ui': 4.1.5(vitest@4.1.5)
       jsdom: 29.1.1
