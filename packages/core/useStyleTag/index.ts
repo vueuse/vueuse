@@ -48,7 +48,7 @@ export interface UseStyleTagReturn {
 }
 
 let _id = 0
-const _count = new Map<string, number>()
+const _refCount = new WeakMap<HTMLStyleElement, number>()
 
 /**
  * Inject <style> element in head.
@@ -93,7 +93,7 @@ export function useStyleTag(
     if (isLoaded.value)
       return
 
-    _count.set(id, (_count.get(id) ?? 0) + 1)
+    _refCount.set(el, (_refCount.get(el) ?? 0) + 1)
 
     stop = watch(
       cssRef,
@@ -111,15 +111,16 @@ export function useStyleTag(
       return
     stop()
 
-    const count = (_count.get(id) ?? 1) - 1
-    if (count <= 0) {
-      _count.delete(id)
-      const el = document.getElementById(id)
-      if (el)
+    const el = document.getElementById(id) as HTMLStyleElement | null
+    if (el) {
+      const count = (_refCount.get(el) ?? 1) - 1
+      if (count <= 0) {
+        _refCount.delete(el)
         document.head.removeChild(el)
-    }
-    else {
-      _count.set(id, count)
+      }
+      else {
+        _refCount.set(el, count)
+      }
     }
 
     isLoaded.value = false
