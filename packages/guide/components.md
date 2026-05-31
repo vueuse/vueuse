@@ -33,7 +33,7 @@ onClickOutside(el, close)
 </template>
 ```
 
-We can now use the renderless component which the binding is done automatically:
+We can now use the component which handles the binding automatically. Note that `OnClickOutside` renders a wrapper element (a `<div>` by default) that can be customized with the `as` prop:
 
 ```vue
 <script setup>
