@@ -17,7 +17,7 @@ const target = useTemplateRef('target')
 const targetIsVisible = useElementVisibility(target)
 
 const target2 = useTemplateRef('target2')
-const targetVisibilityController = useElementVisibility(target2, { controls: true })
+const { isVisible, isActive, stop } = useElementVisibility(target2, { controls: true })
 </script>
 
 <template>
@@ -29,6 +29,33 @@ const targetVisibilityController = useElementVisibility(target2, { controls: tru
     <h1>Hi there</h1>
   </div>
 </template>
+```
+
+### Controls
+
+When `controls: true` is set, the returned object includes additional properties for more control:
+
+| Property     | Type                       | Description                                      |
+|--------------|----------------------------|--------------------------------------------------|
+| `isVisible`  | `ShallowRef<boolean>`      | Whether the element is visible in the viewport   |
+| `isActive`   | `Readonly<ShallowRef<boolean>>` | Whether the observer is currently active      |
+| `stop`       | `() => void`               | Stop the observer                                |
+| `pause`      | `() => void`               | Pause the observer                               |
+| `resume`     | `() => void`               | Resume the observer                              |
+| `isSupported`| `ShallowRef<boolean>`      | Whether `IntersectionObserver` is supported       |
+
+Use the `once` option together with `controls` to automatically stop the observer after the first visibility change, and check `isActive` to know when it has stopped:
+
+```ts
+const { isVisible, isActive } = useElementVisibility(target, {
+  once: true,
+  controls: true,
+})
+
+watch(isActive, (active) => {
+  if (!active)
+    console.log('Observer stopped after first visibility change')
+})
 ```
 
 ### rootMargin
