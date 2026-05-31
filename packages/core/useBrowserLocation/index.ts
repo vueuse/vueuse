@@ -48,7 +48,7 @@ export type UseBrowserLocationReturn = Ref<BrowserLocationState>
 export function useBrowserLocation(options: UseBrowserLocationOptions = {}): UseBrowserLocationReturn {
   const { window = defaultWindow } = options
   const refs = Object.fromEntries(
-    WRITABLE_PROPERTIES.map(key => [key, deepRef()]),
+    WRITABLE_PROPERTIES.map(key => [key, deepRef(window?.location?.[key])]),
   ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>
 
   for (const [key, ref] of objectEntries(refs)) {
