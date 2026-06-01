@@ -91,7 +91,7 @@ catalogs:
     fake-indexeddb: ^6.2.5
     jsdom: ^29.1.1
     msw: ^2.14.2
-    playwright: 1.49.0
+    playwright: 1.60.0
     tsnapi: ^0.3.2
     vitest: ^4.1.5
     vitest-browser-vue: ^2.1.0

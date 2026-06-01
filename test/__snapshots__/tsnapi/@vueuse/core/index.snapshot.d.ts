@@ -185,6 +185,10 @@ export interface OnLongPressOptions {
   distanceThreshold?: number | false;
   onMouseUp?: (_: number, _: number, _: boolean, _: PointerEvent) => void;
 }
+export interface OnStartTypingOptions extends ConfigurableDocument {
+  isTypedCharValid?: (_: KeyboardEvent) => boolean;
+  isFocusedElementEditable?: () => boolean;
+}
 export interface Position {
   x: number;
   y: number;
@@ -1163,9 +1167,10 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
 }
 export interface UseSpeechRecognitionReturn extends Supportable {
   isListening: ShallowRef<boolean>;
-  isFinal: ShallowRef<boolean>;
+  isFinal: Readonly<ShallowRef<boolean>>;
   recognition: SpeechRecognition | undefined;
-  result: ShallowRef<string>;
+  result: Readonly<ShallowRef<string>>;
+  confidence: Readonly<ShallowRef<number>>;
   error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>;
   toggle: (_?: boolean) => void;
   start: () => void;
@@ -1359,7 +1364,7 @@ export interface UseVirtualListOptionsBase {
 }
 export interface UseVirtualListReturn<T> {
   list: Ref<UseVirtualListItem<T>[]>;
-  scrollTo: (_: number) => void;
+  scrollTo: (_: number, _?: UseVirtualListScrollToOptions) => void;
   containerProps: {
     ref: Ref<HTMLElement | null>;
     onScroll: () => void;
@@ -1377,6 +1382,11 @@ export interface UseVirtualListReturn<T> {
       display: string;
     };
   }>;
+}
+export interface UseVirtualListScrollToOptions {
+  behavior?: ScrollBehavior;
+  block?: ScrollLogicalPosition;
+  inline?: ScrollLogicalPosition;
 }
 export interface UseVModelOptions<T, Passive extends boolean = false> {
   passive?: Passive;
@@ -1686,6 +1696,13 @@ export declare function formatTimeAgo<UnitNames extends string = UseTimeAgoUnitN
 export declare function formatTimeAgoIntl(_: Date, _?: FormatTimeAgoIntlOptions, _?: Date | number): string;
 export declare function formatTimeAgoIntlParts(_: Intl.RelativeTimeFormatPart[], _?: FormatTimeAgoIntlOptions): string;
 export declare function getSSRHandler<T extends keyof SSRHandlersMap>(_: T, _: SSRHandlersMap[T] | undefined): SSRHandlersMap[T] | undefined;
+export declare function isFocusedElementEditable(): boolean;
+export declare function isTypedCharValid({
+  keyCode,
+  metaKey,
+  ctrlKey,
+  altKey
+}: KeyboardEvent): boolean;
 export declare function mapGamepadToXbox360Controller(_: Ref<Gamepad | undefined>): _$vue.ComputedRef<{
   buttons: {
     a: GamepadButton;
@@ -1733,7 +1750,7 @@ export declare function onKeyPressed(_: KeyFilter, _: (_: KeyboardEvent) => void
 export declare function onKeyStroke(_: (_: KeyboardEvent) => void, _?: OnKeyStrokeOptions): () => void;
 export declare function onKeyUp(_: KeyFilter, _: (_: KeyboardEvent) => void, _?: Omit<OnKeyStrokeOptions, 'eventName'>): () => void;
 export declare function onLongPress(_: MaybeElementRef, _: (_: PointerEvent) => void, _?: OnLongPressOptions): OnLongPressReturn;
-export declare function onStartTyping(_: (_: KeyboardEvent) => void, _?: ConfigurableDocument): void;
+export declare function onStartTyping(_: (_: KeyboardEvent) => void, _?: OnStartTypingOptions): void;
 export declare function provideSSRWidth(_: number | null, _?: App<unknown>): void;
 export declare function setSSRHandler<T extends keyof SSRHandlersMap>(_: T, _: SSRHandlersMap[T]): void;
 export declare function templateRef<T extends HTMLElement | SVGElement | Component | null, Keys extends string = string>(_: Keys, _?: T | null): Readonly<Ref<T>>;
