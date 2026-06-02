@@ -21,16 +21,21 @@ export declare function logicAnd(..._: MaybeRefOrGetter<any>[]): ComputedRef<boo
 export declare function logicNot(_: MaybeRefOrGetter<any>): ComputedRef<boolean>;
 export declare function logicOr(..._: MaybeRefOrGetter<any>[]): ComputedRef<boolean>;
 export declare function useAbs(_: MaybeRefOrGetter<number>): ComputedRef<number>;
+export declare function useAverage(_: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>): ComputedRef<number>;
 export declare function useAverage(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
 export declare function useCeil(_: MaybeRefOrGetter<number>): ComputedRef<number>;
+export declare function useClamp(_: ReadonlyRefOrGetter<number>, _: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<number>): ComputedRef<number>;
 export declare function useClamp(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<number>): Ref<number>;
 export declare function useFloor(_: MaybeRefOrGetter<number>): ComputedRef<number>;
 export declare function useMath<K extends keyof Math>(_: K, ..._: ArgumentsType<Reactified<Math[K], true>>): UseMathReturn<K>;
+export declare function useMax(_: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>): ComputedRef<number>;
 export declare function useMax(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
+export declare function useMin(_: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>): ComputedRef<number>;
 export declare function useMin(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
 export declare function usePrecision(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<number>, _?: MaybeRefOrGetter<UsePrecisionOptions>): ComputedRef<number>;
 export declare function useProjection(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<readonly [number, number]>, _: MaybeRefOrGetter<readonly [number, number]>, _?: ProjectorFunction<number, number>): _$vue.ComputedRef<number>;
 export declare function useRound(_: MaybeRefOrGetter<number>): ComputedRef<number>;
+export declare function useSum(_: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>): ComputedRef<number>;
 export declare function useSum(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
 export declare function useTrunc(_: MaybeRefOrGetter<number>): ComputedRef<number>;
 // #endregion
