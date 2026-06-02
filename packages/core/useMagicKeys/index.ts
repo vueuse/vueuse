@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { noop } from '@vueuse/shared'
-import { computed, reactive, shallowRef, toValue } from 'vue'
+import { computed, reactive, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -213,6 +213,59 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
   )
 
   return proxy as UseMagicKeysReturn<T>
+}
+
+export interface UseHotkeyOptions {
+  /**
+   * Only trigger once, then clean up
+   *
+   * @default false
+   */
+  once?: boolean
+
+  /**
+   * Trigger on keydown or keyup
+   *
+   * @default 'keydown'
+   */
+  trigger?: 'keydown' | 'keyup'
+
+  /**
+   * Target for listening events
+   *
+   * @default window
+   */
+  target?: MaybeRefOrGetter<EventTarget>
+}
+
+/**
+ * Register a keyboard shortcut with a human-readable combo string.
+ *
+ * @see https://vueuse.org/useMagicKeys#usehotkey
+ */
+export function useHotkey(
+  combo: string,
+  handler: () => void,
+  options: UseHotkeyOptions = {},
+): { cleanup: () => void } {
+  const { once = false, trigger: triggerOn = 'keydown', target = defaultWindow } = options
+
+  const keys = combo.split('+').map(k => k.trim().toLowerCase())
+  const magicKeys = useMagicKeys({ target })
+  const isPressed = computed(() => toValue(magicKeys[keys.join('_')]))
+
+  let prev = false
+  const stop = watch(isPressed, (curr) => {
+    const fire = triggerOn === 'keyup' ? (!curr && prev) : (curr && !prev)
+    if (fire) {
+      handler()
+      if (once)
+        stop()
+    }
+    prev = curr
+  }, { flush: 'sync' })
+
+  return { cleanup: stop }
 }
 
 export { DefaultMagicKeysAliasMap } from './aliasMap'

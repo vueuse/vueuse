@@ -164,6 +164,28 @@ whenever(ctrl_s, () => console.log('Ctrl+S have been pressed'))
 
 > ⚠️ This usage is NOT recommended, please use with caution.
 
+### useHotkey
+
+For simpler cases, you can use `useHotkey` which wraps `useMagicKeys` with a string-based API:
+
+```ts
+import { useHotkey } from '@vueuse/core'
+
+useHotkey('Alt+ArrowRight', () => {
+  x += 10
+})
+```
+
+You can also configure it to fire only once, or on keyup:
+
+```ts
+useHotkey('Ctrl+S', handler, { once: true })
+
+useHotkey('Shift+A', handler, { trigger: 'keyup' })
+```
+
+The function returns a `cleanup` function to manually stop listening.
+
 ### Reactive Mode
 
 By default, the values of `useMagicKeys()` are `Ref<boolean>`. If you want to use the object in the template, you can set it to reactive mode.
