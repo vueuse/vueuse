@@ -259,7 +259,7 @@ export interface UseWebSocketReturn<T> {
    * Reference to the latest data received via the websocket,
    * can be watched to respond to incoming messages
    */
-  data: Ref<T | null>
+  data: ShallowRef<T | null>
   /**
    * The current websocket status, can be only one of:
    * 'OPEN', 'CONNECTING', 'CLOSED'
@@ -284,7 +284,7 @@ export interface UseWebSocketReturn<T> {
   /**
    * Reference to the WebSocket instance.
    */
-  ws: Ref<WebSocket | undefined>
+  ws: ShallowRef<WebSocket | undefined>
 }
 /**
  * Reactive WebSocket client.

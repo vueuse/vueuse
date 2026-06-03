@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify, PromisifyFn, TimerHandle } from './types'
-import { isRef, readonly, shallowRef, toValue } from 'vue'
+import { isRef, shallowReadonly, shallowRef, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'
 
@@ -178,7 +178,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
         resolve(lastInvoker())
       }
     },
-    isPending: readonly(_pending),
+    isPending: shallowReadonly(_pending),
   })
 
   return filter
@@ -306,5 +306,5 @@ export function pausableFilter(extendFilter: EventFilter = bypassFilter, options
       extendFilter(...args)
   }
 
-  return { isActive: readonly(isActive), pause, resume, eventFilter }
+  return { isActive: shallowReadonly(isActive), pause, resume, eventFilter }
 }

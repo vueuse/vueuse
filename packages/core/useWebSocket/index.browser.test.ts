@@ -90,6 +90,51 @@ describe('useWebSocket', () => {
       expect(status.value).toBe('CONNECTING')
     })
 
+    it('should not update status from stale websocket on open', () => {
+      const { ws, status, open } = useWebSocket('ws://localhost', {
+        immediate: true,
+      })
+
+      const oldWs = ws.value
+
+      open()
+
+      expect(ws.value).not.toBe(oldWs)
+      expect(status.value).toBe('CONNECTING')
+
+      // Simulate stale websocket opening after new connection was created
+      oldWs?.onopen?.(new Event('open'))
+
+      expect(status.value).toBe('CONNECTING')
+
+      ws.value?.onopen?.(new Event('open'))
+      expect(status.value).toBe('OPEN')
+    })
+
+    it('should not update status from stale websocket on close', () => {
+      const { ws, status, open } = useWebSocket('ws://localhost', {
+        immediate: true,
+      })
+
+      ws.value?.onopen?.(new Event('open'))
+      expect(status.value).toBe('OPEN')
+
+      const oldWs = ws.value
+
+      open()
+
+      expect(ws.value).not.toBe(oldWs)
+      expect(status.value).toBe('CONNECTING')
+
+      ws.value?.onopen?.(new Event('open'))
+      expect(status.value).toBe('OPEN')
+
+      // Simulate stale websocket closing after new connection is open
+      oldWs?.onclose?.(new CloseEvent('close'))
+
+      expect(status.value).toBe('OPEN')
+    })
+
     it('should support delay as a number', () => {
       const DELAY_TIME = 2500
 

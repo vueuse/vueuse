@@ -37,6 +37,12 @@ const {
 
 ```ts
 export interface UsePointerLockOptions extends ConfigurableDocument {}
+export interface UsePointerLockReturn extends Supportable {
+  element: ShallowRef<MaybeElement>
+  triggerElement: ShallowRef<MaybeElement>
+  lock: (e: MaybeElementRef | Event) => Promise<MaybeElement>
+  unlock: () => Promise<boolean>
+}
 /**
  * Reactive pointer lock.
  *
@@ -49,12 +55,5 @@ export interface UsePointerLockOptions extends ConfigurableDocument {}
 export declare function usePointerLock(
   target?: MaybeElementRef,
   options?: UsePointerLockOptions,
-): {
-  isSupported: ComputedRef<boolean>
-  element: ShallowRef<MaybeElement, MaybeElement>
-  triggerElement: ShallowRef<MaybeElement, MaybeElement>
-  lock: (e: MaybeElementRef | Event) => Promise<HTMLElement | SVGElement>
-  unlock: () => Promise<boolean>
-}
-export type UsePointerLockReturn = ReturnType<typeof usePointerLock>
+): UsePointerLockReturn
 ```
