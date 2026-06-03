@@ -6,9 +6,9 @@ import { toRef, useIntervalFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
-function getDefaultScheduler(options: UseVibrateOptions = { interval: 0 }) {
+function getDefaultScheduler(options: UseVibrateOptions = {}) {
   const {
-    interval,
+    interval = 0,
   } = options
 
   if (interval === 0)
@@ -44,7 +44,7 @@ export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableSc
    * @default 0
    *
    */
-  interval: number
+  interval?: number
 }
 
 export interface UseVibrateReturn extends Supportable {
