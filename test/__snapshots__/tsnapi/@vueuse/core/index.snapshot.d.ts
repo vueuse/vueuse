@@ -1347,7 +1347,7 @@ export interface UseVerticalVirtualListOptions extends UseVirtualListOptionsBase
 }
 export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableScheduler {
   pattern?: MaybeRefOrGetter<Arrayable<number>>;
-  interval: number;
+  interval?: number;
 }
 export interface UseVibrateReturn extends Supportable {
   pattern: MaybeRefOrGetter<Arrayable<number>>;
