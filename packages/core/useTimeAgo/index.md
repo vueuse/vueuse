@@ -1,5 +1,6 @@
 ---
 category: Time
+variants: formatTimeAgo
 ---
 
 # useTimeAgo
