@@ -20,18 +20,16 @@ export function useFuse<DataItem>(
   data: MaybeRefOrGetter<DataItem[]>,
   options?: MaybeRefOrGetter<UseFuseOptions<DataItem>>,
 ): UseFuseReturn<DataItem> {
-  const createFuse = () => {
-    return new Fuse(
-      toValue(data) ?? [],
-      toValue(options)?.fuseOptions,
-    )
-  }
+  const createFuse = (
+    d = toValue(data) ?? [],
+    fuseOpts = toValue(options)?.fuseOptions,
+  ) => new Fuse(d, fuseOpts)
 
   const fuse = shallowRef(createFuse())
 
   watch(
     [() => toValue(data), () => toValue(options)?.fuseOptions],
-    () => { fuse.value = createFuse() },
+    ([newData, newFuseOptions]) => { fuse.value = createFuse(newData ?? [], newFuseOptions) },
     { deep: true },
   )
 
