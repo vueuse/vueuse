@@ -10,10 +10,6 @@ related:
 
 Reactive color mode (dark / light / customs) with auto data persistence.
 
-::: tip
-When using with Nuxt and [`@nuxtjs/color-mode`](https://color-mode.nuxtjs.org/), this function will **NOT** be auto imported in favor of Nuxt Color Modes built-in [`useColorMode()`](https://color-mode.nuxtjs.org/usage/basic). Use explicit import if you want to use the function from VueUse.
-:::
-
 ## Basic Usage
 
 ```ts
