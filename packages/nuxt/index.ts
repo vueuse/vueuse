@@ -1,7 +1,7 @@
 import type { Import, Preset } from 'unimport'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineNuxtModule } from '@nuxt/kit'
+import { defineNuxtModule, hasNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
 import { isPackageExists } from 'local-pkg'
 
@@ -116,6 +116,11 @@ export default defineNuxtModule<VueUseNuxtOptions>({
           if (i.package === 'shared')
             i.package = 'core'
         })
+
+        // disable useColorMode in favor of nuxt color mode
+        if (hasNuxtModule('@nuxtjs/color-mode')) {
+          disabledFunctions.push('useColorMode')
+        }
 
         for (const pkg of packages) {
           if (pkg === 'shared')

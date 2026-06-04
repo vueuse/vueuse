@@ -112,7 +112,7 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 </template>
 ```
 
-To scroll to a specific element, the component exposes `scrollTo(index: number) => void`.
+To scroll to a specific element, the component exposes `scrollTo(index: number, options?: { behavior?: ScrollBehavior, block?: ScrollLogicalPosition, inline?: ScrollLogicalPosition }) => void`.
 
 ## Type Declarations
 
@@ -149,9 +149,14 @@ export interface UseVirtualListItem<T> {
   data: T
   index: number
 }
+export interface UseVirtualListScrollToOptions {
+  behavior?: ScrollBehavior
+  block?: ScrollLogicalPosition
+  inline?: ScrollLogicalPosition
+}
 export interface UseVirtualListReturn<T> {
   list: Ref<UseVirtualListItem<T>[]>
-  scrollTo: (index: number) => void
+  scrollTo: (index: number, options?: UseVirtualListScrollToOptions) => void
   containerProps: {
     ref: Ref<HTMLElement | null>
     onScroll: () => void

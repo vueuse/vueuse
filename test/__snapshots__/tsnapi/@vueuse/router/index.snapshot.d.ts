@@ -7,6 +7,8 @@ export declare function useRouteHash(_?: MaybeRefOrGetter<RouteHashValueRaw>, {
   route,
   router
 }?: ReactiveRouteOptions): _$vue.Ref<RouteHashValueRaw, RouteHashValueRaw>;
+export declare function useRouteParams(_: string): Ref<null | string | string[]>;
 export declare function useRouteParams<T extends RouteParamValueRaw = RouteParamValueRaw, K = T>(_: string, _?: MaybeRefOrGetter<T>, _?: ReactiveRouteOptionsWithTransform<T, K>): Ref<K>;
+export declare function useRouteQuery(_: string): Ref<undefined | null | string | string[]>;
 export declare function useRouteQuery<T extends RouteQueryValueRaw = RouteQueryValueRaw, K = T>(_: string, _?: MaybeRefOrGetter<T>, _?: ReactiveRouteOptionsWithTransform<T, K>): Ref<K>;
 // #endregion

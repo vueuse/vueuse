@@ -281,6 +281,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 
 | Function | Description | Invocation |
 |----------|-------------|------------|
+| [`createDisposableDirective`](references/createDisposableDirective.md) | Utility for authoring disposable directives | AUTO |
 | [`createEventHook`](references/createEventHook.md) | Utility for creating event hooks | AUTO |
 | [`createUnrefFn`](references/createUnrefFn.md) | Make a plain function accepting ref and raw values as arguments | AUTO |
 | [`get`](references/get.md) | Shorthand for accessing `ref.value` | EXPLICIT_ONLY |
