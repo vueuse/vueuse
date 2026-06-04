@@ -117,7 +117,27 @@ describe('useAsyncState', () => {
     const { state } = useAsyncState(asyncValue, initialState)
     await asyncValue
     expect(state.value).toBe(100)
-    expect(initialState).toBe(state)
+    // initialState.value reflects the resolved value (state reads from _source)
+    expect(initialState.value).toBe(200)
+  })
+
+  it('setting state.value directly cancels in-flight execution', async () => {
+    const { state, isLoading, isReady } = useAsyncState(
+      () => promiseTimeout(100).then(() => 99),
+      0,
+      { immediate: true },
+    )
+
+    // Override state before the promise resolves
+    state.value = 42
+
+    await promiseTimeout(150)
+
+    // The promise resolved with 99, but the manual write should have won
+    expect(state.value).toBe(42)
+    expect(isLoading.value).toBe(false)
+    // isReady stays false because execute() detected it was cancelled
+    expect(isReady.value).toBe(false)
   })
 
   it('does not set `state` from an outdated execution', async () => {

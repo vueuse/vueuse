@@ -1,6 +1,6 @@
 import type { MaybeRef, Ref, ShallowRef, UnwrapRef } from 'vue'
 import { noop, promiseTimeout, until } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, toValue } from 'vue'
+import { customRef, ref as deepRef, shallowRef, toValue } from 'vue'
 
 export interface UseAsyncStateReturnBase<Data, Params extends any[], Shallow extends boolean> {
   state: Shallow extends true ? Ref<Data> : Ref<UnwrapRef<Data>>
@@ -93,17 +93,50 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     shallow = true,
     throwError,
   } = options ?? {}
-  const state = shallow ? shallowRef(initialState) : deepRef(initialState)
   const isReady = shallowRef(false)
   const isLoading = shallowRef(false)
   const error = shallowRef<unknown | undefined>(undefined)
 
   let executionsCount = 0
+
+  // Setting state.value externally (outside of execute()) cancels any in-flight
+  // execution so the promise result cannot overwrite the caller's value.
+  // We track this with an _internalWrite flag: execute() sets it before writing
+  // state, so the customRef setter knows not to bump executionsCount.
+  let _internalWrite = false
+  // _source holds the raw value; for deep reactivity we pre-wrap it so that
+  // nested objects are still made reactive when shallow === false.
+  let _source: Data = shallow
+    ? toValue(initialState)
+    : deepRef(toValue(initialState)).value as Data
+
+  const state = customRef<Data>((track, trigger) => {
+    return {
+      get() {
+        track()
+        return _source
+      },
+      set(value: Data) {
+        _source = shallow ? value : deepRef(value).value as Data
+        if (!_internalWrite) {
+          executionsCount += 1
+          // Clear loading/ready state immediately so the caller gets a consistent
+          // snapshot when setting state directly.
+          isLoading.value = false
+          isReady.value = false
+        }
+        trigger()
+      },
+    }
+  }) as Shallow extends true ? ShallowRef<Data> : Ref<UnwrapRef<Data>>
   async function execute(delay = 0, ...args: any[]) {
     const executionId = (executionsCount += 1)
 
-    if (resetOnExecute)
-      state.value = toValue(initialState)
+    if (resetOnExecute) {
+      _internalWrite = true
+      state.value = toValue(initialState) as any
+      _internalWrite = false
+    }
     error.value = undefined
     isReady.value = false
     isLoading.value = true
@@ -118,7 +151,9 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     try {
       const data = await _promise
       if (executionId === executionsCount) {
-        state.value = data
+        _internalWrite = true
+        state.value = data as any
+        _internalWrite = false
         isReady.value = true
       }
       onSuccess(data)
@@ -142,7 +177,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   }
 
   const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
-    state: state as Shallow extends true ? ShallowRef<Data> : Ref<UnwrapRef<Data>>,
+    state,
     isReady,
     isLoading,
     error,
