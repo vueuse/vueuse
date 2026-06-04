@@ -49,7 +49,7 @@ export function useBrowserLocation(options: UseBrowserLocationOptions = {}): Use
   const { window = defaultWindow } = options
   const refs = Object.fromEntries(
     WRITABLE_PROPERTIES.map(key => [key, deepRef()]),
-  ) as Record<(typeof WRITABLE_PROPERTIES)[number], Ref<string | undefined>>
+  ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>
 
   const buildState = (trigger: string): BrowserLocationState => {
     const { state, length } = window?.history || {}
