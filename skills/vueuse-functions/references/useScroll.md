@@ -204,22 +204,10 @@ export interface UseScrollOptions extends ConfigurableWindow {
    */
   onError?: (error: unknown) => void
 }
-/**
- * Reactive scroll.
- *
- * @see https://vueuse.org/useScroll
- * @param element
- * @param options
- */
-export declare function useScroll(
-  element: MaybeRefOrGetter<
-    HTMLElement | SVGElement | Window | Document | null | undefined
-  >,
-  options?: UseScrollOptions,
-): {
-  x: WritableComputedRef<number, number>
-  y: WritableComputedRef<number, number>
-  isScrolling: ShallowRef<boolean, boolean>
+export interface UseScrollReturn {
+  x: WritableComputedRef<number>
+  y: WritableComputedRef<number>
+  isScrolling: ShallowRef<boolean>
   arrivedState: {
     left: boolean
     right: boolean
@@ -232,7 +220,19 @@ export declare function useScroll(
     top: boolean
     bottom: boolean
   }
-  measure(): void
+  measure: () => void
 }
-export type UseScrollReturn = ReturnType<typeof useScroll>
+/**
+ * Reactive scroll.
+ *
+ * @see https://vueuse.org/useScroll
+ * @param element
+ * @param options
+ */
+export declare function useScroll(
+  element: MaybeRefOrGetter<
+    HTMLElement | SVGElement | Window | Document | null | undefined
+  >,
+  options?: UseScrollOptions,
+): UseScrollReturn
 ```

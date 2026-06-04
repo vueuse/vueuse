@@ -4,7 +4,7 @@ category: State
 
 # useStorageAsync
 
-Reactive Storage in with async support.
+Reactive Storage with async support.
 
 ## Usage
 

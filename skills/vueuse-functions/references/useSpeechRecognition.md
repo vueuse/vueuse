@@ -18,10 +18,13 @@ const {
   isListening,
   isFinal,
   result,
+  confidence,
   start,
   stop,
 } = useSpeechRecognition()
 ```
+
+The `confidence` ref tracks the [confidence value](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionAlternative/confidence) of the latest result, between 0 and 1.
 
 ### Options
 
@@ -67,6 +70,22 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
    */
   maxAlternatives?: number
 }
+export interface UseSpeechRecognitionReturn extends Supportable {
+  isListening: ShallowRef<boolean>
+  isFinal: Readonly<ShallowRef<boolean>>
+  recognition: SpeechRecognition | undefined
+  result: Readonly<ShallowRef<string>>
+  /**
+   * Confidence value of the latest result, between 0 and 1.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognitionAlternative/confidence
+   */
+  confidence: Readonly<ShallowRef<number>>
+  error: ShallowRef<SpeechRecognitionErrorEvent | Error | undefined>
+  toggle: (value?: boolean) => void
+  start: () => void
+  stop: () => void
+}
 /**
  * Reactive SpeechRecognition.
  *
@@ -76,19 +95,5 @@ export interface UseSpeechRecognitionOptions extends ConfigurableWindow {
  */
 export declare function useSpeechRecognition(
   options?: UseSpeechRecognitionOptions,
-): {
-  isSupported: ComputedRef<boolean>
-  isListening: ShallowRef<boolean, boolean>
-  isFinal: ShallowRef<boolean, boolean>
-  recognition: SpeechRecognition | undefined
-  result: ShallowRef<string, string>
-  error: ShallowRef<
-    Error | SpeechRecognitionErrorEvent | undefined,
-    Error | SpeechRecognitionErrorEvent | undefined
-  >
-  toggle: (value?: boolean) => void
-  start: () => void
-  stop: () => void
-}
-export type UseSpeechRecognitionReturn = ReturnType<typeof useSpeechRecognition>
+): UseSpeechRecognitionReturn
 ```

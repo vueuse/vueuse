@@ -77,6 +77,9 @@ export default withPwa(defineConfig({
     codeTransformers: [
       transformerTwoslash({
         twoslashOptions: {
+          compilerOptions: {
+            ignoreDeprecations: '6.0',
+          },
           handbookOptions: {
             noErrors: true,
           },
@@ -102,10 +105,13 @@ export default withPwa(defineConfig({
       copyright: 'Copyright © 2020-PRESENT Anthony Fu and VueUse contributors',
     },
 
-    algolia: {
-      appId: 'NBQWY48OOR',
-      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
-      indexName: 'vueuse',
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: 'NBQWY48OOR',
+        apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
+        indexName: 'vueuse',
+      },
     },
 
     socialLinks: [

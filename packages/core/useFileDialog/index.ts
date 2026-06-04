@@ -3,7 +3,7 @@ import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { computed, ref as deepRef, readonly, toValue, watchEffect } from 'vue'
+import { computed, readonly as deepReadonly, ref as deepRef, toValue, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 
@@ -148,7 +148,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   })
 
   return {
-    files: readonly(files),
+    files: deepReadonly(files),
     open,
     reset,
     onCancel,

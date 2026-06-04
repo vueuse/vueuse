@@ -49,23 +49,19 @@ export interface UseDisplayMediaOptions extends ConfigurableNavigator {
    */
   audio?: boolean | MediaTrackConstraints | undefined
 }
+export interface UseDisplayMediaReturn extends Supportable {
+  stream: ShallowRef<MediaStream | undefined>
+  start: () => Promise<MediaStream | undefined>
+  stop: () => void
+  enabled: ShallowRef<boolean>
+}
 /**
  * Reactive `mediaDevices.getDisplayMedia` streaming
  *
  * @see https://vueuse.org/useDisplayMedia
  * @param options
  */
-export declare function useDisplayMedia(options?: UseDisplayMediaOptions): {
-  isSupported: ComputedRef<boolean>
-  stream: ShallowRef<MediaStream | undefined, MediaStream | undefined>
-  start: () => Promise<MediaStream | undefined>
-  stop: () => void
-  enabled:
-    | Ref<boolean, boolean>
-    | ShallowRef<boolean, boolean>
-    | WritableComputedRef<boolean, boolean>
-    | ShallowRef<true, true>
-    | ShallowRef<false, false>
-}
-export type UseDisplayMediaReturn = ReturnType<typeof useDisplayMedia>
+export declare function useDisplayMedia(
+  options?: UseDisplayMediaOptions,
+): UseDisplayMediaReturn
 ```

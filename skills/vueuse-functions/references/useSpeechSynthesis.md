@@ -79,6 +79,15 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
    */
   onBoundary?: (event: SpeechSynthesisEvent) => void
 }
+export interface UseSpeechSynthesisReturn extends Supportable {
+  isPlaying: ShallowRef<boolean>
+  status: ShallowRef<UseSpeechSynthesisStatus>
+  utterance: ComputedRef<SpeechSynthesisUtterance>
+  error: ShallowRef<SpeechSynthesisErrorEvent | undefined>
+  stop: () => void
+  toggle: (value?: boolean) => void
+  speak: () => void
+}
 /**
  * Reactive SpeechSynthesis.
  *
@@ -88,18 +97,5 @@ export interface UseSpeechSynthesisOptions extends ConfigurableWindow {
 export declare function useSpeechSynthesis(
   text: MaybeRefOrGetter<string>,
   options?: UseSpeechSynthesisOptions,
-): {
-  isSupported: ComputedRef<boolean>
-  isPlaying: ShallowRef<boolean, boolean>
-  status: ShallowRef<UseSpeechSynthesisStatus, UseSpeechSynthesisStatus>
-  utterance: ComputedRef<SpeechSynthesisUtterance>
-  error: ShallowRef<
-    SpeechSynthesisErrorEvent | undefined,
-    SpeechSynthesisErrorEvent | undefined
-  >
-  stop: () => void
-  toggle: (value?: boolean) => void
-  speak: () => void
-}
-export type UseSpeechSynthesisReturn = ReturnType<typeof useSpeechSynthesis>
+): UseSpeechSynthesisReturn
 ```

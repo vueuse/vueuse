@@ -86,9 +86,8 @@ jobs:
       - name: server tests
         run: pnpm run test:server
 
-      - if: matrix.node == '20.x'
-        name: attw tests
-        run: pnpm test:attw
+      - name: exports tests
+        run: pnpm run test:exports
 
       - if: matrix.node == 'lts/*'
         name: Playground Smoke Test
@@ -124,4 +123,4 @@ jobs:
 
       - run: pnpm run update:full
 
-      - run: pnpm dlx pkg-pr-new publish --compact --pnpm './packages/*'
+      - run: pnpm dlx pkg-pr-new publish --compact --pnpm './packages/*' --packageManager=pnpm,npm,yarn

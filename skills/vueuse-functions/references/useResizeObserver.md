@@ -86,6 +86,9 @@ export type ResizeObserverCallback = (
 ) => void
 export interface UseResizeObserverOptions
   extends ResizeObserverOptions, ConfigurableWindow {}
+export interface UseResizeObserverReturn extends Supportable {
+  stop: () => void
+}
 /**
  * Reports changes to the dimensions of an Element's content or the border-box
  *
@@ -101,9 +104,5 @@ export declare function useResizeObserver(
     | MaybeRefOrGetter<MaybeElement[]>,
   callback: globalThis.ResizeObserverCallback,
   options?: UseResizeObserverOptions,
-): {
-  isSupported: ComputedRef<boolean>
-  stop: () => void
-}
-export type UseResizeObserverReturn = ReturnType<typeof useResizeObserver>
+): UseResizeObserverReturn
 ```

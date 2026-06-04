@@ -1,19 +1,21 @@
 import type { UseResizeObserverOptions } from '@vueuse/core'
-import type { ObjectDirective } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
+import { createDisposableDirective } from '@vueuse/shared'
 
 type BindingValueFunction = ResizeObserverCallback
 
 type BindingValueArray = [BindingValueFunction, UseResizeObserverOptions]
 
-export const vResizeObserver: ObjectDirective<
+export const vResizeObserver = createDisposableDirective<
   HTMLElement,
   BindingValueFunction | BindingValueArray
-> = {
-  mounted(el, binding) {
-    if (typeof binding.value === 'function')
-      useResizeObserver(el, binding.value)
-    else
-      useResizeObserver(el, ...binding.value)
+>(
+  {
+    mounted(el, binding) {
+      if (typeof binding.value === 'function')
+        useResizeObserver(el, binding.value)
+      else
+        useResizeObserver(el, ...binding.value)
+    },
   },
-}
+)

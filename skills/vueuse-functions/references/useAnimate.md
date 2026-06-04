@@ -149,8 +149,7 @@ export interface UseAnimateOptions
 export type UseAnimateKeyframes = MaybeRef<
   Keyframe[] | PropertyIndexedKeyframes | null
 >
-export interface UseAnimateReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseAnimateReturn extends Supportable {
   animate: ShallowRef<Animation | undefined>
   play: () => void
   pause: () => void

@@ -66,15 +66,13 @@ onDisconnected((index) => {
 
 > The Gamepad Haptics API is sparse, so check the [compatibility table](https://developer.mozilla.org/en-US/docs/Web/API/GamepadHapticActuator#browser_compatibility) before using.
 
-<!-- eslint-disable import/first -->
-
 ```ts
 import { useGamepad } from '@vueuse/core'
+// ---cut---
+import { computed } from 'vue'
 
 const { gamepads, onConnected, onDisconnected } = useGamepad()
 const gamepad = gamepads.value[0]!
-// ---cut---
-import { computed } from 'vue'
 
 const supportsVibration = computed(() => gamepad.hapticActuators.length > 0)
 function vibrate() {
@@ -126,6 +124,11 @@ In other frameworks or plain Vue, you can wrap your usage component with a `<Cli
 ```ts
 export interface UseGamepadOptions
   extends ConfigurableWindow, ConfigurableNavigator {}
+export interface UseGamepadReturn extends Supportable, Pausable {
+  onConnected: EventHookOn<number>
+  onDisconnected: EventHookOn<number>
+  gamepads: Ref<Gamepad[]>
+}
 /**
  * Maps a standard standard gamepad to an Xbox 360 Controller.
  */
@@ -167,56 +170,7 @@ export declare function mapGamepadToXbox360Controller(
   back: GamepadButton
   start: GamepadButton
 } | null>
-export declare function useGamepad(options?: UseGamepadOptions): {
-  isSupported: ComputedRef<boolean>
-  onConnected: EventHookOn<number>
-  onDisconnected: EventHookOn<number>
-  gamepads: Ref<
-    {
-      readonly axes: ReadonlyArray<number>
-      readonly buttons: readonly {
-        readonly pressed: boolean
-        readonly touched: boolean
-        readonly value: number
-      }[]
-      readonly connected: boolean
-      readonly id: string
-      readonly index: number
-      readonly mapping: GamepadMappingType
-      readonly timestamp: DOMHighResTimeStamp
-      readonly vibrationActuator: {
-        playEffect: (
-          type: GamepadHapticEffectType,
-          params?: GamepadEffectParameters,
-        ) => Promise<GamepadHapticsResult>
-        reset: () => Promise<GamepadHapticsResult>
-      }
-    }[],
-    | Gamepad[]
-    | {
-        readonly axes: ReadonlyArray<number>
-        readonly buttons: readonly {
-          readonly pressed: boolean
-          readonly touched: boolean
-          readonly value: number
-        }[]
-        readonly connected: boolean
-        readonly id: string
-        readonly index: number
-        readonly mapping: GamepadMappingType
-        readonly timestamp: DOMHighResTimeStamp
-        readonly vibrationActuator: {
-          playEffect: (
-            type: GamepadHapticEffectType,
-            params?: GamepadEffectParameters,
-          ) => Promise<GamepadHapticsResult>
-          reset: () => Promise<GamepadHapticsResult>
-        }
-      }[]
-  >
-  pause: Fn
-  resume: Fn
-  isActive: Readonly<ShallowRef<boolean>>
-}
-export type UseGamepadReturn = ReturnType<typeof useGamepad>
+export declare function useGamepad(
+  options?: UseGamepadOptions,
+): UseGamepadReturn
 ```

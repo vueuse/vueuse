@@ -50,16 +50,8 @@ export interface UseEyeDropperOptions {
    */
   initialValue?: string
 }
-/**
- * Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
- *
- * @see https://vueuse.org/useEyeDropper
- *
- * @__NO_SIDE_EFFECTS__
- */
-export declare function useEyeDropper(options?: UseEyeDropperOptions): {
-  isSupported: ComputedRef<boolean>
-  sRGBHex: ShallowRef<string, string>
+export interface UseEyeDropperReturn extends Supportable {
+  sRGBHex: ShallowRef<string>
   open: (openOptions?: EyeDropperOpenOptions) => Promise<
     | {
         sRGBHex: string
@@ -67,5 +59,14 @@ export declare function useEyeDropper(options?: UseEyeDropperOptions): {
     | undefined
   >
 }
-export type UseEyeDropperReturn = ReturnType<typeof useEyeDropper>
+/**
+ * Reactive [EyeDropper API](https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API)
+ *
+ * @see https://vueuse.org/useEyeDropper
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
+export declare function useEyeDropper(
+  options?: UseEyeDropperOptions,
+): UseEyeDropperReturn
 ```

@@ -268,6 +268,13 @@ export interface UseDraggableOptions {
       }
   >
 }
+export interface UseDraggableReturn {
+  x: Ref<number>
+  y: Ref<number>
+  position: Ref<Position>
+  isDragging: ComputedRef<boolean>
+  style: ComputedRef<string>
+}
 /**
  * Make elements draggable.
  *
@@ -278,40 +285,5 @@ export interface UseDraggableOptions {
 export declare function useDraggable(
   target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>,
   options?: UseDraggableOptions,
-):
-  | {
-      position: Ref<
-        {
-          x: number
-          y: number
-        },
-        | Position
-        | {
-            x: number
-            y: number
-          }
-      >
-      isDragging: ComputedRef<boolean>
-      style: ComputedRef<string>
-      x: Ref<number, number>
-      y: Ref<number, number>
-    }
-  | {
-      position: Ref<
-        {
-          x: number
-          y: number
-        },
-        | Position
-        | {
-            x: number
-            y: number
-          }
-      >
-      isDragging: ComputedRef<boolean>
-      style: ComputedRef<string>
-      x: Ref<number, number>
-      y: Ref<number, number>
-    }
-export type UseDraggableReturn = ReturnType<typeof useDraggable>
+): UseDraggableReturn
 ```

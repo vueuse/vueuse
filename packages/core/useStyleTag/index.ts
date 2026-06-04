@@ -1,7 +1,7 @@
 import type { MaybeRef, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { readonly, shallowRef, watch } from 'vue'
+import { shallowReadonly, shallowRef, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 
 export interface UseStyleTagOptions extends ConfigurableDocument {
@@ -48,6 +48,7 @@ export interface UseStyleTagReturn {
 }
 
 let _id = 0
+const _refCount = new WeakMap<HTMLStyleElement, number>()
 
 /**
  * Inject <style> element in head.
@@ -92,6 +93,8 @@ export function useStyleTag(
     if (isLoaded.value)
       return
 
+    _refCount.set(el, (_refCount.get(el) ?? 0) + 1)
+
     stop = watch(
       cssRef,
       (value) => {
@@ -107,7 +110,19 @@ export function useStyleTag(
     if (!document || !isLoaded.value)
       return
     stop()
-    document.head.removeChild(document.getElementById(id) as HTMLStyleElement)
+
+    const el = document.getElementById(id) as HTMLStyleElement | null
+    if (el) {
+      const count = (_refCount.get(el) ?? 1) - 1
+      if (count <= 0) {
+        _refCount.delete(el)
+        document.head.removeChild(el)
+      }
+      else {
+        _refCount.set(el, count)
+      }
+    }
+
     isLoaded.value = false
   }
 
@@ -122,6 +137,6 @@ export function useStyleTag(
     css: cssRef,
     unload,
     load,
-    isLoaded: readonly(isLoaded),
+    isLoaded: shallowReadonly(isLoaded),
   }
 }
