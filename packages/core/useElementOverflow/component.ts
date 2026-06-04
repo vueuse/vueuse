@@ -4,7 +4,7 @@ import { defineComponent, h, reactive, shallowRef } from 'vue'
 
 export const UseElementOverflow = /* #__PURE__ */ defineComponent<UseElementOverflowOptions & RenderableComponent>({
   name: 'UseElementOverflow',
-  props: ['observeMutation', 'as'] as unknown as undefined,
+  props: ['observeMutation', 'as'],
   emits: ['update'],
   setup(props, { slots, attrs, emit }) {
     const target = shallowRef()

@@ -75,3 +75,36 @@ export default {
   </div>
 </template>
 ```
+
+## Type Declarations
+
+```ts
+export interface UseElementOverflowOptions extends ConfigurableWindow {
+  /**
+   * Use MutationObserver to observe the target and its children.
+   *
+   * @default false
+   */
+  observeMutation?: boolean | MutationObserverInit
+  /**
+   * Callback when observer triggered.
+   */
+  onUpdated?: ResizeObserverCallback | MutationCallback
+}
+/**
+ * react a dom's overflow state
+ * @see https://vueuse.org/useElementOverflow
+ * @param target
+ * @param option
+ */
+export declare function useElementOverflow(
+  target: MaybeComputedElementRef,
+  option?: UseElementOverflowOptions,
+): {
+  isXOverflowed: Readonly<ShallowRef<boolean, boolean>>
+  isYOverflowed: Readonly<ShallowRef<boolean, boolean>>
+  stop: typeof stop
+  update: () => void
+}
+export type UseElementOverflowReturn = ReturnType<typeof useElementOverflow>
+```
