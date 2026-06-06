@@ -1,6 +1,6 @@
 ---
 category: Time
-variants: formatTimeAgoIntl
+utils: formatTimeAgoIntl
 ---
 
 # useTimeAgoIntl
