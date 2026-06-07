@@ -78,6 +78,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useBreakpoints`](references/useBreakpoints.md) | Reactive viewport breakpoints | AUTO |
 | [`useBroadcastChannel`](references/useBroadcastChannel.md) | Reactive [BroadcastChannel API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel) | AUTO |
 | [`useBrowserLocation`](references/useBrowserLocation.md) | Reactive browser location | AUTO |
+| [`useCanvas2D`](references/useCanvas2D.md) | Reactive 2D rendering context for a canvas element | AUTO |
 | [`useClipboard`](references/useClipboard.md) | Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) | AUTO |
 | [`useClipboardItems`](references/useClipboardItems.md) | Reactive [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) | AUTO |
 | [`useColorMode`](references/useColorMode.md) | Reactive color mode (dark / light / customs) with auto data persistence | AUTO |

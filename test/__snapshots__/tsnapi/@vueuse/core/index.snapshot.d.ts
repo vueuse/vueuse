@@ -380,6 +380,9 @@ export interface UseBroadcastChannelReturn<D, P> extends Supportable {
 }
 export interface UseBrowserLocationOptions extends ConfigurableWindow {}
 export interface UseCachedOptions<D extends boolean = true> extends ConfigurableDeepRefs<D>, WatchOptions {}
+export interface UseCanvas2DReturn {
+  context: ShallowRef<CanvasRenderingContext2D | null>;
+}
 export interface UseClipboardItemsOptions<Source> extends ConfigurableNavigator {
   read?: boolean;
   source?: Source;
@@ -1606,6 +1609,7 @@ export type UseBreakpointReturn<K extends string = string> = Record<K, ComputedR
 };
 export type UseBrowserLocationReturn = Ref<BrowserLocationState>;
 export type UseCachedReturn<T = any, D extends boolean = true> = ShallowOrDeepRef<T, D>;
+export type UseCanvas2DOptions = CanvasRenderingContext2DSettings;
 export type UseColorModeReturn<T extends string = BasicColorMode> = Ref<T | BasicColorSchema> & {
   store: Ref<T | BasicColorSchema>;
   system: ComputedRef<BasicColorMode>;
@@ -1784,6 +1788,7 @@ export declare function useBreakpoints<K extends string>(_: Breakpoints<K>, _?: 
 export declare function useBroadcastChannel<D, P>(_: UseBroadcastChannelOptions): UseBroadcastChannelReturn<D, P>;
 export declare function useBrowserLocation(_?: UseBrowserLocationOptions): UseBrowserLocationReturn;
 export declare function useCached<T, D extends boolean = true>(_: Ref<T>, _?: (_: T, _: T) => boolean, _?: UseCachedOptions<D>): UseCachedReturn<T, D>;
+export declare function useCanvas2D(_: MaybeComputedElementRef<HTMLCanvasElement | null | undefined>, _?: UseCanvas2DOptions): UseCanvas2DReturn;
 export declare function useClipboard(_?: UseClipboardOptions<undefined>): UseClipboardReturn<false>;
 export declare function useClipboard(_: UseClipboardOptions<MaybeRefOrGetter<string>>): UseClipboardReturn<true>;
 export declare function useClipboardItems(_?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>;

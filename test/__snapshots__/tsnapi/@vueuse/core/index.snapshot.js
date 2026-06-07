@@ -41,6 +41,7 @@ export function useBreakpoints(_, _) {}
 export function useBroadcastChannel(_) {}
 export function useBrowserLocation(_) {}
 export function useCached(_, _, _) {}
+export function useCanvas2D(_, _) {}
 export function useClipboard(_) {}
 export function useClipboardItems(_) {}
 export function useCloned(_, _) {}
