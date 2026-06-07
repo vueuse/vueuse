@@ -1,7 +1,7 @@
 import type { FuseResult, IFuseOptions } from 'fuse.js'
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import Fuse from 'fuse.js'
-import { computed, shallowRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, triggerRef, watch } from 'vue'
 
 export type FuseOptions<T> = IFuseOptions<T>
 export interface UseFuseOptions<T> {
@@ -20,16 +20,27 @@ export function useFuse<DataItem>(
   data: MaybeRefOrGetter<DataItem[]>,
   options?: MaybeRefOrGetter<UseFuseOptions<DataItem>>,
 ): UseFuseReturn<DataItem> {
-  const createFuse = (
-    d = toValue(data) ?? [],
-    fuseOpts = toValue(options)?.fuseOptions,
-  ) => new Fuse(d, fuseOpts)
+  const createFuse = () => {
+    return new Fuse(
+      toValue(data) ?? [],
+      toValue(options)?.fuseOptions,
+    )
+  }
 
   const fuse = shallowRef(createFuse())
 
   watch(
-    [() => toValue(data), () => toValue(options)?.fuseOptions],
-    ([newData, newFuseOptions]) => { fuse.value = createFuse(newData ?? [], newFuseOptions) },
+    () => toValue(options)?.fuseOptions,
+    () => { fuse.value = createFuse() },
+    { deep: true },
+  )
+
+  watch(
+    () => toValue(data),
+    (newData) => {
+      fuse.value.setCollection(newData)
+      triggerRef(fuse)
+    },
     { deep: true },
   )
 
