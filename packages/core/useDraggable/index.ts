@@ -353,18 +353,22 @@ function getAxisRange(config: SnapAxisConfig | undefined, base: number): [number
   ]
 }
 
-function resolveContainerBounds(rect: DraggableBounds): { left: number, top: number, right: number, bottom: number } {
-  const W = defaultWindow?.innerWidth ?? 0
-  const H = defaultWindow?.innerHeight ?? 0
-  const left = rect.left != null ? resolveSnapPx(rect.left, W) : 0
-  const top = rect.top != null ? resolveSnapPx(rect.top, H) : 0
+// Resolves a possibly-partial rect into concrete left/top/right/bottom pixels,
+// deriving the far edges from width/height (or the base size) when absent.
+function resolveRectEdges(rect: SnapBoundingRect, baseW: number, baseH: number): { left: number, top: number, right: number, bottom: number } {
+  const left = rect.left != null ? resolveSnapPx(rect.left, baseW) : 0
+  const top = rect.top != null ? resolveSnapPx(rect.top, baseH) : 0
   const right = rect.right != null
-    ? resolveSnapPx(rect.right, W)
-    : left + (rect.width != null ? resolveSnapPx(rect.width, W) : W - left)
+    ? resolveSnapPx(rect.right, baseW)
+    : left + (rect.width != null ? resolveSnapPx(rect.width, baseW) : baseW - left)
   const bottom = rect.bottom != null
-    ? resolveSnapPx(rect.bottom, H)
-    : top + (rect.height != null ? resolveSnapPx(rect.height, H) : H - top)
+    ? resolveSnapPx(rect.bottom, baseH)
+    : top + (rect.height != null ? resolveSnapPx(rect.height, baseH) : baseH - top)
   return { left, top, right, bottom }
+}
+
+function resolveContainerBounds(rect: DraggableBounds): { left: number, top: number, right: number, bottom: number } {
+  return resolveRectEdges(rect, defaultWindow?.innerWidth ?? 0, defaultWindow?.innerHeight ?? 0)
 }
 
 function findClosestCandidate(probe: number, candidates: number[], gravity: number): number | null {
@@ -386,9 +390,9 @@ function getBoxLines(
   baseH: number,
   container: HTMLElement | SVGElement | null | undefined,
 ): { x: number[], y: number[] } {
-  let left: number, top: number, right: number, bottom: number
   if (box instanceof Element) {
     const r = box.getBoundingClientRect()
+    let left: number, top: number
     if (container instanceof HTMLElement) {
       const cr = container.getBoundingClientRect()
       left = r.left - cr.left + container.scrollLeft
@@ -398,20 +402,9 @@ function getBoxLines(
       left = r.left
       top = r.top
     }
-    right = left + r.width
-    bottom = top + r.height
+    return { x: [left, left + r.width], y: [top, top + r.height] }
   }
-  else {
-    const r = box as SnapBoundingRect
-    left = r.left != null ? resolveSnapPx(r.left, baseW) : 0
-    top = r.top != null ? resolveSnapPx(r.top, baseH) : 0
-    right = r.right != null
-      ? resolveSnapPx(r.right, baseW)
-      : left + (r.width != null ? resolveSnapPx(r.width, baseW) : baseW - left)
-    bottom = r.bottom != null
-      ? resolveSnapPx(r.bottom, baseH)
-      : top + (r.height != null ? resolveSnapPx(r.height, baseH) : baseH - top)
-  }
+  const { left, top, right, bottom } = resolveRectEdges(box as SnapBoundingRect, baseW, baseH)
   return { x: [left, right], y: [top, bottom] }
 }
 
@@ -464,6 +457,57 @@ function normalizeSnapTargets(input: SnapInput): SnapTarget[] {
   })
 }
 
+interface AxisSnapState { best: number, value: number }
+
+// Records a candidate snap for one axis, keeping the closest one seen so far.
+// Returns true when this candidate became the new best (i.e. a snap occurred).
+function updateAxisSnap(state: AxisSnapState, dist: number, value: number): boolean {
+  if (dist < state.best) {
+    state.best = dist
+    state.value = value
+    return true
+  }
+  return false
+}
+
+// Probes `candidates` for the one closest to `basePos + off` within gravity,
+// updating `state` if it is the best match. Returns true when a snap occurred.
+function trySnapAxis(state: AxisSnapState, basePos: number, off: number, candidates: number[], gravity: number): boolean {
+  const snapTo = findClosestCandidate(basePos + off, candidates, gravity)
+  if (snapTo == null)
+    return false
+  return updateAxisSnap(state, Math.abs(basePos + off - snapTo), snapTo - off)
+}
+
+// Probe offsets (relative to the element's near edge) for a box wall snap.
+function edgeOffsets(center: boolean, edge: 'inside' | 'outside' | 'both', dim: number, isStart: boolean): number[] {
+  if (center)
+    return [dim / 2]
+  if (edge === 'inside')
+    return [isStart ? 0 : dim]
+  if (edge === 'outside')
+    return [isStart ? dim : 0]
+  return [0, dim]
+}
+
+// Probe offsets (relative to the element's near edge) for a line snap.
+function sideOffsets(center: boolean, side: 'start' | 'end' | 'both', dim: number): number[] {
+  if (center)
+    return [dim / 2]
+  if (side === 'start')
+    return [0]
+  if (side === 'end')
+    return [dim]
+  return [0, dim]
+}
+
+// Merges a shared `step` into a per-axis config so both axes honour it.
+function resolveAxisCfg(axis: SnapAxisConfig | undefined, step: SnapCoordValue | undefined): SnapAxisConfig | undefined {
+  if (step == null)
+    return axis
+  return { ...(typeof axis === 'object' ? axis as SnapRangeConfig : {}), step }
+}
+
 function computeSnap(
   pos: Position,
   size: { width: number, height: number },
@@ -473,10 +517,8 @@ function computeSnap(
   container: HTMLElement | SVGElement | null | undefined,
 ): { position: Position, snapped: boolean } {
   const targets = normalizeSnapTargets(snapInput)
-  let sx = pos.x
-  let sy = pos.y
-  let bestXDist = Infinity
-  let bestYDist = Infinity
+  const xState: AxisSnapState = { best: Infinity, value: pos.x }
+  const yState: AxisSnapState = { best: Infinity, value: pos.y }
   let isSnapped = false
 
   for (const target of targets) {
@@ -490,65 +532,26 @@ function computeSnap(
       const lines = getBoxLines(target.boundingBox, baseW, baseH, container)
       const [xMin, xMax] = lines.x
       const [yMin, yMax] = lines.y
-      for (let ei = 0; ei < lines.x.length; ei++) {
-        // Only snap to a vertical wall if the element overlaps the box in Y
-        if (pos.y + size.height <= yMin || pos.y >= yMax)
-          continue
-        const xLine = lines.x[ei]
-        const isStart = ei === 0
-        const xOffs = center
-          ? [size.width / 2]
-          : edge === 'inside'
-            ? [isStart ? 0 : size.width]
-            : edge === 'outside'
-              ? [isStart ? size.width : 0]
-              : [0, size.width]
-        for (const off of xOffs) {
-          const snapTo = findClosestCandidate(pos.x + off, [xLine], gravity)
-          if (snapTo != null) {
-            const d = Math.abs(pos.x + off - snapTo)
-            if (d < bestXDist) {
-              bestXDist = d
-              sx = snapTo - off
-              isSnapped = true
-            }
-          }
+      // Only snap to a vertical wall if the element overlaps the box in Y (and vice versa)
+      const yOverlaps = !(pos.y + size.height <= yMin || pos.y >= yMax)
+      const xOverlaps = !(pos.x + size.width <= xMin || pos.x >= xMax)
+      if (yOverlaps) {
+        for (let ei = 0; ei < lines.x.length; ei++) {
+          for (const off of edgeOffsets(center, edge, size.width, ei === 0))
+            isSnapped = trySnapAxis(xState, pos.x, off, [lines.x[ei]], gravity) || isSnapped
         }
       }
-      for (let ei = 0; ei < lines.y.length; ei++) {
-        // Only snap to a horizontal wall if the element overlaps the box in X
-        if (pos.x + size.width <= xMin || pos.x >= xMax)
-          continue
-        const yLine = lines.y[ei]
-        const isStart = ei === 0
-        const yOffs = center
-          ? [size.height / 2]
-          : edge === 'inside'
-            ? [isStart ? 0 : size.height]
-            : edge === 'outside'
-              ? [isStart ? size.height : 0]
-              : [0, size.height]
-        for (const off of yOffs) {
-          const snapTo = findClosestCandidate(pos.y + off, [yLine], gravity)
-          if (snapTo != null) {
-            const d = Math.abs(pos.y + off - snapTo)
-            if (d < bestYDist) {
-              bestYDist = d
-              sy = snapTo - off
-              isSnapped = true
-            }
-          }
+      if (xOverlaps) {
+        for (let ei = 0; ei < lines.y.length; ei++) {
+          for (const off of edgeOffsets(center, edge, size.height, ei === 0))
+            isSnapped = trySnapAxis(yState, pos.y, off, [lines.y[ei]], gravity) || isSnapped
         }
       }
       continue
     }
 
-    const xCfg: SnapAxisConfig | undefined = target.step != null
-      ? { ...(typeof target.x === 'object' ? target.x as SnapRangeConfig : {}), step: target.step }
-      : target.x
-    const yCfg: SnapAxisConfig | undefined = target.step != null
-      ? { ...(typeof target.y === 'object' ? target.y as SnapRangeConfig : {}), step: target.step }
-      : target.y
+    const xCfg = resolveAxisCfg(target.x, target.step)
+    const yCfg = resolveAxisCfg(target.y, target.step)
     const xCandidates = getAxisCandidates(xCfg, baseW)
     const yCandidates = getAxisCandidates(yCfg, baseH)
     const isPoint = xCandidates != null && yCandidates != null
@@ -569,18 +572,8 @@ function computeSnap(
           const ySnapTo = findClosestCandidate(pos.y + yOff, yCandidates!, gravity)
           if (ySnapTo == null)
             continue
-          const xDist = Math.abs(pos.x + xOff - xSnapTo)
-          const yDist = Math.abs(pos.y + yOff - ySnapTo)
-          if (xDist < bestXDist) {
-            bestXDist = xDist
-            sx = xSnapTo - xOff
-            isSnapped = true
-          }
-          if (yDist < bestYDist) {
-            bestYDist = yDist
-            sy = ySnapTo - yOff
-            isSnapped = true
-          }
+          isSnapped = updateAxisSnap(xState, Math.abs(pos.x + xOff - xSnapTo), xSnapTo - xOff) || isSnapped
+          isSnapped = updateAxisSnap(yState, Math.abs(pos.y + yOff - ySnapTo), ySnapTo - yOff) || isSnapped
         }
       }
     }
@@ -591,20 +584,8 @@ function computeSnap(
         const yOverlaps = yRange == null
           || (pos.y + size.height >= yRange[0] && pos.y <= yRange[1])
         if (yOverlaps) {
-          const offsets = center
-            ? [size.width / 2]
-            : (side === 'start' ? [0] : side === 'end' ? [size.width] : [0, size.width])
-          for (const off of offsets) {
-            const snapTo = findClosestCandidate(pos.x + off, xCandidates, gravity)
-            if (snapTo != null) {
-              const d = Math.abs(pos.x + off - snapTo)
-              if (d < bestXDist) {
-                bestXDist = d
-                sx = snapTo - off
-                isSnapped = true
-              }
-            }
-          }
+          for (const off of sideOffsets(center, side, size.width))
+            isSnapped = trySnapAxis(xState, pos.x, off, xCandidates, gravity) || isSnapped
         }
       }
       if (yCandidates != null) {
@@ -613,26 +594,14 @@ function computeSnap(
         const xOverlaps = xRange == null
           || (pos.x + size.width >= xRange[0] && pos.x <= xRange[1])
         if (xOverlaps) {
-          const offsets = center
-            ? [size.height / 2]
-            : (side === 'start' ? [0] : side === 'end' ? [size.height] : [0, size.height])
-          for (const off of offsets) {
-            const snapTo = findClosestCandidate(pos.y + off, yCandidates, gravity)
-            if (snapTo != null) {
-              const d = Math.abs(pos.y + off - snapTo)
-              if (d < bestYDist) {
-                bestYDist = d
-                sy = snapTo - off
-                isSnapped = true
-              }
-            }
-          }
+          for (const off of sideOffsets(center, side, size.height))
+            isSnapped = trySnapAxis(yState, pos.y, off, yCandidates, gravity) || isSnapped
         }
       }
     }
   }
 
-  return { position: { x: sx, y: sy }, snapped: isSnapped }
+  return { position: { x: xState.value, y: yState.value }, snapped: isSnapped }
 }
 
 /**
