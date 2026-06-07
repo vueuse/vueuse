@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import type { CloneFn } from '../useCloned'
 import type { UseManualRefHistoryReturn } from '../useManualRefHistory'
 import { pausableFilter, watchIgnorable } from '@vueuse/shared'
+import { cloneFnJSON } from '../useCloned'
 import { useManualRefHistory } from '../useManualRefHistory'
 
 export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends ConfigurableEventFilter, ConfigurableFlush {
@@ -100,8 +101,14 @@ export function useRefHistory<Raw, Serialized = Raw>(
     isActive: isTracking,
   } = pausableFilter(eventFilter)
 
-  // Track the last raw value for shouldCommit comparison
-  let lastRawValue: Raw | undefined = source.value
+  const cloneOption = options.clone || deep
+  const _cloneRaw: (v: Raw) => Raw = cloneOption
+    ? typeof cloneOption === 'function'
+      ? cloneOption
+      : cloneFnJSON
+    : v => v
+
+  let lastRawValue: Raw | undefined = _cloneRaw(source.value)
 
   const {
     ignoreUpdates,
@@ -126,11 +133,11 @@ export function useRefHistory<Raw, Serialized = Raw>(
 
     ignoreUpdates(() => {
       source.value = value
-      lastRawValue = value
+      lastRawValue = _cloneRaw(value)
     })
   }
 
-  const manualHistory = useManualRefHistory(source, { ...options, clone: options.clone || deep, setSource })
+  const manualHistory = useManualRefHistory(source, { ...options, clone: cloneOption, setSource })
 
   const { clear, commit: manualCommit } = manualHistory
 
@@ -143,7 +150,7 @@ export function useRefHistory<Raw, Serialized = Raw>(
     if (!shouldCommit(lastRawValue, source.value))
       return
 
-    lastRawValue = source.value
+    lastRawValue = _cloneRaw(source.value)
     manualCommit()
   }
 
