@@ -166,25 +166,33 @@ whenever(ctrl_s, () => console.log('Ctrl+S have been pressed'))
 
 ### useHotkey
 
-For simpler cases, you can use `useHotkey` which wraps `useMagicKeys` with a string-based API:
+For simpler cases, you can use `useHotkey` which accepts a human-readable combo string:
 
 ```ts
 import { useHotkey } from '@vueuse/core'
 
-useHotkey('Alt+ArrowRight', () => {
+useHotkey('Alt+ArrowRight', (e) => {
   x += 10
 })
 ```
 
-You can also configure it to fire only once, or on keyup:
+The handler receives the native `KeyboardEvent`, so you can call `e.preventDefault()` when needed. You can also pass `preventDefault: true` in options to do it automatically:
 
 ```ts
+useHotkey('Ctrl+S', handler, { preventDefault: true })
+```
+
+Other options:
+
+```ts
+// Fire only once, then auto-cleanup
 useHotkey('Ctrl+S', handler, { once: true })
 
+// Fire on keyup instead of keydown
 useHotkey('Shift+A', handler, { trigger: 'keyup' })
 ```
 
-The function returns a `cleanup` function to manually stop listening.
+The function returns a `cleanup` function to manually stop listening. Listeners are also automatically cleaned up when the enclosing Vue scope is disposed.
 
 ### Reactive Mode
 

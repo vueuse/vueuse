@@ -190,7 +190,7 @@ describe('useHotkey', () => {
     target = document.createElement('input')
   })
 
-  it('fires handler when combo is pressed', async () => {
+  it('fires handler when combo is pressed', () => {
     const handler = vi.fn()
     useHotkey('Alt+ArrowRight', handler, { target })
 
@@ -199,9 +199,10 @@ describe('useHotkey', () => {
 
     dispatchKeyboardEvent({ target, key: 'ArrowRight', altKey: true })
     expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(expect.any(KeyboardEvent))
   })
 
-  it('does not fire on partial combo', async () => {
+  it('does not fire on partial combo', () => {
     const handler = vi.fn()
     useHotkey('Ctrl+A', handler, { target })
 
@@ -209,7 +210,7 @@ describe('useHotkey', () => {
     expect(handler).not.toHaveBeenCalled()
   })
 
-  it('fires once with once: true', async () => {
+  it('fires once then stops listening', () => {
     const handler = vi.fn()
     useHotkey('Shift+A', handler, { target, once: true })
 
@@ -217,13 +218,13 @@ describe('useHotkey', () => {
     dispatchKeyboardEvent({ target, key: 'A', shiftKey: true })
     expect(handler).toHaveBeenCalledTimes(1)
 
-    // Release and press again
-    dispatchKeyboardEvent({ target, key: 'A', shiftKey: true, eventType: 'keyup' })
+    // Press again — listener was removed after first fire
+    dispatchKeyboardEvent({ target, key: 'Shift', shiftKey: true })
     dispatchKeyboardEvent({ target, key: 'A', shiftKey: true })
     expect(handler).toHaveBeenCalledTimes(1)
   })
 
-  it('fires on keyup with trigger: keyup', async () => {
+  it('fires on keyup with trigger: keyup', () => {
     const handler = vi.fn()
     useHotkey('Ctrl+S', handler, { target, trigger: 'keyup' })
 
@@ -235,7 +236,7 @@ describe('useHotkey', () => {
     expect(handler).toHaveBeenCalledTimes(1)
   })
 
-  it('cleanup stops listening', async () => {
+  it('cleanup stops listening', () => {
     const handler = vi.fn()
     const { cleanup } = useHotkey('Space', handler, { target })
 
@@ -245,7 +246,7 @@ describe('useHotkey', () => {
     expect(handler).not.toHaveBeenCalled()
   })
 
-  it('handles triple-key combo', async () => {
+  it('handles triple-key combo', () => {
     const handler = vi.fn()
     useHotkey('Ctrl+Shift+A', handler, { target })
 
@@ -253,6 +254,15 @@ describe('useHotkey', () => {
     dispatchKeyboardEvent({ target, key: 'Shift', ctrlKey: true, shiftKey: true })
     expect(handler).not.toHaveBeenCalled()
 
+    dispatchKeyboardEvent({ target, key: 'A', ctrlKey: true, shiftKey: true })
+    expect(handler).toHaveBeenCalledTimes(1)
+  })
+
+  it('fires when combo keys are held even with extra modifiers', () => {
+    const handler = vi.fn()
+    useHotkey('Ctrl+A', handler, { target })
+
+    dispatchKeyboardEvent({ target, key: 'Control', ctrlKey: true })
     dispatchKeyboardEvent({ target, key: 'A', ctrlKey: true, shiftKey: true })
     expect(handler).toHaveBeenCalledTimes(1)
   })

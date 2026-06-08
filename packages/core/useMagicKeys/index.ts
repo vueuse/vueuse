@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
-import { noop } from '@vueuse/shared'
-import { computed, reactive, shallowRef, toValue, watch } from 'vue'
+import { noop, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, reactive, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
@@ -236,6 +236,13 @@ export interface UseHotkeyOptions {
    * @default window
    */
   target?: MaybeRefOrGetter<EventTarget>
+
+  /**
+   * Whether to call `event.preventDefault()` on match
+   *
+   * @default false
+   */
+  preventDefault?: boolean
 }
 
 /**
@@ -245,27 +252,69 @@ export interface UseHotkeyOptions {
  */
 export function useHotkey(
   combo: string,
-  handler: () => void,
+  handler: (event: KeyboardEvent) => void,
   options: UseHotkeyOptions = {},
 ): { cleanup: () => void } {
-  const { once = false, trigger: triggerOn = 'keydown', target = defaultWindow } = options
+  const {
+    once = false,
+    trigger: triggerOn = 'keydown',
+    target = defaultWindow,
+    preventDefault = false,
+  } = options
 
   const keys = combo.split('+').map(k => k.trim().toLowerCase())
-  const magicKeys = useMagicKeys({ target })
-  const isPressed = computed(() => toValue(magicKeys[keys.join('_')]))
+  const held = new Set<string>()
+  let disposed = false
 
-  let prev = false
-  const stop = watch(isPressed, (curr) => {
-    const fire = triggerOn === 'keyup' ? (!curr && prev) : (curr && !prev)
-    if (fire) {
-      handler()
-      if (once)
-        stop()
+  const stop: Array<() => void> = []
+
+  function cleanup() {
+    if (disposed)
+      return
+    disposed = true
+    held.clear()
+    stop.forEach(fn => fn())
+  }
+
+  function matches(e: KeyboardEvent): boolean {
+    const mainKey = keys[keys.length - 1]
+    const eventKey = e.key?.toLowerCase()
+    if (eventKey !== mainKey && e.code?.toLowerCase() !== mainKey)
+      return false
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!held.has(keys[i]))
+        return false
     }
-    prev = curr
-  }, { flush: 'sync' })
+    return true
+  }
 
-  return { cleanup: stop }
+  stop.push(
+    useEventListener(target, 'keydown', (e: KeyboardEvent) => {
+      held.add(e.key?.toLowerCase() ?? '')
+      if (triggerOn === 'keydown' && matches(e)) {
+        if (preventDefault)
+          e.preventDefault()
+        handler(e)
+        if (once)
+          cleanup()
+      }
+    }),
+    useEventListener(target, 'keyup', (e: KeyboardEvent) => {
+      if (triggerOn === 'keyup' && matches(e)) {
+        if (preventDefault)
+          e.preventDefault()
+        handler(e)
+        if (once)
+          cleanup()
+      }
+      held.delete(e.key?.toLowerCase() ?? '')
+    }),
+    useEventListener(target, 'blur', () => held.clear()),
+  )
+
+  tryOnScopeDispose(cleanup)
+
+  return { cleanup }
 }
 
 export { DefaultMagicKeysAliasMap } from './aliasMap'
