@@ -286,10 +286,10 @@ export type UseArraySomeReturn = ComputedRef<boolean>;
 export type UseArrayUniqueReturn<T = any> = ComputedRef<T[]>;
 export type UseDateFormatReturn = ComputedRef<string>;
 export type UseDebounceFnReturn<T extends FunctionArgs> = CancelablePromisifyFn<T>;
-export type UseThrottleFnReturn<T extends FunctionArgs> = CancelablePromisifyFn<T>;
 export type UseIntervalFnReturn = Pausable;
 export type UseIntervalReturn = Readonly<ShallowRef<number>> | Readonly<UseIntervalControls & Pausable>;
 export type UseLastChangedReturn = Readonly<ShallowRef<number | null>> | Readonly<ShallowRef<number>>;
+export type UseThrottleFnReturn<T extends FunctionArgs> = CancelablePromisifyFn<T>;
 export type UseTimeoutFnReturn<CallbackFn extends AnyFn> = Stoppable<Parameters<CallbackFn> | []>;
 export type UseTimeoutReturn = ComputedRef<boolean> | {
   readonly ready: ComputedRef<boolean>;
