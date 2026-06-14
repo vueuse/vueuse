@@ -207,14 +207,17 @@ export interface ThrottleFilterOptions {
 /**
  * Create an EventFilter that throttle the events
  */
-export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
-export function throttleFilter(options: ThrottleFilterOptions): EventFilter
+export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): CancelableEventFilter
+export function throttleFilter(options: ThrottleFilterOptions): CancelableEventFilter
 export function throttleFilter(...args: any[]) {
   let lastExec = 0
   let timer: TimerHandle
   let isLeading = true
   let lastRejector: AnyFn = noop
+  let lastResolve: AnyFn = noop
+  let lastInvoker: AnyFn = noop
   let lastValue: any
+  const _pending = shallowRef(false)
   let ms: MaybeRefOrGetter<number>
   let trailing: boolean
   let leading: boolean
@@ -232,7 +235,7 @@ export function throttleFilter(...args: any[]) {
     }
   }
 
-  const filter: EventFilter & { clear: () => void } = (_invoke) => {
+  const filter: CancelableEventFilter = Object.assign((_invoke: AnyFn) => {
     const duration = toValue(ms)
     const elapsed = Date.now() - lastExec
     const invoke = () => {
@@ -242,6 +245,8 @@ export function throttleFilter(...args: any[]) {
     clear()
 
     if (duration <= 0) {
+      _pending.value = false
+      lastResolve = noop
       lastExec = Date.now()
       return invoke()
     }
@@ -251,13 +256,19 @@ export function throttleFilter(...args: any[]) {
         invoke()
     }
     else if (trailing) {
+      _pending.value = true
       lastValue = new Promise((resolve, reject) => {
         lastRejector = rejectOnCancel ? reject : resolve
+        lastResolve = resolve
+        lastInvoker = invoke
         timer = setTimeout(() => {
           lastExec = Date.now()
           isLeading = true
+          _pending.value = false
+          lastResolve = noop
           resolve(invoke())
-          clear()
+          timer = undefined
+          lastRejector = noop
         }, Math.max(0, duration - elapsed))
       })
     }
@@ -267,9 +278,31 @@ export function throttleFilter(...args: any[]) {
 
     isLeading = false
     return lastValue
-  }
+  }, {
+    cancel: () => {
+      clear()
+      _pending.value = false
+      lastResolve = noop
+      lastInvoker = noop
+    },
+    flush: () => {
+      if (_pending.value) {
+        if (timer) {
+          clearTimeout(timer)
+          timer = undefined
+        }
+        _pending.value = false
+        lastExec = Date.now()
+        isLeading = true
+        const resolve = lastResolve
+        lastRejector = noop
+        lastResolve = noop
+        resolve(lastInvoker())
+      }
+    },
+    isPending: shallowReadonly(_pending),
+  })
 
-  filter.clear = clear
   return filter
 }
 

@@ -75,6 +75,19 @@ describe('useThrottleFn', () => {
     expect(callback).toHaveBeenCalledTimes(0)
   })
 
+  it('should expose cancel, flush, and isPending', () => {
+    const callback = vi.fn()
+    const run = useThrottleFn(callback, 20, true)
+
+    expect(run.isPending.value).toBe(false)
+    expect(run.cancel).toBeTypeOf('function')
+    expect(run.flush).toBeTypeOf('function')
+
+    run()
+    run()
+    expect(run.isPending.value).toBe(true)
+  })
+
   it('should cancel pending trailing invocation when scope gets disposed', async () => {
     const callback = vi.fn()
     const ms = 20
@@ -84,6 +97,7 @@ describe('useThrottleFn', () => {
       const run = useThrottleFn(callback, ms, true)
       run()
       run()
+      expect(run.isPending.value).toBe(true)
     })
 
     expect(callback).toHaveBeenCalledTimes(1)
