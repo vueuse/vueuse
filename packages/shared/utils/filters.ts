@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify, PromisifyFn } from './types'
+import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify, PromisifyFn, TimerHandle } from './types'
 import { isRef, shallowReadonly, shallowRef, toValue } from 'vue'
 import { toRef } from '../toRef'
 import { noop } from './is'
@@ -88,8 +88,8 @@ export const bypassFilter: EventFilter = (invoke) => {
  * Create an EventFilter that debounce the events
  */
 export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFilterOptions = {}): CancelableEventFilter {
-  let timer: ReturnType<typeof setTimeout> | undefined
-  let maxTimer: ReturnType<typeof setTimeout> | undefined
+  let timer: TimerHandle
+  let maxTimer: TimerHandle
   let lastRejector: AnyFn = noop
   let lastResolve: AnyFn = noop
   const _pending = shallowRef(false)
@@ -214,7 +214,7 @@ export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean,
 export function throttleFilter(options: ThrottleFilterOptions): EventFilter
 export function throttleFilter(...args: any[]) {
   let lastExec = 0
-  let timer: ReturnType<typeof setTimeout> | undefined
+  let timer: TimerHandle
   let isLeading = true
   let lastRejector: AnyFn = noop
   let lastValue: any
