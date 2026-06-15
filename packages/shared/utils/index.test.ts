@@ -740,4 +740,158 @@ describe('optionsFilters', () => {
     expect(sumSpy).toHaveBeenCalledTimes(2)
     await expect(result).resolves.toBe(8 + 9)
   })
+
+  it('optionsThrottleFilter should not invoke on leading edge when leading is false', async () => {
+    const spy = vi.fn((x: number) => x)
+    const throttled = createFilterWrapper(
+      throttleFilter({
+        delay: 1000,
+        leading: false,
+        trailing: true,
+      }),
+      spy,
+    )
+
+    // First call: should NOT fire because leading is false
+    // createFilterWrapper always returns a Promise
+    const firstResult = throttled(1) as Promise<unknown>
+    expect(spy).not.toHaveBeenCalled()
+
+    // Second call within window: should schedule trailing
+    const secondResult = throttled(2) as Promise<unknown>
+    expect(spy).not.toHaveBeenCalled()
+
+    vi.runAllTimers()
+
+    // First call resolves to undefined (leading edge blocked)
+    await expect(firstResult).resolves.toBeUndefined()
+    // Second call's trailing promise should resolve with the last value
+    await expect(secondResult).resolves.toBe(2)
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(2)
+  })
+
+  it('optionsThrottleFilter should reject previous trailing promise when rejectOnCancel is true', async () => {
+    const spy = vi.fn((x: number) => x * 2)
+    const throttled = createFilterWrapper(
+      throttleFilter({
+        delay: 1000,
+        leading: false,
+        trailing: true,
+        rejectOnCancel: true,
+      }),
+      spy,
+    )
+
+    // First call: leading=false prevents immediate fire
+    // elapsed > duration triggers the leading path (blocked), sets isLeading timer
+    throttled(3)
+
+    // Second call: elapsed < duration → trailing path, creates trailing promise (timer A)
+    const promiseA = throttled(5)
+
+    // Third call within window cancels timer A, calling lastRejector = reject
+    // promiseA should reject
+    const promiseB = throttled(7)
+
+    vi.runAllTimers()
+
+    // promiseA was rejected when timer A was cleared by the third call
+    await expect(promiseA).rejects.toBeUndefined()
+    // promiseB resolves with the last trailing invocation
+    await expect(promiseB).resolves.toBe(14)
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(7)
+  })
+
+  it('debounceFilter maxWait shorter than duration should fire maxWait first', async () => {
+    const spy = vi.fn((x: number) => x * 2)
+    const filter = debounceFilter(5000, { maxWait: 1000 })
+    const wrapped = createFilterWrapper(filter, spy)
+
+    const promise = wrapped(3)
+
+    // Advance time past maxWait (1000ms) but before duration (5000ms)
+    vi.advanceTimersByTime(1500)
+
+    await expect(promise).resolves.toBe(6)
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    // Ensure no extra invocations from lingering timers
+    vi.runAllTimers()
+    expect(spy).toHaveBeenCalledTimes(1)
+  })
+
+  it('debounceFilter should clear maxTimer when duration becomes 0', async () => {
+    const spy = vi.fn((x: number) => x * 2)
+    const duration = shallowRef(5000)
+    const filter = debounceFilter(duration, { maxWait: 3000 })
+    const wrapped = createFilterWrapper(filter, spy)
+
+    // First call: sets up both timer (5000ms) and maxTimer (3000ms)
+    const promise1 = wrapped(3)
+    expect(filter.isPending.value).toBe(true)
+
+    // Second call with duration=0: should clear maxTimer and invoke immediately
+    duration.value = 0
+    const promise2 = wrapped(5)
+
+    // The second call should have invoked immediately and cleared pending
+    await expect(promise2).resolves.toBe(10)
+    expect(filter.isPending.value).toBe(false)
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(5)
+
+    // Ensure no lingering timers fire extra invocations
+    vi.runAllTimers()
+    expect(spy).toHaveBeenCalledTimes(1)
+  })
+
+  it('debounceFilter regular timer should clear maxTimer when duration is less than maxWait', async () => {
+    const spy = vi.fn((x: number) => x * 2)
+    const filter = debounceFilter(1000, { maxWait: 5000 })
+    const wrapped = createFilterWrapper(filter, spy)
+
+    // Call creates both timer (1000ms) and maxTimer (5000ms)
+    const promise = wrapped(3)
+
+    // Advance past the regular timer (1000ms) but before maxWait (5000ms)
+    vi.advanceTimersByTime(1500)
+
+    await expect(promise).resolves.toBe(6)
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(3)
+
+    // Ensure maxWait timer was cleared and doesn't fire extra
+    vi.runAllTimers()
+    expect(spy).toHaveBeenCalledTimes(1)
+  })
+
+  it('throttleFilter with leading=false should fire isLeading reset timer', async () => {
+    const spy = vi.fn((x: number) => x)
+    const filter = throttleFilter({
+      delay: 1000,
+      leading: false,
+      trailing: true,
+    })
+    const throttled = createFilterWrapper(filter, spy)
+
+    // First call: leading=false blocks invoke, creates isLeading reset timer
+    throttled(1)
+    expect(spy).not.toHaveBeenCalled()
+
+    // Advance time so the isLeading reset timer fires
+    vi.advanceTimersByTime(1500)
+
+    // Second call after timer reset: elapsed > duration, but leading=false still blocks
+    // Since no trailing was scheduled, this won't invoke either
+    throttled(2)
+    expect(spy).not.toHaveBeenCalled()
+
+    // Third call within window should schedule trailing
+    throttled(3)
+    vi.runAllTimers()
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(3)
+  })
 })
