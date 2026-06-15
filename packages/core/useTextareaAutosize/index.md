@@ -6,12 +6,17 @@ category: Browser
 
 Automatically update the height of a textarea depending on the content.
 
+> [!TIP]
+> You may not need this function anymore. Textarea autosizing can now be achieved natively with CSS, see [`field-sizing: content`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing) for more information.
+
 ## Usage
 
 ### Simple example
 
 ```vue
 <script setup lang="ts">
+import { useTextareaAutosize } from '@vueuse/core'
+
 const { textarea, input } = useTextareaAutosize()
 </script>
 
@@ -48,7 +53,34 @@ If you need support for the rows attribute on a textarea element, then you shoul
 
 ```vue
 <script setup lang="ts">
+import { useTextareaAutosize } from '@vueuse/core'
+
 const { textarea, input } = useTextareaAutosize({ styleProp: 'minHeight' })
+</script>
+
+<template>
+  <textarea
+    ref="textarea"
+    v-model="input"
+    class="resize-none"
+    placeholder="What's on your mind?"
+    rows="3"
+  />
+</template>
+```
+
+### With `maxHeight`
+
+Use the `maxHeight` option to cap the textarea height in pixels while keeping autosize behavior.
+
+```vue
+<script setup lang="ts">
+import { useTextareaAutosize } from '@vueuse/core'
+
+const { textarea, input } = useTextareaAutosize({
+  maxHeight: 180,
+  styleProp: 'minHeight',
+})
 </script>
 
 <template>

@@ -1,5 +1,7 @@
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableDocument, ConfigurableNavigator } from '../_configurable'
-import { whenever } from '@vueuse/shared'
+import type { Supportable } from '../types'
+import { tryOnScopeDispose, whenever } from '@vueuse/shared'
 import { computed, shallowRef } from 'vue'
 import { defaultDocument, defaultNavigator } from '../_configurable'
 import { useDocumentVisibility } from '../useDocumentVisibility'
@@ -20,13 +22,23 @@ type NavigatorWithWakeLock = Navigator & {
 
 export type UseWakeLockOptions = ConfigurableNavigator & ConfigurableDocument
 
+export interface UseWakeLockReturn extends Supportable {
+  sentinel: ShallowRef<WakeLockSentinel | null>
+  isActive: ComputedRef<boolean>
+  request: (type: WakeLockType) => Promise<void>
+  forceRequest: (type: WakeLockType) => Promise<void>
+  release: () => Promise<void>
+}
+
 /**
  * Reactive Screen Wake Lock API.
  *
  * @see https://vueuse.org/useWakeLock
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-export function useWakeLock(options: UseWakeLockOptions = {}) {
+export function useWakeLock(options: UseWakeLockOptions = {}): UseWakeLockReturn {
   const {
     navigator = defaultNavigator,
     document = defaultDocument,
@@ -72,6 +84,10 @@ export function useWakeLock(options: UseWakeLockOptions = {}) {
     await s?.release()
   }
 
+  tryOnScopeDispose(() => {
+    release()
+  })
+
   return {
     sentinel,
     isSupported,
@@ -81,5 +97,3 @@ export function useWakeLock(options: UseWakeLockOptions = {}) {
     release,
   }
 }
-
-export type UseWakeLockReturn = ReturnType<typeof useWakeLock>

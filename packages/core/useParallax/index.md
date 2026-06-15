@@ -9,7 +9,7 @@ Create parallax effect easily. It uses `useDeviceOrientation` and fallback to `u
 ## Usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useParallax } from '@vueuse/core'
 
 const container = ref(null)

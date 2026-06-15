@@ -10,7 +10,8 @@ Get parent element of the given element
 
 When no argument is passed, it will return the parent element of the current component.
 
-```js
+```vue
+<script setup lang="ts">
 import { useParentElement } from '@vueuse/core'
 
 const parentEl = useParentElement()
@@ -18,20 +19,28 @@ const parentEl = useParentElement()
 onMounted(() => {
   console.log(parentEl.value)
 })
+</script>
 ```
 
 It can also accept a `ref` as the first argument.
 
-```ts
+```vue
+<script setup lang="ts">
 import { useParentElement } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { useTemplateRef } from 'vue'
 
-// Don't forget to bind the ref to the element
-const tooltip = shallowRef<HTMLElement | undefined>()
+const tooltip = useTemplateRef('tooltip')
 
 const tooltipWrapper = useParentElement(tooltip)
 
 onMounted(() => {
   console.log(tooltipWrapper.value)
 })
+</script>
+
+<template>
+  <div>
+    <p ref="tooltip" />
+  </div>
+</template>
 ```

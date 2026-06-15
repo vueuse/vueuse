@@ -1,4 +1,6 @@
+import type { ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
+import type { Supportable } from '../types'
 import type { MaybeElement, MaybeElementRef } from '../unrefElement'
 import { until } from '@vueuse/shared'
 import { shallowRef } from 'vue'
@@ -17,14 +19,23 @@ export interface UsePointerLockOptions extends ConfigurableDocument {
   // pointerLockOptions?: PointerLockOptions
 }
 
+export interface UsePointerLockReturn extends Supportable {
+  element: ShallowRef<MaybeElement>
+  triggerElement: ShallowRef<MaybeElement>
+  lock: (e: MaybeElementRef | Event) => Promise<MaybeElement>
+  unlock: () => Promise<boolean>
+}
+
 /**
  * Reactive pointer lock.
  *
  * @see https://vueuse.org/usePointerLock
  * @param target
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
-export function usePointerLock(target?: MaybeElementRef, options: UsePointerLockOptions = {}) {
+export function usePointerLock(target?: MaybeElementRef, options: UsePointerLockOptions = {}): UsePointerLockReturn {
   const { document = defaultDocument } = options
 
   const isSupported = useSupported(() => document && 'pointerLockElement' in document)
@@ -90,5 +101,3 @@ export function usePointerLock(target?: MaybeElementRef, options: UsePointerLock
     unlock,
   }
 }
-
-export type UsePointerLockReturn = ReturnType<typeof usePointerLock>

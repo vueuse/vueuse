@@ -15,6 +15,8 @@ Before an app can send a notification, the user must grant the application the r
 :::
 
 ```ts
+import { useWebNotification } from '@vueuse/core'
+
 const {
   isSupported,
   notification,
@@ -40,6 +42,10 @@ if (isSupported.value && permissionGranted.value)
 This composable also utilizes the createEventHook utility from '@vueuse/shared`:
 
 ```ts
+import { useWebNotification } from '@vueuse/core'
+
+const { onClick, onShow, onError, onClose, } = useWebNotification()
+// ---cut---
 onClick((evt: Event) => {
   // Do something with the notification on:click event...
 })

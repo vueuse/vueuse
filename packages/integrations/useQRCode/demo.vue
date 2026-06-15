@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { shallowRef } from 'vue'
-import { useQRCode } from './index'
 
 const text = shallowRef('https://vueuse.org')
 const qrcode = useQRCode(text, {

@@ -36,6 +36,8 @@ export type UseTitleOptionsBase = {
 
 export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
 
+export type UseTitleReturn = ComputedRef<string | null | undefined> | Ref<string | null | undefined>
+
 /**
  * Reactive document title.
  *
@@ -55,7 +57,7 @@ export function useTitle(
 export function useTitle(
   newTitle: MaybeRefOrGetter<string | null | undefined> = null,
   options: UseTitleOptions = {},
-) {
+): UseTitleReturn {
   const {
     document = defaultDocument,
     restoreOnUnmount = t => t,
@@ -104,5 +106,3 @@ export function useTitle(
 
   return title
 }
-
-export type UseTitleReturn = ReturnType<typeof useTitle>

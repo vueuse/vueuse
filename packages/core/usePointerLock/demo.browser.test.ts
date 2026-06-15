@@ -1,5 +1,5 @@
-import { page, userEvent } from '@vitest/browser/context'
 import { describe, expect, it, vi } from 'vitest'
+import { page, userEvent } from 'vitest/browser'
 import Demo from './demo.vue'
 
 describe('usePointerLock Demo', () => {

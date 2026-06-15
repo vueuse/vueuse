@@ -1,10 +1,13 @@
 import { resolve } from 'node:path'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
+import { createFileSystemTypesCache } from '@shikijs/vitepress-twoslash/cache-fs'
 import { withPwa } from '@vite-pwa/vitepress'
 import { defineConfig } from 'vitepress'
 import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
+import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
+import { FILE_IMPORTS } from './twoslash'
 import viteConfig from './vite.config'
 
 const Guide = [
@@ -12,6 +15,7 @@ const Guide = [
   { text: 'Best Practice', link: '/guide/best-practice' },
   { text: 'Configurations', link: '/guide/config' },
   { text: 'Components', link: '/guide/components' },
+  { text: 'Work with AI', link: '/guide/work-with-ai' },
   { text: 'Contributing', link: '/contributing' },
   { text: 'Guidelines', link: '/guidelines' },
 ]
@@ -71,8 +75,22 @@ export default withPwa(defineConfig({
       dark: 'vitesse-dark',
     },
     codeTransformers: [
-      transformerTwoslash(),
+      transformerTwoslash({
+        twoslashOptions: {
+          compilerOptions: {
+            ignoreDeprecations: '6.0',
+          },
+          handbookOptions: {
+            noErrors: true,
+          },
+        },
+        includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
+        typesCache: createFileSystemTypesCache({
+          dir: resolve(__dirname, 'cache', 'twoslash'),
+        }),
+      }),
     ],
+    languages: ['js', 'ts'],
   },
 
   themeConfig: {
@@ -87,10 +105,13 @@ export default withPwa(defineConfig({
       copyright: 'Copyright © 2020-PRESENT Anthony Fu and VueUse contributors',
     },
 
-    algolia: {
-      appId: 'NBQWY48OOR',
-      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
-      indexName: 'vueuse',
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: 'NBQWY48OOR',
+        apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
+        indexName: 'vueuse',
+      },
     },
 
     socialLinks: [
@@ -127,7 +148,7 @@ export default withPwa(defineConfig({
       },
       {
         text: 'Playground',
-        link: 'https://play.vueuse.org',
+        link: `https://playground.vueuse.org?vueuse=${currentVersion.replace('v', '')}`,
       },
       {
         text: currentVersion,
@@ -248,6 +269,14 @@ export default withPwa(defineConfig({
     injectManifest: {
       globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}', 'hashmap.json'],
       globIgnores: ['og-*.png'],
+      // vue chunk ~5.4MB: won't be precached, and won't work when offline
+      maximumFileSizeToCacheInBytes: 6_000_000,
+      // for local build + preview
+      // enableWorkboxModulesLogs: true,
+      // minify: false,
+      buildPlugins: {
+        vite: [PWAVirtual()],
+      },
     },
   },
 

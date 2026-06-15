@@ -20,7 +20,7 @@ import { toRefs } from '@vueuse/core'
 import { useDrauu } from '@vueuse/integrations/useDrauu'
 import { useTemplateRef } from 'vue'
 
-const target = useTemplateRef<SVGSVGElement>('target')
+const target = useTemplateRef('target')
 const { undo, redo, canUndo, canRedo, brush } = useDrauu(target)
 const { color, size } = toRefs(brush)
 </script>

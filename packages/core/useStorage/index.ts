@@ -2,7 +2,7 @@ import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, RemovableRe
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { StorageLike } from '../ssr-handlers'
-import { pausableWatch, tryOnMounted } from '@vueuse/shared'
+import { tryOnMounted, watchPausable } from '@vueuse/shared'
 import { computed, ref as deepRef, nextTick, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
@@ -173,9 +173,9 @@ export function useStorage<T extends (string | number | boolean | object | null)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
 
-  const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(
+  const { pause: pauseWatch, resume: resumeWatch } = watchPausable(
     data,
-    () => write(data.value),
+    newValue => write(newValue),
     { flush, deep, eventFilter },
   )
 
@@ -234,8 +234,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
       window.dispatchEvent(storage instanceof Storage
         ? new StorageEvent('storage', payload)
         : new CustomEvent<StorageEventLike>(customStorageEventName, {
-          detail: payload,
-        }))
+            detail: payload,
+          }))
     }
   }
 
@@ -295,13 +295,17 @@ export function useStorage<T extends (string | number | boolean | object | null)
       return
     }
 
-    if (event && event.key !== keyComputed.value)
+    if (event && event.key !== keyComputed.value) {
       return
+    }
 
     pauseWatch()
+
     try {
-      if (event?.newValue !== serializer.write(data.value))
+      const serializedData = serializer.write(data.value)
+      if (event === undefined || event?.newValue !== serializedData) {
         data.value = read(event)
+      }
     }
     catch (e) {
       onError(e)

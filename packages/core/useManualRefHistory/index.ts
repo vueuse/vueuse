@@ -45,7 +45,7 @@ export interface UseManualRefHistoryReturn<Raw, Serialized> {
   /**
    * An array of history records for undo, newest comes to first
    */
-  history: Ref<UseRefHistoryRecord<Serialized>[]>
+  history: ComputedRef<UseRefHistoryRecord<Serialized>[]>
 
   /**
    * Last history point, source can be different if paused

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { formatDate, useManualRefHistory } from '@vueuse/core'
-import { useCounter } from '@vueuse/shared'
+import { formatDate, useCounter, useManualRefHistory } from '@vueuse/core'
 
 function format(ts: number) {
   return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')

@@ -26,15 +26,15 @@ export interface ReactifyOptions<T extends boolean> {
  *
  * @param fn - Source function
  * @param options - Options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function reactify<T extends AnyFn, K extends boolean = true>(fn: T, options?: ReactifyOptions<K>): ReactifyReturn<T, K> {
   const unrefFn = options?.computedGetter === false ? unref : toValue
   return function (this: any, ...args: any[]) {
     return computed(() => fn.apply(this, args.map(i => unrefFn(i))))
-  } as any
+  } as ReactifyReturn<T, K>
 }
 
-// alias
-export {
-  reactify as createReactiveFn,
-}
+/** @deprecated use `reactify` instead */
+export const createReactiveFn = reactify

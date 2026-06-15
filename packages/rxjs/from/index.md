@@ -8,14 +8,16 @@ Wrappers around RxJS's [`from()`](https://rxjs.dev/api/index/function/from) and 
 
 ## Usage
 
-```ts
+<!-- TODO: import rxjs error if enable twoslash -->
+
+```ts no-twoslash
 import { from, fromEvent, toObserver, useSubscription } from '@vueuse/rxjs'
 import { interval } from 'rxjs'
 import { map, mapTo, takeUntil, withLatestFrom } from 'rxjs/operators'
-import { shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const count = shallowRef(0)
-const button = shallowRef<HTMLButtonElement | null>(null)
+const button = useTemplateRef('buttonRef')
 
 useSubscription(
   interval(1000)
@@ -29,5 +31,37 @@ useSubscription(
       map(([curr, total]) => curr + total),
     )
     .subscribe(toObserver(count)), // same as ).subscribe(val => (count.value = val))
+)
+```
+
+## from
+
+The `from` function can accept either a standard RxJS `ObservableInput` or a Vue `ref`. When passed a ref, it creates an Observable that emits whenever the ref's value changes.
+
+### Watch Options
+
+When using `from` with a ref, you can pass Vue's `WatchOptions`:
+
+| Option      | Type                        | Description                        |
+| ----------- | --------------------------- | ---------------------------------- |
+| `immediate` | `boolean`                   | Emit the current value immediately |
+| `deep`      | `boolean`                   | Deeply watch nested objects        |
+| `flush`     | `'pre' \| 'post' \| 'sync'` | Timing of the callback flush       |
+
+## fromEvent
+
+The `fromEvent` function extends RxJS's `fromEvent` to accept a ref to an element. When the ref's value changes (e.g., after the component mounts), it automatically subscribes to the new element.
+
+```ts no-twoslash
+import { fromEvent, useSubscription } from '@vueuse/rxjs'
+import { useTemplateRef } from 'vue'
+
+const button = useTemplateRef('buttonRef')
+
+// Will automatically subscribe when the button element becomes available
+useSubscription(
+  fromEvent(button, 'click').subscribe(() => {
+    console.log('clicked!')
+  })
 )
 ```

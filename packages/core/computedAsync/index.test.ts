@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
-import { describe, expect, expectTypeOf, it, vi } from 'vitest'
+import type { ComputedRef, Ref } from 'vue'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, nextTick, shallowRef } from 'vue'
 import { asyncComputed, computedAsync } from './index'
 
@@ -18,6 +18,14 @@ describe('computed', () => {
 })
 
 describe('computedAsync', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('export module', () => {
     expect(computedAsync).toBeDefined()
     expect(asyncComputed).toBeDefined()
@@ -43,6 +51,38 @@ describe('computedAsync', () => {
 
     expectTypeOf(data1).toEqualTypeOf<Ref<string | undefined>>()
     expectTypeOf(data2).toEqualTypeOf<Ref<string>>()
+  })
+
+  it('types are correct when lazy', async () => {
+    const func = vi.fn(() => Promise.resolve('data'))
+
+    const data1 = computedAsync(func, undefined, { lazy: true })
+    const data2 = computedAsync(func, 'initialState', { lazy: true })
+
+    expectTypeOf(data1).toEqualTypeOf<ComputedRef<string | undefined>>()
+    expectTypeOf(data2).toEqualTypeOf<ComputedRef<string>>()
+  })
+
+  it('default onError in computedAsync uses globalThis.reportError', async () => {
+    const originalReportError = globalThis.reportError
+    const mockReportError = vi.fn()
+    globalThis.reportError = mockReportError
+
+    const error = new Error('An Error Message')
+    const func = vi.fn(async () => {
+      throw error
+    })
+
+    const data = computedAsync(func, undefined)
+
+    expect(func).toBeCalledTimes(1)
+
+    expect(data.value).toBeUndefined()
+
+    await nextTick()
+    expect(data.value).toBeUndefined()
+    expect(mockReportError).toHaveBeenCalledWith(error)
+    globalThis.reportError = originalReportError
   })
 
   it('call onError when error is thrown', async () => {
@@ -161,11 +201,10 @@ describe('computedAsync', () => {
   })
 
   it('evaluating works', async () => {
-    vi.useFakeTimers()
     const evaluating = shallowRef(false)
 
     const data = computedAsync(
-      () => new Promise(resolve => setTimeout(() => resolve('data'), 0)),
+      () => new Promise(resolve => setTimeout(resolve, 0, 'data')),
       undefined,
       evaluating,
     )
@@ -209,7 +248,6 @@ describe('computedAsync', () => {
   })
 
   it('cancel is called', async () => {
-    vi.useFakeTimers()
     const onCancel = vi.fn()
     const evaluating = shallowRef(false)
 
@@ -220,7 +258,7 @@ describe('computedAsync', () => {
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 5)
+        setTimeout(resolve, 5, uppercased)
       })
     }, '', evaluating)
 
@@ -253,7 +291,7 @@ describe('computedAsync', () => {
       const uppercased = data.value.toUpperCase()
 
       return new Promise((resolve) => {
-        setTimeout(resolve.bind(null, uppercased), 5)
+        setTimeout(resolve, 5, uppercased)
       })
     }, '', { lazy: true })
 
@@ -274,5 +312,15 @@ describe('computedAsync', () => {
 
     await vi.advanceTimersByTimeAsync(10)
     expect(uppercase.value).toBe('FINAL')
+  })
+
+  it('type when lazy is a boolean', async () => {
+    const lazy: boolean = true
+    const data = [] as string[]
+    const data1 = computedAsync(async () => data, [], { lazy })
+    const data2 = computedAsync(async () => data, undefined, { lazy })
+
+    expectTypeOf(data1).toEqualTypeOf<ComputedRef<string[]>>()
+    expectTypeOf(data2).toEqualTypeOf<ComputedRef<string[] | undefined>>()
   })
 })

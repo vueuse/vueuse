@@ -122,6 +122,15 @@ describe('useStorage', () => {
     expect(storedValue).toBeFalsy()
   })
 
+  it('undefined value with existing store', () => {
+    const initial = { foo: 'bar' }
+    storage.setItem(KEY, JSON.stringify(initial))
+    const store = useStorage(KEY, undefined, storage, { serializer: StorageSerializers.object })
+
+    expect.soft(store.value).toStrictEqual(initial)
+    expect.soft(storage.getItem(KEY)).toBe(JSON.stringify(initial))
+  })
+
   it('remove value', async () => {
     storage.setItem(KEY, 'random')
 

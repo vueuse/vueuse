@@ -1,11 +1,22 @@
-import type { UseIdleOptions } from '@vueuse/core'
+import type { UseIdleOptions, UseIdleReturn } from '@vueuse/core'
+import type { Reactive, SlotsType } from 'vue'
 import { useIdle } from '@vueuse/core'
 import { defineComponent, reactive } from 'vue'
 
-export const UseIdle = /* #__PURE__ */ defineComponent<UseIdleOptions & { timeout: number }>({
-  name: 'UseIdle',
-  props: ['timeout', 'events', 'listenForVisibilityChange', 'initialState'] as unknown as undefined,
-  setup(props, { slots }) {
+export interface UseIdleProps extends UseIdleOptions {
+  timeout: number
+}
+interface UseIdleSlots {
+  default: (data: Reactive<UseIdleReturn>) => any
+}
+
+export const UseIdle = /* #__PURE__ */ defineComponent<
+  UseIdleProps,
+  Record<string, never>,
+  string,
+  SlotsType<UseIdleSlots>
+>(
+  (props, { slots }) => {
     const data = reactive(useIdle(props.timeout, props))
 
     return () => {
@@ -13,4 +24,15 @@ export const UseIdle = /* #__PURE__ */ defineComponent<UseIdleOptions & { timeou
         return slots.default(data)
     }
   },
-})
+  {
+    name: 'UseIdle',
+    props: [
+      'eventFilter',
+      'events',
+      'initialState',
+      'listenForVisibilityChange',
+      'timeout',
+      'window',
+    ],
+  },
+)

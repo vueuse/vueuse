@@ -1,7 +1,6 @@
-import type { ObjectDirective } from 'vue'
-import type { OnLongPressOptions } from './index'
-
-import { onLongPress } from './index'
+import type { OnLongPressOptions } from '@vueuse/core'
+import { onLongPress } from '@vueuse/core'
+import { createDisposableDirective } from '@vueuse/shared'
 
 type BindingValueFunction = (evt: PointerEvent) => void
 
@@ -10,17 +9,19 @@ type BindingValueArray = [
   OnLongPressOptions,
 ]
 
-export const vOnLongPress: ObjectDirective<
+export const vOnLongPress = createDisposableDirective<
   HTMLElement,
   BindingValueFunction | BindingValueArray
-> = {
-  mounted(el, binding) {
-    if (typeof binding.value === 'function')
-      onLongPress(el, binding.value, { modifiers: binding.modifiers })
-    else
-      onLongPress(el, ...binding.value)
+> (
+  {
+    mounted(el, binding) {
+      if (typeof binding.value === 'function')
+        onLongPress(el, binding.value, { modifiers: binding.modifiers })
+      else
+        onLongPress(el, ...binding.value)
+    },
   },
-}
+)
 
-// alias
-export { vOnLongPress as VOnLongPress }
+/** @deprecated use `vOnLongPress` instead */
+export const VOnLongPress = vOnLongPress

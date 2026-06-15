@@ -59,7 +59,7 @@ export interface SyncRefOptions {
    *
    * @default 'sync'
    */
-  flush?: WatchOptions['flush']
+  flush?: WatchOptionFlush
   /**
    * Watch deeply
    *

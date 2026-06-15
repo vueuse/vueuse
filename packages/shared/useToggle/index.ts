@@ -1,7 +1,7 @@
 import type { MaybeRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import { isRef, shallowRef, toValue } from 'vue'
 
-type ToggleFn = (value?: boolean) => void
+export type ToggleFn = (value?: boolean) => void
 
 export type UseToggleReturn = [ShallowRef<boolean>, ToggleFn] | ToggleFn
 
@@ -19,6 +19,8 @@ export function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(init
  * @see https://vueuse.org/useToggle
  * @param [initialValue]
  * @param options
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useToggle(
   initialValue: MaybeRef<boolean> = false,

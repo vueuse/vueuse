@@ -32,7 +32,7 @@ it must wrap the component in a `<Suspense>` tag. You can read more about the su
 
 ```ts
 import { useFetch } from '@vueuse/core'
-
+// ---cut---
 const { isFetching, error, data } = await useFetch(url)
 ```
 
@@ -41,6 +41,8 @@ const { isFetching, error, data } = await useFetch(url)
 Using a `ref` for the url parameter will allow the `useFetch` function to automatically trigger another request when the url is changed.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const url = ref('https://my-api.com/user/1')
 
 const { data } = useFetch(url, { refetch: true })
@@ -53,6 +55,8 @@ url.value = 'https://my-api.com/user/2' // Will trigger another request
 Setting the `immediate` option to false will prevent the request from firing until the `execute` function is called.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const { execute } = useFetch(url, { immediate: false })
 
 execute()
@@ -63,6 +67,8 @@ execute()
 A request can be aborted by using the `abort` function from the `useFetch` function. The `canAbort` property indicates if the request can be aborted.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const { abort, canAbort } = useFetch(url)
 
 setTimeout(() => {
@@ -74,6 +80,8 @@ setTimeout(() => {
 A request can also be aborted automatically by using `timeout` property. It will call `abort` function when the given timeout is reached.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const { data } = useFetch(url, { timeout: 100 })
 ```
 
@@ -82,6 +90,8 @@ const { data } = useFetch(url, { timeout: 100 })
 The `beforeFetch` option can intercept a request before it is sent and modify the request options and url.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const { data } = useFetch(url, {
   async beforeFetch({ url, options, cancel }) {
     const myToken = await getMyToken()
@@ -104,6 +114,8 @@ const { data } = useFetch(url, {
 The `afterFetch` option can intercept the response data before it is updated.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const { data } = useFetch(url, {
   afterFetch(ctx) {
     if (ctx.data.title === 'HxH')
@@ -117,6 +129,8 @@ const { data } = useFetch(url, {
 The `onFetchError` option can intercept the response data and error before it is updated when `updateDataOnError` is set to `true`.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const { data } = useFetch(url, {
   updateDataOnError: true,
   onFetchError(ctx) {
@@ -137,6 +151,8 @@ console.log(data.value) // { title: 'Hunter x Hunter' }
 The request method and return type can be set by adding the appropriate methods to the end of `useFetch`
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 // Request will be sent with GET method and data will be parsed as JSON
 const { data } = useFetch(url).get().json()
 
@@ -154,6 +170,8 @@ const { data } = useFetch(url, { method: 'GET' }, { refetch: true }).blob()
 The `createFetch` function will return a useFetch function with whatever pre-configured options that are provided to it. This is useful for interacting with API's throughout an application that uses the same base URL or needs Authorization headers.
 
 ```ts
+import { createFetch } from '@vueuse/core'
+// ---cut---
 const useMyFetch = createFetch({
   baseUrl: 'https://my-api.com',
   options: {
@@ -175,6 +193,8 @@ const { isFetching, error, data } = useMyFetch('users')
 If you want to control the behavior of `beforeFetch`, `afterFetch`, `onFetchError` between the pre-configured instance and newly spawned instance. You can provide a `combination` option to toggle between `overwrite` or `chaining`.
 
 ```ts
+import { createFetch } from '@vueuse/core'
+// ---cut---
 const useMyFetch = createFetch({
   baseUrl: 'https://my-api.com',
   combination: 'overwrite',
@@ -215,6 +235,8 @@ const { isFetching, error, data } = useMyFetch('users', {
 You can re-execute the request by calling the `execute` method in `afterFetch` or `onFetchError`. Here is a simple example of refreshing a token:
 
 ```ts
+import { createFetch } from '@vueuse/core'
+// ---cut---
 let isRefreshing = false
 const refreshSubscribers: Array<() => void> = []
 
@@ -235,7 +257,7 @@ const useMyFetch = createFetch({
             if (newToken.value) {
               isRefreshing = false
               setMyToken(newToken.value)
-              onRrefreshed()
+              onRefreshed()
             }
             else {
               refreshSubscribers.length = 0
@@ -276,7 +298,7 @@ async function refreshToken() {
   return data
 }
 
-function onRrefreshed() {
+function onRefreshed() {
   refreshSubscribers.forEach(callback => callback())
   refreshSubscribers.length = 0
 }
@@ -293,6 +315,8 @@ const { isFetching, error, data } = useMyFetch('users')
 The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
 
 ```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
 const { onFetchResponse, onFetchError } = useFetch(url)
 
 onFetchResponse((response) => {

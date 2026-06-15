@@ -11,6 +11,8 @@ import { shallowRef } from 'vue'
  *
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
  * @see https://vueuse.org/useIpcRendererInvoke
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: string, ...args: any[]): ShallowRef<T | null>
 
@@ -23,9 +25,21 @@ export function useIpcRendererInvoke<T>(ipcRenderer: IpcRenderer, channel: strin
  *
  * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
  * @see https://vueuse.org/useIpcRendererInvoke
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useIpcRendererInvoke<T>(channel: string, ...args: any[]): ShallowRef<T | null>
 
+/**
+ * Returns Promise<any> - Resolves with the response from the main process.
+ *
+ * Send a message to the main process via channel and expect a result ~~asynchronously~~. As composition-api, it makes asynchronous operations look like synchronous.
+ *
+ * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args
+ * @see https://vueuse.org/useIpcRendererInvoke
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useIpcRendererInvoke<T>(...args: any[]): ShallowRef<T | null> {
   let ipcRenderer: IpcRenderer | undefined
   let channel: string

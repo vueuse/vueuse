@@ -17,6 +17,8 @@ export type ShallowOrDeepRef<T = any, D extends boolean = false> = D extends tru
  * @param value
  * @param deep
  * @returns the `deepRef` or `shallowRef`
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function createRef<T = any, D extends boolean = false>(value: T, deep?: D): CreateRefReturn<T, D> {
   if (deep === true) {

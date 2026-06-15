@@ -1,7 +1,7 @@
 import type { Import, Preset } from 'unimport'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineNuxtModule } from '@nuxt/kit'
+import { defineNuxtModule, hasNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
 import { isPackageExists } from 'local-pkg'
 
@@ -109,13 +109,18 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     if (options.autoImports) {
       // auto import
       nuxt.hook('imports:sources', (sources: (Import | Preset)[]) => {
-        if (sources.find(i => fullPackages.includes((i as Import).from)))
+        if (sources.some(i => fullPackages.includes((i as Import).from)))
           return
 
         metadata.functions.forEach((i) => {
           if (i.package === 'shared')
             i.package = 'core'
         })
+
+        // disable useColorMode in favor of nuxt color mode
+        if (hasNuxtModule('@nuxtjs/color-mode')) {
+          disabledFunctions.push('useColorMode')
+        }
 
         for (const pkg of packages) {
           if (pkg === 'shared')
@@ -130,9 +135,13 @@ export default defineNuxtModule<VueUseNuxtOptions>({
 
           const imports = metadata
             .functions
-            .filter(i => i.package === pkg && !i.internal)
+            .filter(i => i.package === pkg
+              && !i.internal
+              && i.name.length >= 4
+              && !disabledFunctions.includes(i.name),
+            )
             .flatMap((i): Import[] => {
-              const names = [i.name, ...i.alias || []]
+              const names = [i.name, ...i.alias || [], ...i.variants || []]
               return names.map(n => ({
                 from: `@vueuse/${i.importPath || i.package}`,
                 name: n,
@@ -145,7 +154,6 @@ export default defineNuxtModule<VueUseNuxtOptions>({
                 },
               }))
             })
-            .filter(i => i.name.length >= 4 && !disabledFunctions.includes(i.name))
 
           sources.push({
             from: '@vueuse/core',

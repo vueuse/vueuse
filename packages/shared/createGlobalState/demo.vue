@@ -1,6 +1,18 @@
 <script setup lang="ts">
-import { createGlobalState, useStorage } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { createGlobalState, reactify, useStorage } from '@vueuse/core'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const useState = createGlobalState(() =>
   useStorage('vue-use-locale-storage', {

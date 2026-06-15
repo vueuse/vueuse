@@ -41,6 +41,10 @@ export interface CreateReusableTemplateOptions<Props extends Record<string, any>
    */
   inheritAttrs?: boolean
   /**
+   * Name for the reuse component (useful for devtools).
+   */
+  name?: string
+  /**
    * Props definition for reuse component.
    */
   props?: ComponentObjectPropsOptions<Props>
@@ -51,6 +55,8 @@ export interface CreateReusableTemplateOptions<Props extends Record<string, any>
  * It also allow to pass a generic to bind with type.
  *
  * @see https://vueuse.org/createReusableTemplate
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function createReusableTemplate<
   Bindings extends Record<string, any>,
@@ -60,11 +66,13 @@ export function createReusableTemplate<
 ): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps> {
   const {
     inheritAttrs = true,
+    name = 'ReusableTemplate',
   } = options
 
   const render = shallowRef<Slot | undefined>()
 
   const define = defineComponent({
+    name: `${name}.define`,
     setup(_, { slots }) {
       return () => {
         render.value = slots.default
@@ -74,6 +82,7 @@ export function createReusableTemplate<
 
   const reuse = defineComponent({
     inheritAttrs,
+    name: `${name}.reuse`,
     props: options.props,
     setup(props, { attrs, slots }) {
       return () => {
@@ -94,7 +103,7 @@ export function createReusableTemplate<
   return makeDestructurable(
     { define, reuse },
     [define, reuse],
-  ) as any
+  ) as ReusableTemplatePair<Bindings, MapSlotNameToSlotProps>
 }
 
 function keysToCamelKebabCase(obj: Record<string, any>) {

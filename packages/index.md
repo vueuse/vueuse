@@ -27,8 +27,8 @@ features:
   - title: Feature Rich
     details: 200+ functions for you to choose from
     icon: 🎛
-  - title: Seamless migration
-    details: Works for both Vue 3 and 2
+  - title: Built for Vue 3
+    details: Designed for Vue 3 to take full advantage of its latest capabilities
     icon: 🚀
   - title: Fully tree shakeable
     details: Only take what you want

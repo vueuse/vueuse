@@ -10,6 +10,8 @@ export function useMax(...args: MaybeRefOrGetter<number>[]): ComputedRef<number>
  * Reactively get maximum of values.
  *
  * @see https://vueuse.org/useMax
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useMax(...args: MaybeComputedRefArgs<number>) {
   return computed<number>(() => {

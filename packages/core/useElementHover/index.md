@@ -13,7 +13,7 @@ Reactive element's hover state.
 import { useElementHover } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const myHoverableElement = useTemplateRef<HTMLButtonElement>('myHoverableElement')
+const myHoverableElement = useTemplateRef('myHoverableElement')
 const isHovered = useElementHover(myHoverableElement)
 </script>
 

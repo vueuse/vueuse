@@ -27,6 +27,8 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: pnpm
 
+      - run: npm i -g npm@latest
+
       - run: pnpm install
 
       - run: npx changelogithub --no-group
@@ -38,6 +40,4 @@ jobs:
 
       - run: pnpm run publish:ci
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          NPM_CONFIG_PROVENANCE: true
           NODE_OPTIONS: --max-old-space-size=6144

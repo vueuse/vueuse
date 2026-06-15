@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { increaseWithUnit, pxValue, tryOnMounted } from '@vueuse/shared'
 import { computed, shallowRef, toValue } from 'vue'
@@ -23,15 +23,32 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
   ssrWidth?: number
 }
 
+export type UseBreakpointReturn<K extends string = string> = Record<K, ComputedRef<boolean>> & {
+  greaterOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  smallerOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  greater: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  smaller: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  between: (a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  isGreater: (k: MaybeRefOrGetter<K>) => boolean
+  isGreaterOrEqual: (k: MaybeRefOrGetter<K>) => boolean
+  isSmaller: (k: MaybeRefOrGetter<K>) => boolean
+  isSmallerOrEqual: (k: MaybeRefOrGetter<K>) => boolean
+  isInBetween: (a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) => boolean
+  current: () => ComputedRef<K[]>
+  active: () => ComputedRef<K | ''>
+}
+
 /**
  * Reactively viewport breakpoints
  *
  * @see https://vueuse.org/useBreakpoints
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useBreakpoints<K extends string>(
   breakpoints: Breakpoints<K>,
   options: UseBreakpointsOptions = {},
-) {
+): UseBreakpointReturn<K> {
   function getValue(k: MaybeRefOrGetter<K>, delta?: number) {
     let v = toValue(breakpoints[toValue(k)])
 
@@ -122,5 +139,3 @@ export function useBreakpoints<K extends string>(
     },
   })
 }
-
-export type UseBreakpointsReturn<K extends string = string> = ReturnType<typeof useBreakpoints<K>>

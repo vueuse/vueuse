@@ -3,8 +3,8 @@ publish = "packages/.vitepress/dist"
 command = "pnpm run install-fonts && pnpm run docs:build"
 
 [build.environment]
-NODE_OPTIONS = "--max_old_space_size=4096"
-NODE_VERSION = "22"
+NODE_OPTIONS = "--max-old-space-size=5120"
+NODE_VERSION = "24"
 
 [[redirects]]
 from = "https://vueuse.js.org/*"

@@ -1,6 +1,7 @@
 import type { Awaitable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -195,8 +196,7 @@ export function useFileSystemAccess(options: UseFileSystemAccessOptions = {}): U
   }
 }
 
-export interface UseFileSystemAccessReturn<T = string> {
-  isSupported: ComputedRef<boolean>
+export interface UseFileSystemAccessReturn<T = string> extends Supportable {
   data: ShallowRef<T | undefined>
   file: ShallowRef<File | undefined>
   fileName: ComputedRef<string>

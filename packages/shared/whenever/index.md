@@ -20,6 +20,8 @@ whenever(isReady, () => console.log(state))
 ```
 
 ```ts
+import { whenever } from '@vueuse/core'
+// ---cut---
 // this
 whenever(ready, () => console.log(state))
 
@@ -35,6 +37,8 @@ watch(ready, (isReady) => {
 Same as `watch`, the callback will be called with `cb(value, oldValue, onInvalidate)`.
 
 ```ts
+import { whenever } from '@vueuse/core'
+// ---cut---
 whenever(height, (current, lastHeight) => {
   if (current > lastHeight)
     console.log(`Increasing height by ${current - lastHeight}`)
@@ -46,6 +50,8 @@ whenever(height, (current, lastHeight) => {
 Same as `watch`, you can pass a getter function to calculate on each change.
 
 ```ts
+import { whenever } from '@vueuse/core'
+// ---cut---
 // this
 whenever(
   () => counter.value === 7,
@@ -58,6 +64,8 @@ whenever(
 Options and defaults are same with `watch`.
 
 ```ts
+import { whenever } from '@vueuse/core'
+// ---cut---
 // this
 whenever(
   () => counter.value === 7,

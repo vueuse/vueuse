@@ -1,0 +1,23 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "update": {
+      "outputs": [
+        "index.json"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/components/**/*",
+        "$TURBO_ROOT$/packages/core/**/*",
+        "$TURBO_ROOT$/packages/electron/**/*",
+        "$TURBO_ROOT$/packages/firebase/**/*",
+        "$TURBO_ROOT$/packages/integrations/**/*",
+        "$TURBO_ROOT$/packages/math/**/*",
+        "$TURBO_ROOT$/packages/nuxt/**/*",
+        "$TURBO_ROOT$/packages/router/**/*",
+        "$TURBO_ROOT$/packages/rxjs/**/*",
+        "$TURBO_ROOT$/packages/shared/**/*"
+      ]
+    }
+  }
+}

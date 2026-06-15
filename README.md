@@ -12,6 +12,7 @@ Collection of essential Vue Composition Utilities
 <p align="center">
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img src="https://img.shields.io/npm/v/@vueuse/core?color=a1b858&label=" alt="NPM version"></a>
 <a href="https://www.npmjs.com/package/@vueuse/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vueuse/core?color=50a36f&label="></a>
+<a href="https://app.codecov.io/gh/vueuse/vueuse"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/vueuse/vueuse?color=42b883&labelColor=354a5e"></a>
 <a href="https://vueuse.org" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=1e8a7a" alt="Docs & Demos"></a>
 <img alt="Function Count" src="https://vueuse.org/badge-function-count.svg">
 <br>
@@ -20,7 +21,7 @@ Collection of essential Vue Composition Utilities
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'>
+    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg' alt="Sponsors">
   </a>
 </p>
 
@@ -58,6 +59,8 @@ Refer to [functions list](https://vueuse.org/functions) or [documentations](http
 
 ## 📦 Install
 
+> From v14.0, VueUse requires Vue v3.5+
+> From v13.0, VueUse requires Vue v3.3+
 > From v12.0, VueUse no longer supports Vue 2. Please use v11.x for Vue 2 support.
 
 ```bash
@@ -105,7 +108,7 @@ And thanks to [all the contributors on GitHub](https://github.com/vueuse/vueuse/
 
 ### Financial Contributors on Open Collective
 
-<a href="https://opencollective.com/vueuse"><img src="https://opencollective.com/vueuse/individuals.svg?width=890"></a>
+<a href="https://opencollective.com/vueuse"><img src="https://opencollective.com/vueuse/individuals.svg?width=890" alt="Open Collective"></a>
 
 ## 📄 License
 

@@ -18,7 +18,7 @@ same origin.
 Messages are broadcasted via a message event fired at all BroadcastChannel
 objects listening to the channel.
 
-```js
+```ts
 import { useBroadcastChannel } from '@vueuse/core'
 import { shallowRef } from 'vue'
 

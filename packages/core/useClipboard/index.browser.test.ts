@@ -18,14 +18,32 @@ describe('useClipboard', () => {
       expect(text.value).toBe('hello')
       expect(copied.value).toBe(true)
     })
+
+    it('should copy text from async function', async () => {
+      const { text, copy, copied, copyPending } = useClipboard()
+      expect(text.value).toBe('')
+      expect(copied.value).toBe(false)
+
+      const promise = copy(async () => 'async text')
+      expect(copyPending.value).toBe(true)
+
+      await promise
+
+      expect(text.value).toBe('async text')
+      expect(copied.value).toBe(true)
+    })
+
     it.todo('should read from legacy clipboard')
   })
 
   describe('with permissions', () => {
     // todo: mock navigator permissions
     it.todo('should write to clipboard')
+
     it.todo('should read from clipboard')
+
     it.todo('should fall back to legacy clipboard if write fails')
+
     it.todo('should fall back to legacy clipboard if read fails')
   })
 })

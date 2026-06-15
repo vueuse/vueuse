@@ -1,7 +1,19 @@
 <script setup lang="ts">
-import { useElementSize } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
+import { reactify, useElementSize } from '@vueuse/core'
 import { reactive, useTemplateRef } from 'vue'
+import YAML from 'yaml'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const el = useTemplateRef('el')
 const size = reactive(
@@ -18,5 +30,5 @@ const text = stringify(size)
   <note class="mb-2">
     Resize the box to see changes
   </note>
-  <textarea ref="el" class="resizer" v-text="text" />
+  <textarea ref="el" readonly class="resizer" v-text="text" />
 </template>

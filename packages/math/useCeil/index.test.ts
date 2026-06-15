@@ -6,6 +6,7 @@ describe('useCeil', () => {
   it('should be defined', () => {
     expect(useCeil).toBeDefined()
   })
+
   it('should work', () => {
     const base = deepRef(0.95)
     const result = useCeil(base)

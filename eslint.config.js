@@ -25,9 +25,20 @@ export default antfu(
   {
     formatters: true,
     pnpm: true,
+    test: {
+      overrides: {
+        'test/padding-around-after-all-blocks': 'error',
+        'test/padding-around-after-each-blocks': 'error',
+        'test/padding-around-before-all-blocks': 'error',
+        'test/padding-around-before-each-blocks': 'error',
+        'test/padding-around-describe-blocks': 'error',
+        'test/padding-around-test-blocks': 'error',
+      },
+    },
     ignores: [
       'patches',
       'playgrounds',
+      '**/skills/**',
       '**/types',
       '**/cache',
       '**/*.svg',
@@ -85,6 +96,30 @@ export default antfu(
     },
   },
   {
+    files: ['packages/core/**/component.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        paths: restricted,
+        patterns: [{
+          group: ['./*'],
+          message: 'Please use `@vueuse/core` instead.',
+        }],
+      }],
+    },
+  },
+  {
+    files: ['packages/**/component.ts'],
+    ignores: ['packages/core/**/component.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        paths: restricted,
+        patterns: [{
+          group: ['@vueuse/*', '!@vueuse/shared', '!@vueuse/core'],
+        }],
+      }],
+    },
+  },
+  {
     files: [
       'packages/*/index.ts',
     ],
@@ -136,6 +171,15 @@ export default antfu(
         name: 'ref',
         as: 'deepRef',
       },
+      {
+        from: 'vue',
+        name: 'shallowReadonly',
+      },
+      {
+        from: 'vue',
+        name: 'readonly',
+        as: 'deepReadonly',
+      },
     ],
   }),
   createSimplePlugin({
@@ -144,14 +188,26 @@ export default antfu(
     create(context) {
       return {
         CallExpression(node) {
-          if (node.callee.type === 'Identifier' && node.callee.name === 'ref') {
-            context.report({
-              node,
-              message: 'Usage of ref() is restricted. Use shallowRef() or deepRef() instead.',
-            })
+          if (node.callee.type === 'Identifier') {
+            if (node.callee.name === 'ref') {
+              context.report({
+                node,
+                message: 'Usage of ref() is restricted. Use shallowRef() or deepRef() instead.',
+              })
+            }
+            else if (node.callee.name === 'readonly') {
+              context.report({
+                node,
+                message: 'Usage of readonly() is restricted. Use shallowReadonly() or deepReadonly() instead.',
+              })
+            }
           }
         },
       }
     },
   }),
 )
+  .removeRules(
+    'markdown/heading-increment',
+    'markdown/no-missing-link-fragments',
+  )

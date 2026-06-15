@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { useAnimate } from '@vueuse/core'
 import { describe, expect, it, vi } from 'vitest'
 import { defineComponent, shallowRef } from 'vue'
@@ -70,6 +70,36 @@ describe('useAnimate', () => {
         transform: 'rotate(180deg)',
       }])
     })
+
+    wrapper.unmount()
+  })
+
+  it('should not automatically start the animation when shown if `immediate` is false', async () => {
+    const wrapper = mount(defineComponent({
+      template: '<p v-if="show" ref="el">test</p>',
+      setup() {
+        const show = shallowRef(false)
+        const el = shallowRef<HTMLElement>()
+        const animate = useAnimate(el, { transform: 'rotate(360deg)' }, {
+          duration: 100,
+          immediate: false,
+        })
+
+        return { ...animate, el, show }
+      },
+    }))
+
+    const vm = wrapper.vm
+
+    // It is initially hidden
+    expect(vm.animate).toBeUndefined()
+
+    // Toggle element into view
+    vm.show = true
+    await flushPromises()
+
+    // It should not have started automatically
+    expect(vm.animate?.playState).toBe('paused')
 
     wrapper.unmount()
   })

@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { useMousePressed } from '@vueuse/core'
-import { stringify } from '@vueuse/docs-utils'
-import { useToggle } from '@vueuse/shared'
+import { reactify, useMousePressed, useToggle } from '@vueuse/core'
 import { computed, reactive, useTemplateRef } from 'vue'
+import YAML from 'yaml'
 
-const el = useTemplateRef<HTMLElement>('el')
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
+
+const el = useTemplateRef('el')
 const [withTarget, toggle] = useToggle()
 const target = computed<HTMLElement | null>(() =>
   (withTarget.value ? el.value : window) as HTMLElement)

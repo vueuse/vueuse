@@ -65,6 +65,8 @@ export interface UseMemoizeOptions<Result, Args extends unknown[]> {
 
 /**
  * Reactive function result cache based on arguments
+ *
+ * @__NO_SIDE_EFFECTS__
  */
 export function useMemoize<Result, Args extends unknown[]>(
   resolver: (...args: Args) => Result,

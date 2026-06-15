@@ -10,7 +10,7 @@ Reactive `Array.includes`
 
 ### Use with reactive array
 
-```js
+```ts
 import { useArrayIncludes } from '@vueuse/core'
 
 const list = ref([0, 2, 4, 6, 8])

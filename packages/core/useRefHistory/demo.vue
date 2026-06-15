@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { formatDate, useRefHistory } from '@vueuse/core'
-import { useCounter } from '@vueuse/shared'
+import { shallowRef } from 'vue'
 
 function format(ts: number) {
   return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
 }
 
-const { count, inc, dec } = useCounter()
+const count = shallowRef(0)
+
+function inc() {
+  count.value++
+}
+
+function dec() {
+  count.value--
+}
+
 const { history, undo, redo, canUndo, canRedo } = useRefHistory(count, { capacity: 10 })
 </script>
 

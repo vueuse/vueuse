@@ -2,16 +2,12 @@
 
 [![NPM version](https://img.shields.io/npm/v/@vueuse/router?color=a1b858)](https://www.npmjs.com/package/@vueuse/router)
 
-> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), providing utilities for vue-router (Vue 3 only).
-
-::: warning
-This package only works for Vue 3
-:::
+> This is an add-on of [VueUse](https://github.com/vueuse/vueuse), providing utilities for vue-router.
 
 ## Install
 
 ```bash
-npm i @vueuse/router vue-router@4
+npm i @vueuse/router vue-router@5
 ```
 
 ## Functions

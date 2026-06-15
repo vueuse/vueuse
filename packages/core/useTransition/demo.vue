@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { TransitionPresets, useTransition } from '@vueuse/core'
-import { rand } from '@vueuse/shared'
+import { rand, TransitionPresets, useTransition } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 const duration = 1500
@@ -9,13 +8,7 @@ const baseNumber = shallowRef(0)
 
 const baseVector = shallowRef([0, 0])
 
-function easeOutElastic(n: number) {
-  return n === 0
-    ? 0
-    : n === 1
-      ? 1
-      : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
-}
+const baseWord = shallowRef('Hello')
 
 const cubicBezierNumber = useTransition(baseNumber, {
   duration,
@@ -32,9 +25,82 @@ const vector = useTransition(baseVector, {
   transition: TransitionPresets.easeOutExpo,
 })
 
+const word = useTransition(baseWord, {
+  duration,
+  interpolation: wordlerp,
+  transition: TransitionPresets.easeInOutExpo,
+})
+
+// Custom easing functions can control the progress of a transition,
+function easeOutElastic(n: number) {
+  return n === 0
+    ? 0
+    : n === 1
+      ? 1
+      : (2 ** (-10 * n)) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
+}
+
+// and custom interpolation functions control the value of the transition, at
+// that progress. To demonstrate, let's say hello in a bunch of languages!
+const greetings = [
+  'Ahoj',
+  'Bok',
+  'Ciao',
+  'Czesc',
+  'Hallo',
+  'Hei',
+  'Hej',
+  'Hello',
+  'Hola',
+  'Merhaba',
+  'Moi',
+  'Namaste',
+  'Ola',
+  'Privet',
+  'Salam',
+  'Salut',
+  'Sawasdee',
+  'Shalom',
+  'Yia',
+  'Zdravo',
+]
+
+function wordlerp(from: string, target: string, alpha: number) {
+  from = from.padEnd(target.length)
+  target = target.padEnd(from.length)
+
+  const arr = from.split('')
+  const steps = [from]
+
+  while (arr.join('') !== target) {
+    for (let i = 0; i < arr.length; i++) {
+      const current = arr[i].charCodeAt(0)
+      const next = target.charCodeAt(i)
+
+      if (current < next) {
+        arr[i] = String.fromCharCode(current + 1)
+        break
+      }
+      else if (current > next) {
+        arr[i] = String.fromCharCode(current - 1)
+        break
+      }
+    }
+    steps.push(arr.join(''))
+  }
+
+  if (alpha <= 0)
+    return steps[0]
+  if (alpha >= 1)
+    return steps[steps.length - 1]
+  return steps[Math.round(alpha * (steps.length - 1))]
+}
+
 function toggle() {
   baseNumber.value = baseNumber.value === 100 ? 0 : 100
   baseVector.value = [rand(0, 100), rand(0, 100)]
+  const arr = greetings.filter(word => word !== baseWord.value)
+  baseWord.value = arr[rand(0, arr.length - 1)]
 }
 </script>
 
@@ -73,6 +139,10 @@ function toggle() {
         <div class="sled" :style="{ left: `${vector[0]}%`, top: `${vector[1]}%` }" />
       </div>
     </div>
+
+    <p class="mt-2">
+      Non-numeric value: <b>{{ word }}</b>
+    </p>
   </div>
 </template>
 

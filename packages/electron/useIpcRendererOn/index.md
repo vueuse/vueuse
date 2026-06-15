@@ -12,7 +12,7 @@ Use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendere
 import { useIpcRendererOn } from '@vueuse/electron'
 
 // enable nodeIntegration if you don't provide ipcRenderer explicitly
-// @see: https://www.electronjs.org/docs/api/webview-tag#nodeintegration
+// see: https://www.electronjs.org/docs/api/webview-tag#nodeintegration
 // remove listener automatically on unmounted
 useIpcRendererOn('custom-event', (event, ...args) => {
   console.log(args)

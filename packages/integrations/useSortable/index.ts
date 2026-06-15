@@ -3,7 +3,7 @@ import type { Options } from 'sortablejs'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { defaultDocument, tryOnMounted, tryOnScopeDispose, unrefElement } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import { isRef, nextTick, toValue } from 'vue'
+import { isRef, nextTick, toValue, watch } from 'vue'
 
 export interface UseSortableReturn {
   /**
@@ -23,11 +23,25 @@ export interface UseSortableReturn {
   option: (<K extends keyof Sortable.Options>(name: K, value: Sortable.Options[K]) => void) & (<K extends keyof Sortable.Options>(name: K) => Sortable.Options[K])
 }
 
-export type UseSortableOptions = Options & ConfigurableDocument
+export interface UseSortableOptions extends Options, ConfigurableDocument {
+  /**
+   * Watch the element reference for changes and automatically reinitialize Sortable
+   * when the element changes.
+   *
+   * When `false` (default), Sortable is only initialized once on mount.
+   * You must manually call `start()` if the element reference changes.
+   *
+   * When `true`, automatically watches the element reference and reinitializes
+   * Sortable whenever it changes (e.g., conditional rendering with v-if).
+   *
+   * @default false
+   */
+  watchElement?: boolean
+}
 
-export function useSortable<T>(selector: string, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(selector: string, list: MaybeRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
-export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRefOrGetter<T[]>,
+export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRef<T[]>,
   options?: UseSortableOptions): UseSortableReturn
 
 /**
@@ -38,12 +52,12 @@ export function useSortable<T>(el: MaybeRefOrGetter<MaybeElement>, list: MaybeRe
  */
 export function useSortable<T>(
   el: MaybeRefOrGetter<MaybeElement> | string,
-  list: MaybeRefOrGetter<T[]>,
+  list: MaybeRef<T[]>,
   options: UseSortableOptions = {},
 ): UseSortableReturn {
   let sortable: Sortable | undefined
 
-  const { document = defaultDocument, ...resetOptions } = options
+  const { document = defaultDocument, watchElement = false, ...resetOptions } = options
 
   const defaultOptions: Options = {
     onUpdate: (e) => {
@@ -51,16 +65,21 @@ export function useSortable<T>(
     },
   }
 
-  const start = () => {
-    const target = (typeof el === 'string' ? document?.querySelector(el) : unrefElement(el))
+  const cleanup = () => {
+    sortable?.destroy()
+    sortable = undefined
+  }
+
+  const initSortable = (target: Element) => {
     if (!target || sortable !== undefined)
       return
     sortable = new Sortable(target as HTMLElement, { ...defaultOptions, ...resetOptions })
   }
 
-  const stop = () => {
-    sortable?.destroy()
-    sortable = undefined
+  const start = () => {
+    const target = typeof el === 'string' ? document?.querySelector(el) : unrefElement(el)
+    if (target)
+      initSortable(target)
   }
 
   const option = <K extends keyof Options>(name: K, value?: Options[K]) => {
@@ -70,9 +89,34 @@ export function useSortable<T>(
       return sortable?.option(name)
   }
 
-  tryOnMounted(start)
+  // Conditionally set up element watching
+  let stopWatch: (() => void) | undefined
 
-  tryOnScopeDispose(stop)
+  if (watchElement && typeof el !== 'string') {
+    // New behavior: watch element changes and auto-reinitialize
+    stopWatch = watch(
+      () => unrefElement(el),
+      (newElement) => {
+        cleanup()
+        if (newElement)
+          initSortable(newElement)
+      },
+      { immediate: true, flush: 'post' },
+    )
+  }
+  else {
+    // Default behavior: initialize once on mount
+    tryOnMounted(start)
+  }
+
+  const stop = () => {
+    cleanup()
+  }
+
+  tryOnScopeDispose(() => {
+    stopWatch?.()
+    cleanup()
+  })
 
   return {
     stop,
@@ -108,7 +152,7 @@ export function removeNode(node: Node) {
 }
 
 export function moveArrayElement<T>(
-  list: MaybeRefOrGetter<T[]>,
+  list: MaybeRef<T[]>,
   from: number,
   to: number,
   e: Sortable.SortableEvent | null = null,
