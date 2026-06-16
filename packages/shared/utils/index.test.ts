@@ -829,15 +829,15 @@ describe('optionsFilters', () => {
     const wrapped = createFilterWrapper(filter, spy)
 
     // First call: sets up both timer (5000ms) and maxTimer (3000ms)
-    const promise1 = wrapped(3)
+    wrapped(3)
     expect(filter.isPending.value).toBe(true)
 
     // Second call with duration=0: should clear maxTimer and invoke immediately
     duration.value = 0
-    const promise2 = wrapped(5)
+    const promise1 = wrapped(5)
 
     // The second call should have invoked immediately and cleared pending
-    await expect(promise2).resolves.toBe(10)
+    await expect(promise1).resolves.toBe(10)
     expect(filter.isPending.value).toBe(false)
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith(5)
