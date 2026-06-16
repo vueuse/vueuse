@@ -179,7 +179,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
     { flush, deep, eventFilter },
   )
 
-  watch(keyComputed, () => update(), { flush })
+  const keyWatcherFlush = flush === 'sync' ? 'sync' : 'post'
+  watch(keyComputed, () => update(), { flush: keyWatcherFlush })
 
   let firstMounted = false
   const onStorageEvent = (ev: StorageEvent): void => {
