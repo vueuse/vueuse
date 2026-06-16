@@ -1,6 +1,8 @@
 import type { Awaitable, StorageLikeAsync } from '@vueuse/core'
+import { mount } from '@vue/test-utils'
 import { createEventHook, useStorageAsync } from '@vueuse/core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, nextTick } from 'vue'
 
 const KEY = 'custom-key'
 const KEY2 = 'custom-key2'
@@ -85,5 +87,30 @@ describe('useStorageAsync', () => {
       const result = await storage
       expect(result.value).toBe('AnotherValue')
     })
+  })
+
+  it('initOnMounted', async () => {
+    localStorage.setItem(KEY, 'random')
+
+    let basicRef: ReturnType<typeof useStorageAsync<string>> | undefined
+
+    mount(defineComponent({
+      setup() {
+        basicRef = useStorageAsync(KEY, '', new AsyncStubStorage(), { initOnMounted: true })
+        // Pre-mount, the ref still holds the default value because the
+        // initial read is deferred until the component is mounted.
+        expect(basicRef.value).toBe('')
+        return {}
+      },
+      render() {
+        return null
+      },
+    }))
+
+    await nextTick()
+    await vi.runAllTimersAsync()
+    await nextTick()
+
+    expect(basicRef!.value).toBe('random')
   })
 })

@@ -2,7 +2,7 @@ import type { RemovableRef } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
 import type { StorageLikeAsync } from '../ssr-handlers'
 import type { SerializerAsync, UseStorageOptions } from '../useStorage'
-import { watchWithFilter } from '@vueuse/shared'
+import { tryOnMounted, watchWithFilter } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { getSSRHandler } from '../ssr-handlers'
@@ -56,6 +56,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       console.error(e)
     },
     onReady,
+    initOnMounted,
   } = options
 
   const rawInit: T = toValue(initialValue)
@@ -101,15 +102,32 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     }
   }
 
+  let firstMounted = false
+
   const promise = new Promise((resolve) => {
-    read().then(() => {
+    const initialRead = () => read().then(() => {
       onReady?.(data.value)
       resolve(data)
     })
+
+    if (initOnMounted) {
+      tryOnMounted(() => {
+        firstMounted = true
+        initialRead()
+      })
+    }
+    else {
+      initialRead()
+    }
   })
 
-  if (window && listenToStorageChanges)
-    useEventListener(window, 'storage', e => Promise.resolve().then(() => read(e)), { passive: true })
+  if (window && listenToStorageChanges) {
+    useEventListener(window, 'storage', (e) => {
+      if (initOnMounted && !firstMounted)
+        return
+      return Promise.resolve().then(() => read(e))
+    }, { passive: true })
+  }
 
   if (storage) {
     watchWithFilter(
