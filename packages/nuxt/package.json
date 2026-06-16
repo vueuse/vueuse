@@ -24,12 +24,12 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "types": "./dist/types.d.mts",
-      "default": "./dist/module.mjs"
-    },
+    ".": "./dist/module.mjs",
+    "./module": "./dist/module.mjs",
     "./package.json": "./package.json"
   },
+  "main": "./dist/module.mjs",
+  "module": "./dist/module.mjs",
   "types": "./dist/types.d.mts",
   "files": [
     "dist"

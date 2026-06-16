@@ -25,7 +25,7 @@ export default defineConfig({
   attw: {
     level: 'error',
     profile: 'esm-only',
-    ignoreRules: ['cjs-resolves-to-esm', 'fallback-condition'],
+    ignoreRules: ['cjs-resolves-to-esm'],
   },
   hooks: {
     'build:done': async () => {
