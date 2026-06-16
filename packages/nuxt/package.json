@@ -25,7 +25,7 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "type": "./dist/types.d.mts",
+      "types": "./dist/types.d.mts",
       "default": "./dist/module.mjs"
     },
     "./package.json": "./package.json"
