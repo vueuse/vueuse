@@ -24,22 +24,22 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*",
+    ".": {
+      "type": "./dist/types.d.mts",
+      "default": "./dist/module.mjs"
+    },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types.d.mts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown --config-loader unrun",
     "prepack": "pnpm run build"
   },
   "peerDependencies": {
-    "nuxt": "^3.0.0 || ^4.0.0-0",
+    "nuxt": "^3.0.0 || ^4.0.0-0 || ^5.0.0-0",
     "vue": "^3.5.0"
   },
   "dependencies": {
@@ -51,6 +51,7 @@
   "devDependencies": {
     "@nuxt/schema": "catalog:integrations",
     "nuxt": "catalog:dev",
+    "tsdown": "catalog:dev",
     "unimport": "catalog:dev"
   }
 }

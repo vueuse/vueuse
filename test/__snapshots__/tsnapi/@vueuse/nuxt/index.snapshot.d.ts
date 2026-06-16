@@ -8,6 +8,10 @@ export interface VueUseNuxtOptions {
 }
 // #endregion
 
+// #region Types
+export type ModuleOptions = VueUseNuxtOptions;
+// #endregion
+
 // #region Default Export
 declare const _default: _$_nuxt_schema0.NuxtModule<VueUseNuxtOptions, VueUseNuxtOptions, false>;
 export default _default

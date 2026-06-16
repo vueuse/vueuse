@@ -6,7 +6,7 @@ import metadata from './packages/metadata/index.json' with { type: 'json' }
 
 const functions = metadata.functions as PackageIndexes['functions']
 
-const externals = [
+export const externals = [
   'vue',
   /@vueuse\/.*/,
 ]
