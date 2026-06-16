@@ -1,9 +1,10 @@
 import fs from 'node:fs/promises'
 import { StaleGuardRecorder } from 'tsdown-stale-guard'
 import { defineConfig } from 'tsdown/config'
+import { version as tsdownVersion } from 'tsdown/package.json' with { type: 'json' }
 import { packages } from '../../meta/packages.ts'
 import { externals } from '../../tsdown.config.ts'
-import { devDependencies, name, version } from './package.json' with { type: 'json' }
+import { name, version } from './package.json' with { type: 'json' }
 
 const nuxt = packages.find(p => p.name === 'nuxt')!
 
@@ -39,7 +40,7 @@ export { type ModuleOptions, type VueUseNuxtOptions } from './module.mjs';
   "configKey": "vueuse",
   "version": "${version}",
   "builder": {
-    "tsdown": "${devDependencies.tsdown}"
+    "tsdown": "${tsdownVersion}"
   }
 }
 `, 'utf-8'),
