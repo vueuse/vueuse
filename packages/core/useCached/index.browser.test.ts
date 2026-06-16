@@ -59,6 +59,38 @@ describe('useCached', () => {
     expect(cachedArrayRef.value).toEqual([2])
   })
 
+  it('should pass new value first and keep cache when comparator returns true', async () => {
+    const source = shallowRef(0)
+    const comparator = vi.fn(() => true)
+    const cached = useCached(source, comparator)
+
+    await nextTwoTick()
+
+    source.value = 1
+    await nextTwoTick()
+
+    expect(comparator).toHaveBeenCalledWith(1, 0)
+    expect(cached.value).toBe(0)
+  })
+
+  it('should pass latest cached value on subsequent comparator calls', async () => {
+    const source = shallowRef(0)
+    const comparator = vi.fn((newValue: number, cachedValue: number) => newValue === cachedValue)
+    const cached = useCached(source, comparator)
+
+    await nextTwoTick()
+
+    source.value = 1
+    await nextTwoTick()
+
+    source.value = 2
+    await nextTwoTick()
+
+    expect(comparator).toHaveBeenNthCalledWith(1, 1, 0)
+    expect(comparator).toHaveBeenNthCalledWith(2, 2, 1)
+    expect(cached.value).toBe(2)
+  })
+
   describe('should work with options.deepRefs', () => {
     // todo: change default with next major
     it.fails('should return shallowRef by default', () => {

@@ -18,8 +18,16 @@ export interface UseIpcRendererReturn {
 
 // #region Functions
 export declare function useIpcRenderer(_?: IpcRenderer): UseIpcRendererReturn;
+export declare function useIpcRendererInvoke<T>(_: IpcRenderer, _: string, ..._: any[]): ShallowRef<T | null>;
 export declare function useIpcRendererInvoke<T>(_: string, ..._: any[]): ShallowRef<T | null>;
+export declare function useIpcRendererOn(_: IpcRenderer, _: string, _: IpcRendererListener): IpcRenderer;
 export declare function useIpcRendererOn(_: string, _: IpcRendererListener): IpcRenderer;
+export declare function useZoomFactor(_: MaybeRef<number>): Ref<number>;
+export declare function useZoomFactor(_: WebFrame, _: MaybeRef<number>): Ref<number>;
+export declare function useZoomFactor(_: WebFrame): Ref<number>;
 export declare function useZoomFactor(): Ref<number>;
+export declare function useZoomLevel(_: MaybeRef<number>): Ref<number>;
+export declare function useZoomLevel(_: WebFrame, _: MaybeRef<number>): Ref<number>;
+export declare function useZoomLevel(_: WebFrame): Ref<number>;
 export declare function useZoomLevel(): Ref<number>;
 // #endregion
