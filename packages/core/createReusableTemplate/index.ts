@@ -18,8 +18,11 @@ export type DefineTemplateComponent<
 export type ReuseTemplateComponent<
   Bindings extends Record<string, any>,
   MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals,
-> = DefineComponent<Bindings> & {
-  new(): { $slots: GenerateSlotsFromSlotMap<MapSlotNameToSlotProps> }
+> = DefineComponent & {
+  new(): {
+    $props: Bindings
+    $slots: GenerateSlotsFromSlotMap<MapSlotNameToSlotProps>
+  }
 }
 
 export type ReusableTemplatePair<
