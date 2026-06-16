@@ -228,4 +228,31 @@ describe('useFileDialog', () => {
 
     expect(input.capture).toBe('environment')
   })
+
+  it('should remove capture attribute when capture option is omitted', async () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+
+    const { open } = useFileDialog({ input, capture: 'user' })
+
+    expect(input.capture).toBe('user')
+
+    // Open without capture — the attribute should be removed
+    open({ capture: undefined })
+
+    expect(input.hasAttribute('capture')).toBe(false)
+  })
+
+  it('should remove capture attribute when capture option is set to empty string', async () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+
+    const { open } = useFileDialog({ input, capture: 'user' })
+
+    expect(input.capture).toBe('user')
+
+    open({ capture: '' })
+
+    expect(input.hasAttribute('capture')).toBe(false)
+  })
 })
