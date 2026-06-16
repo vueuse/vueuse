@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import { StaleGuardRecorder } from 'tsdown-stale-guard'
 import { defineConfig } from 'tsdown/config'
-import { version as tsdownVersion } from 'tsdown/package.json' with { type: 'json' }
+import tsdownPkg from 'tsdown/package.json' with { type: 'json' }
 import { packages } from '../../meta/packages.ts'
 import { externals } from '../../tsdown.config.ts'
 import { name, version } from './package.json' with { type: 'json' }
@@ -40,7 +40,7 @@ export { type ModuleOptions, type VueUseNuxtOptions } from './module.mjs';
   "configKey": "vueuse",
   "version": "${version}",
   "builder": {
-    "tsdown": "${tsdownVersion}"
+    "tsdown": "${tsdownPkg.version}"
   }
 }
 `, 'utf-8'),
