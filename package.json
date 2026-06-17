@@ -26,7 +26,7 @@
     "release": "bumpp --execute=\"npm run release:prepare\" --all",
     "release:prepare": "npm run build:types && npm run update",
     "size": "tsx scripts/export-size.ts",
-    "test": "nr test:unit",
+    "test": "nr test:unit --project server",
     "test:cov": "vitest run --coverage --project=\"browser (chromium)\" --project=unit",
     "test:server": "vitest --project=\"server*\"",
     "test:exports": "vitest --project=exports",
