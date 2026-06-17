@@ -5,7 +5,7 @@ import { unrefElement } from '../unrefElement'
 import { useCurrentElement } from '../useCurrentElement'
 
 export function useParentElement(
-  element: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined> = useCurrentElement<HTMLElement | SVGAElement>(),
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined> = useCurrentElement<HTMLElement | SVGElement>(),
 ): Readonly<ShallowRef<HTMLElement | SVGElement | null | undefined>> {
   const parentElement = shallowRef<HTMLElement | SVGElement | null | undefined>()
 
