@@ -1,7 +1,6 @@
 import type { Arrayable, Fn } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter } from 'vue'
 import { isObject, toArray, watchImmediate } from '@vueuse/shared'
-// eslint-disable-next-line no-restricted-imports -- We specifically need to use unref here to distinguish between callbacks
 import { computed, toValue, unref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
