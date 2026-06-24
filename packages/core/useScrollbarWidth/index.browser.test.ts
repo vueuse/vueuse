@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import { defineComponent, shallowRef } from 'vue'
 import { useScrollbarWidth } from './index'
@@ -29,15 +29,16 @@ describe('useScrollbarWidth', () => {
     const widthEl = screen.getByTestId('width')
     await expect.element(widthEl).toBeVisible()
 
-    // Wait for ResizeObserver callback
-    await new Promise(r => setTimeout(r, 50))
-
-    const reported = Number(widthEl.query()?.textContent)
     const scroller = screen.getByTestId('scroller').query() as HTMLElement
+    // Measured against the live DOM rather than a hard-coded value, since the
+    // scrollbar width varies across operating systems and browsers (0 for overlay
+    // scrollbars). The vertical overflow guarantees a horizontal scrollbar.
     const expected = scroller.offsetWidth - scroller.clientWidth
 
-    expect(reported).toBe(expected)
-    expect(reported).toBeGreaterThanOrEqual(0)
+    // useResizeObserver fires its callback asynchronously after mount
+    await vi.waitFor(() => {
+      expect(Number(widthEl.query()?.textContent)).toBe(expected)
+    })
   })
 
   it('returns 0 when the target ref is null', () => {
