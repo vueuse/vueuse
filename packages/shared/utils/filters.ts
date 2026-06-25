@@ -46,6 +46,15 @@ export interface DebounceFilterOptions {
    * @default false
    */
   rejectOnCancel?: boolean
+
+  /**
+   * Whether to delay the initial execution as well.
+   * When `false`, the first call will be executed immediately without delay,
+   * and subsequent calls will be debounced as usual.
+   *
+   * @default true
+   */
+  debounceInitialExecution?: boolean
 }
 
 export type CancelablePromisifyFn<T extends AnyFn> = PromisifyFn<T> & {
@@ -93,6 +102,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   let lastRejector: AnyFn = noop
   let lastResolve: AnyFn = noop
   const _pending = shallowRef(false)
+  const _debounceInitialExecution = options.debounceInitialExecution !== false
 
   const _clearTimeout = (timer: TimerHandle) => {
     clearTimeout(timer)
@@ -101,6 +111,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   }
 
   let lastInvoker: () => void
+  let hasExecuted = false
 
   const handler = (invoke: AnyFn) => {
     const duration = toValue(ms)
@@ -110,6 +121,18 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
       _clearTimeout(timer)
 
     if (duration <= 0 || (maxDuration !== undefined && maxDuration <= 0)) {
+      if (maxTimer) {
+        _clearTimeout(maxTimer)
+        maxTimer = undefined
+      }
+      _pending.value = false
+      return Promise.resolve(invoke())
+    }
+
+    // If debounceInitialExecution is false and this is the first call,
+    // execute immediately without delay
+    if (!_debounceInitialExecution && !hasExecuted) {
+      hasExecuted = true
       if (maxTimer) {
         _clearTimeout(maxTimer)
         maxTimer = undefined
