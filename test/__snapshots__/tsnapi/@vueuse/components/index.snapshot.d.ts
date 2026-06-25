@@ -131,6 +131,7 @@ export declare const UseDraggable: _$vue.DefineSetupFnComponent<UseDraggableProp
 export declare const UseElementBounding: _$vue.DefineSetupFnComponent<UseElementBoundingProps, Record<string, never>, SlotsType<UseElementBoundingSlots>, UseElementBoundingProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
 }, _$vue.PublicProps>;
+export declare const UseElementOverflow: _$vue.DefineComponent<UseElementOverflowOptions & RenderableComponent, {}, {}, {}, {}, _$vue.ComponentOptionsMixin, _$vue.ComponentOptionsMixin, {}, string, _$vue.PublicProps, Readonly<UseElementOverflowOptions & RenderableComponent> & Readonly<{}>, {}, {}, {}, {}, string, _$vue.ComponentProvideOptions, false, {}, any>;
 export declare const UseElementSize: _$vue.DefineSetupFnComponent<UseElementSizeProps, Record<string, never>, SlotsType<UseElementSizeSlots>, UseElementSizeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
 }, _$vue.PublicProps>;
@@ -247,6 +248,7 @@ export declare const UseWindowSize: _$vue.DefineSetupFnComponent<UseWindowSizePr
 }, _$vue.PublicProps>;
 export declare const vElementBounding: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any>;
 export declare const vElementHover: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any>;
+export declare const vElementOverflow: _$vue.FunctionDirective<HTMLElement, VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions$1], string, any> | _$vue.ObjectDirective<HTMLElement, VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions$1], string, any>;
 export declare const vElementSize: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: _$_vueuse_core0.UseElementSizeOptions | undefined], string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: _$_vueuse_core0.UseElementSizeOptions | undefined], string, any>;
 export declare const vElementVisibility: _$vue.FunctionDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any>;
 export declare const vInfiniteScroll: _$vue.FunctionDirective<HTMLElement, ((state: _$vue.UnwrapNestedRefs<_$_vueuse_core0.UseScrollReturn>) => _$_vueuse_shared0.Awaitable<void>) | BindingValueArray$4, string, any> | _$vue.ObjectDirective<HTMLElement, ((state: _$vue.UnwrapNestedRefs<_$_vueuse_core0.UseScrollReturn>) => _$_vueuse_shared0.Awaitable<void>) | BindingValueArray$4, string, any>;
