@@ -112,17 +112,17 @@ describe('useDebounceFn', () => {
     expect(debounced.isPending.value).toBe(false)
   })
 
-  it('should execute immediately when debounceInitialExecution is false', async () => {
+  it('should execute immediately when leading is false', async () => {
     const fn = vi.fn()
-    const debounced = useDebounceFn(fn, 100, { debounceInitialExecution: false })
+    const debounced = useDebounceFn(fn, 100, { leading: false })
 
     debounced()
     expect(fn).toHaveBeenCalledTimes(1)
   })
 
-  it('should debounce subsequent calls when debounceInitialExecution is false', async () => {
+  it('should debounce subsequent calls when leading is false', async () => {
     const fn = vi.fn()
-    const debounced = useDebounceFn(fn, 100, { debounceInitialExecution: false })
+    const debounced = useDebounceFn(fn, 100, { leading: false })
 
     // First call executes immediately
     debounced()
@@ -136,9 +136,9 @@ describe('useDebounceFn', () => {
     expect(fn).toHaveBeenCalledTimes(2)
   })
 
-  it('should debounce by default (debounceInitialExecution defaults to true)', async () => {
+  it('should debounce by default (leading defaults to true)', async () => {
     const fn = vi.fn()
-    const debounced = useDebounceFn(fn, 100, { debounceInitialExecution: true })
+    const debounced = useDebounceFn(fn, 100, { leading: true })
 
     debounced()
     expect(fn).not.toHaveBeenCalled()
@@ -147,9 +147,9 @@ describe('useDebounceFn', () => {
     expect(fn).toHaveBeenCalledTimes(1)
   })
 
-  it('should reset debounceInitialExecution behavior after cancel', async () => {
+  it('should reset leading behavior after cancel', async () => {
     const fn = vi.fn()
-    const debounced = useDebounceFn(fn, 100, { debounceInitialExecution: false })
+    const debounced = useDebounceFn(fn, 100, { leading: false })
 
     // First call executes immediately
     debounced()
@@ -195,10 +195,10 @@ describe('useDebounceFn', () => {
     await expect(promise).rejects.toBeUndefined()
   })
 
-  it('should combine debounceInitialExecution with maxWait', async () => {
+  it('should combine leading with maxWait', async () => {
     const fn = vi.fn()
     const debounced = useDebounceFn(fn, 100, {
-      debounceInitialExecution: false,
+      leading: false,
       maxWait: 200,
     })
 

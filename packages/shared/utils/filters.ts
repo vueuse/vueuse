@@ -54,7 +54,7 @@ export interface DebounceFilterOptions {
    *
    * @default true
    */
-  debounceInitialExecution?: boolean
+  leading?: boolean
 }
 
 export type CancelablePromisifyFn<T extends AnyFn> = PromisifyFn<T> & {
@@ -102,7 +102,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   let lastRejector: AnyFn = noop
   let lastResolve: AnyFn = noop
   const _pending = shallowRef(false)
-  const _debounceInitialExecution = options.debounceInitialExecution !== false
+  const _leading = options.leading !== false
 
   const _clearTimeout = (timer: TimerHandle) => {
     clearTimeout(timer)
@@ -129,9 +129,9 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
       return Promise.resolve(invoke())
     }
 
-    // If debounceInitialExecution is false and this is the first call,
+    // If leading is false and this is the first call,
     // execute immediately without delay
-    if (!_debounceInitialExecution && !hasExecuted) {
+    if (!_leading && !hasExecuted) {
       hasExecuted = true
       if (maxTimer) {
         _clearTimeout(maxTimer)
