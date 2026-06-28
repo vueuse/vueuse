@@ -48,11 +48,11 @@ export interface DebounceFilterOptions {
   rejectOnCancel?: boolean
 
   /**
-   * Whether to delay the initial execution as well.
-   * When `false`, the first call will be executed immediately without delay,
+   * Whether to execute on the leading edge.
+   * When `true`, the first call will be executed immediately without delay,
    * and subsequent calls will be debounced as usual.
    *
-   * @default true
+   * @default false
    */
   leading?: boolean
 }
@@ -102,7 +102,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   let lastRejector: AnyFn = noop
   let lastResolve: AnyFn = noop
   const _pending = shallowRef(false)
-  const _leading = options.leading !== false
+  const _leading = options.leading === true
 
   const _clearTimeout = (timer: TimerHandle) => {
     clearTimeout(timer)
@@ -129,9 +129,9 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
       return Promise.resolve(invoke())
     }
 
-    // If leading is false and this is the first call,
-    // execute immediately without delay
-    if (!_leading && !hasExecuted) {
+    // If leading is true and this is the first call,
+    // execute immediately without delay (leading edge)
+    if (_leading && !hasExecuted) {
       hasExecuted = true
       if (maxTimer) {
         _clearTimeout(maxTimer)

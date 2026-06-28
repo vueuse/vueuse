@@ -132,14 +132,14 @@ This is useful when you need to ensure the debounced function runs right away, f
 
 ## Immediate Initial Execution
 
-By default, even the first call to a debounced function is delayed. If you want the first call to execute immediately (without delay) and only debounce subsequent calls, set `leading` to `false`.
+By default, even the first call to a debounced function is delayed. If you want the first call to execute immediately (without delay) and only debounce subsequent calls, set `leading` to `true`.
 
 ```ts
 import { useDebounceFn, useEventListener } from '@vueuse/core'
 
 const debouncedFn = useDebounceFn(() => {
   // do something
-}, 1000, { leading: false })
+}, 1000, { leading: true })
 
 // The first call executes immediately
 debouncedFn()
@@ -156,7 +156,7 @@ import { useDebounceFn } from '@vueuse/core'
 const search = useDebounceFn(async (query: string) => {
   const results = await fetchSearchResults(query)
   updateResults(results)
-}, 300, { leading: false })
+}, 300, { leading: true })
 
 // First keystroke triggers immediate search
 // Rapid subsequent keystrokes are debounced at 300ms
