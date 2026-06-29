@@ -175,4 +175,29 @@ describe('useEventSource', () => {
 
     expect(data.value).toBeNull()
   })
+
+  it('resets the autoReconnect retry budget after a successful reconnection', () => {
+    vi.useFakeTimers()
+
+    const onFailed = vi.fn()
+    const { eventSource } = useEventSource('https://localhost', [], {
+      autoReconnect: { retries: 3, delay: 100, onFailed },
+    })
+
+    // Three independent disconnect episodes, each immediately recovered by a
+    // successful reconnection. Since every reconnection succeeds, the retry
+    // budget should be refreshed each time and never run out.
+    for (let i = 0; i < 3; i++) {
+      const source = eventSource.value as unknown as MockEventSource
+      source.readyState = 2
+      source.onerror(new Event('error'))
+      vi.advanceTimersByTime(100)
+      const reconnected = eventSource.value as unknown as MockEventSource
+      reconnected.onopen(new Event('open'))
+    }
+
+    expect(onFailed).not.toHaveBeenCalled()
+
+    vi.useRealTimers()
+  })
 })

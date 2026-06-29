@@ -164,6 +164,7 @@ export function useEventSource<Events extends string[], Data = any>(
 
     es.onopen = () => {
       status.value = 'OPEN'
+      retried = 0
       error.value = null
     }
 
