@@ -100,8 +100,14 @@ export function useFocusTrap(
   watch(
     targets,
     (els) => {
-      if (!els.length)
+      if (!els.length) {
+        // Clean up to prevent a memory leak
+        if (trap) {
+          trap.updateContainerElements([])
+          trap.deactivate()
+        }
         return
+      }
       if (!trap) {
         // create the trap
         trap = createFocusTrap(els, {
