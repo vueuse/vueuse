@@ -136,6 +136,14 @@ export function onClickOutside(
     return children.some((child: VNode) => child.el === event.target || event.composedPath().includes(child.el))
   }
 
+  function isDialogBackdropClick(el: Element, event: Event): boolean {
+    if (el.tagName !== 'DIALOG')
+      return false
+    const rect = el.getBoundingClientRect()
+    const { clientX, clientY } = event as PointerEvent
+    return rect.left > clientX || rect.right < clientX || rect.top > clientY || rect.bottom < clientY
+  }
+
   const listener = (event: Event) => {
     const el = unrefElement(target)
 
@@ -145,7 +153,7 @@ export function onClickOutside(
     if (!(el instanceof Element) && hasMultipleRoots(target) && checkMultipleRoots(target, event))
       return
 
-    if (!el || el === event.target || event.composedPath().includes(el))
+    if (!el || ((el === event.target || event.composedPath().includes(el)) && !isDialogBackdropClick(el, event)))
       return
 
     if ('detail' in event && event.detail === 0)
@@ -173,7 +181,7 @@ export function onClickOutside(
     }, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
       const el = unrefElement(target)
-      shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
+      shouldListen = !shouldIgnore(e) && !!(el && (!e.composedPath().includes(el) || isDialogBackdropClick(el, e)))
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {
