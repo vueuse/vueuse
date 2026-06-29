@@ -1,9 +1,8 @@
 import fs from 'node:fs/promises'
-import { StaleGuardRecorder } from 'tsdown-stale-guard'
 import { defineConfig } from 'tsdown/config'
 import tsdownPkg from 'tsdown/package.json' with { type: 'json' }
 import { packages } from '../../meta/packages.ts'
-import { externals } from '../../tsdown.config.ts'
+import { attwConfig, basePlugins, externals } from '../../tsdown.config.ts'
 import { name, version } from './package.json' with { type: 'json' }
 
 const nuxt = packages.find(p => p.name === 'nuxt')!
@@ -15,18 +14,14 @@ export default defineConfig({
   platform: 'node',
   exports: false,
   clean: true,
-  plugins: [StaleGuardRecorder()],
+  plugins: basePlugins,
   deps: {
     neverBundle: [
       ...externals,
       ...(nuxt.external || []),
     ],
   },
-  attw: {
-    level: 'error',
-    profile: 'esm-only',
-    ignoreRules: ['cjs-resolves-to-esm'],
-  },
+  attw: attwConfig,
   hooks: {
     'build:done': async () => {
       await Promise.all([

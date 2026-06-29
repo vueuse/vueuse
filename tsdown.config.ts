@@ -11,6 +11,16 @@ export const externals = [
   /@vueuse\/.*/,
 ]
 
+export const attwConfig: UserConfig['attw'] = {
+  level: 'error',
+  profile: 'esm-only',
+  ignoreRules: ['cjs-resolves-to-esm'],
+}
+
+export const basePlugins: UserConfig['plugins'] = [
+  StaleGuardRecorder(),
+]
+
 export function createTsDownConfig(
   pkg: PackageManifest,
   copy?: UserConfig['copy'],
@@ -101,12 +111,8 @@ export function createTsDownConfig(
     entry,
     format,
     copy,
-    plugins: [StaleGuardRecorder()],
-    attw: {
-      level: 'error',
-      profile: 'esm-only',
-      ignoreRules: ['cjs-resolves-to-esm'],
-    },
+    attw: attwConfig,
+    plugins: basePlugins,
   })
 
   return configs
