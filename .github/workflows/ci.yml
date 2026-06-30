@@ -81,14 +81,11 @@ jobs:
       - name: Typecheck
         run: nr typecheck
 
-      - name: unit tests
+      - name: all tests with coverage
         run: pnpm run test:cov
 
-      - name: browser tests
-        run: pnpm run test:browser
-
-      - name: server tests
-        run: pnpm run test:server
+      - name: other browser tests
+        run: pnpm run test:other-browser
 
       - name: exports tests
         run: pnpm run test:exports

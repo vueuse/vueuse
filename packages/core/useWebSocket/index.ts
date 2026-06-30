@@ -232,6 +232,7 @@ export function useWebSocket<Data = any>(
     heartbeatPause?.()
     wsRef.value.close(code, reason)
     wsRef.value = undefined
+    status.value = 'CLOSED'
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
