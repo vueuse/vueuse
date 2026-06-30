@@ -71,7 +71,14 @@ export function useFocusTrap(
   const isPaused = shallowRef(false)
 
   const activate = (opts?: ActivateOptions) => trap && trap.activate(opts)
-  const deactivate = (opts?: DeactivateOptions) => trap && trap.deactivate(opts)
+
+  const deactivate = (opts?: DeactivateOptions) => {
+    if (trap) {
+      trap.deactivate(opts);
+      // Clear trap reference to avoid memory leaks
+      trap = undefined;
+    }
+  }
 
   const pause = () => {
     if (trap) {
@@ -101,11 +108,8 @@ export function useFocusTrap(
     targets,
     (els) => {
       if (!els.length) {
-        // Clean up to prevent a memory leak
-        if (trap) {
-          trap.updateContainerElements([])
-          trap.deactivate()
-        }
+        // Reset trap when targets array becomes empty ("v-if" case)
+        deactivate()
         return
       }
       if (!trap) {
