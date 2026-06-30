@@ -74,9 +74,9 @@ export function useFocusTrap(
 
   const deactivate = (opts?: DeactivateOptions) => {
     if (trap) {
-      trap.deactivate(opts);
+      trap.deactivate(opts)
       // Clear trap reference to avoid memory leaks
-      trap = undefined;
+      trap = undefined
     }
   }
 
