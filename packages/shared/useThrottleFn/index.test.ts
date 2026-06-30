@@ -57,6 +57,23 @@ describe('useThrottleFn', () => {
     expect(callback).toHaveBeenCalledTimes(3)
   })
 
+  it('should work with trailing and not leading', async () => {
+    const callback = vi.fn()
+    const ms = 20
+    const run = useThrottleFn(callback, ms, true, false)
+    run()
+    expect(callback).toHaveBeenCalledTimes(0)
+    vi.advanceTimersByTime(ms / 2)
+    expect(callback).toHaveBeenCalledTimes(0)
+    vi.advanceTimersByTime(ms)
+    expect(callback).toHaveBeenCalledTimes(1)
+    vi.advanceTimersByTime(ms + 10)
+    run()
+    expect(callback).toHaveBeenCalledTimes(1)
+    vi.advanceTimersByTime(ms + 10)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
   it('should work with not leading and not trailing', async () => {
     const callback = vi.fn()
     const ms = 20
