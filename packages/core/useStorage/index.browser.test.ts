@@ -541,6 +541,37 @@ describe('useStorage', () => {
     expect(state2.value).toBe(1)
   })
 
+  it('syncs properly when StorageEvent rejects storageArea', async () => {
+    const NativeStorageEvent = window.StorageEvent
+    Object.defineProperty(window, 'StorageEvent', {
+      configurable: true,
+      writable: true,
+      value: class StorageEvent extends Event {
+        constructor(type: string, eventInitDict?: StorageEventInit) {
+          if (eventInitDict?.storageArea)
+            throw new TypeError('Failed to convert value to Storage.')
+          super(type, eventInitDict)
+        }
+      },
+    })
+
+    try {
+      const state1 = useStorage(KEY, 0, localStorage)
+      const state2 = useStorage(KEY, 0, localStorage)
+
+      state1.value = 1
+      await nextTick()
+      expect(state2.value).toBe(1)
+    }
+    finally {
+      Object.defineProperty(window, 'StorageEvent', {
+        configurable: true,
+        writable: true,
+        value: NativeStorageEvent,
+      })
+    }
+  })
+
   it('syncs properly within the same document (custom storages)', async () => {
     const customStorage = {
       getItem: storage.getItem,
