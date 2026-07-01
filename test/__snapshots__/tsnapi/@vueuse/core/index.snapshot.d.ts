@@ -1769,6 +1769,7 @@ export declare function useActiveElement<T extends HTMLElement>(_?: UseActiveEle
 export declare function useAnimate(_: MaybeComputedElementRef, _: UseAnimateKeyframes, _?: number | UseAnimateOptions): UseAnimateReturn;
 export declare function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(_: S & Array<UseAsyncQueueTask<any>>, _?: UseAsyncQueueOptions): UseAsyncQueueReturn<{ [P in keyof T]: UseAsyncQueueResult<T[P]> }>;
 export declare function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(_: Promise<Data> | ((..._: Params) => Promise<Data>), _: MaybeRef<Data>, _?: UseAsyncStateOptions<Shallow, Data>): UseAsyncStateReturn<Data, Params, Shallow>;
+export declare function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(_: Promise<Data> | ((..._: Params) => Promise<Data>), _?: undefined, _?: UseAsyncStateOptions<Shallow, Data>): UseAsyncStateReturn<Data | undefined, Params, Shallow>;
 export declare function useBase64(_: MaybeRefOrGetter<string | undefined>, _?: UseBase64Options): UseBase64Return;
 export declare function useBase64(_: MaybeRefOrGetter<Blob | undefined>, _?: UseBase64Options): UseBase64Return;
 export declare function useBase64(_: MaybeRefOrGetter<ArrayBuffer | undefined>, _?: UseBase64Options): UseBase64Return;
