@@ -2,7 +2,6 @@ import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions, UseIntersectionObserverReturn } from '../useIntersectionObserver'
-import { watchOnce } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
@@ -84,9 +83,7 @@ export function useElementVisibility(
       isVisible.value = isIntersecting
 
       if (once) {
-        watchOnce(isVisible, () => {
-          observerController.stop()
-        })
+        observerController.stop()
       }
     },
     {
