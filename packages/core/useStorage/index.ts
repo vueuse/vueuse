@@ -206,8 +206,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
   if (window && listenToStorageChanges) {
     if (storage instanceof Storage)
       useEventListener(window, 'storage', onStorageEvent, { passive: true })
-    else
-      useEventListener(window, customStorageEventName, onStorageCustomEvent)
+
+    useEventListener(window, customStorageEventName, onStorageCustomEvent)
   }
 
   if (initOnMounted) {
@@ -231,11 +231,20 @@ export function useStorage<T extends (string | number | boolean | object | null)
       }
       // We also use a CustomEvent since StorageEvent cannot
       // be constructed with a non-built-in storage area
-      window.dispatchEvent(storage instanceof Storage
-        ? new StorageEvent('storage', payload)
-        : new CustomEvent<StorageEventLike>(customStorageEventName, {
-            detail: payload,
-          }))
+      let event: StorageEvent | CustomEvent<StorageEventLike>
+      try {
+        event = storage instanceof Storage
+          ? new StorageEvent('storage', payload)
+          : new CustomEvent<StorageEventLike>(customStorageEventName, {
+              detail: payload,
+            })
+      }
+      catch {
+        event = new CustomEvent<StorageEventLike>(customStorageEventName, {
+          detail: payload,
+        })
+      }
+      window.dispatchEvent(event)
     }
   }
 
