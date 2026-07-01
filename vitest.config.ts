@@ -80,6 +80,7 @@ export default defineConfig({
                 timezoneId: 'UTC',
               },
             }),
+            viewport: { width: 800, height: 800 },
             headless: true,
             instances: [
               { browser: 'chromium' },

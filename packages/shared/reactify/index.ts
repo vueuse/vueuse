@@ -1,7 +1,6 @@
 import type { ComputedRef, MaybeRef, MaybeRefOrGetter } from 'vue'
 
 import type { AnyFn } from '../utils'
-// eslint-disable-next-line no-restricted-imports
 import { computed, toValue, unref } from 'vue'
 
 export type Reactified<T, Computed extends boolean> = T extends (...args: infer A) => infer R

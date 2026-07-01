@@ -1,20 +1,24 @@
+import { provideSSRWidth } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
+import { createSSRApp } from 'vue'
 import { breakpointsBootstrapV5, useBreakpoints } from './index'
 
-describe('useBreakpoints', () => {
-  it('should support basic breakpoints', async () => {
-    expect(window.innerWidth).toBe(800)
-    const breakpoints = useBreakpoints(breakpointsBootstrapV5)
+describe('useBreakpoints SSR', () => {
+  it('should be defined', () => {
+    expect(useBreakpoints).toBeDefined()
+  })
+
+  it('should support ssr breakpoints', async () => {
+    const breakpoints = useBreakpoints(breakpointsBootstrapV5, { window: null as unknown as undefined, ssrWidth: 768 })
     expect(breakpoints.current().value).toStrictEqual(['xs', 'sm', 'md'])
     expect(breakpoints.active().value).toBe('md')
-    expect(breakpoints.isGreater('md')).toBe(true)
+    expect(breakpoints.isGreater('md')).toBe(false)
     expect(breakpoints.isGreaterOrEqual('md')).toBe(true)
     expect(breakpoints.greaterOrEqual('md').value).toBe(true)
     expect(breakpoints.greaterOrEqual('lg').value).toBe(false)
     expect(breakpoints.isSmaller('md')).toBe(false)
-    expect(breakpoints.isSmallerOrEqual('md')).toBe(false)
-    expect(breakpoints.isSmallerOrEqual('lg')).toBe(true)
-    expect(breakpoints.smallerOrEqual('md').value).toBe(false)
+    expect(breakpoints.isSmallerOrEqual('md')).toBe(true)
+    expect(breakpoints.smallerOrEqual('md').value).toBe(true)
     expect(breakpoints.smallerOrEqual('lg').value).toBe(true)
     expect(breakpoints.isInBetween('md', 'lg')).toBe(true)
     expect(breakpoints.isInBetween('sm', 'md')).toBe(false)
@@ -30,7 +34,7 @@ describe('useBreakpoints', () => {
       md: 991,
       sm: 767,
       xs: 575,
-    }, { strategy: 'max-width' })
+    }, { strategy: 'max-width', window: null as unknown as undefined, ssrWidth: 768 })
     expect(breakpoints.current().value).toStrictEqual(['md', 'lg', 'xl'])
     expect(breakpoints.active().value).toBe('md')
     expect(breakpoints.isGreater('md')).toBe(false)
@@ -42,5 +46,14 @@ describe('useBreakpoints', () => {
     expect(breakpoints.md.value).toBe(true)
     expect(breakpoints.lg.value).toBe(true)
     expect(breakpoints.sm.value).toBe(false)
+  })
+
+  it('should get the ssr width from the global store', async () => {
+    const app = createSSRApp({ render: () => '' })
+    provideSSRWidth(768, app)
+    await app.runWithContext(async () => {
+      const breakpoints = useBreakpoints(breakpointsBootstrapV5, { window: null as unknown as undefined })
+      expect(breakpoints.current().value).toStrictEqual(['xs', 'sm', 'md'])
+    })
   })
 })

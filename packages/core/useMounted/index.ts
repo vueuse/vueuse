@@ -1,6 +1,5 @@
 import {
   getCurrentInstance,
-  // eslint-disable-next-line no-restricted-imports
   onMounted,
   shallowRef,
 } from 'vue'

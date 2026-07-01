@@ -415,6 +415,7 @@ export declare function useCounter(_?: MaybeRef<number>, _?: UseCounterOptions):
 };
 export declare function useDateFormat(_: MaybeRefOrGetter<DateLike>, _?: MaybeRefOrGetter<string>, _?: UseDateFormatOptions): UseDateFormatReturn;
 export declare function useDebounceFn<T extends FunctionArgs>(_: T, _?: MaybeRefOrGetter<number>, _?: DebounceFilterOptions): UseDebounceFnReturn<T>;
+export declare function useHasHydrated(): Readonly<_$vue.ShallowRef<boolean, boolean>>;
 export declare function useInterval(_?: MaybeRefOrGetter<number>, _?: UseIntervalOptions<false>): Readonly<ShallowRef<number>>;
 export declare function useInterval(_: MaybeRefOrGetter<number>, _: UseIntervalOptions<true>): Readonly<UseIntervalControls & Pausable>;
 export declare function useIntervalFn(_: Fn, _?: MaybeRefOrGetter<number>, _?: UseIntervalFnOptions): UseIntervalFnReturn;
