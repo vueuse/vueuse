@@ -1547,6 +1547,7 @@ export type KeyModifier = 'Alt' | 'AltGraph' | 'CapsLock' | 'Control' | 'Fn' | '
 export type KeyPredicate = (_: KeyboardEvent) => boolean;
 export type KeyStrokeEventName = 'keydown' | 'keypress' | 'keyup';
 export type MaybeComputedElementRef<T extends MaybeElement = MaybeElement> = MaybeRefOrGetter<T>;
+export type MaybeComputedElementRefOrArray<T extends MaybeElement = MaybeElement> = MaybeComputedElementRef<T> | MaybeComputedElementRef<T>[] | MaybeRefOrGetter<T[] | null>;
 export type MaybeElement = HTMLElement | SVGElement | VueInstance | undefined | null;
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>;
 export type MousePressedOptions = UseMousePressedOptions;
@@ -1862,7 +1863,7 @@ export declare function useGeolocation(_?: UseGeolocationOptions): UseGeolocatio
 export declare function useIdle(_?: number, _?: UseIdleOptions): UseIdleReturn;
 export declare function useImage<Shallow extends true>(_: MaybeRefOrGetter<UseImageOptions>, _?: UseAsyncStateOptions<Shallow>): UseImageReturn;
 export declare function useInfiniteScroll<T extends InfiniteScrollElement>(_: MaybeRefOrGetter<T>, _: (_: UnwrapNestedRefs<UseScrollReturn>) => Awaitable<void>, _?: UseInfiniteScrollOptions<T>): UseInfiniteScrollReturn;
-export declare function useIntersectionObserver(_: MaybeComputedElementRef | MaybeRefOrGetter<MaybeElement[]> | MaybeComputedElementRef[], _: IntersectionObserverCallback, _?: UseIntersectionObserverOptions): UseIntersectionObserverReturn;
+export declare function useIntersectionObserver(_: MaybeComputedElementRefOrArray, _: IntersectionObserverCallback, _?: UseIntersectionObserverOptions): UseIntersectionObserverReturn;
 export declare function useKeyModifier<Initial extends boolean | null>(_: KeyModifier, _?: UseModifierOptions<Initial>): UseKeyModifierReturn<Initial>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<string>, _?: UseStorageOptions<string>): RemovableRef<string>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<boolean>, _?: UseStorageOptions<boolean>): RemovableRef<boolean>;
@@ -1893,7 +1894,7 @@ export declare function useMouseInElement(_?: MaybeElementRef, _?: MouseInElemen
   stop: () => void;
 };
 export declare function useMousePressed(_?: UseMousePressedOptions): UseMousePressedReturn;
-export declare function useMutationObserver(_: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>, _: MutationCallback, _?: UseMutationObserverOptions): UseMutationObserverReturn;
+export declare function useMutationObserver(_: MaybeComputedElementRefOrArray, _: MutationCallback, _?: UseMutationObserverOptions): UseMutationObserverReturn;
 export declare function useNavigatorLanguage(_?: UseNavigatorLanguageOptions): UseNavigatorLanguageReturn;
 export declare function useNetwork(_?: UseNetworkOptions): UseNetworkReturn;
 export declare function useNow(_?: UseNowOptions<false>): ShallowRef<Date>;
@@ -1927,7 +1928,7 @@ export declare function usePrevious<T>(_: MaybeRefOrGetter<T>): Readonly<Shallow
 export declare function usePrevious<T>(_: MaybeRefOrGetter<T>, _: T): Readonly<ShallowRef<T>>;
 export declare function useRafFn(_: (_: UseRafFnCallbackArguments) => void, _?: UseRafFnOptions): Pausable;
 export declare function useRefHistory<Raw, Serialized = Raw>(_: Ref<Raw>, _?: UseRefHistoryOptions<Raw, Serialized>): UseRefHistoryReturn<Raw, Serialized>;
-export declare function useResizeObserver(_: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>, _: globalThis.ResizeObserverCallback, _?: UseResizeObserverOptions): UseResizeObserverReturn;
+export declare function useResizeObserver(_: MaybeComputedElementRefOrArray, _: globalThis.ResizeObserverCallback, _?: UseResizeObserverOptions): UseResizeObserverReturn;
 export declare function useScreenOrientation(_?: UseScreenOrientationOptions): UseScreenOrientationReturn;
 export declare function useScreenSafeArea(): UseScreenSafeAreaReturn;
 export declare function useScriptTag(_: MaybeRefOrGetter<string>, _?: (_: HTMLScriptElement) => void, _?: UseScriptTagOptions): UseScriptTagReturn;
