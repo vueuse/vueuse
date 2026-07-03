@@ -141,7 +141,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
               && !disabledFunctions.includes(i.name),
             )
             .flatMap((i): Import[] => {
-              const names = [i.name, ...i.alias || [], ...i.variants || []]
+              const names = [i.name, ...i.alias || [], ...i.variants || [], ...i.utils || []]
               return names.map(n => ({
                 from: `@vueuse/${i.importPath || i.package}`,
                 name: n,

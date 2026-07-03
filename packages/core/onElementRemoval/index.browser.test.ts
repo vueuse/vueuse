@@ -1,24 +1,23 @@
 import type { AnyFn } from '@vueuse/shared'
-import type { Ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, nextTick, shallowRef } from 'vue'
 import { onElementRemoval } from './index'
 
 describe('onElementRemoval', () => {
   let callBackFn: AnyFn
-  let grandElement: Ref<HTMLElement>
-  let parentElement: Ref<HTMLElement>
-  let targetElement: Ref<HTMLElement>
+  let grandElement: HTMLElement
+  let parentElement: HTMLElement
+  let targetElement: HTMLElement
 
   beforeEach(() => {
     callBackFn = vi.fn(m => expect(m[0]).toBeInstanceOf(MutationRecord))
-    grandElement = shallowRef(document.createElement('div'))
-    parentElement = shallowRef(document.createElement('div'))
-    targetElement = shallowRef(document.createElement('div'))
+    grandElement = document.createElement('div')
+    parentElement = document.createElement('div')
+    targetElement = document.createElement('div')
 
-    parentElement.value.appendChild(targetElement.value)
-    grandElement.value.appendChild(parentElement.value)
-    document.body.appendChild(grandElement.value)
+    parentElement.appendChild(targetElement)
+    grandElement.appendChild(parentElement)
+    document.body.appendChild(grandElement)
   })
 
   afterEach(() => {
@@ -32,17 +31,17 @@ describe('onElementRemoval', () => {
   it('should be called when the element is removed', async () => {
     onElementRemoval(targetElement, callBackFn)
 
-    parentElement.value.removeChild(targetElement.value)
+    parentElement.removeChild(targetElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(1)
 
-    parentElement.value.appendChild(targetElement.value)
-    parentElement.value.removeChild(targetElement.value)
+    parentElement.appendChild(targetElement)
+    parentElement.removeChild(targetElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(2)
 
-    parentElement.value.appendChild(targetElement.value)
-    parentElement.value.innerHTML = ''
+    parentElement.appendChild(targetElement)
+    parentElement.innerHTML = ''
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(3)
   })
@@ -50,38 +49,38 @@ describe('onElementRemoval', () => {
   it('should be called when any element containing the target element is removed', async () => {
     onElementRemoval(targetElement, callBackFn)
 
-    grandElement.value.removeChild(parentElement.value)
+    grandElement.removeChild(parentElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(1)
 
-    grandElement.value.appendChild(parentElement.value)
-    grandElement.value.remove()
+    grandElement.appendChild(parentElement)
+    grandElement.remove()
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(2)
 
-    document.body.appendChild(grandElement.value)
-    document.body.removeChild(grandElement.value)
+    document.body.appendChild(grandElement)
+    document.body.removeChild(grandElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(3)
   })
 
   it('should correctly triggered when use the custom document', async () => {
-    const shadowRoot = grandElement.value.attachShadow({ mode: 'open' })
-    shadowRoot.appendChild(parentElement.value)
+    const shadowRoot = grandElement.attachShadow({ mode: 'open' })
+    shadowRoot.appendChild(parentElement)
 
     onElementRemoval(targetElement, callBackFn, { document: shadowRoot })
 
-    parentElement.value.removeChild(targetElement.value)
+    parentElement.removeChild(targetElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(1)
 
-    parentElement.value.appendChild(targetElement.value)
-    parentElement.value.removeChild(targetElement.value)
+    parentElement.appendChild(targetElement)
+    parentElement.removeChild(targetElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(2)
 
-    parentElement.value.appendChild(targetElement.value)
-    parentElement.value.innerHTML = ''
+    parentElement.appendChild(targetElement)
+    parentElement.innerHTML = ''
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(3)
   })
@@ -92,9 +91,9 @@ describe('onElementRemoval', () => {
 
     const el = document.createElement('div')
     targetElement2.value = el
-    parentElement.value.appendChild(el)
+    parentElement.appendChild(el)
     await nextTick()
-    parentElement.value.removeChild(el)
+    parentElement.removeChild(el)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(1)
   })
@@ -106,7 +105,7 @@ describe('onElementRemoval', () => {
     })
     scope.stop()
 
-    parentElement.value.removeChild(targetElement.value)
+    parentElement.removeChild(targetElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(0)
   })
@@ -115,7 +114,7 @@ describe('onElementRemoval', () => {
     const stop = onElementRemoval(targetElement, callBackFn)
     stop()
 
-    parentElement.value.removeChild(targetElement.value)
+    parentElement.removeChild(targetElement)
     await nextTick()
     expect(callBackFn).toHaveBeenCalledTimes(0)
   })
