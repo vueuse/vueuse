@@ -57,10 +57,10 @@ export const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' 
 export const customStorageEventName = 'vueuse-storage'
 
 export interface StorageEventLike {
-  storageArea: StorageLike | null
+  storageArea: StorageLike<unknown> | null
   key: StorageEvent['key']
-  oldValue: StorageEvent['oldValue']
-  newValue: StorageEvent['newValue']
+  oldValue: unknown
+  newValue: unknown
 }
 
 export interface UseStorageOptions<T> extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
@@ -96,7 +96,9 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
   mergeDefaults?: boolean | ((storageValue: T, defaults: T) => T)
 
   /**
-   * Custom data serialization
+   * Custom data serialization.
+   *
+   * `false` can be passed to store values as-is without serialization.
    */
   serializer?: Serializer<T>
 
@@ -122,11 +124,19 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
   initOnMounted?: boolean
 }
 
+export interface UseStorageRawOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
+  /**
+   * Store values as-is without serialization.
+   */
+  serializer: false
+}
+
+export function useStorage<T>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<T>, storage: StorageLike<T>, options: UseStorageRawOptions<T>): RemovableRef<T>
 export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<string>, storage?: StorageLike, options?: UseStorageOptions<string>): RemovableRef<string>
 export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
 export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
 export function useStorage<T>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<null>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
+export function useStorage<T = unknown>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<null>, storage?: StorageLike<T>, options?: UseStorageOptions<T> | UseStorageRawOptions<T>): RemovableRef<T>
 
 /**
  * Reactive LocalStorage/SessionStorage.
@@ -136,8 +146,8 @@ export function useStorage<T = unknown>(key: MaybeRefOrGetter<string>, defaults:
 export function useStorage<T extends (string | number | boolean | object | null)>(
   key: MaybeRefOrGetter<string>,
   defaults: MaybeRefOrGetter<T>,
-  storage: StorageLike | undefined,
-  options: UseStorageOptions<T> = {},
+  storage: StorageLike<T> | StorageLike | undefined,
+  options: UseStorageOptions<T> | UseStorageRawOptions<T> = {},
 ): RemovableRef<T> {
   const {
     flush = 'pre',
@@ -172,6 +182,9 @@ export function useStorage<T extends (string | number | boolean | object | null)
   const rawInit: T = toValue(defaults)
   const type = guessSerializerType<T>(rawInit)
   const serializer = options.serializer ?? StorageSerializers[type]
+
+  const readValue = (raw: any): T => serializer === false ? raw : serializer.read(raw)
+  const writeValue = (value: T): any => serializer === false ? value : serializer.write(value)
 
   const { pause: pauseWatch, resume: resumeWatch } = watchPausable(
     data,
@@ -220,19 +233,24 @@ export function useStorage<T extends (string | number | boolean | object | null)
     update()
   }
 
-  function dispatchWriteEvent(oldValue: string | null, newValue: string | null) {
+  function dispatchWriteEvent(oldValue: T | string | null, newValue: T | string | null) {
     // send custom event to communicate within same page
     if (window) {
       const payload = {
         key: keyComputed.value,
         oldValue,
         newValue,
-        storageArea: storage as Storage,
+        storageArea: storage as StorageLike<unknown>,
       }
       // We also use a CustomEvent since StorageEvent cannot
       // be constructed with a non-built-in storage area
       window.dispatchEvent(storage instanceof Storage
-        ? new StorageEvent('storage', payload)
+        ? new StorageEvent('storage', {
+            key: payload.key,
+            oldValue: payload.oldValue as string | null,
+            newValue: payload.newValue as string | null,
+            storageArea: storage,
+          })
         : new CustomEvent<StorageEventLike>(customStorageEventName, {
             detail: payload,
           }))
@@ -248,10 +266,10 @@ export function useStorage<T extends (string | number | boolean | object | null)
         storage!.removeItem(keyComputed.value)
       }
       else {
-        const serialized = serializer.write(v as any)
-        if (oldValue !== serialized) {
-          storage!.setItem(keyComputed.value, serialized)
-          dispatchWriteEvent(oldValue, serialized)
+        const newValue = writeValue(v as T)
+        if (oldValue !== newValue) {
+          storage!.setItem(keyComputed.value, newValue)
+          dispatchWriteEvent(oldValue, newValue)
         }
       }
     }
@@ -260,33 +278,36 @@ export function useStorage<T extends (string | number | boolean | object | null)
     }
   }
 
-  function read(event?: StorageEventLike) {
+  function read(event?: StorageEvent | StorageEventLike) {
     const rawValue = event
       ? event.newValue
       : storage!.getItem(keyComputed.value)
 
     if (rawValue == null) {
       if (writeDefaults && rawInit != null)
-        storage!.setItem(keyComputed.value, serializer.write(rawInit))
+        storage!.setItem(keyComputed.value, writeValue(rawInit))
       return rawInit
     }
+    else if (serializer === false) {
+      return rawValue
+    }
     else if (!event && mergeDefaults) {
-      const value = serializer.read(rawValue)
+      const value = readValue(rawValue)
       if (typeof mergeDefaults === 'function')
         return mergeDefaults(value, rawInit)
       else if (type === 'object' && !Array.isArray(value))
-        return { ...rawInit as any, ...value }
+        return { ...(rawInit as any), ...(value as any) }
       return value
     }
     else if (typeof rawValue !== 'string') {
       return rawValue
     }
     else {
-      return serializer.read(rawValue)
+      return readValue(rawValue)
     }
   }
 
-  function update(event?: StorageEventLike) {
+  function update(event?: StorageEvent | StorageEventLike) {
     if (event && event.storageArea !== storage)
       return
 
@@ -302,7 +323,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
     pauseWatch()
 
     try {
-      const serializedData = serializer.write(data.value)
+      const serializedData = writeValue(data.value)
       if (event === undefined || event?.newValue !== serializedData) {
         data.value = read(event)
       }
