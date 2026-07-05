@@ -90,4 +90,30 @@ describe('useGamepad', () => {
     expect(survivor.timestamp).toBe(1000)
     expect(survivor.buttons[0].pressed).toBe(true)
   })
+
+  it('skips null slots returned by getGamepads', async () => {
+    const pad = createGamepad(1)
+    // browsers return a fixed-length array with null in the unused slots
+    const connectedPads: Array<MockGamepad | null> = [null, pad]
+    const navigator = { getGamepads: () => connectedPads } as unknown as Navigator
+
+    const { gamepads } = useGamepad({ navigator })
+    await nextTick()
+
+    dispatchGamepadEvent('gamepadconnected', pad)
+    await nextTick()
+
+    expect(gamepads.value.map(g => g.index)).toEqual([1])
+
+    // new input arrives on the next frame, alongside a null slot
+    pad.timestamp = 1000
+    pad.buttons = [{ pressed: true, touched: true, value: 1 }]
+
+    expect(() => triggerRaf()).not.toThrow()
+    await nextTick()
+
+    const updated = gamepads.value.find(g => g.index === 1)!
+    expect(updated.timestamp).toBe(1000)
+    expect(updated.buttons[0].pressed).toBe(true)
+  })
 })
