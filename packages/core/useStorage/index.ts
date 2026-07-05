@@ -136,8 +136,7 @@ export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGe
 export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<boolean>, storage?: StorageLike, options?: UseStorageOptions<boolean>): RemovableRef<boolean>
 export function useStorage(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<number>, storage?: StorageLike, options?: UseStorageOptions<number>): RemovableRef<number>
 export function useStorage<T>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<T>, storage?: StorageLike, options?: UseStorageOptions<T>): RemovableRef<T>
-export function useStorage<T = unknown>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<null>, storage?: StorageLike<T>, options?: UseStorageOptions<T> | UseStorageRawOptions<T>): RemovableRef<T>
-
+export function useStorage<T = unknown>(key: MaybeRefOrGetter<string>, defaults: MaybeRefOrGetter<null>, storage?: StorageLike<T>, options?: UseStorageOptions<T>): RemovableRef<T>
 /**
  * Reactive LocalStorage/SessionStorage.
  *

@@ -36,7 +36,7 @@ export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<stri
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<boolean>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<boolean>): RemovableRef<boolean> & Promise<RemovableRef<boolean>>
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<number>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<number>): RemovableRef<number> & Promise<RemovableRef<number>>
 export function useStorageAsync<T>(key: string, initialValue: MaybeRefOrGetter<T>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
-export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRefOrGetter<null>, storage?: StorageLikeAsync<T>, options?: UseStorageAsyncOptions<T> | UseStorageAsyncRawOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
+export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRefOrGetter<null>, storage?: StorageLikeAsync<T>, options?: UseStorageAsyncOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
 
 /**
  * Reactive Storage with async support.
