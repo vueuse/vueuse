@@ -68,6 +68,8 @@ useDraggable(el, {
   draggingElement: window,
   // Whether to restrict dragging within the visible area of the container (default false)
   restrictInView: false,
+  // Whether to enable auto-scroll when dragging near the edges (default false)
+  autoScroll: false,
   // Callbacks
   onStart: (position, event) => {
     // Return false to prevent dragging
