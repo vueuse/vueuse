@@ -1,7 +1,7 @@
 import type { Import, Preset } from 'unimport'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineNuxtModule } from '@nuxt/kit'
+import { defineNuxtModule, hasNuxtModule } from '@nuxt/kit'
 import { metadata } from '@vueuse/metadata'
 import { isPackageExists } from 'local-pkg'
 
@@ -117,6 +117,11 @@ export default defineNuxtModule<VueUseNuxtOptions>({
             i.package = 'core'
         })
 
+        // disable useColorMode in favor of nuxt color mode
+        if (hasNuxtModule('@nuxtjs/color-mode')) {
+          disabledFunctions.push('useColorMode')
+        }
+
         for (const pkg of packages) {
           if (pkg === 'shared')
             continue
@@ -136,7 +141,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
               && !disabledFunctions.includes(i.name),
             )
             .flatMap((i): Import[] => {
-              const names = [i.name, ...i.alias || [], ...i.variants || []]
+              const names = [i.name, ...i.alias || [], ...i.variants || [], ...i.utils || []]
               return names.map(n => ({
                 from: `@vueuse/${i.importPath || i.package}`,
                 name: n,

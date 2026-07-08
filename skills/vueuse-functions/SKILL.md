@@ -59,6 +59,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useDraggable`](references/useDraggable.md) | Make elements draggable | AUTO |
 | [`useDropZone`](references/useDropZone.md) | Create a zone where files can be dropped | AUTO |
 | [`useElementBounding`](references/useElementBounding.md) | Reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element | AUTO |
+| [`useElementOverflow`](references/useElementOverflow.md) | Reactive element's overflow state | AUTO |
 | [`useElementSize`](references/useElementSize.md) | Reactive size of an HTML element | AUTO |
 | [`useElementVisibility`](references/useElementVisibility.md) | Tracks the visibility of an element within the viewport | AUTO |
 | [`useIntersectionObserver`](references/useIntersectionObserver.md) | Detects changes to a target element's visibility | AUTO |
@@ -281,6 +282,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 
 | Function | Description | Invocation |
 |----------|-------------|------------|
+| [`createDisposableDirective`](references/createDisposableDirective.md) | Utility for authoring disposable directives | AUTO |
 | [`createEventHook`](references/createEventHook.md) | Utility for creating event hooks | AUTO |
 | [`createUnrefFn`](references/createUnrefFn.md) | Make a plain function accepting ref and raw values as arguments | AUTO |
 | [`get`](references/get.md) | Shorthand for accessing `ref.value` | EXPLICIT_ONLY |

@@ -14,6 +14,8 @@ export function formatTimeAgo(_, _, _) {}
 export function formatTimeAgoIntl(_, _, _) {}
 export function formatTimeAgoIntlParts(_, _) {}
 export function getSSRHandler(_, _) {}
+export function isFocusedElementEditable() {}
+export function isTypedCharValid(_) {}
 export function mapGamepadToXbox360Controller(_) {}
 export function onClickOutside(_, _, _) {}
 export function onElementRemoval(_, _, _) {}
@@ -62,6 +64,7 @@ export function useDropZone(_, _) {}
 export function useElementBounding(_, _) {}
 export function useElementByPoint(_) {}
 export function useElementHover(_, _) {}
+export function useElementOverflow(_, _) {}
 export function useElementSize(_, _, _) {}
 export function useElementVisibility(_, _) {}
 export function useEventBus(_) {}

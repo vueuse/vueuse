@@ -144,7 +144,7 @@ export function usePointerSwipe(
         onSwipe?.(e)
     }, listenerOptions),
 
-    useEventListener(target, 'pointerup', (e: PointerEvent) => {
+    useEventListener(target, ['pointerup', 'pointercancel'], (e: PointerEvent) => {
       if (!eventIsAllowed(e))
         return
       if (isSwiping.value)
