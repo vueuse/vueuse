@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useGamepad } from './index'
 
@@ -35,27 +35,6 @@ function dispatchGamepadEvent(type: 'gamepadconnected' | 'gamepaddisconnected', 
 }
 
 describe('useGamepad', () => {
-  let rafCallback: FrameRequestCallback | null
-
-  beforeEach(() => {
-    rafCallback = null
-    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
-      rafCallback = cb
-      return 1
-    })
-    vi.stubGlobal('cancelAnimationFrame', vi.fn())
-  })
-
-  afterEach(() => {
-    vi.unstubAllGlobals()
-  })
-
-  function triggerRaf() {
-    const cb = rafCallback
-    rafCallback = null
-    cb?.(16)
-  }
-
   it('keeps updating the remaining gamepad after another one disconnects', async () => {
     const pad0 = createGamepad(0)
     const pad1 = createGamepad(1)
@@ -83,12 +62,11 @@ describe('useGamepad', () => {
     pad1.axes = [0.5, 0, 0, 0]
     pad1.buttons = [{ pressed: true, touched: true, value: 1 }]
 
-    triggerRaf()
-    await nextTick()
-
-    const survivor = gamepads.value.find(g => g.index === 1)!
-    expect(survivor.timestamp).toBe(1000)
-    expect(survivor.buttons[0].pressed).toBe(true)
+    await vi.waitFor(() => {
+      const survivor = gamepads.value.find(g => g.index === 1)!
+      expect(survivor.timestamp).toBe(1000)
+      expect(survivor.buttons[0].pressed).toBe(true)
+    })
   })
 
   it('skips null slots returned by getGamepads', async () => {
@@ -109,11 +87,10 @@ describe('useGamepad', () => {
     pad.timestamp = 1000
     pad.buttons = [{ pressed: true, touched: true, value: 1 }]
 
-    expect(() => triggerRaf()).not.toThrow()
-    await nextTick()
-
-    const updated = gamepads.value.find(g => g.index === 1)!
-    expect(updated.timestamp).toBe(1000)
-    expect(updated.buttons[0].pressed).toBe(true)
+    await vi.waitFor(() => {
+      const updated = gamepads.value.find(g => g.index === 1)!
+      expect(updated.timestamp).toBe(1000)
+      expect(updated.buttons[0].pressed).toBe(true)
+    })
   })
 })
