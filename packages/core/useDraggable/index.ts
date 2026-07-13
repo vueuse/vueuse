@@ -1,9 +1,56 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { PointerType, Position } from '../types'
-import { isClient, toRefs } from '@vueuse/shared'
-import { computed, ref as deepRef, toValue, watch } from 'vue'
+import { isClient, toRefs, tryOnScopeDispose } from '@vueuse/shared'
+import { computed, ref as deepRef, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
+import { useRafFn } from '../useRafFn'
+
+export type SnapCoordValue = number | string
+
+export interface SnapRangeConfig {
+  start?: SnapCoordValue
+  end?: SnapCoordValue
+  step?: SnapCoordValue
+}
+
+export type SnapAxisConfig = SnapCoordValue | SnapRangeConfig
+
+export interface SnapBoundingRect {
+  left?: SnapCoordValue
+  top?: SnapCoordValue
+  right?: SnapCoordValue
+  bottom?: SnapCoordValue
+  width?: SnapCoordValue
+  height?: SnapCoordValue
+}
+
+export type DraggableBounds = SnapBoundingRect
+
+export interface SnapTarget {
+  x?: SnapAxisConfig
+  y?: SnapAxisConfig
+  step?: SnapCoordValue
+  boundingBox?: HTMLElement | SVGElement | SnapBoundingRect
+  position?: MaybeRefOrGetter<Position>
+  size?: MaybeRefOrGetter<{ width: number, height: number }>
+  gravity?: number
+  corner?: 'tl' | 'tr' | 'bl' | 'br' | 'all'
+  side?: 'start' | 'end' | 'both'
+  center?: boolean
+  edge?: 'inside' | 'outside' | 'both'
+}
+
+export interface SnapOptions {
+  targets?: SnapCoordValue | SnapTarget | (SnapCoordValue | SnapTarget)[]
+  gravity?: number
+  corner?: 'tl' | 'tr' | 'bl' | 'br' | 'all'
+  side?: 'start' | 'end' | 'both'
+  center?: boolean
+  edge?: 'inside' | 'outside' | 'both'
+}
+
+export type SnapInput = SnapCoordValue | SnapTarget | (SnapCoordValue | SnapTarget)[] | SnapOptions
 
 export interface UseDraggableOptions {
   /**
@@ -46,7 +93,7 @@ export interface UseDraggableOptions {
    *
    * @default undefined
    */
-  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
+  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | DraggableBounds | null | undefined>
 
   /**
    * Handle that triggers the drag event
@@ -83,6 +130,18 @@ export interface UseDraggableOptions {
    * Callback when dragging end.
    */
   onEnd?: (position: Position, event: PointerEvent) => void
+
+  /**
+   * Callback fired once on the first actual movement of each drag session.
+   * Useful for showing drag ghosts, locking sibling elements, etc.
+   */
+  onMoveStart?: (position: Position, event: PointerEvent) => void
+
+  /**
+   * Pre-commit callback fired before each position update.
+   * Return a new `Position` to override the computed position, `false` to cancel the move, or `void` to proceed as normal.
+   */
+  onBeforeMove?: (position: Position, event: PointerEvent) => Position | void | false
 
   /**
    * Axis to drag on.
@@ -129,14 +188,28 @@ export interface UseDraggableOptions {
    */
   autoScroll?: MaybeRefOrGetter<boolean | {
     /**
-     * Speed of auto-scroll.
+     * Speed of auto-scroll in pixels per frame.
+     * Pass a `number[]` paired with `sensitivity` for tiered acceleration:
+     * e.g. `speed: [40, 200, 1000]` with `sensitivity: [100, 40, 10]`.
      *
      * @default 2
      */
-    speed?: MaybeRefOrGetter<number | Position>
+    speed?: MaybeRefOrGetter<number | number[] | Position>
+
+    /**
+     * Distance thresholds (px from container edge) that trigger each speed tier.
+     * Must be paired with a `speed` array of the same length.
+     * When provided, replaces `margin` as the outer trigger zone.
+     *
+     * Example: `sensitivity: [100, 40, 10]` — the further from the edge the
+     * pointer is, the slower the scroll. Each value is an exclusive upper
+     * bound (`dist < sensitivity[i]`), so use a positive innermost threshold.
+     */
+    sensitivity?: MaybeRefOrGetter<number | number[]>
 
     /**
      * Margin from the edge to trigger auto-scroll.
+     * Ignored when `sensitivity` is provided.
      *
      * @default 30
      */
@@ -148,7 +221,70 @@ export interface UseDraggableOptions {
      * @default 'both'
      */
     direction?: 'x' | 'y' | 'both'
+
+    /**
+     * Minimum and maximum scroll positions (px) the auto-scroll is allowed to reach.
+     * Independent of the user's manual scroll position.
+     */
+    minX?: number
+    maxX?: number
+    minY?: number
+    maxY?: number
   }>
+
+  /**
+   * Snap the draggable element to points, lines, grids, or element edges.
+   *
+   * Examples:
+   * - `{ step: 30 }` — 30×30 grid
+   * - `{ x: 100 }` — vertical guide line at x=100
+   * - `{ x: 100, y: { start: 0, end: '50%' } }` — vertical line at x=100, only active for y in [0, 50%]
+   * - `[{ x: 100 }, { x: 300 }]` — two vertical guide lines
+   * - `{ boundingBox: el }` — snap to edges of an element
+   * - `{ targets: [{ step: 30 }], gravity: 15 }` — grid with custom gravity
+   *
+   * @default undefined
+   */
+  snap?: MaybeRefOrGetter<SnapInput>
+
+  /**
+   * How the element's position is applied to its `style`.
+   * - `'leftTop'` (default) — emits `left: Xpx; top: Ypx;` (requires `position: fixed` or `absolute`)
+   * - `'transform'` — emits `transform: translate3d(Xpx, Ypx, 0);` (GPU-accelerated, works with any CSS `position`)
+   *
+   * @default 'leftTop'
+   */
+  output?: 'leftTop' | 'transform'
+
+  /**
+   * CSS classes automatically applied to the target element.
+   * - `draggable` — applied on mount
+   * - `dragging` — applied while the pointer is held down
+   * - `moving` — applied from the first actual movement until pointer release
+   */
+  classes?: {
+    draggable?: string
+    dragging?: string
+    moving?: string
+  }
+
+  /**
+   * Cursor style applied automatically.
+   * - `idle` — cursor when not dragging (default `'grab'`). Pass `false` to skip.
+   * - `dragging` — cursor during drag, applied to `document.body` (default `'grabbing'`). Pass `false` to skip.
+   */
+  cursor?: {
+    idle?: string | false
+    dragging?: string | false
+  }
+
+  /**
+   * `z-index` applied to the element while dragging and restored on release.
+   * Pass `false` to disable.
+   *
+   * @default false
+   */
+  zIndex?: number | false
 }
 
 export interface UseDraggableReturn {
@@ -156,7 +292,9 @@ export interface UseDraggableReturn {
   y: Ref<number>
   position: Ref<Position>
   isDragging: ComputedRef<boolean>
+  snapped: ComputedRef<boolean>
   style: ComputedRef<string>
+  recalc: () => void
 }
 
 const defaultScrollConfig = { speed: 2, margin: 30, direction: 'both' }
@@ -168,13 +306,335 @@ function clampContainerScroll(container: HTMLElement) {
     container.scrollTop = Math.max(0, container.scrollHeight - container.clientHeight)
 }
 
+function getScrollAxisValues(value: number | Position): [number, number] {
+  return typeof value === 'number' ? [value, value] : [value.x, value.y]
+}
+
+function resolveSnapPx(value: SnapCoordValue, base: number): number {
+  if (typeof value === 'string' && value.trim().endsWith('%'))
+    return (Number.parseFloat(value) / 100) * base
+  return Number(value)
+}
+
+function getAxisCandidates(config: SnapAxisConfig | undefined, base: number): number[] | null {
+  if (config == null)
+    return null
+  if (typeof config === 'number' || typeof config === 'string')
+    return [resolveSnapPx(config, base)]
+  const { step, start, end } = config
+  if (step != null) {
+    const stepPx = resolveSnapPx(step, base)
+    if (stepPx <= 0)
+      return null
+    const s = start != null ? resolveSnapPx(start, base) : 0
+    const e = end != null ? resolveSnapPx(end, base) : base
+    const values: number[] = []
+    for (let v = s; v <= e + 1e-6; v += stepPx)
+      values.push(v)
+    return values.length ? values : null
+  }
+  return null
+}
+
+// A range-only config (`{start?, end?}` without `step`) on the perpendicular
+// axis restricts the active extent of a line snap (e.g. a vertical line that
+// only snaps over a portion of the container's height).
+function getAxisRange(config: SnapAxisConfig | undefined, base: number): [number, number] | null {
+  if (config == null || typeof config === 'number' || typeof config === 'string')
+    return null
+  const { step, start, end } = config
+  if (step != null)
+    return null
+  if (start == null && end == null)
+    return null
+  return [
+    start != null ? resolveSnapPx(start, base) : 0,
+    end != null ? resolveSnapPx(end, base) : base,
+  ]
+}
+
+// Resolves a possibly-partial rect into concrete left/top/right/bottom pixels,
+// deriving the far edges from width/height (or the base size) when absent.
+function resolveRectEdges(rect: SnapBoundingRect, baseW: number, baseH: number): { left: number, top: number, right: number, bottom: number } {
+  const left = rect.left != null ? resolveSnapPx(rect.left, baseW) : 0
+  const top = rect.top != null ? resolveSnapPx(rect.top, baseH) : 0
+  const right = rect.right != null
+    ? resolveSnapPx(rect.right, baseW)
+    : left + (rect.width != null ? resolveSnapPx(rect.width, baseW) : baseW - left)
+  const bottom = rect.bottom != null
+    ? resolveSnapPx(rect.bottom, baseH)
+    : top + (rect.height != null ? resolveSnapPx(rect.height, baseH) : baseH - top)
+  return { left, top, right, bottom }
+}
+
+function resolveContainerBounds(rect: DraggableBounds): { left: number, top: number, right: number, bottom: number } {
+  return resolveRectEdges(rect, defaultWindow?.innerWidth ?? 0, defaultWindow?.innerHeight ?? 0)
+}
+
+function findClosestCandidate(probe: number, candidates: number[], gravity: number): number | null {
+  let best: number | null = null
+  let bestDist = gravity + 1e-6
+  for (const c of candidates) {
+    const d = Math.abs(probe - c)
+    if (d < bestDist) {
+      bestDist = d
+      best = c
+    }
+  }
+  return best
+}
+
+function getBoxLines(
+  box: HTMLElement | SVGElement | SnapBoundingRect,
+  baseW: number,
+  baseH: number,
+  container: HTMLElement | SVGElement | null | undefined,
+): { x: number[], y: number[] } {
+  if (box instanceof Element) {
+    const r = box.getBoundingClientRect()
+    let left: number, top: number
+    if (container instanceof HTMLElement) {
+      const cr = container.getBoundingClientRect()
+      left = r.left - cr.left + container.scrollLeft
+      top = r.top - cr.top + container.scrollTop
+    }
+    else {
+      left = r.left
+      top = r.top
+    }
+    return { x: [left, left + r.width], y: [top, top + r.height] }
+  }
+  const { left, top, right, bottom } = resolveRectEdges(box as SnapBoundingRect, baseW, baseH)
+  return { x: [left, right], y: [top, bottom] }
+}
+
+function normalizeSnapTargets(input: SnapInput): SnapTarget[] {
+  const isSnapOptions = (v: unknown): v is SnapOptions =>
+    typeof v === 'object' && v !== null && !Array.isArray(v) && 'targets' in v
+
+  let rawList: (SnapCoordValue | SnapTarget)[]
+  let shared: Omit<SnapOptions, 'targets'> = {}
+
+  if (typeof input === 'number' || typeof input === 'string') {
+    rawList = [input]
+  }
+  else if (Array.isArray(input)) {
+    rawList = input
+  }
+  else if (isSnapOptions(input)) {
+    const { targets, ...rest } = input
+    shared = rest
+    rawList = targets == null ? [] : Array.isArray(targets) ? targets : [targets]
+  }
+  else {
+    rawList = [input as SnapTarget]
+  }
+
+  return rawList.map((raw) => {
+    if (typeof raw === 'number' || typeof raw === 'string')
+      return { ...shared, x: raw, y: raw } as SnapTarget
+    const target = { ...shared, ...raw } as SnapTarget
+    if (target.position != null) {
+      const pos = toValue(target.position)
+      const sz = target.size != null ? toValue(target.size) : { width: 0, height: 0 }
+      if (sz.width === 0 && sz.height === 0) {
+        return {
+          ...target,
+          position: undefined,
+          size: undefined,
+          x: pos.x,
+          y: pos.y,
+        } as SnapTarget
+      }
+      return {
+        ...target,
+        position: undefined,
+        size: undefined,
+        boundingBox: { left: pos.x, top: pos.y, right: pos.x + sz.width, bottom: pos.y + sz.height },
+      } as SnapTarget
+    }
+    return target
+  })
+}
+
+interface AxisSnapState { best: number, value: number }
+
+// Records a candidate snap for one axis, keeping the closest one seen so far.
+// Returns true when this candidate became the new best (i.e. a snap occurred).
+function updateAxisSnap(state: AxisSnapState, dist: number, value: number): boolean {
+  if (dist < state.best) {
+    state.best = dist
+    state.value = value
+    return true
+  }
+  return false
+}
+
+// Probes `candidates` for the one closest to `basePos + off` within gravity,
+// updating `state` if it is the best match. Returns true when a snap occurred.
+function trySnapAxis(state: AxisSnapState, basePos: number, off: number, candidates: number[], gravity: number): boolean {
+  const snapTo = findClosestCandidate(basePos + off, candidates, gravity)
+  if (snapTo == null)
+    return false
+  return updateAxisSnap(state, Math.abs(basePos + off - snapTo), snapTo - off)
+}
+
+// Probe offsets (relative to the element's near edge) for a box wall snap.
+function edgeOffsets(center: boolean, edge: 'inside' | 'outside' | 'both', dim: number, isStart: boolean): number[] {
+  if (center)
+    return [dim / 2]
+  if (edge === 'inside')
+    return [isStart ? 0 : dim]
+  if (edge === 'outside')
+    return [isStart ? dim : 0]
+  return [0, dim]
+}
+
+// Probe offsets (relative to the element's near edge) for a line snap.
+function sideOffsets(center: boolean, side: 'start' | 'end' | 'both', dim: number): number[] {
+  if (center)
+    return [dim / 2]
+  if (side === 'start')
+    return [0]
+  if (side === 'end')
+    return [dim]
+  return [0, dim]
+}
+
+// Merges a shared `step` into a per-axis config so both axes honour it.
+function resolveAxisCfg(axis: SnapAxisConfig | undefined, step: SnapCoordValue | undefined): SnapAxisConfig | undefined {
+  if (step == null)
+    return axis
+  return { ...(typeof axis === 'object' ? axis as SnapRangeConfig : {}), step }
+}
+
+function computeSnap(
+  pos: Position,
+  size: { width: number, height: number },
+  snapInput: SnapInput,
+  baseW: number,
+  baseH: number,
+  container: HTMLElement | SVGElement | null | undefined,
+): { position: Position, snapped: boolean } {
+  const targets = normalizeSnapTargets(snapInput)
+  const xState: AxisSnapState = { best: Infinity, value: pos.x }
+  const yState: AxisSnapState = { best: Infinity, value: pos.y }
+  let isSnapped = false
+
+  for (const target of targets) {
+    const gravity = target.gravity ?? 20
+    const corner = target.corner ?? 'tl'
+    const side = target.side ?? 'both'
+    const center = target.center ?? false
+    const edge = target.edge ?? 'both'
+
+    if (target.boundingBox) {
+      const lines = getBoxLines(target.boundingBox, baseW, baseH, container)
+      const [xMin, xMax] = lines.x
+      const [yMin, yMax] = lines.y
+      // Only snap to a vertical wall if the element overlaps the box in Y (and vice versa)
+      const yOverlaps = !(pos.y + size.height <= yMin || pos.y >= yMax)
+      const xOverlaps = !(pos.x + size.width <= xMin || pos.x >= xMax)
+      if (yOverlaps) {
+        for (let ei = 0; ei < lines.x.length; ei++) {
+          for (const off of edgeOffsets(center, edge, size.width, ei === 0))
+            isSnapped = trySnapAxis(xState, pos.x, off, [lines.x[ei]], gravity) || isSnapped
+        }
+      }
+      if (xOverlaps) {
+        for (let ei = 0; ei < lines.y.length; ei++) {
+          for (const off of edgeOffsets(center, edge, size.height, ei === 0))
+            isSnapped = trySnapAxis(yState, pos.y, off, [lines.y[ei]], gravity) || isSnapped
+        }
+      }
+      continue
+    }
+
+    const xCfg = resolveAxisCfg(target.x, target.step)
+    const yCfg = resolveAxisCfg(target.y, target.step)
+    const xCandidates = getAxisCandidates(xCfg, baseW)
+    const yCandidates = getAxisCandidates(yCfg, baseH)
+    const isPoint = xCandidates != null && yCandidates != null
+
+    if (isPoint) {
+      // Point target: both axes must be within gravity for the same corner probe
+      const xOffsets = center
+        ? [size.width / 2]
+        : (corner === 'all' ? [0, size.width] : (corner === 'tr' || corner === 'br') ? [size.width] : [0])
+      const yOffsets = center
+        ? [size.height / 2]
+        : (corner === 'all' ? [0, size.height] : (corner === 'bl' || corner === 'br') ? [size.height] : [0])
+      for (const xOff of xOffsets) {
+        const xSnapTo = findClosestCandidate(pos.x + xOff, xCandidates!, gravity)
+        if (xSnapTo == null)
+          continue
+        for (const yOff of yOffsets) {
+          const ySnapTo = findClosestCandidate(pos.y + yOff, yCandidates!, gravity)
+          if (ySnapTo == null)
+            continue
+          isSnapped = updateAxisSnap(xState, Math.abs(pos.x + xOff - xSnapTo), xSnapTo - xOff) || isSnapped
+          isSnapped = updateAxisSnap(yState, Math.abs(pos.y + yOff - ySnapTo), ySnapTo - yOff) || isSnapped
+        }
+      }
+    }
+    else {
+      if (xCandidates != null) {
+        // Vertical line: an optional y-axis range restricts the line's active extent
+        const yRange = yCandidates == null ? getAxisRange(yCfg, baseH) : null
+        const yOverlaps = yRange == null
+          || (pos.y + size.height >= yRange[0] && pos.y <= yRange[1])
+        if (yOverlaps) {
+          for (const off of sideOffsets(center, side, size.width))
+            isSnapped = trySnapAxis(xState, pos.x, off, xCandidates, gravity) || isSnapped
+        }
+      }
+      if (yCandidates != null) {
+        // Horizontal line: an optional x-axis range restricts the line's active extent
+        const xRange = xCandidates == null ? getAxisRange(xCfg, baseW) : null
+        const xOverlaps = xRange == null
+          || (pos.x + size.width >= xRange[0] && pos.x <= xRange[1])
+        if (xOverlaps) {
+          for (const off of sideOffsets(center, side, size.height))
+            isSnapped = trySnapAxis(yState, pos.y, off, yCandidates, gravity) || isSnapped
+        }
+      }
+    }
+  }
+
+  return { position: { x: xState.value, y: yState.value }, snapped: isSnapped }
+}
+
 /**
- * Make elements draggable.
- *
- * @see https://vueuse.org/useDraggable
- * @param target
- * @param options
+ * @param dist
+ * @param speed
+ * @param axis
+ * @param sensitivity
  */
+function computeAxisSpeed(
+  dist: number,
+  speed: number | number[] | Position,
+  axis: 'x' | 'y',
+  sensitivity: number | number[] | undefined,
+): number {
+  if (Array.isArray(speed) && Array.isArray(sensitivity)) {
+    let bestSens = Infinity
+    let bestSpeed = 0
+    for (let i = 0; i < sensitivity.length; i++) {
+      const s = sensitivity[i]
+      if (dist < s && s < bestSens) {
+        bestSens = s
+        bestSpeed = speed[Math.min(i, speed.length - 1)]
+      }
+    }
+    return bestSpeed
+  }
+  return Array.isArray(speed)
+    ? speed[speed.length - 1]
+    : typeof speed === 'number'
+      ? speed
+      : axis === 'x' ? speed.x : speed.y
+}
+
 export function useDraggable(
   target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>,
   options: UseDraggableOptions = {},
@@ -195,6 +655,13 @@ export function useDraggable(
     buttons = [0],
     restrictInView,
     autoScroll = false,
+    snap,
+    output = 'leftTop',
+    onMoveStart,
+    onBeforeMove,
+    classes,
+    cursor,
+    zIndex = false,
   } = options
 
   const position = deepRef<Position>(
@@ -202,6 +669,25 @@ export function useDraggable(
   )
 
   const pressedDelta = deepRef<Position>()
+  const snapState = shallowRef(false)
+  let hasMoved = false
+
+  let savedZIndex = ''
+
+  if (isClient) {
+    watch(
+      () => toValue(draggingHandle),
+      (el) => {
+        if (!el)
+          return
+        if (classes?.draggable)
+          el.classList.add(classes.draggable)
+        if (cursor && cursor.idle !== false)
+          (el as HTMLElement).style.cursor = cursor.idle ?? 'grab'
+      },
+      { immediate: true },
+    )
+  }
 
   const filterEvent = (e: PointerEvent) => {
     if (pointerTypes)
@@ -217,16 +703,28 @@ export function useDraggable(
   }
 
   const scrollConfig = toValue(autoScroll)
-  const scrollSettings = typeof scrollConfig === 'object'
+  interface ResolvedScrollSettings {
+    speed: number | number[] | Position
+    sensitivity?: number | number[]
+    margin: number | Position
+    direction: string
+    minX?: number
+    maxX?: number
+    minY?: number
+    maxY?: number
+  }
+  const scrollSettings: ResolvedScrollSettings = typeof scrollConfig === 'object'
     ? {
         speed: toValue(scrollConfig.speed) ?? defaultScrollConfig.speed,
+        sensitivity: toValue(scrollConfig.sensitivity),
         margin: toValue(scrollConfig.margin) ?? defaultScrollConfig.margin,
         direction: scrollConfig.direction ?? defaultScrollConfig.direction,
+        minX: scrollConfig.minX,
+        maxX: scrollConfig.maxX,
+        minY: scrollConfig.minY,
+        maxY: scrollConfig.maxY,
       }
-    : defaultScrollConfig
-
-  const getScrollAxisValues = (value: number | Position): [number, number] =>
-    typeof value === 'number' ? [value, value] : [value.x, value.y]
+    : { ...defaultScrollConfig }
 
   const handleAutoScroll = (
     container: HTMLElement | SVGElement,
@@ -236,23 +734,45 @@ export function useDraggable(
     const { clientWidth, clientHeight, scrollLeft, scrollTop, scrollWidth, scrollHeight } = container
 
     const [marginX, marginY] = getScrollAxisValues(scrollSettings.margin)
-    const [speedX, speedY] = getScrollAxisValues(scrollSettings.speed)
+    const { sensitivity } = scrollSettings
+    const effectiveTrigger = Array.isArray(sensitivity) && sensitivity.length > 0
+      ? Math.max(...sensitivity)
+      : typeof sensitivity === 'number'
+        ? sensitivity
+        : null
+    const triggerX = effectiveTrigger ?? marginX
+    const triggerY = effectiveTrigger ?? marginY
 
     let deltaX = 0
     let deltaY = 0
 
     if (scrollSettings.direction === 'x' || scrollSettings.direction === 'both') {
-      if (position.x < marginX && scrollLeft > 0)
-        deltaX = -speedX
-      else if (position.x + targetRect.width > clientWidth - marginX && scrollLeft < scrollWidth - clientWidth)
-        deltaX = speedX
+      const distLeft = position.x
+      const distRight = clientWidth - (position.x + targetRect.width)
+      if (distLeft < triggerX && scrollLeft > 0)
+        deltaX = -computeAxisSpeed(distLeft, scrollSettings.speed, 'x', sensitivity)
+      else if (distRight < triggerX && scrollLeft < scrollWidth - clientWidth)
+        deltaX = computeAxisSpeed(distRight, scrollSettings.speed, 'x', sensitivity)
     }
 
     if (scrollSettings.direction === 'y' || scrollSettings.direction === 'both') {
-      if (position.y < marginY && scrollTop > 0)
-        deltaY = -speedY
-      else if (position.y + targetRect.height > clientHeight - marginY && scrollTop < scrollHeight - clientHeight)
-        deltaY = speedY
+      const distTop = position.y
+      const distBottom = clientHeight - (position.y + targetRect.height)
+      if (distTop < triggerY && scrollTop > 0)
+        deltaY = -computeAxisSpeed(distTop, scrollSettings.speed, 'y', sensitivity)
+      else if (distBottom < triggerY && scrollTop < scrollHeight - clientHeight)
+        deltaY = computeAxisSpeed(distBottom, scrollSettings.speed, 'y', sensitivity)
+    }
+
+    if (scrollSettings.minX !== undefined || scrollSettings.maxX !== undefined) {
+      const next = scrollLeft + deltaX
+      const clamped = Math.min(Math.max(next, scrollSettings.minX ?? -Infinity), scrollSettings.maxX ?? Infinity)
+      deltaX = clamped - scrollLeft
+    }
+    if (scrollSettings.minY !== undefined || scrollSettings.maxY !== undefined) {
+      const next = scrollTop + deltaY
+      const clamped = Math.min(Math.max(next, scrollSettings.minY ?? -Infinity), scrollSettings.maxY ?? Infinity)
+      deltaY = clamped - scrollTop
     }
 
     if (deltaX || deltaY) {
@@ -260,32 +780,32 @@ export function useDraggable(
     }
   }
 
-  let autoScrollInterval: ReturnType<typeof setInterval> | null = null
-  const startAutoScroll = () => {
+  // Auto-scroll runs via requestAnimationFrame (useRafFn) rather than setInterval:
+  // it's more efficient, pauses automatically when the tab is hidden, and is
+  // cleaned up on scope dispose. `fpsLimit: 60` preserves the original ~16.7ms
+  // cadence so scroll speed stays consistent across display refresh rates.
+  const {
+    pause: stopAutoScroll,
+    resume: resumeAutoScroll,
+    isActive: isAutoScrolling,
+  } = useRafFn(() => {
     const container = toValue(containerElement)
-    if (container && !autoScrollInterval) {
-      autoScrollInterval = setInterval(() => {
-        const targetRect = toValue(target)!.getBoundingClientRect()
-        const { x, y } = position.value
-        const relativePosition = { x: x - container.scrollLeft, y: y - container.scrollTop }
-        if (relativePosition.x >= 0 && relativePosition.y >= 0) {
-          handleAutoScroll(
-            container,
-            targetRect,
-            relativePosition,
-          )
-          relativePosition.x += container.scrollLeft
-          relativePosition.y += container.scrollTop
-          position.value = relativePosition
-        }
-      }, 1000 / 60)
+    if (!(container instanceof Element))
+      return
+    const targetRect = toValue(target)!.getBoundingClientRect()
+    const { x, y } = position.value
+    const relativePosition = { x: x - container.scrollLeft, y: y - container.scrollTop }
+    if (relativePosition.x >= 0 && relativePosition.y >= 0) {
+      handleAutoScroll(container, targetRect, relativePosition)
+      relativePosition.x += container.scrollLeft
+      relativePosition.y += container.scrollTop
+      position.value = relativePosition
     }
-  }
-  const stopAutoScroll = () => {
-    if (autoScrollInterval) {
-      clearInterval(autoScrollInterval)
-      autoScrollInterval = null
-    }
+  }, { immediate: false, fpsLimit: 60 })
+
+  const startAutoScroll = () => {
+    if (toValue(containerElement) instanceof Element && !isAutoScrolling.value)
+      resumeAutoScroll()
   }
   const isPointerNearEdge = (
     pointer: Position,
@@ -293,7 +813,7 @@ export function useDraggable(
     margin: number | Position,
     targetRect: DOMRect,
   ) => {
-    const [marginX, marginY] = typeof margin === 'number' ? [margin, margin] : [margin.x, margin.y]
+    const [marginX, marginY] = getScrollAxisValues(margin)
     const { clientWidth, clientHeight } = container
     return (
       pointer.x < marginX
@@ -306,19 +826,77 @@ export function useDraggable(
     if (toValue(options.disabled) || !pressedDelta.value)
       return
     const container = toValue(containerElement)
-    if (!container)
+    if (!(container instanceof Element))
       return
     const targetRect = toValue(target)!.getBoundingClientRect()
     const { x, y } = position.value
     const relativePosition = { x: x - container.scrollLeft, y: y - container.scrollTop }
 
-    if (isPointerNearEdge(relativePosition, container, scrollSettings.margin, targetRect))
+    const { sensitivity } = scrollSettings
+    const effectiveMargin: number | Position = Array.isArray(sensitivity) && sensitivity.length > 0
+      ? Math.max(...sensitivity)
+      : typeof sensitivity === 'number'
+        ? sensitivity
+        : scrollSettings.margin
+    if (isPointerNearEdge(relativePosition, container, effectiveMargin, targetRect))
       startAutoScroll()
     else stopAutoScroll()
   }
 
   if (toValue(autoScroll)) {
     watch(position, checkAutoScroll)
+  }
+
+  const resolveContainer = () => {
+    const container = toValue(containerElement)
+    const domContainer = container instanceof Element ? container as HTMLElement | SVGElement : null
+    const containerBounds = container != null && !(container instanceof Element)
+      ? resolveContainerBounds(container as DraggableBounds)
+      : null
+    return { domContainer, containerBounds }
+  }
+
+  const applySnapAndClamp = (
+    pos: Position,
+    targetRect: DOMRect,
+    domContainer: HTMLElement | SVGElement | null,
+    containerBounds: { left: number, top: number, right: number, bottom: number } | null,
+  ): Position => {
+    let { x, y } = pos
+    const snapValue = toValue(snap)
+    if (snapValue) {
+      const baseW = domContainer instanceof HTMLElement ? domContainer.clientWidth : (defaultWindow?.innerWidth ?? 0)
+      const baseH = domContainer instanceof HTMLElement ? domContainer.clientHeight : (defaultWindow?.innerHeight ?? 0)
+      const snapResult = computeSnap(
+        { x, y },
+        { width: targetRect.width, height: targetRect.height },
+        snapValue,
+        baseW,
+        baseH,
+        domContainer,
+      )
+      if (axis === 'x' || axis === 'both')
+        x = snapResult.position.x
+      if (axis === 'y' || axis === 'both')
+        y = snapResult.position.y
+      snapState.value = snapResult.snapped
+    }
+    else {
+      snapState.value = false
+    }
+    if (domContainer) {
+      if (axis === 'x' || axis === 'both')
+        x = Math.min(Math.max(0, x), domContainer.scrollWidth - targetRect.width)
+      if (axis === 'y' || axis === 'both')
+        y = Math.min(Math.max(0, y), domContainer.scrollHeight - targetRect.height)
+    }
+    else if (containerBounds) {
+      if (axis === 'x' || axis === 'both')
+        x = Math.min(Math.max(containerBounds.left, x), containerBounds.right - targetRect.width)
+      if (axis === 'y' || axis === 'both')
+        y = Math.min(Math.max(containerBounds.top, y), containerBounds.bottom - targetRect.height)
+    }
+    return { x, y }
   }
 
   const start = (e: PointerEvent) => {
@@ -330,14 +908,27 @@ export function useDraggable(
       return
 
     const container = toValue(containerElement)
-    const containerRect = container?.getBoundingClientRect?.()
+    const domContainer = container instanceof Element ? container as HTMLElement | SVGElement : null
+    const containerRect = domContainer?.getBoundingClientRect?.()
     const targetRect = toValue(target)!.getBoundingClientRect()
     const pos = {
-      x: e.clientX - (container ? targetRect.left - containerRect!.left + (autoScroll ? 0 : container.scrollLeft) : targetRect.left),
-      y: e.clientY - (container ? targetRect.top - containerRect!.top + (autoScroll ? 0 : container.scrollTop) : targetRect.top),
+      x: e.clientX - (domContainer ? targetRect.left - containerRect!.left + (toValue(autoScroll) ? 0 : domContainer.scrollLeft) : targetRect.left),
+      y: e.clientY - (domContainer ? targetRect.top - containerRect!.top + (toValue(autoScroll) ? 0 : domContainer.scrollTop) : targetRect.top),
     }
     if (onStart?.(pos, e) === false)
       return
+    hasMoved = false
+    if (classes?.dragging)
+      toValue(target)?.classList.add(classes.dragging)
+    if (cursor && cursor.dragging !== false && isClient)
+      document.body.style.cursor = cursor.dragging ?? 'grabbing'
+    if (zIndex) {
+      const el = toValue(target) as HTMLElement | null
+      if (el) {
+        savedZIndex = el.style.zIndex
+        el.style.zIndex = String(zIndex)
+      }
+    }
     pressedDelta.value = pos
     handleEvent(e)
   }
@@ -348,47 +939,59 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
 
-    const container = toValue(containerElement)
-    if (container instanceof HTMLElement)
-      clampContainerScroll(container)
+    const { domContainer, containerBounds } = resolveContainer()
+    if (domContainer instanceof HTMLElement)
+      clampContainerScroll(domContainer)
 
     const targetRect = toValue(target)!.getBoundingClientRect()
     let { x, y } = position.value
-    if (axis === 'x' || axis === 'both') {
+    if (axis === 'x' || axis === 'both')
       x = e.clientX - pressedDelta.value.x
-      if (container)
-        x = Math.min(Math.max(0, x), container.scrollWidth - targetRect!.width)
-    }
-    if (axis === 'y' || axis === 'both') {
+    if (axis === 'y' || axis === 'both')
       y = e.clientY - pressedDelta.value.y
-      if (container)
-        y = Math.min(Math.max(0, y), container.scrollHeight - targetRect!.height)
-    }
+    ;({ x, y } = applySnapAndClamp({ x, y }, targetRect, domContainer, containerBounds))
 
-    if (toValue(autoScroll) && container) {
-      if (autoScrollInterval === null)
-        handleAutoScroll(container, targetRect, { x, y })
+    if (toValue(autoScroll) && domContainer) {
+      if (!isAutoScrolling.value)
+        handleAutoScroll(domContainer, targetRect, { x, y })
 
-      x += container.scrollLeft
-      y += container.scrollTop
+      x += domContainer.scrollLeft
+      y += domContainer.scrollTop
     }
-    if (container && (restrictInView || autoScroll)) {
+    if (domContainer && (toValue(restrictInView) || toValue(autoScroll))) {
       if (axis !== 'y') {
-        const relativeX = x - container.scrollLeft
+        const relativeX = x - domContainer.scrollLeft
         if (relativeX < 0)
-          x = container.scrollLeft
-        else if (relativeX > container.clientWidth - targetRect.width)
-          x = container.clientWidth - targetRect.width + container.scrollLeft
+          x = domContainer.scrollLeft
+        else if (relativeX > domContainer.clientWidth - targetRect.width)
+          x = domContainer.clientWidth - targetRect.width + domContainer.scrollLeft
       }
       if (axis !== 'x') {
-        const relativeY = y - container.scrollTop
+        const relativeY = y - domContainer.scrollTop
         if (relativeY < 0)
-          y = container.scrollTop
-        else if (relativeY > container.clientHeight - targetRect.height)
-          y = container.clientHeight - targetRect.height + container.scrollTop
+          y = domContainer.scrollTop
+        else if (relativeY > domContainer.clientHeight - targetRect.height)
+          y = domContainer.clientHeight - targetRect.height + domContainer.scrollTop
       }
     }
 
+    if (onBeforeMove) {
+      const override = onBeforeMove({ x, y }, e)
+      if (override === false) {
+        handleEvent(e)
+        return
+      }
+      if (override !== undefined) {
+        x = override.x
+        y = override.y
+      }
+    }
+    if (!hasMoved) {
+      hasMoved = true
+      if (classes?.moving)
+        toValue(target)?.classList.add(classes.moving)
+      onMoveStart?.({ x, y }, e)
+    }
     position.value = {
       x,
       y,
@@ -402,10 +1005,32 @@ export function useDraggable(
     if (!pressedDelta.value)
       return
     pressedDelta.value = undefined
-    if (autoScroll)
+    if (classes?.dragging)
+      toValue(target)?.classList.remove(classes.dragging)
+    if (classes?.moving)
+      toValue(target)?.classList.remove(classes.moving)
+    if (cursor && cursor.dragging !== false && isClient)
+      document.body.style.cursor = ''
+    if (zIndex) {
+      const el = toValue(target) as HTMLElement | null
+      if (el)
+        el.style.zIndex = savedZIndex
+    }
+    if (toValue(autoScroll))
       stopAutoScroll()
     onEnd?.(position.value, e)
     handleEvent(e)
+  }
+
+  const recalc = () => {
+    if (!isClient)
+      return
+    const targetEl = toValue(target)
+    if (!targetEl)
+      return
+    const targetRect = targetEl.getBoundingClientRect()
+    const { domContainer, containerBounds } = resolveContainer()
+    position.value = applySnapAndClamp(position.value, targetRect, domContainer, containerBounds)
   }
 
   if (isClient) {
@@ -418,14 +1043,24 @@ export function useDraggable(
     useEventListener(draggingElement, 'pointerup', end, config)
   }
 
+  tryOnScopeDispose(() => {
+    stopAutoScroll()
+    // reset the body cursor if disposed while still dragging
+    if (isClient && pressedDelta.value && cursor && cursor.dragging !== false)
+      document.body.style.cursor = ''
+  })
+
   return {
     ...toRefs(position),
     position,
     isDragging: computed(() => !!pressedDelta.value),
-    style: computed(() => `
-      left: ${position.value.x}px;
-      top: ${position.value.y}px;
-      ${autoScroll ? 'text-wrap: nowrap;' : ''}
-    `),
+    snapped: computed(() => snapState.value),
+    style: computed(() => {
+      const nowrap = toValue(autoScroll) ? ' text-wrap: nowrap;' : ''
+      return output === 'transform'
+        ? `transform: translate3d(${position.value.x}px, ${position.value.y}px, 0);${nowrap}`
+        : `left: ${position.value.x}px; top: ${position.value.y}px;${nowrap}`
+    }),
+    recalc,
   }
 }
