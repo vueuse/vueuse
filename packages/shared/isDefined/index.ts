@@ -1,6 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
 
-// eslint-disable-next-line no-restricted-imports
 import { unref } from 'vue'
 
 export type IsDefinedReturn = boolean

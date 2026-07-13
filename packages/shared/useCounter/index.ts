@@ -2,7 +2,6 @@ import type { MaybeRef, Ref } from 'vue'
 import {
   shallowReadonly,
   shallowRef,
-  // eslint-disable-next-line no-restricted-imports
   unref,
 } from 'vue'
 

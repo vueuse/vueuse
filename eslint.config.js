@@ -17,7 +17,7 @@ const restricted = [
   resolve(dir, 'packages/shared/index.ts'),
   {
     name: 'vue',
-    importNames: ['onMounted', 'onUnmounted', 'unref', 'toRef'],
+    importNames: ['onUnmounted', 'toRef'],
   },
 ]
 

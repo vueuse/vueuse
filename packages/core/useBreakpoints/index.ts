@@ -1,7 +1,7 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { increaseWithUnit, pxValue, tryOnMounted } from '@vueuse/shared'
-import { computed, shallowRef, toValue } from 'vue'
+import { increaseWithUnit, pxValue, useHasHydrated } from '@vueuse/shared'
+import { computed, getCurrentInstance, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useMediaQuery } from '../useMediaQuery'
 import { useSSRWidth } from '../useSSRWidth'
@@ -9,6 +9,8 @@ import { useSSRWidth } from '../useSSRWidth'
 export * from './breakpoints'
 
 export type Breakpoints<K extends string = string> = Record<K, MaybeRefOrGetter<number | string>>
+
+type Strategy = 'min-width' | 'max-width'
 
 export interface UseBreakpointsOptions extends ConfigurableWindow {
   /**
@@ -19,7 +21,7 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
    *
    * @default "min-width"
    */
-  strategy?: 'min-width' | 'max-width'
+  strategy?: Strategy
   ssrWidth?: number
 }
 
@@ -63,14 +65,11 @@ export function useBreakpoints<K extends string>(
 
   const { window = defaultWindow, strategy = 'min-width', ssrWidth = useSSRWidth() } = options
 
+  const hasHydrated = getCurrentInstance() ? useHasHydrated() : { value: false }
   const ssrSupport = typeof ssrWidth === 'number'
-  const mounted = ssrSupport ? shallowRef(false) : { value: true }
-  if (ssrSupport) {
-    tryOnMounted(() => mounted.value = !!window)
-  }
 
   function match(query: 'min' | 'max', size: string): boolean {
-    if (!mounted.value && ssrSupport) {
+    if (ssrSupport && !hasHydrated.value) {
       return query === 'min' ? ssrWidth >= pxValue(size) : ssrWidth <= pxValue(size)
     }
     if (!window)
@@ -78,12 +77,21 @@ export function useBreakpoints<K extends string>(
     return window.matchMedia(`(${query}-width: ${size})`).matches
   }
 
+  const usedShortcuts: Record<Strategy, Partial<Record<K, ReturnType<typeof useMediaQuery>>>> = { 'min-width': {}, 'max-width': {} }
+  const shortcutValue = (k: MaybeRefOrGetter<K>, strategy: 'min-width' | 'max-width') => {
+    const key = toValue(k)
+    if (!(key in usedShortcuts)) {
+      usedShortcuts[strategy][key] = useMediaQuery(() => `(${strategy}: ${getValue(key)})`, options)
+    }
+    return usedShortcuts[strategy][key]!
+  }
+
   const greaterOrEqual = (k: MaybeRefOrGetter<K>) => {
-    return useMediaQuery(() => `(min-width: ${getValue(k)})`, options)
+    return shortcutValue(k, 'min-width')
   }
 
   const smallerOrEqual = (k: MaybeRefOrGetter<K>) => {
-    return useMediaQuery(() => `(max-width: ${getValue(k)})`, options)
+    return shortcutValue(k, 'max-width')
   }
 
   const shortcutMethods = (Object.keys(breakpoints) as K[])

@@ -2,12 +2,11 @@
 
 import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { pxValue } from '@vueuse/shared'
-import { computed, shallowRef, toValue, watchEffect } from 'vue'
+import { pxValue, useHasHydrated } from '@vueuse/shared'
+import { computed, getCurrentInstance, shallowRef, toValue, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSSRWidth } from '../useSSRWidth'
-import { useSupported } from '../useSupported'
 
 /**
  * Reactive Media Query.
@@ -18,9 +17,10 @@ import { useSupported } from '../useSupported'
  */
 export function useMediaQuery(query: MaybeRefOrGetter<string>, options: ConfigurableWindow & { ssrWidth?: number } = {}) {
   const { window = defaultWindow, ssrWidth = useSSRWidth() } = options
-  const isSupported = useSupported(() => window && 'matchMedia' in window && typeof window.matchMedia === 'function')
+  const isSupported = window && 'matchMedia' in window && typeof window.matchMedia === 'function'
 
-  const ssrSupport = shallowRef(typeof ssrWidth === 'number')
+  const hasHydrated = getCurrentInstance() ? useHasHydrated() : { value: false }
+  const ssrSupport = typeof ssrWidth === 'number'
 
   const mediaQuery = shallowRef<MediaQueryList>()
   const matches = shallowRef(false)
@@ -30,10 +30,7 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   }
 
   watchEffect(() => {
-    if (ssrSupport.value) {
-      // Exit SSR support on mounted if window available
-      ssrSupport.value = !isSupported.value
-
+    if (ssrSupport && !hasHydrated.value) {
       const queryStrings = toValue(query).split(',')
       matches.value = queryStrings.some((queryString) => {
         const not = queryString.includes('not all')
@@ -50,7 +47,8 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
       })
       return
     }
-    if (!isSupported.value)
+
+    if (!isSupported)
       return
 
     mediaQuery.value = window!.matchMedia(toValue(query))

@@ -364,7 +364,7 @@ export interface UseBluetoothReturn extends Supportable {
   error: ShallowRef<unknown | null>;
 }
 export interface UseBreakpointsOptions extends ConfigurableWindow {
-  strategy?: 'min-width' | 'max-width';
+  strategy?: Strategy;
   ssrWidth?: number;
 }
 export interface UseBroadcastChannelOptions extends ConfigurableWindow {
