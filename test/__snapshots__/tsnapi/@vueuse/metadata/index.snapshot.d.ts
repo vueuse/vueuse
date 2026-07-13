@@ -41,6 +41,7 @@ export interface PackageManifest {
   target?: string;
   utils?: boolean;
   copy?: string[];
+  excludePkgJson?: true;
 }
 export interface VueUseFunction {
   name: string;
