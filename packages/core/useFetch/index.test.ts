@@ -605,6 +605,24 @@ describe('useFetch', () => {
     })
   })
 
+  it('should not pass a stale response to onFetchError when a later fetch rejects', async () => {
+    let errorResponse: Response | null | undefined
+    const { execute } = useFetch(`${baseUrl}?text=hello`, {
+      immediate: false,
+      onFetchError(ctx) {
+        errorResponse = ctx.response
+        return ctx
+      },
+    })
+
+    await execute()
+
+    fetchSpy.mockRejectedValueOnce(new Error('Network request failed'))
+    await execute()
+
+    expect(errorResponse).toBeNull()
+  })
+
   it('should emit onFetchResponse event', async () => {
     const { onFetchResponse, onFetchError, onFetchFinally } = useFetch(baseUrl)
 
