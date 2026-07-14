@@ -109,6 +109,11 @@ export interface BeforeFetchContext {
   options: RequestInit
 
   /**
+   * The response type of the current request
+   */
+  responseType: DataType
+
+  /**
    * Cancels the current request
    */
   cancel: Fn
@@ -456,6 +461,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         ...defaultFetchOptions,
         ...fetchOptions,
       },
+      responseType: config.type,
       cancel: () => { isCanceled = true },
     }
 
