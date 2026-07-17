@@ -657,6 +657,10 @@ export interface UseFaviconOptions extends ConfigurableDocument {
   baseUrl?: string;
   rel?: string;
 }
+export interface UseFetchError<T = any> extends Error {
+  data?: T | null;
+  response?: Response;
+}
 export interface UseFetchOptions {
   fetch?: typeof window.fetch;
   immediate?: boolean;
@@ -680,7 +684,7 @@ export interface UseFetchReturn<T> {
   abort: (_?: any) => void;
   execute: (_?: boolean) => Promise<any>;
   onFetchResponse: EventHookOn<Response>;
-  onFetchError: EventHookOn;
+  onFetchError: EventHookOn<UseFetchError>;
   onFetchFinally: EventHookOn;
   get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
   post: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
