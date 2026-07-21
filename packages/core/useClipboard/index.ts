@@ -76,7 +76,6 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const copied = shallowRef(false)
   const copyPending = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
-  let lastLegacyId = 0
 
   async function updateText() {
     let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
@@ -100,11 +99,19 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     const resolvedValue = value ?? toValue(source)
     if (isSupported.value && resolvedValue != null) {
       copyPending.value = true
+
+      // Resolve the value provider at most once. A function provider that
+      // rejects should surface its error instead of being re-invoked when
+      // falling back to the legacy copy path. See https://github.com/vueuse/vueuse/issues/5539
+      const data = typeof resolvedValue === 'function'
+        ? await resolvedValue()
+        : resolvedValue
+
       let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
 
-      if (!useLegacy) {
+      if (!useLegacy && data != null) {
         try {
-          const clipboardItem = createClipboardItem(resolvedValue)
+          const clipboardItem = createClipboardItem(data)
           await navigator!.clipboard.write([clipboardItem])
         }
         catch {
@@ -112,20 +119,9 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
         }
       }
 
-      if (useLegacy) {
-        if (typeof resolvedValue === 'string') {
-          text.value = resolvedValue
-          legacyCopy(resolvedValue)
-        }
-        else {
-          // For async functions in legacy mode, resolve and copy
-          const currentId = ++lastLegacyId
-          const resolvedText = await resolvedValue()
-          if (resolvedText != null && currentId === lastLegacyId) {
-            text.value = resolvedText
-            legacyCopy(resolvedText)
-          }
-        }
+      if (useLegacy && data != null) {
+        text.value = data
+        legacyCopy(data)
       }
 
       copied.value = true
