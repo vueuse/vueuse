@@ -69,8 +69,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   } = options
 
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
-  const permissionRead = usePermission('clipboard-read')
-  const permissionWrite = usePermission('clipboard-write')
+  const permissionRead = usePermission('clipboard-read', { navigator })
+  const permissionWrite = usePermission('clipboard-write', { navigator })
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = shallowRef('')
   const copied = shallowRef(false)
@@ -99,50 +99,53 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     const resolvedValue = value ?? toValue(source)
     if (isSupported.value && resolvedValue != null) {
       copyPending.value = true
+      try {
+        // Resolve the value provider exactly once. Keeping its promise lets us
+        // hand it to `ClipboardItem` (which preserves the user gesture on
+        // Safari) and reuse it in the legacy fallback, so a provider is never
+        // invoked twice. See https://github.com/vueuse/vueuse/issues/5539
+        const dataPromise = typeof resolvedValue === 'function'
+          ? resolvedValue()
+          : Promise.resolve(resolvedValue)
 
-      // Resolve the value provider at most once. A function provider that
-      // rejects should surface its error instead of being re-invoked when
-      // falling back to the legacy copy path. See https://github.com/vueuse/vueuse/issues/5539
-      const data = typeof resolvedValue === 'function'
-        ? await resolvedValue()
-        : resolvedValue
+        let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
 
-      let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
-
-      if (!useLegacy && data != null) {
-        try {
-          const clipboardItem = createClipboardItem(data)
-          await navigator!.clipboard.write([clipboardItem])
+        if (!useLegacy) {
+          try {
+            await navigator!.clipboard.write([createClipboardItem(dataPromise)])
+          }
+          catch {
+            // Fall back only for a genuine Clipboard API failure. When the
+            // value provider rejected, awaiting the shared promise below
+            // rethrows that error instead of running the provider again.
+            useLegacy = true
+          }
         }
-        catch {
-          useLegacy = true
+
+        if (useLegacy) {
+          const data = await dataPromise
+          if (data != null) {
+            text.value = data
+            legacyCopy(data)
+          }
         }
-      }
 
-      if (useLegacy && data != null) {
-        text.value = data
-        legacyCopy(data)
+        copied.value = true
+        timeout.start()
       }
-
-      copied.value = true
-      timeout.start()
-      copyPending.value = false
+      finally {
+        copyPending.value = false
+      }
     }
   }
 
-  function createClipboardItem(value: ClipboardValue): ClipboardItem {
-    if (typeof value === 'string') {
-      text.value = value
-      return new ClipboardItem({ 'text/plain': value })
-    }
-    else {
-      return new ClipboardItem({
-        'text/plain': value().then((resolvedText = '') => {
-          text.value = resolvedText
-          return new Blob([resolvedText], { type: 'text/plain' })
-        }),
-      })
-    }
+  function createClipboardItem(dataPromise: Promise<string | undefined>): ClipboardItem {
+    return new ClipboardItem({
+      'text/plain': dataPromise.then((resolvedText = '') => {
+        text.value = resolvedText
+        return new Blob([resolvedText], { type: 'text/plain' })
+      }),
+    })
   }
 
   function legacyCopy(value: string) {
