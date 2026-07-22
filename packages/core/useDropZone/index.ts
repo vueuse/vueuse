@@ -84,20 +84,42 @@ export function useDropZone(
       return dataTypesValid && multipleFilesValid
     }
 
-    const isSafari = () => (
-      /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent)
-      && !('chrome' in window)
-    )
+    const checkFileValidity = (fileList: FileList | null | undefined) => {
+      if (_options.checkValidity)
+        return false
+
+      if (!fileList)
+        return false
+
+      const droppedFiles = Array.from(fileList)
+      const dataTypesValid = checkDataTypes(droppedFiles.map(file => file.type))
+      const multipleFilesValid = multiple || droppedFiles.length <= 1
+
+      return dataTypesValid && multipleFilesValid
+    }
 
     const handleDragEvent = (event: DragEvent, eventType: 'enter' | 'over' | 'leave' | 'drop') => {
       const dataTransferItemList = event.dataTransfer?.items
-      isValid = (dataTransferItemList && checkValidity(dataTransferItemList)) ?? false
+      if (dataTransferItemList?.length) {
+        isValid = checkValidity(dataTransferItemList)
+      }
+      else if (eventType === 'drop') {
+        isValid = checkFileValidity(event.dataTransfer?.files)
+      }
+      else {
+        isValid = !_options.checkValidity
+      }
 
       if (preventDefaultForUnhandled) {
         event.preventDefault()
       }
 
-      if (!isSafari() && !isValid) {
+      if (eventType === 'drop') {
+        counter = 0
+        isOverDropZone.value = false
+      }
+
+      if (!isValid) {
         if (event.dataTransfer) {
           event.dataTransfer.dropEffect = 'none'
         }
@@ -127,8 +149,6 @@ export function useDropZone(
           _options.onLeave?.(null, event)
           break
         case 'drop':
-          counter = 0
-          isOverDropZone.value = false
           if (isValid) {
             files.value = currentFiles
             _options.onDrop?.(currentFiles, event)
