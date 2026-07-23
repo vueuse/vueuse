@@ -106,8 +106,8 @@ catalogs:
     '@types/sortablejs': ^1.15.9
     '@types/web-bluetooth': ^0.0.21
 
-neverBuiltDependencies:
-  - electron
+allowBuilds:
+  electron: false
 
 sideEffectsCache: false
 strictPeerDependencies: false
