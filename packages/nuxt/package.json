@@ -40,7 +40,7 @@
   },
   "peerDependencies": {
     "nuxt": "^3.0.0 || ^4.0.0-0",
-    "vue": "^3.5.0"
+    "vue": "^3.5.0 || ^3.6.0-rc.1"
   },
   "dependencies": {
     "@nuxt/kit": "catalog:integrations",
