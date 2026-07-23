@@ -1,4 +1,5 @@
 import type { ElementSize } from '@vueuse/core'
+import type { VaporDirective } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import { createDisposableDirective } from '@vueuse/shared'
 import { watch } from 'vue'
@@ -25,3 +26,15 @@ export const vElementSize = createDisposableDirective<
     },
   },
 )
+
+export const vElementSizeVapor: VaporDirective = (el, value) => {
+  if (!(el instanceof HTMLElement))
+    return
+
+  const bindingValue = value?.() as BindingValueFunction | BindingValueArray
+  const handler = typeof bindingValue === 'function' ? bindingValue : bindingValue[0]
+  const options = (typeof bindingValue === 'function' ? [] : bindingValue.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
+
+  const { width, height } = useElementSize(el, ...options)
+  watch([width, height], ([width, height]) => handler({ width, height }))
+}

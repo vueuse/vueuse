@@ -1,10 +1,12 @@
 import type { OnKeyStrokeOptions } from '@vueuse/core'
+import type { VaporDirective } from 'vue'
 import { onKeyStroke } from '@vueuse/core'
 import { createDisposableDirective } from '@vueuse/shared'
 
 type BindingValueFunction = (event: KeyboardEvent) => void
 
 type BindingValueArray = [BindingValueFunction, OnKeyStrokeOptions]
+type BindingValue = BindingValueFunction | BindingValueArray
 
 export const vOnKeyStroke = createDisposableDirective<
   HTMLElement,
@@ -28,3 +30,23 @@ export const vOnKeyStroke = createDisposableDirective<
     },
   },
 )
+
+export const vOnKeyStrokeVapor: VaporDirective = (el, value, argument) => {
+  if (!(el instanceof HTMLElement))
+    return
+
+  const bindingValue = value?.() as BindingValue
+  const keys = argument?.split(',') ?? true
+  if (typeof bindingValue === 'function') {
+    onKeyStroke(keys, bindingValue, {
+      target: el,
+    })
+  }
+  else {
+    const [handler, options] = bindingValue
+    onKeyStroke(keys, handler, {
+      target: el,
+      ...options,
+    })
+  }
+}

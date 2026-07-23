@@ -1,5 +1,5 @@
 import type { MouseInElementOptions, UseMouseInElementReturn } from '@vueuse/core'
-import type { Reactive } from 'vue'
+import type { Reactive, VaporDirective } from 'vue'
 import { useMouseInElement } from '@vueuse/core'
 import { createDisposableDirective, reactiveOmit } from '@vueuse/shared'
 import { reactive, watch } from 'vue'
@@ -21,3 +21,13 @@ export const vMouseInElement = createDisposableDirective<
     },
   },
 )
+
+export const vMouseInElementVapor: VaporDirective = (el, value) => {
+  if (!(el instanceof HTMLElement))
+    return
+
+  const bindingValue = value?.() as BindingValueFunction | BindingValueArray
+  const [handler, options] = (typeof bindingValue === 'function' ? [bindingValue, {}] : bindingValue) as BindingValueArray
+  const state = reactiveOmit(reactive(useMouseInElement(el, options)), 'stop')
+  watch(state, val => handler(val))
+}

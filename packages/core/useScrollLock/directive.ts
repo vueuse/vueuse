@@ -1,3 +1,4 @@
+import type { VaporDirective } from 'vue'
 import { useScrollLock } from '@vueuse/core'
 import { createDisposableDirective } from '@vueuse/shared'
 import { shallowRef, watch } from 'vue'
@@ -16,3 +17,11 @@ function onScrollLock() {
 }
 
 export const vScrollLock = onScrollLock()
+
+export const vScrollLockVapor: VaporDirective = (el, value) => {
+  if (!(el instanceof HTMLElement) || !value)
+    return
+
+  const isLocked = useScrollLock(el, value())
+  watch(value, v => isLocked.value = v)
+}
