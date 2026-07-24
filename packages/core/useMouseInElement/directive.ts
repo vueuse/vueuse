@@ -7,17 +7,21 @@ import { reactive, watch } from 'vue'
 type MouseInElement = Omit<UseMouseInElementReturn, 'stop'>
 type BindingValueFunction = (mouse: Reactive<MouseInElement>) => void
 type BindingValueArray = [BindingValueFunction, MouseInElementOptions]
+type BindingValue = BindingValueFunction | BindingValueArray
+
+function setupMouseInElement(el: HTMLElement, bindingValue: BindingValue) {
+  const [handler, options] = (typeof bindingValue === 'function' ? [bindingValue, {}] : bindingValue) as BindingValueArray
+  const state = reactiveOmit(reactive(useMouseInElement(el, options)), 'stop')
+  watch(state, val => handler(val))
+}
 
 export const vMouseInElement = createDisposableDirective<
   HTMLElement,
-  BindingValueFunction | BindingValueArray
+  BindingValue
 >(
   {
     mounted(el, binding) {
-      const [handler, options] = (typeof binding.value === 'function' ? [binding.value, {}] : binding.value) as BindingValueArray
-
-      const state = reactiveOmit(reactive(useMouseInElement(el, options)), 'stop')
-      watch(state, val => handler(val))
+      setupMouseInElement(el, binding.value)
     },
   },
 )
@@ -26,8 +30,5 @@ export const vMouseInElementVapor: VaporDirective = (el, value) => {
   if (!(el instanceof HTMLElement))
     return
 
-  const bindingValue = value?.() as BindingValueFunction | BindingValueArray
-  const [handler, options] = (typeof bindingValue === 'function' ? [bindingValue, {}] : bindingValue) as BindingValueArray
-  const state = reactiveOmit(reactive(useMouseInElement(el, options)), 'stop')
-  watch(state, val => handler(val))
+  setupMouseInElement(el, value?.() as BindingValue)
 }

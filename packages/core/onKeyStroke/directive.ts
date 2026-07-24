@@ -8,34 +8,7 @@ type BindingValueFunction = (event: KeyboardEvent) => void
 type BindingValueArray = [BindingValueFunction, OnKeyStrokeOptions]
 type BindingValue = BindingValueFunction | BindingValueArray
 
-export const vOnKeyStroke = createDisposableDirective<
-  HTMLElement,
-  BindingValueFunction | BindingValueArray
->(
-  {
-    mounted(el, binding) {
-      const keys = binding.arg?.split(',') ?? true
-      if (typeof binding.value === 'function') {
-        onKeyStroke(keys, binding.value, {
-          target: el,
-        })
-      }
-      else {
-        const [handler, options] = binding.value
-        onKeyStroke(keys, handler, {
-          target: el,
-          ...options,
-        })
-      }
-    },
-  },
-)
-
-export const vOnKeyStrokeVapor: VaporDirective = (el, value, argument) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  const bindingValue = value?.() as BindingValue
+function setupOnKeyStroke(el: HTMLElement, bindingValue: BindingValue, argument?: string) {
   const keys = argument?.split(',') ?? true
   if (typeof bindingValue === 'function') {
     onKeyStroke(keys, bindingValue, {
@@ -49,4 +22,22 @@ export const vOnKeyStrokeVapor: VaporDirective = (el, value, argument) => {
       ...options,
     })
   }
+}
+
+export const vOnKeyStroke = createDisposableDirective<
+  HTMLElement,
+  BindingValue
+>(
+  {
+    mounted(el, binding) {
+      setupOnKeyStroke(el, binding.value, binding.arg)
+    },
+  },
+)
+
+export const vOnKeyStrokeVapor: VaporDirective = (el, value, argument) => {
+  if (!(el instanceof HTMLElement))
+    return
+
+  setupOnKeyStroke(el, value?.() as BindingValue, argument)
 }

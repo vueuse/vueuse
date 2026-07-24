@@ -11,18 +11,22 @@ type RemoveFirstFromTuple<T extends any[]>
 type BindingValueFunction = (size: ElementSize) => void
 type VElementSizeOptions = RemoveFirstFromTuple<Parameters<typeof useElementSize>>
 type BindingValueArray = [BindingValueFunction, ...VElementSizeOptions]
+type BindingValue = BindingValueFunction | BindingValueArray
+
+function setupElementSize(el: HTMLElement, bindingValue: BindingValue) {
+  const handler = typeof bindingValue === 'function' ? bindingValue : bindingValue[0]
+  const options = (typeof bindingValue === 'function' ? [] : bindingValue.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
+  const { width, height } = useElementSize(el, ...options)
+  watch([width, height], ([width, height]) => handler({ width, height }))
+}
 
 export const vElementSize = createDisposableDirective<
   HTMLElement,
-  BindingValueFunction | BindingValueArray
+  BindingValue
 > (
   {
     mounted(el, binding) {
-      const handler = typeof binding.value === 'function' ? binding.value : binding.value?.[0]
-      const options = (typeof binding.value === 'function' ? [] : binding.value.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
-
-      const { width, height } = useElementSize(el, ...options)
-      watch([width, height], ([width, height]) => handler({ width, height }))
+      setupElementSize(el, binding.value)
     },
   },
 )
@@ -31,10 +35,5 @@ export const vElementSizeVapor: VaporDirective = (el, value) => {
   if (!(el instanceof HTMLElement))
     return
 
-  const bindingValue = value?.() as BindingValueFunction | BindingValueArray
-  const handler = typeof bindingValue === 'function' ? bindingValue : bindingValue[0]
-  const options = (typeof bindingValue === 'function' ? [] : bindingValue.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
-
-  const { width, height } = useElementSize(el, ...options)
-  watch([width, height], ([width, height]) => handler({ width, height }))
+  setupElementSize(el, value?.() as BindingValue)
 }

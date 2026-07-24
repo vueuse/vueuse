@@ -7,16 +7,20 @@ type BindingValueFunction = Parameters<typeof useInfiniteScroll>[1]
 type BindingValueArray = [BindingValueFunction, UseInfiniteScrollOptions]
 type BindingValue = BindingValueFunction | BindingValueArray
 
+function setupInfiniteScroll(el: HTMLElement, bindingValue: BindingValue) {
+  if (typeof bindingValue === 'function')
+    useInfiniteScroll(el, bindingValue)
+  else
+    useInfiniteScroll(el, ...bindingValue)
+}
+
 export const vInfiniteScroll = createDisposableDirective<
   HTMLElement,
-  BindingValueFunction | BindingValueArray
+  BindingValue
 >(
   {
     mounted(el, binding) {
-      if (typeof binding.value === 'function')
-        useInfiniteScroll(el, binding.value)
-      else
-        useInfiniteScroll(el, ...binding.value)
+      setupInfiniteScroll(el, binding.value)
     },
   },
 )
@@ -25,9 +29,5 @@ export const vInfiniteScrollVapor: VaporDirective = (el, value) => {
   if (!(el instanceof HTMLElement))
     return
 
-  const bindingValue = value?.() as BindingValue
-  if (typeof bindingValue === 'function')
-    useInfiniteScroll(el, bindingValue)
-  else
-    useInfiniteScroll(el, ...bindingValue)
+  setupInfiniteScroll(el, value?.() as BindingValue)
 }

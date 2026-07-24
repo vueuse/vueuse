@@ -8,16 +8,20 @@ type BindingValueFunction = IntersectionObserverCallback
 type BindingValueArray = [BindingValueFunction, UseIntersectionObserverOptions]
 type BindingValue = BindingValueFunction | BindingValueArray
 
+function setupIntersectionObserver(el: HTMLElement, bindingValue: BindingValue) {
+  if (typeof bindingValue === 'function')
+    useIntersectionObserver(el, bindingValue)
+  else
+    useIntersectionObserver(el, ...bindingValue)
+}
+
 export const vIntersectionObserver = createDisposableDirective<
   HTMLElement,
-  BindingValueFunction | BindingValueArray
+  BindingValue
 >(
   {
     mounted(el, binding) {
-      if (typeof binding.value === 'function')
-        useIntersectionObserver(el, binding.value)
-      else
-        useIntersectionObserver(el, ...binding.value)
+      setupIntersectionObserver(el, binding.value)
     },
   },
 )
@@ -26,9 +30,5 @@ export const vIntersectionObserverVapor: VaporDirective = (el, value) => {
   if (!(el instanceof HTMLElement))
     return
 
-  const bindingValue = value?.() as BindingValue
-  if (typeof bindingValue === 'function')
-    useIntersectionObserver(el, bindingValue)
-  else
-    useIntersectionObserver(el, ...bindingValue)
+  setupIntersectionObserver(el, value?.() as BindingValue)
 }

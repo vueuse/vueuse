@@ -8,46 +8,7 @@ type BindingValueFunction = (state: UseScrollReturn) => void
 type BindingValueArray = [BindingValueFunction, UseScrollOptions]
 type BindingValue = BindingValueFunction | BindingValueArray
 
-export const vScroll = createDisposableDirective<
-  HTMLElement,
-  BindingValueFunction | BindingValueArray
->(
-  {
-    mounted(el, binding) {
-      if (typeof binding.value === 'function') {
-        const handler = binding.value
-        const state = useScroll(el, {
-          onScroll() {
-            handler(state)
-          },
-          onStop() {
-            handler(state)
-          },
-        })
-      }
-      else {
-        const [handler, options] = binding.value
-        const state = useScroll(el, {
-          ...options,
-          onScroll(e) {
-            options.onScroll?.(e)
-            handler(state)
-          },
-          onStop(e) {
-            options.onStop?.(e)
-            handler(state)
-          },
-        })
-      }
-    },
-  },
-)
-
-export const vScrollVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  const bindingValue = value?.() as BindingValue
+function setupScroll(el: HTMLElement, bindingValue: BindingValue) {
   if (typeof bindingValue === 'function') {
     const state = useScroll(el, {
       onScroll() {
@@ -72,4 +33,22 @@ export const vScrollVapor: VaporDirective = (el, value) => {
       },
     })
   }
+}
+
+export const vScroll = createDisposableDirective<
+  HTMLElement,
+  BindingValue
+>(
+  {
+    mounted(el, binding) {
+      setupScroll(el, binding.value)
+    },
+  },
+)
+
+export const vScrollVapor: VaporDirective = (el, value) => {
+  if (!(el instanceof HTMLElement))
+    return
+
+  setupScroll(el, value?.() as BindingValue)
 }

@@ -11,16 +11,24 @@ type BindingValueArray = [
 ]
 type BindingValue = BindingValueFunction | BindingValueArray
 
+function setupOnLongPress(
+  el: HTMLElement,
+  bindingValue: BindingValue,
+  modifiers: OnLongPressOptions['modifiers'] = {},
+) {
+  if (typeof bindingValue === 'function')
+    onLongPress(el, bindingValue, { modifiers })
+  else
+    onLongPress(el, ...bindingValue)
+}
+
 export const vOnLongPress = createDisposableDirective<
   HTMLElement,
-  BindingValueFunction | BindingValueArray
+  BindingValue
 > (
   {
     mounted(el, binding) {
-      if (typeof binding.value === 'function')
-        onLongPress(el, binding.value, { modifiers: binding.modifiers })
-      else
-        onLongPress(el, ...binding.value)
+      setupOnLongPress(el, binding.value, binding.modifiers)
     },
   },
 )
@@ -29,11 +37,7 @@ export const vOnLongPressVapor: VaporDirective = (el, value, _, modifiers) => {
   if (!(el instanceof HTMLElement))
     return
 
-  const bindingValue = value?.() as BindingValue
-  if (typeof bindingValue === 'function')
-    onLongPress(el, bindingValue, { modifiers: modifiers ?? {} })
-  else
-    onLongPress(el, ...bindingValue)
+  setupOnLongPress(el, value?.() as BindingValue, modifiers)
 }
 
 /** @deprecated use `vOnLongPress` instead */

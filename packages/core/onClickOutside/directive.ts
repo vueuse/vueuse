@@ -6,23 +6,23 @@ import { onClickOutside } from '@vueuse/core'
 type StopHandle = Fn | { stop: Fn, cancel: Fn, trigger: (event: Event) => void }
 type BindingValue = OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>]
 
+function setupOnClickOutside(el: HTMLElement, bindingValue: BindingValue, bubble = false): StopHandle {
+  const capture = !bubble
+  if (typeof bindingValue === 'function')
+    return onClickOutside(el, bindingValue, { capture })
+
+  const [handler, options] = bindingValue
+  return onClickOutside(el, handler, Object.assign({ capture }, options))
+}
+
 const stopClickOutsideMap = new WeakMap<HTMLElement, StopHandle>()
 
 export const vOnClickOutside: ObjectDirective<
   HTMLElement,
-  OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>]
+  BindingValue
 > = {
   mounted(el, binding) {
-    const capture = !binding.modifiers.bubble
-    let stop: StopHandle
-    if (typeof binding.value === 'function') {
-      stop = onClickOutside(el, binding.value, { capture })
-    }
-    else {
-      const [handler, options] = binding.value
-      stop = onClickOutside(el, handler, Object.assign({ capture }, options))
-    }
-    stopClickOutsideMap.set(el, stop)
+    stopClickOutsideMap.set(el, setupOnClickOutside(el, binding.value, binding.modifiers.bubble))
   },
   unmounted(el) {
     const stop = stopClickOutsideMap.get(el)
@@ -40,12 +40,7 @@ export const vOnClickOutsideVapor: VaporDirective = (el, value, _, modifiers) =>
   if (!(el instanceof HTMLElement))
     return
 
-  const bindingValue = value?.() as BindingValue
-  const capture = !modifiers?.bubble
-  if (typeof bindingValue === 'function')
-    onClickOutside(el, bindingValue, { capture })
-  else
-    onClickOutside(el, bindingValue[0], Object.assign({ capture }, bindingValue[1]))
+  setupOnClickOutside(el, value?.() as BindingValue, modifiers?.bubble)
 }
 
 /** @deprecated use `vOnClickOutside` instead */
