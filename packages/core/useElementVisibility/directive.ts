@@ -1,4 +1,5 @@
 import type { UseElementVisibilityOptions, UseElementVisibilityReturn } from '@vueuse/core'
+import type { VaporDirective } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
 import { createDisposableDirective } from '@vueuse/shared'
 import { watch } from 'vue'
@@ -13,29 +14,40 @@ type BindingValueFunctionWithControls = (state: UseElementVisibilityReturn<true>
 
 type BindingValueArray = [BindingValueFunctionWithoutControls, UseElementVisibilityOptions<false>]
   | [BindingValueFunctionWithControls, UseElementVisibilityOptions<true>]
+type BindingValue = BindingValueFunctionWithoutControls | BindingValueArray
+
+function setupElementVisibility(el: HTMLElement, bindingValue: BindingValue) {
+  if (typeof bindingValue === 'function') {
+    const isVisible = useElementVisibility(el)
+    watch(isVisible, v => bindingValue(v), { immediate: true })
+  }
+  else {
+    const [handler, options] = bindingValue
+    if (options?.controls) {
+      const state = useElementVisibility(el, options)
+      watch(state.isVisible, () => (handler as BindingValueFunctionWithControls)(state), { immediate: true })
+    }
+    else {
+      const isVisible = useElementVisibility(el, options as UseElementVisibilityOptions<false>)
+      watch(isVisible, v => (handler as BindingValueFunctionWithoutControls)(v), { immediate: true })
+    }
+  }
+}
 
 export const vElementVisibility = createDisposableDirective<
   HTMLElement,
-  BindingValueFunctionWithoutControls | BindingValueArray
+  BindingValue
 >(
   {
     mounted(el, binding) {
-      if (typeof binding.value === 'function') {
-        const handler = binding.value
-        const isVisible = useElementVisibility(el)
-        watch(isVisible, v => handler(v), { immediate: true })
-      }
-      else {
-        const [handler, options] = binding.value
-        if (options?.controls) {
-          const state = useElementVisibility(el, options)
-          watch(state.isVisible, () => (handler as BindingValueFunctionWithControls)(state), { immediate: true })
-        }
-        else {
-          const isVisible = useElementVisibility(el, options as UseElementVisibilityOptions<false>)
-          watch(isVisible, v => (handler as BindingValueFunctionWithoutControls)(v), { immediate: true })
-        }
-      }
+      setupElementVisibility(el, binding.value)
     },
   },
 )
+
+export const vElementVisibilityVapor: VaporDirective = (el, value) => {
+  if (!(el instanceof HTMLElement))
+    return
+
+  setupElementVisibility(el, value?.() as BindingValue)
+}
