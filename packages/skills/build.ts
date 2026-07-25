@@ -60,7 +60,7 @@ async function prepareFunctionReferences(outDir: string, referenceDir = SKILL_RE
 
     const functions = metadata.functions.filter(i => i.category === category && !i.internal)
     for (const fn of functions) {
-      const description = toTitleCase(fn.description?.replace(/\|/g, '\\|') ?? '')
+      const description = rewriteFunctionLinks(toTitleCase(fn.description?.replace(/\|/g, '\\|') ?? ''), `${referenceDir.replace(/^\.\//, '')}/`)
 
       if (fn.external) {
         refs.push({ name: fn.name, description, reference: fn.external })
@@ -121,8 +121,16 @@ function toTitleCase(str: string): string {
   return first.toUpperCase() + str.slice(1)
 }
 
+// Function docs link to each other via `../{name}/index.md`, but the generated
+// references are flattened into a single directory as `{name}.md`, so rewrite
+// those links to point at the reference file. `prefix` is the path to the
+// reference directory relative to the file the link lives in.
+function rewriteFunctionLinks(md: string, prefix: string) {
+  return md.replace(/\]\(\.\.\/([^/)]+)\/index\.md(#[^)]*)?\)/g, `](${prefix}$1.md$2)`)
+}
+
 async function genFunctionReference(pkg: string, name: string, mdPath: string) {
-  const md = readFileSync(mdPath, 'utf-8')
+  const md = rewriteFunctionLinks(readFileSync(mdPath, 'utf-8'), './')
   const types = await getTypeDefinition(pkg, name)
   if (types) {
     return `${md}
