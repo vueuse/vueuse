@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as metadata from '@vueuse/metadata'
 import { getTypeDefinition } from '../../scripts/utils'
+import { rewriteFunctionLinks } from './rewrite-function-links'
 
 type FunctionInvocation = 'AUTO' | 'EXTERNAL' | 'EXPLICIT_ONLY'
 
@@ -119,14 +120,6 @@ function toTitleCase(str: string): string {
   if (first < 'a' || first > 'z')
     return str
   return first.toUpperCase() + str.slice(1)
-}
-
-// Function docs link to each other via `../{name}/index.md`, but the generated
-// references are flattened into a single directory as `{name}.md`, so rewrite
-// those links to point at the reference file. `prefix` is the path to the
-// reference directory relative to the file the link lives in.
-function rewriteFunctionLinks(md: string, prefix: string) {
-  return md.replace(/\]\(\.\.\/([^/)]+)\/index\.md(#[^)]*)?\)/g, `](${prefix}$1.md$2)`)
 }
 
 async function genFunctionReference(pkg: string, name: string, mdPath: string) {
