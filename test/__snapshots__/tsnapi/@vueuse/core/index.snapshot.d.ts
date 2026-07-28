@@ -222,6 +222,43 @@ export interface SerializerAsync<T> {
   read: (_: string) => Awaitable<T>;
   write: (_: T) => Awaitable<string>;
 }
+export interface SnapBoundingRect {
+  left?: SnapCoordValue;
+  top?: SnapCoordValue;
+  right?: SnapCoordValue;
+  bottom?: SnapCoordValue;
+  width?: SnapCoordValue;
+  height?: SnapCoordValue;
+}
+export interface SnapOptions {
+  targets?: SnapCoordValue | SnapTarget | (SnapCoordValue | SnapTarget)[];
+  gravity?: number;
+  corner?: 'tl' | 'tr' | 'bl' | 'br' | 'all';
+  side?: 'start' | 'end' | 'both';
+  center?: boolean;
+  edge?: 'inside' | 'outside' | 'both';
+}
+export interface SnapRangeConfig {
+  start?: SnapCoordValue;
+  end?: SnapCoordValue;
+  step?: SnapCoordValue;
+}
+export interface SnapTarget {
+  x?: SnapAxisConfig;
+  y?: SnapAxisConfig;
+  step?: SnapCoordValue;
+  boundingBox?: HTMLElement | SVGElement | SnapBoundingRect;
+  position?: MaybeRefOrGetter<Position>;
+  size?: MaybeRefOrGetter<{
+    width: number;
+    height: number;
+  }>;
+  gravity?: number;
+  corner?: 'tl' | 'tr' | 'bl' | 'br' | 'all';
+  side?: 'start' | 'end' | 'both';
+  center?: boolean;
+  edge?: 'inside' | 'outside' | 'both';
+}
 export interface SSRHandlersMap {
   getDefaultStorage: () => StorageLike | undefined;
   getDefaultStorageAsync: () => StorageLikeAsync | undefined;
@@ -525,29 +562,50 @@ export interface UseDraggableOptions {
   stopPropagation?: MaybeRefOrGetter<boolean>;
   capture?: boolean;
   draggingElement?: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>;
-  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>;
+  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | DraggableBounds | null | undefined>;
   handle?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>;
   pointerTypes?: PointerType[];
   initialValue?: MaybeRefOrGetter<Position>;
   onStart?: (_: Position, _: PointerEvent) => void | false;
   onMove?: (_: Position, _: PointerEvent) => void;
   onEnd?: (_: Position, _: PointerEvent) => void;
+  onMoveStart?: (_: Position, _: PointerEvent) => void;
+  onBeforeMove?: (_: Position, _: PointerEvent) => Position | void | false;
   axis?: 'x' | 'y' | 'both';
   disabled?: MaybeRefOrGetter<boolean>;
   buttons?: MaybeRefOrGetter<number[]>;
   restrictInView?: MaybeRefOrGetter<boolean>;
   autoScroll?: MaybeRefOrGetter<boolean | {
-    speed?: MaybeRefOrGetter<number | Position>;
+    speed?: MaybeRefOrGetter<number | number[] | Position>;
+    sensitivity?: MaybeRefOrGetter<number | number[]>;
     margin?: MaybeRefOrGetter<number | Position>;
     direction?: 'x' | 'y' | 'both';
+    minX?: number;
+    maxX?: number;
+    minY?: number;
+    maxY?: number;
   }>;
+  snap?: MaybeRefOrGetter<SnapInput>;
+  output?: 'leftTop' | 'transform';
+  classes?: {
+    draggable?: string;
+    dragging?: string;
+    moving?: string;
+  };
+  cursor?: {
+    idle?: string | false;
+    dragging?: string | false;
+  };
+  zIndex?: number | false;
 }
 export interface UseDraggableReturn {
   x: Ref<number>;
   y: Ref<number>;
   position: Ref<Position>;
   isDragging: ComputedRef<boolean>;
+  snapped: ComputedRef<boolean>;
   style: ComputedRef<string>;
+  recalc: () => void;
 }
 export interface UseDropZoneOptions {
   dataTypes?: MaybeRef<readonly string[]> | ((_: readonly string[]) => boolean);
@@ -1529,6 +1587,7 @@ export type DefineTemplateComponent<Bindings extends Record<string, any>, MapSlo
 };
 export type DeviceMotionOptions = UseDeviceMotionOptions;
 export type DocumentEventName = keyof DocumentEventMap;
+export type DraggableBounds = SnapBoundingRect;
 export type EasingFunction = (_: number) => number;
 export type EventBusEvents<T, P = any> = Set<EventBusListener<T, P>>;
 export type EventBusIdentifier<T = unknown> = EventBusKey<T> | string | number;
@@ -1576,6 +1635,9 @@ export type ReuseTemplateComponent<Bindings extends Record<string, any>, MapSlot
   };
 };
 export type ShadowRootEventName = keyof ShadowRootEventMap;
+export type SnapAxisConfig = SnapCoordValue | SnapRangeConfig;
+export type SnapCoordValue = number | string;
+export type SnapInput = SnapCoordValue | SnapTarget | (SnapCoordValue | SnapTarget)[] | SnapOptions;
 export type TemplatePromise<Return, Args extends any[] = []> = DefineComponent<object> & {
   new (): {
     $slots: {
