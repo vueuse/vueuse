@@ -24,6 +24,9 @@
   "files": [
     "skills"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "update": "tsx build.ts"
   },
