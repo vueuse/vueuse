@@ -24,7 +24,7 @@
     "publish:ci": "tsx scripts/publish.ts",
     "install-fonts": "gfi install Inter && gfi install Fira Code",
     "release": "tsx scripts/verify-branch.ts && bumpp --execute=\"npm run release:prepare\" --all --no-tag --no-push",
-    "release:prepare": "npm run build:types && npm run update",
+    "release:prepare": "npm run build:types && npm run update && npm run update:skills",
     "size": "tsx scripts/export-size.ts",
     "test": "nr test:unit --project=server",
     "test:cov": "vitest run --coverage --project=\"browser (chromium)\" --project=unit --project=server",
@@ -39,6 +39,7 @@
     "typecheck": "vue-tsc --noEmit",
     "update": "turbo run update -F @vueuse/metadata && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
+    "update:skills": "turbo run update -F @vueuse/skills",
     "watch": "turbo watch build",
     "prepare": "simple-git-hooks"
   },

@@ -25,7 +25,7 @@
     "skills"
   ],
   "scripts": {
-    "build": "tsx build.ts"
+    "update": "tsx build.ts"
   },
   "dependencies": {
     "@vueuse/metadata": "workspace:*"
