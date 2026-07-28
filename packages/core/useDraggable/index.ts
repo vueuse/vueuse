@@ -1,8 +1,8 @@
-import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import type { PointerType, Position } from '../types'
-import { isClient, toRefs } from '@vueuse/shared'
-import { computed, ref as deepRef, toValue, watch } from 'vue'
-import { defaultWindow } from '../_configurable'
+import { isClient, toRefs, tryOnUnmounted } from '@vueuse/shared'
+import { computed, ref as deepRef, shallowRef, toValue, watch } from 'vue'
+import { defaultDocument, defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
 export interface UseDraggableOptions {
@@ -216,6 +216,22 @@ export function useDraggable(
       e.stopPropagation()
   }
 
+  const documentScrollTop = shallowRef(0)
+  const documentScrollLeft = shallowRef(0)
+  let eventCanceller: (() => void) | undefined
+
+  watch(() => toValue(containerElement), (elem) => {
+    if (elem === document.body) {
+      eventCanceller = processDocumentScrollOffset(documentScrollTop, documentScrollLeft)
+    }
+    else {
+      eventCanceller?.()
+      documentScrollLeft.value = documentScrollTop.value = 0
+    }
+  }, {
+    immediate: true,
+  })
+
   const scrollConfig = toValue(autoScroll)
   const scrollSettings = typeof scrollConfig === 'object'
     ? {
@@ -336,6 +352,7 @@ export function useDraggable(
       x: e.clientX - (container ? targetRect.left - containerRect!.left + (autoScroll ? 0 : container.scrollLeft) : targetRect.left),
       y: e.clientY - (container ? targetRect.top - containerRect!.top + (autoScroll ? 0 : container.scrollTop) : targetRect.top),
     }
+
     if (onStart?.(pos, e) === false)
       return
     pressedDelta.value = pos
@@ -357,12 +374,13 @@ export function useDraggable(
     if (axis === 'x' || axis === 'both') {
       x = e.clientX - pressedDelta.value.x
       if (container)
-        x = Math.min(Math.max(0, x), container.scrollWidth - targetRect!.width)
+        x = Math.min(Math.max(0, x - documentScrollLeft.value), container.scrollWidth - targetRect!.width - documentScrollLeft.value)
     }
     if (axis === 'y' || axis === 'both') {
       y = e.clientY - pressedDelta.value.y
-      if (container)
-        y = Math.min(Math.max(0, y), container.scrollHeight - targetRect!.height)
+      if (container) {
+        y = Math.min(Math.max(0, y - documentScrollTop.value), container.scrollHeight - targetRect!.height - documentScrollTop.value)
+      }
     }
 
     if (toValue(autoScroll) && container) {
@@ -428,4 +446,22 @@ export function useDraggable(
       ${autoScroll ? 'text-wrap: nowrap;' : ''}
     `),
   }
+}
+
+function processDocumentScrollOffset(scrollTop: ShallowRef<number>, scrollLeft: ShallowRef<number>) {
+  const window = defaultWindow
+  const document = defaultDocument
+  if (!window || !document)
+    return
+
+  const callback = () => {
+    scrollTop.value = document.scrollingElement!.scrollTop
+    scrollLeft.value = document.scrollingElement!.scrollLeft
+  }
+
+  window.addEventListener('scroll', callback)
+  tryOnUnmounted(() => {
+    window.removeEventListener('scroll', callback)
+  })
+  return () => window.removeEventListener('scroll', callback)
 }

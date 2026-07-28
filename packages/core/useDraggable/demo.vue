@@ -13,6 +13,7 @@ const { x, y, style } = useDraggable(el, {
   initialValue: { x: innerWidth / 4.2, y: 80 },
   preventDefault: true,
   disabled,
+  containerElement: document.body,
 })
 </script>
 
@@ -42,6 +43,8 @@ const { x, y, style } = useDraggable(el, {
       👋 Drag me!
       <div class="text-sm opacity-50">
         I am at {{ Math.round(x) }}, {{ Math.round(y) }}
+        <br>
+        My container is document.body
       </div>
     </div>
 
