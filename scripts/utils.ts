@@ -232,7 +232,10 @@ export async function updateCountBadge(indexes: PackageIndexes) {
 export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = JSON.parse(await fs.readFile('package.json', { encoding: 'utf8' }))
 
-  for (const { name, description, author, submodules, iife } of packages) {
+  for (const { name, description, author, submodules, iife, excludePkgJson } of packages) {
+    if (excludePkgJson) {
+      continue
+    }
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = JSON.parse(await fs.readFile(packageJSONPath, { encoding: 'utf8' }))
