@@ -34,7 +34,7 @@ export const packages: PackageManifest[] = [
     display: 'Nuxt',
     description: 'VueUse Nuxt Module',
     manualImport: true,
-    excludePkgJson: true,
+    manualEntryPoints: true,
     addon: true,
     iife: false,
     utils: true,

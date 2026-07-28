@@ -16,8 +16,7 @@ export interface PackageManifest {
   target?: string
   utils?: boolean
   copy?: string[]
-  // don't change package.json
-  excludePkgJson?: true
+  manualEntryPoints?: true
 }
 
 export interface VueUseFunction {
