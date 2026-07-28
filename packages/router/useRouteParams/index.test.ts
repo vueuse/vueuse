@@ -340,6 +340,27 @@ describe('useRouteParams', () => {
     expect(route.query).toEqual({ foo: 'bar' })
   })
 
+  it('should not apply a disposed scope pending write to a later navigation', async () => {
+    let route = getRoute({ id: '1' })
+    const router = { replace: (r: any) => route = r } as any
+    const scope = effectScope()
+
+    // the scope goes away before its queued write reaches the router
+    scope.run(() => {
+      const id = useRouteParams('id', null, { route, router })
+      id.value = 'disposed'
+    })
+    scope.stop()
+
+    const page: Ref<any> = useRouteParams('page', null, { route, router })
+    page.value = '2'
+
+    await nextTick()
+
+    expect(route.params.page).toBe('2')
+    expect(route.params.id).toBe('1')
+  })
+
   it('should allow ref or getter as default value', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any

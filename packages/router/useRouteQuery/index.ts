@@ -54,9 +54,18 @@ export function useRouteQuery<
   const _queriesQueue = _queue.get(router)!
 
   let query = route.query[name] as any
+  let hasPendingWrite = false
 
   tryOnScopeDispose(() => {
     query = undefined
+
+    // Drop this scope's unflushed write. The queue is shared by every consumer of
+    // the router, so leaving it there lets a disposed scope alter a query on the
+    // next navigation someone else triggers.
+    if (hasPendingWrite) {
+      hasPendingWrite = false
+      _queriesQueue.delete(name)
+    }
   })
 
   let _trigger: () => void
@@ -78,10 +87,13 @@ export function useRouteQuery<
 
         query = (v === toValue(defaultValue)) ? undefined : v
         _queriesQueue.set(name, (v === toValue(defaultValue)) ? undefined : v)
+        hasPendingWrite = true
 
         trigger()
 
         nextTick(() => {
+          hasPendingWrite = false
+
           if (_queriesQueue.size === 0)
             return
 

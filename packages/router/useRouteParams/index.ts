@@ -54,9 +54,18 @@ export function useRouteParams<
   const _paramsQueue = _queue.get(router)!
 
   let param = route.params[name] as any
+  let hasPendingWrite = false
 
   tryOnScopeDispose(() => {
     param = undefined
+
+    // Drop this scope's unflushed write. The queue is shared by every consumer of
+    // the router, so leaving it there lets a disposed scope alter a param on the
+    // next navigation someone else triggers.
+    if (hasPendingWrite) {
+      hasPendingWrite = false
+      _paramsQueue.delete(name)
+    }
   })
 
   let _trigger: () => void
@@ -78,10 +87,13 @@ export function useRouteParams<
 
         param = (v === toValue(defaultValue) || v === null) ? undefined : v
         _paramsQueue.set(name, (v === toValue(defaultValue) || v === null) ? undefined : v)
+        hasPendingWrite = true
 
         trigger()
 
         nextTick(() => {
+          hasPendingWrite = false
+
           if (_paramsQueue.size === 0)
             return
 
