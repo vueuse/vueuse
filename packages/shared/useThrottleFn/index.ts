@@ -1,6 +1,9 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { FunctionArgs, PromisifyFn } from '../utils'
+import type { CancelablePromisifyFn, FunctionArgs } from '../utils'
+import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { createFilterWrapper, throttleFilter } from '../utils'
+
+export type UseThrottleFnReturn<T extends FunctionArgs> = CancelablePromisifyFn<T>
 
 /**
  * Throttle execution of a function. Especially useful for rate limiting
@@ -17,19 +20,21 @@ import { createFilterWrapper, throttleFilter } from '../utils'
  *
  * @param [rejectOnCancel] if true, reject the last call if it's been cancel (default value: false)
  *
- * @return  A new, throttled, function.
+ * @return  A new, throttled, function with isPending, cancel, and flush properties.
  *
  * @__NO_SIDE_EFFECTS__
  */
+
 export function useThrottleFn<T extends FunctionArgs>(
   fn: T,
   ms: MaybeRefOrGetter<number> = 200,
   trailing = false,
   leading = true,
   rejectOnCancel = false,
-): PromisifyFn<T> {
-  return createFilterWrapper(
-    throttleFilter(ms, trailing, leading, rejectOnCancel),
-    fn,
-  )
+): UseThrottleFnReturn<T> {
+  const filter = throttleFilter(ms, trailing, leading, rejectOnCancel)
+
+  tryOnScopeDispose(filter.cancel)
+
+  return createFilterWrapper(filter, fn)
 }

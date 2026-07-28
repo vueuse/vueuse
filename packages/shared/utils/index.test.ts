@@ -512,6 +512,68 @@ describe('filters', () => {
       expect(sumSpy).toHaveBeenCalledTimes(2)
       await expect(result).resolves.toBe(8 + 9)
     })
+
+    it('should track pending trailing state', () => {
+      const throttledFilterSpy = vi.fn()
+      const filter = throttleFilter(1000, true)
+      const wrapped = createFilterWrapper(filter, throttledFilterSpy)
+
+      expect(filter.isPending.value).toBe(false)
+
+      wrapped()
+      expect(filter.isPending.value).toBe(false)
+
+      wrapped()
+      expect(filter.isPending.value).toBe(true)
+
+      vi.runAllTimers()
+      expect(filter.isPending.value).toBe(false)
+    })
+
+    it('should cancel pending trailing invocation', () => {
+      const throttledFilterSpy = vi.fn()
+      const filter = throttleFilter(1000, true)
+      const wrapped = createFilterWrapper(filter, throttledFilterSpy)
+
+      wrapped()
+      wrapped()
+      expect(filter.isPending.value).toBe(true)
+
+      filter.cancel()
+      expect(filter.isPending.value).toBe(false)
+
+      vi.runAllTimers()
+      expect(throttledFilterSpy).toHaveBeenCalledOnce()
+    })
+
+    it('should cancel and reject when rejectOnCancel is true', async () => {
+      const throttledFilterSpy = vi.fn(() => 'result')
+      const filter = throttleFilter(1000, true, true, true)
+      const wrapped = createFilterWrapper(filter, throttledFilterSpy)
+
+      wrapped()
+      const promise = wrapped()
+      filter.cancel()
+
+      vi.runAllTimers()
+      await expect(promise).rejects.toBeUndefined()
+      expect(throttledFilterSpy).toHaveBeenCalledOnce()
+    })
+
+    it('should flush pending trailing invocation immediately', () => {
+      const throttledFilterSpy = vi.fn()
+      const filter = throttleFilter(1000, true)
+      const wrapped = createFilterWrapper(filter, throttledFilterSpy)
+
+      wrapped()
+      wrapped()
+      expect(filter.isPending.value).toBe(true)
+      expect(throttledFilterSpy).toHaveBeenCalledOnce()
+
+      filter.flush()
+      expect(filter.isPending.value).toBe(false)
+      expect(throttledFilterSpy).toHaveBeenCalledTimes(2)
+    })
   })
 
   describe('pausableFilter', () => {

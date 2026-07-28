@@ -289,6 +289,7 @@ export type UseDebounceFnReturn<T extends FunctionArgs> = CancelablePromisifyFn<
 export type UseIntervalFnReturn = Pausable;
 export type UseIntervalReturn = Readonly<ShallowRef<number>> | Readonly<UseIntervalControls & Pausable>;
 export type UseLastChangedReturn = Readonly<ShallowRef<number | null>> | Readonly<ShallowRef<number>>;
+export type UseThrottleFnReturn<T extends FunctionArgs> = CancelablePromisifyFn<T>;
 export type UseTimeoutFnReturn<CallbackFn extends AnyFn> = Stoppable<Parameters<CallbackFn> | []>;
 export type UseTimeoutReturn = ComputedRef<boolean> | {
   readonly ready: ComputedRef<boolean>;
@@ -369,8 +370,8 @@ export declare function set<T>(_: Ref<T>, _: T): void;
 export declare function set<O extends object, K extends keyof O>(_: O, _: K, _: O[K]): void;
 export declare function syncRef<L, R, D extends Direction = 'both'>(_: Ref<L>, _: Ref<R>, ...[options]: Equal<L, R> extends true ? [options?: SyncRefOptions<L, R, D>] : [options: SyncRefOptions<L, R, D>]): () => void;
 export declare function syncRefs<T>(_: WatchSource<T>, _: Ref<T> | Ref<T>[], _?: SyncRefsOptions): _$vue.WatchHandle;
-export declare function throttleFilter(_: MaybeRefOrGetter<number>, _?: boolean, _?: boolean, _?: boolean): EventFilter;
-export declare function throttleFilter(_: ThrottleFilterOptions): EventFilter;
+export declare function throttleFilter(_: MaybeRefOrGetter<number>, _?: boolean, _?: boolean, _?: boolean): CancelableEventFilter;
+export declare function throttleFilter(_: ThrottleFilterOptions): CancelableEventFilter;
 export declare function toArray<T>(_: T | readonly T[]): readonly T[];
 export declare function toArray<T>(_: T | T[]): T[];
 export declare function toReactive<T extends object>(_: MaybeRef<T>): UnwrapNestedRefs<T>;
@@ -420,7 +421,7 @@ export declare function useInterval(_: MaybeRefOrGetter<number>, _: UseIntervalO
 export declare function useIntervalFn(_: Fn, _?: MaybeRefOrGetter<number>, _?: UseIntervalFnOptions): UseIntervalFnReturn;
 export declare function useLastChanged(_: WatchSource, _?: UseLastChangedOptions<false>): Readonly<ShallowRef<number | null>>;
 export declare function useLastChanged(_: WatchSource, _: UseLastChangedOptions<true> | UseLastChangedOptions<boolean, number>): Readonly<ShallowRef<number>>;
-export declare function useThrottleFn<T extends FunctionArgs>(_: T, _?: MaybeRefOrGetter<number>, _?: boolean, _?: boolean, _?: boolean): PromisifyFn<T>;
+export declare function useThrottleFn<T extends FunctionArgs>(_: T, _?: MaybeRefOrGetter<number>, _?: boolean, _?: boolean, _?: boolean): UseThrottleFnReturn<T>;
 export declare function useTimeout(_?: MaybeRefOrGetter<number>, _?: UseTimeoutOptions<false>): ComputedRef<boolean>;
 export declare function useTimeout(_: MaybeRefOrGetter<number>, _: UseTimeoutOptions<true>): {
   ready: ComputedRef<boolean>;
