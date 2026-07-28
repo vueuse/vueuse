@@ -57,9 +57,11 @@ export var vInfiniteScroll /* const */
 export var vIntersectionObserver /* const */
 export var vMouseInElement /* const */
 export var vOnClickOutside /* const */
+/** @deprecated */
 export var VOnClickOutside /* const */
 export var vOnKeyStroke /* const */
 export var vOnLongPress /* const */
+/** @deprecated */
 export var VOnLongPress /* const */
 export var vResizeObserver /* const */
 export var vScroll /* const */

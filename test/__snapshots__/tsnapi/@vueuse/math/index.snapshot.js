@@ -23,7 +23,10 @@ export function useTrunc(_) {}
 // #endregion
 
 // #region Variables
+/** @deprecated */
 export var and /* const */
+/** @deprecated */
 export var not /* const */
+/** @deprecated */
 export var or /* const */
 // #endregion
