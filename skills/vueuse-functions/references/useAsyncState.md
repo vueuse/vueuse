@@ -22,14 +22,14 @@ const { state, isReady, isLoading, error } = useAsyncState(
 
 ### Return Values
 
-| Property           | Description                                         |
-| ------------------ | --------------------------------------------------- |
-| `state`            | The result of the async function                    |
-| `isReady`          | `true` when the promise has resolved at least once  |
-| `isLoading`        | `true` while the promise is pending                 |
-| `error`            | The error if the promise was rejected               |
-| `execute`          | Re-execute the async function with optional delay   |
-| `executeImmediate` | Re-execute immediately (shorthand for `execute(0)`) |
+| Property           | Description                                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `state`            | The result of the async function                                                                                               |
+| `isReady`          | `true` when the latest execution has resolved successfully. Reset to `false` on each execution and stays `false` if it rejects |
+| `isLoading`        | `true` while the promise is pending                                                                                            |
+| `error`            | The error if the promise was rejected                                                                                          |
+| `execute`          | Re-execute the async function with optional delay                                                                              |
+| `executeImmediate` | Re-execute immediately (shorthand for `execute(0)`)                                                                            |
 
 ### Awaiting the Result
 

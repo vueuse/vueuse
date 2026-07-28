@@ -107,10 +107,7 @@ export interface UseIntersectionObserverReturn extends Supportable, Pausable {
  * @param options
  */
 export declare function useIntersectionObserver(
-  target:
-    | MaybeComputedElementRef
-    | MaybeRefOrGetter<MaybeElement[]>
-    | MaybeComputedElementRef[],
+  target: MaybeComputedElementRefOrArray,
   callback: IntersectionObserverCallback,
   options?: UseIntersectionObserverOptions,
 ): UseIntersectionObserverReturn
