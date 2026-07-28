@@ -120,6 +120,31 @@ describe('useVirtualList, vertical', () => {
     scrollTo(3, { block: 'nearest' })
     expect(list.value.map(i => i.data)).toEqual(['b', 'c', 'd', 'e'])
   })
+
+  it('recomputes the visible range when a reactive item height changes without scrolling', async () => {
+    const itemHeight = deepRef(50)
+    const {
+      list,
+      containerProps: { ref: containerRef },
+      scrollTo,
+    } = useVirtualList(deepRef(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']), { itemHeight: () => itemHeight.value, overscan: 1 })
+    const div = createDiv({ clientHeight: 100 })
+
+    containerRef.value = div
+    scrollTo(0)
+    // Let the element-size observer settle so the item-height change below is
+    // the only thing that can trigger a recalculation.
+    await nextTick()
+    await nextTick()
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd'])
+
+    // Shrinking the items makes more of them fit; the range must update even
+    // though neither the source nor the container size changed and no scroll
+    // event occurred.
+    itemHeight.value = 25
+    await nextTick()
+    expect(list.value.map(i => i.data)).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
+  })
 })
 
 describe('useVirtualList, horizontal', () => {
