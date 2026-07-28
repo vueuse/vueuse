@@ -16,7 +16,7 @@ catalogs:
     '@iconify/json': ^2.2.482
     '@vitejs/plugin-vue': ^6.0.7
     '@vue/compiler-sfc': ^3.5.35
-    bumpp: ^11.1.0
+    bumpp: ^12.1.0
     chokidar: ^5.0.0
     consola: ^3.4.2
     eslint: ^10.4.1

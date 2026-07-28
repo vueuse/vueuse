@@ -23,7 +23,7 @@
     "lint:fix": "nr lint --fix",
     "publish:ci": "tsx scripts/publish.ts",
     "install-fonts": "gfi install Inter && gfi install Fira Code",
-    "release": "tsx scripts/verify-branch.ts && bumpp --execute=\"npm run release:prepare\" --all --no-tag --no-push",
+    "release": "bumpp --execute=\"npm run release:prepare\" --all --pr",
     "release:prepare": "npm run build:types && npm run update && npm run update:skills",
     "size": "tsx scripts/export-size.ts",
     "test": "nr test:unit --project=server",
