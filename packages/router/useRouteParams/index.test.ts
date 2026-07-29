@@ -347,7 +347,7 @@ describe('useRouteParams', () => {
 
     // the scope goes away before its queued write reaches the router
     scope.run(() => {
-      const id = useRouteParams('id', null, { route, router })
+      const id: Ref<any> = useRouteParams('id', null, { route, router })
       id.value = 'disposed'
     })
     scope.stop()

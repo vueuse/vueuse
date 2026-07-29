@@ -397,7 +397,7 @@ describe('useRouteQuery', () => {
 
     // the scope goes away before its queued write reaches the router
     scope.run(() => {
-      const search = useRouteQuery('search', null, { route, router })
+      const search: Ref<any> = useRouteQuery('search', null, { route, router })
       search.value = 'disposed'
     })
     scope.stop()
