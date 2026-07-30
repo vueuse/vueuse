@@ -1797,7 +1797,7 @@ export declare function useClipboard(_?: UseClipboardOptions<undefined>): UseCli
 export declare function useClipboard(_: UseClipboardOptions<MaybeRefOrGetter<string>>): UseClipboardReturn<true>;
 export declare function useClipboardItems(_?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>;
 export declare function useClipboardItems(_: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems>>): UseClipboardItemsReturn<true>;
-export declare function useCloned<T>(_: MaybeRefOrGetter<T>, _?: UseClonedOptions): UseClonedReturn<T>;
+export declare function useCloned<T>(_: MaybeRefOrGetter<T>, _?: UseClonedOptions<T>): UseClonedReturn<T>;
 export declare function useColorMode<T extends string = BasicColorMode>(_?: UseColorModeOptions<T>): UseColorModeReturn<T>;
 export declare function useConfirmDialog<RevealData = any, ConfirmData = any, CancelData = any>(_?: ShallowRef<boolean>): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData>;
 export declare function useCountdown(_: MaybeRefOrGetter<number>, _?: UseCountdownOptions): UseCountdownReturn;
