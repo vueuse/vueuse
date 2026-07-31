@@ -1,8 +1,7 @@
 import type { ConfigurableFlush, RemovableRef } from '@vueuse/shared'
 import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
-import { watchPausable } from '@vueuse/core'
 import { del, get, set, update } from 'idb-keyval'
-import { ref as deepRef, shallowRef, toRaw, toValue } from 'vue'
+import { ref as deepRef, shallowRef, toRaw, toValue, watch } from 'vue'
 
 interface Serializer<T> {
   read: (raw: unknown) => T
@@ -119,7 +118,7 @@ export function useIDBKeyval<T>(
   const {
     pause: pauseWatch,
     resume: resumeWatch,
-  } = watchPausable(data, () => write(), { flush, deep })
+  } = watch(data, () => write(), { flush, deep })
 
   async function setData(value: T): Promise<void> {
     pauseWatch()
