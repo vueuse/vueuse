@@ -6,6 +6,7 @@ import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
 import { useEventListener } from '../useEventListener'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseFocusWithinReturn {
   /**
@@ -40,6 +41,13 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
   useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
   useEventListener(targetElement, EVENT_FOCUS_OUT, () =>
     _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false, listenerOptions)
+
+  // Removing a focused descendant does not reliably fire `focusout`, so re-check
+  // whether focus is still within the target whenever its subtree changes.
+  useMutationObserver(targetElement, () => {
+    if (_focused.value)
+      _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false
+  }, { ...options, childList: true, subtree: true })
 
   return { focused }
 }
