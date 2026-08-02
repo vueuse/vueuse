@@ -46,7 +46,8 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
   useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
   useEventListener(targetElement, EVENT_FOCUS_OUT, recheckFocusWithin, listenerOptions)
 
-  // Removing a focused descendant does not reliably fire `focusout`, so re-check
+  // Not all browsers fire a `focusout` event when the focused element is removed from the DOM.
+  // Use a MutationObserver to detect descendant changes
   useMutationObserver(targetElement, recheckFocusWithin, { ...options, childList: true, subtree: true })
 
   return { focused }
