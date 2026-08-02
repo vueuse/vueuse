@@ -37,17 +37,17 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
     return { focused }
   }
 
-  const listenerOptions = { passive: true }
-  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
-  useEventListener(targetElement, EVENT_FOCUS_OUT, () =>
-    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false, listenerOptions)
-
-  // Removing a focused descendant does not reliably fire `focusout`, so re-check
-  // whether focus is still within the target whenever its subtree changes.
-  useMutationObserver(targetElement, () => {
+  const recheckFocusWithin = () => {
     if (_focused.value)
       _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false
-  }, { ...options, childList: true, subtree: true })
+  }
+
+  const listenerOptions = { passive: true }
+  useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
+  useEventListener(targetElement, EVENT_FOCUS_OUT, recheckFocusWithin, listenerOptions)
+
+  // Removing a focused descendant does not reliably fire `focusout`, so re-check
+  useMutationObserver(targetElement, recheckFocusWithin, { ...options, childList: true, subtree: true })
 
   return { focused }
 }
