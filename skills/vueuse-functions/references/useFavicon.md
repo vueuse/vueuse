@@ -49,8 +49,7 @@ export interface UseFaviconOptions extends ConfigurableDocument {
   rel?: string
 }
 export type UseFaviconReturn =
-  | ComputedRef<string | null | undefined>
-  | Ref<string | null | undefined>
+  ComputedRef<string | null | undefined> | Ref<string | null | undefined>
 /**
  * Reactive favicon.
  *

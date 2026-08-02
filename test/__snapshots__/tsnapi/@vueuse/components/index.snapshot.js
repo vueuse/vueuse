@@ -65,11 +65,13 @@ export var vIntersectionObserverVapor /* const */
 export var vMouseInElement /* const */
 export var vMouseInElementVapor /* const */
 export var vOnClickOutside /* const */
+/** @deprecated */
 export var VOnClickOutside /* const */
 export var vOnClickOutsideVapor /* const */
 export var vOnKeyStroke /* const */
 export var vOnKeyStrokeVapor /* const */
 export var vOnLongPress /* const */
+/** @deprecated */
 export var VOnLongPress /* const */
 export var vOnLongPressVapor /* const */
 export var vResizeObserver /* const */

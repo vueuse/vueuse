@@ -6,9 +6,19 @@ import metadata from './packages/metadata/index.json' with { type: 'json' }
 
 const functions = metadata.functions as PackageIndexes['functions']
 
-const externals = [
+export const externals = [
   'vue',
   /@vueuse\/.*/,
+]
+
+export const attwConfig: UserConfig['attw'] = {
+  level: 'error',
+  profile: 'esm-only',
+  ignoreRules: ['cjs-resolves-to-esm'],
+}
+
+export const basePlugins: UserConfig['plugins'] = [
+  StaleGuardRecorder(),
 ]
 
 export function createTsDownConfig(
@@ -101,12 +111,8 @@ export function createTsDownConfig(
     entry,
     format,
     copy,
-    plugins: [StaleGuardRecorder()],
-    attw: {
-      level: 'error',
-      profile: 'esm-only',
-      ignoreRules: ['cjs-resolves-to-esm'],
-    },
+    attw: attwConfig,
+    plugins: basePlugins,
   })
 
   return configs

@@ -143,8 +143,7 @@ export interface UseVirtualListOptionsBase {
   overscan?: number
 }
 export type UseVirtualListOptions =
-  | UseHorizontalVirtualListOptions
-  | UseVerticalVirtualListOptions
+  UseHorizontalVirtualListOptions | UseVerticalVirtualListOptions
 export interface UseVirtualListItem<T> {
   data: T
   index: number

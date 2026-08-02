@@ -17,7 +17,7 @@ function setupElementSize(el: HTMLElement, bindingValue: BindingValue) {
   const handler = typeof bindingValue === 'function' ? bindingValue : bindingValue[0]
   const options = (typeof bindingValue === 'function' ? [] : bindingValue.slice(1)) as RemoveFirstFromTuple<BindingValueArray>
   const { width, height } = useElementSize(el, ...options)
-  watch([width, height], ([width, height]) => handler({ width, height }))
+  watch([width, height], ([width, height]) => handler({ width, height }), { immediate: true })
 }
 
 export const vElementSize = createDisposableDirective<

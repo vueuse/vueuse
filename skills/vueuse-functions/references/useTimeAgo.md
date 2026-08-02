@@ -1,5 +1,6 @@
 ---
 category: Time
+utils: formatTimeAgo
 ---
 
 # useTimeAgo
@@ -42,13 +43,7 @@ export type UseTimeAgoFormatter<T = number> = (
   isPast: boolean,
 ) => string
 export type UseTimeAgoUnitNamesDefault =
-  | "second"
-  | "minute"
-  | "hour"
-  | "day"
-  | "week"
-  | "month"
-  | "year"
+  "second" | "minute" | "hour" | "day" | "week" | "month" | "year"
 export interface UseTimeAgoMessagesBuiltIn {
   justNow: string
   past: string | UseTimeAgoFormatter<string>

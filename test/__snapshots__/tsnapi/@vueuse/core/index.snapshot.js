@@ -9,6 +9,7 @@ export function createFetch(_) {}
 export function createReusableTemplate(_) {}
 export function createTemplatePromise(_) {}
 export function createUnrefFn(_) {}
+/** @deprecated */
 export function executeTransition(_, _, _, _) {}
 export function formatTimeAgo(_, _, _) {}
 export function formatTimeAgoIntl(_, _, _) {}
@@ -27,6 +28,7 @@ export function onLongPress(_, _, _) {}
 export function onStartTyping(_, _) {}
 export function provideSSRWidth(_, _) {}
 export function setSSRHandler(_, _) {}
+/** @deprecated */
 export function templateRef(_, _) {}
 export function transition(_, _, _, _) {}
 export function unrefElement(_) {}
@@ -167,6 +169,7 @@ export function useWindowSize(_) {}
 // #endregion
 
 // #region Variables
+/** @deprecated */
 export var asyncComputed /* const */
 export var breakpointsAntDesign /* const */
 export var breakpointsBootstrapV5 /* const */
@@ -176,6 +179,7 @@ export var breakpointsPrimeFlex /* const */
 export var breakpointsQuasar /* const */
 export var breakpointsSematic /* const */
 export var breakpointsTailwind /* const */
+/** @deprecated */
 export var breakpointsVuetify /* const */
 export var breakpointsVuetifyV2 /* const */
 export var breakpointsVuetifyV3 /* const */

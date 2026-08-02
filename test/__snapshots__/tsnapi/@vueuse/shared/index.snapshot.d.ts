@@ -222,7 +222,7 @@ useProvidingState: (...args: Arguments) => ProvideReturn,
 useInjectedState: () => InjectReturn]>;
 export type CreateRefReturn<T = any, D extends boolean = false> = ShallowOrDeepRef<T, D>;
 export type DateLike = Date | number | string | undefined;
-export type DeepMaybeRef<T> = T extends Ref<infer V> ? MaybeRef<V> : T extends Array<any> | object ? { [K in keyof T]: DeepMaybeRef<T[K]> } : MaybeRef<T>;
+export type DeepMaybeRef<T> = T extends Ref<infer V> ? MaybeRef<V> : T extends Array<any> | object ? { [K in keyof T]: DeepMaybeRef<T[K]>; } : MaybeRef<T>;
 export type ElementOf<T> = T extends (infer E)[] ? E : never;
 export type EventFilter<Args extends any[] = any[], This = any, Invoke extends AnyFn = AnyFn> = (_: Invoke, _: FunctionWrapperOptions<Args, This>) => ReturnType<Invoke> | Promisify<ReturnType<Invoke>>;
 export type EventHookOff<T = any> = (_: Callback<T>) => void;
@@ -240,21 +240,21 @@ export type IgnoredUpdater = (_: () => void) => void;
 export type InstanceProxy = NonNullable<NonNullable<ReturnType<typeof getCurrentInstance>>['proxy']>;
 export type IsAny<T> = IfAny<T, true, false>;
 export type IsDefinedReturn = boolean;
-export type MapOldSources<T, Immediate> = { [K in keyof T]: T[K] extends WatchSource<infer V> ? Immediate extends true ? V | undefined : V : never };
-export type MapSources<T> = { [K in keyof T]: T[K] extends WatchSource<infer V> ? V : never };
-export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
+export type MapOldSources<T, Immediate> = { [K in keyof T]: T[K] extends WatchSource<infer V> ? Immediate extends true ? V | undefined : V : never; };
+export type MapSources<T> = { [K in keyof T]: T[K] extends WatchSource<infer V> ? V : never; };
+export type Mutable<T> = { -readonly [P in keyof T]: T[P]; };
 export type Promisify<T> = Promise<Awaited<T>>;
 export type PromisifyFn<T extends AnyFn> = (..._: ArgumentsType<T>) => Promisify<ReturnType<T>>;
 export type ProvideLocalReturn = void;
-export type Reactified<T, Computed extends boolean> = T extends ((...args: infer A) => infer R) ? (...args: { [K in keyof A]: Computed extends true ? MaybeRefOrGetter<A[K]> : MaybeRef<A[K]> }) => ComputedRef<R> : never;
-export type ReactifyNested<T, Keys extends keyof T = keyof T, S extends boolean = true> = { [K in Keys]: T[K] extends AnyFn ? Reactified<T[K], S> : T[K] };
+export type Reactified<T, Computed extends boolean> = T extends ((...args: infer A) => infer R) ? (...args: { [K in keyof A]: Computed extends true ? MaybeRefOrGetter<A[K]> : MaybeRef<A[K]>; }) => ComputedRef<R> : never;
+export type ReactifyNested<T, Keys extends keyof T = keyof T, S extends boolean = true> = { [K in Keys]: T[K] extends AnyFn ? Reactified<T[K], S> : T[K]; };
 export type ReactifyObjectReturn<T, Keys extends keyof T, S extends boolean = true> = ReactifyNested<T, Keys, S>;
 export type ReactifyReturn<T extends AnyFn = AnyFn, K extends boolean = true> = Reactified<T, K>;
 export type ReactiveComputedReturn<T extends object> = UnwrapNestedRefs<T>;
 export type ReactiveOmitPredicate<T> = (_: T[keyof T], _: keyof T) => boolean;
 export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined = undefined> = [K] extends [undefined] ? Partial<T> : Omit<T, Extract<K, keyof T>>;
 export type ReactivePickPredicate<T> = (_: T[keyof T], _: keyof T) => boolean;
-export type ReactivePickReturn<T extends object, K extends keyof T> = { [S in K]: UnwrapRef<T[S]> };
+export type ReactivePickReturn<T extends object, K extends keyof T> = { [S in K]: UnwrapRef<T[S]>; };
 export type ReadonlyRefOrGetter<T> = ComputedRef<T> | (() => T);
 export type RefAutoResetReturn<T = any> = Ref<T>;
 export type RefDebouncedReturn<T = any> = Readonly<Ref<T>>;
@@ -293,6 +293,7 @@ export type UseTimeoutFnReturn<CallbackFn extends AnyFn> = Stoppable<Parameters<
 export type UseTimeoutReturn = ComputedRef<boolean> | {
   readonly ready: ComputedRef<boolean>;
 } & Stoppable;
+/** @deprecated */
 export type UseTimoutReturn = UseTimeoutReturn;
 export type UseToggleReturn = [ShallowRef<boolean>, ToggleFn] | ToggleFn;
 export declare type WatchArrayCallback<V = any, OV = any> = (_: V, _: OV, _: V, _: OV, _: (_: () => void) => void) => any;
@@ -302,6 +303,7 @@ export type WatchTriggerableCallback<V = any, OV = any, R = void> = (_: V, _: OV
 // #endregion
 
 // #region Functions
+/** @deprecated */
 export declare function computedEager<T>(_: () => T, _?: ComputedEagerOptions): ComputedEagerReturn<T>;
 export declare function computedWithControl<T>(_: WatchSource | MultiWatchSources$1, _: ComputedGetter<T>, _?: WatchOptions): ComputedRefWithControl<T>;
 export declare function computedWithControl<T>(_: WatchSource | MultiWatchSources$1, _: WritableComputedOptions<T>, _?: WatchOptions): WritableComputedRefWithControl<T>;
@@ -364,11 +366,11 @@ export declare function refWithControl<T>(_: T, _?: ControlledRefOptions<T>): {
   silentSet: (_: T) => void;
   peek: () => T;
   lay: (_: T) => void;
-} & _$vue.Ref<T, T>;
+} & import("vue").Ref<T, T>;
 export declare function set<T>(_: Ref<T>, _: T): void;
 export declare function set<O extends object, K extends keyof O>(_: O, _: K, _: O[K]): void;
 export declare function syncRef<L, R, D extends Direction = 'both'>(_: Ref<L>, _: Ref<R>, ...[options]: Equal<L, R> extends true ? [options?: SyncRefOptions<L, R, D>] : [options: SyncRefOptions<L, R, D>]): () => void;
-export declare function syncRefs<T>(_: WatchSource<T>, _: Ref<T> | Ref<T>[], _?: SyncRefsOptions): _$vue.WatchHandle;
+export declare function syncRefs<T>(_: WatchSource<T>, _: Ref<T> | Ref<T>[], _?: SyncRefsOptions): import("vue").WatchHandle;
 export declare function throttleFilter(_: MaybeRefOrGetter<number>, _?: boolean, _?: boolean, _?: boolean): EventFilter;
 export declare function throttleFilter(_: ThrottleFilterOptions): EventFilter;
 export declare function toArray<T>(_: T | readonly T[]): readonly T[];
@@ -406,7 +408,7 @@ export declare function useArrayReduce<T, U>(_: MaybeRefOrGetter<MaybeRefOrGette
 export declare function useArraySome<T>(_: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>, _: (_: T, _: number, _: MaybeRefOrGetter<T>[]) => unknown): UseArraySomeReturn;
 export declare function useArrayUnique<T>(_: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>, _?: (_: T, _: T, _: T[]) => boolean): UseArrayUniqueReturn<T>;
 export declare function useCounter(_?: MaybeRef<number>, _?: UseCounterOptions): {
-  count: Readonly<Ref<number, number> | _$vue.ShallowRef<number, number> | _$vue.WritableComputedRef<number, number>>;
+  count: Readonly<Ref<number, number> | import("vue").ShallowRef<number, number> | import("vue").WritableComputedRef<number, number>>;
   inc: (_?: number) => number;
   dec: (_?: number) => number;
   get: () => number;
@@ -430,7 +432,7 @@ export declare function useToggle<Truthy, Falsy, T = Truthy | Falsy>(_: Ref<T>, 
 export declare function useToggle<Truthy = true, Falsy = false, T = Truthy | Falsy>(_?: T, _?: UseToggleOptions<Truthy, Falsy>): [ShallowRef<T>, (value?: T) => T];
 export declare function useToNumber(_: MaybeRefOrGetter<number | string>, _?: UseToNumberOptions): ComputedRef<number>;
 export declare function useToString(_: MaybeRefOrGetter<unknown>): ComputedRef<string>;
-export declare function watchArray<T, Immediate extends Readonly<boolean> = false>(_: WatchSource<T[]> | T[], _: WatchArrayCallback<T[], Immediate extends true ? T[] | undefined : T[]>, _?: WatchOptions<Immediate>): _$vue.WatchHandle;
+export declare function watchArray<T, Immediate extends Readonly<boolean> = false>(_: WatchSource<T[]> | T[], _: WatchArrayCallback<T[], Immediate extends true ? T[] | undefined : T[]>, _?: WatchOptions<Immediate>): import("vue").WatchHandle;
 export declare function watchAtMost<T, Immediate extends Readonly<boolean> = false>(_: WatchSource<T>, _: WatchCallback<T, Immediate extends true ? T | undefined : T>, _: WatchAtMostOptions<Immediate>): WatchAtMostReturn;
 export declare function watchAtMost<T extends Readonly<MultiWatchSources$1>, Immediate extends Readonly<boolean> = false>(_: [...T], _: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, _: WatchAtMostOptions<Immediate>): WatchAtMostReturn;
 export declare function watchAtMost<T extends object, Immediate extends Readonly<boolean> = false>(_: T, _: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, _: WatchAtMostOptions<Immediate>): WatchAtMostReturn;
@@ -449,8 +451,11 @@ export declare function watchImmediate<T extends object>(_: T, _: WatchCallback<
 export declare function watchOnce<T>(_: WatchSource<T>, _: WatchCallback<T, T | undefined>, _?: Omit<WatchOptions<true>, 'once'>): WatchHandle;
 export declare function watchOnce<T extends Readonly<MultiWatchSources$1>>(_: [...T], _: WatchCallback<MapSources<T>, MapOldSources<T, true>>, _?: Omit<WatchOptions<true>, 'once'>): WatchHandle;
 export declare function watchOnce<T extends object>(_: T, _: WatchCallback<T, T | undefined>, _?: Omit<WatchOptions<true>, 'once'>): WatchHandle;
+/** @deprecated */
 export declare function watchPausable<T, Immediate extends Readonly<boolean> = false>(_: WatchSource<T>, _: WatchCallback<T, Immediate extends true ? T | undefined : T>, _?: WatchPausableOptions<Immediate>): WatchPausableReturn;
+/** @deprecated */
 export declare function watchPausable<T extends Readonly<MultiWatchSources$1>, Immediate extends Readonly<boolean> = false>(_: [...T], _: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, _?: WatchPausableOptions<Immediate>): WatchPausableReturn;
+/** @deprecated */
 export declare function watchPausable<T extends object, Immediate extends Readonly<boolean> = false>(_: T, _: WatchCallback<T, Immediate extends true ? T | undefined : T>, _?: WatchPausableOptions<Immediate>): WatchPausableReturn;
 export declare function watchThrottled<T, Immediate extends Readonly<boolean> = false>(_: WatchSource<T>, _: WatchCallback<T, Immediate extends true ? T | undefined : T>, _?: WatchThrottledOptions<Immediate>): WatchHandle;
 export declare function watchThrottled<T extends Readonly<MultiWatchSources$1>, Immediate extends Readonly<boolean> = false>(_: [...T], _: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, _?: WatchThrottledOptions<Immediate>): WatchHandle;
@@ -467,18 +472,26 @@ export declare function whenever<T>(_: WatchSource<T>, _: WatchCallback<Truthy<T
 
 // #region Variables
 export declare const assert: (condition: boolean, ...infos: any[]) => void;
+/** @deprecated */
 export declare const autoResetRef: typeof refAutoReset;
 export declare const bypassFilter: EventFilter;
 export declare const camelize: (str: string) => string;
 export declare const clamp: (n: number, min: number, max: number) => number;
+/** @deprecated */
 export declare const controlledComputed: typeof computedWithControl;
+/** @deprecated */
 export declare const controlledRef: typeof refWithControl;
+/** @deprecated */
 export declare const createReactiveFn: typeof reactify;
+/** @deprecated */
 export declare const debouncedRef: typeof refDebounced;
+/** @deprecated */
 export declare const debouncedWatch: typeof watchDebounced;
+/** @deprecated */
 export declare const eagerComputed: typeof computedEager;
 export declare const hasOwn: <T extends object, K extends keyof T>(val: T, key: K) => key is K;
 export declare const hyphenate: (str: string) => string;
+/** @deprecated */
 export declare const ignorableWatch: typeof watchIgnorable;
 export declare const injectLocal: typeof inject;
 export declare const isClient: boolean;
@@ -489,12 +502,17 @@ export declare const isWorker: boolean;
 export declare const noop: () => void;
 export declare const notNullish: <T = any>(val?: T | null | undefined) => val is T;
 export declare const now: () => number;
+/** @deprecated */
 export declare const pausableWatch: typeof watchPausable;
 export declare const rand: (min: number, max: number) => number;
+/** @deprecated */
 export declare const throttledRef: typeof refThrottled;
+/** @deprecated */
 export declare const throttledWatch: typeof watchThrottled;
 export declare const timestamp: () => number;
+/** @deprecated */
 export declare const useDebounce: typeof refDebounced;
+/** @deprecated */
 export declare const useThrottle: typeof refThrottled;
 // #endregion
 

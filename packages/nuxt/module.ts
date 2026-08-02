@@ -48,6 +48,8 @@ export interface VueUseNuxtOptions {
   ssrHandlers?: boolean
 }
 
+export type ModuleOptions = VueUseNuxtOptions
+
 /**
  * Auto import for VueUse in Nuxt
  * Usage:
@@ -61,7 +63,7 @@ export interface VueUseNuxtOptions {
  * }
  * ```
  */
-export default defineNuxtModule<VueUseNuxtOptions>({
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'vueuse',
     configKey: 'vueuse',
@@ -165,12 +167,3 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     }
   },
 })
-
-declare module '@nuxt/schema' {
-  interface NuxtConfig {
-    vueuse?: VueUseNuxtOptions
-  }
-  interface NuxtOptions {
-    vueuse?: VueUseNuxtOptions
-  }
-}

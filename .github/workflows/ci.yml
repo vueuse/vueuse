@@ -49,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [20.x, lts/*]
+        node: [22.x, lts/*]
       fail-fast: false
 
     steps:

@@ -70,6 +70,42 @@ describe('useDraggable', () => {
     expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
   })
 
+  it('ends the drag when the pointer is canceled', async () => {
+    const onEnd = vi.fn()
+
+    const wrapper = mount({
+      setup() {
+        const el = useTemplateRef<HTMLElement>('el')
+
+        const { isDragging, style } = useDraggable(el, { onEnd })
+
+        return () => h('div', {
+          'data-is-dragging': isDragging.value,
+          'ref': 'el',
+          'style': style.value,
+        })
+      },
+    })
+
+    await nextTick()
+    wrapper.get('div').element.dispatchEvent(new PointerEvent('pointerdown', {
+      clientX: 0,
+      clientY: 0,
+    }))
+    await nextTick()
+    window.dispatchEvent(new PointerEvent('pointermove', {
+      clientX: 10,
+      clientY: 20,
+    }))
+    await nextTick()
+    expect(wrapper.get('div').element.dataset.isDragging).toBe('true')
+
+    window.dispatchEvent(new PointerEvent('pointercancel'))
+    await nextTick()
+    expect(onEnd).toHaveBeenCalledOnce()
+    expect(wrapper.get('div').element.dataset.isDragging).toBe('false')
+  })
+
   it('component', async () => {
     const onStart = vi.fn()
     const onMove = vi.fn()
