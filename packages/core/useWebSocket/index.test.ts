@@ -1,4 +1,5 @@
 import type { UseWebSocketReturn } from './index'
+import { useIntervalFn } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, shallowRef } from 'vue'
 import { useSetup } from '../../.test'
@@ -383,7 +384,7 @@ describe('useWebSocket', () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {
           heartbeat: {
-            interval: 500,
+            scheduler: cb => useIntervalFn(cb, 500, { immediate: false }),
           },
         })
 
@@ -417,7 +418,7 @@ describe('useWebSocket', () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {
           heartbeat: {
-            interval: 500,
+            scheduler: cb => useIntervalFn(cb, 500, { immediate: false }),
             pongTimeout: 1000,
           },
         })
@@ -441,7 +442,7 @@ describe('useWebSocket', () => {
         const ref = useWebSocket('wss://server.example.com', {
           heartbeat: {
             message: 'ping',
-            interval: 500,
+            scheduler: cb => useIntervalFn(cb, 500, { immediate: false }),
             pongTimeout: 1000,
           },
         })
@@ -466,7 +467,7 @@ describe('useWebSocket', () => {
         const ref = useWebSocket('wss://server.example.com', {
           heartbeat: {
             message: messageSpy,
-            interval: 500,
+            scheduler: cb => useIntervalFn(cb, 500, { immediate: false }),
             pongTimeout: 1000,
           },
         })
