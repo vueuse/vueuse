@@ -376,6 +376,18 @@ describe('useEventListener', () => {
     expect(listener2).toHaveBeenCalledTimes(1)
   })
 
+  it('should listen to a custom event on the omitted window target', async () => {
+    const listener = vi.fn()
+
+    useEventListener('my-custom-event', listener)
+
+    window.dispatchEvent(new Event('my-custom-event'))
+
+    await nextTick()
+
+    expect(listener).toHaveBeenCalledTimes(1)
+  })
+
   it('should check multiple shadowRoots + multiple events', async () => {
     const element1 = document.createElement('div')
     const shadowRoot1 = element1.attachShadow({ mode: 'open' })
