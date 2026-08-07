@@ -10,6 +10,8 @@ export interface UseFaviconOptions extends ConfigurableDocument {
   rel?: string
 }
 
+export type UseFaviconReturn = ComputedRef<string | null | undefined> | Ref<string | null | undefined>
+
 /**
  * Reactive favicon.
  *
@@ -19,16 +21,16 @@ export interface UseFaviconOptions extends ConfigurableDocument {
  */
 export function useFavicon(
   newIcon: ReadonlyRefOrGetter<string | null | undefined>,
-  options?: UseFaviconOptions
+  options?: UseFaviconOptions,
 ): ComputedRef<string | null | undefined>
 export function useFavicon(
   newIcon?: MaybeRef<string | null | undefined>,
-  options?: UseFaviconOptions
+  options?: UseFaviconOptions,
 ): Ref<string | null | undefined>
 export function useFavicon(
   newIcon: MaybeRefOrGetter<string | null | undefined> = null,
   options: UseFaviconOptions = {},
-) {
+): UseFaviconReturn {
   const {
     baseUrl = '',
     rel = 'icon',
@@ -64,5 +66,3 @@ export function useFavicon(
 
   return favicon
 }
-
-export type UseFaviconReturn = ReturnType<typeof useFavicon>

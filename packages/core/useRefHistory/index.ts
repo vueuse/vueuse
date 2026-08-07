@@ -1,11 +1,11 @@
-import type { ConfigurableEventFilter, Fn, WatchOptionFlush } from '@vueuse/shared'
+import type { ConfigurableEventFilter, ConfigurableFlush, Fn } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { CloneFn } from '../useCloned'
 import type { UseManualRefHistoryReturn } from '../useManualRefHistory'
 import { pausableFilter, watchIgnorable } from '@vueuse/shared'
 import { useManualRefHistory } from '../useManualRefHistory'
 
-export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends ConfigurableEventFilter {
+export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends ConfigurableEventFilter, ConfigurableFlush {
   /**
    * Watch for deep changes, default to false
    *
@@ -14,16 +14,6 @@ export interface UseRefHistoryOptions<Raw, Serialized = Raw> extends Configurabl
    * @default false
    */
   deep?: boolean
-
-  /**
-   * The flush option allows for greater control over the timing of a history point, default to 'pre'
-   *
-   * Possible values: 'pre', 'post', 'sync'
-   * It works in the same way as the flush option in watch and watch effect in vue reactivity
-   *
-   * @default 'pre'
-   */
-  flush?: WatchOptionFlush
 
   /**
    * Maximum number of history to be kept. Default to unlimited.

@@ -118,3 +118,15 @@ const count = useExtractedObservable(
   }
 )
 ```
+
+## Options
+
+| Option         | Type                 | Description                              |
+| -------------- | -------------------- | ---------------------------------------- |
+| `initialValue` | `T`                  | Value to use before the Observable emits |
+| `onError`      | `(err: any) => void` | Error handler for Observable errors      |
+| `onComplete`   | `() => void`         | Called when the Observable completes     |
+
+## Return Value
+
+Returns a readonly `ShallowRef` containing the latest value emitted by the extracted Observable.

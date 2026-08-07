@@ -19,7 +19,7 @@ const stringify = reactify(
   }),
 )
 
-const video = useTemplateRef<HTMLVideoElement>('video')
+const video = useTemplateRef('video')
 const loop = shallowRef(false)
 const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
 

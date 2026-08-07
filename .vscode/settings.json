@@ -24,6 +24,12 @@
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
 
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/skills": true
+  },
+
   // Enable the flat config support
   "eslint.useFlatConfig": true,
 

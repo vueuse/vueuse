@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useTextareaAutosize } from '@vueuse/core'
+import { useTemplateRef } from 'vue'
 
-const { textarea, input } = useTextareaAutosize()
+const textarea = useTemplateRef<HTMLTextAreaElement>('textarea')
+const { input } = useTextareaAutosize({ element: textarea })
 </script>
 
 <template>
@@ -15,3 +17,14 @@ const { textarea, input } = useTextareaAutosize()
     />
   </div>
 </template>
+
+<style scoped>
+textarea {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+</style>

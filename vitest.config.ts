@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
-import { coverageConfigDefaults, defineConfig } from 'vitest/config'
+import { playwright } from '@vitest/browser-playwright'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [
@@ -29,13 +30,30 @@ export default defineConfig({
     env: {
       TZ: 'UTC-1', // to have some actual results with timezone offset
     },
+    exclude: [
+      '**/node_modules/**',
+    ],
     coverage: {
+      include: [
+        'packages/**/*.ts',
+      ],
       exclude: [
         'packages/.vitepress/**',
-        'playgrounds/**',
-        '**/{unocss,taze}.config.ts',
-        'scripts/**',
-        ...coverageConfigDefaults.exclude,
+        'packages/metadata/**',
+        'packages/components/**',
+        'packages/nuxt/**',
+        'packages/contributors.ts',
+        '**/_template/**',
+        '**/.test/**',
+        '**/.turbo/**',
+        '**/demo/**',
+        '**/dist/**',
+        '**/node_modules/**',
+        '**/*.test.ts',
+        '**/*.*.test.ts',
+        '**/types.ts',
+        '**/_types.ts',
+        '**/*.config.ts',
       ],
     },
 
@@ -56,7 +74,12 @@ export default defineConfig({
           setupFiles: ['vitest-browser-vue'],
           browser: {
             enabled: true,
-            provider: 'playwright',
+            provider: playwright({
+              contextOptions: {
+                locale: 'en-US',
+                timezoneId: 'UTC',
+              },
+            }),
             headless: true,
             instances: [
               { browser: 'chromium' },
@@ -81,16 +104,34 @@ export default defineConfig({
           environment: 'jsdom',
           setupFiles: [resolve(import.meta.dirname, 'packages/.test/setup.ts')],
           include: [
-            '!packages/**/*.{browser,server}.{test,spec}.ts',
             'packages/**/*.{test,spec}.ts',
             'test/*.{test,spec}.ts',
+          ],
+          exclude: [
+            'packages/**/*.{browser,server}.{test,spec}.ts',
+            'test/exports.test.ts',
           ],
           server: {
             deps: {
               inline: [
                 'vue',
                 'msw',
-                'vitest-package-exports',
+              ],
+            },
+          },
+        },
+      },
+      {
+        extends: './vitest.config.ts',
+        test: {
+          name: 'exports',
+          environment: 'node',
+          include: ['test/exports.test.ts'],
+          testTimeout: 120_000,
+          server: {
+            deps: {
+              inline: [
+                'tsnapi',
               ],
             },
           },

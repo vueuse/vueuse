@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onLongPress } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 
-const htmlRef = shallowRef<HTMLElement | null>(null)
-const htmlRefOptions = shallowRef<HTMLElement | null>(null)
-const htmlRefOnMouseUp = shallowRef<HTMLElement | null>(null)
+const htmlRef = useTemplateRef('htmlRef')
+const htmlRefOptions = useTemplateRef('htmlRefOptions')
+const htmlRefOnMouseUp = useTemplateRef('htmlRefOnMouseUp')
 
 const longPressed = shallowRef(false)
 const clicked = shallowRef(false)

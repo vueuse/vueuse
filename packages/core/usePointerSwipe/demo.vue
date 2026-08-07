@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { UseSwipeDirection } from '@vueuse/core'
 import { usePointerSwipe } from '@vueuse/core'
-import { computed, shallowRef } from 'vue'
+import { computed, shallowRef, useTemplateRef } from 'vue'
 
-const target = shallowRef<HTMLElement | null>(null)
-const container = shallowRef<HTMLElement | null>(null)
+const target = useTemplateRef('target')
+const container = useTemplateRef('container')
 
 const containerWidth = computed(() => container.value?.offsetWidth)
 

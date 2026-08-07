@@ -3,8 +3,8 @@ import { UseDraggable as Draggable } from '@vueuse/components'
 import { isClient, useDraggable } from '@vueuse/core'
 import { shallowRef, useTemplateRef } from 'vue'
 
-const el = useTemplateRef<HTMLElement>('el')
-const handle = useTemplateRef<HTMLElement>('handle')
+const el = useTemplateRef('el')
+const handle = useTemplateRef('handle')
 
 const innerWidth = isClient ? window.innerWidth : 200
 

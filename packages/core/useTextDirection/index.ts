@@ -1,8 +1,7 @@
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElement } from '../unrefElement'
 import { tryOnMounted } from '@vueuse/shared'
-
-import { computed, ref as deepRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useMutationObserver } from '../useMutationObserver'
 
@@ -48,7 +47,7 @@ export function useTextDirection(options: UseTextDirectionOptions = {}) {
     return document?.querySelector(selector)?.getAttribute('dir') as UseTextDirectionValue ?? initialValue
   }
 
-  const dir = deepRef<UseTextDirectionValue>(getValue())
+  const dir = shallowRef<UseTextDirectionValue>(getValue())
 
   tryOnMounted(() => dir.value = getValue())
 

@@ -1,4 +1,4 @@
-import type { MaybeRefOrGetter, ShallowRef, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
+import type { MaybeRefOrGetter, MultiWatchSources, ShallowRef, WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import type { MapOldSources, MapSources } from '../utils'
 import type { WatchWithFilterOptions } from '../watchWithFilter'
 import { nextTick, shallowRef, toValue } from 'vue'
@@ -16,9 +16,29 @@ export interface WatchAtMostReturn {
 }
 
 // overloads
-export function watchAtMost<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options: WatchAtMostOptions<Immediate>): WatchAtMostReturn
+export function watchAtMost<T, Immediate extends Readonly<boolean> = false>(
+  sources: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options: WatchAtMostOptions<Immediate>,
+): WatchAtMostReturn
 
-export function watchAtMost<T, Immediate extends Readonly<boolean> = false>(sources: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options: WatchAtMostOptions<Immediate>): WatchAtMostReturn
+export function watchAtMost<
+  T extends Readonly<MultiWatchSources>,
+  Immediate extends Readonly<boolean> = false,
+>(
+  sources: [...T],
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options: WatchAtMostOptions<Immediate>,
+): WatchAtMostReturn
+
+export function watchAtMost<
+  T extends object,
+  Immediate extends Readonly<boolean> = false,
+>(
+  sources: T,
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options: WatchAtMostOptions<Immediate>,
+): WatchAtMostReturn
 
 // implementation
 export function watchAtMost<Immediate extends Readonly<boolean> = false>(

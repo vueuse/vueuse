@@ -1,3 +1,4 @@
+import type { Fn, Pausable } from '@vueuse/shared'
 import { isClient } from '@vueuse/shared'
 
 export interface ConfigurableWindow {
@@ -47,4 +48,11 @@ export interface ConfigurableDeepRefs<D extends boolean> {
    * @default true - will be changed to `false` by default in the next major
    */
   deepRefs?: D
+}
+
+export interface ConfigurableScheduler {
+  /**
+   * Custom scheduler to use for interval execution.
+   */
+  scheduler?: (cb: Fn) => Pausable
 }

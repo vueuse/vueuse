@@ -21,13 +21,13 @@ export function useArrayDifference<T>(
   list: MaybeRefOrGetter<T[]>,
   values: MaybeRefOrGetter<T[]>,
   key?: keyof T,
-  options?: UseArrayDifferenceOptions
+  options?: UseArrayDifferenceOptions,
 ): UseArrayDifferenceReturn<T>
 export function useArrayDifference<T>(
   list: MaybeRefOrGetter<T[]>,
   values: MaybeRefOrGetter<T[]>,
   compareFn?: (value: T, othVal: T) => boolean,
-  options?: UseArrayDifferenceOptions
+  options?: UseArrayDifferenceOptions,
 ): UseArrayDifferenceReturn<T>
 
 /**

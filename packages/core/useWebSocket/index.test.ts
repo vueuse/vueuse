@@ -13,11 +13,13 @@ describe('useWebSocket', () => {
 
   beforeEach(() => {
     vi.stubGlobal('WebSocket', mockWebSocket)
+    vi.useFakeTimers()
   })
 
   afterEach(() => {
     vm?.unmount()
     vi.unstubAllGlobals()
+    vi.useRealTimers()
   })
 
   it('should be defined', () => {
@@ -150,6 +152,29 @@ describe('useWebSocket', () => {
       vm.ref.close()
 
       expect(mockWebSocket.prototype.close).toBeCalledWith(1000, undefined)
+    })
+
+    it('should sync status to CLOSED after close() when onclose fires', () => {
+      vm = useSetup(() => {
+        const ref = useWebSocket('ws://localhost')
+
+        return {
+          ref,
+        }
+      })
+
+      const ws = vm.ref.ws.value
+      ws?.onopen?.(new Event('open'))
+      expect(vm.ref.status.value).toBe('OPEN')
+
+      vm.ref.close()
+
+      // Real browsers fire onclose asynchronously after WebSocket.close().
+      // Simulate that here: at this point close() has already nulled wsRef.value,
+      // so the handler must still transition status to CLOSED.
+      ws?.onclose?.(new CloseEvent('close'))
+
+      expect(vm.ref.status.value).toBe('CLOSED')
     })
   })
 
@@ -354,8 +379,6 @@ describe('useWebSocket', () => {
   })
 
   describe('heartbeat', () => {
-    vi.useFakeTimers()
-
     it('should send a heartbeat if heartbeat=true', async () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {
@@ -373,6 +396,7 @@ describe('useWebSocket', () => {
       await vi.advanceTimersByTimeAsync(500)
       expect(mockWebSocket.prototype.send).toBeCalledWith('ping')
     })
+
     it('should not send a heartbeat if heartbeat=false', async () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {
@@ -388,6 +412,7 @@ describe('useWebSocket', () => {
       await vi.advanceTimersByTimeAsync(500)
       expect(mockWebSocket.prototype.send).not.toHaveBeenCalled()
     })
+
     it('should call close on pongTimeout', async () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {
@@ -410,6 +435,7 @@ describe('useWebSocket', () => {
       await vi.advanceTimersByTimeAsync(1)
       expect(mockWebSocket.prototype.close).toHaveBeenCalledOnce()
     })
+
     it('should not call close on pongTimeout if connection already closed', async () => {
       vm = useSetup(() => {
         const ref = useWebSocket('wss://server.example.com', {
@@ -433,6 +459,7 @@ describe('useWebSocket', () => {
       await vi.advanceTimersByTimeAsync(1500)
       expect(mockWebSocket.prototype.close).not.toHaveBeenCalled()
     })
+
     it('should not send a heartbeat if the connection is closed', async () => {
       const messageSpy = vi.fn(() => 'ping')
       vm = useSetup(() => {

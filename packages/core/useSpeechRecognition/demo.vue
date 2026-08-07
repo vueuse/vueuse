@@ -49,7 +49,6 @@ const sampled = shallowRef<string[]>([])
 
 function start() {
   color.value = 'transparent'
-  speech.result.value = ''
   sampled.value = sample(colors, 5)
   speech.start()
 }

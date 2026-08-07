@@ -1,14 +1,12 @@
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { shallowRef } from 'vue'
-
 import { defaultWindow } from '../_configurable'
-
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
-export interface NavigatorLanguageState {
-  isSupported: ComputedRef<boolean>
+export interface NavigatorLanguageState extends Supportable {
   /**
    *
    * ISO 639-1 standard Language Code
@@ -28,6 +26,11 @@ export interface NavigatorLanguageState {
   language: ShallowRef<string | undefined>
 }
 
+export interface UseNavigatorLanguageOptions extends ConfigurableWindow {
+}
+
+export type UseNavigatorLanguageReturn = Readonly<NavigatorLanguageState>
+
 /**
  *
  * Reactive useNavigatorLanguage
@@ -37,7 +40,7 @@ export interface NavigatorLanguageState {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly<NavigatorLanguageState> {
+export function useNavigatorLanguage(options: UseNavigatorLanguageOptions = {}): UseNavigatorLanguageReturn {
   const { window = defaultWindow } = options
 
   const navigator = window?.navigator
@@ -57,5 +60,3 @@ export function useNavigatorLanguage(options: ConfigurableWindow = {}): Readonly
     language,
   }
 }
-
-export type UseNavigatorLanguageReturn = ReturnType<typeof useNavigatorLanguage>

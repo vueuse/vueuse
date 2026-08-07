@@ -1,3 +1,4 @@
+import type { ComponentInternalInstance } from 'vue'
 import type { Fn } from '../utils'
 // eslint-disable-next-line no-restricted-imports
 import { nextTick, onMounted } from 'vue'
@@ -10,7 +11,7 @@ import { getLifeCycleTarget } from '../utils'
  * @param sync if set to false, it will run in the nextTick() of Vue
  * @param target
  */
-export function tryOnMounted(fn: Fn, sync = true, target?: any) {
+export function tryOnMounted(fn: Fn, sync = true, target?: ComponentInternalInstance | null) {
   const instance = getLifeCycleTarget(target)
   if (instance)
     onMounted(fn, target)

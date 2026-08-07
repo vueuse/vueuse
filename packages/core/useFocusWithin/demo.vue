@@ -2,7 +2,7 @@
 import { useFocusWithin } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
 
-const target = useTemplateRef<HTMLFormElement>('target')
+const target = useTemplateRef('target')
 
 const { focused } = useFocusWithin(target)
 </script>

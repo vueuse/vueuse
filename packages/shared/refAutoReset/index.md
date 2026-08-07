@@ -21,5 +21,7 @@ function setMessage() {
 ```
 
 ::: info
-You can use `triggerRef` to trigger effects after making deep mutations to the inner value of a refAutoReset.
+You can reassign the entire object to trigger updates after making deep mutations to the inner value.
+
+[Learn more about shallow refs →](https://vuejs.org/api/reactivity-advanced#shallowref)
 :::

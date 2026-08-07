@@ -1,17 +1,25 @@
-import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
+import type { Supportable } from '../types'
+import type { MaybeComputedElementRefOrArray } from '../unrefElement'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { computed, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 
+/**
+ * @deprecated This interface is now available in the DOM lib.
+ * Use the global {@link globalThis.ResizeObserverSize} instead.
+ */
 export interface ResizeObserverSize {
   readonly inlineSize: number
   readonly blockSize: number
 }
 
+/**
+ * @deprecated This interface is now available in the DOM lib.
+ * Use the global {@link globalThis.ResizeObserverEntry} instead.
+ */
 export interface ResizeObserverEntry {
   readonly target: Element
   readonly contentRect: DOMRectReadOnly
@@ -20,23 +28,17 @@ export interface ResizeObserverEntry {
   readonly devicePixelContentBoxSize: ReadonlyArray<ResizeObserverSize>
 }
 
+/**
+ * @deprecated This interface is now available in the DOM lib.
+ * Use the global {@link globalThis.ResizeObserverCallback} instead.
+ */
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void
 
-export interface UseResizeObserverOptions extends ConfigurableWindow {
-  /**
-   * Sets which box model the observer will observe changes to. Possible values
-   * are `content-box` (the default), `border-box` and `device-pixel-content-box`.
-   *
-   * @default 'content-box'
-   */
-  box?: ResizeObserverBoxOptions
+export interface UseResizeObserverOptions extends ResizeObserverOptions, ConfigurableWindow {
 }
 
-declare class ResizeObserver {
-  constructor(callback: ResizeObserverCallback)
-  disconnect(): void
-  observe(target: Element, options?: UseResizeObserverOptions): void
-  unobserve(target: Element): void
+export interface UseResizeObserverReturn extends Supportable {
+  stop: () => void
 }
 
 /**
@@ -48,10 +50,10 @@ declare class ResizeObserver {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
-  callback: ResizeObserverCallback,
+  target: MaybeComputedElementRefOrArray,
+  callback: globalThis.ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
-) {
+): UseResizeObserverReturn {
   const { window = defaultWindow, ...observerOptions } = options
   let observer: ResizeObserver | undefined
   const isSupported = useSupported(() => window && 'ResizeObserver' in window)
@@ -97,5 +99,3 @@ export function useResizeObserver(
     stop,
   }
 }
-
-export type UseResizeObserverReturn = ReturnType<typeof useResizeObserver>

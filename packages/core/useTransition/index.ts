@@ -1,7 +1,7 @@
 import type { ComputedRef, MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { identity as linear, promiseTimeout, tryOnScopeDispose } from '@vueuse/shared'
-import { computed, ref as deepRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 /**
@@ -15,9 +15,14 @@ export type CubicBezierPoints = [number, number, number, number]
 export type EasingFunction = (n: number) => number
 
 /**
+ * Interpolation function
+ */
+export type InterpolationFunction<T> = (from: T, to: T, t: number) => T
+
+/**
  * Transition options
  */
-export interface TransitionOptions extends ConfigurableWindow {
+export interface TransitionOptions<T> extends ConfigurableWindow {
 
   /**
    * Manually abort a transition
@@ -30,12 +35,23 @@ export interface TransitionOptions extends ConfigurableWindow {
   duration?: MaybeRef<number>
 
   /**
-   * Easing function or cubic bezier points for calculating transition values
+   * Easing function or cubic bezier points to calculate transition progress
+   */
+  easing?: MaybeRef<EasingFunction | CubicBezierPoints>
+
+  /**
+   * Custom interpolation function
+   */
+  interpolation?: InterpolationFunction<T>
+
+  /**
+   * Easing function or cubic bezier points to calculate transition progress
+   * @deprecated The `transition` option is deprecated, use `easing` instead.
    */
   transition?: MaybeRef<EasingFunction | CubicBezierPoints>
 }
 
-export interface UseTransitionOptions extends TransitionOptions {
+export interface UseTransitionOptions<T> extends TransitionOptions<T> {
   /**
    * Milliseconds to wait before starting transition
    */
@@ -124,8 +140,25 @@ function lerp(a: number, b: number, alpha: number) {
   return a + alpha * (b - a)
 }
 
-function toVec(t: number | number[] | undefined) {
-  return (typeof t === 'number' ? [t] : t) || []
+function defaultInterpolation<T>(a: T, b: T, t: number) {
+  const aVal = toValue(a)
+  const bVal = toValue(b)
+
+  if (typeof aVal === 'number' && typeof bVal === 'number') {
+    return lerp(aVal, bVal, t) as T
+  }
+
+  if (Array.isArray(aVal) && Array.isArray(bVal)) {
+    return aVal.map((v, i) => lerp(v, toValue(bVal[i]), t)) as T
+  }
+
+  throw new TypeError('Unknown transition type, specify an interpolation function.')
+}
+
+function normalizeEasing(easing: MaybeRef<EasingFunction | CubicBezierPoints> | undefined) {
+  return typeof easing === 'function'
+    ? easing
+    : (toValue(easing) ?? linear)
 }
 
 /**
@@ -136,25 +169,28 @@ function toVec(t: number | number[] | undefined) {
  * @param to
  * @param options
  */
-export function executeTransition<T extends number | number[]>(
+export function transition<T>(
   source: Ref<T>,
   from: MaybeRefOrGetter<T>,
   to: MaybeRefOrGetter<T>,
-  options: TransitionOptions = {},
+  options: TransitionOptions<T> = {},
 ): PromiseLike<void> {
   const {
     window = defaultWindow,
   } = options
   const fromVal = toValue(from)
   const toVal = toValue(to)
-  const v1 = toVec(fromVal)
-  const v2 = toVec(toVal)
   const duration = toValue(options.duration) ?? 1000
   const startedAt = Date.now()
   const endAt = Date.now() + duration
-  const trans = typeof options.transition === 'function'
-    ? options.transition
-    : (toValue(options.transition) ?? linear)
+
+  const interpolation = typeof options.interpolation === 'function'
+    ? options.interpolation
+    : defaultInterpolation
+
+  const trans = typeof options.easing !== 'undefined'
+    ? normalizeEasing(options.easing)
+    : normalizeEasing(options.transition)
 
   const ease = typeof trans === 'function'
     ? trans
@@ -172,12 +208,8 @@ export function executeTransition<T extends number | number[]>(
 
       const now = Date.now()
       const alpha = ease((now - startedAt) / duration)
-      const arr = toVec(source.value).map((n, i) => lerp(v1[i], v2[i], alpha))
 
-      if (Array.isArray(source.value))
-        (source.value as number[]) = arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha))
-      else if (typeof source.value === 'number')
-        (source.value as number) = arr[0]
+      source.value = interpolation(fromVal, toVal, alpha) as T
 
       if (now < endAt) {
         window?.requestAnimationFrame(tick)
@@ -193,14 +225,32 @@ export function executeTransition<T extends number | number[]>(
   })
 }
 
-// option 1: reactive number
-export function useTransition(source: MaybeRefOrGetter<number>, options?: UseTransitionOptions): ComputedRef<number>
+/**
+ * Transition from one value to another.
+ * @deprecated The `executeTransition` function is deprecated, use `transition` instead.
+ *
+ * @param source
+ * @param from
+ * @param to
+ * @param options
+ */
+export function executeTransition<T>(
+  source: Ref<T>,
+  from: MaybeRefOrGetter<T>,
+  to: MaybeRefOrGetter<T>,
+  options: TransitionOptions<T> = {},
+) {
+  return transition(source, from, to, options)
+}
 
-// option 2: static array of possibly reactive numbers
-export function useTransition<T extends MaybeRefOrGetter<number>[]>(source: [...T], options?: UseTransitionOptions): ComputedRef<{ [K in keyof T]: number }>
+// static array of possibly reactive numbers
+export function useTransition<T extends MaybeRefOrGetter<number>[]>(source: [...T], options?: UseTransitionOptions<T>): ComputedRef<{ [K in keyof T]: number }>
 
-// option 3: reactive array of numbers
-export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, options?: UseTransitionOptions): ComputedRef<number[]>
+// reactive array of numbers
+export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, options?: UseTransitionOptions<T>): ComputedRef<number[]>
+
+// custom type
+export function useTransition<T>(source: MaybeRefOrGetter<T>, options?: UseTransitionOptions<T>): ComputedRef<T>
 
 /**
  * Follow value with a transition.
@@ -209,21 +259,21 @@ export function useTransition<T extends MaybeRefOrGetter<number[]>>(source: T, o
  * @param source
  * @param options
  */
-export function useTransition(
-  source: MaybeRefOrGetter<number | number[]> | MaybeRefOrGetter<number>[],
-  options: UseTransitionOptions = {},
-): Ref<any> {
+export function useTransition<T>(
+  source: MaybeRefOrGetter<T>,
+  options: UseTransitionOptions<T> = {},
+): ComputedRef<T> {
   let currentId = 0
 
-  const sourceVal = () => {
+  const sourceVal = (): T => {
     const v = toValue(source)
 
-    return typeof v === 'number'
-      ? v
-      : v.map(toValue<number>)
+    return typeof options.interpolation === 'undefined' && Array.isArray(v)
+      ? (v as any).map(toValue)
+      : v
   }
 
-  const outputRef = deepRef(sourceVal())
+  const outputRef = shallowRef(sourceVal())
 
   watch(sourceVal, async (to) => {
     if (toValue(options.disabled))
@@ -237,11 +287,9 @@ export function useTransition(
     if (id !== currentId)
       return
 
-    const toVal = Array.isArray(to) ? to.map(toValue<number>) : toValue(to)
-
     options.onStarted?.()
 
-    await executeTransition(outputRef, outputRef.value, toVal, {
+    await transition(outputRef, outputRef.value, to, {
       ...options,
       abort: () => id !== currentId || options.abort?.(),
     })

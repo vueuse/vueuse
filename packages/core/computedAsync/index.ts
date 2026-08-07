@@ -1,4 +1,4 @@
-import type { Fn, WatchOptionFlush } from '@vueuse/shared'
+import type { ConfigurableFlushSync, Fn } from '@vueuse/shared'
 import type { ComputedRef, Ref } from 'vue'
 import { noop } from '@vueuse/shared'
 import {
@@ -16,7 +16,7 @@ import {
  */
 export type AsyncComputedOnCancel = (cancelCallback: Fn) => void
 
-export interface AsyncComputedOptions<Lazy = boolean> {
+export interface AsyncComputedOptions<Lazy = boolean> extends ConfigurableFlushSync {
   /**
    * Should value be evaluated lazily
    *
@@ -35,16 +35,6 @@ export interface AsyncComputedOptions<Lazy = boolean> {
    * @default true
    */
   shallow?: boolean
-
-  /**
-   * The flush option allows for greater control over the timing of a history point, default to `pre`
-   *
-   * Possible values: `pre`, `post`, `sync`
-   *
-   * It works in the same way as the flush option in watch and watch effect in vue reactivity
-   * @default 'sync'
-   */
-  flush?: WatchOptionFlush
 
   /**
    * Callback when error is caught.

@@ -1,6 +1,6 @@
-import type { MapOldSources, MapSources, MultiWatchSources } from '@vueuse/shared'
+import type { MapOldSources, MapSources } from '@vueuse/shared'
 import type { Observable, Subscription } from 'rxjs'
-import type { WatchHandle, WatchOptions, WatchSource } from 'vue'
+import type { MultiWatchSources, WatchHandle, WatchOptions, WatchSource } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { watch } from 'vue'
 
@@ -26,7 +26,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // overload: multiple sources w/ `as const`
@@ -45,7 +45,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // overload: single source + cb
@@ -62,7 +62,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // overload: watching reactive object w/ cb
@@ -79,7 +79,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // implementation

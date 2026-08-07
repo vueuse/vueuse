@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 import { onLongPress } from './index'
@@ -13,6 +13,10 @@ describe('onLongPress', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   async function triggerCallback(isRef: boolean) {
@@ -163,7 +167,7 @@ describe('onLongPress', () => {
     pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, false, expect.any(PointerEvent))
     expect(onMouseUpCallback.mock.calls[0][0]).toBeGreaterThanOrEqual(250 - 2)
 
     // wait for 500ms after pointer up
@@ -182,7 +186,7 @@ describe('onLongPress', () => {
     pointerUpEvent = new PointerEvent('pointerup', { cancelable: true, bubbles: true })
     element.value.dispatchEvent(pointerUpEvent)
     expect(onMouseUpCallback).toHaveBeenCalledTimes(2)
-    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true)
+    expect(onMouseUpCallback).toBeCalledWith(expect.any(Number), 0, true, expect.any(PointerEvent))
     expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500 - 2)
   }
 
@@ -193,12 +197,19 @@ describe('onLongPress', () => {
 
     describe('given options', () => {
       it('should trigger longpress after options.delay ms', () => triggerCallbackWithDelay(isRef))
+
       it('should not trigger longpress when child element on longpress', () => notTriggerCallbackOnChildLongPress(isRef))
+
       it('should work with once and prevent modifiers', () => workOnceAndPreventModifiers(isRef))
+
       it('should stop propagation', () => stopPropagation(isRef))
+
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
+
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
+
       it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
+
       it('should trigger longpress after options.delay ms when options.delay is a function', () => triggerCallbackWithDelay(isRef, () => 2000))
     })
   }

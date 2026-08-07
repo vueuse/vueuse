@@ -1,18 +1,29 @@
 import type { PackageIndexes, PackageManifest } from '@vueuse/metadata'
-import type { Format, Options, UserConfig } from 'tsdown'
+import type { Format, UserConfig } from 'tsdown'
 import { globSync } from 'tinyglobby'
+import { StaleGuardRecorder } from 'tsdown-stale-guard'
 import metadata from './packages/metadata/index.json' with { type: 'json' }
 
 const functions = metadata.functions as PackageIndexes['functions']
 
-const externals = [
+export const externals = [
   'vue',
   /@vueuse\/.*/,
 ]
 
+export const attwConfig: UserConfig['attw'] = {
+  level: 'error',
+  profile: 'esm-only',
+  ignoreRules: ['cjs-resolves-to-esm'],
+}
+
+export const basePlugins: UserConfig['plugins'] = [
+  StaleGuardRecorder(),
+]
+
 export function createTsDownConfig(
   pkg: PackageManifest,
-  copy?: Options['copy'],
+  copy?: UserConfig['copy'],
   cwd = process.cwd(),
 ) {
   const { globals, external, submodules, iife, build, mjs, dts, target = 'es2018' } = pkg
@@ -37,10 +48,12 @@ export function createTsDownConfig(
     target,
     dts,
     platform: 'browser',
-    external: [
-      ...externals,
-      ...(external || []),
-    ],
+    deps: {
+      neverBundle: [
+        ...externals,
+        ...(external || []),
+      ],
+    },
   }
 
   const configs: UserConfig[] = []
@@ -98,6 +111,8 @@ export function createTsDownConfig(
     entry,
     format,
     copy,
+    attw: attwConfig,
+    plugins: basePlugins,
   })
 
   return configs
