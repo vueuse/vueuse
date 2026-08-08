@@ -28,8 +28,6 @@ export function onLongPress(_, _, _) {}
 export function onStartTyping(_, _) {}
 export function provideSSRWidth(_, _) {}
 export function setSSRHandler(_, _) {}
-/** @deprecated */
-export function templateRef(_, _) {}
 export function transition(_, _, _, _) {}
 export function unrefElement(_) {}
 export function useActiveElement(_) {}

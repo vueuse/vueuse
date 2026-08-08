@@ -1770,8 +1770,6 @@ export declare function onLongPress(_: MaybeElementRef, _: (_: PointerEvent) => 
 export declare function onStartTyping(_: (_: KeyboardEvent) => void, _?: OnStartTypingOptions): void;
 export declare function provideSSRWidth(_: number | null, _?: App<unknown>): void;
 export declare function setSSRHandler<T extends keyof SSRHandlersMap>(_: T, _: SSRHandlersMap[T]): void;
-/** @deprecated */
-export declare function templateRef<T extends HTMLElement | SVGElement | Component | null, Keys extends string = string>(_: Keys, _?: T | null): Readonly<Ref<T>>;
 export declare function transition<T>(_: Ref<T>, _: MaybeRefOrGetter<T>, _: MaybeRefOrGetter<T>, _?: TransitionOptions<T>): PromiseLike<void>;
 export declare function unrefElement<T extends MaybeElement>(_: MaybeComputedElementRef<T>): UnRefElementReturn<T>;
 export declare function useActiveElement<T extends HTMLElement>(_?: UseActiveElementOptions): UseActiveElementReturn<T>;
