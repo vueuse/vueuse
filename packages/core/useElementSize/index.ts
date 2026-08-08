@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
 import { toArray, tryOnMounted } from '@vueuse/shared'
@@ -11,6 +12,15 @@ export interface ElementSize {
   height: number
 }
 
+export interface UseElementSizeOptions extends UseResizeObserverOptions {
+}
+
+export interface UseElementSizeReturn {
+  width: ShallowRef<number>
+  height: ShallowRef<number>
+  stop: () => void
+}
+
 /**
  * Reactive size of an HTML element.
  *
@@ -19,8 +29,8 @@ export interface ElementSize {
 export function useElementSize(
   target: MaybeComputedElementRef,
   initialSize: ElementSize = { width: 0, height: 0 },
-  options: UseResizeObserverOptions = {},
-) {
+  options: UseElementSizeOptions = {},
+): UseElementSizeReturn {
   const { window = defaultWindow, box = 'content-box' } = options
   const isSVG = computed(() => unrefElement(target)?.namespaceURI?.includes('svg'))
   const width = shallowRef(initialSize.width)
@@ -61,9 +71,24 @@ export function useElementSize(
 
   tryOnMounted(() => {
     const ele = unrefElement(target)
-    if (ele) {
-      width.value = 'offsetWidth' in ele ? ele.offsetWidth : initialSize.width
-      height.value = 'offsetHeight' in ele ? ele.offsetHeight : initialSize.height
+    if (ele && 'offsetWidth' in ele) {
+      if (box === 'content-box' && window) {
+        const cs = window.getComputedStyle(ele)
+        const padX = Number.parseFloat(cs.paddingLeft) + Number.parseFloat(cs.paddingRight)
+        const padY = Number.parseFloat(cs.paddingTop) + Number.parseFloat(cs.paddingBottom)
+        const bdX = Number.parseFloat(cs.borderLeftWidth) + Number.parseFloat(cs.borderRightWidth)
+        const bdY = Number.parseFloat(cs.borderTopWidth) + Number.parseFloat(cs.borderBottomWidth)
+        width.value = ele.offsetWidth - padX - bdX
+        height.value = ele.offsetHeight - padY - bdY
+      }
+      else {
+        width.value = ele.offsetWidth
+        height.value = ele.offsetHeight
+      }
+    }
+    else if (ele) {
+      width.value = initialSize.width
+      height.value = initialSize.height
     }
   })
 
@@ -86,5 +111,3 @@ export function useElementSize(
     stop,
   }
 }
-
-export type UseElementSizeReturn = ReturnType<typeof useElementSize>

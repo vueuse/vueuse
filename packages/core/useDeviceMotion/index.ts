@@ -1,15 +1,16 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 import type { ConfigurableEventFilter } from '@vueuse/shared'
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
+import type { Supportable } from '../types'
 import { bypassFilter, createFilterWrapper } from '@vueuse/shared'
 import { ref as deepRef, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
 
-export interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {
+export interface UseDeviceMotionOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Request for permissions immediately if it's not granted,
    * otherwise label and deviceIds could be empty
@@ -19,8 +20,21 @@ export interface DeviceMotionOptions extends ConfigurableWindow, ConfigurableEve
   requestPermissions?: boolean
 }
 
-interface DeviceMotionEventiOS extends DeviceMotionOptions {
+/** @deprecated use {@link UseDeviceMotionOptions} instead */
+export type DeviceMotionOptions = UseDeviceMotionOptions
+
+interface DeviceMotionEventiOS extends UseDeviceMotionOptions {
   requestPermission: () => Promise<'granted' | 'denied'>
+}
+
+export interface UseDeviceMotionReturn extends Supportable {
+  acceleration: Ref<DeviceMotionEventAcceleration | null>
+  accelerationIncludingGravity: Ref<DeviceMotionEventAcceleration | null>
+  rotationRate: Ref<DeviceMotionEventRotationRate | null>
+  interval: ShallowRef<number>
+  requirePermissions: ComputedRef<boolean>
+  ensurePermissions: () => Promise<void>
+  permissionGranted: ShallowRef<boolean>
 }
 
 /**
@@ -29,7 +43,7 @@ interface DeviceMotionEventiOS extends DeviceMotionOptions {
  * @see https://vueuse.org/useDeviceMotion
  * @param options
  */
-export function useDeviceMotion(options: DeviceMotionOptions = {}) {
+export function useDeviceMotion(options: UseDeviceMotionOptions = {}): UseDeviceMotionReturn {
   const {
     window = defaultWindow,
     requestPermissions = false,
@@ -118,5 +132,3 @@ export function useDeviceMotion(options: DeviceMotionOptions = {}) {
     permissionGranted,
   }
 }
-
-export type UseDeviceMotionReturn = ReturnType<typeof useDeviceMotion>

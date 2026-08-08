@@ -1,6 +1,6 @@
-import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
+import type { Supportable } from '../types'
+import type { MaybeComputedElementRefOrArray } from '../unrefElement'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { computed, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -37,6 +37,10 @@ export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry
 export interface UseResizeObserverOptions extends ResizeObserverOptions, ConfigurableWindow {
 }
 
+export interface UseResizeObserverReturn extends Supportable {
+  stop: () => void
+}
+
 /**
  * Reports changes to the dimensions of an Element's content or the border-box
  *
@@ -46,10 +50,10 @@ export interface UseResizeObserverOptions extends ResizeObserverOptions, Configu
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
+  target: MaybeComputedElementRefOrArray,
   callback: globalThis.ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
-) {
+): UseResizeObserverReturn {
   const { window = defaultWindow, ...observerOptions } = options
   let observer: ResizeObserver | undefined
   const isSupported = useSupported(() => window && 'ResizeObserver' in window)
@@ -95,5 +99,3 @@ export function useResizeObserver(
     stop,
   }
 }
-
-export type UseResizeObserverReturn = ReturnType<typeof useResizeObserver>

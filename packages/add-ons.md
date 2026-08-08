@@ -1,6 +1,6 @@
 # Add-ons
 
-The core package aims to be lightweight and dependence free. While the add-ons are wrapping popular packages into the consistent API style.
+The core package aims to be lightweight and dependency-free. While the add-ons are wrapping popular packages into the consistent API style.
 
 ## Head - [`@vueuse/head`](https://github.com/vueuse/head) <carbon-link class="external-link"/>
 
@@ -109,7 +109,7 @@ Enables realtime bindings for Firebase
 
 Electron renderer process modules for VueUse
 
-- [`useIpcRenderer`](https://vueuse.org/electron/useIpcRenderer/) — provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and all of its APIs
+- [`useIpcRenderer`](https://vueuse.org/electron/useIpcRenderer/) — provides [ipcRenderer](https://www.electronjs.org/docs/api/ipc-renderer) and all of its APIs with Vue reactivity
 - [`useIpcRendererInvoke`](https://vueuse.org/electron/useIpcRendererInvoke/) — reactive [ipcRenderer.invoke API](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererinvokechannel-args) result
 - [`useIpcRendererOn`](https://vueuse.org/electron/useIpcRendererOn/) — use [ipcRenderer.on](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereronchannel-listener) with ease and [ipcRenderer.removeListener](https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovelistenerchannel-listener) automatically on unmounted
 - [`useZoomFactor`](https://vueuse.org/electron/useZoomFactor/) — reactive [WebFrame](https://www.electronjs.org/docs/api/web-frame#webframe) zoom factor

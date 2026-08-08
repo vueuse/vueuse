@@ -1,5 +1,6 @@
+import type { ShallowRef } from 'vue'
 import type { UseIntersectionObserverReturn } from '.'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { cleanup } from 'vitest-browser-vue'
 import { page } from 'vitest/browser'
 import { defineComponent, shallowRef, toValue, useTemplateRef } from 'vue'
@@ -8,6 +9,11 @@ import { useIntersectionObserver } from '.'
 describe('useIntersectionObserver', () => {
   beforeEach(() => {
     window.scrollTo(0, 0)
+  })
+
+  it('accepts an array template ref bound to v-for as target', () => {
+    expectTypeOf<Readonly<ShallowRef<HTMLElement[] | null>>>()
+      .toExtend<Parameters<typeof useIntersectionObserver>[0]>()
   })
 
   const expectFunctionHasNotBeenCalled = async (callbackMock: any) => {
@@ -109,7 +115,7 @@ describe('useIntersectionObserver', () => {
       await vi.waitFor(() => {
         expect(callbackMock).toHaveBeenCalledTimes(2)
         expect(callbackMock.mock.calls[1][0][0].isIntersecting).toBe(true)
-        expect(callbackMock.mock.calls[0][0][0].rootBounds!.height).toBe(200)
+        expect(callbackMock.mock.calls[1][0][0].rootBounds!.height).toBe(200)
       })
     })
 

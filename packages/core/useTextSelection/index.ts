@@ -1,7 +1,18 @@
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { computed, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
+
+export interface UseTextSelectionOptions extends ConfigurableWindow {
+}
+
+export interface UseTextSelectionReturn {
+  text: ComputedRef<string>
+  rects: ComputedRef<DOMRect[]>
+  ranges: ComputedRef<Range[]>
+  selection: ShallowRef<Selection | null>
+}
 
 function getRangesFromSelection(selection: Selection) {
   const rangeCount = selection.rangeCount ?? 0
@@ -15,7 +26,7 @@ function getRangesFromSelection(selection: Selection) {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useTextSelection(options: ConfigurableWindow = {}) {
+export function useTextSelection(options: UseTextSelectionOptions = {}): UseTextSelectionReturn {
   const {
     window = defaultWindow,
   } = options
@@ -41,5 +52,3 @@ export function useTextSelection(options: ConfigurableWindow = {}) {
     selection,
   }
 }
-
-export type UseTextSelectionReturn = ReturnType<typeof useTextSelection>

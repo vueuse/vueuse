@@ -19,7 +19,7 @@ export function MarkdownTransform(): Plugin {
     name: 'vueuse-md-transform',
     enforce: 'pre',
     async transform(code, id) {
-      if (!id.match(/\.md\b/))
+      if (!/\.md\b/.test(id))
         return null
 
       // linkify function names

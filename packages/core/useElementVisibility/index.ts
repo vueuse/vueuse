@@ -1,12 +1,13 @@
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
-import type { UseIntersectionObserverOptions } from '../useIntersectionObserver'
+import type { UseIntersectionObserverOptions, UseIntersectionObserverReturn } from '../useIntersectionObserver'
 import { watchOnce } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
-export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'rootMargin' | 'threshold'> {
+export interface UseElementVisibilityOptions<Controls extends boolean = false> extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'rootMargin' | 'threshold'> {
   /**
    * Initial value.
    *
@@ -23,6 +24,21 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<Us
    * @default false
    */
   once?: boolean
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
+
+export type UseElementVisibilityReturn<Controls extends boolean = false>
+  = Controls extends true
+    ? UseElementVisibilityReturnWithControls
+    : ShallowRef<boolean>
+
+export interface UseElementVisibilityReturnWithControls extends UseIntersectionObserverReturn {
+  isVisible: ShallowRef<boolean>
 }
 
 /**
@@ -32,8 +48,16 @@ export interface UseElementVisibilityOptions extends ConfigurableWindow, Pick<Us
  */
 export function useElementVisibility(
   element: MaybeComputedElementRef,
-  options: UseElementVisibilityOptions = {},
-) {
+  options?: UseElementVisibilityOptions<false>,
+): UseElementVisibilityReturn<false>
+export function useElementVisibility(
+  element: MaybeComputedElementRef,
+  options?: UseElementVisibilityOptions<true>,
+): UseElementVisibilityReturn<true>
+export function useElementVisibility(
+  element: MaybeComputedElementRef,
+  options: UseElementVisibilityOptions<boolean> = {},
+): UseElementVisibilityReturn<boolean> {
   const {
     window = defaultWindow,
     scrollTarget,
@@ -42,12 +66,12 @@ export function useElementVisibility(
     once = false,
     initialValue = false,
   } = options
-  const elementIsVisible = shallowRef(initialValue)
+  const isVisible = shallowRef(initialValue)
 
-  const { stop } = useIntersectionObserver(
+  const observerController = useIntersectionObserver(
     element,
     (intersectionObserverEntries) => {
-      let isIntersecting = elementIsVisible.value
+      let isIntersecting = isVisible.value
 
       // Get the latest value of isIntersecting based on the entry time
       let latestTime = 0
@@ -57,11 +81,11 @@ export function useElementVisibility(
           isIntersecting = entry.isIntersecting
         }
       }
-      elementIsVisible.value = isIntersecting
+      isVisible.value = isIntersecting
 
       if (once) {
-        watchOnce(elementIsVisible, () => {
-          stop()
+        watchOnce(isVisible, () => {
+          observerController.stop()
         })
       }
     },
@@ -73,7 +97,7 @@ export function useElementVisibility(
     },
   )
 
-  return elementIsVisible
+  return options.controls
+    ? { ...observerController, isVisible }
+    : isVisible
 }
-
-export type UseElementVisibilityReturn = ReturnType<typeof useElementVisibility>

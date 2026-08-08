@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import { tryOnMounted } from '@vueuse/shared'
 import { shallowRef, watch } from 'vue'
@@ -45,6 +46,18 @@ export interface UseElementBoundingOptions {
   updateTiming?: 'sync' | 'next-frame'
 }
 
+export interface UseElementBoundingReturn {
+  height: ShallowRef<number>
+  bottom: ShallowRef<number>
+  left: ShallowRef<number>
+  right: ShallowRef<number>
+  top: ShallowRef<number>
+  width: ShallowRef<number>
+  x: ShallowRef<number>
+  y: ShallowRef<number>
+  update: () => void
+}
+
 /**
  * Reactive bounding box of an HTML element.
  *
@@ -54,7 +67,7 @@ export interface UseElementBoundingOptions {
 export function useElementBounding(
   target: MaybeComputedElementRef,
   options: UseElementBoundingOptions = {},
-) {
+): UseElementBoundingReturn {
   const {
     reset = true,
     windowResize = true,
@@ -137,5 +150,3 @@ export function useElementBounding(
     update,
   }
 }
-
-export type UseElementBoundingReturn = ReturnType<typeof useElementBounding>

@@ -2,7 +2,7 @@
 // by @linusborg https://github.com/LinusBorg
 
 import type { ShallowRef, WatchOptionsBase } from 'vue'
-import { readonly, shallowRef, watchEffect } from 'vue'
+import { readonly as deepReadonly, shallowRef, watchEffect } from 'vue'
 
 export type ComputedEagerOptions = WatchOptionsBase
 
@@ -31,7 +31,7 @@ export function computedEager<T>(fn: () => T, options?: ComputedEagerOptions): C
     flush: options?.flush ?? 'sync',
   })
 
-  return readonly(result)
+  return deepReadonly(result)
 }
 
 /** @deprecated use `computedEager` instead */

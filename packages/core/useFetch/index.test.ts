@@ -122,7 +122,7 @@ describe('useFetch', () => {
 
   it('should abort request and set aborted to true', async () => {
     const { aborted, abort, execute } = useFetch(baseUrl)
-    setTimeout(() => abort(), 0)
+    setTimeout(abort, 0)
     await vi.waitFor(() => {
       expect(aborted.value).toBe(true)
     })
@@ -729,6 +729,17 @@ describe('useFetch', () => {
     await vi.waitFor(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
     })
+  })
+
+  it('should clear error when refetch succeeds after aborting previous request', async () => {
+    const url = shallowRef(`${baseUrl}?delay=50`)
+    const { data, error } = useFetch(url, { refetch: true }).json()
+    await nextTick()
+    url.value = jsonUrl
+    await vi.waitFor(() => {
+      expect(data.value).toEqual(jsonMessage)
+    })
+    expect(error.value).toBeNull()
   })
 
   it('should be generated payloadType on execute', async () => {

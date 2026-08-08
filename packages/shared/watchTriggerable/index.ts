@@ -17,10 +17,26 @@ type OnCleanup = (cleanupFn: () => void) => void
 
 export type WatchTriggerableCallback<V = any, OV = any, R = void> = (value: V, oldValue: OV, onCleanup: OnCleanup) => R
 
-export function watchTriggerable<T extends Readonly<MultiWatchSources>, FnReturnT>(sources: [...T], cb: WatchTriggerableCallback<MapSources<T>, MapOldSources<T, true>, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
-export function watchTriggerable<T, FnReturnT>(source: WatchSource<T>, cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
-export function watchTriggerable<T extends object, FnReturnT>(source: T, cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>, options?: WatchWithFilterOptions<boolean>): WatchTriggerableReturn<FnReturnT>
+// overloads
+export function watchTriggerable<T, FnReturnT>(
+  source: WatchSource<T>,
+  cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>,
+  options?: WatchWithFilterOptions<boolean>,
+): WatchTriggerableReturn<FnReturnT>
 
+export function watchTriggerable<T extends Readonly<MultiWatchSources>, FnReturnT>(
+  sources: [...T],
+  cb: WatchTriggerableCallback<MapSources<T>, MapOldSources<T, true>, FnReturnT>,
+  options?: WatchWithFilterOptions<boolean>,
+): WatchTriggerableReturn<FnReturnT>
+
+export function watchTriggerable<T extends object, FnReturnT>(
+  source: T,
+  cb: WatchTriggerableCallback<T, T | undefined, FnReturnT>,
+  options?: WatchWithFilterOptions<boolean>,
+): WatchTriggerableReturn<FnReturnT>
+
+// implementation
 export function watchTriggerable<Immediate extends Readonly<boolean> = false>(
   source: any,
   cb: any,

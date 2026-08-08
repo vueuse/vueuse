@@ -62,6 +62,7 @@ describe('useFirestore', () => {
 
   afterEach(() => {
     vi.clearAllTimers()
+    vi.useRealTimers()
   })
 
   it('should get `users` collection data', () => {

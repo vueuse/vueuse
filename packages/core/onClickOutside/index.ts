@@ -39,7 +39,7 @@ export type OnClickOutsideHandler<
     | PointerEvent,
 ) => void
 
-interface OnClickOutsideControlsReturn {
+export type OnClickOutsideReturn<Controls extends boolean = false> = Controls extends false ? Fn : {
   stop: Fn
   cancel: Fn
   trigger: (event: Event) => void
@@ -69,14 +69,18 @@ export function onClickOutside<
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
   options: T,
-): OnClickOutsideControlsReturn
+): {
+  stop: Fn
+  cancel: Fn
+  trigger: (event: Event) => void
+}
 
 // Implementation
 export function onClickOutside(
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler,
   options: OnClickOutsideOptions<boolean> = {},
-) {
+): OnClickOutsideReturn<boolean> {
   const { window = defaultWindow, ignore = [], capture = true, detectIframe = false, controls = false } = options
 
   if (!window) {
@@ -174,8 +178,11 @@ export function onClickOutside(
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {
         const el = unrefElement(target)
+        let activeEl: Element | null | undefined = window.document.activeElement
+        while (activeEl?.shadowRoot)
+          activeEl = activeEl.shadowRoot.activeElement
         if (
-          window.document.activeElement?.tagName === 'IFRAME'
+          activeEl?.tagName === 'IFRAME'
           && !el?.contains(window.document.activeElement)
         ) {
           handler(event as any)

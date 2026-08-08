@@ -5,7 +5,7 @@ import { defineComponent, reactive } from 'vue'
 
 export interface UseNowProps extends Omit<UseNowOptions<true>, 'controls'> {}
 interface UseNowSlots {
-  default: (data: Reactive<UseNowReturn>) => any
+  default: (data: Reactive<UseNowReturn<true>>) => any
 }
 
 export const UseNow = /* #__PURE__ */ defineComponent<
@@ -25,6 +25,7 @@ export const UseNow = /* #__PURE__ */ defineComponent<
   {
     name: 'UseNow',
     props: [
+      'scheduler',
       'immediate',
       'interval',
     ],

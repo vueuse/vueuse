@@ -1,5 +1,5 @@
 import type { Fn } from '@vueuse/shared'
-import type { MaybeRef, MultiWatchSources, WatchSource } from 'vue'
+import type { MaybeRef, MultiWatchSources, Ref, WatchSource } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { toRef } from '@vueuse/shared'
 import { nextTick, shallowRef, toValue, watch } from 'vue'
@@ -11,6 +11,8 @@ export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   element?: MaybeRef<HTMLTextAreaElement | undefined | null>
   /** Textarea content. */
   input?: MaybeRef<string>
+  /** Maximum autosized height in pixels. */
+  maxHeight?: number
   /** Watch sources that should trigger a textarea resize. */
   watch?: WatchSource | MultiWatchSources
   /** Function called when the textarea size changes. */
@@ -19,6 +21,12 @@ export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   styleTarget?: MaybeRef<HTMLElement | undefined>
   /** Specify the style property that will be used to manipulate height. Can be `height | minHeight`. Default value is `height`. */
   styleProp?: 'height' | 'minHeight'
+}
+
+export interface UseTextareaAutosizeReturn {
+  textarea: Ref<HTMLTextAreaElement | undefined | null>
+  input: Ref<string>
+  triggerResize: () => void
 }
 
 /**
@@ -39,7 +47,7 @@ function tryRequestAnimationFrame(
   }
 }
 
-export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
+export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}): UseTextareaAutosizeReturn {
   const { window = defaultWindow } = options
   const textarea = toRef(options?.element)
   const input = toRef(options?.input ?? '')
@@ -52,16 +60,21 @@ export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
       return
 
     let height = ''
+    const maxHeight = options?.maxHeight
 
     textarea.value.style[styleProp] = '1px'
     textareaScrollHeight.value = textarea.value?.scrollHeight
     const _styleTarget = toValue(options?.styleTarget)
+    const styleHeight = maxHeight != null
+      ? `${Math.min(textareaScrollHeight.value, maxHeight)}px`
+      : `${textareaScrollHeight.value}px`
+
     // If style target is provided update its height
     if (_styleTarget)
-      _styleTarget.style[styleProp] = `${textareaScrollHeight.value}px`
+      _styleTarget.style[styleProp] = styleHeight
     // else update textarea's height by updating height variable
     else
-      height = `${textareaScrollHeight.value}px`
+      height = styleHeight
 
     textarea.value.style[styleProp] = height
   }
@@ -89,5 +102,3 @@ export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}) {
     triggerResize,
   }
 }
-
-export type UseTextareaAutosizeReturn = ReturnType<typeof useTextareaAutosize>
