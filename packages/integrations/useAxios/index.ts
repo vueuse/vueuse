@@ -247,7 +247,7 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
 
     instance(_url, { ...defaultConfig, ...typeof executeUrl === 'object' ? executeUrl : config, signal: abortController.signal })
       .then((r: any) => {
-        if (isAborted.value)
+        if (isAborted.value || currentExecuteCounter !== executeCounter)
           return
         response.value = r
         const result = r?.data
@@ -255,7 +255,8 @@ export function useAxios<T = any, R = AxiosResponse<T>, D = any>(...args: any[])
         onSuccess(result)
       })
       .catch((e: any) => {
-        error.value = e
+        if (currentExecuteCounter === executeCounter)
+          error.value = e
         onError(e)
       })
       .finally(() => {

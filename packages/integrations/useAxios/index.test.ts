@@ -3,6 +3,7 @@ import type { UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialDa
 import axios from 'axios'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { baseUrl } from '../../.test/mockServer'
 import { useAxios } from './index'
 
 describe('useAxios', () => {
@@ -345,6 +346,32 @@ describe('useAxios', () => {
   it('should use initialData', async () => {
     const { data } = useAxios(url, config, { ...options, initialData: { value: 1 } })
     expect(data.value).toEqual({ value: 1 })
+  })
+
+  it('should ignore a superseded request that resolves later', async () => {
+    const onSuccess = vi.fn()
+    const onFinish = vi.fn()
+    const { data, execute } = useAxios(url, config, { ...options, abortPrevious: false, onSuccess, onFinish })
+
+    execute(`${baseUrl}?text=stale&delay=50`)
+    await execute(`${baseUrl}?text=fresh`)
+    await vi.waitFor(() => expect(onFinish).toBeCalledTimes(2))
+
+    expect(data.value).toBe('fresh')
+    expect(onSuccess).toBeCalledTimes(1)
+    expect(onSuccess).toHaveBeenCalledWith('fresh')
+  })
+
+  it('should ignore a superseded request that rejects later', async () => {
+    const onFinish = vi.fn()
+    const { data, error, execute } = useAxios(url, config, { ...options, abortPrevious: false, onFinish })
+
+    execute(`${baseUrl}?status=500&delay=50`)
+    await execute(`${baseUrl}?text=fresh`)
+    await vi.waitFor(() => expect(onFinish).toBeCalledTimes(2))
+
+    expect(data.value).toBe('fresh')
+    expect(error.value).toBeUndefined()
   })
 
   it('should not crash when options is undefined', async () => {
