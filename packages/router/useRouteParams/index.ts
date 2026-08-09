@@ -5,7 +5,7 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-const _queue = new WeakMap<Router, Map<string, any>>()
+const _queue = new WeakMap<Router, Map<string, { value: any, owner: object }>>()
 
 export function useRouteParams(
   name: string,
@@ -53,19 +53,22 @@ export function useRouteParams<
 
   const _paramsQueue = _queue.get(router)!
 
+  // Marks the queue entries this instance wrote. The queue holds one entry per
+  // name and is shared by every consumer of the router, so an instance can only
+  // recognise its own write by identity.
+  const writer = {}
+
   let param = route.params[name] as any
-  let hasPendingWrite = false
 
   tryOnScopeDispose(() => {
     param = undefined
 
-    // Drop this scope's unflushed write. The queue is shared by every consumer of
-    // the router, so leaving it there lets a disposed scope alter a param on the
-    // next navigation someone else triggers.
-    if (hasPendingWrite) {
-      hasPendingWrite = false
+    // Drop this scope's unflushed write. Leaving it in the shared queue lets a
+    // disposed scope alter a param on the next navigation someone else triggers.
+    // Another instance bound to the same name may have queued over the entry in
+    // the meantime, so only drop the write that is still ours.
+    if (_paramsQueue.get(name)?.owner === writer)
       _paramsQueue.delete(name)
-    }
   })
 
   let _trigger: () => void
@@ -86,18 +89,17 @@ export function useRouteParams<
           return
 
         param = (v === toValue(defaultValue) || v === null) ? undefined : v
-        _paramsQueue.set(name, (v === toValue(defaultValue) || v === null) ? undefined : v)
-        hasPendingWrite = true
+        _paramsQueue.set(name, { value: param, owner: writer })
 
         trigger()
 
         nextTick(() => {
-          hasPendingWrite = false
-
           if (_paramsQueue.size === 0)
             return
 
-          const newParams = Object.fromEntries(_paramsQueue.entries())
+          const newParams = Object.fromEntries(
+            Array.from(_paramsQueue, ([key, entry]) => [key, entry.value] as const),
+          )
           _paramsQueue.clear()
 
           const { params, query, hash } = route

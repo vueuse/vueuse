@@ -361,6 +361,28 @@ describe('useRouteParams', () => {
     expect(route.params.id).toBe('1')
   })
 
+  it('should keep a live instance pending write when a scope bound to the same param disposes', async () => {
+    let route = getRoute({ id: '1' })
+    const router = { replace: (r: any) => route = r } as any
+    const scope = effectScope()
+
+    // both instances share the single queue entry for `id`
+    scope.run(() => {
+      const id: Ref<any> = useRouteParams('id', null, { route, router })
+      id.value = 'disposed'
+    })
+
+    const id: Ref<any> = useRouteParams('id', null, { route, router })
+    id.value = 'from-live-instance'
+
+    // the disposing scope no longer owns the entry, so it must leave it alone
+    scope.stop()
+
+    await nextTick()
+
+    expect(route.params.id).toBe('from-live-instance')
+  })
+
   it('should allow ref or getter as default value', () => {
     let route = getRoute()
     const router = { replace: (r: any) => route = r } as any
