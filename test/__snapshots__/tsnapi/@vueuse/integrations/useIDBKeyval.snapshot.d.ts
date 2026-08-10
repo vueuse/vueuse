@@ -5,14 +5,16 @@
 export interface UseIDBKeyvalReturn<T> {
   data: RemovableRef<T>;
   isFinished: ShallowRef<boolean>;
+  isSupported: ComputedRef<boolean>;
   set: (_: T) => Promise<void>;
 }
-export interface UseIDBOptions<T> extends ConfigurableFlush {
+export interface UseIDBOptions<T> extends ConfigurableFlush, ConfigurableWindow {
   deep?: boolean;
   onError?: (_: unknown) => void;
   shallow?: boolean;
   writeDefaults?: boolean;
   serializer?: Serializer<T>;
+  listenToStorageChanges?: boolean;
 }
 // #endregion
 
