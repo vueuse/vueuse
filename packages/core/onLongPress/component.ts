@@ -8,7 +8,7 @@ export interface OnLongPressProps extends RenderableComponent {
 }
 // eslint-disable-next-line ts/consistent-type-definitions
 export type OnLongPressEmits = {
-  trigger: (event: PointerEvent) => void
+  trigger: (event: PointerEvent | TouchEvent) => void
 }
 
 interface OnLongPressSlots {

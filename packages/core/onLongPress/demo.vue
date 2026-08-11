@@ -9,7 +9,7 @@ const htmlRefOnMouseUp = useTemplateRef('htmlRefOnMouseUp')
 const longPressed = shallowRef(false)
 const clicked = shallowRef(false)
 
-function onLongPressCallback(e: PointerEvent) {
+function onLongPressCallback(e: PointerEvent | TouchEvent) {
   longPressed.value = true
 }
 

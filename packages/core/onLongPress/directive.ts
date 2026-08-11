@@ -2,7 +2,7 @@ import type { OnLongPressOptions } from '@vueuse/core'
 import { onLongPress } from '@vueuse/core'
 import { createDisposableDirective } from '@vueuse/shared'
 
-type BindingValueFunction = (evt: PointerEvent) => void
+type BindingValueFunction = (evt: PointerEvent | TouchEvent) => void
 
 type BindingValueArray = [
   BindingValueFunction,
