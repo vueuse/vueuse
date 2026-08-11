@@ -11,6 +11,7 @@ describe('useClipboard', () => {
     const writeText = vi.fn()
 
     beforeEach(() => {
+      vi.stubGlobal('ClipboardItem', undefined)
       Object.defineProperty(navigator, 'clipboard', {
         configurable: true,
         value: { write, writeText },
@@ -22,6 +23,7 @@ describe('useClipboard', () => {
     })
 
     afterEach(() => {
+      vi.unstubAllGlobals()
       Reflect.deleteProperty(navigator, 'clipboard')
       Reflect.deleteProperty(navigator, 'permissions')
     })
