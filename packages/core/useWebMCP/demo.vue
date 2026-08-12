@@ -5,7 +5,7 @@ import { shallowRef } from 'vue'
 const todos = shallowRef<string[]>([])
 const draft = shallowRef('')
 
-const { isSupported, registered, error } = useWebMCP({
+const { isSupported, isRegistered, error } = useWebMCP({
   name: 'add-todo',
   description: 'Add a new item to the user\'s active todo list',
   inputSchema: {
@@ -35,7 +35,7 @@ function add() {
       Supported: <b>{{ isSupported }}</b>
     </p>
     <p>
-      Tool registered: <b>{{ registered }}</b>
+      Tool registered: <b>{{ isRegistered }}</b>
     </p>
     <p v-if="error">
       Error: <b>{{ error.message }}</b>

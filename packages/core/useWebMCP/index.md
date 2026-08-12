@@ -20,7 +20,7 @@ import { shallowRef } from 'vue'
 
 const todos = shallowRef<string[]>([])
 
-const { isSupported, registered, error } = useWebMCP({
+const { isSupported, isRegistered, error } = useWebMCP({
   name: 'add-todo',
   description: 'Add a new item to the user\'s active todo list',
   inputSchema: {
@@ -88,6 +88,32 @@ useWebMCP({
     console.error('checkout tool failed', err)
   },
 })
+```
+
+## Registering multiple tools
+
+Pass an array to register several tools with a single call. Each entry takes the same options, and `isRegistered` is `true` only while **every** tool is registered; `error` surfaces the first tool that failed.
+
+```ts
+import { useWebMCP } from '@vueuse/core'
+
+const { isRegistered } = useWebMCP([
+  {
+    name: 'add-todo',
+    description: 'Add a new item to the todo list',
+    execute({ text }) {
+      // …
+    },
+  },
+  {
+    name: 'clear-todos',
+    description: 'Remove every item from the todo list',
+    annotations: { readOnlyHint: false },
+    execute() {
+      // …
+    },
+  },
+])
 ```
 
 ## References

@@ -50,7 +50,7 @@ describe('useWebMCP', () => {
     await nextTick()
 
     expect(result.isSupported.value).toBe(false)
-    expect(result.registered.value).toBe(false)
+    expect(result.isRegistered.value).toBe(false)
     expect(result.error.value).toBeNull()
     scope.stop()
   })
@@ -67,13 +67,13 @@ describe('useWebMCP', () => {
 
     expect(registerTool).toHaveBeenCalledTimes(1)
     expect(result.isSupported.value).toBe(true)
-    expect(result.registered.value).toBe(true)
+    expect(result.isRegistered.value).toBe(true)
     expect(tools[0].descriptor.name).toBe('add-todo')
     expect(tools[0].aborted()).toBe(false)
 
     scope.stop()
     expect(tools[0].aborted()).toBe(true)
-    expect(result.registered.value).toBe(false)
+    expect(result.isRegistered.value).toBe(false)
   })
 
   it('does not register while `enabled` is false, and (un)registers as it toggles', async () => {
@@ -89,16 +89,16 @@ describe('useWebMCP', () => {
     await nextTick()
 
     expect(registerTool).not.toHaveBeenCalled()
-    expect(result.registered.value).toBe(false)
+    expect(result.isRegistered.value).toBe(false)
 
     enabled.value = true
     await nextTick()
     expect(registerTool).toHaveBeenCalledTimes(1)
-    expect(result.registered.value).toBe(true)
+    expect(result.isRegistered.value).toBe(true)
 
     enabled.value = false
     await nextTick()
-    expect(result.registered.value).toBe(false)
+    expect(result.isRegistered.value).toBe(false)
     scope.stop()
   })
 
@@ -155,10 +155,65 @@ describe('useWebMCP', () => {
     }))!
     await nextTick()
 
-    expect(result.registered.value).toBe(false)
+    expect(result.isRegistered.value).toBe(false)
     expect(result.error.value).toBeInstanceOf(Error)
     expect(result.error.value?.name).toBe('NotAllowedError')
     scope.stop()
+  })
+
+  describe('array of tools', () => {
+    it('registers every tool and cleans them all up', async () => {
+      const { tools, registerTool } = installModelContext()
+      const scope = effectScope()
+      const result = scope.run(() => useWebMCP([
+        { name: 'a', description: 'tool a', execute: () => 'a' },
+        { name: 'b', description: 'tool b', execute: () => 'b' },
+      ]))!
+      await nextTick()
+
+      expect(registerTool).toHaveBeenCalledTimes(2)
+      expect(tools.map(t => t.descriptor.name)).toEqual(['a', 'b'])
+      expect(result.isRegistered.value).toBe(true)
+
+      scope.stop()
+      expect(tools.every(t => t.aborted())).toBe(true)
+      expect(result.isRegistered.value).toBe(false)
+    })
+
+    it('isRegistered is false while any tool is not registered', async () => {
+      installModelContext()
+      const enabledB = shallowRef(false)
+      const scope = effectScope()
+      const result = scope.run(() => useWebMCP([
+        { name: 'a', description: 'tool a', execute: () => 'a' },
+        { name: 'b', description: 'tool b', enabled: enabledB, execute: () => 'b' },
+      ]))!
+      await nextTick()
+      expect(result.isRegistered.value).toBe(false)
+
+      enabledB.value = true
+      await nextTick()
+      expect(result.isRegistered.value).toBe(true)
+      scope.stop()
+    })
+
+    it('surfaces the first tool error', async () => {
+      const { registerTool } = installModelContext()
+      registerTool.mockImplementationOnce(() => {}) // 'a' registers fine
+      registerTool.mockImplementationOnce(() => {
+        throw new Error('b failed')
+      })
+      const scope = effectScope()
+      const result = scope.run(() => useWebMCP([
+        { name: 'a', description: 'tool a', execute: () => 'a' },
+        { name: 'b', description: 'tool b', execute: () => 'b' },
+      ]))!
+      await nextTick()
+
+      expect(result.isRegistered.value).toBe(false)
+      expect(result.error.value?.message).toBe('b failed')
+      scope.stop()
+    })
   })
 
   describe('result normalization', () => {

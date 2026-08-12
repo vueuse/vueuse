@@ -1,8 +1,8 @@
-import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { Supportable } from '../types'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { shallowRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -105,13 +105,15 @@ export interface UseWebMCPOptions<Args, Result> extends ConfigurableDocument {
 
 export interface UseWebMCPReturn extends Supportable {
   /**
-   * Whether the tool is currently registered with the browser.
+   * Whether the tool is currently registered with the browser. When an array
+   * of tools is passed, this is `true` only while every tool is registered.
    */
-  registered: ShallowRef<boolean>
+  isRegistered: ComputedRef<boolean>
   /**
-   * Registration error, e.g. a `NotAllowedError` from a `tools` permissions policy.
+   * The first registration error, e.g. a `NotAllowedError` from a `tools`
+   * permissions policy, or `null` when none of the tools errored.
    */
-  error: ShallowRef<Error | null>
+  error: ComputedRef<Error | null>
 }
 
 // Stringify for error reporting without ever throwing itself
@@ -159,10 +161,11 @@ function toErrorResponse(error: unknown): WebMCPToolResponse {
  * Register a [WebMCP](https://github.com/webmachinelearning/webmcp) tool and
  * tie its lifecycle to the current scope.
  *
- * The tool is registered when the composable runs (and whenever a
- * discoverable part — `name`, `description`, `inputSchema`, `annotations` or
- * `enabled` — changes) and unregistered automatically on scope dispose, so the
- * tools an agent sees stay in lockstep with what is on screen.
+ * A tool is registered when the composable runs (and whenever a discoverable
+ * part — `name`, `description`, `inputSchema`, `annotations` or `enabled` —
+ * changes) and unregistered automatically on scope dispose, so the tools an
+ * agent sees stay in lockstep with what is on screen. Pass an array to
+ * register several tools with a single call.
  *
  * The API is experimental (`document.modelContext`), so this feature-detects
  * and degrades to a no-op wherever it is absent.
@@ -170,47 +173,53 @@ function toErrorResponse(error: unknown): WebMCPToolResponse {
  * @see https://vueuse.org/useWebMCP
  * @see https://github.com/webmachinelearning/webmcp
  */
-export function useWebMCP<Args = Record<string, any>, Result = unknown>(
-  options: UseWebMCPOptions<Args, Result>,
+export function useWebMCP<Args = Record<string, any>, Result = unknown>(options: UseWebMCPOptions<Args, Result>): UseWebMCPReturn
+export function useWebMCP(options: UseWebMCPOptions<any, any>[]): UseWebMCPReturn
+export function useWebMCP(
+  options: UseWebMCPOptions<any, any> | UseWebMCPOptions<any, any>[],
 ): UseWebMCPReturn {
-  const {
-    document = defaultDocument,
-    enabled = true,
-  } = options
+  const tools = Array.isArray(options) ? options : [options]
+  const documents = tools.map(tool => tool.document ?? defaultDocument)
 
-  const isSupported = useSupported(() => !!document && !!document.modelContext)
-  const registered = shallowRef(false)
-  const error = shallowRef<Error | null>(null)
+  const isSupported = useSupported(() =>
+    tools.length > 0 && documents.every(document => !!document && !!document.modelContext))
 
-  let controller: AbortController | undefined
+  // Per-tool registration state, aggregated for the return value.
+  const registeredStates = tools.map(() => shallowRef(false))
+  const errorStates = tools.map(() => shallowRef<Error | null>(null))
+  const controllers: (AbortController | undefined)[] = tools.map(() => undefined)
 
-  function cleanup() {
+  function cleanup(index: number) {
     // Aborting the signal is how WebMCP unregisters a tool.
-    controller?.abort()
-    controller = undefined
-    registered.value = false
+    controllers[index]?.abort()
+    controllers[index] = undefined
+    registeredStates[index].value = false
   }
 
-  function register() {
-    cleanup()
-    error.value = null
+  function register(index: number) {
+    cleanup(index)
+    errorStates[index].value = null
 
-    if (!isSupported.value || !toValue(enabled))
+    const tool = tools[index]
+    const document = documents[index]
+
+    if (!isSupported.value || !toValue(tool.enabled ?? true))
       return
 
-    controller = new AbortController()
+    const controller = new AbortController()
+    controllers[index] = controller
 
     try {
       document!.modelContext!.registerTool(
         {
-          name: toValue(options.name),
-          description: toValue(options.description),
-          inputSchema: toValue(options.inputSchema),
-          annotations: toValue(options.annotations),
-          async execute(args: Args) {
+          name: toValue(tool.name),
+          description: toValue(tool.description),
+          inputSchema: toValue(tool.inputSchema),
+          annotations: toValue(tool.annotations),
+          async execute(args: any) {
             try {
-              const result = await options.execute(args)
-              const shaped = options.formatOutput ? options.formatOutput(result, args) : result
+              const result = await tool.execute(args)
+              const shaped = tool.formatOutput ? tool.formatOutput(result, args) : result
               // A returned Error gets the same treatment as a thrown one:
               // `onError`, then an `isError` result.
               if (shaped instanceof Error)
@@ -218,19 +227,19 @@ export function useWebMCP<Args = Record<string, any>, Result = unknown>(
               return toToolResponse(shaped)
             }
             catch (err) {
-              options.onError?.(err)
+              tool.onError?.(err)
               return toErrorResponse(err)
             }
           },
         },
         { signal: controller.signal },
       )
-      registered.value = true
+      registeredStates[index].value = true
     }
     catch (err) {
       // e.g. NotAllowedError when the `tools` permissions policy is disabled.
-      error.value = err instanceof Error ? err : new Error(safeStringify(err))
-      registered.value = false
+      errorStates[index].value = err instanceof Error ? err : new Error(safeStringify(err))
+      registeredStates[index].value = false
     }
   }
 
@@ -238,24 +247,30 @@ export function useWebMCP<Args = Record<string, any>, Result = unknown>(
   // annotations are serialized so inline object literals don't churn every
   // change. `execute`/`formatOutput`/`onError` are read live at call time, so
   // a changing closure never forces a re-registration.
-  watch(
-    [
-      isSupported,
-      () => toValue(options.name),
-      () => toValue(options.description),
-      () => (toValue(options.inputSchema) ? JSON.stringify(toValue(options.inputSchema)) : ''),
-      () => (toValue(options.annotations) ? JSON.stringify(toValue(options.annotations)) : ''),
-      () => toValue(enabled),
-    ],
-    register,
-    { immediate: true, flush: 'post' },
-  )
+  tools.forEach((tool, index) => {
+    watch(
+      [
+        isSupported,
+        () => toValue(tool.name),
+        () => toValue(tool.description),
+        () => (toValue(tool.inputSchema) ? JSON.stringify(toValue(tool.inputSchema)) : ''),
+        () => (toValue(tool.annotations) ? JSON.stringify(toValue(tool.annotations)) : ''),
+        () => toValue(tool.enabled ?? true),
+      ],
+      () => register(index),
+      { immediate: true, flush: 'post' },
+    )
+  })
 
-  tryOnScopeDispose(cleanup)
+  tryOnScopeDispose(() => tools.forEach((_, index) => cleanup(index)))
+
+  const isRegistered = computed(() =>
+    registeredStates.length > 0 && registeredStates.every(state => state.value))
+  const error = computed(() => errorStates.find(state => state.value)?.value ?? null)
 
   return {
     isSupported,
-    registered,
+    isRegistered,
     error,
   }
 }
