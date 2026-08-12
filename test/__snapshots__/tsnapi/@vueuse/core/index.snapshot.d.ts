@@ -133,6 +133,11 @@ export interface MemoryInfo {
   readonly usedJSHeapSize: number;
   [Symbol.toStringTag]: 'MemoryInfo';
 }
+export interface ModelContext {
+  registerTool: (_: WebMCPToolDescriptor, _?: {
+    signal?: AbortSignal;
+  }) => void;
+}
 export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean;
   windowScroll?: boolean;
@@ -1394,6 +1399,20 @@ export interface UseWakeLockReturn extends Supportable {
   forceRequest: (_: WakeLockType) => Promise<void>;
   release: () => Promise<void>;
 }
+export interface UseWebMCPOptions<Args, Result> extends ConfigurableDocument {
+  name: MaybeRefOrGetter<string>;
+  description: MaybeRefOrGetter<string>;
+  inputSchema?: MaybeRefOrGetter<object | undefined>;
+  annotations?: MaybeRefOrGetter<WebMCPToolAnnotations | undefined>;
+  execute: (_: Args) => Result | Promise<Result>;
+  enabled?: MaybeRefOrGetter<boolean>;
+  formatOutput?: (_: Result, _: Args) => unknown;
+  onError?: (_: unknown) => void;
+}
+export interface UseWebMCPReturn extends Supportable {
+  isRegistered: ComputedRef<boolean>;
+  error: ComputedRef<Error | null>;
+}
 export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
   requestPermissions?: boolean;
 }
@@ -1469,6 +1488,27 @@ export interface WakeLockSentinel extends EventTarget {
   type: WakeLockType;
   released: boolean;
   release: () => Promise<void>;
+}
+export interface WebMCPToolAnnotations {
+  readOnlyHint?: boolean;
+  untrustedContentHint?: boolean;
+  [key: string]: unknown;
+}
+export interface WebMCPToolContent {
+  type: string;
+  text?: string;
+  [key: string]: unknown;
+}
+export interface WebMCPToolDescriptor {
+  name: string;
+  description: string;
+  inputSchema?: object;
+  annotations?: WebMCPToolAnnotations;
+  execute: (_: any) => Promise<WebMCPToolResponse> | WebMCPToolResponse;
+}
+export interface WebMCPToolResponse {
+  content: WebMCPToolContent[];
+  isError?: boolean;
 }
 export interface WebNotificationOptions {
   title?: string;
@@ -1974,6 +2014,8 @@ export declare function useVModel<P extends object, K extends keyof P, Name exte
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, true>): ToRefs<P>;
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, false>): ToRefs<P>;
 export declare function useWakeLock(_?: UseWakeLockOptions): UseWakeLockReturn;
+export declare function useWebMCP<Args = Record<string, any>, Result = unknown>(_: UseWebMCPOptions<Args, Result>): UseWebMCPReturn;
+export declare function useWebMCP(_: UseWebMCPOptions<any, any>[]): UseWebMCPReturn;
 export declare function useWebNotification(_?: UseWebNotificationOptions): UseWebNotificationReturn;
 export declare function useWebSocket<Data = any>(_: MaybeRefOrGetter<string | URL | undefined>, _?: UseWebSocketOptions): UseWebSocketReturn<Data>;
 export declare function useWebWorker<T = any>(_: string, _?: WorkerOptions, _?: ConfigurableWindow): UseWebWorkerReturn<T>;
