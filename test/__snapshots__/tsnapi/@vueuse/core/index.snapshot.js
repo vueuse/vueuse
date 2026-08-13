@@ -88,6 +88,7 @@ export function useImage(_, _) {}
 export function useInfiniteScroll(_, _, _) {}
 export function useIntersectionObserver(_, _, _) {}
 export function useKeyModifier(_, _) {}
+export function useLiveAnnouncer(_) {}
 export function useLocalStorage(_, _, _) {}
 export function useMagicKeys(_) {}
 export function useManualRefHistory(_, _) {}

@@ -813,6 +813,14 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
 export interface UseIntersectionObserverReturn extends Supportable, Pausable {
   stop: () => void;
 }
+export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
+  idPrefix?: string;
+}
+export interface UseLiveAnnouncerReturn {
+  announce: (_: string, _?: 'polite' | 'assertive', _?: number) => void;
+  polite: (_: string, _?: number) => void;
+  assertive: (_: string, _?: number) => void;
+}
 export interface UseMagicKeysOptions<Reactive extends boolean> {
   reactive?: Reactive;
   target?: MaybeRefOrGetter<EventTarget>;
@@ -1868,6 +1876,7 @@ export declare function useImage<Shallow extends true>(_: MaybeRefOrGetter<UseIm
 export declare function useInfiniteScroll<T extends InfiniteScrollElement>(_: MaybeRefOrGetter<T>, _: (_: UnwrapNestedRefs<UseScrollReturn>) => Awaitable<void>, _?: UseInfiniteScrollOptions<T>): UseInfiniteScrollReturn;
 export declare function useIntersectionObserver(_: MaybeComputedElementRefOrArray, _: IntersectionObserverCallback, _?: UseIntersectionObserverOptions): UseIntersectionObserverReturn;
 export declare function useKeyModifier<Initial extends boolean | null>(_: KeyModifier, _?: UseModifierOptions<Initial>): UseKeyModifierReturn<Initial>;
+export declare function useLiveAnnouncer(_?: UseLiveAnnouncerOptions): UseLiveAnnouncerReturn;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<string>, _?: UseStorageOptions<string>): RemovableRef<string>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<boolean>, _?: UseStorageOptions<boolean>): RemovableRef<boolean>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<number>, _?: UseStorageOptions<number>): RemovableRef<number>;
