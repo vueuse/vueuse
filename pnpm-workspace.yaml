@@ -104,6 +104,7 @@ catalogs:
     jsdom: ^30.0.0
     msw: ^2.15.0
     playwright: 1.60.0
+    temporal-polyfill: ^1.0.3
     tsnapi: ^1.2.0
     vitest: ^4.1.10
     vitest-browser-vue: ^2.1.0

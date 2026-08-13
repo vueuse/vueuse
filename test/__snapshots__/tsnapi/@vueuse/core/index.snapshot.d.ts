@@ -71,6 +71,15 @@ export interface CreateReusableTemplateOptions<Props extends Record<string, any>
   name?: string;
   props?: ComponentObjectPropsOptions<Props>;
 }
+export interface CreateTemporalReturn {
+  zonedDateTime: ComputedRef<Temporal.ZonedDateTime>;
+  toTimezone: (_: string) => Temporal.ZonedDateTime;
+  toCalendar: (_: string) => Temporal.ZonedDateTime;
+  toPlainDate: () => Temporal.PlainDate;
+  toPlainTime: () => Temporal.PlainTime;
+  toPlainDateTime: () => Temporal.PlainDateTime;
+  format: (_?: Intl.DateTimeFormatOptions) => string;
+}
 export interface ElementSize {
   width: number;
   height: number;
@@ -1254,6 +1263,26 @@ export interface UseSwipeReturn {
   lengthY: ComputedRef<number>;
   stop: () => void;
 }
+export interface UseTemporalOptions {
+  timezone?: string;
+  calendar?: string;
+  interval?: MaybeRefOrGetter<number>;
+  immediate?: boolean;
+}
+export interface UseTemporalReturn extends Pausable {
+  now: Ref<Temporal.ZonedDateTime>;
+  timezone: Ref<string>;
+  calendar: Ref<string>;
+  toTimezone: (_: string) => Temporal.ZonedDateTime;
+  toCalendar: (_: string) => Temporal.ZonedDateTime;
+  toPlainDate: () => Temporal.PlainDate;
+  toPlainTime: () => Temporal.PlainTime;
+  toPlainDateTime: () => Temporal.PlainDateTime;
+  format: (_?: Intl.DateTimeFormatOptions) => string;
+  add: (_: Temporal.DurationLike) => Temporal.ZonedDateTime;
+  subtract: (_: Temporal.DurationLike) => Temporal.ZonedDateTime;
+  compare: (_: Temporal.ZonedDateTime | string) => number;
+}
 export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   element?: MaybeRef<HTMLTextAreaElement | undefined | null>;
   input?: MaybeRef<string>;
@@ -1692,6 +1721,7 @@ export declare function computedInject<T, K = any>(_: InjectionKey<T> | string, 
 export declare function createFetch(_?: CreateFetchOptions): typeof useFetch;
 export declare function createReusableTemplate<Bindings extends Record<string, any>, MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals = Record<'default', undefined>>(_?: CreateReusableTemplateOptions<Bindings>): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps>;
 export declare function createTemplatePromise<Return, Args extends any[] = []>(_?: TemplatePromiseOptions): TemplatePromise<Return, Args>;
+export declare function createTemporal(_?: MaybeRefOrGetter<string | Temporal.ZonedDateTime | undefined>, _?: MaybeRefOrGetter<string | undefined>, _?: MaybeRefOrGetter<string | undefined>): CreateTemporalReturn;
 export declare function createUnrefFn<T extends Function>(_: T): UnrefFn<T>;
 /** @deprecated */
 export declare function executeTransition<T>(_: Ref<T>, _: MaybeRefOrGetter<T>, _: MaybeRefOrGetter<T>, _?: TransitionOptions<T>): PromiseLike<void>;
@@ -1947,6 +1977,7 @@ export declare function useStyleTag(_: MaybeRef<string>, _?: UseStyleTagOptions)
 export declare function useSupported(_: () => unknown): UseSupportedReturn;
 export declare function useSwipe(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseSwipeOptions): UseSwipeReturn;
 export declare function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>>;
+export declare function useTemporal(_?: UseTemporalOptions): UseTemporalReturn;
 export declare function useTextareaAutosize(_?: UseTextareaAutosizeOptions): UseTextareaAutosizeReturn;
 export declare function useTextDirection(_?: UseTextDirectionOptions): import("vue").WritableComputedRef<UseTextDirectionValue, UseTextDirectionValue>;
 export declare function useTextSelection(_?: UseTextSelectionOptions): UseTextSelectionReturn;

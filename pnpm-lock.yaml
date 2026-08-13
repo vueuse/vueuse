@@ -237,6 +237,9 @@ catalogs:
     playwright:
       specifier: 1.60.0
       version: 1.60.0
+    temporal-polyfill:
+      specifier: ^1.0.3
+      version: 1.0.3
     tsnapi:
       specifier: ^1.2.0
       version: 1.2.0
@@ -449,6 +452,9 @@ importers:
       taze:
         specifier: catalog:dev
         version: 19.16.0
+      temporal-polyfill:
+        specifier: catalog:test
+        version: 1.0.3
       tinyglobby:
         specifier: catalog:dev
         version: 0.2.17
@@ -533,6 +539,10 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.40(typescript@6.0.3)
+    devDependencies:
+      temporal-polyfill:
+        specifier: catalog:test
+        version: 1.0.3
 
   packages/electron:
     dependencies:
@@ -8536,6 +8546,15 @@ packages:
   temp-dir@2.0.0:
     resolution: {integrity: sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==}
     engines: {node: '>=8'}
+
+  temporal-polyfill@1.0.3:
+    resolution: {integrity: sha512-U8vuzZBc+dfMIfl8wXWcedfI7AJCxJjjVBIRpJUvIz5+UAp555UJDHguKsfZqHWaHRSdVUThm7mqqIWhN/xPBQ==}
+
+  temporal-spec@1.0.1:
+    resolution: {integrity: sha512-wxVoanmDeavXie1vu2JaQ3WIc3JZnWAOYFBsJyATaVsXsycKYUflGsyBmrRSnoCpZJpwPyr38VpgSUlQ8CbFxg==}
+
+  temporal-utils@1.0.1:
+    resolution: {integrity: sha512-HAixuesxFQIUaQk3ptX2jhfO/FsOkgVkDDMawvp6n/fkB1q6BKfs3lURw9I+pK/2e2e/q/vrLrxmeqauBoyGMQ==}
 
   tempy@0.6.0:
     resolution: {integrity: sha512-G13vtMYPT/J8A4X2SjdtBTphZlrp1gKv6hZiOjw14RCWg6GbHuQBGtjlx75xLbYV/wEc0D7G5K4rxKP/cXk8Bw==}
@@ -18330,6 +18349,15 @@ snapshots:
       yaml: 2.9.0
 
   temp-dir@2.0.0: {}
+
+  temporal-polyfill@1.0.3:
+    dependencies:
+      temporal-spec: 1.0.1
+      temporal-utils: 1.0.1
+
+  temporal-spec@1.0.1: {}
+
+  temporal-utils@1.0.1: {}
 
   tempy@0.6.0:
     dependencies:

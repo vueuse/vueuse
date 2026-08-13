@@ -8,6 +8,7 @@ export function computedInject(_, _, _, _) {}
 export function createFetch(_) {}
 export function createReusableTemplate(_) {}
 export function createTemplatePromise(_) {}
+export function createTemporal(_, _, _) {}
 export function createUnrefFn(_) {}
 /** @deprecated */
 export function executeTransition(_, _, _, _) {}
@@ -140,6 +141,7 @@ export function useStyleTag(_, _) {}
 export function useSupported(_) {}
 export function useSwipe(_, _) {}
 export function useTemplateRefsList() {}
+export function useTemporal(_) {}
 export function useTextareaAutosize(_) {}
 export function useTextDirection(_) {}
 export function useTextSelection(_) {}
