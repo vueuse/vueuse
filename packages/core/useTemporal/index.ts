@@ -96,15 +96,8 @@ function resolveTemporal(custom?: typeof Temporal): typeof Temporal | undefined 
 }
 
 function assertTemporal(impl: typeof Temporal | undefined): typeof Temporal {
-  if (!impl) {
-    throw new Error(
-      '[VueUse] `useTemporal` requires a `Temporal` implementation. '
-      + 'It is natively available in modern JS engines. For environments without native support, '
-      + 'either pass a custom implementation via the `temporal` option (e.g. the `Temporal` export '
-      + 'from `@js-temporal/polyfill`), or install a global polyfill (e.g. `temporal-polyfill`) and '
-      + 'load it before calling this function. See https://vueuse.org/useTemporal for details.',
-    )
-  }
+  if (!impl)
+    throw new Error('[VueUse] No `Temporal` implementation found. See https://vueuse.org/useTemporal for details.')
   return impl
 }
 
