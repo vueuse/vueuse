@@ -27,7 +27,10 @@ describe('useInputCaretPosition', () => {
     const element = input.element() as HTMLInputElement
     const { position } = useInputCaretPosition(element)
 
+    // click only focuses the input here; where the browser places the caret on click
+    // depends on font metrics, so move to a known position with the keyboard instead
     await userEvent.click(input)
+    await userEvent.keyboard('[End]')
     expect(position.value).toMatchInlineSnapshot(`15`)
     await userEvent.keyboard('[ArrowLeft][ArrowLeft]')
     expect(position.value).toMatchInlineSnapshot(`13`)

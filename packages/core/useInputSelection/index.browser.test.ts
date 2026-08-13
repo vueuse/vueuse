@@ -19,7 +19,9 @@ describe('useInputSelection', () => {
     const { start, end, direction } = useInputSelection(wrapper.element)
     expect(start.value).toMatchInlineSnapshot(`15`)
     expect(end.value).toMatchInlineSnapshot(`15`)
-    expect(direction.value).toMatchInlineSnapshot(`"forward"`)
+    // the initial selection direction on mount differs across browsers
+    // (e.g. Chromium reports `forward`, WebKit reports `none`)
+    expect(['forward', 'none']).toContain(direction.value)
   })
 
   it('should update the position selection change', async ({ onTestFailed, onTestFinished }) => {
