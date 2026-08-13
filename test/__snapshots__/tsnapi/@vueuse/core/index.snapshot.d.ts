@@ -1410,8 +1410,8 @@ export interface UseWebMCPOptions<Args, Result> extends ConfigurableDocument {
   onError?: (_: unknown) => void;
 }
 export interface UseWebMCPReturn extends Supportable {
-  isRegistered: ComputedRef<boolean>;
-  error: ComputedRef<Error | null>;
+  isRegistered: ShallowRef<boolean>;
+  error: ShallowRef<Error | null>;
 }
 export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
   requestPermissions?: boolean;
@@ -2015,7 +2015,6 @@ export declare function useVModels<P extends object, Name extends string>(_: P, 
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, false>): ToRefs<P>;
 export declare function useWakeLock(_?: UseWakeLockOptions): UseWakeLockReturn;
 export declare function useWebMCP<Args = Record<string, any>, Result = unknown>(_: UseWebMCPOptions<Args, Result>): UseWebMCPReturn;
-export declare function useWebMCP(_: UseWebMCPOptions<any, any>[]): UseWebMCPReturn;
 export declare function useWebNotification(_?: UseWebNotificationOptions): UseWebNotificationReturn;
 export declare function useWebSocket<Data = any>(_: MaybeRefOrGetter<string | URL | undefined>, _?: UseWebSocketOptions): UseWebSocketReturn<Data>;
 export declare function useWebWorker<T = any>(_: string, _?: WorkerOptions, _?: ConfigurableWindow): UseWebWorkerReturn<T>;

@@ -92,28 +92,27 @@ useWebMCP({
 
 ## Registering multiple tools
 
-Pass an array to register several tools with a single call. Each entry takes the same options, and `isRegistered` is `true` only while **every** tool is registered; `error` surfaces the first tool that failed.
+Call `useWebMCP` once per tool to register several — each call manages its own registration lifecycle.
 
 ```ts
 import { useWebMCP } from '@vueuse/core'
 
-const { isRegistered } = useWebMCP([
-  {
-    name: 'add-todo',
-    description: 'Add a new item to the todo list',
-    execute({ text }) {
-      // …
-    },
+useWebMCP({
+  name: 'add-todo',
+  description: 'Add a new item to the todo list',
+  execute({ text }) {
+    // …
   },
-  {
-    name: 'clear-todos',
-    description: 'Remove every item from the todo list',
-    annotations: { readOnlyHint: false },
-    execute() {
-      // …
-    },
+})
+
+useWebMCP({
+  name: 'clear-todos',
+  description: 'Remove every item from the todo list',
+  annotations: { readOnlyHint: false },
+  execute() {
+    // …
   },
-])
+})
 ```
 
 ## References

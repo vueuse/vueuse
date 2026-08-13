@@ -161,61 +161,6 @@ describe('useWebMCP', () => {
     scope.stop()
   })
 
-  describe('array of tools', () => {
-    it('registers every tool and cleans them all up', async () => {
-      const { tools, registerTool } = installModelContext()
-      const scope = effectScope()
-      const result = scope.run(() => useWebMCP([
-        { name: 'a', description: 'tool a', execute: () => 'a' },
-        { name: 'b', description: 'tool b', execute: () => 'b' },
-      ]))!
-      await nextTick()
-
-      expect(registerTool).toHaveBeenCalledTimes(2)
-      expect(tools.map(t => t.descriptor.name)).toEqual(['a', 'b'])
-      expect(result.isRegistered.value).toBe(true)
-
-      scope.stop()
-      expect(tools.every(t => t.aborted())).toBe(true)
-      expect(result.isRegistered.value).toBe(false)
-    })
-
-    it('isRegistered is false while any tool is not registered', async () => {
-      installModelContext()
-      const enabledB = shallowRef(false)
-      const scope = effectScope()
-      const result = scope.run(() => useWebMCP([
-        { name: 'a', description: 'tool a', execute: () => 'a' },
-        { name: 'b', description: 'tool b', enabled: enabledB, execute: () => 'b' },
-      ]))!
-      await nextTick()
-      expect(result.isRegistered.value).toBe(false)
-
-      enabledB.value = true
-      await nextTick()
-      expect(result.isRegistered.value).toBe(true)
-      scope.stop()
-    })
-
-    it('surfaces the first tool error', async () => {
-      const { registerTool } = installModelContext()
-      registerTool.mockImplementationOnce(() => {}) // 'a' registers fine
-      registerTool.mockImplementationOnce(() => {
-        throw new Error('b failed')
-      })
-      const scope = effectScope()
-      const result = scope.run(() => useWebMCP([
-        { name: 'a', description: 'tool a', execute: () => 'a' },
-        { name: 'b', description: 'tool b', execute: () => 'b' },
-      ]))!
-      await nextTick()
-
-      expect(result.isRegistered.value).toBe(false)
-      expect(result.error.value?.message).toBe('b failed')
-      scope.stop()
-    })
-  })
-
   describe('result normalization', () => {
     async function runExecute(execute: (args: any) => any, args: any = {}, options: any = {}) {
       const { tools } = installModelContext()
