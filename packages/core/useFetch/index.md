@@ -314,6 +314,8 @@ const { isFetching, error, data } = useMyFetch('users')
 
 The `onFetchResponse` and `onFetchError` will fire on fetch request responses and errors respectively.
 
+When the response arrives with a non-ok status, the error also exposes the parsed body of the response as `data` and the raw [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) as `response`. Both are `undefined` when the request failed without receiving a response (e.g. a network error or an aborted request).
+
 ```ts
 import { useFetch } from '@vueuse/core'
 // ---cut---
@@ -325,5 +327,7 @@ onFetchResponse((response) => {
 
 onFetchError((error) => {
   console.error(error.message)
+  console.error(error.data) // Parsed body of the error response, e.g. { message: 'Invalid request' }
+  console.error(error.response?.status) // e.g. 400
 })
 ```

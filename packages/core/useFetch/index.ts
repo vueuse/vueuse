@@ -64,7 +64,7 @@ export interface UseFetchReturn<T> {
   /**
    * Fires after a fetch request error
    */
-  onFetchError: EventHookOn
+  onFetchError: EventHookOn<UseFetchError>
 
   /**
    * Fires after a fetch has completed
@@ -219,6 +219,25 @@ export interface CreateFetchOptions {
    * Options for the fetch request
    */
   fetchOptions?: RequestInit
+}
+
+/**
+ * Thrown when a response arrives with a non-ok status.
+ * Delivered to onFetchError subscribers and becomes a rejection of execute(true).
+ */
+export interface UseFetchError<T = any> extends Error {
+  /**
+   * The parsed body of an error response;
+   * undefined - when the request failed before receiving a response (network error, abort);
+   * null - there was a response, but the body parsed to null.
+   */
+  data?: T | null
+
+  /**
+   * Raw Response of an error response;
+   * undefined - when the request failed before receiving a response (network error, abort).
+   */
+  response?: Response
 }
 
 /**
@@ -492,7 +511,10 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
           data.value = initialData || null
-          throw new Error(fetchResponse.statusText)
+          const err: UseFetchError = new Error(fetchResponse.statusText)
+          err.data = responseData
+          err.response = fetchResponse
+          throw err
         }
 
         if (options.afterFetch) {

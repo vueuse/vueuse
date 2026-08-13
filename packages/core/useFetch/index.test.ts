@@ -1,4 +1,4 @@
-import type { AfterFetchContext, OnFetchErrorContext } from './index'
+import type { AfterFetchContext, OnFetchErrorContext, UseFetchError } from './index'
 import { until } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, nextTick, shallowRef } from 'vue'
@@ -851,6 +851,25 @@ describe('useFetch', () => {
     await vi.waitFor(() => {
       expect(aborted.value).toBe(true)
       expect(error).toBe(reason)
+    })
+  })
+
+  it('should expose the response body via the onFetchError event hook', async () => {
+    const errorBody = { title: 'Invalid request' }
+    let capturedError: UseFetchError
+
+    const { onFetchError } = useFetch(`${baseUrl}?status=400&json=${encodeURIComponent(JSON.stringify(errorBody))}`).json()
+
+    onFetchError((error) => {
+      capturedError = error
+    })
+
+    await vi.waitFor(() => {
+      expect(capturedError).toBeInstanceOf(Error)
+      expect(capturedError.message).toBe('Bad Request')
+      expect(capturedError.data).toEqual(errorBody)
+      expect(capturedError.response).toBeInstanceOf(Response)
+      expect(capturedError.response?.status).toBe(400)
     })
   })
 })
