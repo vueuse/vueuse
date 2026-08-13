@@ -210,6 +210,40 @@ describe('useTemporal', () => {
 
     globalThis.Temporal = original
   })
+
+  it('should also work with `@js-temporal/polyfill`, another common implementation', async () => {
+    const { Temporal: JsTemporalPolyfill } = await import('@js-temporal/polyfill')
+
+    // `@js-temporal/polyfill` ships its own, independently authored type
+    // declarations that aren't structurally identical to the ambient
+    // `Temporal` types TypeScript provides (unlike `temporal-polyfill`, whose
+    // types are derived from the same source). A cast is required to satisfy
+    // the `temporal` option's type at compile time — the runtime objects are
+    // spec-compliant and interoperate fine.
+    const temporal = useTemporal({
+      immediate: false,
+      timezone: 'Asia/Tokyo',
+      temporal: JsTemporalPolyfill as unknown as typeof Temporal,
+    })
+
+    expect(temporal.now.value).toBeInstanceOf(JsTemporalPolyfill.ZonedDateTime)
+    expect(temporal.now.value.timeZoneId).toBe('Asia/Tokyo')
+    expect(temporal.toPlainDate().toString()).toMatch(/^\d{4}-\d{2}-\d{2}/)
+
+    const future = temporal.add('P1D')
+    expect(JsTemporalPolyfill.ZonedDateTime.compare(future, temporal.now.value)).toBe(1)
+  })
+
+  it('should also work with `@js-temporal/polyfill` when the global Temporal object is unavailable', async () => {
+    const { Temporal: JsTemporalPolyfill } = await import('@js-temporal/polyfill')
+    const original = globalThis.Temporal
+    // @ts-expect-error simulate an environment without Temporal support
+    delete globalThis.Temporal
+
+    expect(() => useTemporal({ temporal: JsTemporalPolyfill as unknown as typeof Temporal })).not.toThrow()
+
+    globalThis.Temporal = original
+  })
 })
 
 describe('createTemporal', () => {

@@ -96,6 +96,7 @@ catalogs:
     vue-router: ^5.2.0
   test:
     '@arethetypeswrong/core': ^0.18.5
+    '@js-temporal/polyfill': ^0.5.1
     '@vitest/browser-playwright': ^4.1.10
     '@vitest/coverage-v8': ^4.1.10
     '@vitest/ui': ^4.1.10

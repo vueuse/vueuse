@@ -51,6 +51,7 @@
     "@vueuse/shared": "workspace:*"
   },
   "devDependencies": {
+    "@js-temporal/polyfill": "catalog:test",
     "temporal-polyfill": "catalog:test"
   }
 }
