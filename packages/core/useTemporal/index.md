@@ -49,7 +49,7 @@ This function relies on the [`Temporal`](https://developer.mozilla.org/en-US/doc
   const temporal = useTemporal({ temporal: Temporal as unknown as typeof globalThis.Temporal })
   ```
 
-If no `Temporal` implementation can be found (neither passed via the `temporal` option nor available globally), calling `useTemporal` or `createTemporal` will throw an error.
+If no `Temporal` implementation can be found (neither passed via the `temporal` option nor available globally), calling `useTemporal` will throw an error.
 
 ## Usage
 
@@ -157,26 +157,6 @@ resume() // Start auto-update
 pause() // Stop auto-update
 
 console.log(isActive.value) // true/false
-```
-
-### Static Temporal Utility
-
-```ts
-import { createTemporal } from '@vueuse/core'
-
-// Create from string
-const temporal1 = createTemporal('2023-12-25T15:30:00[America/New_York]')
-
-// Create from current time with timezone
-const temporal2 = createTemporal(undefined, 'Asia/Tokyo', 'japanese')
-
-// Reactive inputs
-const timezone = ref('Europe/London')
-const temporal3 = createTemporal(undefined, timezone)
-
-// Use utility functions
-const formatted = temporal1.format({ dateStyle: 'full' })
-const tokyoTime = temporal1.toTimezone('Asia/Tokyo')
 ```
 
 ## Examples

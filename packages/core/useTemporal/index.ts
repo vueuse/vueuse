@@ -1,7 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
-import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
-import { computed, shallowRef, toValue, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 
 export interface UseTemporalOptions {
   /**
@@ -160,79 +160,5 @@ export function useTemporal(options: UseTemporalOptions = {}): UseTemporalReturn
     isActive,
     pause,
     resume,
-  }
-}
-
-export interface CreateTemporalReturn {
-  /**
-   * The resolved `Temporal.ZonedDateTime`
-   */
-  zonedDateTime: ComputedRef<Temporal.ZonedDateTime>
-  /**
-   * Convert to a different timezone
-   */
-  toTimezone: (timezone: string) => Temporal.ZonedDateTime
-  /**
-   * Convert to a different calendar
-   */
-  toCalendar: (calendar: string) => Temporal.ZonedDateTime
-  /**
-   * Get the `Temporal.PlainDate` (date only)
-   */
-  toPlainDate: () => Temporal.PlainDate
-  /**
-   * Get the `Temporal.PlainTime` (time only)
-   */
-  toPlainTime: () => Temporal.PlainTime
-  /**
-   * Get the `Temporal.PlainDateTime` (local date/time)
-   */
-  toPlainDateTime: () => Temporal.PlainDateTime
-  /**
-   * Format the resolved date/time
-   */
-  format: (options?: Intl.DateTimeFormatOptions) => string
-}
-
-/**
- * Create a static, computed Temporal date/time utility.
- *
- * @see https://vueuse.org/useTemporal
- * @param input - Initial date/time value, defaults to the current time
- * @param timezone - Timezone to resolve `input` to
- * @param calendar - Calendar system to resolve `input` to
- * @param temporal - Custom `Temporal` implementation to use instead of the global `Temporal` object
- */
-export function createTemporal(
-  input?: MaybeRefOrGetter<string | Temporal.ZonedDateTime | undefined>,
-  timezone?: MaybeRefOrGetter<string | undefined>,
-  calendar?: MaybeRefOrGetter<string | undefined>,
-  temporal?: typeof Temporal,
-): CreateTemporalReturn {
-  const TemporalImpl = assertTemporal(resolveTemporal(temporal))
-
-  const zonedDateTime = computed(() => {
-    const inputValue = toValue(input)
-    const tz = toValue(timezone) || 'UTC'
-    const cal = toValue(calendar) || 'gregory'
-
-    if (!inputValue)
-      return TemporalImpl.Now.zonedDateTimeISO(tz).withCalendar(cal)
-
-    if (typeof inputValue === 'string')
-      return TemporalImpl.ZonedDateTime.from(inputValue).withTimeZone(tz).withCalendar(cal)
-
-    return inputValue.withTimeZone(tz).withCalendar(cal)
-  })
-
-  return {
-    zonedDateTime,
-    toTimezone: (tz: string) => zonedDateTime.value.withTimeZone(tz),
-    toCalendar: (cal: string) => zonedDateTime.value.withCalendar(cal),
-    toPlainDate: () => zonedDateTime.value.toPlainDate(),
-    toPlainTime: () => zonedDateTime.value.toPlainTime(),
-    toPlainDateTime: () => zonedDateTime.value.toPlainDateTime(),
-    format: (formatOptions?: Intl.DateTimeFormatOptions) =>
-      zonedDateTime.value.toLocaleString(undefined, formatOptions),
   }
 }

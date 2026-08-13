@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { createTemporal, useTemporal } from '.'
+import { useTemporal } from '.'
 // Test-only polyfill (the `/full/` variant, so non-Gregorian calendars used
 // in these tests are supported). `@vueuse/core` itself has no runtime
 // dependency on any Temporal implementation — see `index.md` for what
@@ -243,80 +243,6 @@ describe('useTemporal', () => {
     expect(() => useTemporal({ temporal: JsTemporalPolyfill as unknown as typeof Temporal })).not.toThrow()
 
     globalThis.Temporal = original
-  })
-})
-
-describe('createTemporal', () => {
-  it('should create from current time', () => {
-    const temporal = createTemporal()
-
-    expect(temporal.zonedDateTime.value).toBeInstanceOf(Temporal.ZonedDateTime)
-    expect(temporal.zonedDateTime.value.timeZoneId).toBe('UTC')
-    expect(temporal.zonedDateTime.value.calendarId).toBe('gregory')
-  })
-
-  it('should create with custom timezone and calendar', () => {
-    const temporal = createTemporal(undefined, 'America/New_York', 'islamic-umalqura')
-
-    expect(temporal.zonedDateTime.value.timeZoneId).toBe('America/New_York')
-    expect(temporal.zonedDateTime.value.calendarId).toBe('islamic-umalqura')
-  })
-
-  it('should create from string input', () => {
-    const dateString = '2023-12-25T15:30:00[America/New_York]'
-    const temporal = createTemporal(dateString)
-
-    expect(temporal.zonedDateTime.value.toString()).toMatch(/2023-12-25T\d{2}:\d{2}:\d{2}/)
-  })
-
-  it('should create from ZonedDateTime input', () => {
-    const zonedDateTime = Temporal.Now.zonedDateTimeISO('Asia/Tokyo')
-    const temporal = createTemporal(zonedDateTime)
-
-    expect(temporal.zonedDateTime.value.timeZoneId).toBe('UTC') // Converted to default
-  })
-
-  it('should convert to timezone', () => {
-    const temporal = createTemporal()
-    const converted = temporal.toTimezone('Asia/Tokyo')
-
-    expect(converted.timeZoneId).toBe('Asia/Tokyo')
-  })
-
-  it('should convert to calendar', () => {
-    const temporal = createTemporal()
-    const converted = temporal.toCalendar('islamic-umalqura')
-
-    expect(converted.calendarId).toBe('islamic-umalqura')
-  })
-
-  it('should convert to plain date', () => {
-    const temporal = createTemporal()
-    const plainDate = temporal.toPlainDate()
-
-    expect(plainDate).toBeInstanceOf(Temporal.PlainDate)
-  })
-
-  it('should convert to plain time', () => {
-    const temporal = createTemporal()
-    const plainTime = temporal.toPlainTime()
-
-    expect(plainTime).toBeInstanceOf(Temporal.PlainTime)
-  })
-
-  it('should convert to plain datetime', () => {
-    const temporal = createTemporal()
-    const plainDateTime = temporal.toPlainDateTime()
-
-    expect(plainDateTime).toBeInstanceOf(Temporal.PlainDateTime)
-  })
-
-  it('should format datetime', () => {
-    const temporal = createTemporal()
-    const formatted = temporal.format({ dateStyle: 'short' })
-
-    expect(typeof formatted).toBe('string')
-    expect(formatted).toMatch(/\d/)
   })
 })
 
