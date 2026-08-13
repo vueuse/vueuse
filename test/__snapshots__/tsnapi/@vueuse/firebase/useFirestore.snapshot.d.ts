@@ -13,5 +13,8 @@ export type FirebaseDocRef<T> = Query<T> | DocumentReference<T>;
 // #endregion
 
 // #region Functions
+export declare function useFirestore<T extends DocumentData>(_: MaybeRef<DocumentReference<T> | Falsy>, _: T, _?: UseFirestoreOptions): Ref<T | null>;
+export declare function useFirestore<T extends DocumentData>(_: MaybeRef<Query<T> | Falsy>, _: T[], _?: UseFirestoreOptions): Ref<T[]>;
+export declare function useFirestore<T extends DocumentData>(_: MaybeRef<DocumentReference<T> | Falsy>, _?: T | undefined | null, _?: UseFirestoreOptions): Ref<T | undefined | null>;
 export declare function useFirestore<T extends DocumentData>(_: MaybeRef<Query<T> | Falsy>, _?: T[], _?: UseFirestoreOptions): Ref<T[] | undefined>;
 // #endregion

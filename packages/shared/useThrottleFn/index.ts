@@ -11,7 +11,7 @@ import { createFilterWrapper, throttleFilter } from '../utils'
  * @param   ms             A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
  *                                    (default value: 200)
  *
- * @param [trailing] if true, call fn again after the time is up (default value: false)
+ * @param [trailing] if true, call fn again after the time is up (default value: true)
  *
  * @param [leading] if true, call fn on the leading edge of the ms timeout (default value: true)
  *
@@ -24,7 +24,7 @@ import { createFilterWrapper, throttleFilter } from '../utils'
 export function useThrottleFn<T extends FunctionArgs>(
   fn: T,
   ms: MaybeRefOrGetter<number> = 200,
-  trailing = false,
+  trailing = true,
   leading = true,
   rejectOnCancel = false,
 ): PromisifyFn<T> {

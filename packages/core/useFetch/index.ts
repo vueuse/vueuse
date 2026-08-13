@@ -521,9 +521,11 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           }))
         }
 
-        error.value = errorData
-        if (options.updateDataOnError)
-          data.value = responseData
+        if (currentExecuteCounter === executeCounter) {
+          error.value = errorData
+          if (options.updateDataOnError)
+            data.value = responseData
+        }
 
         errorEvent.trigger(fetchError)
         if (throwOnFailed)

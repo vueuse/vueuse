@@ -32,7 +32,7 @@ onMounted(() => {
 })
 ```
 
-Alternatively you can set this up globally for your app using [`provideSSRWidth`](../useSSRWidth/index.md)
+Alternatively you can set this up globally for your app using [`provideSSRWidth`](./useSSRWidth.md)
 
 ## Type Declarations
 

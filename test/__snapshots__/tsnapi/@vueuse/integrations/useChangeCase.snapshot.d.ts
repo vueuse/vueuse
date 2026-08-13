@@ -6,5 +6,6 @@ export type ChangeCaseType = ChangeCaseKeys[keyof ChangeCaseKeys];
 // #endregion
 
 // #region Functions
+export declare function useChangeCase(_: MaybeRef<string>, _: MaybeRefOrGetter<ChangeCaseType>, _?: MaybeRefOrGetter<Options> | undefined): WritableComputedRef<string>;
 export declare function useChangeCase(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<ChangeCaseType>, _?: MaybeRefOrGetter<Options> | undefined): ComputedRef<string>;
 // #endregion

@@ -25,9 +25,16 @@ export type WatchExtractedObservableCallback<Value, OldValue, ObservableElement>
 export declare function from<T>(_: ObservableInput<T> | Ref<T>, _?: WatchOptions): Observable<T>;
 export declare function fromEvent<T extends HTMLElement | null>(_: MaybeRef<T>, _: string): Observable<Event>;
 export declare function toObserver<T>(_: Ref<T>): NextObserver<T>;
+export declare function useExtractedObservable<T extends MultiWatchSources, E, Immediate extends Readonly<boolean> = false>(_: [...T], _: WatchExtractedObservableCallback<MapSources<T>, MapOldSources<T, Immediate>, E>, _?: UseExtractedObservableOptions<E>, _?: WatchOptions<Immediate>): DeepReadonly<ShallowRef<E>>;
+export declare function useExtractedObservable<T extends Readonly<MultiWatchSources>, E, Immediate extends Readonly<boolean> = false>(_: T, _: WatchExtractedObservableCallback<MapSources<T>, MapOldSources<T, Immediate>, E>, _?: UseExtractedObservableOptions<E>, _?: WatchOptions<Immediate>): DeepReadonly<ShallowRef<E>>;
+export declare function useExtractedObservable<T, E, Immediate extends Readonly<boolean> = false>(_: WatchSource<T>, _: WatchExtractedObservableCallback<T, Immediate extends true ? T | undefined : T, E>, _?: UseExtractedObservableOptions<E>, _?: WatchOptions<Immediate>): DeepReadonly<ShallowRef<E>>;
 export declare function useExtractedObservable<T extends object, E, Immediate extends Readonly<boolean> = false>(_: T, _: WatchExtractedObservableCallback<T, Immediate extends true ? T | undefined : T, E>, _?: UseExtractedObservableOptions<E>, _?: WatchOptions<Immediate>): DeepReadonly<ShallowRef<E>>;
 export declare function useObservable<H, I = undefined>(_: Observable<H>, _?: UseObservableOptions<I | undefined>): Readonly<Ref<H | I>>;
+export declare function useSubject<H>(_: BehaviorSubject<H>, _?: UseSubjectOptions): Ref<H>;
 export declare function useSubject<H>(_: Subject<H>, _?: UseSubjectOptions): Ref<H | undefined>;
 export declare function useSubscription(_: Unsubscribable): void;
+export declare function watchExtractedObservable<T extends MultiWatchSources, E, Immediate extends Readonly<boolean> = false>(_: [...T], _: WatchExtractedObservableCallback<MapSources<T>, MapOldSources<T, Immediate>, E>, _: (_: E) => void, _?: WatchExtractedObservableOptions, _?: WatchOptions<Immediate>): WatchHandle;
+export declare function watchExtractedObservable<T extends Readonly<MultiWatchSources>, E, Immediate extends Readonly<boolean> = false>(_: T, _: WatchExtractedObservableCallback<MapSources<T>, MapOldSources<T, Immediate>, E>, _: (_: E) => void, _?: WatchExtractedObservableOptions, _?: WatchOptions<Immediate>): WatchHandle;
+export declare function watchExtractedObservable<T, E, Immediate extends Readonly<boolean> = false>(_: WatchSource<T>, _: WatchExtractedObservableCallback<T, Immediate extends true ? T | undefined : T, E>, _: (_: E) => void, _?: WatchExtractedObservableOptions, _?: WatchOptions<Immediate>): WatchHandle;
 export declare function watchExtractedObservable<T extends object, E, Immediate extends Readonly<boolean> = false>(_: T, _: WatchExtractedObservableCallback<T, Immediate extends true ? T | undefined : T, E>, _: (_: E) => void, _?: WatchExtractedObservableOptions, _?: WatchOptions<Immediate>): WatchHandle;
 // #endregion

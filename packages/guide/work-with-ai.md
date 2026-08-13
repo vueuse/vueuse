@@ -3,7 +3,7 @@
 ## Agent Skills
 
 > [!IMPORTANT]
-> 🧪 Experimental: VueUse Skills are currently experimental and under active development, feedbacks are welcome.
+> 🧪 Experimental: VueUse Skills are currently experimental and under active development, feedback is welcome.
 
 The [VueUse Skills](https://github.com/vueuse/skills) are AI Agent Skills maintained by the VueUse team.
 

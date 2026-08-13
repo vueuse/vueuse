@@ -94,6 +94,9 @@ export async function readMetadata() {
       let variants = frontmatter.variants
       if (typeof variants === 'string')
         variants = variants.split(',').map(s => s.trim()).filter(Boolean)
+      let utils = frontmatter.utils
+      if (typeof utils === 'string')
+        utils = utils.split(',').map(s => s.trim()).filter(Boolean)
       let related = frontmatter.related
       if (typeof related === 'string')
         related = related.split(',').map(s => s.trim()).filter(Boolean)
@@ -126,6 +129,8 @@ export async function readMetadata() {
         fn.alias = alias
       if (variants?.length)
         fn.variants = variants
+      if (utils?.length)
+        fn.utils = utils
 
       if (related?.length)
         fn.related = related

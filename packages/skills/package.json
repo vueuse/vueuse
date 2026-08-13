@@ -24,8 +24,11 @@
   "files": [
     "skills"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "build": "tsx build.ts"
+    "update": "tsx build.ts"
   },
   "dependencies": {
     "@vueuse/metadata": "workspace:*"

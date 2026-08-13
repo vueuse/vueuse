@@ -112,4 +112,4 @@ const { list, containerProps, wrapperProps } = useVirtualList(
 </template>
 ```
 
-To scroll to a specific element, the component exposes `scrollTo(index: number) => void`.
+To scroll to a specific element, the component exposes `scrollTo(index: number, options?: { behavior?: ScrollBehavior, block?: ScrollLogicalPosition, inline?: ScrollLogicalPosition }) => void`.

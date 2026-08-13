@@ -731,6 +731,17 @@ describe('useFetch', () => {
     })
   })
 
+  it('should clear error when refetch succeeds after aborting previous request', async () => {
+    const url = shallowRef(`${baseUrl}?delay=50`)
+    const { data, error } = useFetch(url, { refetch: true }).json()
+    await nextTick()
+    url.value = jsonUrl
+    await vi.waitFor(() => {
+      expect(data.value).toEqual(jsonMessage)
+    })
+    expect(error.value).toBeNull()
+  })
+
   it('should be generated payloadType on execute', async () => {
     const form = deepRef()
     const { execute } = useFetch(baseUrl).post(form)
