@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { stringify } from '@vueuse/docs-utils'
-import { reactive, ref, useTemplateRef } from 'vue'
+import { reactive, shallowRef, useTemplateRef } from 'vue'
 import { useInputSelection } from '.'
 
 const input = useTemplateRef('input')
@@ -9,7 +9,7 @@ const textarea = useTemplateRef('textarea')
 const { start, end, direction } = useInputSelection(input)
 const selectionTextarea = reactive(useInputSelection(textarea))
 
-const value = ref('VueUse is cool')
+const value = shallowRef('VueUse is cool')
 
 const text = stringify(reactive({ start, end, direction }))
 const textTextarea = stringify(selectionTextarea)

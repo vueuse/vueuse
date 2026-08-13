@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, useTemplateRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 import { useInputCaretPosition } from '..'
 
 const input = useTemplateRef<HTMLInputElement>('input')
 
 const { position } = useInputCaretPosition(input)
 
-const inputValue = ref('')
+const inputValue = shallowRef('')
 </script>
 
 <template>
