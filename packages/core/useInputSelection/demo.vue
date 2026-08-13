@@ -1,7 +1,20 @@
 <script setup lang="ts">
-import { stringify } from '@vueuse/docs-utils'
+import { reactify } from '@vueuse/core'
 import { reactive, shallowRef, useTemplateRef } from 'vue'
+import YAML from 'yaml'
 import { useInputSelection } from '.'
+
+const stringify = reactify(
+  (input: any) => YAML.stringify(input, (k, v) => {
+    if (typeof v === 'function') {
+      return undefined
+    }
+    return v
+  }, {
+    singleQuote: true,
+    flowCollectionPadding: false,
+  }),
+)
 
 const input = useTemplateRef('input')
 const textarea = useTemplateRef('textarea')
