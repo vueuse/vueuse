@@ -3,7 +3,6 @@
     "target": "es2020",
     "jsx": "preserve",
     "lib": ["ESNext", "DOM", "DOM.Iterable", "webworker"],
-    "baseUrl": ".",
     "rootDir": ".",
     "module": "esnext",
     "moduleResolution": "Bundler",
@@ -45,6 +44,7 @@
     "packages",
     "packages/.vitepress/components/*.vue",
     "packages/.vitepress/*.ts",
+    "packages/.vitepress/theme",
     "meta",
     "vitest.config.ts"
   ],

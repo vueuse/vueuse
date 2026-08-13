@@ -44,17 +44,17 @@ For further details, you may refer to this documentation: [Designing Websites fo
 ## Type Declarations
 
 ```ts
+export interface UseScreenSafeAreaReturn {
+  top: ShallowRef<string>
+  right: ShallowRef<string>
+  bottom: ShallowRef<string>
+  left: ShallowRef<string>
+  update: () => void
+}
 /**
  * Reactive `env(safe-area-inset-*)`
  *
  * @see https://vueuse.org/useScreenSafeArea
  */
-export declare function useScreenSafeArea(): {
-  top: ShallowRef<string, string>
-  right: ShallowRef<string, string>
-  bottom: ShallowRef<string, string>
-  left: ShallowRef<string, string>
-  update: () => void
-}
-export type UseScreenSafeAreaReturn = ReturnType<typeof useScreenSafeArea>
+export declare function useScreenSafeArea(): UseScreenSafeAreaReturn
 ```

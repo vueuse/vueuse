@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as metadata from '@vueuse/metadata'
 import { getTypeDefinition } from '../../scripts/utils'
+import { rewriteFunctionLinks } from './rewrite-function-links'
 
 type FunctionInvocation = 'AUTO' | 'EXTERNAL' | 'EXPLICIT_ONLY'
 
@@ -60,7 +61,7 @@ async function prepareFunctionReferences(outDir: string, referenceDir = SKILL_RE
 
     const functions = metadata.functions.filter(i => i.category === category && !i.internal)
     for (const fn of functions) {
-      const description = toTitleCase(fn.description?.replace(/\|/g, '\\|') ?? '')
+      const description = rewriteFunctionLinks(toTitleCase(fn.description?.replace(/\|/g, '\\|') ?? ''), `${referenceDir.replace(/^\.\//, '')}/`)
 
       if (fn.external) {
         refs.push({ name: fn.name, description, reference: fn.external })
@@ -122,7 +123,7 @@ function toTitleCase(str: string): string {
 }
 
 async function genFunctionReference(pkg: string, name: string, mdPath: string) {
-  const md = readFileSync(mdPath, 'utf-8')
+  const md = rewriteFunctionLinks(readFileSync(mdPath, 'utf-8'), './')
   const types = await getTypeDefinition(pkg, name)
   if (types) {
     return `${md}

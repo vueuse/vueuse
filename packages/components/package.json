@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/components",
   "type": "module",
-  "version": "14.2.1",
+  "version": "14.4.0",
   "description": "Renderless components for VueUse",
   "author": "Jacob Clevenger<https://github.com/wheatjs>",
   "license": "MIT",
@@ -33,6 +33,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "tsdown",
     "prepack": "pnpm run build"

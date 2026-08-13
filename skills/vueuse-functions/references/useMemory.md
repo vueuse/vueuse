@@ -55,9 +55,8 @@ export interface UseMemoryOptions extends ConfigurableScheduler {
   /** @deprecated Please use `scheduler` option instead */
   interval?: number
 }
-export interface UseMemoryReturn {
-  isSupported: ComputedRef<boolean>
-  memory: Ref<MemoryInfo | undefined>
+export interface UseMemoryReturn extends Supportable {
+  memory: ShallowRef<MemoryInfo | undefined>
 }
 /**
  * Reactive Memory Info.

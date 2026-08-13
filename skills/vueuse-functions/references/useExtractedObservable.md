@@ -152,7 +152,7 @@ export declare function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 export declare function useExtractedObservable<
   T extends Readonly<MultiWatchSources>,
   E,
@@ -166,7 +166,7 @@ export declare function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 export declare function useExtractedObservable<
   T,
   E,
@@ -180,7 +180,7 @@ export declare function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 export declare function useExtractedObservable<
   T extends object,
   E,
@@ -194,5 +194,5 @@ export declare function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 ```

@@ -28,10 +28,8 @@ export interface UseElementByPointOptions<Multiple extends boolean = false>
   /** @deprecated Please use `scheduler` option instead */
   interval?: "requestAnimationFrame" | number
 }
-export interface UseElementByPointReturn<
-  Multiple extends boolean = false,
-> extends Pausable {
-  isSupported: ComputedRef<boolean>
+export interface UseElementByPointReturn<Multiple extends boolean = false>
+  extends Supportable, Pausable {
   element: ShallowRef<
     Multiple extends true ? HTMLElement[] : HTMLElement | null
   >

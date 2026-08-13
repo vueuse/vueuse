@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/metadata",
   "type": "module",
-  "version": "14.2.1",
+  "version": "14.4.0",
   "description": "Metadata for VueUse functions",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -31,6 +31,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "update": "tsx scripts/update.ts",
     "build": "tsdown",

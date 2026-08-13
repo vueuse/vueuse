@@ -50,7 +50,7 @@ export interface UsePointerReturn {
   isInside: ShallowRef<boolean>
 }
 
-const defaultState: UsePointerState = /* #__PURE__ */ {
+const defaultState: UsePointerState = {
   x: 0,
   y: 0,
   pointerId: 0,

@@ -27,6 +27,8 @@ const isLeft = usePageLeave()
 ## Type Declarations
 
 ```ts
+export interface UsePageLeaveOptions extends ConfigurableWindow {}
+export type UsePageLeaveReturn = ShallowRef<boolean>
 /**
  * Reactive state to show whether mouse leaves the page.
  *
@@ -36,7 +38,6 @@ const isLeft = usePageLeave()
  * @__NO_SIDE_EFFECTS__
  */
 export declare function usePageLeave(
-  options?: ConfigurableWindow,
-): ShallowRef<boolean, boolean>
-export type UsePageLeaveReturn = ReturnType<typeof usePageLeave>
+  options?: UsePageLeaveOptions,
+): UsePageLeaveReturn
 ```

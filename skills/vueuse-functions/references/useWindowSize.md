@@ -60,6 +60,10 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
    */
   type?: "inner" | "outer" | "visual"
 }
+export interface UseWindowSizeReturn {
+  width: ShallowRef<number>
+  height: ShallowRef<number>
+}
 /**
  * Reactive window size.
  *
@@ -68,9 +72,7 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export declare function useWindowSize(options?: UseWindowSizeOptions): {
-  width: ShallowRef<number, number>
-  height: ShallowRef<number, number>
-}
-export type UseWindowSizeReturn = ReturnType<typeof useWindowSize>
+export declare function useWindowSize(
+  options?: UseWindowSizeOptions,
+): UseWindowSizeReturn
 ```

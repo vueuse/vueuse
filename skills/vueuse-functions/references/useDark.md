@@ -131,14 +131,12 @@ export interface UseDarkOptions extends Omit<
     mode: BasicColorSchema,
   ) => void
 }
+export type UseDarkReturn = WritableComputedRef<boolean>
 /**
  * Reactive dark mode with auto data persistence.
  *
  * @see https://vueuse.org/useDark
  * @param options
  */
-export declare function useDark(
-  options?: UseDarkOptions,
-): WritableComputedRef<boolean, boolean>
-export type UseDarkReturn = ReturnType<typeof useDark>
+export declare function useDark(options?: UseDarkOptions): UseDarkReturn
 ```

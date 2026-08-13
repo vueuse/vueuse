@@ -33,29 +33,14 @@ const { x, y } = useWindowScroll()
 ```ts
 export interface UseWindowScrollOptions
   extends ConfigurableWindow, UseScrollOptions {}
+export interface UseWindowScrollReturn extends UseScrollReturn {}
 /**
  * Reactive window scroll.
  *
  * @see https://vueuse.org/useWindowScroll
  * @param options
  */
-export declare function useWindowScroll(options?: UseWindowScrollOptions): {
-  x: WritableComputedRef<number, number>
-  y: WritableComputedRef<number, number>
-  isScrolling: ShallowRef<boolean, boolean>
-  arrivedState: {
-    left: boolean
-    right: boolean
-    top: boolean
-    bottom: boolean
-  }
-  directions: {
-    left: boolean
-    right: boolean
-    top: boolean
-    bottom: boolean
-  }
-  measure(): void
-}
-export type UseWindowScrollReturn = ReturnType<typeof useWindowScroll>
+export declare function useWindowScroll(
+  options?: UseWindowScrollOptions,
+): UseWindowScrollReturn
 ```

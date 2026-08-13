@@ -101,10 +101,7 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
     }
 
     if (timeout) {
-      timeoutId.value = setTimeout(
-        () => workerTerminate('TIMEOUT_EXPIRED'),
-        timeout,
-      ) as any
+      timeoutId.value = setTimeout(workerTerminate, timeout, 'TIMEOUT_EXPIRED') as any
     }
     return newWorker
   }
