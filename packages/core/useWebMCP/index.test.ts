@@ -55,6 +55,22 @@ describe('useWebMCP', () => {
     scope.stop()
   })
 
+  it('reports unsupported when modelContext lacks a callable registerTool', async () => {
+    ;(document as any).modelContext = {} // present but incomplete
+    const scope = effectScope()
+    const result = scope.run(() => useWebMCP({
+      name: 'noop',
+      description: 'no-op',
+      execute: () => 'ok',
+    }))!
+    await nextTick()
+
+    expect(result.isSupported.value).toBe(false)
+    expect(result.isRegistered.value).toBe(false)
+    expect(result.error.value).toBeNull()
+    scope.stop()
+  })
+
   it('registers on run and unregisters when the scope is disposed', async () => {
     const { tools, registerTool } = installModelContext()
     const scope = effectScope()
@@ -190,6 +206,14 @@ describe('useWebMCP', () => {
       expect(await runExecute(() => ({ a: 1 }))).toEqual({ content: [{ type: 'text', text: '{"a":1}' }] })
     })
 
+    it('does not throw on non-serializable (circular) results', async () => {
+      const circular: any = {}
+      circular.self = circular
+      const res = await runExecute(() => circular)
+      expect(res.isError).toBeUndefined()
+      expect(res.content[0].type).toBe('text')
+    })
+
     it('turns a thrown Error into an isError result and calls onError', async () => {
       const onError = vi.fn()
       const res = await runExecute(() => {
@@ -217,6 +241,17 @@ describe('useWebMCP', () => {
       const onError = vi.fn()
       const res = await runExecute(() => new Error('returned'), {}, { onError })
       expect(res).toEqual({ content: [{ type: 'text', text: 'returned' }], isError: true })
+      expect(onError).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not let a throwing onError break the tool execution path', async () => {
+      const onError = vi.fn(() => {
+        throw new Error('onError blew up')
+      })
+      const res = await runExecute(() => {
+        throw new Error('boom')
+      }, {}, { onError })
+      expect(res).toEqual({ content: [{ type: 'text', text: 'boom' }], isError: true })
       expect(onError).toHaveBeenCalledTimes(1)
     })
 

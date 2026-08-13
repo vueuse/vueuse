@@ -58,11 +58,11 @@ export interface ModelContext {
   registerTool: (tool: WebMCPToolDescriptor, options?: { signal?: AbortSignal }) => void
 }
 
-declare global {
-  interface Document {
-    modelContext?: ModelContext
-  }
-}
+// The WebMCP API is experimental and not yet in the DOM lib, so narrow the
+// `document` locally rather than augmenting the global `Document` type (a
+// `declare global` here would risk type conflicts for downstream consumers
+// once the DOM lib ships its own definition).
+type DocumentWithModelContext = Document & { modelContext?: ModelContext }
 
 export interface UseWebMCPOptions<Args, Result> extends ConfigurableDocument {
   /**
@@ -141,7 +141,9 @@ function toToolResponse(value: unknown): WebMCPToolResponse {
     return { content: [{ type: 'text', text: value }] }
 
   // Anything else (objects, arrays, numbers) is serialized to JSON text.
-  return { content: [{ type: 'text', text: JSON.stringify(value) }] }
+  // `safeStringify` so exotic values (circular refs / BigInt) can't turn a
+  // successful result into an error.
+  return { content: [{ type: 'text', text: safeStringify(value) }] }
 }
 
 // Every failure becomes an explicit `isError` result, whatever was thrown — a
@@ -179,7 +181,12 @@ export function useWebMCP<Args = Record<string, any>, Result = unknown>(
     enabled = true,
   } = options
 
-  const isSupported = useSupported(() => !!document && !!document.modelContext)
+  const doc = document as DocumentWithModelContext | undefined
+
+  // Require `registerTool` to be callable, not merely that `modelContext`
+  // exists — a present-but-incomplete API should report unsupported rather
+  // than surface a registration error.
+  const isSupported = useSupported(() => typeof doc?.modelContext?.registerTool === 'function')
   const isRegistered = shallowRef(false)
   const error = shallowRef<Error | null>(null)
 
@@ -202,7 +209,7 @@ export function useWebMCP<Args = Record<string, any>, Result = unknown>(
     controller = new AbortController()
 
     try {
-      document!.modelContext!.registerTool(
+      doc!.modelContext!.registerTool(
         {
           name: toValue(options.name),
           description: toValue(options.description),
@@ -219,7 +226,12 @@ export function useWebMCP<Args = Record<string, any>, Result = unknown>(
               return toToolResponse(shaped)
             }
             catch (err) {
-              options.onError?.(err)
+              // `onError` is a side effect and must never break the tool
+              // execution path — always return a WebMCPToolResponse.
+              try {
+                options.onError?.(err)
+              }
+              catch {}
               return toErrorResponse(err)
             }
           },
@@ -244,8 +256,8 @@ export function useWebMCP<Args = Record<string, any>, Result = unknown>(
       isSupported,
       () => toValue(options.name),
       () => toValue(options.description),
-      () => (toValue(options.inputSchema) ? JSON.stringify(toValue(options.inputSchema)) : ''),
-      () => (toValue(options.annotations) ? JSON.stringify(toValue(options.annotations)) : ''),
+      () => (toValue(options.inputSchema) ? safeStringify(toValue(options.inputSchema)) : ''),
+      () => (toValue(options.annotations) ? safeStringify(toValue(options.annotations)) : ''),
       () => toValue(enabled),
     ],
     register,
