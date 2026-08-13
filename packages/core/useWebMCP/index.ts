@@ -181,8 +181,7 @@ export function useWebMCP(
   const tools = Array.isArray(options) ? options : [options]
   const documents = tools.map(tool => tool.document ?? defaultDocument)
 
-  const isSupported = useSupported(() =>
-    tools.length > 0 && documents.every(document => !!document && !!document.modelContext))
+  const isSupported = useSupported(() => tools.length > 0 && documents.every(document => !!document && !!document.modelContext))
 
   // Per-tool registration state, aggregated for the return value.
   const registeredStates = tools.map(() => shallowRef(false))
@@ -264,8 +263,7 @@ export function useWebMCP(
 
   tryOnScopeDispose(() => tools.forEach((_, index) => cleanup(index)))
 
-  const isRegistered = computed(() =>
-    registeredStates.length > 0 && registeredStates.every(state => state.value))
+  const isRegistered = computed(() => registeredStates.length > 0 && registeredStates.every(state => state.value))
   const error = computed(() => errorStates.find(state => state.value)?.value ?? null)
 
   return {
