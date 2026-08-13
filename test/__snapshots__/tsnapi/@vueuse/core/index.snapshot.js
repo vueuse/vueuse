@@ -8,7 +8,7 @@ export function computedInject(_, _, _, _) {}
 export function createFetch(_) {}
 export function createReusableTemplate(_) {}
 export function createTemplatePromise(_) {}
-export function createTemporal(_, _, _) {}
+export function createTemporal(_, _, _, _) {}
 export function createUnrefFn(_) {}
 /** @deprecated */
 export function executeTransition(_, _, _, _) {}

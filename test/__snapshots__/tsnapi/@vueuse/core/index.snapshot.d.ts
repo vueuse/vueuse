@@ -1268,6 +1268,7 @@ export interface UseTemporalOptions {
   calendar?: string;
   interval?: MaybeRefOrGetter<number>;
   immediate?: boolean;
+  temporal?: typeof Temporal;
 }
 export interface UseTemporalReturn extends Pausable {
   now: Ref<Temporal.ZonedDateTime>;
@@ -1721,7 +1722,7 @@ export declare function computedInject<T, K = any>(_: InjectionKey<T> | string, 
 export declare function createFetch(_?: CreateFetchOptions): typeof useFetch;
 export declare function createReusableTemplate<Bindings extends Record<string, any>, MapSlotNameToSlotProps extends ObjectLiteralWithPotentialObjectLiterals = Record<'default', undefined>>(_?: CreateReusableTemplateOptions<Bindings>): ReusableTemplatePair<Bindings, MapSlotNameToSlotProps>;
 export declare function createTemplatePromise<Return, Args extends any[] = []>(_?: TemplatePromiseOptions): TemplatePromise<Return, Args>;
-export declare function createTemporal(_?: MaybeRefOrGetter<string | Temporal.ZonedDateTime | undefined>, _?: MaybeRefOrGetter<string | undefined>, _?: MaybeRefOrGetter<string | undefined>): CreateTemporalReturn;
+export declare function createTemporal(_?: MaybeRefOrGetter<string | Temporal.ZonedDateTime | undefined>, _?: MaybeRefOrGetter<string | undefined>, _?: MaybeRefOrGetter<string | undefined>, _?: typeof Temporal): CreateTemporalReturn;
 export declare function createUnrefFn<T extends Function>(_: T): UnrefFn<T>;
 /** @deprecated */
 export declare function executeTransition<T>(_: Ref<T>, _: MaybeRefOrGetter<T>, _: MaybeRefOrGetter<T>, _?: TransitionOptions<T>): PromiseLike<void>;

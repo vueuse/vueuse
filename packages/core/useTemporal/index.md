@@ -10,7 +10,7 @@ Uses the modern Temporal API instead of the legacy `Date` object, providing bett
 
 ## Requirements
 
-This function relies on the global [`Temporal`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) object. It does **not** bundle or depend on any Temporal implementation.
+This function relies on the [`Temporal`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal) API. It does **not** bundle or depend on any Temporal implementation — by default it reads the global `Temporal` object, but you can also pass your own implementation via the `temporal` option.
 
 - Modern JS engines (recent Node.js, Deno, and browsers) already expose `Temporal` natively, or will soon.
 - For environments without native support, install a polyfill yourself, for example [`temporal-polyfill`](https://github.com/fullcalendar/temporal-polyfill):
@@ -19,7 +19,7 @@ This function relies on the global [`Temporal`](https://developer.mozilla.org/en
   npm i temporal-polyfill
   ```
 
-  and load it once, before this function is used (e.g. in your app's entry point):
+  and either load it once as a global, before this function is used (e.g. in your app's entry point):
 
   ```ts
   import 'temporal-polyfill/global'
@@ -31,9 +31,25 @@ This function relies on the global [`Temporal`](https://developer.mozilla.org/en
   import 'temporal-polyfill/full/global'
   ```
 
-  [`@js-temporal/polyfill`](https://github.com/js-temporal/temporal-polyfill) is another common alternative, though it does not install a global `Temporal` object by itself, so you would need to assign it manually: `globalThis.Temporal ??= require('@js-temporal/polyfill').Temporal`.
+  ...or pass it explicitly via the `temporal` option instead of touching the global scope:
 
-If `Temporal` is not available, calling `useTemporal` or `createTemporal` will throw an error.
+  ```ts
+  import { useTemporal } from '@vueuse/core'
+  import { Temporal } from 'temporal-polyfill'
+
+  const temporal = useTemporal({ temporal: Temporal })
+  ```
+
+  [`@js-temporal/polyfill`](https://github.com/js-temporal/temporal-polyfill) is another common alternative. It does not install a global `Temporal` object by itself, so the `temporal` option is the natural way to use it:
+
+  ```ts
+  import { Temporal } from '@js-temporal/polyfill'
+  import { useTemporal } from '@vueuse/core'
+
+  const temporal = useTemporal({ temporal: Temporal })
+  ```
+
+If no `Temporal` implementation can be found (neither passed via the `temporal` option nor available globally), calling `useTemporal` or `createTemporal` will throw an error.
 
 ## Usage
 

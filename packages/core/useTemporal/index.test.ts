@@ -188,6 +188,28 @@ describe('useTemporal', () => {
 
     globalThis.Temporal = original
   })
+
+  it('should use a custom `temporal` implementation instead of the global one', async () => {
+    // A separate, independently imported implementation (not the polyfilled
+    // global one), to prove `useTemporal` doesn't just fall back to `globalThis.Temporal`.
+    const { Temporal: CustomTemporal } = await import('temporal-polyfill')
+
+    const temporal = useTemporal({ immediate: false, temporal: CustomTemporal })
+
+    expect(temporal.now.value).toBeInstanceOf(CustomTemporal.ZonedDateTime)
+    expect(temporal.now.value).not.toBeInstanceOf(Temporal.ZonedDateTime)
+  })
+
+  it('should work even when the global Temporal object is unavailable, given a custom implementation', async () => {
+    const { Temporal: CustomTemporal } = await import('temporal-polyfill')
+    const original = globalThis.Temporal
+    // @ts-expect-error simulate an environment without Temporal support
+    delete globalThis.Temporal
+
+    expect(() => useTemporal({ temporal: CustomTemporal })).not.toThrow()
+
+    globalThis.Temporal = original
+  })
 })
 
 describe('createTemporal', () => {

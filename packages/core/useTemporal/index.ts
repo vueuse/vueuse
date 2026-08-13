@@ -28,6 +28,14 @@ export interface UseTemporalOptions {
    * @default true
    */
   immediate?: boolean
+  /**
+   * Custom `Temporal` implementation to use, e.g. the `Temporal` export from
+   * `@js-temporal/polyfill` or another polyfill, instead of relying on the
+   * global `Temporal` object.
+   *
+   * @default globalThis.Temporal
+   */
+  temporal?: typeof Temporal
 }
 
 export interface UseTemporalReturn extends Pausable {
@@ -81,15 +89,23 @@ export interface UseTemporalReturn extends Pausable {
   compare: (other: Temporal.ZonedDateTime | string) => number
 }
 
-function assertTemporalSupport() {
-  if (typeof Temporal === 'undefined') {
+function resolveTemporal(custom?: typeof Temporal): typeof Temporal | undefined {
+  if (custom)
+    return custom
+  return typeof Temporal === 'undefined' ? undefined : Temporal
+}
+
+function assertTemporal(impl: typeof Temporal | undefined): typeof Temporal {
+  if (!impl) {
     throw new Error(
-      '[VueUse] `useTemporal` requires a global `Temporal` object. '
-      + 'It is natively available in modern JS engines; for environments without native support, '
-      + 'install a polyfill (e.g. `temporal-polyfill`) and load it before calling this function. '
-      + 'See https://vueuse.org/useTemporal for details.',
+      '[VueUse] `useTemporal` requires a `Temporal` implementation. '
+      + 'It is natively available in modern JS engines. For environments without native support, '
+      + 'either pass a custom implementation via the `temporal` option (e.g. the `Temporal` export '
+      + 'from `@js-temporal/polyfill`), or install a global polyfill (e.g. `temporal-polyfill`) and '
+      + 'load it before calling this function. See https://vueuse.org/useTemporal for details.',
     )
   }
+  return impl
 }
 
 /**
@@ -99,24 +115,25 @@ function assertTemporalSupport() {
  * @param options - Configuration options
  */
 export function useTemporal(options: UseTemporalOptions = {}): UseTemporalReturn {
-  assertTemporalSupport()
-
   const {
     timezone: initialTimezone = 'UTC',
     calendar: initialCalendar = 'gregory',
     interval = 1000,
     immediate = true,
+    temporal: customTemporal,
   } = options
+
+  const TemporalImpl = assertTemporal(resolveTemporal(customTemporal))
 
   const timezone = shallowRef(initialTimezone)
   const calendar = shallowRef(initialCalendar)
 
   const now = shallowRef(
-    Temporal.Now.zonedDateTimeISO(timezone.value).withCalendar(calendar.value),
+    TemporalImpl.Now.zonedDateTimeISO(timezone.value).withCalendar(calendar.value),
   )
 
   function updateNow() {
-    now.value = Temporal.Now.zonedDateTimeISO(timezone.value).withCalendar(calendar.value)
+    now.value = TemporalImpl.Now.zonedDateTimeISO(timezone.value).withCalendar(calendar.value)
   }
 
   const { isActive, pause, resume } = useIntervalFn(updateNow, interval, { immediate })
@@ -132,7 +149,7 @@ export function useTemporal(options: UseTemporalOptions = {}): UseTemporalReturn
   const format = (formatOptions?: Intl.DateTimeFormatOptions) => now.value.toLocaleString(undefined, formatOptions)
   const add = (duration: Temporal.DurationLike) => now.value.add(duration)
   const subtract = (duration: Temporal.DurationLike) => now.value.subtract(duration)
-  const compare = (other: Temporal.ZonedDateTime | string) => Temporal.ZonedDateTime.compare(now.value, other)
+  const compare = (other: Temporal.ZonedDateTime | string) => TemporalImpl.ZonedDateTime.compare(now.value, other)
 
   return {
     now,
@@ -188,13 +205,18 @@ export interface CreateTemporalReturn {
  * Create a static, computed Temporal date/time utility.
  *
  * @see https://vueuse.org/useTemporal
+ * @param input - Initial date/time value, defaults to the current time
+ * @param timezone - Timezone to resolve `input` to
+ * @param calendar - Calendar system to resolve `input` to
+ * @param temporal - Custom `Temporal` implementation to use instead of the global `Temporal` object
  */
 export function createTemporal(
   input?: MaybeRefOrGetter<string | Temporal.ZonedDateTime | undefined>,
   timezone?: MaybeRefOrGetter<string | undefined>,
   calendar?: MaybeRefOrGetter<string | undefined>,
+  temporal?: typeof Temporal,
 ): CreateTemporalReturn {
-  assertTemporalSupport()
+  const TemporalImpl = assertTemporal(resolveTemporal(temporal))
 
   const zonedDateTime = computed(() => {
     const inputValue = toValue(input)
@@ -202,10 +224,10 @@ export function createTemporal(
     const cal = toValue(calendar) || 'gregory'
 
     if (!inputValue)
-      return Temporal.Now.zonedDateTimeISO(tz).withCalendar(cal)
+      return TemporalImpl.Now.zonedDateTimeISO(tz).withCalendar(cal)
 
     if (typeof inputValue === 'string')
-      return Temporal.ZonedDateTime.from(inputValue).withTimeZone(tz).withCalendar(cal)
+      return TemporalImpl.ZonedDateTime.from(inputValue).withTimeZone(tz).withCalendar(cal)
 
     return inputValue.withTimeZone(tz).withCalendar(cal)
   })
