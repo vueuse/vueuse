@@ -35,7 +35,20 @@ describe('useTimeoutPoll', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
 
-    vi.advanceTimersByTime(100)
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('immediateCallback waits for the callback to finish', async () => {
+    const callback = vi.fn(() => new Promise<void>(resolve => setTimeout(resolve, 50)))
+    useTimeoutPoll(callback, 50, { immediateCallback: true })
+
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(50)
     expect(callback).toHaveBeenCalledTimes(2)
   })
 
