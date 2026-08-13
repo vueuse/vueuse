@@ -26,10 +26,12 @@ describe('useLiveAnnouncer', () => {
 
     expect(polite?.getAttribute('aria-live')).toBe('polite')
     expect(polite?.getAttribute('role')).toBe('status')
+    expect(polite?.getAttribute('aria-atomic')).toBe('true')
     expect(polite?.textContent).toBe('Test message')
 
     expect(assertive?.getAttribute('aria-live')).toBe('assertive')
     expect(assertive?.getAttribute('role')).toBe('alert')
+    expect(assertive?.getAttribute('aria-atomic')).toBe('true')
   })
 
   it('should support polite announcement', async () => {
@@ -87,6 +89,29 @@ describe('useLiveAnnouncer', () => {
 
     vi.advanceTimersByTime(500)
     expect(assertiveEl?.textContent).toBe('')
+  })
+
+  it('should not clear a re-announced identical message early', async () => {
+    vi.useFakeTimers()
+    const { polite } = useLiveAnnouncer()
+
+    polite('Same message', 1000)
+    await nextTick()
+
+    vi.advanceTimersByTime(500)
+    // Re-announce the identical text; the first timer must be cancelled.
+    polite('Same message', 1000)
+    await nextTick()
+
+    const politeEl = document.getElementById('vueuse-live-announcer-polite')
+
+    // At t=1000 the first (cancelled) timer would have wiped the message.
+    vi.advanceTimersByTime(500)
+    expect(politeEl?.textContent).toBe('Same message')
+
+    // Only the second timer (t=1500) should clear it.
+    vi.advanceTimersByTime(500)
+    expect(politeEl?.textContent).toBe('')
   })
 
   it('should support custom idPrefix', async () => {

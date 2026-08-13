@@ -3,7 +3,11 @@ import { tryOnScopeDispose } from '@vueuse/shared'
 import { nextTick } from 'vue'
 import { defaultWindow } from '../_configurable'
 
-const announcerMap = new Map<string, number>()
+let announcerMap: Map<string, number> | undefined
+
+function getAnnouncerMap() {
+  return announcerMap ??= new Map<string, number>()
+}
 
 export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
   /**
@@ -13,18 +17,19 @@ export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
   idPrefix?: string
 }
 
-function cleanup(idPrefix: string) {
-  const count = announcerMap.get(idPrefix) || 0
+function cleanup(idPrefix: string, document: Document) {
+  const map = getAnnouncerMap()
+  const count = map.get(idPrefix) || 0
 
   if (count <= 1) {
     const container = document.getElementById(`${idPrefix}-container`)
     if (container) {
       container.remove()
     }
-    announcerMap.delete(idPrefix)
+    map.delete(idPrefix)
   }
   else {
-    announcerMap.set(idPrefix, count - 1)
+    map.set(idPrefix, count - 1)
   }
 }
 
@@ -41,13 +46,17 @@ export function useLiveAnnouncer(options: UseLiveAnnouncerOptions = {}): UseLive
   } = options
 
   const document = window?.document
+  const timers = new Map<'polite' | 'assertive', ReturnType<Window['setTimeout']>>()
 
-  if (document) {
-    const count = announcerMap.get(idPrefix) || 0
-    announcerMap.set(idPrefix, count + 1)
+  if (window && document) {
+    const map = getAnnouncerMap()
+    const count = map.get(idPrefix) || 0
+    map.set(idPrefix, count + 1)
 
     tryOnScopeDispose(() => {
-      cleanup(idPrefix)
+      timers.forEach(timer => window.clearTimeout(timer))
+      timers.clear()
+      cleanup(idPrefix, document)
     })
   }
 
@@ -96,7 +105,7 @@ export function useLiveAnnouncer(options: UseLiveAnnouncerOptions = {}): UseLive
   ensureAnnouncer()
 
   function announce(message: string, mode: 'polite' | 'assertive' = 'polite', timeout?: number) {
-    if (!document)
+    if (!window || !document)
       return
 
     ensureAnnouncer()
@@ -104,14 +113,22 @@ export function useLiveAnnouncer(options: UseLiveAnnouncerOptions = {}): UseLive
     const element = document.getElementById(`${idPrefix}-${mode}`)
 
     if (element) {
+      // Cancel any pending auto-clear for this region so it can't wipe the new message.
+      const pending = timers.get(mode)
+      if (pending != null) {
+        window.clearTimeout(pending)
+        timers.delete(mode)
+      }
+
       element.textContent = ''
       nextTick(() => element.textContent = message)
 
       if (timeout && timeout > 0) {
-        window.setTimeout(() => {
-          if (element.textContent === message)
-            element.textContent = ''
+        const timer = window.setTimeout(() => {
+          timers.delete(mode)
+          element.textContent = ''
         }, timeout)
+        timers.set(mode, timer)
       }
     }
   }

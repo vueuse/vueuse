@@ -18,6 +18,15 @@ polite('This is also a polite announcement')
 assertive('Important message!')
 ```
 
+The message stays in the live region until it is replaced by the next announcement. Pass a `timeout` (in milliseconds) to automatically clear it after a delay:
+
+```ts
+// clears the message after 3000ms
+announce('Saved successfully', 'polite', 3000)
+polite('Saved successfully', 3000)
+assertive('Network error', 3000)
+```
+
 ## Accessibility
 
 The announcer uses the following ARIA attributes:
