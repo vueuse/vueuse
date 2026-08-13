@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTemporal } from '@vueuse/core'
+import { useTemporalNow } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 const {
@@ -15,7 +15,7 @@ const {
   pause,
   resume,
   isActive,
-} = useTemporal()
+} = useTemporalNow()
 
 const selectedTimezone = shallowRef('UTC')
 const selectedCalendar = shallowRef('gregory')

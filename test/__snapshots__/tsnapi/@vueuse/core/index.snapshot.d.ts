@@ -1254,14 +1254,14 @@ export interface UseSwipeReturn {
   lengthY: ComputedRef<number>;
   stop: () => void;
 }
-export interface UseTemporalOptions {
+export interface UseTemporalNowOptions {
   timezone?: string;
   calendar?: string;
   interval?: MaybeRefOrGetter<number>;
   immediate?: boolean;
   temporal?: typeof Temporal;
 }
-export interface UseTemporalReturn extends Pausable {
+export interface UseTemporalNowReturn extends Pausable {
   now: Ref<Temporal.ZonedDateTime>;
   timezone: Ref<string>;
   calendar: Ref<string>;
@@ -1968,7 +1968,7 @@ export declare function useStyleTag(_: MaybeRef<string>, _?: UseStyleTagOptions)
 export declare function useSupported(_: () => unknown): UseSupportedReturn;
 export declare function useSwipe(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseSwipeOptions): UseSwipeReturn;
 export declare function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>>;
-export declare function useTemporal(_?: UseTemporalOptions): UseTemporalReturn;
+export declare function useTemporalNow(_?: UseTemporalNowOptions): UseTemporalNowReturn;
 export declare function useTextareaAutosize(_?: UseTextareaAutosizeOptions): UseTextareaAutosizeReturn;
 export declare function useTextDirection(_?: UseTextDirectionOptions): import("vue").WritableComputedRef<UseTextDirectionValue, UseTextDirectionValue>;
 export declare function useTextSelection(_?: UseTextSelectionOptions): UseTextSelectionReturn;

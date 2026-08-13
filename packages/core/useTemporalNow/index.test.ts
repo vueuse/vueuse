@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useTemporal } from '.'
+import { useTemporalNow } from '.'
 // Test-only polyfill (the `/full/` variant, so non-Gregorian calendars used
 // in these tests are supported). `@vueuse/core` itself has no runtime
 // dependency on any Temporal implementation — see `index.md` for what
 // consumers need to do.
 import 'temporal-polyfill/full/global'
 
-describe('useTemporal', () => {
+describe('useTemporalNow', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
@@ -18,7 +18,7 @@ describe('useTemporal', () => {
   })
 
   it('should initialize with default options', () => {
-    const temporal = useTemporal()
+    const temporal = useTemporalNow()
 
     expect(temporal.timezone.value).toBe('UTC')
     expect(temporal.calendar.value).toBe('gregory')
@@ -27,7 +27,7 @@ describe('useTemporal', () => {
   })
 
   it('should initialize with custom options', () => {
-    const temporal = useTemporal({
+    const temporal = useTemporalNow({
       timezone: 'America/New_York',
       calendar: 'islamic-umalqura',
       immediate: false,
@@ -39,7 +39,7 @@ describe('useTemporal', () => {
   })
 
   it('should update timezone reactively', async () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const initialTz = temporal.now.value.timeZoneId
 
     temporal.timezone.value = 'Asia/Tokyo'
@@ -50,7 +50,7 @@ describe('useTemporal', () => {
   })
 
   it('should update calendar reactively', async () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const initialCal = temporal.now.value.calendarId
 
     temporal.calendar.value = 'islamic-umalqura'
@@ -61,7 +61,7 @@ describe('useTemporal', () => {
   })
 
   it('should convert to different timezone', () => {
-    const temporal = useTemporal({ timezone: 'UTC', immediate: false })
+    const temporal = useTemporalNow({ timezone: 'UTC', immediate: false })
     const converted = temporal.toTimezone('America/New_York')
 
     expect(converted.timeZoneId).toBe('America/New_York')
@@ -69,7 +69,7 @@ describe('useTemporal', () => {
   })
 
   it('should convert to different calendar', () => {
-    const temporal = useTemporal({ calendar: 'gregory', immediate: false })
+    const temporal = useTemporalNow({ calendar: 'gregory', immediate: false })
     const converted = temporal.toCalendar('islamic-umalqura')
 
     expect(converted.calendarId).toBe('islamic-umalqura')
@@ -77,7 +77,7 @@ describe('useTemporal', () => {
   })
 
   it('should convert to plain date', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const plainDate = temporal.toPlainDate()
 
     expect(plainDate).toBeInstanceOf(Temporal.PlainDate)
@@ -85,7 +85,7 @@ describe('useTemporal', () => {
   })
 
   it('should convert to plain time', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const plainTime = temporal.toPlainTime()
 
     expect(plainTime).toBeInstanceOf(Temporal.PlainTime)
@@ -93,7 +93,7 @@ describe('useTemporal', () => {
   })
 
   it('should convert to plain datetime', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const plainDateTime = temporal.toPlainDateTime()
 
     expect(plainDateTime).toBeInstanceOf(Temporal.PlainDateTime)
@@ -101,7 +101,7 @@ describe('useTemporal', () => {
   })
 
   it('should format datetime', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const formatted = temporal.format({ dateStyle: 'short' })
 
     expect(typeof formatted).toBe('string')
@@ -109,7 +109,7 @@ describe('useTemporal', () => {
   })
 
   it('should add duration', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const original = temporal.now.value
     const added = temporal.add('P1D') // Add 1 day
 
@@ -118,7 +118,7 @@ describe('useTemporal', () => {
   })
 
   it('should add duration object', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const original = temporal.now.value
     const duration = Temporal.Duration.from({ hours: 2 })
     const added = temporal.add(duration)
@@ -127,7 +127,7 @@ describe('useTemporal', () => {
   })
 
   it('should subtract duration', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const original = temporal.now.value
     const subtracted = temporal.subtract('P1D') // Subtract 1 day
 
@@ -136,7 +136,7 @@ describe('useTemporal', () => {
   })
 
   it('should compare dates', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const future = temporal.add('P1D')
     const past = temporal.subtract('P1D')
 
@@ -146,14 +146,14 @@ describe('useTemporal', () => {
   })
 
   it('should compare with string dates', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
     const futureString = temporal.add('P1D').toString()
 
     expect(temporal.compare(futureString)).toBe(-1)
   })
 
   it('should pause and resume updates', () => {
-    const temporal = useTemporal({ interval: 100 })
+    const temporal = useTemporalNow({ interval: 100 })
 
     expect(temporal.isActive.value).toBe(true)
 
@@ -165,7 +165,7 @@ describe('useTemporal', () => {
   })
 
   it('should update automatically with interval', () => {
-    const temporal = useTemporal({ interval: 100 })
+    const temporal = useTemporalNow({ interval: 100 })
     const initialTime = temporal.now.value.epochNanoseconds
 
     vi.advanceTimersByTime(150)
@@ -174,7 +174,7 @@ describe('useTemporal', () => {
   })
 
   it('should not start immediately when immediate is false', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
 
     expect(temporal.isActive.value).toBe(false)
   })
@@ -184,17 +184,17 @@ describe('useTemporal', () => {
     // @ts-expect-error simulate an environment without Temporal support
     delete globalThis.Temporal
 
-    expect(() => useTemporal()).toThrow(/Temporal/)
+    expect(() => useTemporalNow()).toThrow(/Temporal/)
 
     globalThis.Temporal = original
   })
 
   it('should use a custom `temporal` implementation instead of the global one', async () => {
     // A separate, independently imported implementation (not the polyfilled
-    // global one), to prove `useTemporal` doesn't just fall back to `globalThis.Temporal`.
+    // global one), to prove `useTemporalNow` doesn't just fall back to `globalThis.Temporal`.
     const { Temporal: CustomTemporal } = await import('temporal-polyfill')
 
-    const temporal = useTemporal({ immediate: false, temporal: CustomTemporal })
+    const temporal = useTemporalNow({ immediate: false, temporal: CustomTemporal })
 
     expect(temporal.now.value).toBeInstanceOf(CustomTemporal.ZonedDateTime)
     expect(temporal.now.value).not.toBeInstanceOf(Temporal.ZonedDateTime)
@@ -206,7 +206,7 @@ describe('useTemporal', () => {
     // @ts-expect-error simulate an environment without Temporal support
     delete globalThis.Temporal
 
-    expect(() => useTemporal({ temporal: CustomTemporal })).not.toThrow()
+    expect(() => useTemporalNow({ temporal: CustomTemporal })).not.toThrow()
 
     globalThis.Temporal = original
   })
@@ -220,7 +220,7 @@ describe('useTemporal', () => {
     // types are derived from the same source). A cast is required to satisfy
     // the `temporal` option's type at compile time — the runtime objects are
     // spec-compliant and interoperate fine.
-    const temporal = useTemporal({
+    const temporal = useTemporalNow({
       immediate: false,
       timezone: 'Asia/Tokyo',
       temporal: JsTemporalPolyfill as unknown as typeof Temporal,
@@ -240,7 +240,7 @@ describe('useTemporal', () => {
     // @ts-expect-error simulate an environment without Temporal support
     delete globalThis.Temporal
 
-    expect(() => useTemporal({ temporal: JsTemporalPolyfill as unknown as typeof Temporal })).not.toThrow()
+    expect(() => useTemporalNow({ temporal: JsTemporalPolyfill as unknown as typeof Temporal })).not.toThrow()
 
     globalThis.Temporal = original
   })
@@ -249,18 +249,18 @@ describe('useTemporal', () => {
 describe('edge cases', () => {
   it('should handle invalid timezone gracefully', () => {
     expect(() => {
-      useTemporal({ timezone: 'Invalid/Timezone' })
+      useTemporalNow({ timezone: 'Invalid/Timezone' })
     }).toThrow()
   })
 
   it('should handle invalid calendar gracefully', () => {
     expect(() => {
-      useTemporal({ calendar: 'invalid-calendar' })
+      useTemporalNow({ calendar: 'invalid-calendar' })
     }).toThrow()
   })
 
   it('should handle invalid duration strings', () => {
-    const temporal = useTemporal({ immediate: false })
+    const temporal = useTemporalNow({ immediate: false })
 
     expect(() => {
       temporal.add('invalid-duration')
@@ -268,7 +268,7 @@ describe('edge cases', () => {
   })
 
   it('should handle multiple pause/resume calls', () => {
-    const temporal = useTemporal()
+    const temporal = useTemporalNow()
 
     temporal.pause()
     temporal.pause() // Should not throw

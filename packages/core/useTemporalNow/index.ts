@@ -3,7 +3,7 @@ import type { MaybeRefOrGetter, Ref } from 'vue'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, watch } from 'vue'
 
-export interface UseTemporalOptions {
+export interface UseTemporalNowOptions {
   /**
    * Initial timezone
    *
@@ -38,7 +38,7 @@ export interface UseTemporalOptions {
   temporal?: typeof Temporal
 }
 
-export interface UseTemporalReturn extends Pausable {
+export interface UseTemporalNowReturn extends Pausable {
   /**
    * Current `Temporal.ZonedDateTime`
    */
@@ -97,17 +97,17 @@ function resolveTemporal(custom?: typeof Temporal): typeof Temporal | undefined 
 
 function assertTemporal(impl: typeof Temporal | undefined): typeof Temporal {
   if (!impl)
-    throw new Error('[VueUse] No `Temporal` implementation found. See https://vueuse.org/useTemporal for details.')
+    throw new Error('[VueUse] No `Temporal` implementation found. See https://vueuse.org/useTemporalNow for details.')
   return impl
 }
 
 /**
  * Reactive Temporal API with timezone and calendar support.
  *
- * @see https://vueuse.org/useTemporal
+ * @see https://vueuse.org/useTemporalNow
  * @param options - Configuration options
  */
-export function useTemporal(options: UseTemporalOptions = {}): UseTemporalReturn {
+export function useTemporalNow(options: UseTemporalNowOptions = {}): UseTemporalNowReturn {
   const {
     timezone: initialTimezone = 'UTC',
     calendar: initialCalendar = 'gregory',
