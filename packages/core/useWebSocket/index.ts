@@ -300,6 +300,9 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
+      if (wsRef.value !== ws)
+        return
+
       if (options.heartbeat) {
         resetHeartbeat()
         const {

@@ -234,6 +234,29 @@ describe('useWebSocket', () => {
     expect(vm.ref.data.value).toBe('bleep bloop')
   })
 
+  it('should not set data on message from a superseded socket', async () => {
+    const url = shallowRef('ws://localhost')
+    vm = useSetup(() => {
+      const ref = useWebSocket(url)
+
+      return {
+        ref,
+      }
+    })
+
+    const ws = vm.ref.ws.value
+    ws?.onopen?.(new Event('open'))
+
+    url.value = 'ws://127.0.0.1'
+    await nextTick()
+
+    ws?.onmessage?.(new MessageEvent('message', {
+      data: 'bleep bloop',
+    }))
+
+    expect(vm.ref.data.value).toBe(null)
+  })
+
   it('should call onMessage on message', () => {
     const onMessage = vi.fn()
 
