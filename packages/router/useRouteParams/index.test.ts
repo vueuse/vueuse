@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
 import { useRouteParams } from './index'
 
@@ -38,6 +38,22 @@ describe('useRouteParams', () => {
     const id = useRouteParams('id', '1', { transform: Number, route, router })
 
     expect(id.value).toBe(1)
+  })
+
+  it('should not narrow the transform value type to the default value type', () => {
+    const route = getRoute()
+    const router = {} as any
+
+    const id = useRouteParams('id', null, {
+      transform: (value) => {
+        expectTypeOf(value).not.toEqualTypeOf<null>()
+        return value == null ? null : Number(value)
+      },
+      route,
+      router,
+    })
+
+    expectTypeOf(id.value).toEqualTypeOf<number | null>()
   })
 
   it('should handle transform get/set', async () => {
