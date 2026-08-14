@@ -115,9 +115,14 @@ export function useNetwork(options: UseNetworkOptions = {}): UseNetworkReturn {
 
   // Some environments (in-app WebViews, partial NetworkInformation
   // implementations) expose `navigator.connection` as a plain object
-  // that does not inherit from EventTarget
-  if (connection && typeof connection.addEventListener === 'function')
+  // that does not implement the whole EventTarget interface
+  if (
+    connection
+    && typeof connection.addEventListener === 'function'
+    && typeof connection.removeEventListener === 'function'
+  ) {
     useEventListener(connection, 'change', updateNetworkInformation, listenerOptions)
+  }
 
   updateNetworkInformation()
 

@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { effectScope } from 'vue'
 import { useNetwork } from '.'
 
 function createMockWindow(connection?: unknown) {
@@ -52,12 +53,39 @@ describe('useNetwork', () => {
       effectiveType: '3g',
     })
 
-    expect(() => useNetwork({ window: mockWindow as any })).not.toThrow()
-
     const { isOnline, downlink, effectiveType } = useNetwork({ window: mockWindow as any })
 
     expect(isOnline.value).toBe(true)
     expect(downlink.value).toBe(5)
     expect(effectiveType.value).toBe('3g')
+  })
+
+  it('should unsubscribe from connection changes on scope dispose', () => {
+    const connection = {
+      downlink: 10,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }
+    const mockWindow = createMockWindow(connection)
+    const scope = effectScope()
+
+    scope.run(() => useNetwork({ window: mockWindow as any }))
+    scope.stop()
+
+    expect(connection.removeEventListener).toHaveBeenCalledWith('change', expect.any(Function), expect.objectContaining({ passive: true }))
+  })
+
+  it('should not subscribe when connection cannot remove listeners', () => {
+    const connection = {
+      downlink: 5,
+      addEventListener: vi.fn(),
+    }
+    const mockWindow = createMockWindow(connection)
+    const scope = effectScope()
+
+    scope.run(() => useNetwork({ window: mockWindow as any }))
+
+    expect(connection.addEventListener).not.toHaveBeenCalled()
+    expect(() => scope.stop()).not.toThrow()
   })
 })
