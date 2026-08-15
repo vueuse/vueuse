@@ -104,7 +104,7 @@ describe('computedDebounced', () => {
       source.value++
     }
 
-    // maxWait fired the getter at least once by now
+    // maxWait forced the debounced update through at least once by now
     expect(value.value).toBeGreaterThan(2)
 
     vi.useRealTimers()

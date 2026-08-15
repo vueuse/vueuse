@@ -45,7 +45,7 @@ The third argument accepts both debounce options and watch options:
 computedDebounced(() => value, 1000, { maxWait: 5000, flush: 'post' })
 ```
 
-- `maxWait` — the maximum time allowed to be delayed before the getter is invoked, in milliseconds.
+- `maxWait` — the maximum time the debounced update is allowed to be delayed, in milliseconds. The getter itself may still run earlier as its reactive dependencies change.
 - `flush` — the flush timing of the underlying watch, see [Vue watch options](https://vuejs.org/api/reactivity-core#watch).
 
 ## Type Declarations
