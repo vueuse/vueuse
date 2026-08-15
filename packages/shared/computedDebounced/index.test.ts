@@ -1,10 +1,18 @@
 import { expectTypeOf } from 'expect-type'
 import type { Ref } from 'vue'
-import { computedDebounced } from './index'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
+import { computedDebounced } from './index'
 
 describe('computedDebounced', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should be defined', () => {
     expect(computedDebounced).toBeDefined()
   })
@@ -17,7 +25,6 @@ describe('computedDebounced', () => {
   })
 
   it('updates after the debounce delay', async () => {
-    vi.useFakeTimers()
     const source = ref(1)
     const value = computedDebounced(() => source.value * 2, 100)
 
@@ -29,12 +36,9 @@ describe('computedDebounced', () => {
 
     await vi.advanceTimersByTimeAsync(1)
     expect(value.value).toBe(4)
-
-    vi.useRealTimers()
   })
 
   it('merges rapid changes into a single update', async () => {
-    vi.useFakeTimers()
     const source = ref(1)
     const getter = vi.fn(() => source.value * 2)
     const value = computedDebounced(getter, 100)
@@ -49,12 +53,9 @@ describe('computedDebounced', () => {
 
     expect(value.value).toBe(8)
     expect(getter).toHaveBeenCalledTimes(2) // initial + one debounced update
-
-    vi.useRealTimers()
   })
 
   it('reacts to multiple reactive dependencies', async () => {
-    vi.useFakeTimers()
     const a = ref(1)
     const b = ref(10)
     const value = computedDebounced(() => a.value + b.value, 100)
@@ -66,12 +67,9 @@ describe('computedDebounced', () => {
     b.value = 20
     await vi.advanceTimersByTimeAsync(100)
     expect(value.value).toBe(22)
-
-    vi.useRealTimers()
   })
 
   it('does not trigger when the computed value is unchanged', async () => {
-    vi.useFakeTimers()
     const source = ref('a')
     let getterCalls = 0
     const value = computedDebounced(() => {
@@ -88,12 +86,9 @@ describe('computedDebounced', () => {
     expect(value.value).toBe('a')
     // the computed cache means the getter re-runs, but the ref is not updated
     expect(getterCalls).toBe(2)
-
-    vi.useRealTimers()
   })
 
   it('supports maxWait', async () => {
-    vi.useFakeTimers()
     const source = ref(1)
     const value = computedDebounced(() => source.value * 2, 1000, { maxWait: 150 })
 
@@ -106,12 +101,9 @@ describe('computedDebounced', () => {
 
     // maxWait forced the debounced update through at least once by now
     expect(value.value).toBeGreaterThan(2)
-
-    vi.useRealTimers()
   })
 
   it('supports a reactive delay', async () => {
-    vi.useFakeTimers()
     const source = ref(1)
     const delay = ref(100)
     const value = computedDebounced(() => source.value * 2, delay)
@@ -126,8 +118,6 @@ describe('computedDebounced', () => {
     expect(value.value).toBe(4) // not yet
     await vi.advanceTimersByTimeAsync(400)
     expect(value.value).toBe(6)
-
-    vi.useRealTimers()
   })
 
   it('returns a readonly ref', () => {
