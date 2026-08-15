@@ -1,6 +1,5 @@
-import { expectTypeOf } from 'expect-type'
 import type { Ref } from 'vue'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { computedDebounced } from './index'
 
