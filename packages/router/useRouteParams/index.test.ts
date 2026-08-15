@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import type { RouteParamValueRaw } from 'vue-router'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
 import { useRouteParams } from './index'
@@ -25,6 +26,36 @@ describe('useRouteParams', () => {
     const route = getRoute()
     const value = useRouteParams('employeeId', null, {
       transform: v => (!v ? null : Number(v)),
+      router,
+      route,
+    })
+    expectTypeOf(value).toEqualTypeOf<Ref<number | null>>()
+  })
+
+  it('should infer type from transform return value with reactive null default (#5588)', () => {
+    const router = {} as any
+    const route = getRoute()
+    const defaultValue = deepRef(null)
+    const value = useRouteParams('employeeId', defaultValue, {
+      transform: (v) => {
+        expectTypeOf(v).toEqualTypeOf<RouteParamValueRaw>()
+        return !v ? null : Number(v)
+      },
+      router,
+      route,
+    })
+    expectTypeOf(value).toEqualTypeOf<Ref<number | null>>()
+  })
+
+  it('should infer type from transform return value with computed null default (#5588)', () => {
+    const router = {} as any
+    const route = getRoute()
+    const defaultValue = computed(() => null)
+    const value = useRouteParams('employeeId', defaultValue, {
+      transform: (v) => {
+        expectTypeOf(v).toEqualTypeOf<RouteParamValueRaw>()
+        return !v ? null : Number(v)
+      },
       router,
       route,
     })

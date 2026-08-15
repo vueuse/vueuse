@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import type { RouteQueryValueRaw } from '../_types'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { useRouteQuery } from './index'
@@ -25,6 +26,21 @@ describe('useRouteQuery', () => {
     const route = getRoute()
     const value = useRouteQuery('page', null, {
       transform: v => (!v ? null : Number(v)),
+      router,
+      route,
+    })
+    expectTypeOf(value).toEqualTypeOf<Ref<number | null>>()
+  })
+
+  it('should infer type from transform return value with reactive null default (#5588)', () => {
+    const router = {} as any
+    const route = getRoute()
+    const defaultValue = deepRef(null)
+    const value = useRouteQuery('page', defaultValue, {
+      transform: (v) => {
+        expectTypeOf(v).toEqualTypeOf<RouteQueryValueRaw>()
+        return !v ? null : Number(v)
+      },
       router,
       route,
     })
