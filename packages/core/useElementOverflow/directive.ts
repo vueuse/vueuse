@@ -24,9 +24,6 @@ export const vElementOverflow = createDisposableDirective<
   },
 })
 
-export const vElementOverflowVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupElementOverflow(el, value?.() as BindingValue)
+export const vElementOverflowVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupElementOverflow(el, value!())
 }

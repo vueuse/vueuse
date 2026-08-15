@@ -46,9 +46,6 @@ export const vScroll = createDisposableDirective<
   },
 )
 
-export const vScrollVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupScroll(el, value?.() as BindingValue)
+export const vScrollVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupScroll(el, value!())
 }

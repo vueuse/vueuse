@@ -36,11 +36,8 @@ export const vOnClickOutside: ObjectDirective<
   },
 }
 
-export const vOnClickOutsideVapor: VaporDirective = (el, value, _, modifiers) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupOnClickOutside(el, value?.() as BindingValue, modifiers?.bubble)
+export const vOnClickOutsideVapor: VaporDirective<HTMLElement, BindingValue, 'bubble'> = (el, value, _, modifiers) => {
+  setupOnClickOutside(el, value!(), modifiers?.bubble)
 }
 
 /** @deprecated use `vOnClickOutside` instead */

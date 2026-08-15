@@ -30,9 +30,6 @@ export const vElementHover = createDisposableDirective<
   },
 )
 
-export const vElementHoverVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupElementHover(el, value?.() as BindingValue)
+export const vElementHoverVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupElementHover(el, value!())
 }

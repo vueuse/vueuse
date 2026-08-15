@@ -26,9 +26,6 @@ export const vIntersectionObserver = createDisposableDirective<
   },
 )
 
-export const vIntersectionObserverVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupIntersectionObserver(el, value?.() as BindingValue)
+export const vIntersectionObserverVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupIntersectionObserver(el, value!())
 }

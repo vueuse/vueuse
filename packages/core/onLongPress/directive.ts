@@ -1,4 +1,4 @@
-import type { OnLongPressOptions } from '@vueuse/core'
+import type { OnLongPressModifiers, OnLongPressOptions } from '@vueuse/core'
 import type { VaporDirective } from 'vue'
 import { onLongPress } from '@vueuse/core'
 import { createDisposableDirective } from '@vueuse/shared'
@@ -33,11 +33,8 @@ export const vOnLongPress = createDisposableDirective<
   },
 )
 
-export const vOnLongPressVapor: VaporDirective = (el, value, _, modifiers) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupOnLongPress(el, value?.() as BindingValue, modifiers)
+export const vOnLongPressVapor: VaporDirective<HTMLElement, BindingValue, keyof OnLongPressModifiers> = (el, value, _, modifiers) => {
+  setupOnLongPress(el, value!(), modifiers)
 }
 
 /** @deprecated use `vOnLongPress` instead */

@@ -69,7 +69,7 @@
     "qrcode": "^1.5",
     "sortablejs": "^1",
     "universal-cookie": "^7 || ^8",
-    "vue": "^3.5.0 || ^3.6.0-rc.1"
+    "vue": "^3.5.0 || ^3.6.0-rc.3"
   },
   "peerDependenciesMeta": {
     "async-validator": {

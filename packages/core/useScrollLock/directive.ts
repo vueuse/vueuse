@@ -22,8 +22,8 @@ function onScrollLock() {
 
 export const vScrollLock = onScrollLock()
 
-export const vScrollLockVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement) || !value)
+export const vScrollLockVapor: VaporDirective<HTMLElement, boolean> = (el, value) => {
+  if (!value)
     return
 
   setupScrollLock(el, value)

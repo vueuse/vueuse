@@ -25,9 +25,6 @@ export const vInfiniteScroll = createDisposableDirective<
   },
 )
 
-export const vInfiniteScrollVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupInfiniteScroll(el, value?.() as BindingValue)
+export const vInfiniteScrollVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupInfiniteScroll(el, value!())
 }

@@ -26,9 +26,6 @@ export const vMouseInElement = createDisposableDirective<
   },
 )
 
-export const vMouseInElementVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupMouseInElement(el, value?.() as BindingValue)
+export const vMouseInElementVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupMouseInElement(el, value!())
 }

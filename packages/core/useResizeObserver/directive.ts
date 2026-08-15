@@ -26,9 +26,6 @@ export const vResizeObserver = createDisposableDirective<
   },
 )
 
-export const vResizeObserverVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupResizeObserver(el, value?.() as BindingValue)
+export const vResizeObserverVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupResizeObserver(el, value!())
 }

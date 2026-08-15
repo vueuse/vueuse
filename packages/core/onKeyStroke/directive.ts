@@ -35,9 +35,6 @@ export const vOnKeyStroke = createDisposableDirective<
   },
 )
 
-export const vOnKeyStrokeVapor: VaporDirective = (el, value, argument) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupOnKeyStroke(el, value?.() as BindingValue, argument)
+export const vOnKeyStrokeVapor: VaporDirective<HTMLElement, BindingValue, never, string> = (el, value, argument) => {
+  setupOnKeyStroke(el, value!(), argument)
 }

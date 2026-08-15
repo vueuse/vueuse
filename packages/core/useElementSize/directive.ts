@@ -31,9 +31,6 @@ export const vElementSize = createDisposableDirective<
   },
 )
 
-export const vElementSizeVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupElementSize(el, value?.() as BindingValue)
+export const vElementSizeVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupElementSize(el, value!())
 }

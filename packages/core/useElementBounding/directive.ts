@@ -35,9 +35,6 @@ export const vElementBounding = createDisposableDirective<
   },
 )
 
-export const vElementBoundingVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupElementBounding(el, value?.() as BindingValue)
+export const vElementBoundingVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupElementBounding(el, value!())
 }

@@ -45,9 +45,6 @@ export const vElementVisibility = createDisposableDirective<
   },
 )
 
-export const vElementVisibilityVapor: VaporDirective = (el, value) => {
-  if (!(el instanceof HTMLElement))
-    return
-
-  setupElementVisibility(el, value?.() as BindingValue)
+export const vElementVisibilityVapor: VaporDirective<HTMLElement, BindingValue> = (el, value) => {
+  setupElementVisibility(el, value!())
 }
