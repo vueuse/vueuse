@@ -31,6 +31,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "update": "tsx scripts/update.ts",
     "build": "tsdown",

@@ -1,5 +1,8 @@
+import type { AnyFn } from '@vueuse/shared'
+import { useIntervalFn } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef } from 'vue'
+import { useRafFn } from '../useRafFn'
 import { useTimestamp } from './index'
 
 describe('useTimestamp', () => {
@@ -26,7 +29,7 @@ describe('useTimestamp', () => {
     })
     const { resume, timestamp } = useTimestamp({
       controls: true,
-      immediate: false,
+      scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }),
       callback,
     })
 
@@ -48,8 +51,7 @@ describe('useTimestamp', () => {
     })
     const { resume, timestamp } = useTimestamp({
       controls: true,
-      immediate: false,
-      interval: 50,
+      scheduler: (cb: AnyFn) => useIntervalFn(cb, 50, { immediate: false }),
       callback,
     })
 

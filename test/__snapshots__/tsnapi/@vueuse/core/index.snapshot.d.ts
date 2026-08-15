@@ -436,10 +436,8 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   onCancel: EventHookOn<CancelData>;
 }
 export interface UseCountdownOptions extends ConfigurableScheduler {
-  interval?: MaybeRefOrGetter<number>;
   onComplete?: () => void;
   onTick?: () => void;
-  immediate?: boolean;
 }
 export interface UseCountdownReturn extends Pausable {
   remaining: ShallowRef<number>;
@@ -587,8 +585,6 @@ export interface UseElementByPointOptions<Multiple extends boolean = false> exte
   x: MaybeRefOrGetter<number>;
   y: MaybeRefOrGetter<number>;
   multiple?: MaybeRefOrGetter<Multiple>;
-  immediate?: boolean;
-  interval?: 'requestAnimationFrame' | number;
 }
 export interface UseElementByPointReturn<Multiple extends boolean = false> extends Supportable, Pausable {
   element: ShallowRef<Multiple extends true ? HTMLElement[] : HTMLElement | null>;
@@ -813,6 +809,14 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
 export interface UseIntersectionObserverReturn extends Supportable, Pausable {
   stop: () => void;
 }
+export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
+  idPrefix?: string;
+}
+export interface UseLiveAnnouncerReturn {
+  announce: (_: string, _?: 'polite' | 'assertive', _?: number) => void;
+  polite: (_: string, _?: number) => void;
+  assertive: (_: string, _?: number) => void;
+}
 export interface UseMagicKeysOptions<Reactive extends boolean> {
   reactive?: Reactive;
   target?: MaybeRefOrGetter<EventTarget>;
@@ -904,11 +908,7 @@ export interface UseMemoizeReturn<Result, Args extends unknown[]> {
   generateKey: (..._: Args) => CacheKey;
   cache: UseMemoizeCache<CacheKey, Result>;
 }
-export interface UseMemoryOptions extends ConfigurableScheduler {
-  immediate?: boolean;
-  immediateCallback?: boolean;
-  interval?: number;
-}
+export interface UseMemoryOptions extends ConfigurableScheduler {}
 export interface UseMemoryReturn extends Supportable {
   memory: ShallowRef<MemoryInfo | undefined>;
 }
@@ -961,8 +961,6 @@ export interface UseNavigatorLanguageOptions extends ConfigurableWindow {}
 export interface UseNetworkOptions extends ConfigurableWindow {}
 export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
   controls?: Controls;
-  immediate?: boolean;
-  interval?: 'requestAnimationFrame' | number;
 }
 export interface UseOffsetPaginationOptions {
   total?: MaybeRefOrGetter<number>;
@@ -1292,7 +1290,6 @@ export interface UseTextSelectionReturn {
 }
 export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatTimeAgoIntlOptions, ConfigurableScheduler {
   controls?: Controls;
-  updateInterval?: number;
 }
 export interface UseTimeAgoMessagesBuiltIn {
   justNow: string;
@@ -1302,7 +1299,6 @@ export interface UseTimeAgoMessagesBuiltIn {
 }
 export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> extends FormatTimeAgoOptions<UnitNames>, ConfigurableScheduler {
   controls?: Controls;
-  updateInterval?: number;
 }
 export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
   max: number;
@@ -1316,8 +1312,6 @@ export interface UseTimeoutPollOptions {
 export interface UseTimestampOptions<Controls extends boolean> extends ConfigurableScheduler {
   controls?: Controls;
   offset?: number;
-  immediate?: boolean;
-  interval?: 'requestAnimationFrame' | number;
   callback?: (_: number) => void;
 }
 export interface UseTransitionOptions<T> extends TransitionOptions<T> {
@@ -1353,7 +1347,6 @@ export interface UseVerticalVirtualListOptions extends UseVirtualListOptionsBase
 }
 export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableScheduler {
   pattern?: MaybeRefOrGetter<Arrayable<number>>;
-  interval?: number;
 }
 export interface UseVibrateReturn extends Supportable {
   pattern: MaybeRefOrGetter<Arrayable<number>>;
@@ -1431,7 +1424,6 @@ export interface UseWebSocketOptions {
   heartbeat?: boolean | ConfigurableScheduler & {
     message?: MaybeRefOrGetter<WebSocketHeartbeatMessage>;
     responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>;
-    interval?: number;
     pongTimeout?: number;
   };
   autoReconnect?: boolean | {
@@ -1770,8 +1762,6 @@ export declare function onLongPress(_: MaybeElementRef, _: (_: PointerEvent) => 
 export declare function onStartTyping(_: (_: KeyboardEvent) => void, _?: OnStartTypingOptions): void;
 export declare function provideSSRWidth(_: number | null, _?: App<unknown>): void;
 export declare function setSSRHandler<T extends keyof SSRHandlersMap>(_: T, _: SSRHandlersMap[T]): void;
-/** @deprecated */
-export declare function templateRef<T extends HTMLElement | SVGElement | Component | null, Keys extends string = string>(_: Keys, _?: T | null): Readonly<Ref<T>>;
 export declare function transition<T>(_: Ref<T>, _: MaybeRefOrGetter<T>, _: MaybeRefOrGetter<T>, _?: TransitionOptions<T>): PromiseLike<void>;
 export declare function unrefElement<T extends MaybeElement>(_: MaybeComputedElementRef<T>): UnRefElementReturn<T>;
 export declare function useActiveElement<T extends HTMLElement>(_?: UseActiveElementOptions): UseActiveElementReturn<T>;
@@ -1868,6 +1858,7 @@ export declare function useImage<Shallow extends true>(_: MaybeRefOrGetter<UseIm
 export declare function useInfiniteScroll<T extends InfiniteScrollElement>(_: MaybeRefOrGetter<T>, _: (_: UnwrapNestedRefs<UseScrollReturn>) => Awaitable<void>, _?: UseInfiniteScrollOptions<T>): UseInfiniteScrollReturn;
 export declare function useIntersectionObserver(_: MaybeComputedElementRefOrArray, _: IntersectionObserverCallback, _?: UseIntersectionObserverOptions): UseIntersectionObserverReturn;
 export declare function useKeyModifier<Initial extends boolean | null>(_: KeyModifier, _?: UseModifierOptions<Initial>): UseKeyModifierReturn<Initial>;
+export declare function useLiveAnnouncer(_?: UseLiveAnnouncerOptions): UseLiveAnnouncerReturn;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<string>, _?: UseStorageOptions<string>): RemovableRef<string>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<boolean>, _?: UseStorageOptions<boolean>): RemovableRef<boolean>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<number>, _?: UseStorageOptions<number>): RemovableRef<number>;

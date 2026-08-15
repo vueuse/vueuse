@@ -28,8 +28,6 @@ export function onLongPress(_, _, _) {}
 export function onStartTyping(_, _) {}
 export function provideSSRWidth(_, _) {}
 export function setSSRHandler(_, _) {}
-/** @deprecated */
-export function templateRef(_, _) {}
 export function transition(_, _, _, _) {}
 export function unrefElement(_) {}
 export function useActiveElement(_) {}
@@ -88,6 +86,7 @@ export function useImage(_, _) {}
 export function useInfiniteScroll(_, _, _) {}
 export function useIntersectionObserver(_, _, _) {}
 export function useKeyModifier(_, _) {}
+export function useLiveAnnouncer(_) {}
 export function useLocalStorage(_, _, _) {}
 export function useMagicKeys(_) {}
 export function useManualRefHistory(_, _) {}
