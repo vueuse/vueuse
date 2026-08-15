@@ -1,8 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import type { MockInstance } from 'vitest'
 import type { Ref } from 'vue'
-import { expectTypeOf } from 'expect-type'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, shallowRef } from 'vue'
 import { useEventListener } from './index'
 
@@ -413,10 +412,10 @@ describe('useEventListener', () => {
     const scope = effectScope()
 
     scope.run(() => {
-      useEventListener('my-custom-event', (ev: Event) => {
+      useEventListener('my-custom-event', (ev) => {
         expectTypeOf(ev).toEqualTypeOf<Event>()
       })
-      useEventListener(window, 'my-custom-event', (ev: Event) => {
+      useEventListener(window, 'my-custom-event', (ev) => {
         expectTypeOf(ev).toEqualTypeOf<Event>()
       })
       useEventListener('click', (ev) => {
