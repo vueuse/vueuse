@@ -1,6 +1,5 @@
 import type { Ref } from 'vue'
-import { expectTypeOf } from 'expect-type'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { useRouteQuery } from './index'
 
