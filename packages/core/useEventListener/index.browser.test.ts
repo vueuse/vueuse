@@ -1,6 +1,7 @@
 import type { Fn } from '@vueuse/shared'
 import type { MockInstance } from 'vitest'
 import type { Ref } from 'vue'
+import { expectTypeOf } from 'expect-type'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, shallowRef } from 'vue'
 import { useEventListener } from './index'
@@ -406,5 +407,17 @@ describe('useEventListener', () => {
     await nextTick()
 
     expect(listener).toHaveBeenCalledTimes(6)
+  })
+
+  it('should support custom event names with omitted window target (#5567)', () => {
+    useEventListener('my-custom-event', (ev: Event) => {
+      expectTypeOf(ev).toEqualTypeOf<Event>()
+    })
+    useEventListener(window, 'my-custom-event', (ev: Event) => {
+      expectTypeOf(ev).toEqualTypeOf<Event>()
+    })
+    useEventListener('click', (ev) => {
+      expectTypeOf(ev).toEqualTypeOf<MouseEvent>()
+    })
   })
 })
