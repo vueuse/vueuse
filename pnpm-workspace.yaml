@@ -27,7 +27,7 @@ catalogs:
     '@antfu/ni': ^30.3.0
     '@iconify/json': ^2.2.506
     '@vitejs/plugin-vue': ^6.0.8
-    '@vue/compiler-sfc': ^3.6.0-rc.1
+    '@vue/compiler-sfc': ^3.6.0-rc.3
     bumpp: ^12.1.0
     chokidar: ^5.0.0
     consola: ^3.4.2
@@ -58,7 +58,7 @@ catalogs:
     unocss: ^66.7.5
     vite: ^8.1.5
     vite-plugin-inspect: ^11.4.1
-    vue: ^3.6.0-rc.1
+    vue: ^3.6.0-rc.3
     vue-tsc: ^3.3.8
   docs:
     '@shikijs/vitepress-twoslash': ^4.3.1
