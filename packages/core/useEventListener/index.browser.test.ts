@@ -410,14 +410,20 @@ describe('useEventListener', () => {
   })
 
   it('should support custom event names with omitted window target (#5567)', () => {
-    useEventListener('my-custom-event', (ev: Event) => {
-      expectTypeOf(ev).toEqualTypeOf<Event>()
+    const scope = effectScope()
+
+    scope.run(() => {
+      useEventListener('my-custom-event', (ev: Event) => {
+        expectTypeOf(ev).toEqualTypeOf<Event>()
+      })
+      useEventListener(window, 'my-custom-event', (ev: Event) => {
+        expectTypeOf(ev).toEqualTypeOf<Event>()
+      })
+      useEventListener('click', (ev) => {
+        expectTypeOf(ev).toEqualTypeOf<MouseEvent>()
+      })
     })
-    useEventListener(window, 'my-custom-event', (ev: Event) => {
-      expectTypeOf(ev).toEqualTypeOf<Event>()
-    })
-    useEventListener('click', (ev) => {
-      expectTypeOf(ev).toEqualTypeOf<MouseEvent>()
-    })
+
+    scope.stop()
   })
 })
