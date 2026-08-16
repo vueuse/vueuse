@@ -37,8 +37,13 @@ export function useTimeoutPoll(
     if (!isActive.value)
       return
 
-    await fn()
-    start()
+    try {
+      await fn()
+    }
+    finally {
+      if (isActive.value)
+        start()
+    }
   }
 
   function resume() {
