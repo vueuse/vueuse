@@ -14,6 +14,9 @@ When using with Nuxt 3, this function will **NOT** be auto imported in favor of 
 :::
 
 ## Usage
+::: tip
+`useFetch` is a lightweight reactive wrapper around the native [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). It is not a full HTTP client like axios — it does not support request retries, interceptor chains, or automatic error throwing on non-2xx responses. For simple reactive data fetching it works great; for complex API layers consider pairing it with `createFetch` or using a dedicated library.
+:::
 
 ### Basic Usage
 
@@ -34,6 +37,29 @@ it must wrap the component in a `<Suspense>` tag. You can read more about the su
 import { useFetch } from '@vueuse/core'
 // ---cut---
 const { isFetching, error, data } = await useFetch(url)
+```
+
+::: warning
+Top-level `await` in `<script setup>` makes the component async. You must wrap it in a `<Suspense>` tag in the **parent** component, otherwise Vue will throw a runtime warning.
+:::
+
+```vue
+<!-- ParentComponent.vue -->
+<template>
+  <Suspense>
+    <AsyncChild />
+    <template #fallback>
+      <span>Loading...</span>
+    </template>
+  </Suspense>
+</template>
+```
+
+::: tip
+In most cases you don't need to `await` useFetch at all. The reactive `isFetching`, `data`, and `error` refs handle async state without making the component async:
+
+```ts
+const { isFetching, error, data } = useFetch(url) // no await needed
 ```
 
 ### Refetching on URL change
