@@ -91,6 +91,20 @@ describe('useEventSource', () => {
     expect(lastEventId.value).toBe('303')
   })
 
+  it('should not set data on message from a superseded event source', () => {
+    const { data, eventSource, open } = useEventSource('https://localhost')
+
+    const staleSource = eventSource.value!
+
+    open()
+
+    staleSource.onmessage!(new MessageEvent('message', {
+      data: 'bleep',
+    }))
+
+    expect(data.value).toBe(null)
+  })
+
   it('can set non-string data', () => {
     const { data, eventSource } = useEventSource('https://localhost')
 
