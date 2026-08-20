@@ -1254,11 +1254,9 @@ export interface UseSwipeReturn {
   lengthY: ComputedRef<number>;
   stop: () => void;
 }
-export interface UseTemporalNowOptions {
+export interface UseTemporalNowOptions extends ConfigurableScheduler {
   timezone?: string;
   calendar?: string;
-  interval?: MaybeRefOrGetter<number>;
-  immediate?: boolean;
   temporal?: typeof Temporal;
 }
 export interface UseTemporalNowReturn extends Pausable {

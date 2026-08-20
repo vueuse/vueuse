@@ -144,12 +144,18 @@ const custom = format({
 
 ### Control Auto-Update
 
+By default `useTemporalNow` updates on every `requestAnimationFrame`. Pass a
+custom `scheduler` to control how updates are driven — for example, tick on a
+fixed interval, or start paused:
+
 ```ts
 import { useTemporalNow } from '@vueuse/core'
+import { useIntervalFn } from '@vueuse/shared'
 
 const { pause, resume, isActive } = useTemporalNow({
-  interval: 500, // Update every 500ms
-  immediate: false // Don't start immediately
+  // Update every 500ms instead of on every animation frame,
+  // and don't start immediately.
+  scheduler: cb => useIntervalFn(cb, 500, { immediate: false }),
 })
 
 // Manually control updates

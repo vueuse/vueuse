@@ -1,6 +1,9 @@
+import type { AnyFn } from '@vueuse/shared'
+import { useIntervalFn } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useTemporalNow } from '.'
+import { useRafFn } from '../useRafFn'
 // Test-only polyfill (the `/full/` variant, so non-Gregorian calendars used
 // in these tests are supported). `@vueuse/core` itself has no runtime
 // dependency on any Temporal implementation — see `index.md` for what
@@ -30,7 +33,7 @@ describe('useTemporalNow', () => {
     const temporal = useTemporalNow({
       timezone: 'America/New_York',
       calendar: 'islamic-umalqura',
-      immediate: false,
+      scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }),
     })
 
     expect(temporal.timezone.value).toBe('America/New_York')
@@ -39,7 +42,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should update timezone reactively', async () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const initialTz = temporal.now.value.timeZoneId
 
     temporal.timezone.value = 'Asia/Tokyo'
@@ -50,7 +53,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should update calendar reactively', async () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const initialCal = temporal.now.value.calendarId
 
     temporal.calendar.value = 'islamic-umalqura'
@@ -61,7 +64,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should convert to different timezone', () => {
-    const temporal = useTemporalNow({ timezone: 'UTC', immediate: false })
+    const temporal = useTemporalNow({ timezone: 'UTC', scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const converted = temporal.toTimezone('America/New_York')
 
     expect(converted.timeZoneId).toBe('America/New_York')
@@ -69,7 +72,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should convert to different calendar', () => {
-    const temporal = useTemporalNow({ calendar: 'gregory', immediate: false })
+    const temporal = useTemporalNow({ calendar: 'gregory', scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const converted = temporal.toCalendar('islamic-umalqura')
 
     expect(converted.calendarId).toBe('islamic-umalqura')
@@ -77,7 +80,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should convert to plain date', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const plainDate = temporal.toPlainDate()
 
     expect(plainDate).toBeInstanceOf(Temporal.PlainDate)
@@ -85,7 +88,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should convert to plain time', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const plainTime = temporal.toPlainTime()
 
     expect(plainTime).toBeInstanceOf(Temporal.PlainTime)
@@ -93,7 +96,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should convert to plain datetime', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const plainDateTime = temporal.toPlainDateTime()
 
     expect(plainDateTime).toBeInstanceOf(Temporal.PlainDateTime)
@@ -101,7 +104,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should format datetime', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const formatted = temporal.format({ dateStyle: 'short' })
 
     expect(typeof formatted).toBe('string')
@@ -109,7 +112,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should add duration', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const original = temporal.now.value
     const added = temporal.add('P1D') // Add 1 day
 
@@ -118,7 +121,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should add duration object', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const original = temporal.now.value
     const duration = Temporal.Duration.from({ hours: 2 })
     const added = temporal.add(duration)
@@ -127,7 +130,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should subtract duration', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const original = temporal.now.value
     const subtracted = temporal.subtract('P1D') // Subtract 1 day
 
@@ -136,7 +139,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should compare dates', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const future = temporal.add('P1D')
     const past = temporal.subtract('P1D')
 
@@ -146,14 +149,14 @@ describe('useTemporalNow', () => {
   })
 
   it('should compare with string dates', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
     const futureString = temporal.add('P1D').toString()
 
     expect(temporal.compare(futureString)).toBe(-1)
   })
 
   it('should pause and resume updates', () => {
-    const temporal = useTemporalNow({ interval: 100 })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useIntervalFn(cb, 100) })
 
     expect(temporal.isActive.value).toBe(true)
 
@@ -165,7 +168,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should update automatically with interval', () => {
-    const temporal = useTemporalNow({ interval: 100 })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useIntervalFn(cb, 100) })
     const initialTime = temporal.now.value.epochNanoseconds
 
     vi.advanceTimersByTime(150)
@@ -173,8 +176,8 @@ describe('useTemporalNow', () => {
     expect(temporal.now.value.epochNanoseconds).toBeGreaterThan(initialTime)
   })
 
-  it('should not start immediately when immediate is false', () => {
-    const temporal = useTemporalNow({ immediate: false })
+  it('should not start immediately when the scheduler is not immediate', () => {
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
 
     expect(temporal.isActive.value).toBe(false)
   })
@@ -194,7 +197,7 @@ describe('useTemporalNow', () => {
     // global one), to prove `useTemporalNow` doesn't just fall back to `globalThis.Temporal`.
     const { Temporal: CustomTemporal } = await import('temporal-polyfill')
 
-    const temporal = useTemporalNow({ immediate: false, temporal: CustomTemporal })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }), temporal: CustomTemporal })
 
     expect(temporal.now.value).toBeInstanceOf(CustomTemporal.ZonedDateTime)
     expect(temporal.now.value).not.toBeInstanceOf(Temporal.ZonedDateTime)
@@ -221,7 +224,7 @@ describe('useTemporalNow', () => {
     // the `temporal` option's type at compile time — the runtime objects are
     // spec-compliant and interoperate fine.
     const temporal = useTemporalNow({
-      immediate: false,
+      scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }),
       timezone: 'Asia/Tokyo',
       temporal: JsTemporalPolyfill as unknown as typeof Temporal,
     })
@@ -260,7 +263,7 @@ describe('edge cases', () => {
   })
 
   it('should handle invalid duration strings', () => {
-    const temporal = useTemporalNow({ immediate: false })
+    const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }) })
 
     expect(() => {
       temporal.add('invalid-duration')

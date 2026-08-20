@@ -1,9 +1,10 @@
 import type { Pausable } from '@vueuse/shared'
-import type { MaybeRefOrGetter, Ref } from 'vue'
-import { useIntervalFn } from '@vueuse/shared'
+import type { Ref } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { shallowRef, watch } from 'vue'
+import { useRafFn } from '../useRafFn'
 
-export interface UseTemporalNowOptions {
+export interface UseTemporalNowOptions extends ConfigurableScheduler {
   /**
    * Initial timezone
    *
@@ -16,18 +17,6 @@ export interface UseTemporalNowOptions {
    * @default 'gregory'
    */
   calendar?: string
-  /**
-   * Update interval in milliseconds
-   *
-   * @default 1000
-   */
-  interval?: MaybeRefOrGetter<number>
-  /**
-   * Whether to start immediately
-   *
-   * @default true
-   */
-  immediate?: boolean
   /**
    * Custom `Temporal` implementation to use, e.g. the `Temporal` export from
    * `@js-temporal/polyfill` or another polyfill, instead of relying on the
@@ -111,8 +100,7 @@ export function useTemporalNow(options: UseTemporalNowOptions = {}): UseTemporal
   const {
     timezone: initialTimezone = 'UTC',
     calendar: initialCalendar = 'gregory',
-    interval = 1000,
-    immediate = true,
+    scheduler = useRafFn,
     temporal: customTemporal,
   } = options
 
@@ -129,7 +117,7 @@ export function useTemporalNow(options: UseTemporalNowOptions = {}): UseTemporal
     now.value = TemporalImpl.Now.zonedDateTimeISO(timezone.value).withCalendar(calendar.value)
   }
 
-  const { isActive, pause, resume } = useIntervalFn(updateNow, interval, { immediate })
+  const { isActive, pause, resume } = scheduler(updateNow)
 
   // Update immediately when timezone/calendar change, rather than waiting for the next tick
   watch([timezone, calendar], updateNow)
