@@ -34,4 +34,16 @@ describe('usePrecision', () => {
     base.value = -2.3
     expect(result.value).toMatchInlineSnapshot('-2.3')
   })
+
+  it('should apply float-error correction to negative values', () => {
+    const base = deepRef(-1.1)
+    const floored = usePrecision(base, 2, { math: 'floor' })
+    expect(floored.value).toBe(-1.1)
+
+    base.value = -2.2
+    expect(floored.value).toBe(-2.2)
+
+    const ceiled = usePrecision(deepRef(-2.3), 2, { math: 'ceil' })
+    expect(ceiled.value).toBe(-2.3)
+  })
 })
