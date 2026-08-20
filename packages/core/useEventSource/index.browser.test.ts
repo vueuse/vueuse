@@ -77,6 +77,33 @@ describe('useEventSource', () => {
     expect(error.value).toBe(err)
   })
 
+  it('should not set status to OPEN on open event from a superseded event source', () => {
+    const { status, eventSource, open } = useEventSource('https://localhost', [], { immediate: false })
+
+    open()
+    const staleSource = eventSource.value!
+
+    open()
+
+    staleSource.onopen!(new Event('open'))
+
+    expect(status.value).toBe('CONNECTING')
+  })
+
+  it('should not set error status on error event from a superseded event source', () => {
+    const { status, eventSource, error, open } = useEventSource('https://localhost', [], { autoReconnect: false })
+
+    const staleSource = eventSource.value!
+
+    open()
+    eventSource.value!.onopen!(new Event('open'))
+
+    staleSource.onerror!(new Event('error'))
+
+    expect(status.value).toBe('OPEN')
+    expect(error.value).toBe(null)
+  })
+
   it('sets data on message', () => {
     const { data, eventSource, lastEventId } = useEventSource('https://localhost')
 
@@ -89,6 +116,20 @@ describe('useEventSource', () => {
 
     expect(data.value).toBe('bleep')
     expect(lastEventId.value).toBe('303')
+  })
+
+  it('should not set data on message from a superseded event source', () => {
+    const { data, eventSource, open } = useEventSource('https://localhost')
+
+    const staleSource = eventSource.value!
+
+    open()
+
+    staleSource.onmessage!(new MessageEvent('message', {
+      data: 'bleep',
+    }))
+
+    expect(data.value).toBe(null)
   })
 
   it('can set non-string data', () => {
@@ -115,6 +156,23 @@ describe('useEventSource', () => {
 
     expect(event.value).toBe('custom-event')
     expect(data.value).toBe('bloop')
+  })
+
+  it('should not set data on custom event from a superseded event source', () => {
+    const { data, event, eventSource, open } = useEventSource('https://localhost', [
+      'custom-event',
+    ])
+
+    const staleSource = eventSource.value!
+
+    open()
+
+    staleSource.dispatchEvent(new MessageEvent('custom-event', {
+      data: 'bloop',
+    }))
+
+    expect(event.value).toBe(null)
+    expect(data.value).toBe(null)
   })
 
   it('can manually open()', () => {
