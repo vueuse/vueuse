@@ -16,7 +16,7 @@ export function useRouteQuery<
   K = T,
 >(
   name: string,
-  defaultValue?: MaybeRefOrGetter<T>,
+  defaultValue?: MaybeRefOrGetter<NoInfer<T>>,
   options?: ReactiveRouteOptionsWithTransform<T, K>,
 ): Ref<K>
 

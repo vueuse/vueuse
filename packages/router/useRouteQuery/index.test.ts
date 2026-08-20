@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { useRouteQuery } from './index'
 
@@ -36,6 +36,22 @@ describe('useRouteQuery', () => {
     expect(page.value).toBe(1)
     expect(perPage.value).toBe(15)
     expect(tags.value).toEqual(['vite'])
+  })
+
+  it('should not narrow the transform value type to the default value type', () => {
+    const route = getRoute()
+    const router = {} as any
+
+    const page = useRouteQuery('page', null, {
+      transform: (value) => {
+        expectTypeOf(value).not.toEqualTypeOf<null>()
+        return value == null ? null : Number(value)
+      },
+      route,
+      router,
+    })
+
+    expectTypeOf(page.value).toEqualTypeOf<number | null>()
   })
 
   it('should handle transform get/set', async () => {
