@@ -800,6 +800,15 @@ export interface UseInfiniteScrollReturn {
   isLoading: ComputedRef<boolean>;
   reset: () => void;
 }
+export interface UseInputCaretPostionOptions extends UseInputSelectionOptions {}
+export interface UseInputSelectionOptions {
+  events?: HTMLElementEventName[];
+}
+export interface UseInputSelectionReturn<T extends (HTMLInputElement | HTMLTextAreaElement)> {
+  start: ShallowRef<T['selectionStart']>;
+  end: ShallowRef<T['selectionEnd']>;
+  direction: ShallowRef<T['selectionDirection']>;
+}
 export interface UseIntersectionObserverOptions extends ConfigurableWindow {
   immediate?: boolean;
   root?: MaybeComputedElementRef | Document;
@@ -1536,6 +1545,7 @@ export type FileSystemAccessWindow = Window & {
 export type GeneralPermissionDescriptor = PermissionDescriptor | {
   name: DescriptorNamePolyfill;
 };
+export type HTMLElementEventName = keyof HTMLElementEventMap;
 export type InterpolationFunction<T> = (_: T, _: T, _: number) => T;
 export type KeyFilter = true | string | string[] | KeyPredicate;
 export type KeyModifier = 'Alt' | 'AltGraph' | 'CapsLock' | 'Control' | 'Fn' | 'FnLock' | 'Meta' | 'NumLock' | 'ScrollLock' | 'Shift' | 'Symbol' | 'SymbolLock';
@@ -1631,6 +1641,7 @@ export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAcces
 };
 export type UseFileSystemAccessShowSaveFileOptions = Pick<FileSystemAccessShowSaveFileOptions, 'suggestedName'>;
 export type UseImageReturn = UseAsyncStateReturn<HTMLImageElement | undefined, any[], true>;
+export type UseInputCaretPositionReturn = ReturnType<typeof useInputCaretPosition>;
 export type UseKeyModifierReturn<Initial> = ShallowRef<Initial extends boolean ? boolean : boolean | null>;
 export type UseMagicKeysReturn<Reactive extends boolean> = Readonly<Record<string, Reactive extends true ? boolean : ComputedRef<boolean>> & MagicKeysInternal>;
 export type UseMouseCoordType = 'page' | 'client' | 'screen' | 'movement';
@@ -1856,6 +1867,10 @@ export declare function useGeolocation(_?: UseGeolocationOptions): UseGeolocatio
 export declare function useIdle(_?: number, _?: UseIdleOptions): UseIdleReturn;
 export declare function useImage<Shallow extends true>(_: MaybeRefOrGetter<UseImageOptions>, _?: UseAsyncStateOptions<Shallow>): UseImageReturn;
 export declare function useInfiniteScroll<T extends InfiniteScrollElement>(_: MaybeRefOrGetter<T>, _: (_: UnwrapNestedRefs<UseScrollReturn>) => Awaitable<void>, _?: UseInfiniteScrollOptions<T>): UseInfiniteScrollReturn;
+export declare function useInputCaretPosition<T extends (HTMLInputElement | HTMLTextAreaElement)>(_: MaybeElementRef<T | null | undefined>, _?: UseInputCaretPostionOptions): {
+  position: import("vue").WritableComputedRef<T["selectionStart"] | T["selectionEnd"], T["selectionStart"] | T["selectionEnd"]>;
+};
+export declare function useInputSelection<T extends (HTMLInputElement | HTMLTextAreaElement)>(_: MaybeElementRef<T | null | undefined>, _?: UseInputSelectionOptions): UseInputSelectionReturn<T>;
 export declare function useIntersectionObserver(_: MaybeComputedElementRefOrArray, _: IntersectionObserverCallback, _?: UseIntersectionObserverOptions): UseIntersectionObserverReturn;
 export declare function useKeyModifier<Initial extends boolean | null>(_: KeyModifier, _?: UseModifierOptions<Initial>): UseKeyModifierReturn<Initial>;
 export declare function useLiveAnnouncer(_?: UseLiveAnnouncerOptions): UseLiveAnnouncerReturn;
@@ -2089,6 +2104,7 @@ export declare const defaultLocation: Location | undefined;
 export declare const DefaultMagicKeysAliasMap: Readonly<Record<string, string>>;
 export declare const defaultNavigator: Navigator | undefined;
 export declare const defaultWindow: (Window & typeof globalThis) | undefined;
+export declare const inputSelectionDefaultEvents: HTMLElementEventName[];
 export declare const StorageSerializers: Record<'boolean' | 'object' | 'number' | 'any' | 'string' | 'map' | 'set' | 'date', Serializer<any>>;
 export declare const TransitionPresets: Record<keyof typeof _TransitionPresets, CubicBezierPoints> & {
   linear: EasingFunction;

@@ -84,6 +84,8 @@ export function useGeolocation(_) {}
 export function useIdle(_, _) {}
 export function useImage(_, _) {}
 export function useInfiniteScroll(_, _, _) {}
+export function useInputCaretPosition(_, _) {}
+export function useInputSelection(_, _) {}
 export function useIntersectionObserver(_, _, _) {}
 export function useKeyModifier(_, _) {}
 export function useLiveAnnouncer(_) {}
@@ -188,6 +190,7 @@ export var defaultLocation /* const */
 export var DefaultMagicKeysAliasMap /* const */
 export var defaultNavigator /* const */
 export var defaultWindow /* const */
+export var inputSelectionDefaultEvents /* const */
 export var StorageSerializers /* const */
 export var TransitionPresets /* const */
 // #endregion
