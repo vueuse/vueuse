@@ -99,6 +99,7 @@
     "simple-git": "catalog:dev",
     "simple-git-hooks": "catalog:dev",
     "taze": "catalog:dev",
+    "temporal-polyfill": "catalog:test",
     "tinyglobby": "catalog:dev",
     "tsdown": "catalog:dev",
     "tsdown-stale-guard": "catalog:dev",

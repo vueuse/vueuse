@@ -46,5 +46,9 @@
     "@types/web-bluetooth": "catalog:types",
     "@vueuse/metadata": "workspace:*",
     "@vueuse/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@js-temporal/polyfill": "catalog:test",
+    "temporal-polyfill": "catalog:test"
   }
 }

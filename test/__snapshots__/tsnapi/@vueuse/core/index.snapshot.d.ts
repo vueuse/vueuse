@@ -1272,6 +1272,25 @@ export interface UseSwipeReturn {
   lengthY: ComputedRef<number>;
   stop: () => void;
 }
+export interface UseTemporalNowOptions extends ConfigurableScheduler {
+  timezone?: string;
+  calendar?: string;
+  temporal?: typeof Temporal;
+}
+export interface UseTemporalNowReturn extends Pausable {
+  now: Ref<Temporal.ZonedDateTime>;
+  timezone: Ref<string>;
+  calendar: Ref<string>;
+  toTimezone: (_: string) => Temporal.ZonedDateTime;
+  toCalendar: (_: string) => Temporal.ZonedDateTime;
+  toPlainDate: () => Temporal.PlainDate;
+  toPlainTime: () => Temporal.PlainTime;
+  toPlainDateTime: () => Temporal.PlainDateTime;
+  format: (_?: Intl.DateTimeFormatOptions) => string;
+  add: (_: Temporal.DurationLike) => Temporal.ZonedDateTime;
+  subtract: (_: Temporal.DurationLike) => Temporal.ZonedDateTime;
+  compare: (_: Temporal.ZonedDateTime | string) => number;
+}
 export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   element?: MaybeRef<HTMLTextAreaElement | undefined | null>;
   input?: MaybeRef<string>;
@@ -1974,6 +1993,7 @@ export declare function useStyleTag(_: MaybeRef<string>, _?: UseStyleTagOptions)
 export declare function useSupported(_: () => unknown): UseSupportedReturn;
 export declare function useSwipe(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseSwipeOptions): UseSwipeReturn;
 export declare function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>>;
+export declare function useTemporalNow(_?: UseTemporalNowOptions): UseTemporalNowReturn;
 export declare function useTextareaAutosize(_?: UseTextareaAutosizeOptions): UseTextareaAutosizeReturn;
 export declare function useTextDirection(_?: UseTextDirectionOptions): import("vue").WritableComputedRef<UseTextDirectionValue, UseTextDirectionValue>;
 export declare function useTextSelection(_?: UseTextSelectionOptions): UseTextSelectionReturn;

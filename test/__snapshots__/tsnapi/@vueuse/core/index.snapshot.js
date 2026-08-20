@@ -143,6 +143,7 @@ export function useStyleTag(_, _) {}
 export function useSupported(_) {}
 export function useSwipe(_, _) {}
 export function useTemplateRefsList() {}
+export function useTemporalNow(_) {}
 export function useTextareaAutosize(_) {}
 export function useTextDirection(_) {}
 export function useTextSelection(_) {}
