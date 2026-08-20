@@ -17,7 +17,13 @@ export default {
   enhanceApp(ctx) {
     if (typeof window !== 'undefined')
       handleRedirects(ctx.router)
-    ctx.app.use(TwoSlashFloatingVue)
+    ctx.app.use(TwoSlashFloatingVue, {
+      themes: {
+        twoslash: {
+          delay: { show: 200, hide: 0 },
+        },
+      },
+    })
 
     // Redirect function shorthands
     // For example `/useDark` to `/core/useDark`
