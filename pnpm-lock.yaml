@@ -213,6 +213,9 @@ catalogs:
     '@arethetypeswrong/core':
       specifier: ^0.18.5
       version: 0.18.5
+    '@js-temporal/polyfill':
+      specifier: ^0.5.1
+      version: 0.5.1
     '@vitest/browser-playwright':
       specifier: ^4.1.10
       version: 4.1.10
@@ -237,6 +240,9 @@ catalogs:
     playwright:
       specifier: 1.60.0
       version: 1.60.0
+    temporal-polyfill:
+      specifier: ^1.0.3
+      version: 1.0.3
     tsnapi:
       specifier: ^1.2.0
       version: 1.2.0
@@ -449,6 +455,9 @@ importers:
       taze:
         specifier: catalog:dev
         version: 19.16.0
+      temporal-polyfill:
+        specifier: catalog:test
+        version: 1.0.3
       tinyglobby:
         specifier: catalog:dev
         version: 0.2.17
@@ -533,6 +542,13 @@ importers:
       vue:
         specifier: ^3.5.0
         version: 3.5.40(typescript@6.0.3)
+    devDependencies:
+      '@js-temporal/polyfill':
+        specifier: catalog:test
+        version: 0.5.1
+      temporal-polyfill:
+        specifier: catalog:test
+        version: 1.0.3
 
   packages/electron:
     dependencies:
@@ -2450,6 +2466,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@js-temporal/polyfill@0.5.1':
+    resolution: {integrity: sha512-hloP58zRVCRSpgDxmqCWJNlizAlUgJFqG2ypq79DCvyv9tHjRYMDOcPFjzfl/A1/YxDvRCZz8wvZvmapQnKwFQ==}
+    engines: {node: '>=12'}
 
   '@json-render/core@0.19.0':
     resolution: {integrity: sha512-vvcyZ+10EDZKbEyB1J2kXOGfDaiZR2LurZGSqi2r5STHyKr+Te85DWaBxTwRGgM7U1LtIvNx85BzzjElRKoAIg==}
@@ -6644,6 +6664,9 @@ packages:
     resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
     hasBin: true
 
+  jsbi@4.3.2:
+    resolution: {integrity: sha512-9fqMSQbhJykSeii05nxKl4m6Eqn2P6rOlYiS+C5Dr/HPIU/7yZxu5qzbs40tgaFORiw2Amd0mirjxatXYMkIew==}
+
   jsdoc-type-pratt-parser@7.2.0:
     resolution: {integrity: sha512-dh140MMgjyg3JhJZY/+iEzW+NO5xR2gpbDFKHqotCmexElVntw7GjWjt511+C/Ef02RU5TKYrJo/Xlzk+OLaTw==}
     engines: {node: '>=20.0.0'}
@@ -8536,6 +8559,15 @@ packages:
   temp-dir@2.0.0:
     resolution: {integrity: sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==}
     engines: {node: '>=8'}
+
+  temporal-polyfill@1.0.3:
+    resolution: {integrity: sha512-U8vuzZBc+dfMIfl8wXWcedfI7AJCxJjjVBIRpJUvIz5+UAp555UJDHguKsfZqHWaHRSdVUThm7mqqIWhN/xPBQ==}
+
+  temporal-spec@1.0.1:
+    resolution: {integrity: sha512-wxVoanmDeavXie1vu2JaQ3WIc3JZnWAOYFBsJyATaVsXsycKYUflGsyBmrRSnoCpZJpwPyr38VpgSUlQ8CbFxg==}
+
+  temporal-utils@1.0.1:
+    resolution: {integrity: sha512-HAixuesxFQIUaQk3ptX2jhfO/FsOkgVkDDMawvp6n/fkB1q6BKfs3lURw9I+pK/2e2e/q/vrLrxmeqauBoyGMQ==}
 
   tempy@0.6.0:
     resolution: {integrity: sha512-G13vtMYPT/J8A4X2SjdtBTphZlrp1gKv6hZiOjw14RCWg6GbHuQBGtjlx75xLbYV/wEc0D7G5K4rxKP/cXk8Bw==}
@@ -11485,6 +11517,10 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@js-temporal/polyfill@0.5.1':
+    dependencies:
+      jsbi: 4.3.2
 
   '@json-render/core@0.19.0(zod@4.4.3)':
     dependencies:
@@ -15813,6 +15849,8 @@ snapshots:
       argparse: 1.0.10
       esprima: 4.0.1
 
+  jsbi@4.3.2: {}
+
   jsdoc-type-pratt-parser@7.2.0: {}
 
   jsdoc-type-pratt-parser@7.3.0: {}
@@ -18330,6 +18368,15 @@ snapshots:
       yaml: 2.9.0
 
   temp-dir@2.0.0: {}
+
+  temporal-polyfill@1.0.3:
+    dependencies:
+      temporal-spec: 1.0.1
+      temporal-utils: 1.0.1
+
+  temporal-spec@1.0.1: {}
+
+  temporal-utils@1.0.1: {}
 
   tempy@0.6.0:
     dependencies:
