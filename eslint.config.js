@@ -207,3 +207,7 @@ export default antfu(
     },
   }),
 )
+  .removeRules(
+    'markdown/heading-increment',
+    'markdown/no-missing-link-fragments',
+  )

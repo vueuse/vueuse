@@ -59,6 +59,13 @@ useNProgress(null, {
 
 ```ts
 export type UseNProgressOptions = Partial<NProgressOptions>
+export interface UseNProgressReturn {
+  isLoading: WritableComputedRef<boolean, boolean>
+  progress: Ref<number | null | undefined>
+  start: () => NProgress
+  done: (force?: boolean) => NProgress
+  remove: () => void
+}
 /**
  * Reactive progress bar.
  *
@@ -67,12 +74,5 @@ export type UseNProgressOptions = Partial<NProgressOptions>
 export declare function useNProgress(
   currentProgress?: MaybeRefOrGetter<number | null | undefined>,
   options?: UseNProgressOptions,
-): {
-  isLoading: WritableComputedRef<boolean, boolean>
-  progress: Ref<number | null | undefined, number | null | undefined>
-  start: () => nprogress.NProgress
-  done: (force?: boolean) => nprogress.NProgress
-  remove: () => void
-}
-export type UseNProgressReturn = ReturnType<typeof useNProgress>
+): UseNProgressReturn
 ```

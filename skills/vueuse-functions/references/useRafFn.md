@@ -42,11 +42,11 @@ export interface UseRafFnOptions extends ConfigurableWindow {
   immediate?: boolean
   /**
    * The maximum frame per second to execute the function.
-   * Set to `undefined` to disable the limit.
+   * Set to `null` to disable the limit.
    *
-   * @default undefined
+   * @default null
    */
-  fpsLimit?: MaybeRefOrGetter<number>
+  fpsLimit?: MaybeRefOrGetter<number | null>
   /**
    * After the requestAnimationFrame loop executed once, it will be automatically stopped.
    *

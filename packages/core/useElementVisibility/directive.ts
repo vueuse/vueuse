@@ -1,6 +1,6 @@
 import type { UseElementVisibilityOptions, UseElementVisibilityReturn } from '@vueuse/core'
-import type { ObjectDirective } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
+import { createDisposableDirective } from '@vueuse/shared'
 import { watch } from 'vue'
 
 /**
@@ -14,26 +14,28 @@ type BindingValueFunctionWithControls = (state: UseElementVisibilityReturn<true>
 type BindingValueArray = [BindingValueFunctionWithoutControls, UseElementVisibilityOptions<false>]
   | [BindingValueFunctionWithControls, UseElementVisibilityOptions<true>]
 
-export const vElementVisibility: ObjectDirective<
+export const vElementVisibility = createDisposableDirective<
   HTMLElement,
   BindingValueFunctionWithoutControls | BindingValueArray
-> = {
-  mounted(el, binding) {
-    if (typeof binding.value === 'function') {
-      const handler = binding.value
-      const isVisible = useElementVisibility(el)
-      watch(isVisible, v => handler(v), { immediate: true })
-    }
-    else {
-      const [handler, options] = binding.value
-      if (options?.controls) {
-        const state = useElementVisibility(el, options)
-        watch(state.isVisible, () => (handler as BindingValueFunctionWithControls)(state), { immediate: true })
+>(
+  {
+    mounted(el, binding) {
+      if (typeof binding.value === 'function') {
+        const handler = binding.value
+        const isVisible = useElementVisibility(el)
+        watch(isVisible, v => handler(v), { immediate: true })
       }
       else {
-        const isVisible = useElementVisibility(el, options as UseElementVisibilityOptions<false>)
-        watch(isVisible, v => (handler as BindingValueFunctionWithoutControls)(v), { immediate: true })
+        const [handler, options] = binding.value
+        if (options?.controls) {
+          const state = useElementVisibility(el, options)
+          watch(state.isVisible, () => (handler as BindingValueFunctionWithControls)(state), { immediate: true })
+        }
+        else {
+          const isVisible = useElementVisibility(el, options as UseElementVisibilityOptions<false>)
+          watch(isVisible, v => (handler as BindingValueFunctionWithoutControls)(v), { immediate: true })
+        }
       }
-    }
+    },
   },
-}
+)
