@@ -35,8 +35,56 @@ describe('useTimeoutPoll', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
 
-    vi.advanceTimersByTime(100)
+    await vi.advanceTimersByTimeAsync(50)
     expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('immediateCallback waits for the callback to finish', async () => {
+    const callback = vi.fn(() => new Promise<void>(resolve => setTimeout(resolve, 50)))
+    useTimeoutPoll(callback, 50, { immediateCallback: true })
+
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('keeps polling when the callback rejects', async () => {
+    const ignoreRejection = (e: PromiseRejectionEvent) => e.preventDefault()
+    window.addEventListener('unhandledrejection', ignoreRejection)
+
+    try {
+      const callback = vi.fn(() => Promise.reject(new Error('failed')))
+      useTimeoutPoll(callback, 50, { immediateCallback: true })
+
+      expect(callback).toHaveBeenCalledTimes(1)
+
+      await vi.advanceTimersByTimeAsync(50)
+      expect(callback).toHaveBeenCalledTimes(2)
+
+      await vi.advanceTimersByTimeAsync(50)
+      expect(callback).toHaveBeenCalledTimes(3)
+    }
+    finally {
+      window.removeEventListener('unhandledrejection', ignoreRejection)
+    }
+  })
+
+  it('does not schedule another round when paused during the callback', async () => {
+    const callback = vi.fn(() => new Promise<void>(resolve => setTimeout(resolve, 50)))
+    const { pause } = useTimeoutPoll(callback, 50, { immediateCallback: true })
+
+    expect(callback).toHaveBeenCalledTimes(1)
+    pause()
+
+    await vi.advanceTimersByTimeAsync(50)
+    expect(vi.getTimerCount()).toBe(0)
+
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(1)
   })
 
   it('pause/resume in scope', async () => {
