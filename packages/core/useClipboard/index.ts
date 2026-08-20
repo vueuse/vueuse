@@ -69,14 +69,13 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   } = options
 
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
-  const permissionRead = usePermission('clipboard-read')
-  const permissionWrite = usePermission('clipboard-write')
+  const permissionRead = usePermission('clipboard-read', { navigator })
+  const permissionWrite = usePermission('clipboard-write', { navigator })
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
   const text = shallowRef('')
   const copied = shallowRef(false)
   const copyPending = shallowRef(false)
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
-  let lastLegacyId = 0
 
   async function updateText() {
     let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionRead.value))
@@ -100,53 +99,53 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     const resolvedValue = value ?? toValue(source)
     if (isSupported.value && resolvedValue != null) {
       copyPending.value = true
-      let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
+      try {
+        // Resolve the value provider exactly once. Keeping its promise lets us
+        // hand it to `ClipboardItem` (which preserves the user gesture on
+        // Safari) and reuse it in the legacy fallback, so a provider is never
+        // invoked twice. See https://github.com/vueuse/vueuse/issues/5539
+        const dataPromise = typeof resolvedValue === 'function'
+          ? resolvedValue()
+          : Promise.resolve(resolvedValue)
 
-      if (!useLegacy) {
-        try {
-          const clipboardItem = createClipboardItem(resolvedValue)
-          await navigator!.clipboard.write([clipboardItem])
-        }
-        catch {
-          useLegacy = true
-        }
-      }
+        let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
 
-      if (useLegacy) {
-        if (typeof resolvedValue === 'string') {
-          text.value = resolvedValue
-          legacyCopy(resolvedValue)
-        }
-        else {
-          // For async functions in legacy mode, resolve and copy
-          const currentId = ++lastLegacyId
-          const resolvedText = await resolvedValue()
-          if (resolvedText != null && currentId === lastLegacyId) {
-            text.value = resolvedText
-            legacyCopy(resolvedText)
+        if (!useLegacy) {
+          try {
+            await navigator!.clipboard.write([createClipboardItem(dataPromise)])
+          }
+          catch {
+            // Fall back only for a genuine Clipboard API failure. When the
+            // value provider rejected, awaiting the shared promise below
+            // rethrows that error instead of running the provider again.
+            useLegacy = true
           }
         }
-      }
 
-      copied.value = true
-      timeout.start()
-      copyPending.value = false
+        if (useLegacy) {
+          const data = await dataPromise
+          if (data != null) {
+            text.value = data
+            legacyCopy(data)
+          }
+        }
+
+        copied.value = true
+        timeout.start()
+      }
+      finally {
+        copyPending.value = false
+      }
     }
   }
 
-  function createClipboardItem(value: ClipboardValue): ClipboardItem {
-    if (typeof value === 'string') {
-      text.value = value
-      return new ClipboardItem({ 'text/plain': value })
-    }
-    else {
-      return new ClipboardItem({
-        'text/plain': value().then((resolvedText = '') => {
-          text.value = resolvedText
-          return new Blob([resolvedText], { type: 'text/plain' })
-        }),
-      })
-    }
+  function createClipboardItem(dataPromise: Promise<string | undefined>): ClipboardItem {
+    return new ClipboardItem({
+      'text/plain': dataPromise.then((resolvedText = '') => {
+        text.value = resolvedText
+        return new Blob([resolvedText], { type: 'text/plain' })
+      }),
+    })
   }
 
   function legacyCopy(value: string) {
