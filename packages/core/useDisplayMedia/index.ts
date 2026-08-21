@@ -46,16 +46,37 @@ export function useDisplayMedia(options: UseDisplayMediaOptions = {}): UseDispla
   const constraint: MediaStreamConstraints = { audio, video }
 
   const stream = shallowRef<MediaStream | undefined>()
+  let starting = false
+  let startId = 0
 
   async function _start() {
-    if (!isSupported.value || stream.value)
+    if (!isSupported.value || stream.value || starting)
       return
-    stream.value = await navigator!.mediaDevices.getDisplayMedia(constraint)
-    stream.value?.getTracks().forEach(t => useEventListener(t, 'ended', stop, { passive: true }))
-    return stream.value
+
+    starting = true
+    const id = ++startId
+
+    try {
+      const mediaStream = await navigator!.mediaDevices.getDisplayMedia(constraint)
+
+      if (id !== startId) {
+        mediaStream.getTracks().forEach(t => t.stop())
+        return
+      }
+
+      stream.value = mediaStream
+      stream.value.getTracks().forEach(t => useEventListener(t, 'ended', stop, { passive: true }))
+      return stream.value
+    }
+    finally {
+      if (id === startId)
+        starting = false
+    }
   }
 
   async function _stop() {
+    startId++
+    starting = false
     stream.value?.getTracks().forEach(t => t.stop())
     stream.value = undefined
   }
