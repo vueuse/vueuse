@@ -1,3 +1,4 @@
+import type { Fn } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import type { Supportable } from '../types'
@@ -91,6 +92,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
   const server = shallowRef<undefined | BluetoothRemoteGATTServer>()
   const isConnected = shallowRef(false)
+  let removeDisconnectListener: Fn | undefined
 
   function reset() {
     isConnected.value = false
@@ -102,9 +104,12 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
     // Reset any errors we currently have:
     error.value = null
 
+    removeDisconnectListener?.()
+    removeDisconnectListener = undefined
+
     if (device.value && device.value.gatt) {
       // Add reset fn to gattserverdisconnected event:
-      useEventListener(device, 'gattserverdisconnected', reset, { passive: true })
+      removeDisconnectListener = useEventListener(device, 'gattserverdisconnected', reset, { passive: true })
 
       try {
         // Connect to the device:
@@ -119,10 +124,11 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
   tryOnMounted(() => {
     if (device.value)
-      device.value.gatt?.connect()
+      void connectToBluetoothGATTServer()
   })
 
   tryOnScopeDispose(() => {
+    removeDisconnectListener?.()
     if (device.value)
       device.value.gatt?.disconnect()
   })
