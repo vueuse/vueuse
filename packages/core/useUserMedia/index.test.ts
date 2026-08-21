@@ -3,12 +3,13 @@ import { nextTick } from 'vue'
 import { useSetup } from '../../.test'
 import { useUserMedia } from './index'
 
-function createMockTrack() {
-  return { stop: vi.fn() }
-}
-
-function createMockStream(id: number) {
-  const tracks = [createMockTrack()]
+function createMockStream(id: number, live: Set<number>) {
+  const tracks = [{
+    stop: vi.fn(() => {
+      live.delete(id)
+    }),
+  }]
+  live.add(id)
   return {
     id,
     getTracks: () => tracks,
@@ -21,9 +22,7 @@ function createMockMediaDevices(delay = 0) {
   const live = new Set<number>()
   const getUserMedia = vi.fn(() => new Promise<MediaStream>((resolve) => {
     setTimeout(() => {
-      const stream = createMockStream(++n)
-      live.add(stream.id as number)
-      resolve(stream)
+      resolve(createMockStream(++n, live))
     }, delay)
   }))
 
