@@ -13,8 +13,10 @@ import { localProvidedStateMap } from '../provideLocal/map'
  *
  * @__NO_SIDE_EFFECTS__
  */
-// @ts-expect-error overloads are not compatible
-export const injectLocal: typeof inject = <T>(...args) => {
+export function injectLocal<T>(key: InjectionKey<T> | string): T | undefined
+export function injectLocal<T>(key: InjectionKey<T> | string, defaultValue: T, treatDefaultAsFactory?: false): T
+export function injectLocal<T>(key: InjectionKey<T> | string, defaultValue: T | (() => T), treatDefaultAsFactory: true): T
+export function injectLocal<T>(...args: any[]): T | undefined {
   const key = args[0] as InjectionKey<T> | string | number
   const instance = getCurrentInstance()?.proxy
   const owner = instance ?? getCurrentScope()
@@ -23,7 +25,7 @@ export const injectLocal: typeof inject = <T>(...args) => {
     throw new Error('injectLocal must be called in setup')
 
   if (owner && localProvidedStateMap.has(owner) && key in localProvidedStateMap.get(owner)!)
-    return localProvidedStateMap.get(owner)![key]
+    return localProvidedStateMap.get(owner)![key] as T
 
   // @ts-expect-error overloads are not compatible
   return inject(...args)
