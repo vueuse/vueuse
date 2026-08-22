@@ -623,6 +623,20 @@ describe('useFetch', () => {
     expect(errorResponse).toBeNull()
   })
 
+  it('should keep the previous response.value until the next request settles', async () => {
+    const { execute, response } = useFetch(`${baseUrl}?text=hello`, { immediate: false })
+
+    await execute()
+    const firstResponse = response.value
+    expect(firstResponse).not.toBeNull()
+
+    const executePromise = execute()
+    expect(response.value).toBe(firstResponse)
+
+    await executePromise
+    expect(response.value).not.toBe(firstResponse)
+  })
+
   it('should emit onFetchResponse event', async () => {
     const { onFetchResponse, onFetchError, onFetchFinally } = useFetch(baseUrl)
 
