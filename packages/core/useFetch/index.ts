@@ -468,6 +468,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     }
 
     let responseData: any = null
+    let currentResponse: Response | null = null
 
     if (timer)
       timer.start()
@@ -484,6 +485,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       },
     )
       .then(async (fetchResponse) => {
+        currentResponse = fetchResponse
         if (currentExecuteCounter === executeCounter) {
           response.value = fetchResponse
           statusCode.value = fetchResponse.status
@@ -519,7 +521,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           ({ error: errorData, data: responseData } = await options.onFetchError({
             data: responseData,
             error: fetchError,
-            response: response.value,
+            response: currentResponse,
             context,
             execute,
           }))
