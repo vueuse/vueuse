@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { formatDate, useManualRefHistory } from '@vueuse/core'
-import { shallowRef } from 'vue'
+import { formatDate, useManualRefHistory, useCounter } from '@vueuse/core'
 
 function format(ts: number) {
   return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
 }
-const count = shallowRef(0)
 
-function inc() {
-  count.value++
-}
+const { inc, dec, count, set } = useCounter()
 
-function dec() {
-  count.value--
-}
-
-const { canUndo, canRedo, history, commit, undo, redo } = useManualRefHistory(count, { capacity: 10 })
+const { canUndo, canRedo, history, commit, undo, redo } = useManualRefHistory(
+  count,
+  { capacity: 10, setSource: (_source, value: number) => set(value) },
+)
 </script>
 
 <template>
