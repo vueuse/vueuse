@@ -116,8 +116,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
   tryOnMounted(() => {
     useEventListener(device, 'gattserverdisconnected', reset, { passive: true, once: true })
-    if (device.value)
-      void connectToBluetoothGATTServer()
+    void connectToBluetoothGATTServer()
   })
 
   tryOnScopeDispose(() => {
