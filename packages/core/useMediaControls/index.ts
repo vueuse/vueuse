@@ -232,6 +232,18 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   const sourceErrorEvent = createEventHook<Event>()
   const playbackErrorEvent = createEventHook<Event>()
 
+  // For updateing the position state of media session
+  function updatePositionState() {
+    if (!('mediaSession' in navigator))
+      return
+
+    navigator.mediaSession.setPositionState({
+      duration: duration.value,
+      playbackRate: rate.value,
+      position: currentTime.value,
+    })
+  }
+
   /**
    * Disables the specified track. If no track is specified then
    * all tracks will be disabled
@@ -445,7 +457,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'durationchange',
-    () => duration.value = (toValue(target))!.duration,
+    () => {
+      duration.value = (toValue(target))!.duration
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -463,7 +478,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'seeked',
-    () => seeking.value = false,
+    () => {
+      seeking.value = false
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -478,7 +496,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'loadeddata',
-    () => waiting.value = false,
+    () => {
+      waiting.value = false
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -488,13 +509,17 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       waiting.value = false
       ended.value = false
       ignorePlayingUpdates(() => playing.value = true)
+      updatePositionState()
     },
     listenerOptions,
   )
   useEventListener(
     target,
     'ratechange',
-    () => rate.value = (toValue(target))!.playbackRate,
+    () => {
+      rate.value = (toValue(target))!.playbackRate
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -506,19 +531,28 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'ended',
-    () => ended.value = true,
+    () => {
+      ended.value = true
+      navigator.mediaSession.playbackState = 'none'
+    },
     listenerOptions,
   )
   useEventListener(
     target,
     'pause',
-    () => ignorePlayingUpdates(() => playing.value = false),
+    () => ignorePlayingUpdates(() => {
+      playing.value = false
+      navigator.mediaSession.playbackState = 'paused'
+    }),
     listenerOptions,
   )
   useEventListener(
     target,
     'play',
-    () => ignorePlayingUpdates(() => playing.value = true),
+    () => ignorePlayingUpdates(() => {
+      playing.value = true
+      navigator.mediaSession.playbackState = 'playing'
+    }),
     listenerOptions,
   )
   useEventListener(
