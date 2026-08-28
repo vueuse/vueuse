@@ -28,7 +28,7 @@ const metadata = reactive<MediaMetadataInit>({
   artist: 'Blender Foundation',
   album: 'Sintel',
   artwork: [
-    { src: 'https://dummyimage.com/512x512/000/fff.jpg', sizes: '512x512', type: 'image/jpeg' },
+    { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
   ],
 })
 const controls = useMediaControls(video, {
