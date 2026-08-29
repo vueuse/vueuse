@@ -16,6 +16,7 @@ import { localProvidedStateMap } from '../provideLocal/map'
 export function injectLocal<T>(key: InjectionKey<T> | string): T | undefined
 export function injectLocal<T>(key: InjectionKey<T> | string, defaultValue: T, treatDefaultAsFactory?: false): T
 export function injectLocal<T>(key: InjectionKey<T> | string, defaultValue: T | (() => T), treatDefaultAsFactory: true): T
+/* @__NO_SIDE_EFFECTS__ */
 export function injectLocal<T>(...args: any[]): T | undefined {
   const key = args[0] as InjectionKey<T> | string | number
   const instance = getCurrentInstance()?.proxy
