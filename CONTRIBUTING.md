@@ -143,13 +143,24 @@ export function useFoo(value: string | number): string | number {
 
 TypeScript removes overload signatures during compilation, so the JSDoc annotation does not reach the bundler. Keep the one-line annotation before the implementation; there is no need to duplicate the full JSDoc.
 
-For arrow functions, place the build annotation immediately before the function expression:
+### `@__NO_SIDE_EFFECTS__` with arrow functions
+
+For arrow functions, place the compact build annotation immediately before the function expression:
 
 ```ts
+/**
+ * ...
+ *
+ * This function has no side effects.
+ */
 export const useFoo: () => void = /* @__NO_SIDE_EFFECTS__ */ () => {
   // ...
 }
 ```
+
+Do not include the magic `@__NO_SIDE_EFFECTS__` tag in the leading JSDoc of a `const` declaration. Unlike overload signatures, the declaration and its JSDoc are emitted to JavaScript. The tag would then appear before the variable declaration instead of the function expression and may trigger an invalid-annotation warning from the bundler.
+
+Describe the function as having no side effects in ordinary prose instead. If the exact tag must appear in the public JSDoc, use a function declaration.
 
 ## Thanks
 
