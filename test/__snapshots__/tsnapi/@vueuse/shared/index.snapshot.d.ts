@@ -331,6 +331,9 @@ export declare function identity<T>(_: T): T;
 export declare function increaseWithUnit(_: number, _: number): number;
 export declare function increaseWithUnit(_: string, _: number): string;
 export declare function increaseWithUnit(_: string | number, _: number): string | number;
+export declare function injectLocal<T>(_: InjectionKey<T> | string): T | undefined;
+export declare function injectLocal<T>(_: InjectionKey<T> | string, _: T, _?: false): T;
+export declare function injectLocal<T>(_: InjectionKey<T> | string, _: T | (() => T), _: true): T;
 export declare function invoke<T>(_: () => T): T;
 export declare function isDefined<T>(_: ComputedRef<T>): v is ComputedRef<Exclude<T, null | undefined>>;
 export declare function isDefined<T>(_: Ref<T>): v is Ref<Exclude<T, null | undefined>>;
@@ -493,7 +496,6 @@ export declare const hasOwn: <T extends object, K extends keyof T>(val: T, key: 
 export declare const hyphenate: (str: string) => string;
 /** @deprecated */
 export declare const ignorableWatch: typeof watchIgnorable;
-export declare const injectLocal: typeof inject;
 export declare const isClient: boolean;
 export declare const isDef: <T = any>(val?: T) => val is T;
 export declare const isIOS: boolean;

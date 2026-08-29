@@ -21,6 +21,7 @@ export function get(_, _) {}
 export function getLifeCycleTarget(_) {}
 export function identity(_) {}
 export function increaseWithUnit(_, _) {}
+export function injectLocal(..._) {}
 export function invoke(_) {}
 export function isDefined(_) {}
 export function makeDestructurable(_, _) {}
@@ -119,7 +120,6 @@ export var hasOwn /* const */
 export var hyphenate /* const */
 /** @deprecated */
 export var ignorableWatch /* const */
-export var injectLocal /* const */
 export var isClient /* const */
 export var isDef /* const */
 export var isIOS /* const */
