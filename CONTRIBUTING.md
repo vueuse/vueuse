@@ -120,6 +120,37 @@ Read more about the [guidelines](https://vueuse.org/guidelines).
 
 Don't worry about the code style as long as you install the dev dependencies. Git hooks will format and fix them for you on committing.
 
+### `@__NO_SIDE_EFFECTS__` with function overloads
+
+For overloaded functions, add `@__NO_SIDE_EFFECTS__` in **two places**:
+
+1. In the public JSDoc, for API documentation.
+2. Immediately before the implementation, for build tools.
+
+```ts
+/**
+ * ...
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
+export function useFoo(value: string): string
+export function useFoo(value: number): number
+/* @__NO_SIDE_EFFECTS__ */
+export function useFoo(value: string | number): string | number {
+  // ...
+}
+```
+
+TypeScript removes overload signatures during compilation, so the JSDoc annotation does not reach the bundler. Keep the one-line annotation before the implementation; there is no need to duplicate the full JSDoc.
+
+For arrow functions, place the build annotation immediately before the function expression:
+
+```ts
+export const useFoo: () => void = /* @__NO_SIDE_EFFECTS__ */ () => {
+  // ...
+}
+```
+
 ## Thanks
 
 Thank you again for being interested in this project! You are awesome!
