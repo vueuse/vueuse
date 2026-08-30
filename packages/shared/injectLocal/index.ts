@@ -11,7 +11,7 @@ import { localProvidedStateMap } from '../provideLocal/map'
  * const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
  * ```
  *
- * This function has no side effects.
+ * @NO_SIDE_EFFECTS
  */
 // @ts-expect-error overloads are not compatible
 export const injectLocal: typeof inject = /* @__NO_SIDE_EFFECTS__ */ <T>(...args) => {
