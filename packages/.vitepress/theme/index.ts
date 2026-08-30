@@ -3,6 +3,11 @@ import TwoSlashFloatingVue from '@shikijs/vitepress-twoslash/client'
 import DefaultTheme from 'vitepress/theme'
 import { functions } from '../../../packages/metadata/metadata'
 import { handleRedirects } from './redirects'
+// Docs-only polyfill so the `useTemporalNow` demo works in browsers/engines
+// without native `Temporal` support yet (the `/full/` variant is used so the
+// demo's non-Gregorian calendars work). `@vueuse/core` itself ships with no
+// such dependency, see `packages/core/useTemporalNow/index.md`.
+import 'temporal-polyfill/full/global'
 import '@shikijs/vitepress-twoslash/style.css'
 
 import './styles/main.css'
