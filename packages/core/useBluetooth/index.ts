@@ -62,7 +62,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
   const error = shallowRef<unknown | null>(null)
 
   watch(device, () => {
-    connectToBluetoothGATTServer()
+    void connectToBluetoothGATTServer()
   })
 
   async function requestDevice(): Promise<void> {
@@ -103,9 +103,6 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
     error.value = null
 
     if (device.value && device.value.gatt) {
-      // Add reset fn to gattserverdisconnected event:
-      useEventListener(device, 'gattserverdisconnected', reset, { passive: true })
-
       try {
         // Connect to the device:
         server.value = await device.value.gatt.connect()
@@ -118,8 +115,8 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
   }
 
   tryOnMounted(() => {
-    if (device.value)
-      device.value.gatt?.connect()
+    useEventListener(device, 'gattserverdisconnected', reset, { passive: true, once: true })
+    void connectToBluetoothGATTServer()
   })
 
   tryOnScopeDispose(() => {
