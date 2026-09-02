@@ -120,6 +120,55 @@ Read more about the [guidelines](https://vueuse.org/guidelines).
 
 Don't worry about the code style as long as you install the dev dependencies. Git hooks will format and fix them for you on committing.
 
+### `@__NO_SIDE_EFFECTS__` with function overloads
+
+For overloaded functions, add `@__NO_SIDE_EFFECTS__` in **two places**:
+
+1. In the public JSDoc, for API documentation.
+2. Immediately before the implementation, for build tools.
+
+```ts
+/**
+ * ...
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
+export function useFoo(value: string): string
+export function useFoo(value: number): number
+/* @__NO_SIDE_EFFECTS__ */
+export function useFoo(value: string | number): string | number {
+  // ...
+}
+```
+
+TypeScript removes overload signatures during compilation, so the JSDoc annotation does not reach the bundler. Keep the one-line annotation before the implementation; there is no need to duplicate the full JSDoc.
+
+### `@__NO_SIDE_EFFECTS__` with arrow functions
+
+For arrow functions, place the compact build annotation immediately before the function expression for the bundler to recognize it.
+
+```ts
+export const useFoo: () => void = /* @__NO_SIDE_EFFECTS__ */ () => {
+  // ...
+}
+```
+
+DO NOT include the magic `@__NO_SIDE_EFFECTS__` tag in the leading JSDoc of a `const` declaration. Unlike overload signatures, the declaration and its JSDoc are emitted to JavaScript. The tag would then appear before the variable declaration instead of the function expression and may trigger an invalid-annotation warning from the bundler.
+
+If you want to present the information to human readers, consider using `@NO_SIDE_EFFECTS` (without the `__`) in ordinary prose instead. It will be ignored by the bundler so it won't trigger any warnings.
+
+```diff
+/**
+ * ...
+ *
+- * @__NO_SIDE_EFFECTS__
++ * @NO_SIDE_EFFECTS
+ */
+export const useFoo: () => void = /* @__NO_SIDE_EFFECTS__ */ () => {
+  // ...
+}
+```
+
 ## Thanks
 
 Thank you again for being interested in this project! You are awesome!

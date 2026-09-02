@@ -42,6 +42,13 @@ export interface UseStepperReturn<StepName, Steps, Step> {
   isAfter: (step: StepName) => boolean
 }
 
+/**
+ * Provides helpers for building a multi-step wizard interface.
+ *
+ * @see https://vueuse.org/useStepper
+ *
+ * @__NO_SIDE_EFFECTS__
+ */
 export function useStepper<T extends string | number>(steps: MaybeRef<T[]>, initialStep?: T): UseStepperReturn<T, T[], T>
 export function useStepper<T extends Record<string, any>>(steps: MaybeRef<T>, initialStep?: keyof T): UseStepperReturn<Exclude<keyof T, symbol>, T, T[keyof T]>
 /* @__NO_SIDE_EFFECTS__ */

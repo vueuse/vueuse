@@ -44,6 +44,7 @@ export function createInjectionState<Arguments extends Array<any>, Return>(
   composable: (...args: Arguments) => Return,
   options?: CreateInjectionStateOptions<Return>,
 ): CreateInjectionStateReturn<Arguments, Return, Return | undefined>
+/* @__NO_SIDE_EFFECTS__ */
 export function createInjectionState<Arguments extends Array<any>, Return>(
   composable: (...args: Arguments) => Return,
   options?: CreateInjectionStateOptions<Return>,
