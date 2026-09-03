@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as metadata from '@vueuse/metadata'
@@ -42,14 +42,19 @@ const EXPLICIT_ONLY_FUNCTIONS = new Set([
   console.log(`Generated skills documentation at: ${outputPath}`)
 
   // Copy to project root skills directory
-  cpSync(SKILL_DIR, SKILL_COPY_DIR, { recursive: true, force: true })
+  // Remove first, `cpSync` merges and would leave behind files no longer in the source
+  rmSync(SKILL_COPY_DIR, { recursive: true, force: true })
+  cpSync(SKILL_DIR, SKILL_COPY_DIR, { recursive: true })
   console.log(`Copied skills to: ${SKILL_COPY_DIR}`)
 })()
 
 // Utils
 
 async function prepareFunctionReferences(outDir: string, referenceDir = SKILL_REFERENCE_DIR): Promise<Record<string, FunctionReference[]>> {
-  mkdirSync(path.join(outDir, referenceDir), { recursive: true })
+  // Regenerate from scratch so references of removed functions don't linger
+  const outReferenceDir = path.join(outDir, referenceDir)
+  rmSync(outReferenceDir, { recursive: true, force: true })
+  mkdirSync(outReferenceDir, { recursive: true })
 
   const categories: Record<string, FunctionReference[]> = {}
 
