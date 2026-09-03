@@ -93,6 +93,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useFullscreen`](references/useFullscreen.md) | Reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) | AUTO |
 | [`useGamepad`](references/useGamepad.md) | Provides reactive bindings for the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API) | AUTO |
 | [`useImage`](references/useImage.md) | Reactive load an image in the browser | AUTO |
+| [`useLiveAnnouncer`](references/useLiveAnnouncer.md) | Accessible way to announce messages to screen reader users (ARIA live regions) | AUTO |
 | [`useMediaControls`](references/useMediaControls.md) | Reactive media controls for both `audio` and `video` elements | AUTO |
 | [`useMediaQuery`](references/useMediaQuery.md) | Reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries) | AUTO |
 | [`useMemory`](references/useMemory.md) | Reactive Memory Info | AUTO |
@@ -193,7 +194,6 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`computedInject`](references/computedInject.md) | Combine `computed` and `inject` | AUTO |
 | [`createReusableTemplate`](references/createReusableTemplate.md) | Define and reuse template inside the component scope | AUTO |
 | [`createTemplatePromise`](references/createTemplatePromise.md) | Template as Promise | AUTO |
-| [`templateRef`](references/templateRef.md) | Shorthand for binding ref to template element | AUTO |
 | [`tryOnBeforeMount`](references/tryOnBeforeMount.md) | Safe `onBeforeMount` | AUTO |
 | [`tryOnBeforeUnmount`](references/tryOnBeforeUnmount.md) | Safe `onBeforeUnmount` | AUTO |
 | [`tryOnMounted`](references/tryOnMounted.md) | Safe `onMounted` | AUTO |
@@ -275,6 +275,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 |----------|-------------|------------|
 | [`useCountdown`](references/useCountdown.md) | Reactive countdown timer in seconds | AUTO |
 | [`useDateFormat`](references/useDateFormat.md) | Get the formatted date according to the string of tokens passed in | AUTO |
+| [`useTemporalNow`](references/useTemporalNow.md) | Reactive [Temporal API](https://tc39.es/proposal-temporal/docs/) with timezone conversion and calendar system support | AUTO |
 | [`useTimeAgo`](references/useTimeAgo.md) | Reactive time ago | AUTO |
 | [`useTimeAgoIntl`](references/useTimeAgoIntl.md) | Reactive time ago with i18n supported | AUTO |
 
