@@ -1,0 +1,9 @@
+version: 1
+scan:
+  issues: true
+allowed-users:
+  - antfubot
+trusted-author-associations:
+  - owner
+  - member
+honeypot: true
