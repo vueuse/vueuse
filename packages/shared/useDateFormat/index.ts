@@ -109,7 +109,7 @@ export function normalizeDate(date: DateLike) {
   return new Date(date)
 }
 
-export type UseDateFormatReturn = ComputedRef<string>
+export type UseDateFormatReturn<T = string> = ComputedRef<T>
 
 /**
  * Get the formatted date according to the string of tokens passed in.
@@ -121,6 +121,6 @@ export type UseDateFormatReturn = ComputedRef<string>
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useDateFormat(date: MaybeRefOrGetter<DateLike>, formatStr: MaybeRefOrGetter<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}): UseDateFormatReturn {
+export function useDateFormat<T = string>(date: MaybeRefOrGetter<DateLike>, formatStr: MaybeRefOrGetter<string> = 'HH:mm:ss', options: UseDateFormatOptions = {}): UseDateFormatReturn<T> {
   return computed(() => formatDate(normalizeDate(toValue(date)), toValue(formatStr), options))
 }
