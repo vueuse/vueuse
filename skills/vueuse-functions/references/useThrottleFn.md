@@ -37,7 +37,7 @@ useEventListener(window, 'resize', throttledFn)
  * @param   ms             A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
  *                                    (default value: 200)
  *
- * @param [trailing] if true, call fn again after the time is up (default value: false)
+ * @param [trailing] if true, call fn again after the time is up (default value: true)
  *
  * @param [leading] if true, call fn on the leading edge of the ms timeout (default value: true)
  *
