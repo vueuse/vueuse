@@ -265,3 +265,184 @@ export declare const vResizeObserver: import("vue").FunctionDirective<HTMLElemen
 export declare const vScroll: import("vue").FunctionDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any>;
 export declare const vScrollLock: import("vue").FunctionDirective<HTMLElement, boolean, string, any> | import("vue").ObjectDirective<HTMLElement, boolean, string, any>;
 // #endregion
+
+// #region Referenced (internal)
+type BindingValueArray = [BindingValueFunction, UseScrollOptions];
+type BindingValueArray$1 = [BindingValueFunction$1, UseResizeObserverOptions];
+type BindingValueArray$2 = [BindingValueFunction$2, MouseInElementOptions];
+type BindingValueArray$3 = [BindingValueFunction$3, UseIntersectionObserverOptions];
+type BindingValueArray$4 = [BindingValueFunction$4, UseInfiniteScrollOptions];
+type BindingValueArray$5 = [BindingValueFunctionWithoutControls, UseElementVisibilityOptions<false>] | [BindingValueFunctionWithControls, UseElementVisibilityOptions<true>];
+type BindingValueArray$6 = [BindingValueFunction$7, UseElementBoundingOptions];
+type BindingValueArray$7 = [BindingValueFunction$8, OnLongPressOptions];
+type BindingValueArray$8 = [BindingValueFunction$9, OnKeyStrokeOptions];
+type BindingValueFunction = (_: UseScrollReturn) => void;
+type BindingValueFunction$2 = (_: Reactive<MouseInElement>) => void;
+type BindingValueFunction$5 = (_: ElementSize) => void;
+type BindingValueFunction$6 = (_: boolean) => void;
+type BindingValueFunction$7 = (_: ElementBounding) => void;
+type BindingValueFunction$8 = (_: PointerEvent) => void;
+type BindingValueFunction$9 = (_: KeyboardEvent) => void;
+type BindingValueFunctionWithoutControls = (_: boolean) => void;
+interface OnLongPressSlots {
+  default: (_: UseOnLongPressReturn) => any;
+}
+interface RenderableComponent$1 {
+  as?: object | string;
+}
+interface UseActiveElementSlots {
+  default: (_: Reactive<{
+    element: UseActiveElementReturn;
+  }>) => any;
+}
+interface UseBatterySlots {
+  default: (_: Reactive<UseBatteryReturn>) => any;
+}
+interface UseBrowserLocationProps extends ConfigurableWindow {}
+interface UseBrowserLocationSlots {
+  default: (_: Reactive<UseBrowserLocationReturn>) => any;
+}
+interface UseClipboardSlots {
+  default: (_: Reactive<UseClipboardReturn<true>>) => any;
+}
+interface UseColorModeSlots {
+  default: (_: Reactive<{
+    mode: UseColorModeReturn<BasicColorMode>;
+    system: UseColorModeReturn['system'];
+    store: UseColorModeReturn['store'];
+  }>) => any;
+}
+interface UseDarkSlots {
+  default: (_: Reactive<{
+    isDark: UseDarkReturn;
+    toggleDark: ToggleFn;
+  }>) => any;
+}
+interface UseDeviceMotionSlots {
+  default: (_: UseDeviceMotionReturn) => any;
+}
+interface UseDeviceOrientationSlots {
+  default: (_: Reactive<UseDeviceOrientationReturn>) => any;
+}
+interface UseDevicePixelRatioSlots {
+  default: (_: Reactive<UseDevicePixelRatioReturn>) => any;
+}
+interface UseDevicesListSlots {
+  default: (_: Reactive<UseDevicesListReturn>) => any;
+}
+interface UseDocumentVisibilitySlots {
+  default: (_: Reactive<{
+    visibility: UseDocumentVisibilityReturn;
+  }>) => any;
+}
+interface UseElementBoundingSlots {
+  default: (_: Reactive<UseElementBoundingReturn>) => any;
+}
+interface UseElementOverflowOptions$1 extends ConfigurableWindow$1 {
+  observeMutation?: boolean | MutationObserverInit;
+  onUpdated?: ResizeObserverCallback | MutationCallback;
+}
+interface UseElementSizeSlots {
+  default: (_: Reactive<UseElementSizeReturn>) => any;
+}
+interface UseElementVisibilitySlots {
+  default: (_: Reactive<UseElementVisibilityReturn<true>>) => any;
+}
+interface UseEyeDropperSlots {
+  default: (_: Reactive<UseEyeDropperReturn>) => any;
+}
+interface UseFullscreenSlots {
+  default: (_: Reactive<UseFullscreenReturn>) => any;
+}
+interface UseGeolocationSlots {
+  default: (_: Reactive<UseGeolocationReturn>) => any;
+}
+interface UseIdleSlots {
+  default: (_: Reactive<UseIdleReturn>) => any;
+}
+interface UseImageSlots {
+  default: (_: Reactive<UseImageReturn>) => any;
+  loading: (_: Reactive<UseImageReturn>) => any;
+  error: (_: UnwrapRef<UseImageReturn['error']>) => any;
+}
+interface UseMouseInElementSlots {
+  default: (_: Reactive<UseMouseInElementReturn>) => any;
+}
+interface UseMousePressedSlots {
+  default: (_: Reactive<UseMousePressedReturn>) => any;
+}
+interface UseMouseSlots {
+  default: (_: Reactive<UseMouseReturn>) => any;
+}
+interface UseNetworkSlots {
+  default: (_: Reactive<UseNetworkReturn>) => any;
+}
+interface UseNowSlots {
+  default: (_: Reactive<UseNowReturn<true>>) => any;
+}
+interface UseObjectUrlSlots {
+  default: (_: Readonly<string | undefined>) => any;
+}
+interface UseOffsetPaginationSlots {
+  default: (_: Reactive<UseOffsetPaginationReturn>) => any;
+}
+interface UseOnlineSlots {
+  default: (_: Reactive<{
+    isOnline: UseNetworkReturn['isOnline'];
+  }>) => any;
+}
+interface UsePageLeaveSlots {
+  default: (_: Reactive<{
+    isLeft: UsePageLeaveReturn;
+  }>) => any;
+}
+interface UsePointerLockSlots {
+  default: (_: Reactive<UsePointerLockReturn>) => any;
+}
+interface UsePointerSlots {
+  default: (_: Reactive<UsePointerReturn>) => any;
+}
+interface UsePreferredColorSchemeSlots {
+  default: (_: Reactive<{
+    colorScheme: ComputedRef<ColorSchemeType>;
+  }>) => any;
+}
+interface UsePreferredContrastSlots {
+  default: (_: Reactive<{
+    contrast: ComputedRef<ContrastType>;
+  }>) => any;
+}
+interface UsePreferredDarkSlots {
+  default: (_: Reactive<{
+    prefersDark: ComputedRef<boolean>;
+  }>) => any;
+}
+interface UsePreferredLanguagesSlots {
+  default: (_: Reactive<{
+    languages: Ref<readonly string[]>;
+  }>) => any;
+}
+interface UsePreferredReducedMotionSlots {
+  default: (_: Reactive<{
+    motion: ComputedRef<ReducedMotionType>;
+  }>) => any;
+}
+interface UseScreenSafeAreaSlots {
+  default: (_: Reactive<UseScreenSafeAreaReturn>) => any;
+}
+interface UseTimeAgoSlots {
+  default: (_: Reactive<UseTimeAgoReturn<true>>) => any;
+}
+interface UseTimestampSlots {
+  default: (_: Reactive<UseTimestampReturn<true>>) => any;
+}
+interface UseWindowFocusSlots {
+  default: (_: Reactive<{
+    focused: ShallowRef<boolean>;
+  }>) => any;
+}
+interface UseWindowSizeSlots {
+  default: (_: Reactive<UseWindowSizeReturn>) => any;
+}
+type VElementOverflowHandler = (_: UseElementOverflowReturn) => void;
+// #endregion

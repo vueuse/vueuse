@@ -2118,3 +2118,63 @@ export declare const TransitionPresets: Record<keyof typeof _TransitionPresets, 
 // #region Re-exports
 export * from "@vueuse/shared";
 // #endregion
+
+// #region Referenced (internal)
+type CacheKey = any;
+type ClipboardValue = string | (() => Promise<string | undefined>);
+type Combination = 'overwrite' | 'chain';
+type DescriptorNamePolyfill = 'accelerometer' | 'accessibility-events' | 'ambient-light-sensor' | 'background-sync' | 'camera' | 'clipboard-read' | 'clipboard-write' | 'gyroscope' | 'magnetometer' | 'microphone' | 'notifications' | 'payment-handler' | 'persistent-storage' | 'push' | 'speaker' | 'local-fonts';
+interface FileSystemWritableFileStream extends WritableStream {
+  write: FileSystemWritableFileStreamWrite;
+  seek: (_: number) => Promise<void>;
+  truncate: (_: number) => Promise<void>;
+}
+type GenerateSlotsFromSlotMap<T extends ObjectLiteralWithPotentialObjectLiterals> = { [K in keyof T]: Slot<T[K]>; };
+interface InferEventTarget<Events> {
+  addEventListener: (_: Events, _?: any, _?: any) => any;
+  removeEventListener: (_: Events, _?: any, _?: any) => any;
+}
+type InfiniteScrollElement = HTMLElement | SVGElement | Window | Document | null | undefined;
+type Locale = Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale;
+type MapQueueTask<T extends any[]> = { [K in keyof T]: UseAsyncQueueTask<T[K]>; };
+type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>;
+type PostMessage = typeof Worker.prototype['postMessage'];
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  grammars: SpeechGrammarList;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  onaudioend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onaudiostart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onerror: ((this: SpeechRecognition, _: SpeechRecognitionErrorEvent) => any) | null;
+  onnomatch: ((this: SpeechRecognition, _: SpeechRecognitionEvent) => any) | null;
+  onresult: ((this: SpeechRecognition, _: SpeechRecognitionEvent) => any) | null;
+  onsoundend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onsoundstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onspeechend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onspeechstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  abort: () => void;
+  start: () => void;
+  stop: () => void;
+  addEventListener: (<K extends keyof SpeechRecognitionEventMap>(_: K, _: (this: SpeechRecognition, _: SpeechRecognitionEventMap[K]) => any, _?: boolean | AddEventListenerOptions) => void) & ((_: string, _: EventListenerOrEventListenerObject, _?: boolean | AddEventListenerOptions) => void);
+  removeEventListener: (<K extends keyof SpeechRecognitionEventMap>(_: K, _: (this: SpeechRecognition, _: SpeechRecognitionEventMap[K]) => any, _?: boolean | EventListenerOptions) => void) & ((_: string, _: EventListenerOrEventListenerObject, _?: boolean | EventListenerOptions) => void);
+}
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: SpeechRecognitionErrorCode;
+  readonly message: string;
+}
+interface UseMediaControlsOptions extends ConfigurableDocument {
+  src?: MaybeRefOrGetter<string | UseMediaSource | UseMediaSource[]>;
+  tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>;
+}
+type UseTimeAgoReturn$1<Controls extends boolean = false> = Controls extends true ? {
+  timeAgoIntl: ComputedRef<string>;
+  parts: ComputedRef<Intl.RelativeTimeFormatPart[]>;
+} & Pausable : ComputedRef<string>;
+type UseVirtualListItemSize = number | ((_: number) => number);
+type WakeLockType = 'screen';
+type WorkerFn = (..._: unknown[]) => Worker;
+// #endregion
