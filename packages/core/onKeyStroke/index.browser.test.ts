@@ -55,7 +55,7 @@ describe('onKeyStroke', () => {
     expect(callBackFn).toBeCalledTimes(1)
   })
 
-  it('registers a passive listener instead of a capture listener when passive is true', () => {
+  it('pass passive option to listener', () => {
     const addSpy = vi.spyOn(window, 'addEventListener')
 
     onKeyStroke('a', callBackFn, { passive: true })
