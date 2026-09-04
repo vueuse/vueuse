@@ -18,3 +18,7 @@ export declare function useFirestore<T extends DocumentData>(_: MaybeRef<Query<T
 export declare function useFirestore<T extends DocumentData>(_: MaybeRef<DocumentReference<T> | Falsy>, _?: T | undefined | null, _?: UseFirestoreOptions): Ref<T | undefined | null>;
 export declare function useFirestore<T extends DocumentData>(_: MaybeRef<Query<T> | Falsy>, _?: T[], _?: UseFirestoreOptions): Ref<T[] | undefined>;
 // #endregion
+
+// #region Referenced (internal)
+type Falsy = false | 0 | '' | null | undefined;
+// #endregion
