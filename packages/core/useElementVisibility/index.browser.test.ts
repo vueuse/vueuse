@@ -1,4 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { useElementVisibility } from './index'
 
 describe('useElementVisibility', () => {
@@ -143,6 +144,42 @@ describe('useElementVisibility', () => {
 
       useElementVisibility(el, { window: mockWindow })
       expect(vi.mocked(useIntersectionObserver).mock.lastCall?.[2]?.window).toBe(mockWindow)
+    })
+
+    it('stops observing as soon as the element is reported visible when once is true', async () => {
+      const controls = useElementVisibility(el, { controls: true, once: true })
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+
+      callback?.([{ isIntersecting: true, time: 1 }] as IntersectionObserverEntry[], {} as IntersectionObserver)
+      await nextTick()
+
+      expect(controls.isVisible.value).toBe(true)
+      expect(controls.stop).toHaveBeenCalledTimes(1)
+    })
+
+    it('keeps observing until the element becomes visible when once is true', async () => {
+      const controls = useElementVisibility(el, { controls: true, once: true })
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+
+      callback?.([{ isIntersecting: false, time: 1 }] as IntersectionObserverEntry[], {} as IntersectionObserver)
+      await nextTick()
+      expect(controls.stop).not.toHaveBeenCalled()
+
+      callback?.([{ isIntersecting: true, time: 2 }] as IntersectionObserverEntry[], {} as IntersectionObserver)
+      await nextTick()
+      expect(controls.stop).toHaveBeenCalledTimes(1)
+    })
+
+    it('never stops observing when once is not set', async () => {
+      const controls = useElementVisibility(el, { controls: true })
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+
+      callback?.([{ isIntersecting: true, time: 1 }] as IntersectionObserverEntry[], {} as IntersectionObserver)
+      await nextTick()
+      callback?.([{ isIntersecting: false, time: 2 }] as IntersectionObserverEntry[], {} as IntersectionObserver)
+      await nextTick()
+
+      expect(controls.stop).not.toHaveBeenCalled()
     })
 
     it('uses the given scrollTarget as the root element in useIntersectionObserver', () => {

@@ -82,12 +82,6 @@ export function useElementVisibility(
         }
       }
       isVisible.value = isIntersecting
-
-      if (once) {
-        watchOnce(isVisible, () => {
-          observerController.stop()
-        })
-      }
     },
     {
       root: scrollTarget,
@@ -96,6 +90,14 @@ export function useElementVisibility(
       rootMargin,
     },
   )
+
+  // Registered up front: inside the observer callback the watcher would only start
+  // after the visibility change it is meant to react to had already been applied.
+  if (once) {
+    watchOnce(isVisible, () => {
+      observerController.stop()
+    })
+  }
 
   return options.controls
     ? { ...observerController, isVisible }
