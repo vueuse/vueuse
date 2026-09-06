@@ -73,7 +73,7 @@ const Key = defineComponent({
 
       <div class="text-center mt-4">
         <Note>Keys Pressed</Note>
-        <div class="flex mt-2 justify-center space-x-1 min-h-1.5em">
+        <div class="flex mt-2 justify-center space-x-1 min-h-2em">
           <code
             v-for="key in keys"
             :key="key"
