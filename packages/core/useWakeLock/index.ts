@@ -52,6 +52,7 @@ export function useWakeLock(options: UseWakeLockOptions = {}): UseWakeLockReturn
   if (isSupported.value) {
     useEventListener(sentinel, 'release', () => {
       requestedType.value = sentinel.value?.type ?? false
+      sentinel.value = null
     }, { passive: true })
 
     whenever(
