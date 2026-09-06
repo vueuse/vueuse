@@ -29,7 +29,7 @@ export function useTimeoutPoll(
     immediateCallback = false,
   } = options
 
-  const { start } = useTimeoutFn(loop, interval, { immediate })
+  const { start } = useTimeoutFn(loop, interval, { immediate: false })
 
   const isActive = shallowRef(false)
 
@@ -37,16 +37,22 @@ export function useTimeoutPoll(
     if (!isActive.value)
       return
 
-    await fn()
-    start()
+    try {
+      await fn()
+    }
+    finally {
+      if (isActive.value)
+        start()
+    }
   }
 
   function resume() {
     if (!isActive.value) {
       isActive.value = true
       if (immediateCallback)
-        fn()
-      start()
+        loop()
+      else
+        start()
     }
   }
 
