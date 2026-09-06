@@ -152,4 +152,23 @@ describe('useWakeLock', () => {
 
     expect(isActive.value).toBeTruthy()
   })
+
+  it('it should become inactive if the sentinel fires release while the document stays visible', async () => {
+    const sentinel = defineWakeLockAPI()
+    const mockDocument = new MockDocument()
+    mockDocument.visibilityState = 'visible'
+
+    const { isActive, request } = useWakeLock({ document: mockDocument as Document })
+
+    await request('screen')
+
+    expect(isActive.value).toBeTruthy()
+
+    sentinel.dispatchEvent(new Event('release'))
+
+    await nextTick()
+    await nextTick()
+
+    expect(isActive.value).toBeFalsy()
+  })
 })
