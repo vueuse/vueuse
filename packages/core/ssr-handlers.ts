@@ -2,15 +2,15 @@
 import type { Awaitable } from '@vueuse/shared'
 import type { MaybeElementRef } from './unrefElement'
 
-export interface StorageLikeAsync {
-  getItem: (key: string) => Awaitable<string | null>
-  setItem: (key: string, value: string) => Awaitable<void>
+export interface StorageLikeAsync<T = string> {
+  getItem: (key: string) => Awaitable<T | null>
+  setItem: (key: string, value: T) => Awaitable<void>
   removeItem: (key: string) => Awaitable<void>
 }
 
-export interface StorageLike {
-  getItem: (key: string) => string | null
-  setItem: (key: string, value: string) => void
+export interface StorageLike<T = string> {
+  getItem: (key: string) => T | null
+  setItem: (key: string, value: T) => void
   removeItem: (key: string) => void
 }
 
