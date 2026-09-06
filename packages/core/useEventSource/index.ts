@@ -1,4 +1,4 @@
-import type { Fn } from '@vueuse/shared'
+import type { Fn, TimerHandle } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
 import { shallowRef, watch } from 'vue'
@@ -132,6 +132,7 @@ export function useEventSource<Events extends string[], Data = any>(
 
   let explicitlyClosed = false
   let retried = 0
+  let retryTimeout: TimerHandle
 
   const {
     withCredentials = false,
@@ -143,7 +144,15 @@ export function useEventSource<Events extends string[], Data = any>(
     },
   } = options
 
+  const resetRetry = () => {
+    if (retryTimeout != null) {
+      clearTimeout(retryTimeout)
+      retryTimeout = undefined
+    }
+  }
+
   const close = () => {
+    resetRetry()
     if (isClient && eventSource.value) {
       eventSource.value.close()
       eventSource.value = null
@@ -183,9 +192,9 @@ export function useEventSource<Events extends string[], Data = any>(
         retried += 1
 
         if (typeof retries === 'number' && (retries < 0 || retried < retries))
-          setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, delay)
         else if (typeof retries === 'function' && retries())
-          setTimeout(_init, delay)
+          retryTimeout = setTimeout(_init, delay)
         else
           onFailed?.()
       }
