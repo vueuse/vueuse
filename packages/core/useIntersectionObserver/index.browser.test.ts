@@ -168,7 +168,10 @@ describe('useIntersectionObserver', () => {
           useIntersectionObserver(
             targetNodeRef,
             callbackMock,
-            { threshold: [0, 0.5, 1] },
+            // 0.99 instead of 1: Firefox computes the ratio from subpixel-rounded
+            // rects and reports just below 1 (e.g. 0.9998) for a fully visible
+            // target, so a threshold of exactly 1 never fires there.
+            { threshold: [0, 0.5, 0.99] },
           )
         },
       })
@@ -182,20 +185,24 @@ describe('useIntersectionObserver', () => {
       })
       callbackMock.mockClear()
 
-      // scroll 10px down to "touch" the target
-      window.scrollTo(0, 10)
+      // scroll a couple of px past the boundary so the target just enters the
+      // viewport — browsers like Firefox on HiDPI screens quantize the scroll
+      // position to device pixels, so landing exactly on a boundary (here 10px,
+      // where the target only "touches" the viewport) is not reliable.
+      window.scrollTo(0, 12)
       await vi.waitFor(() => {
         expect(callbackMock).toHaveBeenCalledTimes(1)
-        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBe(0)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBeLessThan(0.5)
         expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
       })
       callbackMock.mockClear()
 
-      // scroll to show 50% of the target
-      window.scrollTo(0, 60)
+      // scroll to show just over 50% of the target
+      window.scrollTo(0, 65)
       await vi.waitFor(() => {
         expect(callbackMock).toHaveBeenCalledTimes(1)
-        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBeCloseTo(0.5)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBeGreaterThanOrEqual(0.5)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBeLessThan(1)
         expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
       })
       callbackMock.mockClear()
@@ -204,7 +211,7 @@ describe('useIntersectionObserver', () => {
       window.scrollTo(0, 200)
       await vi.waitFor(() => {
         expect(callbackMock).toHaveBeenCalledTimes(1)
-        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBe(1)
+        expect(callbackMock.mock.calls[0][0][0].intersectionRatio).toBeGreaterThanOrEqual(0.99)
         expect(callbackMock.mock.calls[0][0][0].isIntersecting).toBe(true)
       })
     })
