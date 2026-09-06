@@ -40,7 +40,7 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   scroll?: boolean
 
   /**
-   * Reset to initial value when `touchend` event fired
+   * Reset to initial value when `touchend` or `touchcancel` event fired
    *
    * @default false
    */
@@ -157,7 +157,7 @@ export function useMouse(options: UseMouseOptions = {}): UseMouseReturn {
     if (touch && type !== 'movement') {
       useEventListener(target, ['touchstart', 'touchmove'], touchHandlerWrapper, listenerOptions)
       if (resetOnTouchEnds)
-        useEventListener(target, 'touchend', reset, listenerOptions)
+        useEventListener(target, ['touchend', 'touchcancel'], reset, listenerOptions)
     }
     if (scroll && type === 'page')
       useEventListener(window, 'scroll', scrollHandlerWrapper, listenerOptions)
