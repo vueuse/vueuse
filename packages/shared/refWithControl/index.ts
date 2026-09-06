@@ -1,4 +1,4 @@
-import type { Fn } from '../utils'
+import type { Awaitable, Fn } from '../utils'
 import { customRef } from 'vue'
 import { extendRef } from '../extendRef'
 
@@ -8,7 +8,7 @@ export interface ControlledRefOptions<T> {
    *
    * Returning `false` to dismiss the change.
    */
-  onBeforeChange?: (value: T, oldValue: T) => void | boolean
+  onBeforeChange?: (value: T, oldValue: T) => Awaitable<void | boolean>
 
   /**
    * Callback function after the ref changed
@@ -56,8 +56,20 @@ export function refWithControl<T>(
       return
 
     const old = source
-    if (options.onBeforeChange?.(value, old) === false)
+    const result = options.onBeforeChange?.(value, old)
+    if (result === false)
       return // dismissed
+    if (result instanceof Promise) {
+      result.then((res) => {
+        if (res === false)
+          return // dismissed
+        source = value
+        options.onChanged?.(value, old)
+        if (triggering)
+          trigger()
+      })
+      return
+    }
 
     source = value
 
