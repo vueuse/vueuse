@@ -63,6 +63,7 @@ export function useIdle(
 
   const reset = () => {
     idle.value = false
+    lastActive.value = timestamp()
     clearTimeout(timer)
     timer = setTimeout(() => idle.value = true, timeout)
   }
@@ -70,7 +71,6 @@ export function useIdle(
   const onEvent = createFilterWrapper(
     eventFilter,
     () => {
-      lastActive.value = timestamp()
       reset()
     },
   )
