@@ -1,7 +1,7 @@
 import type { WindowEventName } from '@vueuse/core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { userEvent } from 'vitest/browser'
-import { nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
 import { useIdle } from '.'
 
 describe('useIdle', () => {
@@ -215,5 +215,39 @@ describe('useIdle', () => {
     // Start should reset to non-idle state (false)
     start()
     expect(idle.value).toBe(false)
+  })
+
+  it('should not start with immediate = false', () => {
+    const { idle, isPending } = useIdle(1000, { immediate: false })
+
+    expect(isPending.value).toBe(false)
+
+    // Countdown should not affect the idle state
+    vi.advanceTimersByTime(1000)
+    expect(idle.value).toBe(false)
+  })
+
+  it('should use new timer value only after reset when reactive timer value changes', () => {
+    const reactiveTimer = ref(1000)
+    const { idle, reset } = useIdle(reactiveTimer)
+
+    reactiveTimer.value = 5000
+
+    // Countdown length should change only after reset
+    vi.advanceTimersByTime(1000)
+    expect(idle.value).toBe(true)
+
+    reset()
+
+    // It now 5000, so it should not be affected
+    vi.advanceTimersByTime(1000)
+    expect(idle.value).toBe(false)
+
+    reactiveTimer.value = 1000
+    reset();
+
+    // After reset, it now 1000
+    vi.advanceTimersByTime(1000)
+    expect(idle.value).toBe(true)
   })
 })
