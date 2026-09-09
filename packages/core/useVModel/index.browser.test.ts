@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { nextTick, reactive, watch } from 'vue'
 import { useVModel } from './index'
 
 describe('useVModel', () => {
@@ -66,6 +66,28 @@ describe('useVModel', () => {
     await nextTick()
 
     expect(emitMock).toHaveBeenCalledWith('update:age', 20)
+  })
+
+  it('should follow a prop that changes twice within a tick w/ passive', async () => {
+    const emitMock = vi.fn()
+
+    const props = reactive({ ...defaultProps(), age: 18 })
+    const data = useVModel(props, 'age', emitMock, { passive: true })
+
+    // created after useVModel, so it runs after its watcher within the same flush
+    watch(() => props.age, (v) => {
+      if (v === 19)
+        props.age = 20
+    })
+
+    props.age = 19
+
+    await nextTick()
+    await nextTick()
+
+    expect(props.age).toBe(20)
+    expect(data.value).toBe(20)
+    expect(emitMock).not.toHaveBeenCalled()
   })
 
   it('should emit w/ object props type', async () => {
