@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { TeamMember } from '../../../contributors'
-import { getAvatarUrl } from '../../../contributors'
 
 defineProps<{
   data: TeamMember
@@ -13,7 +12,7 @@ defineProps<{
       loading="lazy"
       m-auto rounded-full min-w-25 min-h-25 h-30 w-30 mb--15
       shadow
-      :src="getAvatarUrl(data.github)"
+      :src="data.avatar"
       :alt="`${data.name}'s avatar`"
     >
     <div bg-gray:5 rounded-xl pt-18 p4 flex="~ col gap-2 items-center" flex-auto>

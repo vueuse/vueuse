@@ -288,7 +288,8 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
 }
 
 async function fetchContributors(page = 1) {
-  const teamWithoutCommits = ['egoist', 'Tahul']
+  // contributors that contribute to repos other than `vueuse/vueuse`, required for contributor avatar to work
+  const additional = ['egoist', 'Tahul', 'BobbieGoede']
 
   const collaborators: string[] = []
   const data = await $fetch<{ login: string }[]>(`https://api.github.com/repos/vueuse/vueuse/contributors?per_page=100&page=${page}`, {
@@ -303,7 +304,7 @@ async function fetchContributors(page = 1) {
 
   return Array.from(new Set([
     ...collaborators.filter(collaborator => !['renovate[bot]', 'dependabot[bot]', 'renovate-bot'].includes(collaborator)),
-    ...teamWithoutCommits,
+    ...additional,
   ]))
 }
 
