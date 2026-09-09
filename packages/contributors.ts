@@ -128,31 +128,31 @@ export const team: TeamMember[] = [
     avatar: contributorsAvatars.ilyaliao,
     name: 'IlyaL',
     github: 'ilyaliao',
-    description: 'All you need is a notepad and the world becomes your canvas.',
+    description: '',
   },
   {
     avatar: contributorsAvatars.sxzz,
     name: 'Kevin Deng',
     github: 'sxzz',
-    description: 'Seeking the meaning of existence.',
+    description: '',
   },
   {
     avatar: contributorsAvatars['9romise'],
     name: 'Vida Xie',
     github: '9romise',
-    description: 'Doing what I can to make things better',
+    description: '',
   },
   {
     avatar: contributorsAvatars.serkodev,
     name: 'SerKo',
     github: 'serkodev',
-    description: 'Coding for a lazier tomorrow.',
+    description: '',
   },
   {
     avatar: contributorsAvatars.sun0day,
     name: 'sun0day',
     github: 'sun0day',
-    description: 'lost in rust :)',
+    description: '',
   },
 ]
   .sort((pre, cur) => contributorsGenerated.findIndex(name => name === pre.github) - contributorsGenerated.findIndex(name => name === cur.github))
