@@ -103,6 +103,41 @@ export const team: TeamMember[] = [
     description: '',
     packages: ['motion'],
   },
+  {
+    name: 'James Garbutt',
+    github: '43081j',
+    description: '',
+  },
+  {
+    name: 'Robin',
+    github: 'OrbisK',
+    description: '',
+  },
+  {
+    name: 'IlyaL',
+    github: 'ilyaliao',
+    description: 'All you need is a notepad and the world becomes your canvas.',
+  },
+  {
+    name: 'Kevin Deng',
+    github: 'sxzz',
+    description: 'Seeking the meaning of existence.',
+  },
+  {
+    name: 'Vida Xie',
+    github: '9romise',
+    description: 'Doing what I can to make things better',
+  },
+  {
+    name: 'SerKo',
+    github: 'serkodev',
+    description: 'Coding for a lazier tomorrow.',
+  },
+  {
+    name: 'sun0day',
+    github: 'sun0day',
+    description: 'lost in rust :)',
+  },
 ]
   .sort((a, b) => contributionRank(a) - contributionRank(b))
 
