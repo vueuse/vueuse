@@ -6,7 +6,6 @@ export interface Contributor {
 }
 
 export interface TeamMember {
-  avatar: string
   name: string
   github: string
   twitter?: string
@@ -17,21 +16,20 @@ export interface TeamMember {
   functions?: string[]
 }
 
-const contributorsAvatars: Record<string, string> = {}
-
-function getAvatarUrl(name: string) {
-  return `https://avatars.githubusercontent.com/${name}?v=4`
+export function getAvatarUrl(login: string) {
+  return `https://avatars.githubusercontent.com/${login}?v=4`
 }
 
-export const contributors = (contributorsGenerated as string[]).reduce((acc, name) => {
-  contributorsAvatars[name] = getAvatarUrl(name)
-  acc.push({ name, avatar: contributorsAvatars[name] })
-  return acc
-}, [] as Contributor[])
+export const contributors: Contributor[] = (contributorsGenerated as string[])
+  .map(name => ({ name, avatar: getAvatarUrl(name) }))
+
+function contributionRank(member: TeamMember) {
+  const index = contributorsGenerated.indexOf(member.github)
+  return index === -1 ? contributorsGenerated.length : index
+}
 
 export const team: TeamMember[] = [
   {
-    avatar: contributorsAvatars.antfu,
     name: 'Anthony Fu',
     github: 'antfu',
     twitter: 'antfu7',
@@ -41,9 +39,8 @@ export const team: TeamMember[] = [
     packages: ['core'],
   },
   {
-    avatar: contributorsAvatars['patak-dev'],
     name: 'Patak',
-    github: 'patak-dev',
+    github: 'patak-cat',
     twitter: 'patak_dev',
     bluesky: 'patak.dev',
     sponsors: true,
@@ -54,7 +51,6 @@ export const team: TeamMember[] = [
     description: 'A collaborative being<br>Core team member of Vite<br>Team member of Vue',
   },
   {
-    avatar: contributorsAvatars.wheatjs,
     name: 'wheatjs',
     github: 'wheatjs',
     twitter: 'wheatjs',
@@ -65,7 +61,6 @@ export const team: TeamMember[] = [
     packages: ['components'],
   },
   {
-    avatar: contributorsAvatars['harlan-zw'],
     name: 'Harlan Wilton',
     github: 'harlan-zw',
     twitter: 'harlan_zw',
@@ -75,7 +70,6 @@ export const team: TeamMember[] = [
     packages: ['schema-org'],
   },
   {
-    avatar: contributorsAvatars['Alfred-Skyblue'],
     name: 'Alfred-Skyblue',
     github: 'Alfred-Skyblue',
     description: 'open source enthusiast',
@@ -84,7 +78,6 @@ export const team: TeamMember[] = [
     ],
   },
   {
-    avatar: contributorsAvatars['Doctor-wu'],
     name: 'Doctorwu',
     github: 'Doctor-wu',
     twitter: 'Doctorwu666',
@@ -93,7 +86,6 @@ export const team: TeamMember[] = [
   },
 
   {
-    avatar: contributorsAvatars.Tahul,
     name: 'Tahul',
     github: 'Tahul',
     twitter: 'yaeeelglx',
@@ -103,7 +95,6 @@ export const team: TeamMember[] = [
     packages: ['motion', 'gesture', 'sound'],
   },
   {
-    avatar: contributorsAvatars.BobbieGoede,
     name: 'Bobbie Goede',
     github: 'BobbieGoede',
     twitter: 'BobbieGoede',
@@ -113,11 +104,10 @@ export const team: TeamMember[] = [
     packages: ['motion'],
   },
 ]
-  .sort((pre, cur) => contributorsGenerated.findIndex(name => name === pre.github) - contributorsGenerated.findIndex(name => name === cur.github))
+  .sort((a, b) => contributionRank(a) - contributionRank(b))
 
 export const emeriti: TeamMember[] = [
   {
-    avatar: contributorsAvatars.egoist,
     name: 'EGOIST',
     github: 'egoist',
     twitter: '_egoistlily',
@@ -127,7 +117,6 @@ export const emeriti: TeamMember[] = [
     packages: ['head'],
   },
   {
-    avatar: contributorsAvatars.webfansplz,
     name: 'webfansplz',
     github: 'webfansplz',
     twitter: 'webfansplz',
@@ -139,7 +128,6 @@ export const emeriti: TeamMember[] = [
     description: 'FE Developer<br>Love open source',
   },
   {
-    avatar: contributorsAvatars.anteriovieira,
     name: 'anteriovieira',
     github: 'anteriovieira',
     twitter: 'anteriovieira',
@@ -147,7 +135,6 @@ export const emeriti: TeamMember[] = [
     description: '',
   },
   {
-    avatar: contributorsAvatars['cawa-93'],
     name: 'Alex Kozack',
     github: 'cawa-93',
     twitter: 'alex_kozack',
@@ -157,7 +144,6 @@ export const emeriti: TeamMember[] = [
     description: 'Open Source Contributor from Ukraine',
   },
   {
-    avatar: contributorsAvatars.scottbedard,
     name: 'Scott Bedard',
     github: 'scottbedard',
     bluesky: 'scottbedard.net',
@@ -170,7 +156,6 @@ export const emeriti: TeamMember[] = [
     description: '',
   },
   {
-    avatar: contributorsAvatars.sibbng,
     name: 'sibbng',
     github: 'sibbng',
     sponsors: false,
@@ -181,7 +166,6 @@ export const emeriti: TeamMember[] = [
     ],
   },
   {
-    avatar: contributorsAvatars.okxiaoliang4,
     name: 'Jelf',
     github: 'okxiaoliang4',
     twitter: 'okxiaoliang4',
@@ -193,7 +177,6 @@ export const emeriti: TeamMember[] = [
     description: '',
   },
   {
-    avatar: contributorsAvatars.lstoeferle,
     name: 'lstoeferle',
     github: 'lstoeferle',
     twitter: '54ku1',
