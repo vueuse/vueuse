@@ -27,5 +27,5 @@ export function useArrayFilter<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   fn: (element: T, index: number, array: T[]) => unknown,
 ): UseArrayFilterReturn<T> {
-  return computed(() => toValue(list).map(i => toValue(i)).filter(fn))
+  return computed(() => toValue(list).filter(i => fn(toValue(i)))
 }
