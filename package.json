@@ -1,14 +1,18 @@
 {
   "name": "@vueuse/monorepo",
   "type": "module",
-  "version": "14.3.0",
+  "version": "14.4.0",
   "private": true,
-  "packageManager": "pnpm@10.33.2",
+  "packageManager": "pnpm@11.25.0",
   "description": "Collection of essential Vue Composition Utilities",
   "author": "Anthony Fu<https://github.com/antfu>",
   "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "up": "nlx taze && nr size",
+    "backport": "tsx scripts/backport.ts",
     "build": "nr update && nr build:packages",
     "build:packages": "turbo run build",
     "build:redirects": "tsx scripts/redirects.ts",
@@ -23,8 +27,8 @@
     "lint:fix": "nr lint --fix",
     "publish:ci": "tsx scripts/publish.ts",
     "install-fonts": "gfi install Inter && gfi install Fira Code",
-    "release": "bumpp --execute=\"npm run release:prepare\" --all",
-    "release:prepare": "npm run build:types && npm run update",
+    "release": "bumpp --execute=\"nr release:prepare\" --all --pr",
+    "release:prepare": "nr update:skills && nr build && nr size",
     "size": "tsx scripts/export-size.ts",
     "test": "nr test:unit --project=server",
     "test:cov": "vitest run --coverage --project=\"browser (chromium)\" --project=unit --project=server",
@@ -39,6 +43,7 @@
     "typecheck": "vue-tsc --noEmit",
     "update": "turbo run update -F @vueuse/metadata && tsx scripts/update.ts",
     "update:full": "nr update && nr build:types",
+    "update:skills": "turbo run update -F @vueuse/skills",
     "watch": "turbo watch build",
     "prepare": "simple-git-hooks"
   },
@@ -97,6 +102,7 @@
     "simple-git": "catalog:dev",
     "simple-git-hooks": "catalog:dev",
     "taze": "catalog:dev",
+    "temporal-polyfill": "catalog:test",
     "tinyglobby": "catalog:dev",
     "tsdown": "catalog:dev",
     "tsdown-stale-guard": "catalog:dev",

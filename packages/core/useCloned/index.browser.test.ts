@@ -1,5 +1,5 @@
 import { useCloned } from '@vueuse/core'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { ref as deepRef, nextTick } from 'vue'
 
 describe('useCloned', () => {
@@ -68,6 +68,17 @@ describe('useCloned', () => {
 
     expect(cloned.value.test).toBe('partial')
     expect(cloned.value.proxyTest).toBe(true)
+  })
+
+  it('infers source type in custom clone function', () => {
+    const data = deepRef({ test: 'test' })
+
+    useCloned(data, {
+      clone: (source) => {
+        expectTypeOf(source).toEqualTypeOf<{ test: string }>()
+        return source
+      },
+    })
   })
 
   it('works with watch options', async () => {

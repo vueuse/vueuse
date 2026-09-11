@@ -9,7 +9,7 @@ export interface UsePrecisionOptions {
 
 // #region Types
 export type ProjectorFunction<F, T> = (_: F, _: readonly [F, F], _: readonly [T, T]) => T;
-export type UseMathKeys = keyof { [K in keyof Math as Math[K] extends ((...args: any) => any) ? K : never]: unknown };
+export type UseMathKeys = keyof { [K in keyof Math as Math[K] extends ((...args: any) => any) ? K : never]: unknown; };
 export type UseMathReturn<K extends keyof Math> = ReturnType<Reactified<Math[K], true>>;
 export type UseProjection<F, T> = (_: MaybeRefOrGetter<F>) => ComputedRef<T>;
 // #endregion
@@ -33,7 +33,7 @@ export declare function useMax(..._: MaybeRefOrGetter<number>[]): ComputedRef<nu
 export declare function useMin(_: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>): ComputedRef<number>;
 export declare function useMin(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
 export declare function usePrecision(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<number>, _?: MaybeRefOrGetter<UsePrecisionOptions>): ComputedRef<number>;
-export declare function useProjection(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<readonly [number, number]>, _: MaybeRefOrGetter<readonly [number, number]>, _?: ProjectorFunction<number, number>): _$vue.ComputedRef<number>;
+export declare function useProjection(_: MaybeRefOrGetter<number>, _: MaybeRefOrGetter<readonly [number, number]>, _: MaybeRefOrGetter<readonly [number, number]>, _?: ProjectorFunction<number, number>): import("vue").ComputedRef<number>;
 export declare function useRound(_: MaybeRefOrGetter<number>): ComputedRef<number>;
 export declare function useSum(_: MaybeRefOrGetter<MaybeRefOrGetter<number>[]>): ComputedRef<number>;
 export declare function useSum(..._: MaybeRefOrGetter<number>[]): ComputedRef<number>;
@@ -41,7 +41,10 @@ export declare function useTrunc(_: MaybeRefOrGetter<number>): ComputedRef<numbe
 // #endregion
 
 // #region Variables
+/** @deprecated */
 export declare const and: typeof logicAnd;
+/** @deprecated */
 export declare const not: typeof logicNot;
+/** @deprecated */
 export declare const or: typeof logicOr;
 // #endregion

@@ -71,9 +71,24 @@ export function useElementSize(
 
   tryOnMounted(() => {
     const ele = unrefElement(target)
-    if (ele) {
-      width.value = 'offsetWidth' in ele ? ele.offsetWidth : initialSize.width
-      height.value = 'offsetHeight' in ele ? ele.offsetHeight : initialSize.height
+    if (ele && 'offsetWidth' in ele) {
+      if (box === 'content-box' && window) {
+        const cs = window.getComputedStyle(ele)
+        const padX = Number.parseFloat(cs.paddingLeft) + Number.parseFloat(cs.paddingRight)
+        const padY = Number.parseFloat(cs.paddingTop) + Number.parseFloat(cs.paddingBottom)
+        const bdX = Number.parseFloat(cs.borderLeftWidth) + Number.parseFloat(cs.borderRightWidth)
+        const bdY = Number.parseFloat(cs.borderTopWidth) + Number.parseFloat(cs.borderBottomWidth)
+        width.value = ele.offsetWidth - padX - bdX
+        height.value = ele.offsetHeight - padY - bdY
+      }
+      else {
+        width.value = ele.offsetWidth
+        height.value = ele.offsetHeight
+      }
+    }
+    else if (ele) {
+      width.value = initialSize.width
+      height.value = initialSize.height
     }
   })
 

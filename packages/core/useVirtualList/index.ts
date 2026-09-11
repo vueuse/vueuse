@@ -212,8 +212,8 @@ function createGetDistance<T>(itemSize: UseVirtualListItemSize, source: UseVirtu
   }
 }
 
-function useWatchForSizes<T>(size: UseVirtualElementSizes, listRef: Ref<readonly T[]>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
-  watch([size.width, size.height, listRef, containerRef], () => {
+function useWatchForSizes<T>(size: UseVirtualElementSizes, listRef: Ref<readonly T[]>, totalSize: ComputedRef<number>, containerRef: Ref<HTMLElement | null>, calculateRange: () => void) {
+  watch([size.width, size.height, listRef, totalSize, containerRef], () => {
     calculateRange()
   })
 }
@@ -299,7 +299,7 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
 
   const totalWidth = createComputedTotalSize(itemWidth, source)
 
-  useWatchForSizes(size, source, containerRef, calculateRange)
+  useWatchForSizes(size, source, totalWidth, containerRef, calculateRange)
 
   const scrollTo = createScrollTo('horizontal', calculateRange, getDistanceLeft, containerRef, itemWidth)
 
@@ -345,7 +345,7 @@ function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list:
 
   const totalHeight = createComputedTotalSize(itemHeight, source)
 
-  useWatchForSizes(size, source, containerRef, calculateRange)
+  useWatchForSizes(size, source, totalHeight, containerRef, calculateRange)
 
   const scrollTo = createScrollTo('vertical', calculateRange, getDistanceTop, containerRef, itemHeight)
 

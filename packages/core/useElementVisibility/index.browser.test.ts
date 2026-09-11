@@ -35,8 +35,13 @@ describe('useElementVisibility', () => {
       vi.resetAllMocks()
       vi.mock('../useIntersectionObserver', () => ({
         useIntersectionObserver: vi.fn((_target) => {
-          const stop = vi.fn()
-          return { stop }
+          return {
+            isSupported: { value: true },
+            isActive: { value: true },
+            pause: vi.fn(),
+            resume: vi.fn(),
+            stop: vi.fn(),
+          }
         }),
       }))
     })
@@ -86,6 +91,23 @@ describe('useElementVisibility', () => {
       // It should become true if the callback gets an isIntersecting = true
       callMockCallbackWithIsIntersectingValue(true)
       expect(visibilityState.isVisible.value).toBe(true)
+    })
+
+    it('returns a plain visibility ref when controls is not set', () => {
+      const visible = useElementVisibility(el)
+      expect(visible).toHaveProperty('value')
+      expect(visible).not.toHaveProperty('isVisible')
+      expect(visible).not.toHaveProperty('stop')
+    })
+
+    it('exposes the intersection observer controls when controls is true', () => {
+      const controls = useElementVisibility(el, { controls: true })
+      expect(controls).toHaveProperty('isVisible')
+      expect(controls).toHaveProperty('isActive')
+      expect(controls).toHaveProperty('isSupported')
+      expect(controls.stop).toBeTypeOf('function')
+      expect(controls.pause).toBeTypeOf('function')
+      expect(controls.resume).toBeTypeOf('function')
     })
 
     it('uses the latest version of isIntersecting when multiple intersection entries are given', () => {

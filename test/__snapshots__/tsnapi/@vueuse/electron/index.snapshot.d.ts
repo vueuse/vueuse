@@ -31,3 +31,7 @@ export declare function useZoomLevel(_: WebFrame, _: MaybeRef<number>): Ref<numb
 export declare function useZoomLevel(_: WebFrame): Ref<number>;
 export declare function useZoomLevel(): Ref<number>;
 // #endregion
+
+// #region Referenced (internal)
+type IpcRendererListener = (_: IpcRendererEvent, ..._: any[]) => void;
+// #endregion

@@ -41,6 +41,7 @@ export interface PackageManifest {
   target?: string;
   utils?: boolean;
   copy?: string[];
+  manualEntryPoints?: true;
 }
 export interface VueUseFunction {
   name: string;

@@ -232,7 +232,7 @@ export async function updateCountBadge(indexes: PackageIndexes) {
 export async function updatePackageJSON(indexes: PackageIndexes) {
   const { version } = JSON.parse(await fs.readFile('package.json', { encoding: 'utf8' }))
 
-  for (const { name, description, author, submodules, iife } of packages) {
+  for (const { name, description, author, submodules, iife, manualEntryPoints } of packages) {
     const packageDir = join(DIR_SRC, name)
     const packageJSONPath = join(packageDir, 'package.json')
     const packageJSON = JSON.parse(await fs.readFile(packageJSONPath, { encoding: 'utf8' }))
@@ -252,32 +252,35 @@ export async function updatePackageJSON(indexes: PackageIndexes) {
       url: 'git+https://github.com/vueuse/vueuse.git',
       directory: `packages/${name}`,
     }
-    packageJSON.main = './dist/index.js'
-    packageJSON.types = './dist/index.d.ts'
-    packageJSON.module = './dist/index.js'
-    if (iife !== false) {
-      packageJSON.unpkg = './dist/index.iife.min.js'
-      packageJSON.jsdelivr = './dist/index.iife.min.js'
-    }
     packageJSON.files = [
       'dist',
     ]
 
-    packageJSON.exports = {
-      '.': './dist/index.js',
-      ...packageJSON.exports,
-      './*': './dist/*',
-    }
+    if (!manualEntryPoints) {
+      packageJSON.main = './dist/index.js'
+      packageJSON.types = './dist/index.d.ts'
+      packageJSON.module = './dist/index.js'
+      if (iife !== false) {
+        packageJSON.unpkg = './dist/index.iife.min.js'
+        packageJSON.jsdelivr = './dist/index.iife.min.js'
+      }
 
-    if (submodules) {
-      indexes.functions
-        .filter(i => i.package === name)
-        .forEach((i) => {
-          packageJSON.exports[`./${i.name}`] = `./dist/${i.name}.js`
-          if (i.component) {
-            packageJSON.exports[`./${i.name}/component`] = `./dist/${i.name}/component.js`
-          }
-        })
+      packageJSON.exports = {
+        '.': './dist/index.js',
+        ...packageJSON.exports,
+        './*': './dist/*',
+      }
+
+      if (submodules) {
+        indexes.functions
+          .filter(i => i.package === name)
+          .forEach((i) => {
+            packageJSON.exports[`./${i.name}`] = `./dist/${i.name}.js`
+            if (i.component) {
+              packageJSON.exports[`./${i.name}/component`] = `./dist/${i.name}/component.js`
+            }
+          })
+      }
     }
 
     await fs.writeFile(packageJSONPath, `${JSON.stringify(packageJSON, null, 2)}\n`)

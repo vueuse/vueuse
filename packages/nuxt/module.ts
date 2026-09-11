@@ -7,7 +7,7 @@ import { isPackageExists } from 'local-pkg'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
-const disabledFunctions = [
+const disabledFunctions = new Set([
   // Vue 3 built-in
   'toRefs',
   'toRef',
@@ -19,7 +19,7 @@ const disabledFunctions = [
   'useHead',
   'useStorage',
   'useImage',
-]
+])
 
 const packages = [
   'core',
@@ -48,6 +48,8 @@ export interface VueUseNuxtOptions {
   ssrHandlers?: boolean
 }
 
+export type ModuleOptions = VueUseNuxtOptions
+
 /**
  * Auto import for VueUse in Nuxt
  * Usage:
@@ -61,7 +63,7 @@ export interface VueUseNuxtOptions {
  * }
  * ```
  */
-export default defineNuxtModule<VueUseNuxtOptions>({
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'vueuse',
     configKey: 'vueuse',
@@ -119,7 +121,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
 
         // disable useColorMode in favor of nuxt color mode
         if (hasNuxtModule('@nuxtjs/color-mode')) {
-          disabledFunctions.push('useColorMode')
+          disabledFunctions.add('useColorMode')
         }
 
         for (const pkg of packages) {
@@ -138,7 +140,7 @@ export default defineNuxtModule<VueUseNuxtOptions>({
             .filter(i => i.package === pkg
               && !i.internal
               && i.name.length >= 4
-              && !disabledFunctions.includes(i.name),
+              && !disabledFunctions.has(i.name),
             )
             .flatMap((i): Import[] => {
               const names = [i.name, ...i.alias || [], ...i.variants || [], ...i.utils || []]
@@ -165,12 +167,3 @@ export default defineNuxtModule<VueUseNuxtOptions>({
     }
   },
 })
-
-declare module '@nuxt/schema' {
-  interface NuxtConfig {
-    vueuse?: VueUseNuxtOptions
-  }
-  interface NuxtOptions {
-    vueuse?: VueUseNuxtOptions
-  }
-}

@@ -30,8 +30,7 @@ export const VDirective = createDisposableDirective({
 
 ```ts
 type originDirective<H, V, A> =
-  | FunctionDirective<H, V, string, A>
-  | ObjectDirective<H, V, string, A>
+  FunctionDirective<H, V, string, A> | ObjectDirective<H, V, string, A>
 /**
  * Utility for authoring disposable directives. Reactive effects created within `mounted` directive hook will be tracked and automatically disposed when directive is unmounted.
  *

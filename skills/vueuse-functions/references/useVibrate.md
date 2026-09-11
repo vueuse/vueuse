@@ -63,7 +63,7 @@ export interface UseVibrateOptions
    * @default 0
    *
    */
-  interval: number
+  interval?: number
 }
 export interface UseVibrateReturn extends Supportable {
   pattern: MaybeRefOrGetter<Arrayable<number>>

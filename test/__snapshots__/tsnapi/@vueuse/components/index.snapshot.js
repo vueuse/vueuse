@@ -17,6 +17,7 @@ export var UseDevicesList /* const */
 export var UseDocumentVisibility /* const */
 export var UseDraggable /* const */
 export var UseElementBounding /* const */
+export var UseElementOverflow /* const */
 export var UseElementSize /* const */
 export var UseElementVisibility /* const */
 export var UseEyeDropper /* const */
@@ -49,15 +50,18 @@ export var UseWindowFocus /* const */
 export var UseWindowSize /* const */
 export var vElementBounding /* const */
 export var vElementHover /* const */
+export var vElementOverflow /* const */
 export var vElementSize /* const */
 export var vElementVisibility /* const */
 export var vInfiniteScroll /* const */
 export var vIntersectionObserver /* const */
 export var vMouseInElement /* const */
 export var vOnClickOutside /* const */
+/** @deprecated */
 export var VOnClickOutside /* const */
 export var vOnKeyStroke /* const */
 export var vOnLongPress /* const */
+/** @deprecated */
 export var VOnLongPress /* const */
 export var vResizeObserver /* const */
 export var vScroll /* const */

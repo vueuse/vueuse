@@ -105,12 +105,7 @@ function canLoadMore() {
 
 ```ts
 type InfiniteScrollElement =
-  | HTMLElement
-  | SVGElement
-  | Window
-  | Document
-  | null
-  | undefined
+  HTMLElement | SVGElement | Window | Document | null | undefined
 export interface UseInfiniteScrollOptions<
   T extends InfiniteScrollElement = InfiniteScrollElement,
 > extends UseScrollOptions {

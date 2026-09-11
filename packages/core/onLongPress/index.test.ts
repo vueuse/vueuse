@@ -190,6 +190,25 @@ describe('onLongPress', () => {
     expect(onMouseUpCallback.mock.calls[1][0]).toBeGreaterThanOrEqual(500 - 2)
   }
 
+  async function notTriggerCallbackOnPointerCancel(isRef: boolean) {
+    const onLongPressCallback = vi.fn()
+    const onMouseUpCallback = vi.fn()
+    onLongPress(isRef ? element : element.value, onLongPressCallback, { onMouseUp: onMouseUpCallback })
+
+    pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true })
+    element.value.dispatchEvent(pointerdownEvent)
+
+    await vi.advanceTimersByTimeAsync(250)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+
+    // the user agent takes the gesture over, e.g. a second pointer starting a pinch
+    element.value.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true }))
+    expect(onMouseUpCallback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(500)
+    expect(onLongPressCallback).toHaveBeenCalledTimes(0)
+  }
+
   function suites(isRef: boolean) {
     describe('given no options', () => {
       it('should trigger longpress after 500ms', () => triggerCallback(isRef))
@@ -209,6 +228,8 @@ describe('onLongPress', () => {
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
 
       it('should trigger onMouseUp when pointer is released', () => triggerOnMouseUp(isRef))
+
+      it('should not trigger longpress when the pointer is canceled', () => notTriggerCallbackOnPointerCancel(isRef))
 
       it('should trigger longpress after options.delay ms when options.delay is a function', () => triggerCallbackWithDelay(isRef, () => 2000))
     })

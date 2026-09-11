@@ -1,5 +1,5 @@
 import type { ComputedRef } from 'vue'
-import { timestamp } from '@vueuse/shared'
+import { timestamp, useIntervalFn } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, shallowRef } from 'vue'
 import { useTimeAgo } from './index'
@@ -43,7 +43,11 @@ describe('useTimeAgo', () => {
   })
 
   it('control now', async () => {
-    const { resume, pause, timeAgo } = useTimeAgo(baseTime, { controls: true, showSecond: true, updateInterval: 500 })
+    const { resume, pause, timeAgo } = useTimeAgo(baseTime, {
+      controls: true,
+      showSecond: true,
+      scheduler: cb => useIntervalFn(cb, 500),
+    })
     await vi.advanceTimersByTimeAsync(400)
     expect(timeAgo.value).toContain('0 second')
 

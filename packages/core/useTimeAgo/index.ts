@@ -65,14 +65,6 @@ export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends s
    * @default false
    */
   controls?: Controls
-
-  /**
-   * Intervals to update, set 0 to disable auto update
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default 30_000
-   */
-  updateInterval?: number
 }
 
 export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
@@ -127,15 +119,6 @@ function DEFAULT_FORMATTER(date: Date) {
 
 export type UseTimeAgoReturn<Controls extends boolean = false> = Controls extends true ? { timeAgo: ComputedRef<string> } & Pausable : ComputedRef<string>
 
-function getDefaultScheduler(options: UseTimeAgoOptions<boolean, string>) {
-  if ('updateInterval' in options) {
-    const { updateInterval = 30_000 } = options
-    return (cb: AnyFn) => useIntervalFn(cb, updateInterval)
-  }
-
-  return (cb: AnyFn) => useIntervalFn(cb, 30_000)
-}
-
 /**
  * Reactive time ago formatter.
  *
@@ -145,18 +128,11 @@ function getDefaultScheduler(options: UseTimeAgoOptions<boolean, string>) {
  */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoOptions<false, UnitNames>): UseTimeAgoReturn<false>
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<true, UnitNames>): UseTimeAgoReturn<true>
-
-/**
- * Reactive time ago formatter.
- *
- * @see https://vueuse.org/useTimeAgo
- *
- * @__NO_SIDE_EFFECTS__
- */
+/* @__NO_SIDE_EFFECTS__ */
 export function useTimeAgo<UnitNames extends string = UseTimeAgoUnitNamesDefault>(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoOptions<boolean, UnitNames> = {}) {
   const {
     controls: exposeControls = false,
-    scheduler = getDefaultScheduler(options),
+    scheduler = (cb: AnyFn) => useIntervalFn(cb, 30_000),
   } = options
 
   const { now, ...controls } = useNow({

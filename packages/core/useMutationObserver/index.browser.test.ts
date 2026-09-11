@@ -1,10 +1,16 @@
-import { describe, expect, it, vi } from 'vitest'
+import type { ShallowRef } from 'vue'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { computed, ref as deepRef, nextTick } from 'vue'
 import { useMutationObserver } from './index'
 
 describe('useMutationObserver', () => {
   it('should be defined', () => {
     expect(useMutationObserver).toBeDefined()
+  })
+
+  it('accepts an array template ref bound to v-for as target', () => {
+    expectTypeOf<Readonly<ShallowRef<HTMLElement[] | null>>>()
+      .toExtend<Parameters<typeof useMutationObserver>[0]>()
   })
 
   it('should work with attributes', async () => {
