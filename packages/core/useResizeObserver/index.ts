@@ -79,7 +79,7 @@ export function useResizeObserver(
       if (isSupported.value && window) {
         observer = new ResizeObserver(callback)
         for (const _el of els) {
-          if (_el)
+          if (_el instanceof Element)
             observer!.observe(_el, observerOptions)
         }
       }
