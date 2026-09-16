@@ -15,7 +15,7 @@ When using with Nuxt 3, this function will **NOT** be auto imported in favor of 
 
 ## Usage
 ::: tip
-`useFetch` is a lightweight reactive wrapper around the native [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). It is not a full HTTP client like axios — it does not support request retries, interceptor chains, or automatic error throwing on non-2xx responses. For simple reactive data fetching it works great; for complex API layers consider pairing it with `createFetch` or using a dedicated library.
+`useFetch` is a lightweight reactive wrapper around the native [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). It is not a full HTTP client like ofetch, ky or axios — it does not support request retries, interceptor chains, or automatic error throwing on non-2xx responses. For simple reactive data fetching it works great; for complex API layers consider pairing it with `createFetch` or using a dedicated library.
 :::
 
 ### Basic Usage
