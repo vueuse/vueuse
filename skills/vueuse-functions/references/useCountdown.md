@@ -51,12 +51,6 @@ start()
 ```ts
 export interface UseCountdownOptions extends ConfigurableScheduler {
   /**
-   *  Interval for the countdown in milliseconds. Default is 1000ms.
-   *
-   * @deprecated Please use `scheduler` option instead
-   */
-  interval?: MaybeRefOrGetter<number>
-  /**
    * Callback function called when the countdown reaches 0.
    */
   onComplete?: () => void
@@ -64,13 +58,6 @@ export interface UseCountdownOptions extends ConfigurableScheduler {
    * Callback function called on each tick of the countdown.
    */
   onTick?: () => void
-  /**
-   * Start the countdown immediately
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default false
-   */
-  immediate?: boolean
 }
 export interface UseCountdownReturn extends Pausable {
   /**

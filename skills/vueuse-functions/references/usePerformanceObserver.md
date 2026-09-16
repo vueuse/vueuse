@@ -11,11 +11,11 @@ Observe performance metrics.
 ```ts
 import { usePerformanceObserver } from '@vueuse/core'
 
-const entrys = ref<PerformanceEntry[]>([])
+const entries = ref<PerformanceEntry[]>([])
 usePerformanceObserver({
   entryTypes: ['paint'],
 }, (list) => {
-  entrys.value = list.getEntries()
+  entries.value = list.getEntries()
 })
 ```
 

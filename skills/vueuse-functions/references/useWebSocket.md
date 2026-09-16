@@ -187,13 +187,6 @@ export interface UseWebSocketOptions {
          */
         responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
         /**
-         * Interval, in milliseconds
-         *
-         * @deprecated Please use `scheduler` option instead
-         * @default 1000
-         */
-        interval?: number
-        /**
          * Heartbeat response timeout, in milliseconds
          *
          * @default 1000
