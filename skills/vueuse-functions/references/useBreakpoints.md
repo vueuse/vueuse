@@ -90,7 +90,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind, {
 
 #### Server Side Rendering and Nuxt
 
-If you are using `useBreakpoints` with SSR enabled, then you need to specify which screen size you would like to render on the server and before hydration to avoid an hydration mismatch
+If you are using `useBreakpoints` with SSR enabled, then you need to specify which screen size you would like to render on the server and before hydration to avoid a hydration mismatch
 
 ```ts
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'

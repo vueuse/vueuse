@@ -29,7 +29,7 @@ const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
  * const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
  * ```
  *
- * @__NO_SIDE_EFFECTS__
+ * @NO_SIDE_EFFECTS
  */
 export declare const injectLocal: typeof inject
 ```
