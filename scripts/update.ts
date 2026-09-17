@@ -16,6 +16,9 @@ async function run() {
   ])
 
   await fs.copyFile('./CONTRIBUTING.md', './packages/contributing.md')
+  // `@vueuse/core` ships the root README on npm. A symlink here did not
+  // survive every checkout or pack, so keep the copy in sync instead.
+  await fs.copyFile('./README.md', './packages/core/README.md')
 }
 
 run()
