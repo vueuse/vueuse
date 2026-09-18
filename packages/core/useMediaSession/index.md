@@ -13,16 +13,24 @@ Reactive [Media Session API](https://developer.mozilla.org/en-US/docs/Web/API/Me
 import { useMediaSession } from '@vueuse/core'
 
 const sampleVideo = useTemplateRef('sampleVideo')
+const {
+  album,
+  artist,
+  artwork,
+  title,
+  duration,
+  playbackRate,
+  position,
+  playbackState,
+  actionHandlers,
+} = useMediaSession()
 
-const { metadata, positionState, playbackState, actionHandlers } = useMediaSession()
-metadata.value = {
-  title: 'Sintel',
-  artist: 'Blender Foundation',
-  album: 'Sintel',
-  artwork: [
-    { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-  ],
-}
+title.value = 'Sintel'
+artist.value = 'Blender Foundation'
+album.value = 'Sintel'
+artwork.value = [
+  { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
+]
 
 actionHandlers.value = {
   play: () => sampleVideo.value?.play(),
@@ -32,13 +40,11 @@ actionHandlers.value = {
   seekto: details => sampleVideo.value.currentTime = details.seekTime ?? 0,
 }
 
-watchEffect(() => {
-  positionState.value = {
-    duration: sampleVideo.value?.duration,
-    playbackRate: sampleVideo.value?.playbackRate,
-    position: sampleVideo.value?.currentTime,
-  }
-})
+function updatePositionState() {
+  duration.value = sampleVideo.value?.duration
+  playbackRate.value = sampleVideo.value?.playbackRate
+  position.value = sampleVideo.value?.currentTime
+}
 </script>
 
 <template>
@@ -48,6 +54,8 @@ watchEffect(() => {
     controls
     @play="playbackState = 'playing'"
     @pause="playbackState = 'paused'"
+    @loadedmetadata="updatePositionState()"
+    @seeked="updatePositionState()"
   />
 </template>
 ```

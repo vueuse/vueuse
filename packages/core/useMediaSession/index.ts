@@ -12,17 +12,52 @@ import { useSupported } from '../useSupported'
 
 export interface UseMediaSessionReturn extends Supportable {
   /**
-   * The **`MediaMetadata`** interface of the Media Session API allows a web page to provide rich media metadata for display in a platform UI.
+   * The **`album`** property of the `MediaMetadata` interface returns or sets the name of the album or collection containing the media to be played.
    *
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata)
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/album)
    */
-  metadata: Ref<MediaMetadataInit | null>
+  album: ShallowRef<MediaMetadataInit['album']>
   /**
-   * An object providing updated information about the playback position and speed of the document's ongoing media. If the object is empty, the existing playback state information is cleared.
+   * The **`artist`** property of the `MediaMetadata` interface returns or sets the name of the artist, group, creator, etc., of the media to be played.
    *
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState)
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/artist)
    */
-  positionState: Ref<MediaPositionState | undefined>
+  artist: ShallowRef<MediaMetadataInit['artist']>
+  /**
+   * The **`artwork`** property of the `MediaMetadata` interface returns or sets an array of objects representing images associated with playing media.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/artwork)
+   */
+  artwork: ShallowRef<MediaMetadataInit['artwork']>
+  /**
+   * The **`title`** property of the `MediaMetadata` interface returns or sets the title of the media to be played.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/title)
+   */
+  title: ShallowRef<MediaMetadataInit['title']>
+  /**
+   * A floating-point value giving the total duration of the current media in seconds.
+   * This should always be a positive number, with positive infinity (`Infinity`) indicating media
+   * without a defined end, such as a live stream.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#duration)
+   */
+  duration: ShallowRef<MediaPositionState['duration']>
+  /**
+   * A floating-point value indicating the rate at which the media is being played,
+   * as a ratio relative to its normal playback speed. Thus, a value of 1 is playing at normal speed,
+   * 2 is playing at double speed, and so forth. Negative values indicate that the media is playing in reverse;
+   * -1 indicates playback at the normal speed but backward, -2 is double speed in reverse, and so on.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#playbackrate)
+   */
+  playbackRate: ShallowRef<MediaPositionState['playbackRate']>
+  /**
+   * A floating-point value indicating the last reported playback position of the media in seconds. This must always be a positive value.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#position)
+   */
+  position: ShallowRef<MediaPositionState['position']>
   /**
    * The **`playbackState`** property of the `MediaSession` interface indicates whether the current media session is playing or paused.
    *
@@ -76,9 +111,17 @@ export function useMediaSession(): UseMediaSessionReturn {
   // throw new Error('Media Session API is not supported by your browser.')
   const isSupported = useSupported(() => navigator && 'mediaSession' in navigator)
 
-  const metadata = deepRef<MediaMetadataInit | null>(null)
-  const positionState = deepRef<MediaPositionState>()
+  const album = shallowRef<MediaMetadataInit['album']>()
+  const artist = shallowRef<MediaMetadataInit['artist']>()
+  const artwork = shallowRef<MediaMetadataInit['artwork']>()
+  const title = shallowRef<MediaMetadataInit['title']>()
+
+  const duration = shallowRef<MediaPositionState['duration']>()
+  const playbackRate = shallowRef<MediaPositionState['playbackRate']>()
+  const position = shallowRef<MediaPositionState['position']>()
+
   const playbackState = shallowRef<MediaSessionPlaybackState>('none')
+
   const actionHandlers = deepRef<Partial<Record<MediaSessionAction, MediaSessionActionHandler>>>()
 
   const cameraActive = shallowRef(false)
@@ -91,10 +134,10 @@ export function useMediaSession(): UseMediaSessionReturn {
     tryOnMounted(() => {
       watchEffect(() => {
         navigator.mediaSession.metadata = new MediaMetadata({
-          album: metadata.value?.album,
-          artist: metadata.value?.artist,
-          artwork: metadata.value?.artwork,
-          title: metadata.value?.title,
+          album: album.value,
+          artist: artist.value,
+          artwork: artwork.value,
+          title: title.value,
         })
       })
 
@@ -104,9 +147,9 @@ export function useMediaSession(): UseMediaSessionReturn {
 
       watchEffect(() => {
         navigator.mediaSession.setPositionState({
-          duration: positionState.value?.duration,
-          playbackRate: positionState.value?.playbackRate,
-          position: positionState.value?.position,
+          duration: duration.value,
+          playbackRate: playbackRate.value,
+          position: position.value,
         })
       })
 
@@ -141,9 +184,16 @@ export function useMediaSession(): UseMediaSessionReturn {
     if (!isSupported.value)
       return false
 
-    metadata.value = null
+    album.value = undefined
+    artist.value = undefined
+    artwork.value = []
+    title.value = undefined
+
+    duration.value = undefined
+    playbackRate.value = undefined
+    position.value = undefined
+
     playbackState.value = 'none'
-    positionState.value = undefined
     actionHandlers.value = {}
   }
 
@@ -152,8 +202,13 @@ export function useMediaSession(): UseMediaSessionReturn {
 
   return {
     isSupported,
-    metadata,
-    positionState,
+    album,
+    artist,
+    artwork,
+    title,
+    duration,
+    playbackRate,
+    position,
     playbackState,
     actionHandlers,
     cameraActive,
