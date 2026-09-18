@@ -23,15 +23,25 @@ function formatDuration(seconds: number) {
   return new Date(1000 * seconds).toISOString().slice(14, 19)
 }
 
-const { metadata, positionState, playbackState, actionHandlers } = useMediaSession()
-metadata.value = {
-  title: 'Sintel',
-  artist: 'Blender Foundation',
-  album: 'Sintel',
-  artwork: [
-    { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-  ],
-}
+const {
+  album,
+  artist,
+  artwork,
+  title,
+  duration: msDuration,
+  playbackRate,
+  position,
+  playbackState,
+  actionHandlers,
+} = useMediaSession()
+
+title.value = 'Sintel'
+artist.value = 'Blender Foundation'
+album.value = 'Sintel'
+artwork.value = [
+  { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
+]
+
 actionHandlers.value = {
   play: () => playing.value = true,
   pause: () => playing.value = false,
@@ -41,11 +51,8 @@ actionHandlers.value = {
 }
 
 watchEffect(() => {
-  positionState.value = {
-    duration: duration.value,
-    playbackRate: rate.value,
-    position: currentTime.value,
-  }
+  msDuration.value = duration.value
+  playbackRate.value = rate.value
 })
 
 watchEffect(() => {
@@ -70,6 +77,7 @@ watchEffect(() => {
         :poster="poster"
         :loop="loop"
         @click="playing = !playing"
+        @seeked="position = currentTime"
       />
       <div
         v-if="waiting"
