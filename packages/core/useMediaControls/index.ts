@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { createEventHook, isObject, toRef, tryOnBeforeUnmount, tryOnMounted, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isObject, toRef, tryOnMounted, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { shallowRef, toValue, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -588,7 +588,7 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       navigator.mediaSession.metadata = new MediaMetadata({ ...metadata })
     })
   })
-  tryOnBeforeUnmount(clearMediaSession)
+  tryOnScopeDispose(clearMediaSession)
 
   // Remove text track listeners
   tryOnScopeDispose(() => listeners.forEach(listener => listener()))
