@@ -79,7 +79,7 @@ export function onKeyStroke(...args: any[]) {
       handler(e)
   }
 
-  return useEventListener(target, eventName, listener, passive)
+  return useEventListener(target, eventName, listener, { passive })
 }
 
 /**
