@@ -3,7 +3,7 @@ import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-rout
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { isNavigationFailure, NavigationFailureType, useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
 
@@ -76,6 +76,7 @@ export function useRouteParams<
         if (param === v)
           return
 
+        const oldParam = param
         param = (v === toValue(defaultValue) || v === null) ? undefined : v
         _paramsQueue.set(name, (v === toValue(defaultValue) || v === null) ? undefined : v)
 
@@ -90,14 +91,20 @@ export function useRouteParams<
 
           const { params, query, hash } = route
 
-          router[toValue(mode)]({
+          Promise.resolve(router[toValue(mode)]({
             params: {
               ...params,
               ...newParams,
             },
             query,
             hash,
-          } as LocationAsRelativeRaw)
+          } as LocationAsRelativeRaw),
+          ).then((failure) => {
+            if (isNavigationFailure(failure, NavigationFailureType.aborted)) {
+              param = oldParam
+              trigger()
+            }
+          })
         })
       },
     }
