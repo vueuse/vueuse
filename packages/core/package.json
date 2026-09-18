@@ -43,7 +43,7 @@
     "prepack": "pnpm run build"
   },
   "peerDependencies": {
-    "vue": "^3.5.0"
+    "vue": "^3.5.0 || ^3.6.0-rc.3"
   },
   "dependencies": {
     "@types/web-bluetooth": "catalog:types",

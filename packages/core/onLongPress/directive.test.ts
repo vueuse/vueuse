@@ -4,8 +4,8 @@ import { mount } from '@vue/test-utils'
 import { promiseTimeout } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { defineComponent } from 'vue'
-import { VOnLongPress, vOnLongPress } from './directive'
+import { defineComponent, effectScope } from 'vue'
+import { VOnLongPress, vOnLongPress, vOnLongPressVapor } from './directive'
 
 const App = defineComponent({
   props: {
@@ -109,5 +109,27 @@ describe('vOnLongPress', () => {
       await promiseTimeout(500)
       expect(onLongPress).toHaveBeenCalledTimes(0)
     })
+  })
+})
+
+describe('vOnLongPressVapor', () => {
+  it('should trigger and dispose with the active effect scope', async () => {
+    const onLongPress = vi.fn()
+    const element = document.createElement('div')
+    const scope = effectScope()
+
+    scope.run(() => {
+      vOnLongPressVapor(element, () => [onLongPress, { delay: 10 }])
+    })
+
+    element.dispatchEvent(new Event('pointerdown'))
+    await promiseTimeout(10)
+    expect(onLongPress).toHaveBeenCalledTimes(1)
+
+    scope.stop()
+    onLongPress.mockClear()
+    element.dispatchEvent(new Event('pointerdown'))
+    await promiseTimeout(10)
+    expect(onLongPress).not.toHaveBeenCalled()
   })
 })
