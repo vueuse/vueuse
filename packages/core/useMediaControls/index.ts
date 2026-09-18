@@ -1,14 +1,14 @@
 import type { EventHookOn, Fn } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { createEventHook, isObject, toRef, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isObject, toRef, tryOnBeforeUnmount, tryOnMounted, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { shallowRef, toValue, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
 /**
  * Many of the jsdoc definitions here are modified version of the
- * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
+ * documentation from MDN (https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement) and
  */
 
 export interface UseMediaSource {
@@ -70,6 +70,14 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * A list of text tracks for the media
    */
   tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>
+
+  /**
+   * The MediaMetadata interface of the Media Session API allows a web page
+   * to provide rich media metadata for display in a platform UI.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/
+   */
+  metadata?: MaybeRefOrGetter<MediaMetadataInit>
 }
 
 export interface UseMediaTextTrack {
@@ -169,6 +177,19 @@ function timeRangeToArray(timeRanges: TimeRanges) {
 function tracksToArray(tracks: TextTrackList): UseMediaTextTrack[] {
   return Array.from(tracks)
     .map(({ label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }, id) => ({ id, label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }))
+}
+
+function clearMediaSession() {
+  if (!('mediaSession' in navigator))
+    return
+
+  navigator.mediaSession.metadata = null
+  navigator.mediaSession.playbackState = 'none'
+  navigator.mediaSession.setPositionState({
+    duration: 0,
+    playbackRate: 1,
+    position: 0,
+  })
 }
 
 const defaultOptions: UseMediaControlsOptions = {
@@ -543,6 +564,30 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     listeners[1] = useEventListener(el.textTracks, 'removetrack', () => tracks.value = tracksToArray(el.textTracks), listenerOptions)
     listeners[2] = useEventListener(el.textTracks, 'change', () => tracks.value = tracksToArray(el.textTracks), listenerOptions)
   })
+
+  // Configure Media Session API
+  tryOnMounted(() => {
+    if (!('mediaSession' in navigator))
+      return
+
+    navigator.mediaSession.setActionHandler('play', () => ignorePlayingUpdates(() => playing.value = true))
+    navigator.mediaSession.setActionHandler('pause', () => ignorePlayingUpdates(() => playing.value = false))
+
+    navigator.mediaSession.setActionHandler('seekbackward', () => currentTime.value -= 10)
+    navigator.mediaSession.setActionHandler('seekforward', () => currentTime.value += 10)
+    navigator.mediaSession.setActionHandler('seekto', e => currentTime.value += e.seekTime!)
+
+    watchEffect(() => {
+      const metadata = toValue(options.metadata)
+      if (!metadata) {
+        navigator.mediaSession.metadata = null
+        return
+      }
+
+      navigator.mediaSession.metadata = new MediaMetadata({ ...metadata })
+    })
+  })
+  tryOnBeforeUnmount(clearMediaSession)
 
   // Remove text track listeners
   tryOnScopeDispose(() => listeners.forEach(listener => listener()))

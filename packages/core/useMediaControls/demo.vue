@@ -23,6 +23,14 @@ const video = useTemplateRef('video')
 const loop = shallowRef(false)
 const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
 
+const metadata = reactive<MediaMetadataInit>({
+  title: 'Sintel',
+  artist: 'Blender Foundation',
+  album: 'Sintel',
+  artwork: [
+    { src: 'https://dummyimage.com/512x512/000/fff.jpg', sizes: '512x512', type: 'image/jpeg' },
+  ],
+})
 const controls = useMediaControls(video, {
   src: {
     src: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Sintel_movie_4K.webm',
@@ -43,6 +51,7 @@ const controls = useMediaControls(video, {
       srcLang: 'fr',
     },
   ],
+  metadata,
 })
 
 const {
@@ -60,6 +69,7 @@ const {
   togglePictureInPicture,
   enableTrack,
   disableTrack,
+
 } = controls
 const text = stringify(reactive(controls))
 const endBuffer = computed(() => buffered.value.length > 0 ? buffered.value[buffered.value.length - 1][1] : 0)
@@ -190,5 +200,8 @@ function formatDuration(seconds: number) {
       </Menu>
     </div>
   </div>
+  <p>Controls:</p>
   <pre class="code-block" lang="yaml">{{ text }}</pre>
+  <p>Metadata of Media Session API:</p>
+  <pre class="code-block" lang="yaml">{{ stringify(metadata) }}</pre>
 </template>
