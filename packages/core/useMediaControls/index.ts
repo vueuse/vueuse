@@ -8,7 +8,8 @@ import { useEventListener } from '../useEventListener'
 
 /**
  * Many of the jsdoc definitions here are modified version of the
- * documentation from MDN (https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement) and
+ * documentation from MDN (https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
+ * and (https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API)
  */
 
 export interface UseMediaSource {
