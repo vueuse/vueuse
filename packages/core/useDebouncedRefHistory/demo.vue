@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatDate, useCounter, useDebouncedRefHistory } from '@vueuse/core'
+import { formatDate, useDebouncedRefHistory } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
 function format(ts: number) {
@@ -7,7 +7,10 @@ function format(ts: number) {
 }
 const delay = shallowRef(1000)
 
-const { count, inc, dec } = useCounter()
+const count = shallowRef(0)
+const inc = () => count.value++
+const dec = () => count.value--
+
 const { history, undo, redo, canUndo, canRedo } = useDebouncedRefHistory(
   count,
   { capacity: 10, debounce: delay },
