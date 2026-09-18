@@ -1,6 +1,8 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
+import { createMemoryHistory, createRouter } from 'vue-router'
+import { nextTwoTick } from '../../.test'
 import { useRouteQuery } from './index'
 
 describe('useRouteQuery', () => {
@@ -15,6 +17,18 @@ describe('useRouteQuery', () => {
     path: '',
     redirectedFrom: undefined,
   })
+
+  const getRouter = async (query: Record<string, any> = {}) => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: '/', component: {} }],
+    })
+    await router.push({ path: '/', query })
+    const route = reactive(Object.fromEntries(
+      Object.keys(router.currentRoute.value).map(key => [key, computed(() => (router.currentRoute.value as any)[key])]),
+    )) as any
+    return { router, route }
+  }
 
   it('should export', () => {
     expect(useRouteQuery).toBeDefined()
@@ -138,6 +152,41 @@ describe('useRouteQuery', () => {
     expect(route.query.page).toBe('1')
     expect(lang.value).toBe('en')
     expect(route.query.lang).toBe('en')
+  })
+
+  it('should roll back the value when navigation is aborted', async () => {
+    const { router, route } = await getRouter({ page: '1' })
+    router.beforeEach(() => false)
+
+    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+
+    page.value = '2'
+
+    expect(page.value).toBe('2')
+
+    await nextTwoTick()
+
+    expect(route.query.page).toBe('1')
+    expect(page.value).toBe('1')
+  })
+
+  it('should roll back the value when navigation rejects', async () => {
+    const { router, route } = await getRouter({ page: '1' })
+    router.beforeEach(() => {
+      throw new Error('guard')
+    })
+    router.onError(() => {})
+
+    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+
+    page.value = '2'
+
+    expect(page.value).toBe('2')
+
+    await nextTwoTick()
+
+    expect(route.query.page).toBe('1')
+    expect(page.value).toBe('1')
   })
 
   it('should return default value', () => {
