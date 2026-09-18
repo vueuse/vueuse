@@ -69,7 +69,6 @@ const {
   togglePictureInPicture,
   enableTrack,
   disableTrack,
-
 } = controls
 const text = stringify(reactive(controls))
 const endBuffer = computed(() => buffered.value.length > 0 ? buffered.value[buffered.value.length - 1][1] : 0)
