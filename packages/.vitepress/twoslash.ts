@@ -53,3 +53,19 @@ export const EXTRA_FILES = {
 }
 
 export const FILE_IMPORTS = generateFileImports('vue', vueExports, vueTypes)
+
+const VUEUSE_SITE_URL = /^https?:\/\/vueuse\.org\b/
+
+function isVueUseSelfLink(name: string, text?: string) {
+  return name === 'see' && VUEUSE_SITE_URL.test(text ?? '')
+}
+
+function isBundlerAnnotation(name: string) {
+  return name.startsWith('__')
+}
+
+export function hideDocsNoiseTags(node: { type: string, tags?: [string, string?][] }) {
+  if (node.type === 'hover' && node.tags)
+    node.tags = node.tags.filter(([name, text]) => !isVueUseSelfLink(name, text) && !isBundlerAnnotation(name))
+  return true
+}
