@@ -54,7 +54,7 @@ export const EXTRA_FILES = {
 
 export const FILE_IMPORTS = generateFileImports('vue', vueExports, vueTypes)
 
-const VUEUSE_SITE_URL = /^https?:\/\/vueuse\.org\b/
+const VUEUSE_SITE_URL = /^https?:\/\/vueuse\.org(?:[/?#]|$)/
 
 function isVueUseSelfLink(name: string, text?: string) {
   return name === 'see' && VUEUSE_SITE_URL.test(text ?? '')
