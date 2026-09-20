@@ -17,9 +17,30 @@ export interface WatchIgnorableReturn {
   stop: WatchStopHandle
 }
 
-export function watchIgnorable<T extends Readonly<MultiWatchSources>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchWithFilterOptions<Immediate>): WatchIgnorableReturn
-export function watchIgnorable<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchWithFilterOptions<Immediate>): WatchIgnorableReturn
-export function watchIgnorable<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchWithFilterOptions<Immediate>): WatchIgnorableReturn
+// overloads
+export function watchIgnorable<T, Immediate extends Readonly<boolean> = false>(
+  source: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchWithFilterOptions<Immediate>,
+): WatchIgnorableReturn
+
+export function watchIgnorable<
+  T extends Readonly<MultiWatchSources>,
+  Immediate extends Readonly<boolean> = false,
+>(
+  sources: [...T],
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options?: WatchWithFilterOptions<Immediate>,
+): WatchIgnorableReturn
+
+export function watchIgnorable<
+  T extends object,
+  Immediate extends Readonly<boolean> = false,
+>(
+  source: T,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchWithFilterOptions<Immediate>,
+): WatchIgnorableReturn
 
 export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
   source: any,
@@ -84,6 +105,11 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
       ignoreCounter = syncCounter
     }
 
+    // The counting watch below is an implementation detail, so the user's debug
+    // hooks must not be attached to it. Otherwise every change to the source is
+    // reported twice: once by the counting watch and once by the actual watch.
+    const { onTrack, onTrigger, ...countingWatchOptions } = watchOptions
+
     // Sync watch to count modifications to the source
     disposables.push(
       watch(
@@ -91,7 +117,7 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
         () => {
           syncCounter++
         },
-        { ...watchOptions, flush: 'sync' },
+        { ...countingWatchOptions, flush: 'sync' },
       ),
     )
 

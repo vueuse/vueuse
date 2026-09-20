@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import { vElementHover } from './directive'
 
 const App = defineComponent({
@@ -16,6 +16,11 @@ const App = defineComponent({
   <div v-element-hover="onHover">Hover me</div>
   </template>
   `,
+})
+
+const mockMouseEnterEvent = new MouseEvent('mouseenter', {
+  clientX: 10,
+  clientY: 10,
 })
 
 describe('vElementHover', () => {
@@ -38,5 +43,13 @@ describe('vElementHover', () => {
 
   it('should be defined', () => {
     expect(wrapper).toBeDefined()
+  })
+
+  it('should clear directive when component is unmounted', async () => {
+    const element = wrapper.element.querySelector('div')!
+    wrapper.unmount()
+    element.dispatchEvent(mockMouseEnterEvent)
+    await nextTick()
+    expect(onHover).toBeCalledTimes(0)
   })
 })

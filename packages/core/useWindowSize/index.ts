@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
 import { shallowRef, watch } from 'vue'
@@ -31,6 +32,11 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
   type?: 'inner' | 'outer' | 'visual'
 }
 
+export interface UseWindowSizeReturn {
+  width: ShallowRef<number>
+  height: ShallowRef<number>
+}
+
 /**
  * Reactive window size.
  *
@@ -39,7 +45,7 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useWindowSize(options: UseWindowSizeOptions = {}) {
+export function useWindowSize(options: UseWindowSizeOptions = {}): UseWindowSizeReturn {
   const {
     window = defaultWindow,
     initialWidth = Number.POSITIVE_INFINITY,
@@ -91,5 +97,3 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   return { width, height }
 }
-
-export type UseWindowSizeReturn = ReturnType<typeof useWindowSize>

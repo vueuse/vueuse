@@ -18,6 +18,9 @@ const WRITABLE_PROPERTIES = [
   'search',
 ] as const
 
+export interface UseBrowserLocationOptions extends ConfigurableWindow {
+}
+
 export interface BrowserLocationState {
   readonly trigger: string
   readonly state?: any
@@ -33,6 +36,8 @@ export interface BrowserLocationState {
   search?: string
 }
 
+export type UseBrowserLocationReturn = Ref<BrowserLocationState>
+
 /**
  * Reactive browser location.
  *
@@ -40,19 +45,11 @@ export interface BrowserLocationState {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useBrowserLocation(options: ConfigurableWindow = {}) {
+export function useBrowserLocation(options: UseBrowserLocationOptions = {}): UseBrowserLocationReturn {
   const { window = defaultWindow } = options
   const refs = Object.fromEntries(
     WRITABLE_PROPERTIES.map(key => [key, deepRef()]),
   ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>
-
-  for (const [key, ref] of objectEntries(refs)) {
-    watch(ref, (value) => {
-      if (!window?.location || window.location[key] === value)
-        return
-      window.location[key] = value!
-    })
-  }
 
   const buildState = (trigger: string): BrowserLocationState => {
     const { state, length } = window?.history || {}
@@ -70,8 +67,15 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
     })
   }
 
-  const state = deepRef(buildState('load'))
+  const state = deepRef<BrowserLocationState>(buildState('load'))
 
+  for (const [key, ref] of objectEntries(refs)) {
+    watch(ref, (value) => {
+      if (!window?.location || window.location[key] === value)
+        return
+      window.location[key] = value!
+    })
+  }
   if (window) {
     const listenerOptions = { passive: true }
     useEventListener(window, 'popstate', () => state.value = buildState('popstate'), listenerOptions)
@@ -80,5 +84,3 @@ export function useBrowserLocation(options: ConfigurableWindow = {}) {
 
   return state
 }
-
-export type UseBrowserLocationReturn = ReturnType<typeof useBrowserLocation>

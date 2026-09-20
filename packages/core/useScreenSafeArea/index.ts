@@ -1,3 +1,4 @@
+import type { ShallowRef } from 'vue'
 import { isClient, tryOnMounted, useDebounceFn } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { useCssVar } from '../useCssVar'
@@ -8,12 +9,20 @@ const rightVarName = '--vueuse-safe-area-right'
 const bottomVarName = '--vueuse-safe-area-bottom'
 const leftVarName = '--vueuse-safe-area-left'
 
+export interface UseScreenSafeAreaReturn {
+  top: ShallowRef<string>
+  right: ShallowRef<string>
+  bottom: ShallowRef<string>
+  left: ShallowRef<string>
+  update: () => void
+}
+
 /**
  * Reactive `env(safe-area-inset-*)`
  *
  * @see https://vueuse.org/useScreenSafeArea
  */
-export function useScreenSafeArea() {
+export function useScreenSafeArea(): UseScreenSafeAreaReturn {
   const top = shallowRef('')
   const right = shallowRef('')
   const bottom = shallowRef('')
@@ -56,5 +65,3 @@ type VarName = '--vueuse-safe-area-top' | '--vueuse-safe-area-right' | '--vueuse
 function getValue(position: VarName) {
   return getComputedStyle(document.documentElement).getPropertyValue(position)
 }
-
-export type UseScreenSafeAreaReturn = ReturnType<typeof useScreenSafeArea>

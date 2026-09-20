@@ -1,5 +1,6 @@
-import type { MaybeRef } from 'vue'
+import type { MaybeRef, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
@@ -22,13 +23,20 @@ export interface UseDisplayMediaOptions extends ConfigurableNavigator {
   audio?: boolean | MediaTrackConstraints | undefined
 }
 
+export interface UseDisplayMediaReturn extends Supportable {
+  stream: ShallowRef<MediaStream | undefined>
+  start: () => Promise<MediaStream | undefined>
+  stop: () => void
+  enabled: ShallowRef<boolean>
+}
+
 /**
  * Reactive `mediaDevices.getDisplayMedia` streaming
  *
  * @see https://vueuse.org/useDisplayMedia
  * @param options
  */
-export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
+export function useDisplayMedia(options: UseDisplayMediaOptions = {}): UseDisplayMediaReturn {
   const enabled = shallowRef(options.enabled ?? false)
   const video = options.video
   const audio = options.audio
@@ -83,5 +91,3 @@ export function useDisplayMedia(options: UseDisplayMediaOptions = {}) {
     enabled,
   }
 }
-
-export type UseDisplayMediaReturn = ReturnType<typeof useDisplayMedia>

@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router'
 const _queue = new WeakMap<Router, Map<string, any>>()
 
 export function useRouteQuery(
-  name: string
+  name: string,
 ): Ref<undefined | null | string | string[]>
 
 export function useRouteQuery<
@@ -17,7 +17,7 @@ export function useRouteQuery<
 >(
   name: string,
   defaultValue?: MaybeRefOrGetter<T>,
-  options?: ReactiveRouteOptionsWithTransform<T, K>
+  options?: ReactiveRouteOptionsWithTransform<T, K>,
 ): Ref<K>
 
 export function useRouteQuery<

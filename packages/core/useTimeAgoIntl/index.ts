@@ -1,5 +1,7 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
+import { useIntervalFn } from '@vueuse/shared'
 import { computed, toValue } from 'vue'
 import { useNow } from '../useNow'
 
@@ -41,20 +43,13 @@ export interface FormatTimeAgoIntlOptions {
   units?: TimeAgoUnit[]
 }
 
-export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatTimeAgoIntlOptions {
+export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatTimeAgoIntlOptions, ConfigurableScheduler {
   /**
    * Expose more controls and the raw `parts` result.
    *
    * @default false
    */
   controls?: Controls
-
-  /**
-   * Update interval in milliseconds, set 0 to disable auto update
-   *
-   * @default 30_000
-   */
-  updateInterval?: number
 }
 
 type UseTimeAgoReturn<Controls extends boolean = false>
@@ -82,13 +77,17 @@ const UNITS: TimeAgoUnit[] = [
  */
 export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options?: UseTimeAgoIntlOptions<false>): UseTimeAgoReturn<false>
 export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoIntlOptions<true>): UseTimeAgoReturn<true>
+
 export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoIntlOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
-    updateInterval = 30_000,
+    scheduler = (cb: AnyFn) => useIntervalFn(cb, 30_000),
   } = options
 
-  const { now, ...controls } = useNow({ interval: updateInterval, controls: true })
+  const { now, ...controls } = useNow({
+    scheduler,
+    controls: true,
+  })
 
   const result = computed(() =>
     getTimeAgoIntlResult(new Date(toValue(time)), options, toValue(now)),

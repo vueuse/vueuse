@@ -1,3 +1,4 @@
+import type { Fn, Pausable } from '@vueuse/shared'
 import { isClient } from '@vueuse/shared'
 
 export interface ConfigurableWindow {
@@ -35,10 +36,10 @@ export interface ConfigurableLocation {
   location?: Location
 }
 
-export const defaultWindow = /* #__PURE__ */ isClient ? window : undefined
-export const defaultDocument = /* #__PURE__ */ isClient ? window.document : undefined
-export const defaultNavigator = /* #__PURE__ */ isClient ? window.navigator : undefined
-export const defaultLocation = /* #__PURE__ */ isClient ? window.location : undefined
+export const defaultWindow = isClient ? window : undefined
+export const defaultDocument = isClient ? window.document : undefined
+export const defaultNavigator = isClient ? window.navigator : undefined
+export const defaultLocation = isClient ? window.location : undefined
 
 export interface ConfigurableDeepRefs<D extends boolean> {
   /**
@@ -47,4 +48,11 @@ export interface ConfigurableDeepRefs<D extends boolean> {
    * @default true - will be changed to `false` by default in the next major
    */
   deepRefs?: D
+}
+
+export interface ConfigurableScheduler {
+  /**
+   * Custom scheduler to use for interval execution.
+   */
+  scheduler?: (cb: Fn) => Pausable
 }

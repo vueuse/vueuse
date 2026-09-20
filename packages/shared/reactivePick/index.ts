@@ -13,7 +13,7 @@ export function reactivePick<T extends object, K extends keyof T>(
 ): ReactivePickReturn<T, K>
 export function reactivePick<T extends object>(
   obj: T,
-  predicate: ReactivePickPredicate<T>
+  predicate: ReactivePickPredicate<T>,
 ): ReactivePickReturn<T, keyof T>
 
 /**

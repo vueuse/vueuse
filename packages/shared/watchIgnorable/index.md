@@ -79,4 +79,4 @@ await nextTick() // logs: Changed to after!
 
 ## Recommended Readings
 
-- [Ignorable Watch](https://patak.dev/vue/ignorable-watch.html) - by [@patak-dev](https://github.com/patak-dev)
+- [Ignorable Watch](https://patak.dev/vue/ignorable-watch.html) - by [@patak-cat](https://github.com/patak-cat)

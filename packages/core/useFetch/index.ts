@@ -1,7 +1,7 @@
 import type { EventHookOn, Fn, Stoppable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import { containsProp, createEventHook, toRef, until, useTimeoutFn } from '@vueuse/shared'
-import { computed, isRef, readonly, shallowRef, toValue, watch } from 'vue'
+import { computed, isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 
 export interface UseFetchReturn<T> {
@@ -484,14 +484,17 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       },
     )
       .then(async (fetchResponse) => {
-        response.value = fetchResponse
-        statusCode.value = fetchResponse.status
+        if (currentExecuteCounter === executeCounter) {
+          response.value = fetchResponse
+          statusCode.value = fetchResponse.status
+        }
 
         responseData = await fetchResponse.clone()[config.type]()
 
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
-          data.value = initialData || null
+          if (currentExecuteCounter === executeCounter)
+            data.value = initialData || null
           throw new Error(fetchResponse.statusText)
         }
 
@@ -503,7 +506,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             execute,
           }))
         }
-        data.value = responseData
+        if (currentExecuteCounter === executeCounter)
+          data.value = responseData
 
         responseEvent.trigger(fetchResponse)
         return fetchResponse
@@ -521,9 +525,11 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           }))
         }
 
-        error.value = errorData
-        if (options.updateDataOnError)
-          data.value = responseData
+        if (currentExecuteCounter === executeCounter) {
+          error.value = errorData
+          if (options.updateDataOnError)
+            data.value = responseData
+        }
 
         errorEvent.trigger(fetchError)
         if (throwOnFailed)
@@ -550,8 +556,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   )
 
   const shell: UseFetchReturn<T> = {
-    isFinished: readonly(isFinished),
-    isFetching: readonly(isFetching),
+    isFinished: shallowReadonly(isFinished),
+    isFetching: shallowReadonly(isFetching),
     statusCode,
     response,
     error,

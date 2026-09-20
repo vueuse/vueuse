@@ -5,7 +5,6 @@ export default defineConfig({
   exclude: [
     'rxjs',
     'electron',
-    'msw',
   ],
   packageMode: {
     vue: 'minor',

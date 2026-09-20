@@ -3,7 +3,7 @@ import type { MockedFunction } from 'vitest'
 import type { ComputedRef, Ref } from 'vue'
 import { BehaviorSubject, of } from 'rxjs'
 import { delay, map, tap } from 'rxjs/operators'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, nextTick, reactive, shallowRef } from 'vue'
 import { watchExtractedObservable } from './index'
 
@@ -20,6 +20,14 @@ class TestWrapper {
 }
 
 describe('watchExtractedObservable', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   describe('when no options are provided', () => {
     let numRef: Ref<number | undefined>
     let obj: ComputedRef<TestWrapper | null>
@@ -159,7 +167,6 @@ describe('watchExtractedObservable', () => {
     })
 
     it('doesn\'t call onComplete if the watched observable has changed before it could complete', async () => {
-      vi.useFakeTimers()
       expect.hasAssertions()
 
       const re = deepRef([42, 23, 420])

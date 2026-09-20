@@ -1,0 +1,12 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "update": {
+      "dependsOn": ["@vueuse/metadata#build"],
+      "outputs": [
+        "skills/**",
+        "$TURBO_ROOT$/skills/vueuse-functions/**"
+      ]
+    }
+  }
+}

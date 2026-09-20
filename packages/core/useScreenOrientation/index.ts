@@ -1,5 +1,7 @@
+import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
-import { ref as deepRef, shallowRef } from 'vue'
+import type { Supportable } from '../types'
+import { shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -17,6 +19,15 @@ export interface ScreenOrientation extends EventTarget {
   readonly angle: number
   addEventListener: (type: 'change', listener: (this: this, ev: Event) => any, useCapture?: boolean) => void
 }
+export interface UseScreenOrientationOptions extends ConfigurableWindow {
+}
+
+export interface UseScreenOrientationReturn extends Supportable {
+  orientation: ShallowRef<OrientationType | undefined>
+  angle: ShallowRef<number>
+  lockOrientation: (type: OrientationLockType) => Promise<void>
+  unlockOrientation: () => void
+}
 
 /**
  * Reactive screen orientation
@@ -25,7 +36,7 @@ export interface ScreenOrientation extends EventTarget {
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useScreenOrientation(options: ConfigurableWindow = {}) {
+export function useScreenOrientation(options: UseScreenOrientationOptions = {}): UseScreenOrientationReturn {
   const {
     window = defaultWindow,
   } = options
@@ -34,7 +45,7 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
 
   const screenOrientation = (isSupported.value ? window!.screen.orientation : {}) as ScreenOrientation
 
-  const orientation = deepRef<OrientationType | undefined>(screenOrientation.type)
+  const orientation = shallowRef<OrientationType | undefined>(screenOrientation.type)
   const angle = shallowRef(screenOrientation.angle || 0)
 
   if (isSupported.value) {
@@ -64,5 +75,3 @@ export function useScreenOrientation(options: ConfigurableWindow = {}) {
     unlockOrientation,
   }
 }
-
-export type UseScreenOrientationReturn = ReturnType<typeof useScreenOrientation>

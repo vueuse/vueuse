@@ -234,8 +234,8 @@ export function useStorage<T extends (string | number | boolean | object | null)
       window.dispatchEvent(storage instanceof Storage
         ? new StorageEvent('storage', payload)
         : new CustomEvent<StorageEventLike>(customStorageEventName, {
-          detail: payload,
-        }))
+            detail: payload,
+          }))
     }
   }
 

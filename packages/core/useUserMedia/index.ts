@@ -1,7 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
-import type { MaybeRef, Ref } from 'vue'
+import type { MaybeRef, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
@@ -28,13 +29,23 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
   constraints?: MaybeRef<MediaStreamConstraints>
 }
 
+export interface UseUserMediaReturn extends Supportable {
+  stream: Ref<MediaStream | undefined>
+  start: () => Promise<MediaStream | undefined>
+  stop: () => void
+  restart: () => Promise<MediaStream | undefined>
+  constraints: Ref<MediaStreamConstraints | undefined>
+  enabled: ShallowRef<boolean>
+  autoSwitch: ShallowRef<boolean>
+}
+
 /**
  * Reactive `mediaDevices.getUserMedia` streaming
  *
  * @see https://vueuse.org/useUserMedia
  * @param options
  */
-export function useUserMedia(options: UseUserMediaOptions = {}) {
+export function useUserMedia(options: UseUserMediaOptions = {}): UseUserMediaReturn {
   const enabled = shallowRef(options.enabled ?? false)
   const autoSwitch = shallowRef(options.autoSwitch ?? true)
   const constraints = deepRef(options.constraints)
@@ -124,5 +135,3 @@ export function useUserMedia(options: UseUserMediaOptions = {}) {
     autoSwitch,
   }
 }
-
-export type UseUserMediaReturn = ReturnType<typeof useUserMedia>

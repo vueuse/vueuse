@@ -112,16 +112,17 @@ describe('useFetch', () => {
   it('should throw error', async () => {
     const options = { immediate: false }
     const error1 = await useFetch(`${baseUrl}?status=400`, options).execute(true).catch(err => err)
-    const error2 = await useFetch(`${baseUrl}?status=600`, options).execute(true).catch(err => err)
+    const error2 = await useFetch(`${baseUrl}?status=500`, options).execute(true).catch(err => err)
 
     expect(error1.name).toBe('Error')
     expect(error1.message).toBe('Bad Request')
     expect(error2.name).toBe('Error')
+    expect(error2.message).toBe('Internal Server Error')
   })
 
   it('should abort request and set aborted to true', async () => {
     const { aborted, abort, execute } = useFetch(baseUrl)
-    setTimeout(() => abort(), 0)
+    setTimeout(abort, 0)
     await vi.waitFor(() => {
       expect(aborted.value).toBe(true)
     })
@@ -728,6 +729,53 @@ describe('useFetch', () => {
     await vi.waitFor(() => {
       expect(onFetchResponseSpy).toBeCalledTimes(1)
     })
+  })
+
+  it('should clear error when refetch succeeds after aborting previous request', async () => {
+    const url = shallowRef(`${baseUrl}?delay=50`)
+    const { data, error } = useFetch(url, { refetch: true }).json()
+    await nextTick()
+    url.value = jsonUrl
+    await vi.waitFor(() => {
+      expect(data.value).toEqual(jsonMessage)
+    })
+    expect(error.value).toBeNull()
+  })
+
+  it('should not overwrite the data of a newer request when a superseded one resolves', async () => {
+    const secondMessage = { hello: 'again' }
+    const url = shallowRef(jsonUrl)
+    let releaseFirst = () => {}
+    const firstReleased = new Promise<void>((resolve) => {
+      releaseFirst = resolve
+    })
+    const afterFetchSpy = vi.fn()
+    const responseSpy = vi.fn()
+
+    const { data, onFetchResponse } = useFetch(url, {
+      refetch: true,
+      async afterFetch(ctx) {
+        afterFetchSpy()
+        if (ctx.data.hello === jsonMessage.hello)
+          await firstReleased
+        return ctx
+      },
+    }).json()
+    onFetchResponse(responseSpy)
+
+    await vi.waitFor(() => {
+      expect(afterFetchSpy).toHaveBeenCalled()
+    })
+    url.value = `${baseUrl}/test?json=${encodeURI(JSON.stringify(secondMessage))}`
+    await vi.waitFor(() => {
+      expect(data.value).toEqual(secondMessage)
+    })
+
+    releaseFirst()
+    await vi.waitFor(() => {
+      expect(responseSpy).toHaveBeenCalledTimes(2)
+    })
+    expect(data.value).toEqual(secondMessage)
   })
 
   it('should be generated payloadType on execute', async () => {

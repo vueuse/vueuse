@@ -10,9 +10,29 @@ export interface WatchThrottledOptions<Immediate> extends WatchOptions<Immediate
 }
 
 // overloads
-export function watchThrottled<T extends Readonly<MultiWatchSources>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchThrottledOptions<Immediate>): WatchHandle
-export function watchThrottled<T, Immediate extends Readonly<boolean> = false>(source: WatchSource<T>, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchHandle
-export function watchThrottled<T extends object, Immediate extends Readonly<boolean> = false>(source: T, cb: WatchCallback<T, Immediate extends true ? T | undefined : T>, options?: WatchThrottledOptions<Immediate>): WatchHandle
+export function watchThrottled<T, Immediate extends Readonly<boolean> = false>(
+  source: WatchSource<T>,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchThrottledOptions<Immediate>,
+): WatchHandle
+
+export function watchThrottled<
+  T extends Readonly<MultiWatchSources>,
+  Immediate extends Readonly<boolean> = false,
+>(
+  sources: [...T],
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
+  options?: WatchThrottledOptions<Immediate>,
+): WatchHandle
+
+export function watchThrottled<
+  T extends object,
+  Immediate extends Readonly<boolean> = false,
+>(
+  source: T,
+  cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchThrottledOptions<Immediate>,
+): WatchHandle
 
 // implementation
 export function watchThrottled<Immediate extends Readonly<boolean> = false>(

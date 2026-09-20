@@ -4,22 +4,22 @@ import type { MapOldSources, MapSources } from '../utils/types'
 import { watch } from 'vue'
 
 // overloads
-export function watchImmediate<T extends Readonly<MultiWatchSources>>(
-  source: [...T],
-  cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
-  options?: Omit<WatchOptions<true>, 'immediate'>
-): WatchHandle
-
 export function watchImmediate<T>(
   source: WatchSource<T>,
   cb: WatchCallback<T, T | undefined>,
-  options?: Omit<WatchOptions<true>, 'immediate'>
+  options?: Omit<WatchOptions<true>, 'immediate'>,
+): WatchHandle
+
+export function watchImmediate<T extends Readonly<MultiWatchSources>>(
+  source: [...T],
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, true>>,
+  options?: Omit<WatchOptions<true>, 'immediate'>,
 ): WatchHandle
 
 export function watchImmediate<T extends object>(
   source: T,
   cb: WatchCallback<T, T | undefined>,
-  options?: Omit<WatchOptions<true>, 'immediate'>
+  options?: Omit<WatchOptions<true>, 'immediate'>,
 ): WatchHandle
 
 /**

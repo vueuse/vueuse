@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter, WatchOptions, WatchSource } from 'vue'
-import type { ElementOf, ShallowUnwrapRef, WatchOptionFlush } from '../utils'
+import type { ConfigurableFlushSync, ElementOf, ShallowUnwrapRef } from '../utils'
 import { isRef, nextTick, toValue, watch } from 'vue'
 import { promiseTimeout } from '../utils'
 
-export interface UntilToMatchOptions {
+export interface UntilToMatchOptions extends ConfigurableFlushSync {
   /**
    * Milliseconds timeout for promise to resolve/reject if the when condition does not meet.
    * 0 for never timed out
@@ -20,13 +20,6 @@ export interface UntilToMatchOptions {
   throwOnTimeout?: boolean
 
   /**
-   * `flush` option for internal watch
-   *
-   * @default 'sync'
-   */
-  flush?: WatchOptionFlush
-
-  /**
    * `deep` option for internal watch
    *
    * @default 'false'
@@ -37,10 +30,10 @@ export interface UntilToMatchOptions {
 export interface UntilBaseInstance<T, Not extends boolean = false> {
   toMatch: (<U extends T = T>(
     condition: (v: T) => v is U,
-    options?: UntilToMatchOptions
+    options?: UntilToMatchOptions,
   ) => Not extends true ? Promise<Exclude<T, U>> : Promise<U>) & ((
     condition: (v: T) => boolean,
-    options?: UntilToMatchOptions
+    options?: UntilToMatchOptions,
   ) => Promise<T>)
   changed: (options?: UntilToMatchOptions) => Promise<T>
   changedTimes: (n?: number, options?: UntilToMatchOptions) => Promise<T>

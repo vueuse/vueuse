@@ -1,7 +1,8 @@
-import type { Fn, TimerHandle } from '@vueuse/shared'
-import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { AnyFn, Fn, TimerHandle } from '@vueuse/shared'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { ConfigurableScheduler } from '../_configurable'
 import { isClient, isWorker, toRef, tryOnScopeDispose, useIntervalFn } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, toValue, watch } from 'vue'
+import { shallowRef, toValue, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type WebSocketStatus = 'OPEN' | 'CONNECTING' | 'CLOSED'
@@ -20,7 +21,7 @@ export interface UseWebSocketOptions {
    *
    * @default false
    */
-  heartbeat?: boolean | {
+  heartbeat?: boolean | ConfigurableScheduler & {
     /**
      * Message for the heartbeat
      *
@@ -32,13 +33,6 @@ export interface UseWebSocketOptions {
      * Response message for the heartbeat, if undefined the message will be used
      */
     responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
-
-    /**
-     * Interval, in milliseconds
-     *
-     * @default 1000
-     */
-    interval?: number
 
     /**
      * Heartbeat response timeout, in milliseconds
@@ -112,7 +106,7 @@ export interface UseWebSocketReturn<T> {
    * Reference to the latest data received via the websocket,
    * can be watched to respond to incoming messages
    */
-  data: Ref<T | null>
+  data: ShallowRef<T | null>
 
   /**
    * The current websocket status, can be only one of:
@@ -142,7 +136,7 @@ export interface UseWebSocketReturn<T> {
   /**
    * Reference to the WebSocket instance.
    */
-  ws: Ref<WebSocket | undefined>
+  ws: ShallowRef<WebSocket | undefined>
 }
 
 function resolveNestedOptions<T>(options: T | true): T {
@@ -172,9 +166,9 @@ export function useWebSocket<Data = any>(
     protocols = [],
   } = options
 
-  const data: Ref<Data | null> = deepRef(null)
+  const data = shallowRef<Data | null>(null)
   const status = shallowRef<WebSocketStatus>('CLOSED')
-  const wsRef = deepRef<WebSocket | undefined>()
+  const wsRef = shallowRef<WebSocket | undefined>()
   const urlRef = toRef(url)
 
   let heartbeatPause: Fn | undefined
@@ -218,6 +212,7 @@ export function useWebSocket<Data = any>(
     heartbeatPause?.()
     wsRef.value.close(code, reason)
     wsRef.value = undefined
+    status.value = 'CLOSED'
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
@@ -240,6 +235,9 @@ export function useWebSocket<Data = any>(
     status.value = 'CONNECTING'
 
     ws.onopen = () => {
+      if (wsRef.value !== ws)
+        return
+
       status.value = 'OPEN'
       retried = 0
       onConnected?.(ws!)
@@ -248,7 +246,9 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onclose = (ev) => {
-      status.value = 'CLOSED'
+      if (wsRef.value === ws)
+        status.value = 'CLOSED'
+
       resetHeartbeat()
       heartbeatPause?.()
       onDisconnected?.(ws, ev)
@@ -260,11 +260,11 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        const checkRetires = typeof retries === 'function'
+        const checkRetries = typeof retries === 'function'
           ? retries
           : () => typeof retries === 'number' && (retries < 0 || retried < retries)
 
-        if (checkRetires(retried)) {
+        if (checkRetries(retried)) {
           retried += 1
           const delayTime = typeof delay === 'function' ? delay(retried) : delay
           retryTimeout = setTimeout(_init, delayTime)
@@ -280,6 +280,9 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
+      if (wsRef.value !== ws)
+        return
+
       if (options.heartbeat) {
         resetHeartbeat()
         const {
@@ -298,24 +301,20 @@ export function useWebSocket<Data = any>(
   if (options.heartbeat) {
     const {
       message = DEFAULT_PING_MESSAGE,
-      interval = 1000,
+      scheduler = (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false }),
       pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 
-    const { pause, resume } = useIntervalFn(
-      () => {
-        send(toValue(message), false)
-        if (pongTimeoutWait != null)
-          return
-        pongTimeoutWait = setTimeout(() => {
-          // auto-reconnect will be trigger with ws.onclose()
-          close()
-          explicitlyClosed = false
-        }, pongTimeout)
-      },
-      interval,
-      { immediate: false },
-    )
+    const { pause, resume } = scheduler(() => {
+      send(toValue(message), false)
+      if (pongTimeoutWait != null)
+        return
+      pongTimeoutWait = setTimeout(() => {
+        // auto-reconnect will be trigger with ws.onclose()
+        close()
+        explicitlyClosed = false
+      }, pongTimeout)
+    })
 
     heartbeatPause = pause
     heartbeatResume = resume

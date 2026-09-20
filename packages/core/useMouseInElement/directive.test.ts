@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import { vMouseInElement } from './directive'
 
 const App = defineComponent({
@@ -21,6 +21,11 @@ const App = defineComponent({
   <div v-else v-mouse-in-element="onMouseInElement">Hello world!</div>
   </template>
   `,
+})
+
+const mockMouseEvent = new MouseEvent('mousemove', {
+  clientX: 100,
+  clientY: 100,
 })
 
 describe('vMouseInElement', () => {
@@ -45,6 +50,13 @@ describe('vMouseInElement', () => {
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
     })
+
+    it('should clear directive when component is unmounted', async () => {
+      wrapper.unmount()
+      window.dispatchEvent(mockMouseEvent)
+      await nextTick()
+      expect(onMouseInElement).toBeCalledTimes(0)
+    })
   })
 
   describe('given options', () => {
@@ -67,6 +79,13 @@ describe('vMouseInElement', () => {
 
     it('should be defined', () => {
       expect(wrapper).toBeDefined()
+    })
+
+    it('should clear directive when component is unmounted', async () => {
+      wrapper.unmount()
+      window.dispatchEvent(mockMouseEvent)
+      await nextTick()
+      expect(onMouseInElement).toBeCalledTimes(0)
     })
   })
 })

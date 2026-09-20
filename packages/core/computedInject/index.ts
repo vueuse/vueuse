@@ -17,23 +17,23 @@ export interface WritableComputedInjectOptionsWithDefault<T, K> {
 
 export function computedInject<T, K = any>(
   key: InjectionKey<T> | string,
-  getter: ComputedInjectGetter<T, K>
+  getter: ComputedInjectGetter<T, K>,
 ): ComputedRef<K | undefined>
 export function computedInject<T, K = any>(
   key: InjectionKey<T> | string,
-  options: WritableComputedInjectOptions<T, K>
+  options: WritableComputedInjectOptions<T, K>,
 ): ComputedRef<K | undefined>
 export function computedInject<T, K = any>(
   key: InjectionKey<T> | string,
   getter: ComputedInjectGetterWithDefault<T, K>,
   defaultSource: T,
-  treatDefaultAsFactory?: false
+  treatDefaultAsFactory?: false,
 ): ComputedRef<K>
 export function computedInject<T, K = any>(
   key: InjectionKey<T> | string,
   options: WritableComputedInjectOptionsWithDefault<T, K>,
   defaultSource: T | (() => T),
-  treatDefaultAsFactory: true
+  treatDefaultAsFactory: true,
 ): ComputedRef<K>
 export function computedInject<T, K = any>(
   key: InjectionKey<T> | string,

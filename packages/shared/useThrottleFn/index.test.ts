@@ -1,9 +1,13 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useThrottleFn } from './index'
 
 describe('useThrottleFn', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('should be defined', () => {
@@ -18,8 +22,10 @@ describe('useThrottleFn', () => {
     run()
     expect(callback).toHaveBeenCalledTimes(1)
     vi.advanceTimersByTime(ms + 10)
-    run()
     expect(callback).toHaveBeenCalledTimes(2)
+    run()
+    vi.advanceTimersByTime(ms + 10)
+    expect(callback).toHaveBeenCalledTimes(3)
   })
 
   it('should work with trailing', async () => {

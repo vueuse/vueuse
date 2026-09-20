@@ -37,7 +37,6 @@ The following utils are **disabled** from auto-import for Nuxt to avoid conflict
 - `useFetch`
 - `useCookie`
 - `useHead`
-- `useTitle`
 - `useStorage`
 - `useImage`
 

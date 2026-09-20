@@ -1,8 +1,8 @@
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
+import type { Supportable } from '../types'
 import { tryOnMounted, tryOnScopeDispose } from '@vueuse/shared'
-import { readonly, shallowRef, watch } from 'vue'
-
+import { shallowReadonly, shallowRef, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -62,7 +62,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
   const error = shallowRef<unknown | null>(null)
 
   watch(device, () => {
-    connectToBluetoothGATTServer()
+    void connectToBluetoothGATTServer()
   })
 
   async function requestDevice(): Promise<void> {
@@ -103,9 +103,6 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
     error.value = null
 
     if (device.value && device.value.gatt) {
-      // Add reset fn to gattserverdisconnected event:
-      useEventListener(device, 'gattserverdisconnected', reset, { passive: true })
-
       try {
         // Connect to the device:
         server.value = await device.value.gatt.connect()
@@ -118,8 +115,8 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
   }
 
   tryOnMounted(() => {
-    if (device.value)
-      device.value.gatt?.connect()
+    useEventListener(device, 'gattserverdisconnected', reset, { passive: true, once: true })
+    void connectToBluetoothGATTServer()
   })
 
   tryOnScopeDispose(() => {
@@ -129,7 +126,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
 
   return {
     isSupported,
-    isConnected: readonly(isConnected),
+    isConnected: shallowReadonly(isConnected),
     // Device:
     device,
     requestDevice,
@@ -140,8 +137,7 @@ export function useBluetooth(options?: UseBluetoothOptions): UseBluetoothReturn 
   }
 }
 
-export interface UseBluetoothReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseBluetoothReturn extends Supportable {
   isConnected: Readonly<ShallowRef<boolean>>
   device: ShallowRef<BluetoothDevice | undefined>
   requestDevice: () => Promise<void>

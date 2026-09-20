@@ -1,5 +1,6 @@
 export * from './computedEager'
 export * from './computedWithControl'
+export * from './createDisposableDirective'
 export * from './createEventHook'
 export * from './createGlobalState'
 export * from './createInjectionState'

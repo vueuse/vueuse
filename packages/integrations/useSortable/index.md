@@ -96,7 +96,82 @@ useSortable('#dv', list)
 </template>
 ```
 
-### Tips
+### Using Component
+
+```vue
+<script setup lang="ts">
+import { UseSortable } from '@vueuse/integrations/useSortable/component'
+import { shallowRef } from 'vue'
+
+const list = shallowRef([
+  { id: 1, name: 'a' },
+  { id: 2, name: 'b' },
+  { id: 3, name: 'c' },
+])
+</script>
+
+<template>
+  <UseSortable v-model="list" as="ol" :options="{ animation: 150 }">
+    <li v-for="item in list" :key="item.id">
+      {{ item.name }}
+    </li>
+  </UseSortable>
+</template>
+```
+
+You can also access the helper functions like `start`, `stop`, and `option` from the slot scope:
+
+```vue
+<template>
+  <UseSortable v-slot="{ stop, start }" v-model="list">
+    <button @click="stop()">
+      Stop Sorting
+    </button>
+    <button @click="start()">
+      Start Sorting
+    </button>
+    <div v-for="item in list" :key="item.id">
+      {{ item.name }}
+    </div>
+  </UseSortable>
+</template>
+```
+
+### Return Values
+
+| Property | Description                                                      |
+| -------- | ---------------------------------------------------------------- |
+| `start`  | Initialize the Sortable instance (called automatically on mount) |
+| `stop`   | Destroy the Sortable instance                                    |
+| `option` | Get or set Sortable options at runtime                           |
+
+```ts
+const { start, stop, option } = useSortable(el, list)
+
+// Stop sorting
+stop()
+
+// Start sorting again
+start()
+
+// Get/set options
+option('animation', 200) // set
+const animation = option('animation') // get
+```
+
+### Watch Element Changes
+
+Use the `watchElement` option to automatically reinitialize Sortable when the element changes (useful with `v-if`).
+
+```ts
+import { useSortable } from '@vueuse/integrations/useSortable'
+
+useSortable(el, list, {
+  watchElement: true, // auto-reinitialize when element changes
+})
+```
+
+### Custom Update Handler
 
 If you want to handle the `onUpdate` yourself, you can pass in `onUpdate` parameters, and we also exposed a function to move the item position.
 
@@ -115,3 +190,13 @@ useSortable(el, list, {
   }
 })
 ```
+
+### Helper Functions
+
+The following helper functions are also exported:
+
+| Function                                   | Description                                           |
+| ------------------------------------------ | ----------------------------------------------------- |
+| `moveArrayElement(list, from, to, event?)` | Move an element in an array from one index to another |
+| `insertNodeAt(parent, element, index)`     | Insert a DOM node at a specific index                 |
+| `removeNode(node)`                         | Remove a DOM node from its parent                     |

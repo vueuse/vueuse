@@ -1,22 +1,19 @@
 import type { Pausable } from '@vueuse/shared'
-import type { ComputedRef, MaybeRefOrGetter, ShallowRef } from 'vue'
-import type { ConfigurableDocument } from '../_configurable'
-import { useIntervalFn } from '@vueuse/shared'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import type { ConfigurableDocument, ConfigurableScheduler } from '../_configurable'
+import type { Supportable } from '../types'
 import { shallowRef, toValue } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useRafFn } from '../useRafFn'
 import { useSupported } from '../useSupported'
 
-export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument {
+export interface UseElementByPointOptions<Multiple extends boolean = false> extends ConfigurableDocument, ConfigurableScheduler {
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>
-  immediate?: boolean
-  interval?: 'requestAnimationFrame' | number
 }
 
-export interface UseElementByPointReturn<Multiple extends boolean = false> extends Pausable {
-  isSupported: ComputedRef<boolean>
+export interface UseElementByPointReturn<Multiple extends boolean = false> extends Supportable, Pausable {
   element: ShallowRef<Multiple extends true ? HTMLElement[] : HTMLElement | null>
 }
 
@@ -32,8 +29,7 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
     y,
     document = defaultDocument,
     multiple,
-    interval = 'requestAnimationFrame',
-    immediate = true,
+    scheduler = useRafFn,
   } = options
 
   const isSupported = useSupported(() => {
@@ -45,15 +41,11 @@ export function useElementByPoint<M extends boolean = false>(options: UseElement
 
   const element = shallowRef<any>(null)
 
-  const cb = () => {
+  const controls = scheduler(() => {
     element.value = toValue(multiple)
       ? document?.elementsFromPoint(toValue(x), toValue(y)) ?? []
       : document?.elementFromPoint(toValue(x), toValue(y)) ?? null
-  }
-
-  const controls: Pausable = interval === 'requestAnimationFrame'
-    ? useRafFn(cb, { immediate })
-    : useIntervalFn(cb, interval, { immediate })
+  })
 
   return {
     isSupported,

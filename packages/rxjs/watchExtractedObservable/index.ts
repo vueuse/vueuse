@@ -26,7 +26,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // overload: multiple sources w/ `as const`
@@ -45,7 +45,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // overload: single source + cb
@@ -62,7 +62,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // overload: watching reactive object w/ cb
@@ -79,7 +79,7 @@ export function watchExtractedObservable<
   >,
   callback: (snapshot: E) => void,
   subscriptionOptions?: WatchExtractedObservableOptions,
-  watchOptions?: WatchOptions<Immediate>
+  watchOptions?: WatchOptions<Immediate>,
 ): WatchHandle
 
 // implementation

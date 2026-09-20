@@ -1,7 +1,7 @@
 import type { Fn } from '@vueuse/shared'
-import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import { isClient, toRef, tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { useEventListener } from '../useEventListener'
 
 export type EventSourceStatus = 'CONNECTING' | 'OPEN' | 'CLOSED'
@@ -94,7 +94,7 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
   /**
    * Reference to the current EventSource instance.
    */
-  eventSource: Ref<EventSource | null>
+  eventSource: ShallowRef<EventSource | null>
   /**
    * The last event ID string, for server-sent events.
    * @see https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/lastEventId
@@ -107,7 +107,7 @@ function resolveNestedOptions<T>(options: T | true): T {
     return {} as T
   return options
 }
-
+const DEFAULT_EVENT = 'message'
 /**
  * Reactive wrapper for EventSource.
  *
@@ -125,7 +125,7 @@ export function useEventSource<Events extends string[], Data = any>(
   const event: ShallowRef<string | null> = shallowRef(null)
   const data: ShallowRef<Data | null> = shallowRef(null)
   const status = shallowRef<EventSourceStatus>('CONNECTING')
-  const eventSource = deepRef<EventSource | null>(null)
+  const eventSource = shallowRef<EventSource | null>(null)
   const error = shallowRef<Event | null>(null)
   const urlRef = toRef(url)
   const lastEventId = shallowRef<string | null>(null)
@@ -190,13 +190,7 @@ export function useEventSource<Events extends string[], Data = any>(
           onFailed?.()
       }
     }
-
-    es.onmessage = (e: MessageEvent) => {
-      event.value = null
-      data.value = serializer.read(e.data) ?? null
-      lastEventId.value = e.lastEventId
-    }
-
+    events = events.length > 0 ? events : [DEFAULT_EVENT] as unknown as Events
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: string, lastEventId?: string }) => {
         event.value = event_name

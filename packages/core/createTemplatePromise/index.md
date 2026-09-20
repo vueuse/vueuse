@@ -110,6 +110,22 @@ And in the template slot, you can access the arguments via `args` property.
 </template>
 ```
 
+### Singleton Mode
+
+Use the `singleton` option to ensure only one instance of the promise can be active at a time. If `start` is called while a promise is already active, it will return the existing promise instead of creating a new one.
+
+```ts
+import { createTemplatePromise } from '@vueuse/core'
+
+const TemplatePromise = createTemplatePromise<boolean>({
+  singleton: true,
+})
+
+// These will return the same promise if called in quick succession
+const result1 = TemplatePromise.start()
+const result2 = TemplatePromise.start() // returns the same promise as result1
+```
+
 ### Transition
 
 You can use transition to animate the slot.
@@ -146,6 +162,37 @@ const TemplatePromise = createTemplatePromise<ReturnType>({
 ```
 
 Learn more about [Vue Transition](https://vuejs.org/guide/built-ins/transition.html).
+
+### Slot Props
+
+The slot provides the following props:
+
+| Prop          | Type                                     | Description                                               |
+| ------------- | ---------------------------------------- | --------------------------------------------------------- |
+| `promise`     | `Promise<Return> \| undefined`           | The current promise instance                              |
+| `resolve`     | `(v: Return \| Promise<Return>) => void` | Resolve the promise with a value                          |
+| `reject`      | `(v: any) => void`                       | Reject the promise                                        |
+| `args`        | `Args`                                   | Arguments passed to `start()`                             |
+| `isResolving` | `boolean`                                | `true` when resolving another promise passed to `resolve` |
+| `key`         | `number`                                 | Unique key for list rendering                             |
+
+```vue
+<template>
+  <TemplatePromise v-slot="{ promise, resolve, reject, args, isResolving }">
+    <div v-if="isResolving">
+      Loading...
+    </div>
+    <div v-else>
+      <button @click="resolve('ok')">
+        OK
+      </button>
+      <button @click="reject('cancelled')">
+        Cancel
+      </button>
+    </div>
+  </TemplatePromise>
+</template>
+```
 
 ## Motivation
 

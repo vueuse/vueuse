@@ -40,7 +40,7 @@ export function cloneFnJSON<T>(source: T): T {
 
 export function useCloned<T>(
   source: MaybeRefOrGetter<T>,
-  options: UseClonedOptions = {},
+  options: UseClonedOptions<T> = {},
 ): UseClonedReturn<T> {
   const cloned = deepRef({} as T) as Ref<T>
   const isModified = shallowRef<boolean>(false)

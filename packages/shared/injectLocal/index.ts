@@ -11,10 +11,10 @@ import { localProvidedStateMap } from '../provideLocal/map'
  * const injectedValue = injectLocal('MyInjectionKey') // injectedValue === 1
  * ```
  *
- * @__NO_SIDE_EFFECTS__
+ * @NO_SIDE_EFFECTS
  */
 // @ts-expect-error overloads are not compatible
-export const injectLocal: typeof inject = <T>(...args) => {
+export const injectLocal: typeof inject = /* @__NO_SIDE_EFFECTS__ */ <T>(...args) => {
   const key = args[0] as InjectionKey<T> | string | number
   const instance = getCurrentInstance()?.proxy
   const owner = instance ?? getCurrentScope()

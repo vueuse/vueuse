@@ -21,7 +21,7 @@ Collection of essential Vue Composition Utilities
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'>
+    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg' alt="Sponsors">
   </a>
 </p>
 
@@ -108,7 +108,7 @@ And thanks to [all the contributors on GitHub](https://github.com/vueuse/vueuse/
 
 ### Financial Contributors on Open Collective
 
-<a href="https://opencollective.com/vueuse"><img src="https://opencollective.com/vueuse/individuals.svg?width=890"></a>
+<a href="https://opencollective.com/vueuse"><img src="https://opencollective.com/vueuse/individuals.svg?width=890" alt="Open Collective"></a>
 
 ## 📄 License
 

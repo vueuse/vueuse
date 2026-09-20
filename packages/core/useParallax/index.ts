@@ -59,8 +59,7 @@ export function useParallax(
 
   const source = computed(() => {
     if (orientation.isSupported
-      && ((orientation.alpha != null && orientation.alpha !== 0) || (orientation.gamma != null && orientation.gamma !== 0))
-    ) {
+      && ((orientation.alpha != null && orientation.alpha !== 0) || (orientation.gamma != null && orientation.gamma !== 0))) {
       return 'deviceOrientation'
     }
     return 'mouse'

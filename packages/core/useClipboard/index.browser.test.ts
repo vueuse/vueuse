@@ -19,6 +19,20 @@ describe('useClipboard', () => {
       expect(copied.value).toBe(true)
     })
 
+    it('should copy text from async function', async () => {
+      const { text, copy, copied, copyPending } = useClipboard()
+      expect(text.value).toBe('')
+      expect(copied.value).toBe(false)
+
+      const promise = copy(async () => 'async text')
+      expect(copyPending.value).toBe(true)
+
+      await promise
+
+      expect(text.value).toBe('async text')
+      expect(copied.value).toBe(true)
+    })
+
     it.todo('should read from legacy clipboard')
   })
 
