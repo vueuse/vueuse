@@ -73,12 +73,12 @@ export interface UseFetchReturn<T> {
 
   // methods
   get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
   json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
@@ -588,7 +588,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   function setMethod(method: HttpMethod) {
-    return (payload?: unknown, payloadType?: PayloadType) => {
+    return <P = unknown>(payload?: P, payloadType?: PayloadType) => {
       if (!isFetching.value) {
         config.method = method
         config.payload = payload
