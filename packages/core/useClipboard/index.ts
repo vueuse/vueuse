@@ -70,6 +70,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   } = options
 
   const isClipboardApiSupported = useSupported(() => (navigator && 'clipboard' in navigator))
+  const isClipboardItemSupported = useSupported(() => typeof ClipboardItem !== 'undefined')
   const permissionRead = usePermission('clipboard-read')
   const permissionWrite = usePermission('clipboard-write')
   const isSupported = computed(() => isClipboardApiSupported.value || legacy)
@@ -105,8 +106,13 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
       if (!useLegacy) {
         try {
-          const clipboardItem = createClipboardItem(resolvedValue)
-          await navigator!.clipboard.write([clipboardItem])
+          if (isClipboardItemSupported.value) {
+            const clipboardItem = createClipboardItem(resolvedValue)
+            await navigator!.clipboard.write([clipboardItem])
+          }
+          else {
+            await navigator!.clipboard.writeText(await resolveText(resolvedValue))
+          }
         }
         catch {
           useLegacy = true
@@ -148,6 +154,12 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
         }),
       })
     }
+  }
+
+  async function resolveText(value: ClipboardValue) {
+    const resolvedText = typeof value === 'string' ? value : (await value() ?? '')
+    text.value = resolvedText
+    return resolvedText
   }
 
   function legacyCopy(value: string) {
