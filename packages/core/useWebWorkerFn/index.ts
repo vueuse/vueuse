@@ -54,17 +54,19 @@ export function useWebWorkerFn<T extends (...fnArgs: any[]) => any>(fn: T, optio
 
   let worker: (Worker & { _url?: string }) | undefined
   const workerStatus = shallowRef<WebWorkerStatus>('PENDING')
-  const promise = shallowRef<({ reject?: (result: ReturnType<T> | ErrorEvent) => void, resolve?: (result: ReturnType<T>) => void })>({})
+  const promise = shallowRef<({ reject?: (result: ReturnType<T> | ErrorEvent | Error) => void, resolve?: (result: ReturnType<T>) => void })>({})
   const timeoutId = shallowRef<number>()
 
   const workerTerminate = (status: WebWorkerStatus = 'PENDING') => {
     if (worker && worker._url && window) {
       worker.terminate()
       URL.revokeObjectURL(worker._url)
+      const { reject } = promise.value
       promise.value = {}
       worker = undefined
       window.clearTimeout(timeoutId.value)
       workerStatus.value = status
+      reject?.(new Error(`[useWebWorkerFn] worker terminated with status: ${status}`))
     }
   }
 
