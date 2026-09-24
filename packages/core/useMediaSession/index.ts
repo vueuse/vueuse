@@ -173,7 +173,7 @@ export function useMediaSession(): UseMediaSessionReturn {
       }
 
       if (isSetMicrophoneSupported.value) {
-        watchEffect(() => navigator.mediaSession.setCameraActive(microphoneActive.value))
+        watchEffect(() => navigator.mediaSession.setMicrophoneActive(microphoneActive.value))
       }
     })
   }
