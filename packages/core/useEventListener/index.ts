@@ -36,7 +36,20 @@ export function useEventListener<E extends keyof WindowEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 2: Explicitly Window target
+ * Overload 2: Omitted Window target with custom event names
+ *
+ * @see https://vueuse.org/useEventListener
+ */
+export function useEventListener<Names extends string, EventType = Event>(
+  event: MaybeRefOrGetter<Arrayable<Names>>,
+  listener: MaybeRef<Arrayable<GeneralEventListener<EventType>>>,
+  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>,
+): Fn
+
+/**
+ * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
+ *
+ * Overload 3: Explicitly Window target
  *
  * @see https://vueuse.org/useEventListener
  * @param target
@@ -54,7 +67,7 @@ export function useEventListener<E extends keyof WindowEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 3: Explicitly Document target
+ * Overload 4: Explicitly Document target
  *
  * @see https://vueuse.org/useEventListener
  */
@@ -68,7 +81,7 @@ export function useEventListener<E extends keyof DocumentEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 4: Explicitly ShadowRoot target
+ * Overload 5: Explicitly ShadowRoot target
  *
  * @see https://vueuse.org/useEventListener
  */
@@ -82,7 +95,7 @@ export function useEventListener<E extends keyof ShadowRootEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 5: Explicitly HTMLElement target
+ * Overload 6: Explicitly HTMLElement target
  *
  * @see https://vueuse.org/useEventListener
  */
@@ -96,7 +109,7 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 6: Custom event target with event type infer
+ * Overload 7: Custom event target with event type infer
  *
  * @see https://vueuse.org/useEventListener
  */
@@ -110,7 +123,7 @@ export function useEventListener<Names extends string, EventType = Event>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 7: Custom event target fallback
+ * Overload 8: Custom event target fallback
  *
  * @see https://vueuse.org/useEventListener
  */
