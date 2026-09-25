@@ -1,3 +1,4 @@
+import type { StorageLike } from '../ssr-handlers'
 import { debounceFilter } from '@vueuse/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref as deepRef, defineComponent, nextTick, toRaw } from 'vue'
@@ -7,6 +8,31 @@ import { customStorageEventName, StorageSerializers, useStorage } from './index'
 const KEY = 'custom-key'
 const ANOTHER_KEY = 'another-key'
 
+interface RawStorageValue {
+  name: string
+  createdAt: Date
+  nested: {
+    map: Map<string, Set<number>>
+  }
+  self?: RawStorageValue
+}
+
+function createRawStorageValue(name: string): RawStorageValue {
+  const value: RawStorageValue = {
+    name,
+    createdAt: new Date('2024-01-01T00:00:00.000Z'),
+    nested: {
+      map: new Map([
+        ['numbers', new Set([1, 2, 3])],
+      ]),
+    },
+  }
+
+  value.self = value
+
+  return value
+}
+
 vi.mock('../ssr-handlers', () => ({
   getSSRHandler: vi.fn().mockImplementationOnce((_, cb) => () => cb()).mockImplementationOnce(() => () => {
     throw new Error('getDefaultStorage error')
@@ -15,7 +41,7 @@ vi.mock('../ssr-handlers', () => ({
 
 describe('useStorage', () => {
   console.error = vi.fn()
-  const storageState = new Map<string, string | number | undefined>()
+  const storageState = new Map<string, unknown>()
   const storageMock = {
     getItem: vi.fn(x => storageState.get(x)),
     setItem: vi.fn((x, v) => storageState.set(x, v)),
@@ -356,6 +382,61 @@ describe('useStorage', () => {
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
+  it('stores values as-is when serializer is false', async () => {
+    const initial = createRawStorageValue('initial')
+    const objectStorage = storageMock as StorageLike<RawStorageValue>
+    const store = useStorage(KEY, initial, objectStorage, { serializer: false })
+
+    expect(toRaw(store.value)).toBe(initial)
+    expect(objectStorage.getItem(KEY)).toBe(initial)
+
+    const next = createRawStorageValue('next')
+    store.value = next
+    await nextTwoTick()
+
+    const storedValue = objectStorage.getItem(KEY)
+    expect(storedValue).toBe(store.value)
+    expect(toRaw(storedValue!)).toBe(next)
+
+    store.value = null
+    await nextTwoTick()
+
+    expect(storage.removeItem).toHaveBeenCalledWith(KEY)
+  })
+
+  it('stores vm values as-is when serializer is false', async () => {
+    const initial = createRawStorageValue('initial')
+    const objectStorage = storageMock as StorageLike<RawStorageValue>
+    const vm = useSetup(() => {
+      const ref = useStorage(KEY, initial, objectStorage, { serializer: false })
+
+      return {
+        ref,
+      }
+    })
+
+    expect(toRaw(vm.ref)).toBe(initial)
+    expect(objectStorage.getItem(KEY)).toBe(initial)
+
+    const next = createRawStorageValue('next')
+    vm.ref = next
+    await nextTwoTick()
+
+    const storedValue = objectStorage.getItem(KEY)
+    expect(storedValue).toBe(vm.ref)
+    expect(toRaw(storedValue!)).toBe(next)
+  })
+
+  it('reads existing values as-is when serializer is false', () => {
+    const storedValue = createRawStorageValue('stored')
+    storageMock.setItem(KEY, storedValue)
+
+    const objectStorage = storageMock as StorageLike<RawStorageValue>
+    const store = useStorage(KEY, createRawStorageValue('default'), objectStorage, { serializer: false })
+
+    expect(toRaw(store.value)).toBe(storedValue)
+  })
+
   it('mergeDefaults option', async () => {
     // basic
     storage.setItem(KEY, '0')
@@ -553,6 +634,24 @@ describe('useStorage', () => {
     state1.value = 1
     await nextTick()
     expect(state2.value).toBe(1)
+  })
+
+  it('updates from custom storage events when serializer is false', async () => {
+    const customStorage = storageMock as StorageLike<RawStorageValue>
+    const state = useStorage(KEY, createRawStorageValue('initial'), customStorage, { serializer: false })
+    const nextValue = createRawStorageValue('event')
+
+    window.dispatchEvent(new CustomEvent(customStorageEventName, {
+      detail: {
+        storageArea: customStorage,
+        key: KEY,
+        oldValue: createRawStorageValue('previous'),
+        newValue: nextValue,
+      },
+    }))
+    await nextTick()
+
+    expect(toRaw(state.value)).toBe(nextValue)
   })
 
   it('updates on key change when thew new storage value is presented', async () => {
