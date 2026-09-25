@@ -3,9 +3,10 @@ import type { LocationAsRelativeRaw, RouteParamValueRaw, Router } from 'vue-rout
 import type { ReactiveRouteOptionsWithTransform } from '../_types'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { customRef, nextTick, toValue, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { isNavigationFailure, useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
+const _syncs = new WeakMap<Router, Set<() => void>>()
 
 export function useRouteParams(
   name: string,
@@ -53,13 +54,37 @@ export function useRouteParams<
 
   const _paramsQueue = _queue.get(router)!
 
+  if (!_syncs.has(router))
+    _syncs.set(router, new Set())
+
+  const _routerSyncs = _syncs.get(router)!
+
   let param = route.params[name] as any
 
+  let _trigger: () => void
+
+  const sync = () => {
+    const v = route.params[name]
+
+    if (param === transformGet(v as T))
+      return
+
+    param = v
+
+    _trigger()
+  }
+
+  const resync = () => {
+    for (const fn of _routerSyncs)
+      fn()
+  }
+
+  _routerSyncs.add(sync)
+
   tryOnScopeDispose(() => {
+    _routerSyncs.delete(sync)
     param = undefined
   })
-
-  let _trigger: () => void
 
   const proxy = customRef<any>((track, trigger) => {
     _trigger = trigger
@@ -90,7 +115,7 @@ export function useRouteParams<
 
           const { params, query, hash } = route
 
-          router[toValue(mode)]({
+          const result = router[toValue(mode)]({
             params: {
               ...params,
               ...newParams,
@@ -98,6 +123,14 @@ export function useRouteParams<
             query,
             hash,
           } as LocationAsRelativeRaw)
+
+          Promise.resolve(result).then(
+            (failure) => {
+              if (isNavigationFailure(failure))
+                resync()
+            },
+            resync,
+          )
         })
       },
     }
@@ -105,14 +138,7 @@ export function useRouteParams<
 
   watch(
     () => route.params[name],
-    (v) => {
-      if (param === transformGet(v as T))
-        return
-
-      param = v
-
-      _trigger()
-    },
+    sync,
     { flush: 'sync' },
   )
 
