@@ -133,6 +133,11 @@ export interface MemoryInfo {
   readonly usedJSHeapSize: number;
   [Symbol.toStringTag]: 'MemoryInfo';
 }
+export interface ModelContext {
+  registerTool: (_: WebMCPToolDescriptor, _?: {
+    signal?: AbortSignal;
+  }) => void;
+}
 export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean;
   windowScroll?: boolean;
@@ -1479,6 +1484,20 @@ export interface UseWakeLockReturn extends Supportable {
   forceRequest: (_: WakeLockType) => Promise<void>;
   release: () => Promise<void>;
 }
+export interface UseWebMCPOptions<Args, Result> extends ConfigurableDocument {
+  name: MaybeRefOrGetter<string>;
+  description: MaybeRefOrGetter<string>;
+  inputSchema?: MaybeRefOrGetter<object | undefined>;
+  annotations?: MaybeRefOrGetter<WebMCPToolAnnotations | undefined>;
+  execute: (_: Args) => Result | Promise<Result>;
+  enabled?: MaybeRefOrGetter<boolean>;
+  formatOutput?: (_: Result, _: Args) => unknown;
+  onError?: (_: unknown) => void;
+}
+export interface UseWebMCPReturn extends Supportable {
+  isRegistered: ShallowRef<boolean>;
+  error: ShallowRef<Error | null>;
+}
 export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
   requestPermissions?: boolean;
 }
@@ -1554,6 +1573,27 @@ export interface WakeLockSentinel extends EventTarget {
   type: WakeLockType;
   released: boolean;
   release: () => Promise<void>;
+}
+export interface WebMCPToolAnnotations {
+  readOnlyHint?: boolean;
+  untrustedContentHint?: boolean;
+  [key: string]: unknown;
+}
+export interface WebMCPToolContent {
+  type: string;
+  text?: string;
+  [key: string]: unknown;
+}
+export interface WebMCPToolDescriptor {
+  name: string;
+  description: string;
+  inputSchema?: object;
+  annotations?: WebMCPToolAnnotations;
+  execute: (_: any) => Promise<WebMCPToolResponse> | WebMCPToolResponse;
+}
+export interface WebMCPToolResponse {
+  content: WebMCPToolContent[];
+  isError?: boolean;
 }
 export interface WebNotificationOptions {
   title?: string;
@@ -2065,6 +2105,7 @@ export declare function useVModel<P extends object, K extends keyof P, Name exte
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, true>): ToRefs<P>;
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, false>): ToRefs<P>;
 export declare function useWakeLock(_?: UseWakeLockOptions): UseWakeLockReturn;
+export declare function useWebMCP<Args = Record<string, any>, Result = unknown>(_: UseWebMCPOptions<Args, Result>): UseWebMCPReturn;
 export declare function useWebNotification(_?: UseWebNotificationOptions): UseWebNotificationReturn;
 export declare function useWebSocket<Data = any>(_: MaybeRefOrGetter<string | URL | undefined>, _?: UseWebSocketOptions): UseWebSocketReturn<Data>;
 export declare function useWebWorker<T = any>(_: string, _?: WorkerOptions, _?: ConfigurableWindow): UseWebWorkerReturn<T>;
@@ -2179,4 +2220,64 @@ export declare const TransitionPresets: Record<keyof typeof _TransitionPresets, 
 
 // #region Re-exports
 export * from "@vueuse/shared";
+// #endregion
+
+// #region Referenced (internal)
+type CacheKey = any;
+type ClipboardValue = string | (() => Promise<string | undefined>);
+type Combination = 'overwrite' | 'chain';
+type DescriptorNamePolyfill = 'accelerometer' | 'accessibility-events' | 'ambient-light-sensor' | 'background-sync' | 'camera' | 'clipboard-read' | 'clipboard-write' | 'gyroscope' | 'magnetometer' | 'microphone' | 'notifications' | 'payment-handler' | 'persistent-storage' | 'push' | 'speaker' | 'local-fonts';
+interface FileSystemWritableFileStream extends WritableStream {
+  write: FileSystemWritableFileStreamWrite;
+  seek: (_: number) => Promise<void>;
+  truncate: (_: number) => Promise<void>;
+}
+type GenerateSlotsFromSlotMap<T extends ObjectLiteralWithPotentialObjectLiterals> = { [K in keyof T]: Slot<T[K]>; };
+interface InferEventTarget<Events> {
+  addEventListener: (_: Events, _?: any, _?: any) => any;
+  removeEventListener: (_: Events, _?: any, _?: any) => any;
+}
+type InfiniteScrollElement = HTMLElement | SVGElement | Window | Document | null | undefined;
+type Locale = Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale;
+type MapQueueTask<T extends any[]> = { [K in keyof T]: UseAsyncQueueTask<T[K]>; };
+type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>;
+type PostMessage = typeof Worker.prototype['postMessage'];
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  grammars: SpeechGrammarList;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  onaudioend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onaudiostart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onerror: ((this: SpeechRecognition, _: SpeechRecognitionErrorEvent) => any) | null;
+  onnomatch: ((this: SpeechRecognition, _: SpeechRecognitionEvent) => any) | null;
+  onresult: ((this: SpeechRecognition, _: SpeechRecognitionEvent) => any) | null;
+  onsoundend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onsoundstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onspeechend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onspeechstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  abort: () => void;
+  start: () => void;
+  stop: () => void;
+  addEventListener: (<K extends keyof SpeechRecognitionEventMap>(_: K, _: (this: SpeechRecognition, _: SpeechRecognitionEventMap[K]) => any, _?: boolean | AddEventListenerOptions) => void) & ((_: string, _: EventListenerOrEventListenerObject, _?: boolean | AddEventListenerOptions) => void);
+  removeEventListener: (<K extends keyof SpeechRecognitionEventMap>(_: K, _: (this: SpeechRecognition, _: SpeechRecognitionEventMap[K]) => any, _?: boolean | EventListenerOptions) => void) & ((_: string, _: EventListenerOrEventListenerObject, _?: boolean | EventListenerOptions) => void);
+}
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: SpeechRecognitionErrorCode;
+  readonly message: string;
+}
+interface UseMediaControlsOptions extends ConfigurableDocument {
+  src?: MaybeRefOrGetter<string | UseMediaSource | UseMediaSource[]>;
+  tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>;
+}
+type UseTimeAgoReturn$1<Controls extends boolean = false> = Controls extends true ? {
+  timeAgoIntl: ComputedRef<string>;
+  parts: ComputedRef<Intl.RelativeTimeFormatPart[]>;
+} & Pausable : ComputedRef<string>;
+type UseVirtualListItemSize = number | ((_: number) => number);
+type WakeLockType = 'screen';
+type WorkerFn = (..._: unknown[]) => Worker;
 // #endregion

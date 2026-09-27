@@ -14,3 +14,9 @@ export declare const UseFocusTrap: import("vue").DefineSetupFnComponent<UseFocus
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
 }, import("vue").PublicProps>;
 // #endregion
+
+// #region Referenced (internal)
+interface UseFocusTrapSlots {
+  default: (_: Reactive<UseFocusTrapReturn>) => any;
+}
+// #endregion

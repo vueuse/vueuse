@@ -1,11 +1,19 @@
+minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
-  - bumpp@12.1.0
-  - '@types/node@26.1.2'
-  - postcss@8.5.24
+  - '@iconify/json@2.2.525'
+  - vue-router@5.3.1
+  - bumpp@12.3.0
 
+trustPolicy: no-downgrade
+
+update:
+  ignoreDeps:
+    - typescript@7
+
+strictPeerDependencies: false
 shamefullyHoist: true
 shellEmulator: true
-trustPolicy: no-downgrade
+sideEffectsCache: false
 
 packages:
   - packages/*
@@ -21,47 +29,56 @@ overrides:
 patchedDependencies:
   google-font-installer@1.2.0: patches/google-font-installer@1.2.0.patch
 
+allowBuilds:
+  '@firebase/util': false
+  '@parcel/watcher': false
+  electron: false
+  esbuild: false
+  msw: false
+  protobufjs: false
+  simple-git-hooks: false
+
 catalogs:
   dev:
-    '@antfu/eslint-config': ^9.2.0
-    '@antfu/ni': ^30.3.0
-    '@iconify/json': ^2.2.506
+    '@antfu/eslint-config': ^9.5.1
+    '@antfu/ni': ^30.5.0
+    '@iconify/json': ^2.2.525
     '@vitejs/plugin-vue': ^6.0.8
-    '@vue/compiler-sfc': ^3.5.40
-    bumpp: ^12.1.0
+    '@vue/compiler-sfc': ^3.5.42
+    bumpp: ^12.3.0
     chokidar: ^5.0.0
     consola: ^3.4.2
-    eslint: ^10.8.0
+    eslint: ^10.9.1
     eslint-factory: ^0.1.2
     eslint-plugin-format: ^2.0.1
     eslint-plugin-unimport: ^2.0.0
     export-size: ^0.8.0
-    lint-staged: ^17.2.0
-    nuxt: ^4.5.1
+    lint-staged: ^17.4.1
+    nuxt: ^4.5.2
     ofetch: ^1.5.1
-    pnpm: ^11.17.0
-    postcss: ^8.5.24
+    pnpm: ^11.25.0
+    postcss: ^8.5.26
     postcss-nested: ^7.0.2
     prettier: ^3.9.6
     semver: ^7.8.5
-    sharp: ^0.35.3
+    sharp: ^0.35.4
     simple-git: ^3.36.0
-    simple-git-hooks: ^2.13.1
-    taze: ^19.16.0
+    simple-git-hooks: ^2.14.0
+    taze: ^21.1.0
     tinyglobby: ^0.2.17
     tsdown: ^0.22.14
     tsdown-stale-guard: ^0.1.3
-    tsx: ^4.23.1
-    turbo: ^2.10.7
+    tsx: ^4.23.13
+    turbo: ^2.10.12
     typescript: ^6.0.3
-    unimport: ^6.3.1
-    unocss: ^66.7.5
-    vite: ^8.1.5
+    unimport: ^6.4.0
+    unocss: ^66.9.2
+    vite: ^8.2.2
     vite-plugin-inspect: ^11.4.1
-    vue: ^3.5.40
-    vue-tsc: ^3.3.8
+    vue: ^3.5.42
+    vue-tsc: ^3.3.11
   docs:
-    '@shikijs/vitepress-twoslash': ^4.3.1
+    '@shikijs/vitepress-twoslash': ^4.4.3
     '@vite-pwa/vitepress': ^1.1.0
     '@vue/repl': ^4.7.2
     google-font-installer: ^1.2.0
@@ -72,17 +89,17 @@ catalogs:
     unplugin-icons: ^23.0.1
     unplugin-vue-components: ^32.1.0
     vite-plugin-pwa: ^1.3.0
-    vitepress: ^2.0.0-alpha.18
+    vitepress: ^2.0.0-alpha.19
     yaml: ^2.9.0
   integrations:
-    '@nuxt/kit': ^4.5.1
-    '@nuxt/schema': ^4.5.1
+    '@nuxt/kit': ^4.5.2
+    '@nuxt/schema': ^4.5.2
     async-validator: ^4.2.5
-    axios: ^1.18.1
+    axios: ^1.20.0
     change-case: ^5.4.4
     drauu: ^1.0.0
     electron: ^13.1.0
-    firebase: ^12.16.0
+    firebase: ^12.18.0
     focus-trap: ^8.2.2
     fuse.js: ^7.5.0
     idb-keyval: ^6.3.0
@@ -93,41 +110,29 @@ catalogs:
     rxjs: ^6.6.7
     sortablejs: ^1.15.7
     universal-cookie: ^8.1.2
-    vue-router: ^5.2.0
+    vue-router: ^5.3.1
   test:
     '@arethetypeswrong/core': ^0.18.5
     '@js-temporal/polyfill': ^0.5.1
-    '@vitest/browser-playwright': ^4.1.10
-    '@vitest/coverage-v8': ^4.1.10
-    '@vitest/ui': ^4.1.10
-    '@vue/test-utils': ^2.4.11
+    '@vitest/browser-playwright': ^4.1.11
+    '@vitest/coverage-v8': ^4.1.11
+    '@vitest/ui': ^4.1.11
+    '@vue/test-utils': ^2.5.0
     fake-indexeddb: ^6.2.5
-    jsdom: ^30.0.0
+    jsdom: ^30.0.1
     msw: ^2.15.0
     playwright: 1.60.0
-    temporal-polyfill: ^1.0.3
-    tsnapi: ^1.2.0
-    vitest: ^4.1.10
+    temporal-polyfill: ^1.0.4
+    tsnapi: ^1.4.2
+    vitest: ^4.1.11
     vitest-browser-vue: ^2.1.0
   types:
     '@type-challenges/utils': ^0.1.1
     '@types/md5': ^2.3.6
-    '@types/node': ^26.1.2
+    '@types/node': ^26.4.1
     '@types/nprogress': ^0.2.3
     '@types/qrcode': ^1.5.6
     '@types/remove-markdown': ^0.3.4
-    '@types/semver': ^7.7.1
+    '@types/semver': ^7.8.0
     '@types/sortablejs': ^1.15.9
     '@types/web-bluetooth': ^0.0.21
-
-allowBuilds:
-  '@firebase/util': false
-  '@parcel/watcher': false
-  electron: false
-  esbuild: false
-  msw: false
-  protobufjs: false
-  simple-git-hooks: false
-
-sideEffectsCache: false
-strictPeerDependencies: false

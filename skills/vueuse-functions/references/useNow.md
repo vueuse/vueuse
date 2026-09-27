@@ -48,20 +48,6 @@ export interface UseNowOptions<
    * @default false
    */
   controls?: Controls
-  /**
-   * Start the clock immediately
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default true
-   */
-  immediate?: boolean
-  /**
-   * Update interval in milliseconds, or use requestAnimationFrame
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default requestAnimationFrame
-   */
-  interval?: "requestAnimationFrame" | number
 }
 export type UseNowReturn<Controls extends boolean> = Controls extends true
   ? {

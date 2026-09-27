@@ -516,6 +516,18 @@ export declare const useDebounce: typeof refDebounced;
 export declare const useThrottle: typeof refThrottled;
 // #endregion
 
+// #region Referenced (internal)
+type Callback<T> = IsAny<T> extends true ? (...param: any) => void : ([T] extends [void] ? (...param: unknown[]) => void : [T] extends [any[]] ? (...param: T) => void : (...param: [T, ...unknown[]]) => void);
+type Direction = 'ltr' | 'rtl' | 'both';
+type Equal<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
+type Falsy = false | void | null | undefined | 0 | 0n | '';
+type LocalProvidedKey<T> = InjectionKey<T> | string | number;
+type OnCleanup = (_: () => void) => void;
+type originDirective<H, V, A> = FunctionDirective<H, V, string, A> | ObjectDirective<H, V, string, A>;
+type TransformType<D extends Direction, L, R> = Equal<L, R> extends true ? EqualType<D, L, R> : IncludeButNotEqual<L, R> extends true ? StrictIncludeType<'LR', D, L, R> : IncludeButNotEqual<R, L> extends true ? StrictIncludeType<'RL', D, L, R> : IntersectButNotEqual<L, R> extends true ? IntersectButNotEqualType<D, L, R> : NotIntersect<L, R> extends true ? NotIntersectType<D, L, R> : never;
+type Truthy<T> = T extends false | null | undefined ? never : T;
+// #endregion
+
 // #region Other
 export { MultiWatchSources }
 // #endregion

@@ -13,3 +13,9 @@ export declare const UseSortable: import("vue").DefineSetupFnComponent<UseSortab
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
 }, import("vue").PublicProps>;
 // #endregion
+
+// #region Referenced (internal)
+interface UseSortableSlots {
+  default: (_: Reactive<UseSortableReturn>) => any;
+}
+// #endregion

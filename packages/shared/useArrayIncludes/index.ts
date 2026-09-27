@@ -39,16 +39,7 @@ export function useArrayIncludes<T, V = any>(
   value: MaybeRefOrGetter<V>,
   options?: UseArrayIncludesOptions<T, V>,
 ): UseArrayIncludesReturn
-
-/**
- * Reactive `Array.includes`
- *
- * @see https://vueuse.org/useArrayIncludes
- *
- * @returns true if the `value` is found in the array. Otherwise, false.
- *
- * @__NO_SIDE_EFFECTS__
- */
+/* @__NO_SIDE_EFFECTS__ */
 export function useArrayIncludes<T, V = any>(
   ...args: any[]
 ): UseArrayIncludesReturn {
