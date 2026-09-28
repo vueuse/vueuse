@@ -119,7 +119,7 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
   const album = shallowRef<MediaMetadataInit['album']>()
   const artist = shallowRef<MediaMetadataInit['artist']>()
-  const artwork = shallowRef<MediaMetadataInit['artwork']>()
+  const artwork = deepRef<MediaMetadataInit['artwork']>()
   const title = shallowRef<MediaMetadataInit['title']>()
 
   const duration = shallowRef<MediaPositionState['duration']>()
