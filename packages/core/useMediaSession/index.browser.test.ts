@@ -132,6 +132,7 @@ describe('useMediaSession', () => {
   it('should have `isSetMicrophoneSupported` as false if `setMicrophoneActive()` not available', () => {
     const navigator = createMockNavigator(false, false)
     const { isSetMicrophoneSupported } = useMediaSession({ navigator })
+
     expect(isSetMicrophoneSupported.value).toBe(false)
   })
 
