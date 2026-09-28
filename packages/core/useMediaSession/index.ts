@@ -1,14 +1,19 @@
 import type { Ref, ShallowRef } from 'vue'
-import type { Supportable } from '../types'
+import type { ConfigurableNavigator, Supportable } from '../types'
 import type { UseSupportedReturn } from '../useSupported'
 import { tryOnMounted, tryOnScopeDispose, watchDeep } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, watchEffect } from 'vue'
+import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
 /**
  * Many of the jsdoc definitions here are modified version of the
  * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/MediaSession)
  */
+
+export interface UseMediaSessionOptions extends ConfigurableNavigator {
+
+}
 
 export interface UseMediaSessionReturn extends Supportable {
   /**
@@ -107,8 +112,11 @@ export interface UseMediaSessionReturn extends Supportable {
  *
  * @see https://vueuse.org/useMediaSession
  */
-export function useMediaSession(): UseMediaSessionReturn {
-  // throw new Error('Media Session API is not supported by your browser.')
+export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaSessionReturn {
+  const {
+    navigator = defaultNavigator,
+  } = options
+
   const isSupported = useSupported(() => navigator && 'mediaSession' in navigator)
 
   const album = shallowRef<MediaMetadataInit['album']>()
@@ -133,7 +141,7 @@ export function useMediaSession(): UseMediaSessionReturn {
   if (isSupported.value) {
     tryOnMounted(() => {
       watchEffect(() => {
-        navigator.mediaSession.metadata = new MediaMetadata({
+        navigator!.mediaSession.metadata = new MediaMetadata({
           album: album.value,
           artist: artist.value,
           artwork: artwork.value,
@@ -142,11 +150,11 @@ export function useMediaSession(): UseMediaSessionReturn {
       })
 
       watchEffect(() => {
-        navigator.mediaSession.playbackState = playbackState.value
+        navigator!.mediaSession.playbackState = playbackState.value
       })
 
       watchEffect(() => {
-        navigator.mediaSession.setPositionState({
+        navigator!.mediaSession.setPositionState({
           duration: duration.value,
           playbackRate: playbackRate.value,
           position: position.value,
@@ -156,24 +164,24 @@ export function useMediaSession(): UseMediaSessionReturn {
       watchDeep(actionHandlers, (newHandlers = {}, oldHandlers = {}) => {
         Object.entries(oldHandlers).forEach(([action]) => {
           try {
-            navigator.mediaSession.setActionHandler(action as MediaSessionAction, null)
+            navigator!.mediaSession.setActionHandler(action as MediaSessionAction, null)
           }
           catch {}
         })
         Object.entries(newHandlers).forEach(([action, handler]) => {
           try {
-            navigator.mediaSession.setActionHandler(action as MediaSessionAction, handler)
+            navigator!.mediaSession.setActionHandler(action as MediaSessionAction, handler)
           }
           catch {}
         })
       })
 
       if (isSetCameraSupported.value) {
-        watchEffect(() => navigator.mediaSession.setCameraActive(cameraActive.value))
+        watchEffect(() => navigator!.mediaSession.setCameraActive(cameraActive.value))
       }
 
       if (isSetMicrophoneSupported.value) {
-        watchEffect(() => navigator.mediaSession.setMicrophoneActive(microphoneActive.value))
+        watchEffect(() => navigator!.mediaSession.setMicrophoneActive(microphoneActive.value))
       }
     })
   }
