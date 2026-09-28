@@ -11,9 +11,7 @@ import { useSupported } from '../useSupported'
  * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/MediaSession)
  */
 
-export interface UseMediaSessionOptions extends ConfigurableNavigator {
-
-}
+export interface UseMediaSessionOptions extends ConfigurableNavigator {}
 
 export interface UseMediaSessionReturn extends Supportable {
   /**
@@ -33,7 +31,7 @@ export interface UseMediaSessionReturn extends Supportable {
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/artwork)
    */
-  artwork: ShallowRef<MediaMetadataInit['artwork']>
+  artwork: Ref<MediaMetadataInit['artwork']>
   /**
    * The **`title`** property of the `MediaMetadata` interface returns or sets the title of the media to be played.
    *
