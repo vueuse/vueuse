@@ -192,14 +192,23 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
     album.value = undefined
     artist.value = undefined
-    artwork.value = []
+    artwork.value = undefined
     title.value = undefined
+    navigator!.mediaSession.metadata = null
 
     duration.value = undefined
     playbackRate.value = undefined
     position.value = undefined
+    navigator!.mediaSession.setPositionState()
 
     playbackState.value = 'none'
+    navigator!.mediaSession.playbackState = 'none'
+    Object.entries(actionHandlers.value || {}).forEach(([action]) => {
+      try {
+        navigator!.mediaSession.setActionHandler(action as MediaSessionAction, null)
+      }
+      catch {}
+    })
     actionHandlers.value = {}
   }
 
