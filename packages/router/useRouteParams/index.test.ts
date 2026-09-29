@@ -362,7 +362,7 @@ describe('useRouteParams', () => {
     expect(lang.value).toBe('en-US')
   })
 
-  it('should clear param when passing `undefined` or `null`', async () => {
+  it('should clear param when passing empty string or `undefined` or `null` if route have `name`', async () => {
     const router = createRouter({
       history: createMemoryHistory(),
       routes: [
@@ -379,6 +379,7 @@ describe('useRouteParams', () => {
     id.value = null
     await promiseTimeout(50)
     expect(router.currentRoute.value.params.id).toBeUndefined()
+    expect(router.currentRoute.value.path).toBe('/')
 
     id.value = 'foo'
     await promiseTimeout(50)
@@ -386,5 +387,44 @@ describe('useRouteParams', () => {
     id.value = undefined
     await promiseTimeout(50)
     expect(router.currentRoute.value.params.id).toBeUndefined()
+    expect(router.currentRoute.value.path).toBe('/')
+
+    id.value = 'foo'
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBe('foo')
+    id.value = ''
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBe('')
+    expect(router.currentRoute.value.path).toBe('/')
+  })
+
+  it('should clear param only when passing empty string if route have no `name`', async () => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: '/:id?', component: { template: '<div>Home</div>' } },
+      ],
+    })
+    router.push('/foo')
+    await router.isReady()
+
+    const id: Ref<any> = useRouteParams('id', null, { route: router.currentRoute.value, router })
+
+    expect(id.value).toBe('foo')
+
+    id.value = null
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBe('foo')
+    expect(router.currentRoute.value.path).toBe('/foo')
+
+    id.value = undefined
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBe('foo')
+    expect(router.currentRoute.value.path).toBe('/foo')
+
+    id.value = ''
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBe('')
+    expect(router.currentRoute.value.path).toBe('/')
   })
 })
