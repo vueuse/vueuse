@@ -87,16 +87,18 @@ export function useConfirmDialog<
   }
 
   const confirm = (data?: ConfirmData) => {
+    const resolve = _resolve
     revealed.value = false
     confirmHook.trigger(data)
 
-    _resolve({ data, isCanceled: false })
+    resolve({ data, isCanceled: false })
   }
 
   const cancel = (data?: CancelData) => {
+    const resolve = _resolve
     revealed.value = false
     cancelHook.trigger(data)
-    _resolve({ data, isCanceled: true })
+    resolve({ data, isCanceled: true })
   }
 
   return {
