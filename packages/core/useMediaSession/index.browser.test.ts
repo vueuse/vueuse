@@ -32,7 +32,7 @@ describe('useMediaSession', () => {
     expect(useMediaSession).toBeDefined()
   })
 
-  it('should not be be supported if `navigator.mediaSession` not available', () => {
+  it('should not be be supported if `navigator.mediaSession` is not available', () => {
     const { isSupported } = useMediaSession({ navigator: {} as unknown as Navigator })
     expect(isSupported.value).toBe(false)
   })
