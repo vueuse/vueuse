@@ -1,6 +1,8 @@
 import type { Ref } from 'vue'
+import { promiseTimeout } from '@vueuse/shared'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
+import { createMemoryHistory, createRouter } from 'vue-router'
 import { useRouteParams } from './index'
 
 describe('useRouteParams', () => {
@@ -358,5 +360,31 @@ describe('useRouteParams', () => {
 
     expect(page.value).toBe(2)
     expect(lang.value).toBe('en-US')
+  })
+
+  it('should clear param when passing `undefined` or `null`', async () => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { name: 'Home', path: '/:id?', component: { template: '<div>Home</div>' } },
+      ],
+    })
+    router.push('/foo')
+    await router.isReady()
+
+    const id: Ref<any> = useRouteParams('id', null, { route: router.currentRoute.value, router })
+
+    expect(id.value).toBe('foo')
+
+    id.value = null
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBeUndefined()
+
+    id.value = 'foo'
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBe('foo')
+    id.value = undefined
+    await promiseTimeout(50)
+    expect(router.currentRoute.value.params.id).toBeUndefined()
   })
 })
