@@ -41,9 +41,9 @@ export const team: TeamMember[] = [
     packages: ['core'],
   },
   {
-    avatar: contributorsAvatars['patak-dev'],
+    avatar: contributorsAvatars['patak-cat'],
     name: 'Patak',
-    github: 'patak-dev',
+    github: 'patak-cat',
     twitter: 'patak_dev',
     bluesky: 'patak.dev',
     sponsors: true,
@@ -111,6 +111,48 @@ export const team: TeamMember[] = [
     sponsors: true,
     description: '',
     packages: ['motion'],
+  },
+  {
+    avatar: contributorsAvatars['43081j'],
+    name: 'James Garbutt',
+    github: '43081j',
+    description: '',
+  },
+  {
+    avatar: contributorsAvatars.OrbisK,
+    name: 'Robin',
+    github: 'OrbisK',
+    description: '',
+  },
+  {
+    avatar: contributorsAvatars.ilyaliao,
+    name: 'IlyaL',
+    github: 'ilyaliao',
+    description: '',
+  },
+  {
+    avatar: contributorsAvatars.sxzz,
+    name: 'Kevin Deng',
+    github: 'sxzz',
+    description: '',
+  },
+  {
+    avatar: contributorsAvatars['9romise'],
+    name: 'Vida Xie',
+    github: '9romise',
+    description: '',
+  },
+  {
+    avatar: contributorsAvatars.serkodev,
+    name: 'SerKo',
+    github: 'serkodev',
+    description: '',
+  },
+  {
+    avatar: contributorsAvatars.sun0day,
+    name: 'sun0day',
+    github: 'sun0day',
+    description: '',
   },
 ]
   .sort((pre, cur) => contributorsGenerated.findIndex(name => name === pre.github) - contributorsGenerated.findIndex(name => name === cur.github))

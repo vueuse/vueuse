@@ -16,6 +16,7 @@ export interface PackageManifest {
   target?: string
   utils?: boolean
   copy?: string[]
+  manualEntryPoints?: true
 }
 
 export interface VueUseFunction {
@@ -34,6 +35,7 @@ export interface VueUseFunction {
   alias?: string[]
   related?: string[]
   variants?: string[]
+  utils?: string[]
 }
 
 export interface VueUsePackage extends PackageManifest {

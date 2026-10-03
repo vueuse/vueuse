@@ -36,3 +36,12 @@ console.log('IDB transaction finished!')
 // delete data from idb storage
 storedObject.value = null
 ```
+
+## Cross-tab syncing
+
+Changes are automatically synced across browser tabs using the [`BroadcastChannel` API](https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel). This is enabled by default and can be disabled via the `listenToStorageChanges` option.
+
+```ts
+// disable cross-tab syncing
+const { data } = useIDBKeyval('my-key', 'default', { listenToStorageChanges: false })
+```

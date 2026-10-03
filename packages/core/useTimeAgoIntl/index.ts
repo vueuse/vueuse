@@ -50,14 +50,6 @@ export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatT
    * @default false
    */
   controls?: Controls
-
-  /**
-   * Update interval in milliseconds, set 0 to disable auto update
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default 30_000
-   */
-  updateInterval?: number
 }
 
 type UseTimeAgoReturn<Controls extends boolean = false>
@@ -80,15 +72,6 @@ const UNITS: TimeAgoUnit[] = [
   { name: 'second', ms: 1_000 },
 ]
 
-function getDefaultScheduler(options: UseTimeAgoIntlOptions<boolean>) {
-  if ('updateInterval' in options) {
-    const { updateInterval = 30_000 } = options
-    return (cb: AnyFn) => useIntervalFn(cb, updateInterval)
-  }
-
-  return (cb: AnyFn) => useIntervalFn(cb, 30_000)
-}
-
 /**
  * A reactive wrapper for `Intl.RelativeTimeFormat`.
  */
@@ -98,7 +81,7 @@ export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, o
 export function useTimeAgoIntl(time: MaybeRefOrGetter<Date | number | string>, options: UseTimeAgoIntlOptions<boolean> = {}) {
   const {
     controls: exposeControls = false,
-    scheduler = getDefaultScheduler(options),
+    scheduler = (cb: AnyFn) => useIntervalFn(cb, 30_000),
   } = options
 
   const { now, ...controls } = useNow({

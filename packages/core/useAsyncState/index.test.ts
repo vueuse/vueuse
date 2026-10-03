@@ -56,6 +56,23 @@ describe('useAsyncState', () => {
     expect(isReady.value).toBeTruthy()
   })
 
+  it('should reset isReady on re-execution', async () => {
+    const { execute, isReady } = useAsyncState(p1, 0, { immediate: false })
+    await execute()
+    expect(isReady.value).toBeTruthy()
+    const promise = execute()
+    expect(isReady.value).toBeFalsy()
+    await promise
+    expect(isReady.value).toBeTruthy()
+  })
+
+  it('should keep isReady false when the promise rejects', async () => {
+    const { execute, isReady, isLoading } = useAsyncState(p2, '0', { immediate: false })
+    await execute()
+    expect(isReady.value).toBeFalsy()
+    expect(isLoading.value).toBeFalsy()
+  })
+
   it('should work with error', async () => {
     const { execute, error } = useAsyncState(p2, '0', { immediate: false })
     expect(error.value).toBeUndefined()

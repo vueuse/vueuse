@@ -26,6 +26,35 @@ onStartTyping(() => {
 </template>
 ```
 
+## Custom Valid Key
+
+```ts
+import { onStartTyping } from '@vueuse/core'
+
+onStartTyping(handleKey, {
+  // only allow numbers
+  isTypedCharValid: e => /^\d$/.test(e.key)
+})
+```
+
+## Custom Editable Element
+
+```ts
+import { isFocusedElementEditable as defaultEditable, onStartTyping } from '@vueuse/core'
+
+onStartTyping(handleKey, {
+  isFocusedElementEditable: () => {
+    const { activeElement } = document
+
+    // Exclude elements with id 'targetInput'
+    if (activeElement?.id === 'targetInput')
+      return true
+
+    return defaultEditable()
+  }
+})
+```
+
 ## How It Works
 
 The callback only fires when:
@@ -36,9 +65,22 @@ The callback only fires when:
 
 This allows users to start typing anywhere on the page without accidentally triggering the callback when using keyboard shortcuts or interacting with form fields.
 
+Both `isFocusedElementEditable` and `isTypedCharValid` are also exported as utility functions, so you can reuse them when writing custom options.
+
 ## Type Declarations
 
 ```ts
+export declare function isFocusedElementEditable(): boolean
+export declare function isTypedCharValid({
+  keyCode,
+  metaKey,
+  ctrlKey,
+  altKey,
+}: KeyboardEvent): boolean
+export interface OnStartTypingOptions extends ConfigurableDocument {
+  isTypedCharValid?: (event: KeyboardEvent) => boolean
+  isFocusedElementEditable?: () => boolean
+}
 /**
  * Fires when users start typing on non-editable elements.
  *
@@ -48,6 +90,6 @@ This allows users to start typing anywhere on the page without accidentally trig
  */
 export declare function onStartTyping(
   callback: (event: KeyboardEvent) => void,
-  options?: ConfigurableDocument,
+  options?: OnStartTypingOptions,
 ): void
 ```

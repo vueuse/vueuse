@@ -41,6 +41,7 @@ export interface PackageManifest {
   target?: string;
   utils?: boolean;
   copy?: string[];
+  manualEntryPoints?: true;
 }
 export interface VueUseFunction {
   name: string;
@@ -58,6 +59,7 @@ export interface VueUseFunction {
   alias?: string[];
   related?: string[];
   variants?: string[];
+  utils?: string[];
 }
 export interface VueUsePackage extends PackageManifest {
   dir: string;

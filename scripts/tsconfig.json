@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "declaration": false,
+    "declarationDir": null,
+    "emitDeclarationOnly": false,
+    "noEmit": true
+  },
+  "include": ["./**/*.ts", "../meta/**/*.ts"]
+}

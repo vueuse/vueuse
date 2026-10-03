@@ -10,7 +10,13 @@ export interface UseAsyncValidatorProps {
 // #endregion
 
 // #region Variables
-export declare const UseAsyncValidator: _$vue.DefineSetupFnComponent<UseAsyncValidatorProps, Record<string, never>, SlotsType<UseAsyncValidatorSlots>, UseAsyncValidatorProps & {
+export declare const UseAsyncValidator: import("vue").DefineSetupFnComponent<UseAsyncValidatorProps, Record<string, never>, SlotsType<UseAsyncValidatorSlots>, UseAsyncValidatorProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
+}, import("vue").PublicProps>;
+// #endregion
+
+// #region Referenced (internal)
+interface UseAsyncValidatorSlots {
+  default: (_: Reactive<UseAsyncValidatorReturn>) => any;
+}
 // #endregion

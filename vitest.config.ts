@@ -74,7 +74,12 @@ export default defineConfig({
           setupFiles: ['vitest-browser-vue'],
           browser: {
             enabled: true,
-            provider: playwright(),
+            provider: playwright({
+              contextOptions: {
+                locale: 'en-US',
+                timezoneId: 'UTC',
+              },
+            }),
             headless: true,
             instances: [
               { browser: 'chromium' },

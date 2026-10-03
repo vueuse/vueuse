@@ -20,6 +20,17 @@ original.value.key = 'some new value'
 console.log(cloned.value.key) // 'value'
 ```
 
+Changes to the source are not reflected in the cloned ref immediately.
+Use `{ flush: 'sync' }` to obtain the updated value without delay.
+
+```ts
+const { cloned } = useCloned(original, { flush: 'sync' })
+
+original.value.key = 'some new value'
+
+console.log(cloned.value.key) // 'some new value'
+```
+
 ## Manual cloning
 
 ```ts
@@ -86,6 +97,6 @@ export type CloneFn<F, T = F> = (x: F) => T
 export declare function cloneFnJSON<T>(source: T): T
 export declare function useCloned<T>(
   source: MaybeRefOrGetter<T>,
-  options?: UseClonedOptions,
+  options?: UseClonedOptions<T>,
 ): UseClonedReturn<T>
 ```

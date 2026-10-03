@@ -31,10 +31,10 @@ export const UseTimeAgo = /* #__PURE__ */ defineComponent<
       'max',
       'messages',
       'rounding',
+      'scheduler',
       'showSecond',
       'time',
       'units',
-      'updateInterval',
     ],
   },
 )

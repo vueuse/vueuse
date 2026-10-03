@@ -50,10 +50,7 @@ export interface UseMutationObserverReturn extends Supportable {
  * @param options
  */
 export declare function useMutationObserver(
-  target:
-    | MaybeComputedElementRef
-    | MaybeComputedElementRef[]
-    | MaybeRefOrGetter<MaybeElement[]>,
+  target: MaybeComputedElementRefOrArray,
   callback: MutationCallback,
   options?: UseMutationObserverOptions,
 ): UseMutationObserverReturn

@@ -16,5 +16,6 @@ export interface UseSortableReturn {
 export declare function insertNodeAt(_: Element, _: Element, _: number): void;
 export declare function moveArrayElement<T>(_: MaybeRef<T[]>, _: number, _: number, _?: Sortable.SortableEvent | null): void;
 export declare function removeNode(_: Node): void;
+export declare function useSortable<T>(_: string, _: MaybeRef<T[]>, _?: UseSortableOptions): UseSortableReturn;
 export declare function useSortable<T>(_: MaybeRefOrGetter<MaybeElement>, _: MaybeRef<T[]>, _?: UseSortableOptions): UseSortableReturn;
 // #endregion

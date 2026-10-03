@@ -731,6 +731,53 @@ describe('useFetch', () => {
     })
   })
 
+  it('should clear error when refetch succeeds after aborting previous request', async () => {
+    const url = shallowRef(`${baseUrl}?delay=50`)
+    const { data, error } = useFetch(url, { refetch: true }).json()
+    await nextTick()
+    url.value = jsonUrl
+    await vi.waitFor(() => {
+      expect(data.value).toEqual(jsonMessage)
+    })
+    expect(error.value).toBeNull()
+  })
+
+  it('should not overwrite the data of a newer request when a superseded one resolves', async () => {
+    const secondMessage = { hello: 'again' }
+    const url = shallowRef(jsonUrl)
+    let releaseFirst = () => {}
+    const firstReleased = new Promise<void>((resolve) => {
+      releaseFirst = resolve
+    })
+    const afterFetchSpy = vi.fn()
+    const responseSpy = vi.fn()
+
+    const { data, onFetchResponse } = useFetch(url, {
+      refetch: true,
+      async afterFetch(ctx) {
+        afterFetchSpy()
+        if (ctx.data.hello === jsonMessage.hello)
+          await firstReleased
+        return ctx
+      },
+    }).json()
+    onFetchResponse(responseSpy)
+
+    await vi.waitFor(() => {
+      expect(afterFetchSpy).toHaveBeenCalled()
+    })
+    url.value = `${baseUrl}/test?json=${encodeURI(JSON.stringify(secondMessage))}`
+    await vi.waitFor(() => {
+      expect(data.value).toEqual(secondMessage)
+    })
+
+    releaseFirst()
+    await vi.waitFor(() => {
+      expect(responseSpy).toHaveBeenCalledTimes(2)
+    })
+    expect(data.value).toEqual(secondMessage)
+  })
+
   it('should be generated payloadType on execute', async () => {
     const form = deepRef()
     const { execute } = useFetch(baseUrl).post(form)
