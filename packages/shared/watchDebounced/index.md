@@ -49,6 +49,14 @@ watchDebounced(
 debounceMs.value = 1000
 ```
 
+### Async callbacks
+
+`debounce` and `maxWait` control when the callback runs; they do not cancel asynchronous work that the callback has already started. An earlier request can still complete after a later one and overwrite newer state.
+
+For a latest-result-wins UI, cancel obsolete requests where supported and guard state updates so only current work can commit. Invalidate previous work when the watched source changes, including while the next callback is waiting for the debounce delay.
+
+See [async race conditions and stale UI updates](https://frontendatlas.com/javascript/trivia/js-async-race-conditions) for cancellation and request-ownership examples.
+
 ## How It Works
 
 It's essentially a shorthand for the following code:
