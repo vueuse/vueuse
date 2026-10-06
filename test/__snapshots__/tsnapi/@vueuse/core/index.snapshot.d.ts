@@ -15,10 +15,10 @@ export interface AsyncComputedOptions<Lazy = boolean> extends ConfigurableFlushS
   onError?: (_: unknown) => void;
 }
 export interface BatteryManager extends EventTarget {
-  charging: boolean;
-  chargingTime: number;
-  dischargingTime: number;
-  level: number;
+  readonly charging: boolean;
+  readonly chargingTime: number;
+  readonly dischargingTime: number;
+  readonly level: number;
 }
 export interface BeforeFetchContext {
   url: string;
@@ -351,10 +351,10 @@ export interface UseBase64Return {
 }
 export interface UseBatteryOptions extends ConfigurableNavigator {}
 export interface UseBatteryReturn extends Supportable {
-  charging: ShallowRef<boolean>;
-  chargingTime: ShallowRef<number>;
-  dischargingTime: ShallowRef<number>;
-  level: ShallowRef<number>;
+  charging: Readonly<ShallowRef<boolean>>;
+  chargingTime: Readonly<ShallowRef<number>>;
+  dischargingTime: Readonly<ShallowRef<number>>;
+  level: Readonly<ShallowRef<number>>;
 }
 export interface UseBluetoothOptions extends UseBluetoothRequestDeviceOptions, ConfigurableNavigator {
   acceptAllDevices?: boolean;
