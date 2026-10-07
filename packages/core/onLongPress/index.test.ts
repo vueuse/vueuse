@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { shallowRef } from 'vue'
+import { effectScope, shallowRef } from 'vue'
 import { useEventListener } from '../useEventListener'
 import { onLongPress } from './index'
 
@@ -117,6 +117,35 @@ describe('onLongPress', () => {
     expect(onLongPressCallback).toHaveBeenCalledTimes(0)
   }
 
+  async function stopPendingLongPress(isRef: boolean) {
+    const callback = vi.fn()
+    const stop = onLongPress(isRef ? element : element.value, callback)
+
+    element.value.dispatchEvent(pointerdownEvent)
+    await vi.advanceTimersByTimeAsync(250)
+
+    stop()
+    expect(vi.getTimerCount()).toBe(0)
+
+    await vi.advanceTimersByTimeAsync(500)
+    expect(callback).not.toHaveBeenCalled()
+  }
+
+  async function disposePendingLongPress(isRef: boolean) {
+    const callback = vi.fn()
+    const scope = effectScope()
+    scope.run(() => onLongPress(isRef ? element : element.value, callback))
+
+    element.value.dispatchEvent(pointerdownEvent)
+    await vi.advanceTimersByTimeAsync(250)
+
+    scope.stop()
+    expect(vi.getTimerCount()).toBe(0)
+
+    await vi.advanceTimersByTimeAsync(500)
+    expect(callback).not.toHaveBeenCalled()
+  }
+
   async function triggerCallbackWithThreshold(isRef: boolean) {
     const onLongPressCallback = vi.fn()
     pointerdownEvent = new PointerEvent('pointerdown', { cancelable: true, bubbles: true, clientX: 20, clientY: 20 })
@@ -224,6 +253,10 @@ describe('onLongPress', () => {
       it('should stop propagation', () => stopPropagation(isRef))
 
       it('should remove event listeners after being stopped', () => stopEventListeners(isRef))
+
+      it('should cancel a pending long press after being stopped', () => stopPendingLongPress(isRef))
+
+      it('should cancel a pending long press when its scope is disposed', () => disposePendingLongPress(isRef))
 
       it('should trigger longpress if pointer is moved', () => triggerCallbackWithThreshold(isRef))
 
