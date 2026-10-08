@@ -107,7 +107,9 @@ export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
           return
         }
 
-        const done = curr(prevRes).then((currentRes: any) => {
+        const done = Promise.resolve(curr(prevRes)).then((currentRes: any) => {
+          if (signal?.aborted)
+            throw new Error('aborted')
           updateResult(promiseState.fulfilled, currentRes)
           if (activeIndex.value === tasks.length - 1)
             onFinished()
