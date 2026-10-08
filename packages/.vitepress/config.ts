@@ -7,7 +7,7 @@ import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
-import { FILE_IMPORTS } from './twoslash'
+import { FILE_IMPORTS, hideDocsNoiseTags } from './twoslash'
 import viteConfig from './vite.config'
 
 const Guide = [
@@ -83,6 +83,7 @@ export default withPwa(defineConfig({
           handbookOptions: {
             noErrors: true,
           },
+          filterNode: hideDocsNoiseTags,
         },
         includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
         typesCache: createFileSystemTypesCache({
