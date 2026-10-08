@@ -2,8 +2,8 @@ import type { VueWrapper } from '@vue/test-utils'
 import type { OnKeyStrokeOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { defineComponent, nextTick } from 'vue'
-import { vOnKeyStroke } from './directive'
+import { defineComponent, effectScope, nextTick } from 'vue'
+import { vOnKeyStroke, vOnKeyStrokeVapor } from './directive'
 
 const App = defineComponent({
   props: {
@@ -100,5 +100,28 @@ describe('vOnKeyStroke', () => {
 
       expect(onUpdate).toBeCalledTimes(0)
     })
+  })
+})
+
+describe('vOnKeyStrokeVapor', () => {
+  it('should listen and dispose with the Vapor component scope', async () => {
+    const onUpdate = vi.fn()
+    const element = document.createElement('div')
+    const scope = effectScope()
+
+    scope.run(() => {
+      vOnKeyStrokeVapor(element, () => onUpdate, 'a')
+    })
+    await nextTick()
+
+    element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+    await nextTick()
+    expect(onUpdate).toHaveBeenCalledOnce()
+
+    scope.stop()
+    onUpdate.mockClear()
+    element.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+    await nextTick()
+    expect(onUpdate).not.toHaveBeenCalled()
   })
 })

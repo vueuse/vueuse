@@ -22,6 +22,7 @@ packages:
 overrides:
   chokidar: ^5.0.0
   semver: ^7.8.5
+  vue: catalog:dev
   # 7.4.1 swaps @surma/rollup-plugin-off-main-thread for the @trickfilm400 fork,
   # whose 3.0.0-pre1 has no provenance attestation and trips trustPolicy.
   workbox-build: 7.4.0
@@ -44,7 +45,7 @@ catalogs:
     '@antfu/ni': ^30.5.0
     '@iconify/json': ^2.2.525
     '@vitejs/plugin-vue': ^6.0.8
-    '@vue/compiler-sfc': ^3.5.42
+    '@vue/compiler-sfc': ^3.6.0-rc.3
     bumpp: ^12.3.0
     chokidar: ^5.0.0
     consola: ^3.4.2
@@ -75,7 +76,7 @@ catalogs:
     unocss: ^66.9.2
     vite: ^8.2.2
     vite-plugin-inspect: ^11.4.1
-    vue: ^3.5.42
+    vue: ^3.6.0-rc.3
     vue-tsc: ^3.3.11
   docs:
     '@shikijs/vitepress-twoslash': ^4.4.3
