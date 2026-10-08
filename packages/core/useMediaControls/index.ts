@@ -1,14 +1,15 @@
 import type { EventHookOn, Fn } from '@vueuse/shared'
 import type { MaybeRef, MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
-import { createEventHook, isObject, toRef, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
+import { createEventHook, isObject, toRef, tryOnMounted, tryOnScopeDispose, watchIgnorable } from '@vueuse/shared'
 import { shallowRef, toValue, watch, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
 /**
  * Many of the jsdoc definitions here are modified version of the
- * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
+ * documentation from MDN (https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
+ * and (https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API)
  */
 
 export interface UseMediaSource {
@@ -70,6 +71,14 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
    * A list of text tracks for the media
    */
   tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>
+
+  /**
+   * The MediaMetadata interface of the Media Session API allows a web page
+   * to provide rich media metadata for display in a platform UI.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/
+   */
+  metadata?: MaybeRefOrGetter<MediaMetadataInit>
 }
 
 export interface UseMediaTextTrack {
@@ -171,6 +180,19 @@ function tracksToArray(tracks: TextTrackList): UseMediaTextTrack[] {
     .map(({ label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }, id) => ({ id, label, kind, language, mode, activeCues, cues, inBandMetadataTrackDispatchType }))
 }
 
+function clearMediaSession() {
+  if (!('mediaSession' in navigator))
+    return
+
+  navigator.mediaSession.metadata = null
+  navigator.mediaSession.playbackState = 'none'
+  navigator.mediaSession.setPositionState({
+    duration: 0,
+    playbackRate: 1,
+    position: 0,
+  })
+}
+
 const defaultOptions: UseMediaControlsOptions = {
   src: '',
   tracks: [],
@@ -209,6 +231,18 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   // Events
   const sourceErrorEvent = createEventHook<Event>()
   const playbackErrorEvent = createEventHook<Event>()
+
+  // For updateing the position state of media session
+  function updatePositionState() {
+    if (!('mediaSession' in navigator))
+      return
+
+    navigator.mediaSession.setPositionState({
+      duration: duration.value,
+      playbackRate: rate.value,
+      position: currentTime.value,
+    })
+  }
 
   /**
    * Disables the specified track. If no track is specified then
@@ -423,7 +457,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'durationchange',
-    () => duration.value = (toValue(target))!.duration,
+    () => {
+      duration.value = (toValue(target))!.duration
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -441,7 +478,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'seeked',
-    () => seeking.value = false,
+    () => {
+      seeking.value = false
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -456,7 +496,10 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'loadeddata',
-    () => waiting.value = false,
+    () => {
+      waiting.value = false
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -466,13 +509,17 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
       waiting.value = false
       ended.value = false
       ignorePlayingUpdates(() => playing.value = true)
+      updatePositionState()
     },
     listenerOptions,
   )
   useEventListener(
     target,
     'ratechange',
-    () => rate.value = (toValue(target))!.playbackRate,
+    () => {
+      rate.value = (toValue(target))!.playbackRate
+      updatePositionState()
+    },
     listenerOptions,
   )
   useEventListener(
@@ -484,19 +531,28 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
   useEventListener(
     target,
     'ended',
-    () => ended.value = true,
+    () => {
+      ended.value = true
+      navigator.mediaSession.playbackState = 'none'
+    },
     listenerOptions,
   )
   useEventListener(
     target,
     'pause',
-    () => ignorePlayingUpdates(() => playing.value = false),
+    () => ignorePlayingUpdates(() => {
+      playing.value = false
+      navigator.mediaSession.playbackState = 'paused'
+    }),
     listenerOptions,
   )
   useEventListener(
     target,
     'play',
-    () => ignorePlayingUpdates(() => playing.value = true),
+    () => ignorePlayingUpdates(() => {
+      playing.value = true
+      navigator.mediaSession.playbackState = 'playing'
+    }),
     listenerOptions,
   )
   useEventListener(
@@ -543,6 +599,30 @@ export function useMediaControls(target: MaybeRef<HTMLMediaElement | null | unde
     listeners[1] = useEventListener(el.textTracks, 'removetrack', () => tracks.value = tracksToArray(el.textTracks), listenerOptions)
     listeners[2] = useEventListener(el.textTracks, 'change', () => tracks.value = tracksToArray(el.textTracks), listenerOptions)
   })
+
+  // Configure Media Session API
+  tryOnMounted(() => {
+    if (!('mediaSession' in navigator))
+      return
+
+    navigator.mediaSession.setActionHandler('play', () => ignorePlayingUpdates(() => playing.value = true))
+    navigator.mediaSession.setActionHandler('pause', () => ignorePlayingUpdates(() => playing.value = false))
+
+    navigator.mediaSession.setActionHandler('seekbackward', () => currentTime.value -= 10)
+    navigator.mediaSession.setActionHandler('seekforward', () => currentTime.value += 10)
+    navigator.mediaSession.setActionHandler('seekto', e => currentTime.value += e.seekTime!)
+
+    watchEffect(() => {
+      const metadata = toValue(options.metadata)
+      if (!metadata) {
+        navigator.mediaSession.metadata = null
+        return
+      }
+
+      navigator.mediaSession.metadata = new MediaMetadata({ ...metadata })
+    })
+  })
+  tryOnScopeDispose(clearMediaSession)
 
   // Remove text track listeners
   tryOnScopeDispose(() => listeners.forEach(listener => listener()))
