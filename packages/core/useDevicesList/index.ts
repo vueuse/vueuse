@@ -72,18 +72,22 @@ export function useDevicesList(options: UseDevicesListOptions = {}): UseDevicesL
     }
   }
 
-  async function ensurePermissions() {
+  async function getCurrentPermission() {
     const deviceName = constraints.video ? 'camera' : 'microphone'
+    const { state, query } = usePermission(deviceName, { controls: true })
+    await query()
+    return state.value
+  }
 
+  async function ensurePermissions() {
     if (!isSupported.value)
       return false
 
     if (permissionGranted.value)
       return true
 
-    const { state, query } = usePermission(deviceName, { controls: true })
-    await query()
-    if (state.value !== 'granted') {
+    const alwaysRequireStreamToEnumerate = navigator!.userAgent.indexOf('Firefox') > 0
+    if (alwaysRequireStreamToEnumerate || (await getCurrentPermission()) !== 'granted') {
       let granted = true
       try {
         const allDevices = await navigator!.mediaDevices.enumerateDevices()
