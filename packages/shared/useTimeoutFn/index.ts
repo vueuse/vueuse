@@ -57,7 +57,7 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
 
   function start(...args: Parameters<CallbackFn> | []) {
     if (immediateCallback)
-      cb()
+      cb(...args)
     clear()
     isPending.value = true
     timer = setTimeout(() => {
