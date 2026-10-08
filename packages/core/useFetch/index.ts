@@ -73,12 +73,12 @@ export interface UseFetchReturn<T> {
 
   // methods
   get: () => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  post: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  put: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  delete: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
-  options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  post: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  put: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  delete: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  patch: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  head: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  options: <P = unknown>(payload?: MaybeRefOrGetter<P>, type?: PayloadType) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
   json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
@@ -91,11 +91,12 @@ export interface UseFetchReturn<T> {
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 type Combination = 'overwrite' | 'chain'
+type PayloadType = 'json' | 'text' | (string & {})
 
-const payloadMapping: Record<string, string> = {
-  json: 'application/json',
-  text: 'text/plain',
-}
+const payloadMapping: Map<PayloadType, string> = new Map([
+  ['json', 'application/json'],
+  ['text', 'text/plain'],
+])
 
 export interface BeforeFetchContext {
   /**
@@ -349,7 +350,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     method: HttpMethod
     type: DataType
     payload: unknown
-    payloadType?: string
+    payloadType?: PayloadType
   }
 
   const config: InternalConfig = {
@@ -442,7 +443,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
         config.payloadType = 'json'
 
       if (config.payloadType)
-        headers['Content-Type'] = payloadMapping[config.payloadType] ?? config.payloadType
+        headers['Content-Type'] = payloadMapping.get(config.payloadType) ?? config.payloadType
 
       defaultFetchOptions.body = config.payloadType === 'json'
         ? JSON.stringify(payload)
@@ -587,7 +588,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
   }
 
   function setMethod(method: HttpMethod) {
-    return (payload?: unknown, payloadType?: string) => {
+    return <P = unknown>(payload?: P, payloadType?: PayloadType) => {
       if (!isFetching.value) {
         config.method = method
         config.payload = payload
