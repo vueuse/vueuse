@@ -323,6 +323,31 @@ describe('useRefHistory - sync', () => {
     expect(history.value.length).toBe(3)
     expect(history.value[0].snapshot).toBe(4)
   })
+
+  it('sync: shouldCommit with deep should receive cloned old value', () => {
+    const v = deepRef({ foo: 1 })
+    const { history } = useRefHistory(v, {
+      flush: 'sync',
+      deep: true,
+      shouldCommit: (oldValue: { foo: number } | undefined, newValue: { foo: number }) => {
+        if (oldValue === undefined)
+          return true
+        return oldValue.foo !== newValue.foo
+      },
+    })
+
+    expect(history.value.length).toBe(1)
+
+    v.value.foo = 2
+    expect(history.value.length).toBe(2)
+
+    v.value.foo = 3
+    expect(history.value.length).toBe(3)
+
+    // same value should not commit
+    v.value.foo = 3
+    expect(history.value.length).toBe(3)
+  })
 })
 
 describe('useRefHistory - pre', () => {
@@ -628,5 +653,32 @@ describe('useRefHistory - pre', () => {
     await nextTick()
     expect(history.value.length).toBe(3)
     expect(history.value[0].snapshot).toBe(4)
+  })
+
+  it('pre: shouldCommit with deep should receive cloned old value', async () => {
+    const v = deepRef({ foo: 1 })
+    const { history } = useRefHistory(v, {
+      deep: true,
+      shouldCommit: (oldValue: { foo: number } | undefined, newValue: { foo: number }) => {
+        if (oldValue === undefined)
+          return true
+        return oldValue.foo !== newValue.foo
+      },
+    })
+
+    expect(history.value.length).toBe(1)
+
+    v.value.foo = 2
+    await nextTick()
+    expect(history.value.length).toBe(2)
+
+    v.value.foo = 3
+    await nextTick()
+    expect(history.value.length).toBe(3)
+
+    // same value should not commit
+    v.value.foo = 3
+    await nextTick()
+    expect(history.value.length).toBe(3)
   })
 })
