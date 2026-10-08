@@ -1,10 +1,12 @@
 import type { Awaitable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
+import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseScrollOptions, UseScrollReturn } from '../useScroll'
 import { tryOnUnmounted } from '@vueuse/shared'
 import { computed, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { resolveElement } from '../_resolve-element'
 import { useElementVisibility } from '../useElementVisibility'
+import { useIntersectionObserver } from '../useIntersectionObserver'
 import { useScroll } from '../useScroll'
 
 type InfiniteScrollElement = HTMLElement | SVGElement | Window | Document | null | undefined
@@ -37,6 +39,13 @@ export interface UseInfiniteScrollOptions<T extends InfiniteScrollElement = Infi
    * and `false` otherwise.
    */
   canLoadMore?: (el: T) => boolean
+
+  /**
+   * The element to observe for triggering load more.
+   * When provided, loading is triggered when this element
+   * becomes visible instead of when the scroll container reaches its end.
+   */
+  trigger?: MaybeComputedElementRef
 }
 
 export interface UseInfiniteScrollReturn {
@@ -58,6 +67,7 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
     direction = 'bottom',
     interval = 100,
     canLoadMore = () => true,
+    trigger,
   } = options
 
   const state = reactive(useScroll(
@@ -79,13 +89,69 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
     return resolveElement(toValue(element))
   })
 
-  const isElementVisible = useElementVisibility(observedElement)
-
   const canLoad = computed(() => {
     if (!observedElement.value)
       return false
     return canLoadMore(observedElement.value as T)
   })
+
+  if (trigger) {
+    const distance = options.distance ?? 0
+    const rootMarginMap = {
+      bottom: `0px 0px ${distance}px 0px`,
+      top: `${distance}px 0px 0px 0px`,
+      left: `0px 0px 0px ${distance}px`,
+      right: `0px ${distance}px 0px 0px`,
+    }
+
+    const isTriggered = shallowRef(false)
+
+    function triggerLoad() {
+      if (!canLoad.value || promise.value)
+        return
+
+      promise.value = Promise.all([
+        onLoadMore(state),
+        new Promise(resolve => setTimeout(resolve, interval)),
+      ])
+        .finally(() => {
+          promise.value = null
+          nextTick(() => {
+            if (isTriggered.value)
+              triggerLoad()
+          })
+        })
+    }
+
+    useIntersectionObserver(
+      trigger,
+      (entries) => {
+        isTriggered.value = entries.some(e => e.isIntersecting)
+      },
+      {
+        root: observedElement,
+        rootMargin: rootMarginMap[direction],
+      },
+    )
+
+    watch(
+      () => [isTriggered.value, canLoad.value],
+      () => {
+        if (isTriggered.value)
+          triggerLoad()
+      },
+      { flush: 'post' },
+    )
+
+    return {
+      isLoading,
+      reset() {
+        nextTick(() => triggerLoad())
+      },
+    }
+  }
+
+  const isElementVisible = useElementVisibility(observedElement)
 
   function checkAndLoad() {
     state.measure()

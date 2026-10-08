@@ -50,6 +50,44 @@ function resetList() {
 </template>
 ```
 
+## Trigger Element
+
+By default, `useInfiniteScroll` triggers loading when the scroll container reaches its end. If you have additional content (like a footer) below your list inside the scroll container, you can use the `trigger` option to specify a sentinel element that determines when to load more.
+
+```vue
+<script setup lang="ts">
+import { useInfiniteScroll } from '@vueuse/core'
+import { ref, useTemplateRef } from 'vue'
+
+const el = useTemplateRef('el')
+const trigger = useTemplateRef('trigger')
+const data = ref([1, 2, 3, 4, 5, 6])
+
+useInfiniteScroll(
+  el,
+  () => {
+    data.value.push(...moreData)
+  },
+  {
+    trigger,
+    distance: 100,
+  },
+)
+</script>
+
+<template>
+  <div ref="el">
+    <div v-for="item in data" :key="item">
+      {{ item }}
+    </div>
+    <div ref="trigger" />
+    <footer>Footer content here</footer>
+  </div>
+</template>
+```
+
+When `trigger` is provided, an `IntersectionObserver` watches the trigger element instead of relying on the scroll container's scroll position. The `distance` option maps to the observer's `rootMargin`, allowing loading to start before the trigger element becomes visible.
+
 ## Direction
 
 Different scroll directions require different CSS style settings:
