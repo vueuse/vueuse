@@ -18,6 +18,18 @@ Currently, `useSortable` only implements drag-and-drop sorting for a single list
 npm i sortablejs@^1
 ```
 
+::: tip NOTE
+
+If you're using TypeScript, it will throw errors for any `options` passed to `useSortable`, as `sortablejs` does not provide built-in type definitions.
+
+To avoid this, install the typings manually:
+
+```bash
+npm i -D @types/sortablejs@^1
+```
+
+:::
+
 ## Usage
 
 ### Use template ref
