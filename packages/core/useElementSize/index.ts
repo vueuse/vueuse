@@ -84,6 +84,17 @@ export function useElementSize(
         height.value = ele.offsetHeight
       }
     }
+    else if (isSVG.value) {
+      if (box === 'content-box') {
+        width.value = ele.clientWidth
+        height.value = ele.clientHeight
+      }
+      else if (window) {
+        const cs = window.getComputedStyle(ele)
+        width.value = Number.parseFloat(cs.width)
+        height.value = Number.parseFloat(cs.height)
+      }
+    }
     else if (ele) {
       width.value = initialSize.width
       height.value = initialSize.height
