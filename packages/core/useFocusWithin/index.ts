@@ -6,6 +6,7 @@ import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useActiveElement } from '../useActiveElement'
 import { useEventListener } from '../useEventListener'
+import { useMutationObserver } from '../useMutationObserver'
 
 export interface UseFocusWithinReturn {
   /**
@@ -36,10 +37,18 @@ export function useFocusWithin(target: MaybeElementRef, options: ConfigurableWin
     return { focused }
   }
 
+  const recheckFocusWithin = () => {
+    if (_focused.value)
+      _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false
+  }
+
   const listenerOptions = { passive: true }
   useEventListener(targetElement, EVENT_FOCUS_IN, () => _focused.value = true, listenerOptions)
-  useEventListener(targetElement, EVENT_FOCUS_OUT, () =>
-    _focused.value = targetElement.value?.matches?.(PSEUDO_CLASS_FOCUS_WITHIN) ?? false, listenerOptions)
+  useEventListener(targetElement, EVENT_FOCUS_OUT, recheckFocusWithin, listenerOptions)
+
+  // Not all browsers fire a `focusout` event when the focused element is removed from the DOM.
+  // Use a MutationObserver to detect descendant changes
+  useMutationObserver(targetElement, recheckFocusWithin, { ...options, childList: true, subtree: true })
 
   return { focused }
 }

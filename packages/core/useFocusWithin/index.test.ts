@@ -83,6 +83,19 @@ describe('useFocusWithin', () => {
     expect(focused.value).toBeFalsy()
   })
 
+  it('should reset the state when the focused descendant is removed', async () => {
+    const { focused } = useFocusWithin(parent)
+
+    expect(focused.value).toBeFalsy()
+
+    grandchild?.focus()
+    expect(focused.value).toBeTruthy()
+
+    child.removeChild(grandchild)
+    await new Promise(resolve => setTimeout(resolve, 0))
+    expect(focused.value).toBeFalsy()
+  })
+
   it('should the state of target always be falsy when document.activeElement invalid', () => {
     const mockWindow = new Proxy(window, {
       get: (target, prop: any) => {
