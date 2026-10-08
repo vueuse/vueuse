@@ -1,6 +1,7 @@
 import type { TimerHandle } from '@vueuse/shared'
 import type { Position } from '../types'
 import type { MaybeElementRef } from '../unrefElement'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { computed } from 'vue'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
@@ -156,7 +157,12 @@ export function onLongPress(
     useEventListener(elementRef, ['pointerup', 'pointerleave', 'pointercancel'], onRelease, listenerOptions),
   ]
 
-  const stop = () => cleanup.forEach(fn => fn())
+  const stop = () => {
+    clear()
+    cleanup.forEach(fn => fn())
+  }
+
+  tryOnScopeDispose(stop)
 
   return stop
 }
