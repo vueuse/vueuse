@@ -1,9 +1,9 @@
 import type { ConfigurableEventFilter, Stoppable, TimerHandle } from '@vueuse/shared'
-import type { ShallowRef } from 'vue'
+import type { ShallowRef, MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
 import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
-import { shallowReadonly, shallowRef } from 'vue'
+import { shallowReadonly, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -29,6 +29,12 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
    * @default false
    */
   initialState?: boolean
+  /**
+   * Whether or not it should start immediately
+   *
+   * @default true
+   */
+  immediate?: boolean
 }
 
 export interface UseIdleReturn extends Stoppable {
@@ -45,11 +51,12 @@ export interface UseIdleReturn extends Stoppable {
  * @param options IdleOptions
  */
 export function useIdle(
-  timeout: number = oneMinute,
+  timeout?: MaybeRefOrGetter<number | undefined> | undefined,
   options: UseIdleOptions = {},
 ): UseIdleReturn {
   const {
     initialState = false,
+    immediate = true,
     listenForVisibilityChange = true,
     events = defaultEvents,
     window = defaultWindow,
@@ -64,7 +71,7 @@ export function useIdle(
   const reset = () => {
     idle.value = false
     clearTimeout(timer)
-    timer = setTimeout(() => idle.value = true, timeout)
+    timer = setTimeout(() => idle.value = true, toValue(timeout) ?? oneMinute)
   }
 
   const onEvent = createFilterWrapper(
@@ -95,7 +102,9 @@ export function useIdle(
       }, listenerOptions)
     }
 
-    start()
+    if (immediate) {
+      start()
+    }
   }
 
   function start() {
