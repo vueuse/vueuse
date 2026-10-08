@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ref as deepRef, isReactive, nextTick, reactive, watchSyncEffect } from 'vue'
+import { ref as deepRef, isReactive, nextTick, reactive, renderList, watchSyncEffect } from 'vue'
 import { toRefs } from '../toRefs'
 import { toReactive } from './index'
 
@@ -82,6 +82,16 @@ describe('toReactive', () => {
 
     expect(dummy).toBe(undefined)
     expect(state).toEqual({ a: 'c' })
+  })
+
+  it('should work with array', () => {
+    const r = deepRef([1, 2, 3])
+    const state = toReactive(r)
+
+    expect([...state]).toEqual([1, 2, 3])
+    expect(Array.from(state)).toEqual([1, 2, 3])
+    expect(renderList(state, item => item)).toEqual([1, 2, 3])
+    expect(state).toBeInstanceOf(Array)
   })
 
   it('toReactive(toRefs())', () => {
