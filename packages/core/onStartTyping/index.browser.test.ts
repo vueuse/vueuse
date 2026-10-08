@@ -3,12 +3,9 @@ import { userEvent } from 'vitest/browser'
 import { onStartTyping } from './index'
 
 describe('onStartTyping', () => {
-  let element: HTMLInputElement
   let callBackFn: any
 
   beforeEach(() => {
-    element = document.createElement('input')
-    element.tabIndex = 1
     callBackFn = vi.fn()
   })
 
@@ -47,19 +44,11 @@ describe('onStartTyping', () => {
   })
 
   it('does not trigger callback with invalid characters', async () => {
-    document.body.appendChild(element)
-    const arrows = range(4, 37)
-    const functionKeys = range(32, 112)
+    const invalidKeys = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', ...range(12, 1).map(i => `F${i}`)]
 
     onStartTyping(callBackFn)
 
-    for (let i = 0; i < arrows.length; i++) {
-      await userEvent.fill(element, String.fromCharCode(arrows[i]))
-    }
-
-    for (let i = 0; i < functionKeys.length; i++) {
-      await userEvent.fill(element, String.fromCharCode(functionKeys[i]))
-    }
+    await userEvent.keyboard(invalidKeys.map(key => `{${key}}`).join(''))
 
     expect(callBackFn).toBeCalledTimes(0)
   })
