@@ -77,13 +77,15 @@ export function useRafFn(fn: (args: UseRafFnCallbackArguments) => void, options:
     }
 
     previousFrameTimestamp = timestamp
+    const currentRafId = rafId
     fn({ delta, timestamp })
     if (once) {
       isActive.value = false
       rafId = null
       return
     }
-    rafId = window.requestAnimationFrame(loop)
+    if (isActive.value && rafId === currentRafId)
+      rafId = window.requestAnimationFrame(loop)
   }
 
   function resume() {
