@@ -88,9 +88,10 @@ export function useRouteParams<
           const newParams = Object.fromEntries(_paramsQueue.entries())
           _paramsQueue.clear()
 
-          const { params, query, hash } = route
+          const { name, params, query, hash } = route
 
           router[toValue(mode)]({
+            name,
             params: {
               ...params,
               ...newParams,
