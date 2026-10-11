@@ -5,6 +5,8 @@ import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
 
+const modifiers = ['Shift', 'Control', 'Alt', 'Meta']
+
 export interface UseMagicKeysOptions<Reactive extends boolean> {
   /**
    * Returns a reactive object instead of an object of refs
@@ -135,8 +137,12 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     deps.clear()
   }
 
-  function clearMetaDeps() {
+  function clearMetaDeps(e: KeyboardEvent) {
     metaDeps.forEach((key) => {
+      // Modifiers report their own state, so keep the ones still held
+      const modifier = modifiers.find(m => key.startsWith(m.toLowerCase()))
+      if (modifier && e.getModifierState?.(modifier))
+        return
       current.delete(key)
       setRefs(key, false)
     })
@@ -148,7 +154,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
   function releaseStaleModifiers(e: KeyboardEvent) {
     if (typeof e.getModifierState !== 'function')
       return
-    for (const modifier of ['Shift', 'Control', 'Alt', 'Meta']) {
+    for (const modifier of modifiers) {
       const key = modifier.toLowerCase()
       if (!current.has(key) || e.getModifierState(modifier))
         continue
@@ -157,7 +163,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
         setRefs(ref, false)
       clearDeps(false, key)
       if (key === 'meta')
-        clearMetaDeps()
+        clearMetaDeps(e)
     }
   }
 
@@ -193,7 +199,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     // We track it's combination and release manually
     if (key === 'meta' && !value) {
       // Meta key released
-      clearMetaDeps()
+      clearMetaDeps(e)
     }
   }
 

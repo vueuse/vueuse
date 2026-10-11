@@ -207,6 +207,28 @@ describe('useMagicKeys', () => {
     expect(current).toStrictEqual(new Set(['a']))
   })
 
+  it('keep held modifiers when releasing a missed meta', () => {
+    const { shift_a } = useMagicKeys({ target })
+    expect(shift_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'Shift', metaKey: true, shiftKey: true })
+    // Meta's keyup was missed, Shift is still held
+    dispatchKeyboardEvent({ target, key: 'a', shiftKey: true })
+    expect(shift_a.value).toBe(true)
+  })
+
+  it('keep held modifiers when meta is released', () => {
+    const { shift_a } = useMagicKeys({ target })
+    expect(shift_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'Shift', metaKey: true, shiftKey: true })
+    dispatchKeyboardEvent({ target, eventType: 'keyup', key: 'Meta', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'a', shiftKey: true })
+    expect(shift_a.value).toBe(true)
+  })
+
   it('should handle empty or undefined key events without errors', async () => {
     const { a } = useMagicKeys({ target })
 
