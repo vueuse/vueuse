@@ -229,6 +229,28 @@ describe('useMagicKeys', () => {
     expect(shift_a.value).toBe(true)
   })
 
+  it('keep held modifiers when releasing a missed shift', () => {
+    const { alt_a } = useMagicKeys({ target })
+    expect(alt_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Shift', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'Alt', shiftKey: true, altKey: true })
+    // Shift's keyup was missed, Alt is still held
+    dispatchKeyboardEvent({ target, key: 'a', altKey: true })
+    expect(alt_a.value).toBe(true)
+  })
+
+  it('keep held modifiers when shift is released', () => {
+    const { alt_a } = useMagicKeys({ target })
+    expect(alt_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Shift', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'Alt', shiftKey: true, altKey: true })
+    dispatchKeyboardEvent({ target, eventType: 'keyup', key: 'Shift', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'a', altKey: true })
+    expect(alt_a.value).toBe(true)
+  })
+
   it('should handle empty or undefined key events without errors', async () => {
     const { a } = useMagicKeys({ target })
 

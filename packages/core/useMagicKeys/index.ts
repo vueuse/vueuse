@@ -7,6 +7,12 @@ import { DefaultMagicKeysAliasMap } from './aliasMap'
 
 const modifiers = ['Shift', 'Control', 'Alt', 'Meta']
 
+// Modifiers report their own state, so keep the ones still held
+function isHeldModifier(e: KeyboardEvent, key: string) {
+  const modifier = modifiers.find(m => key.startsWith(m.toLowerCase()))
+  return !!modifier && !!e.getModifierState?.(modifier)
+}
+
 export interface UseMagicKeysOptions<Reactive extends boolean> {
   /**
    * Returns a reactive object instead of an object of refs
@@ -118,7 +124,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     }
   }
 
-  function clearDeps(value: boolean, key: string) {
+  function clearDeps(value: boolean, e: KeyboardEvent, key: string) {
     if (value)
       return
     const depsMapKey = `${key[0].toUpperCase()}${key.slice(1)}`
@@ -129,7 +135,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     const depsArray = Array.from(deps)
     const depsIndex = depsArray.indexOf(key)
     depsArray.forEach((key, index) => {
-      if (index >= depsIndex) {
+      if (index >= depsIndex && !isHeldModifier(e, key)) {
         current.delete(key)
         setRefs(key, false)
       }
@@ -139,9 +145,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
 
   function clearMetaDeps(e: KeyboardEvent) {
     metaDeps.forEach((key) => {
-      // Modifiers report their own state, so keep the ones still held
-      const modifier = modifiers.find(m => key.startsWith(m.toLowerCase()))
-      if (modifier && e.getModifierState?.(modifier))
+      if (isHeldModifier(e, key))
         return
       current.delete(key)
       setRefs(key, false)
@@ -161,7 +165,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
       current.delete(key)
       for (const ref of [key, `${key}left`, `${key}right`])
         setRefs(ref, false)
-      clearDeps(false, key)
+      clearDeps(false, e, key)
       if (key === 'meta')
         clearMetaDeps(e)
     }
@@ -192,7 +196,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     }
 
     updateDeps(value, e, [...current, ...values])
-    clearDeps(value, key)
+    clearDeps(value, e, key)
 
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
