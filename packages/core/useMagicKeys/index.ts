@@ -135,6 +135,32 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     deps.clear()
   }
 
+  function clearMetaDeps() {
+    metaDeps.forEach((key) => {
+      current.delete(key)
+      setRefs(key, false)
+    })
+    metaDeps.clear()
+  }
+
+  // Keyups can be missed without a blur, e.g. swallowed by macOS screenshot shortcuts,
+  // so trust the modifier state reported by each event
+  function releaseStaleModifiers(e: KeyboardEvent) {
+    if (typeof e.getModifierState !== 'function')
+      return
+    for (const modifier of ['Shift', 'Control', 'Alt', 'Meta']) {
+      const key = modifier.toLowerCase()
+      if (!current.has(key) || e.getModifierState(modifier))
+        continue
+      current.delete(key)
+      for (const ref of [key, `${key}left`, `${key}right`])
+        setRefs(ref, false)
+      clearDeps(false, key)
+      if (key === 'meta')
+        clearMetaDeps()
+    }
+  }
+
   function updateRefs(e: KeyboardEvent, value: boolean) {
     const key = e.key?.toLowerCase()
     const code = e.code?.toLowerCase()
@@ -142,6 +168,9 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
 
     if (!key)
       return
+
+    // Before updating this key, so its watchers see the real modifier state
+    releaseStaleModifiers(e)
 
     // current set
     if (key) {
@@ -164,11 +193,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     // We track it's combination and release manually
     if (key === 'meta' && !value) {
       // Meta key released
-      metaDeps.forEach((key) => {
-        current.delete(key)
-        setRefs(key, false)
-      })
-      metaDeps.clear()
+      clearMetaDeps()
     }
   }
 
