@@ -61,6 +61,25 @@ describe('useTimeoutPoll', () => {
     expect(callback).toHaveBeenCalledTimes(2)
   })
 
+  it('does not restart a resumed timer when an earlier callback finishes', async () => {
+    let finishFirstCallback!: () => void
+    const callback = vi.fn()
+      .mockImplementationOnce(() => new Promise<void>((resolve) => {
+        finishFirstCallback = resolve
+      }))
+      .mockResolvedValue(undefined)
+
+    const { pause, resume } = useTimeoutPoll(callback, 50, { immediateCallback: true })
+    pause()
+    resume()
+
+    await vi.advanceTimersByTimeAsync(25)
+    finishFirstCallback()
+    await vi.advanceTimersByTimeAsync(25)
+
+    expect(callback).toHaveBeenCalledTimes(3)
+  })
+
   it('pause/resume in scope', async () => {
     const callback = vi.fn()
     const interval = shallowRef(0)
