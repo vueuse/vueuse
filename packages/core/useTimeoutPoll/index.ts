@@ -39,9 +39,13 @@ export function useTimeoutPoll(
       return
 
     const currentRunId = runId
-    await fn()
-    if (isActive.value && currentRunId === runId)
-      start()
+    try {
+      await fn()
+    }
+    finally {
+      if (isActive.value && currentRunId === runId)
+        start()
+    }
   }
 
   function resume() {
