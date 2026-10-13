@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { effectScope, shallowRef } from 'vue'
 import { useTimeoutPoll } from './index'
 
@@ -35,7 +35,7 @@ describe('useTimeoutPoll', () => {
 
     expect(callback).toHaveBeenCalledTimes(1)
 
-    vi.advanceTimersByTime(100)
+    await vi.advanceTimersByTimeAsync(50)
     expect(callback).toHaveBeenCalledTimes(2)
   })
 
@@ -52,5 +52,56 @@ describe('useTimeoutPoll', () => {
     await scope.stop()
     vi.advanceTimersByTime(60)
     expect(callback).toHaveBeenCalledTimes(0)
+  })
+
+  it('waits for async immediateCallback before scheduling the next poll', async () => {
+    const callback = vi.fn(() => new Promise<void>(resolve => setTimeout(resolve, 100)))
+    useTimeoutPoll(callback, 50, { immediateCallback: true })
+
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(149)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(1)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
+
+  it('keeps polling when the callback rejects', async () => {
+    const onRejection = (e: PromiseRejectionEvent) => e.preventDefault()
+    window.addEventListener('unhandledrejection', onRejection)
+    onTestFinished(() => window.removeEventListener('unhandledrejection', onRejection))
+
+    const callback = vi.fn(() => Promise.reject(new Error('poll failed')))
+    useTimeoutPoll(callback, 50, { immediateCallback: true })
+
+    await vi.advanceTimersByTimeAsync(100)
+    expect(callback).toHaveBeenCalledTimes(3)
+  })
+
+  it('does not schedule a poll when paused while the callback is pending', async () => {
+    const callback = vi.fn(() => new Promise<void>(resolve => setTimeout(resolve, 100)))
+    const { pause } = useTimeoutPoll(callback, 50)
+
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(1)
+    pause()
+
+    await vi.advanceTimersByTimeAsync(100)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it('clears the pending poll on pause before resuming with immediateCallback', async () => {
+    const callback = vi.fn(() => new Promise<void>(resolve => setTimeout(resolve, 100)))
+    const { pause, resume } = useTimeoutPoll(callback, 50, { immediateCallback: true })
+
+    await vi.advanceTimersByTimeAsync(120)
+    expect(callback).toHaveBeenCalledTimes(1)
+    pause()
+    resume()
+    expect(callback).toHaveBeenCalledTimes(2)
+
+    await vi.advanceTimersByTimeAsync(99)
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 })
