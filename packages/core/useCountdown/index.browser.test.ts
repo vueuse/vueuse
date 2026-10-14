@@ -96,6 +96,23 @@ describe('useCountdown', () => {
     await exec(useCountdown(countdown, options))
   })
 
+  it('passes the updated remaining value to onTick, including the final zero', () => {
+    const { start, isActive } = useCountdown(3, {
+      onTick: tickCallback,
+      onComplete: completeCallback,
+    })
+
+    start()
+    vi.advanceTimersByTime(3000)
+
+    expect(tickCallback.mock.calls).toEqual([[2], [1], [0]])
+    expect(completeCallback).toHaveBeenCalledTimes(1)
+    expect(isActive.value).toBe(false)
+
+    vi.advanceTimersByTime(1000)
+    expect(tickCallback).toHaveBeenCalledTimes(3)
+  })
+
   it('pause/resume in scope', async () => {
     const scope = effectScope()
     await scope.run(async () => {
