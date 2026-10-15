@@ -107,7 +107,7 @@ function resolveNestedOptions<T>(options: T | true): T {
     return {} as T
   return options
 }
-
+const DEFAULT_EVENT = 'message'
 /**
  * Reactive wrapper for EventSource.
  *
@@ -196,16 +196,7 @@ export function useEventSource<Events extends string[], Data = any>(
           onFailed?.()
       }
     }
-
-    es.onmessage = (e: MessageEvent) => {
-      if (eventSource.value !== es)
-        return
-
-      event.value = null
-      data.value = serializer.read(e.data) ?? null
-      lastEventId.value = e.lastEventId
-    }
-
+    events = events.length > 0 ? events : [DEFAULT_EVENT] as unknown as Events
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: string, lastEventId?: string }) => {
         if (eventSource.value !== es)

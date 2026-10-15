@@ -8,3 +8,19 @@ export declare function useRouteParams<T extends RouteParamValueRaw = RouteParam
 export declare function useRouteQuery(_: string): Ref<undefined | null | string | string[]>;
 export declare function useRouteQuery<T extends RouteQueryValueRaw = RouteQueryValueRaw, K = T>(_: string, _?: MaybeRefOrGetter<T>, _?: ReactiveRouteOptionsWithTransform<T, K>): Ref<K>;
 // #endregion
+
+// #region Referenced (internal)
+interface ReactiveRouteOptions {
+  mode?: MaybeRef<'replace' | 'push'>;
+  route?: ReturnType<typeof useRoute>;
+  router?: ReturnType<typeof useRouter>;
+}
+interface ReactiveRouteOptionsWithTransform<V, R> extends ReactiveRouteOptions {
+  transform?: ((_: V) => R) | ({
+    get?: (_: V) => R;
+    set?: (_: R) => V;
+  });
+}
+type RouteHashValueRaw = string | null | undefined;
+type RouteQueryValueRaw = RouteParamValueRaw | string[];
+// #endregion

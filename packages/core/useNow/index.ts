@@ -25,15 +25,7 @@ export type UseNowReturn<Controls extends boolean> = Controls extends true ? ({ 
  */
 export function useNow(options?: UseNowOptions<false>): ShallowRef<Date>
 export function useNow(options: UseNowOptions<true>): { now: ShallowRef<Date> } & Pausable
-
-/**
- * Reactive current Date instance.
- *
- * @see https://vueuse.org/useNow
- * @param options
- *
- * @__NO_SIDE_EFFECTS__
- */
+/* @__NO_SIDE_EFFECTS__ */
 export function useNow(options: UseNowOptions<boolean> = {}): UseNowReturn<boolean> {
   const {
     controls: exposeControls = false,

@@ -21,3 +21,10 @@ export interface UseIDBOptions<T> extends ConfigurableFlush, ConfigurableWindow 
 // #region Functions
 export declare function useIDBKeyval<T>(_: IDBValidKey, _: MaybeRefOrGetter<T>, _?: UseIDBOptions<T>): UseIDBKeyvalReturn<T>;
 // #endregion
+
+// #region Referenced (internal)
+interface Serializer<T> {
+  read: (_: unknown) => T;
+  write: (_: T) => unknown;
+}
+// #endregion

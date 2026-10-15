@@ -109,7 +109,12 @@ describe('useEventSource', () => {
 
     const source = eventSource.value!
 
+    // mock  SSE API to trigger message event and onmessage callback
     source.onmessage!(new MessageEvent('message', {
+      data: 'bleep',
+      lastEventId: '303',
+    }))
+    source.dispatchEvent(new MessageEvent('message', {
       data: 'bleep',
       lastEventId: '303',
     }))
@@ -125,7 +130,7 @@ describe('useEventSource', () => {
 
     open()
 
-    staleSource.onmessage!(new MessageEvent('message', {
+    staleSource.dispatchEvent(new MessageEvent('message', {
       data: 'bleep',
     }))
 
@@ -138,7 +143,9 @@ describe('useEventSource', () => {
     const source = eventSource.value!
     const eventData = { some: { complex: 'data' } }
 
+    // mock  SSE API to trigger message event and onmessage callback
     source.onmessage!(new MessageEvent('message', { data: eventData }))
+    source.dispatchEvent!(new MessageEvent('message', { data: eventData }))
 
     expect(data.value).toBe(eventData)
   })
@@ -213,7 +220,9 @@ describe('useEventSource', () => {
     const source = eventSource.value!
     const testData = 'hello world'
 
+    // mock  SSE API to trigger message event and onmessage callback
     source.onmessage!(new MessageEvent('message', { data: testData }))
+    source.dispatchEvent(new MessageEvent('message', { data: testData }))
 
     expect(deserialize).toHaveBeenCalledWith(testData)
     expect(data.value).toEqual({ data: 'HELLO WORLD' })

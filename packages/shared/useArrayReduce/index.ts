@@ -38,19 +38,7 @@ export function useArrayReduce<T, U>(
   reducer: UseArrayReducer<U, T, U>,
   initialValue: MaybeRefOrGetter<U>,
 ): UseArrayReduceReturn<U>
-
-/**
- * Reactive `Array.reduce`
- *
- * @see https://vueuse.org/useArrayReduce
- * @param list - the array was called upon.
- * @param reducer - a "reducer" function.
- * @param args
- *
- * @returns the value that results from running the "reducer" callback function to completion over the entire array.
- *
- * @__NO_SIDE_EFFECTS__
- */
+/* @__NO_SIDE_EFFECTS__ */
 export function useArrayReduce<T>(
   list: MaybeRefOrGetter<MaybeRefOrGetter<T>[]>,
   reducer: ((...p: any[]) => any),
