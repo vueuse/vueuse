@@ -3,7 +3,7 @@
  */
 // #region Interfaces
 export interface VueUseNuxtOptions {
-  autoImports?: boolean;
+  autoImports?: boolean | AutoImportOptions;
   ssrHandlers?: boolean;
 }
 // #endregion
@@ -15,4 +15,10 @@ export type ModuleOptions = VueUseNuxtOptions;
 // #region Default Export
 declare const _default: import("@nuxt/schema").NuxtModule<VueUseNuxtOptions, VueUseNuxtOptions, false>;
 export default _default
+// #endregion
+
+// #region Referenced (internal)
+interface AutoImportOptions {
+  disableFunctions?: string[];
+}
 // #endregion
