@@ -48,6 +48,22 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
   })
 
+  it('should update lastActive when reset is called', () => {
+    const timeout = 1000
+    const { idle, lastActive, reset } = useIdle(timeout)
+    const initialLastActive = lastActive.value
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+
+    reset()
+    expect(idle.value).toBe(false)
+    expect(lastActive.value).toBe(initialLastActive + timeout)
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+  })
+
   it('should accept custom events list', async () => {
     document.body.innerHTML = ''
     const button = document.createElement('button')
