@@ -53,3 +53,33 @@ const { results } = useFuse(input, data)
  *
  */
 ```
+
+## Logical queries
+
+The search argument also accepts Fuse.js [logical query operators](https://www.fusejs.io/logical-search.html), either directly, as a ref, or through a getter. For example, combine conditions across fields with `$and` and `$or`:
+
+```ts
+import { useFuse } from '@vueuse/integrations/useFuse'
+
+const books = [
+  { title: 'Old War', author: 'Alice' },
+  { title: 'Old War', author: 'Bob' },
+  { title: 'New World', author: 'Alice' },
+]
+
+const { results } = useFuse({
+  $and: [
+    { author: '=Alice' },
+    { $or: [{ title: '="Old War"' }, { title: '="New World"' }] },
+  ],
+}, books, {
+  fuseOptions: {
+    keys: ['title', 'author'],
+    useExtendedSearch: true,
+  },
+})
+
+// Results contain Alice's "Old War" and "New World".
+```
+
+Here, `useExtendedSearch` enables the `=` exact-match operator inside each condition.
