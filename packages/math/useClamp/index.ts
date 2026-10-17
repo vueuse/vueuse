@@ -23,17 +23,7 @@ export function useClamp(
   min: MaybeRefOrGetter<number>,
   max: MaybeRefOrGetter<number>,
 ): Ref<number>
-
-/**
- * Reactively clamp a value between two other values.
- *
- * @see https://vueuse.org/useClamp
- * @param value number
- * @param min
- * @param max
- *
- * @__NO_SIDE_EFFECTS__
- */
+/* @__NO_SIDE_EFFECTS__ */
 export function useClamp(value: MaybeRefOrGetter<number>, min: MaybeRefOrGetter<number>, max: MaybeRefOrGetter<number>) {
   if (typeof value === 'function' || isReadonly(value))
     return computed(() => clamp(toValue(value), toValue(min), toValue(max)))

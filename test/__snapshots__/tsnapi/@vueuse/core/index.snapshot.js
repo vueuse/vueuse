@@ -28,8 +28,6 @@ export function onLongPress(_, _, _) {}
 export function onStartTyping(_, _) {}
 export function provideSSRWidth(_, _) {}
 export function setSSRHandler(_, _) {}
-/** @deprecated */
-export function templateRef(_, _) {}
 export function transition(_, _, _, _) {}
 export function unrefElement(_) {}
 export function useActiveElement(_) {}
@@ -88,6 +86,7 @@ export function useImage(_, _) {}
 export function useInfiniteScroll(_, _, _) {}
 export function useIntersectionObserver(_, _, _) {}
 export function useKeyModifier(_, _) {}
+export function useLiveAnnouncer(_) {}
 export function useLocalStorage(_, _, _) {}
 export function useMagicKeys(_) {}
 export function useManualRefHistory(_, _) {}
@@ -142,6 +141,7 @@ export function useStyleTag(_, _) {}
 export function useSupported(_) {}
 export function useSwipe(_, _) {}
 export function useTemplateRefsList() {}
+export function useTemporalNow(_) {}
 export function useTextareaAutosize(_) {}
 export function useTextDirection(_) {}
 export function useTextSelection(_) {}
@@ -159,6 +159,7 @@ export function useVirtualList(_, _) {}
 export function useVModel(_, _, _, _) {}
 export function useVModels(_, _, _) {}
 export function useWakeLock(_) {}
+export function useWebMCP(_) {}
 export function useWebNotification(_) {}
 export function useWebSocket(_, _) {}
 export function useWebWorker(_, _, _) {}

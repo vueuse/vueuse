@@ -1,5 +1,6 @@
-import type { Pausable } from '@vueuse/shared'
+import type { AnyFn, Pausable } from '@vueuse/shared'
 import type { UseCountdownOptions } from './index'
+import { useIntervalFn } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, shallowRef } from 'vue'
 import { useCountdown } from './index'
@@ -9,12 +10,10 @@ describe('useCountdown', () => {
   let completeCallback = vi.fn()
   let countdown = 3
   let interval = 100
-  const immediate = true
   let options: UseCountdownOptions = {
-    interval,
+    scheduler: (cb: AnyFn) => useIntervalFn(cb, interval),
     onComplete: completeCallback,
     onTick: tickCallback,
-    immediate,
   }
 
   beforeEach(() => {
@@ -25,10 +24,9 @@ describe('useCountdown', () => {
     countdown = 3
     interval = 100
     options = {
-      interval,
+      scheduler: (cb: AnyFn) => useIntervalFn(cb, interval),
       onComplete: completeCallback,
       onTick: tickCallback,
-      immediate,
     }
   })
 
@@ -110,7 +108,7 @@ describe('useCountdown', () => {
   })
 
   it('cant work when interval is negative', async () => {
-    const { isActive } = useCountdown(5, { interval: -1 })
+    const { isActive } = useCountdown(5, { scheduler: cb => useIntervalFn(cb, -1) })
 
     expect(isActive.value).toBeFalsy()
     vi.advanceTimersByTime(60)
@@ -120,7 +118,10 @@ describe('useCountdown', () => {
   it('initial interval can be changed', async () => {
     const countdown = shallowRef(3)
 
-    const { start } = useCountdown(countdown, { ...options, immediate: false })
+    const { start } = useCountdown(countdown, {
+      ...options,
+      scheduler: cb => useIntervalFn(cb, interval, { immediate: false }),
+    })
 
     countdown.value = 2
     start()

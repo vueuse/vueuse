@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, shallowRef } from 'vue'
+import { ref as deepRef, nextTick, shallowRef, watch } from 'vue'
 import { ignorableWatch, watchIgnorable } from './index'
 
 describe('watchIgnorable', () => {
@@ -85,6 +85,52 @@ describe('watchIgnorable', () => {
     ignorePrevAsyncUpdates()
 
     expect(target.value).toBe(5)
+  })
+
+  it('does not report the internal counting watch to the debug hooks', async () => {
+    // `watchIgnorable` runs an extra sync watch to count updates to the source.
+    // That watch is an implementation detail, so the debug hooks should observe
+    // exactly what a plain `watch` on the same source would observe.
+    const plainSource = shallowRef(0)
+    const plainOnTrack = vi.fn()
+    const plainOnTrigger = vi.fn()
+    watch(plainSource, () => {}, { onTrack: plainOnTrack, onTrigger: plainOnTrigger })
+
+    const source = shallowRef(0)
+    const onTrack = vi.fn()
+    const onTrigger = vi.fn()
+    watchIgnorable(source, () => {}, { onTrack, onTrigger })
+
+    plainSource.value = 1
+    source.value = 1
+    await nextTick()
+
+    // guards against a "fix" that simply drops the hooks altogether
+    expect(plainOnTrigger).toHaveBeenCalledTimes(1)
+    expect(plainOnTrack).toHaveBeenCalled()
+
+    expect(onTrigger).toHaveBeenCalledTimes(plainOnTrigger.mock.calls.length)
+    expect(onTrack).toHaveBeenCalledTimes(plainOnTrack.mock.calls.length)
+  })
+
+  it('ignore deep updates', async () => {
+    // the counting watch still needs `deep`, otherwise nested mutations are
+    // never counted and `ignoreUpdates` stops ignoring anything
+    const source = deepRef({ foo: 0 })
+    const callback = vi.fn()
+    const { ignoreUpdates } = watchIgnorable(source, callback, { deep: true })
+
+    ignoreUpdates(() => {
+      source.value.foo = 1
+    })
+
+    await nextTick()
+    expect(callback).toHaveBeenCalledTimes(0)
+
+    source.value.foo = 2
+
+    await nextTick()
+    expect(callback).toHaveBeenCalledTimes(1)
   })
 
   it('stop watch', async () => {

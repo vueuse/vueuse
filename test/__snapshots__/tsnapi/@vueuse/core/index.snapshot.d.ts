@@ -15,10 +15,10 @@ export interface AsyncComputedOptions<Lazy = boolean> extends ConfigurableFlushS
   onError?: (_: unknown) => void;
 }
 export interface BatteryManager extends EventTarget {
-  charging: boolean;
-  chargingTime: number;
-  dischargingTime: number;
-  level: number;
+  readonly charging: boolean;
+  readonly chargingTime: number;
+  readonly dischargingTime: number;
+  readonly level: number;
 }
 export interface BeforeFetchContext {
   url: string;
@@ -132,6 +132,11 @@ export interface MemoryInfo {
   readonly totalJSHeapSize: number;
   readonly usedJSHeapSize: number;
   [Symbol.toStringTag]: 'MemoryInfo';
+}
+export interface ModelContext {
+  registerTool: (_: WebMCPToolDescriptor, _?: {
+    signal?: AbortSignal;
+  }) => void;
 }
 export interface MouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean;
@@ -346,10 +351,10 @@ export interface UseBase64Return {
 }
 export interface UseBatteryOptions extends ConfigurableNavigator {}
 export interface UseBatteryReturn extends Supportable {
-  charging: ShallowRef<boolean>;
-  chargingTime: ShallowRef<number>;
-  dischargingTime: ShallowRef<number>;
-  level: ShallowRef<number>;
+  charging: Readonly<ShallowRef<boolean>>;
+  chargingTime: Readonly<ShallowRef<number>>;
+  dischargingTime: Readonly<ShallowRef<number>>;
+  level: Readonly<ShallowRef<number>>;
 }
 export interface UseBluetoothOptions extends UseBluetoothRequestDeviceOptions, ConfigurableNavigator {
   acceptAllDevices?: boolean;
@@ -436,10 +441,8 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
   onCancel: EventHookOn<CancelData>;
 }
 export interface UseCountdownOptions extends ConfigurableScheduler {
-  interval?: MaybeRefOrGetter<number>;
   onComplete?: () => void;
   onTick?: () => void;
-  immediate?: boolean;
 }
 export interface UseCountdownReturn extends Pausable {
   remaining: ShallowRef<number>;
@@ -587,8 +590,6 @@ export interface UseElementByPointOptions<Multiple extends boolean = false> exte
   x: MaybeRefOrGetter<number>;
   y: MaybeRefOrGetter<number>;
   multiple?: MaybeRefOrGetter<Multiple>;
-  immediate?: boolean;
-  interval?: 'requestAnimationFrame' | number;
 }
 export interface UseElementByPointReturn<Multiple extends boolean = false> extends Supportable, Pausable {
   element: ShallowRef<Multiple extends true ? HTMLElement[] : HTMLElement | null>;
@@ -813,6 +814,14 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
 export interface UseIntersectionObserverReturn extends Supportable, Pausable {
   stop: () => void;
 }
+export interface UseLiveAnnouncerOptions extends ConfigurableWindow {
+  idPrefix?: string;
+}
+export interface UseLiveAnnouncerReturn {
+  announce: (_: string, _?: 'polite' | 'assertive', _?: number) => void;
+  polite: (_: string, _?: number) => void;
+  assertive: (_: string, _?: number) => void;
+}
 export interface UseMagicKeysOptions<Reactive extends boolean> {
   reactive?: Reactive;
   target?: MaybeRefOrGetter<EventTarget>;
@@ -904,11 +913,7 @@ export interface UseMemoizeReturn<Result, Args extends unknown[]> {
   generateKey: (..._: Args) => CacheKey;
   cache: UseMemoizeCache<CacheKey, Result>;
 }
-export interface UseMemoryOptions extends ConfigurableScheduler {
-  immediate?: boolean;
-  immediateCallback?: boolean;
-  interval?: number;
-}
+export interface UseMemoryOptions extends ConfigurableScheduler {}
 export interface UseMemoryReturn extends Supportable {
   memory: ShallowRef<MemoryInfo | undefined>;
 }
@@ -961,8 +966,6 @@ export interface UseNavigatorLanguageOptions extends ConfigurableWindow {}
 export interface UseNetworkOptions extends ConfigurableWindow {}
 export interface UseNowOptions<Controls extends boolean> extends ConfigurableScheduler {
   controls?: Controls;
-  immediate?: boolean;
-  interval?: 'requestAnimationFrame' | number;
 }
 export interface UseOffsetPaginationOptions {
   total?: MaybeRefOrGetter<number>;
@@ -1264,6 +1267,25 @@ export interface UseSwipeReturn {
   lengthY: ComputedRef<number>;
   stop: () => void;
 }
+export interface UseTemporalNowOptions extends ConfigurableScheduler {
+  timezone?: string;
+  calendar?: string;
+  temporal?: typeof Temporal;
+}
+export interface UseTemporalNowReturn extends Pausable {
+  now: Ref<Temporal.ZonedDateTime>;
+  timezone: Ref<string>;
+  calendar: Ref<string>;
+  toTimezone: (_: string) => Temporal.ZonedDateTime;
+  toCalendar: (_: string) => Temporal.ZonedDateTime;
+  toPlainDate: () => Temporal.PlainDate;
+  toPlainTime: () => Temporal.PlainTime;
+  toPlainDateTime: () => Temporal.PlainDateTime;
+  format: (_?: Intl.DateTimeFormatOptions) => string;
+  add: (_: Temporal.DurationLike) => Temporal.ZonedDateTime;
+  subtract: (_: Temporal.DurationLike) => Temporal.ZonedDateTime;
+  compare: (_: Temporal.ZonedDateTime | string) => number;
+}
 export interface UseTextareaAutosizeOptions extends ConfigurableWindow {
   element?: MaybeRef<HTMLTextAreaElement | undefined | null>;
   input?: MaybeRef<string>;
@@ -1292,7 +1314,6 @@ export interface UseTextSelectionReturn {
 }
 export interface UseTimeAgoIntlOptions<Controls extends boolean> extends FormatTimeAgoIntlOptions, ConfigurableScheduler {
   controls?: Controls;
-  updateInterval?: number;
 }
 export interface UseTimeAgoMessagesBuiltIn {
   justNow: string;
@@ -1302,7 +1323,6 @@ export interface UseTimeAgoMessagesBuiltIn {
 }
 export interface UseTimeAgoOptions<Controls extends boolean, UnitNames extends string = UseTimeAgoUnitNamesDefault> extends FormatTimeAgoOptions<UnitNames>, ConfigurableScheduler {
   controls?: Controls;
-  updateInterval?: number;
 }
 export interface UseTimeAgoUnit<Unit extends string = UseTimeAgoUnitNamesDefault> {
   max: number;
@@ -1316,8 +1336,6 @@ export interface UseTimeoutPollOptions {
 export interface UseTimestampOptions<Controls extends boolean> extends ConfigurableScheduler {
   controls?: Controls;
   offset?: number;
-  immediate?: boolean;
-  interval?: 'requestAnimationFrame' | number;
   callback?: (_: number) => void;
 }
 export interface UseTransitionOptions<T> extends TransitionOptions<T> {
@@ -1353,7 +1371,6 @@ export interface UseVerticalVirtualListOptions extends UseVirtualListOptionsBase
 }
 export interface UseVibrateOptions extends ConfigurableNavigator, ConfigurableScheduler {
   pattern?: MaybeRefOrGetter<Arrayable<number>>;
-  interval?: number;
 }
 export interface UseVibrateReturn extends Supportable {
   pattern: MaybeRefOrGetter<Arrayable<number>>;
@@ -1409,6 +1426,20 @@ export interface UseWakeLockReturn extends Supportable {
   forceRequest: (_: WakeLockType) => Promise<void>;
   release: () => Promise<void>;
 }
+export interface UseWebMCPOptions<Args, Result> extends ConfigurableDocument {
+  name: MaybeRefOrGetter<string>;
+  description: MaybeRefOrGetter<string>;
+  inputSchema?: MaybeRefOrGetter<object | undefined>;
+  annotations?: MaybeRefOrGetter<WebMCPToolAnnotations | undefined>;
+  execute: (_: Args) => Result | Promise<Result>;
+  enabled?: MaybeRefOrGetter<boolean>;
+  formatOutput?: (_: Result, _: Args) => unknown;
+  onError?: (_: unknown) => void;
+}
+export interface UseWebMCPReturn extends Supportable {
+  isRegistered: ShallowRef<boolean>;
+  error: ShallowRef<Error | null>;
+}
 export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
   requestPermissions?: boolean;
 }
@@ -1431,7 +1462,6 @@ export interface UseWebSocketOptions {
   heartbeat?: boolean | ConfigurableScheduler & {
     message?: MaybeRefOrGetter<WebSocketHeartbeatMessage>;
     responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>;
-    interval?: number;
     pongTimeout?: number;
   };
   autoReconnect?: boolean | {
@@ -1485,6 +1515,27 @@ export interface WakeLockSentinel extends EventTarget {
   type: WakeLockType;
   released: boolean;
   release: () => Promise<void>;
+}
+export interface WebMCPToolAnnotations {
+  readOnlyHint?: boolean;
+  untrustedContentHint?: boolean;
+  [key: string]: unknown;
+}
+export interface WebMCPToolContent {
+  type: string;
+  text?: string;
+  [key: string]: unknown;
+}
+export interface WebMCPToolDescriptor {
+  name: string;
+  description: string;
+  inputSchema?: object;
+  annotations?: WebMCPToolAnnotations;
+  execute: (_: any) => Promise<WebMCPToolResponse> | WebMCPToolResponse;
+}
+export interface WebMCPToolResponse {
+  content: WebMCPToolContent[];
+  isError?: boolean;
 }
 export interface WebNotificationOptions {
   title?: string;
@@ -1770,8 +1821,6 @@ export declare function onLongPress(_: MaybeElementRef, _: (_: PointerEvent) => 
 export declare function onStartTyping(_: (_: KeyboardEvent) => void, _?: OnStartTypingOptions): void;
 export declare function provideSSRWidth(_: number | null, _?: App<unknown>): void;
 export declare function setSSRHandler<T extends keyof SSRHandlersMap>(_: T, _: SSRHandlersMap[T]): void;
-/** @deprecated */
-export declare function templateRef<T extends HTMLElement | SVGElement | Component | null, Keys extends string = string>(_: Keys, _?: T | null): Readonly<Ref<T>>;
 export declare function transition<T>(_: Ref<T>, _: MaybeRefOrGetter<T>, _: MaybeRefOrGetter<T>, _?: TransitionOptions<T>): PromiseLike<void>;
 export declare function unrefElement<T extends MaybeElement>(_: MaybeComputedElementRef<T>): UnRefElementReturn<T>;
 export declare function useActiveElement<T extends HTMLElement>(_?: UseActiveElementOptions): UseActiveElementReturn<T>;
@@ -1797,7 +1846,7 @@ export declare function useClipboard(_?: UseClipboardOptions<undefined>): UseCli
 export declare function useClipboard(_: UseClipboardOptions<MaybeRefOrGetter<string>>): UseClipboardReturn<true>;
 export declare function useClipboardItems(_?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>;
 export declare function useClipboardItems(_: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems>>): UseClipboardItemsReturn<true>;
-export declare function useCloned<T>(_: MaybeRefOrGetter<T>, _?: UseClonedOptions): UseClonedReturn<T>;
+export declare function useCloned<T>(_: MaybeRefOrGetter<T>, _?: UseClonedOptions<T>): UseClonedReturn<T>;
 export declare function useColorMode<T extends string = BasicColorMode>(_?: UseColorModeOptions<T>): UseColorModeReturn<T>;
 export declare function useConfirmDialog<RevealData = any, ConfirmData = any, CancelData = any>(_?: ShallowRef<boolean>): UseConfirmDialogReturn<RevealData, ConfirmData, CancelData>;
 export declare function useCountdown(_: MaybeRefOrGetter<number>, _?: UseCountdownOptions): UseCountdownReturn;
@@ -1868,6 +1917,7 @@ export declare function useImage<Shallow extends true>(_: MaybeRefOrGetter<UseIm
 export declare function useInfiniteScroll<T extends InfiniteScrollElement>(_: MaybeRefOrGetter<T>, _: (_: UnwrapNestedRefs<UseScrollReturn>) => Awaitable<void>, _?: UseInfiniteScrollOptions<T>): UseInfiniteScrollReturn;
 export declare function useIntersectionObserver(_: MaybeComputedElementRefOrArray, _: IntersectionObserverCallback, _?: UseIntersectionObserverOptions): UseIntersectionObserverReturn;
 export declare function useKeyModifier<Initial extends boolean | null>(_: KeyModifier, _?: UseModifierOptions<Initial>): UseKeyModifierReturn<Initial>;
+export declare function useLiveAnnouncer(_?: UseLiveAnnouncerOptions): UseLiveAnnouncerReturn;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<string>, _?: UseStorageOptions<string>): RemovableRef<string>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<boolean>, _?: UseStorageOptions<boolean>): RemovableRef<boolean>;
 export declare function useLocalStorage(_: MaybeRefOrGetter<string>, _: MaybeRefOrGetter<number>, _?: UseStorageOptions<number>): RemovableRef<number>;
@@ -1965,6 +2015,7 @@ export declare function useStyleTag(_: MaybeRef<string>, _?: UseStyleTagOptions)
 export declare function useSupported(_: () => unknown): UseSupportedReturn;
 export declare function useSwipe(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseSwipeOptions): UseSwipeReturn;
 export declare function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>>;
+export declare function useTemporalNow(_?: UseTemporalNowOptions): UseTemporalNowReturn;
 export declare function useTextareaAutosize(_?: UseTextareaAutosizeOptions): UseTextareaAutosizeReturn;
 export declare function useTextDirection(_?: UseTextDirectionOptions): import("vue").WritableComputedRef<UseTextDirectionValue, UseTextDirectionValue>;
 export declare function useTextSelection(_?: UseTextSelectionOptions): UseTextSelectionReturn;
@@ -1992,6 +2043,7 @@ export declare function useVModel<P extends object, K extends keyof P, Name exte
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, true>): ToRefs<P>;
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, false>): ToRefs<P>;
 export declare function useWakeLock(_?: UseWakeLockOptions): UseWakeLockReturn;
+export declare function useWebMCP<Args = Record<string, any>, Result = unknown>(_: UseWebMCPOptions<Args, Result>): UseWebMCPReturn;
 export declare function useWebNotification(_?: UseWebNotificationOptions): UseWebNotificationReturn;
 export declare function useWebSocket<Data = any>(_: MaybeRefOrGetter<string | URL | undefined>, _?: UseWebSocketOptions): UseWebSocketReturn<Data>;
 export declare function useWebWorker<T = any>(_: string, _?: WorkerOptions, _?: ConfigurableWindow): UseWebWorkerReturn<T>;
@@ -2106,4 +2158,64 @@ export declare const TransitionPresets: Record<keyof typeof _TransitionPresets, 
 
 // #region Re-exports
 export * from "@vueuse/shared";
+// #endregion
+
+// #region Referenced (internal)
+type CacheKey = any;
+type ClipboardValue = string | (() => Promise<string | undefined>);
+type Combination = 'overwrite' | 'chain';
+type DescriptorNamePolyfill = 'accelerometer' | 'accessibility-events' | 'ambient-light-sensor' | 'background-sync' | 'camera' | 'clipboard-read' | 'clipboard-write' | 'gyroscope' | 'magnetometer' | 'microphone' | 'notifications' | 'payment-handler' | 'persistent-storage' | 'push' | 'speaker' | 'local-fonts';
+interface FileSystemWritableFileStream extends WritableStream {
+  write: FileSystemWritableFileStreamWrite;
+  seek: (_: number) => Promise<void>;
+  truncate: (_: number) => Promise<void>;
+}
+type GenerateSlotsFromSlotMap<T extends ObjectLiteralWithPotentialObjectLiterals> = { [K in keyof T]: Slot<T[K]>; };
+interface InferEventTarget<Events> {
+  addEventListener: (_: Events, _?: any, _?: any) => any;
+  removeEventListener: (_: Events, _?: any, _?: any) => any;
+}
+type InfiniteScrollElement = HTMLElement | SVGElement | Window | Document | null | undefined;
+type Locale = Intl.UnicodeBCP47LocaleIdentifier | Intl.Locale;
+type MapQueueTask<T extends any[]> = { [K in keyof T]: UseAsyncQueueTask<T[K]>; };
+type ObjectLiteralWithPotentialObjectLiterals = Record<string, Record<string, any> | undefined>;
+type PostMessage = typeof Worker.prototype['postMessage'];
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  grammars: SpeechGrammarList;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  onaudioend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onaudiostart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onerror: ((this: SpeechRecognition, _: SpeechRecognitionErrorEvent) => any) | null;
+  onnomatch: ((this: SpeechRecognition, _: SpeechRecognitionEvent) => any) | null;
+  onresult: ((this: SpeechRecognition, _: SpeechRecognitionEvent) => any) | null;
+  onsoundend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onsoundstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onspeechend: ((this: SpeechRecognition, _: Event) => any) | null;
+  onspeechstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  onstart: ((this: SpeechRecognition, _: Event) => any) | null;
+  abort: () => void;
+  start: () => void;
+  stop: () => void;
+  addEventListener: (<K extends keyof SpeechRecognitionEventMap>(_: K, _: (this: SpeechRecognition, _: SpeechRecognitionEventMap[K]) => any, _?: boolean | AddEventListenerOptions) => void) & ((_: string, _: EventListenerOrEventListenerObject, _?: boolean | AddEventListenerOptions) => void);
+  removeEventListener: (<K extends keyof SpeechRecognitionEventMap>(_: K, _: (this: SpeechRecognition, _: SpeechRecognitionEventMap[K]) => any, _?: boolean | EventListenerOptions) => void) & ((_: string, _: EventListenerOrEventListenerObject, _?: boolean | EventListenerOptions) => void);
+}
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: SpeechRecognitionErrorCode;
+  readonly message: string;
+}
+interface UseMediaControlsOptions extends ConfigurableDocument {
+  src?: MaybeRefOrGetter<string | UseMediaSource | UseMediaSource[]>;
+  tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>;
+}
+type UseTimeAgoReturn$1<Controls extends boolean = false> = Controls extends true ? {
+  timeAgoIntl: ComputedRef<string>;
+  parts: ComputedRef<Intl.RelativeTimeFormatPart[]>;
+} & Pausable : ComputedRef<string>;
+type UseVirtualListItemSize = number | ((_: number) => number);
+type WakeLockType = 'screen';
+type WorkerFn = (..._: unknown[]) => Worker;
 // #endregion

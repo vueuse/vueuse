@@ -1,5 +1,9 @@
+import type { AnyFn } from '@vueuse/shared'
+import type { UseNowOptions } from './index'
 import { mount } from '@vue/test-utils'
+import { useIntervalFn } from '@vueuse/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { useRafFn } from '../useRafFn'
 import { UseNow } from './component'
 import { useNow } from './index'
 
@@ -18,9 +22,12 @@ describe('useNow', () => {
     expect(+now.value).toBeLessThanOrEqual(Date.now())
   })
 
-  it('starts lazily if immediate is false', () => {
+  it('starts lazily if the scheduler is not immediate', () => {
     const initial = Date.now()
-    const { now, resume } = useNow({ controls: true, immediate: false })
+    const { now, resume } = useNow({
+      controls: true,
+      scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }),
+    })
 
     expect(+now.value).toBe(initial)
     vi.advanceTimersByTime(50)
@@ -39,10 +46,10 @@ describe('useNow', () => {
     expect(Number.parseInt(wrapper.text(), 10)).toBeLessThanOrEqual(Date.now())
   })
 
-  function testControl(interval: any) {
-    it(`should control now timestamp by ${interval}`, async () => {
+  function testControl(name: string, scheduler: NonNullable<UseNowOptions<true>['scheduler']>) {
+    it(`should control now timestamp by ${name}`, async () => {
       let initial = Date.now()
-      const { now, pause, resume } = useNow({ controls: true, interval })
+      const { now, pause, resume } = useNow({ controls: true, scheduler })
 
       expect(+now.value).toBeGreaterThanOrEqual(initial)
 
@@ -64,6 +71,6 @@ describe('useNow', () => {
     })
   }
 
-  testControl('requestAnimationFrame')
-  testControl(50)
+  testControl('requestAnimationFrame', cb => useRafFn(cb))
+  testControl('interval', cb => useIntervalFn(cb, 50))
 })

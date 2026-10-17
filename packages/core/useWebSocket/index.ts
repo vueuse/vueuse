@@ -35,14 +35,6 @@ export interface UseWebSocketOptions {
     responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
-     * Interval, in milliseconds
-     *
-     * @deprecated Please use `scheduler` option instead
-     * @default 1000
-     */
-    interval?: number
-
-    /**
      * Heartbeat response timeout, in milliseconds
      *
      * @default 1000
@@ -151,18 +143,6 @@ function resolveNestedOptions<T>(options: T | true): T {
   if (options === true)
     return {} as T
   return options
-}
-
-function getDefaultScheduler(options: Extract<UseWebSocketOptions['heartbeat'], { interval?: number }>) {
-  if ('interval' in options) {
-    const {
-      interval = 1000,
-    } = options
-
-    return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate: false })
-  }
-
-  return (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false })
 }
 
 /**
@@ -300,6 +280,9 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
+      if (wsRef.value !== ws)
+        return
+
       if (options.heartbeat) {
         resetHeartbeat()
         const {
@@ -318,7 +301,7 @@ export function useWebSocket<Data = any>(
   if (options.heartbeat) {
     const {
       message = DEFAULT_PING_MESSAGE,
-      scheduler = getDefaultScheduler(resolveNestedOptions(options.heartbeat)),
+      scheduler = (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false }),
       pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 

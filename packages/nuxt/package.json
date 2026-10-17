@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/nuxt",
   "type": "module",
-  "version": "14.4.0",
+  "version": "15.0.0",
   "description": "VueUse Nuxt Module",
   "author": "Anthony Fu <https://github.com/antfu>",
   "license": "MIT",
@@ -34,6 +34,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "tsdown --config-loader unrun",
     "prepack": "pnpm run build"

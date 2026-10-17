@@ -14,3 +14,9 @@ export declare const UseAsyncValidator: import("vue").DefineSetupFnComponent<Use
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
 }, import("vue").PublicProps>;
 // #endregion
+
+// #region Referenced (internal)
+interface UseAsyncValidatorSlots {
+  default: (_: Reactive<UseAsyncValidatorReturn>) => any;
+}
+// #endregion

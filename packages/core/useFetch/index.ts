@@ -484,14 +484,17 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       },
     )
       .then(async (fetchResponse) => {
-        response.value = fetchResponse
-        statusCode.value = fetchResponse.status
+        if (currentExecuteCounter === executeCounter) {
+          response.value = fetchResponse
+          statusCode.value = fetchResponse.status
+        }
 
         responseData = await fetchResponse.clone()[config.type]()
 
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
-          data.value = initialData || null
+          if (currentExecuteCounter === executeCounter)
+            data.value = initialData || null
           throw new Error(fetchResponse.statusText)
         }
 
@@ -503,7 +506,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             execute,
           }))
         }
-        data.value = responseData
+        if (currentExecuteCounter === executeCounter)
+          data.value = responseData
 
         responseEvent.trigger(fetchResponse)
         return fetchResponse

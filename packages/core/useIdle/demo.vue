@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useIdle, useTimestamp } from '@vueuse/core'
+import { useIdle, useIntervalFn, useTimestamp } from '@vueuse/core'
 import { computed } from 'vue'
 
 const { idle, lastActive } = useIdle(5000)
 
-const now = useTimestamp({ interval: 1000 })
+const now = useTimestamp({ scheduler: cb => useIntervalFn(cb, 1000) })
 
 const idledFor = computed(() => {
   const active = Math.floor((now.value - lastActive.value) / 1000)
