@@ -92,6 +92,7 @@ export function useMagicKeys(_) {}
 export function useManualRefHistory(_, _) {}
 export function useMediaControls(_, _) {}
 export function useMediaQuery(_, _) {}
+export function useMediaSession(_) {}
 export function useMemoize(_, _) {}
 export function useMemory(_) {}
 export function useMounted() {}

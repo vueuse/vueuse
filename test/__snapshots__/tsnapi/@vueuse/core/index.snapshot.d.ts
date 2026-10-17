@@ -872,6 +872,23 @@ export interface UseMediaControlsReturn {
   onSourceError: EventHookOn<Event>;
   onPlaybackError: EventHookOn<Event>;
 }
+export interface UseMediaSessionOptions extends ConfigurableNavigator {}
+export interface UseMediaSessionReturn extends Supportable {
+  album: ShallowRef<MediaMetadataInit['album']>;
+  artist: ShallowRef<MediaMetadataInit['artist']>;
+  artwork: Ref<MediaMetadataInit['artwork']>;
+  title: ShallowRef<MediaMetadataInit['title']>;
+  duration: ShallowRef<MediaPositionState['duration']>;
+  playbackRate: ShallowRef<MediaPositionState['playbackRate']>;
+  position: ShallowRef<MediaPositionState['position']>;
+  playbackState: ShallowRef<MediaSessionPlaybackState>;
+  actionHandlers: Ref<Partial<Record<MediaSessionAction, MediaSessionActionHandler> | undefined>>;
+  cameraActive: ShallowRef<boolean>;
+  microphoneActive: ShallowRef<boolean>;
+  isSetCameraSupported: UseSupportedReturn;
+  isSetMicrophoneSupported: UseSupportedReturn;
+  clear: () => void;
+}
 export interface UseMediaSource {
   src: string;
   type?: string;
@@ -1929,6 +1946,7 @@ export declare function useMediaControls(_: MaybeRef<HTMLMediaElement | null | u
 export declare function useMediaQuery(_: MaybeRefOrGetter<string>, _?: ConfigurableWindow & {
   ssrWidth?: number;
 }): import("vue").ComputedRef<boolean>;
+export declare function useMediaSession(_?: UseMediaSessionOptions): UseMediaSessionReturn;
 export declare function useMemoize<Result, Args extends unknown[]>(_: (..._: Args) => Result, _?: UseMemoizeOptions<Result, Args>): UseMemoizeReturn<Result, Args>;
 export declare function useMemory(_?: UseMemoryOptions): UseMemoryReturn;
 export declare function useMounted(): import("vue").ShallowRef<boolean, boolean>;
