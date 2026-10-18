@@ -55,8 +55,6 @@ debounceMs.value = 1000
 
 For a latest-result-wins UI, cancel obsolete requests where supported and guard state updates so only current work can commit. Invalidate previous work when the watched source changes, including while the next callback is waiting for the debounce delay.
 
-See [async race conditions and stale UI updates](https://frontendatlas.com/javascript/trivia/js-async-race-conditions) for cancellation and request-ownership examples.
-
 ## How It Works
 
 It's essentially a shorthand for the following code:
