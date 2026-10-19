@@ -777,7 +777,7 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
 export interface UseIdleReturn extends Stoppable {
   idle: ShallowRef<boolean>;
   lastActive: ShallowRef<number>;
-  reset: () => void;
+  reset: (_?: boolean) => void;
 }
 export interface UseImageOptions {
   src: string;
