@@ -48,6 +48,29 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
   })
 
+  it('should update lastActive only when reset is called with resetLastActive', () => {
+    const timeout = 1000
+    const { idle, lastActive, reset } = useIdle(timeout)
+    const initialLastActive = lastActive.value
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+
+    reset()
+    expect(idle.value).toBe(false)
+    expect(lastActive.value).toBe(initialLastActive)
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+
+    reset(true)
+    expect(idle.value).toBe(false)
+    expect(lastActive.value).toBe(initialLastActive + 2 * timeout)
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+  })
+
   it('should accept custom events list', async () => {
     document.body.innerHTML = ''
     const button = document.createElement('button')
