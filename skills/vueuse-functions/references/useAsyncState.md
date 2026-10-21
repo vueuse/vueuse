@@ -182,4 +182,13 @@ export declare function useAsyncState<
   initialState: MaybeRef<Data>,
   options?: UseAsyncStateOptions<Shallow, Data>,
 ): UseAsyncStateReturn<Data, Params, Shallow>
+export declare function useAsyncState<
+  Data,
+  Params extends any[] = any[],
+  Shallow extends boolean = true,
+>(
+  promise: Promise<Data> | ((...args: Params) => Promise<Data>),
+  initialState?: undefined,
+  options?: UseAsyncStateOptions<Shallow, Data>,
+): UseAsyncStateReturn<Data | undefined, Params, Shallow>
 ```

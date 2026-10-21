@@ -83,7 +83,19 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   promise: Promise<Data> | ((...args: Params) => Promise<Data>),
   initialState: MaybeRef<Data>,
   options?: UseAsyncStateOptions<Shallow, Data>,
-): UseAsyncStateReturn<Data, Params, Shallow> {
+): UseAsyncStateReturn<Data, Params, Shallow>
+
+export function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(
+  promise: Promise<Data> | ((...args: Params) => Promise<Data>),
+  initialState?: undefined,
+  options?: UseAsyncStateOptions<Shallow, Data>,
+): UseAsyncStateReturn<Data | undefined, Params, Shallow>
+
+export function useAsyncState<Data, Params extends any[] = any[], Shallow extends boolean = true>(
+  promise: Promise<Data> | ((...args: Params) => Promise<Data>),
+  initialState?: MaybeRef<Data>,
+  options?: UseAsyncStateOptions<Shallow, Data>,
+): UseAsyncStateReturn<Data | undefined, Params, Shallow> {
   const {
     immediate = true,
     delay = 0,
@@ -141,8 +153,8 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     execute(delay)
   }
 
-  const shell: UseAsyncStateReturnBase<Data, Params, Shallow> = {
-    state: state as Shallow extends true ? ShallowRef<Data> : Ref<UnwrapRef<Data>>,
+  const shell: UseAsyncStateReturnBase<Data | undefined, Params, Shallow> = {
+    state: state as Shallow extends true ? ShallowRef<Data | undefined> : Ref<UnwrapRef<Data | undefined>>,
     isReady,
     isLoading,
     error,
@@ -151,7 +163,7 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
   }
 
   function waitUntilIsLoaded() {
-    return new Promise<UseAsyncStateReturnBase<Data, Params, Shallow>>((resolve, reject) => {
+    return new Promise<UseAsyncStateReturnBase<Data | undefined, Params, Shallow>>((resolve, reject) => {
       until(isLoading).toBe(false).then(() => resolve(shell)).catch(reject)
     })
   }
