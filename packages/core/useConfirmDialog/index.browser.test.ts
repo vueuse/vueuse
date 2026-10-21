@@ -1,8 +1,34 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { nextTick, shallowRef } from 'vue'
 import { useConfirmDialog } from './index'
 
 describe('useConfirmDialog', () => {
+  it.each(['confirm', 'cancel'] as const)('should settle the current dialog when on %s reveals another dialog', async (action) => {
+    const dialog = useConfirmDialog<void, string, string>()
+    const firstSettled = vi.fn()
+    const secondSettled = vi.fn()
+    const onAction = action === 'confirm' ? dialog.onConfirm : dialog.onCancel
+    const { off } = onAction(() => {
+      off()
+      dialog.reveal().then(secondSettled)
+    })
+
+    dialog.reveal().then(firstSettled)
+    dialog[action]('first')
+    await nextTick()
+
+    expect(firstSettled).toHaveBeenCalledExactlyOnceWith({ data: 'first', isCanceled: action === 'cancel' })
+    expect(secondSettled).not.toHaveBeenCalled()
+    expect(dialog.isRevealed.value).toBe(true)
+
+    dialog.confirm('second')
+    await nextTick()
+
+    expect(firstSettled).toHaveBeenCalledTimes(1)
+    expect(secondSettled).toHaveBeenCalledExactlyOnceWith({ data: 'second', isCanceled: false })
+    expect(dialog.isRevealed.value).toBe(false)
+  })
+
   it('should be defined', () => {
     expect(useConfirmDialog).toBeDefined()
   })
