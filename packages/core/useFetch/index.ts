@@ -423,6 +423,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     loading(true)
     error.value = null
     statusCode.value = null
+    response.value = null
     aborted.value = false
 
     executeCounter += 1
