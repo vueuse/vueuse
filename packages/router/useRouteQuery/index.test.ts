@@ -390,6 +390,49 @@ describe('useRouteQuery', () => {
     expect(lang.value).toBe('en-US')
   })
 
+  it('should not apply a disposed scope pending write to a later navigation', async () => {
+    let route = getRoute({ search: 'vue3' })
+    const router = { replace: (r: any) => route = r } as any
+    const scope = effectScope()
+
+    // the scope goes away before its queued write reaches the router
+    scope.run(() => {
+      const search: Ref<any> = useRouteQuery('search', null, { route, router })
+      search.value = 'disposed'
+    })
+    scope.stop()
+
+    const page: Ref<any> = useRouteQuery('page', null, { route, router })
+    page.value = '2'
+
+    await nextTick()
+
+    expect(route.query.page).toBe('2')
+    expect(route.query.search).toBe('vue3')
+  })
+
+  it('should keep a live instance pending write when a scope bound to the same query disposes', async () => {
+    let route = getRoute({ search: 'vue3' })
+    const router = { replace: (r: any) => route = r } as any
+    const scope = effectScope()
+
+    // both instances share the single queue entry for `search`
+    scope.run(() => {
+      const search: Ref<any> = useRouteQuery('search', null, { route, router })
+      search.value = 'disposed'
+    })
+
+    const search: Ref<any> = useRouteQuery('search', null, { route, router })
+    search.value = 'from-live-instance'
+
+    // the disposing scope no longer owns the entry, so it must leave it alone
+    scope.stop()
+
+    await nextTick()
+
+    expect(route.query.search).toBe('from-live-instance')
+  })
+
   it.each([{ value: 'default' }, { value: undefined }, { value: () => 'default' }])('should reset value when $value value', async ({ value }) => {
     let route = getRoute({
       search: 'vue3',
