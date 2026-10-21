@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
+import * as VueRouter from 'vue-router'
 import { useRouteParams } from './index'
 
 describe('useRouteParams', () => {
@@ -338,6 +339,35 @@ describe('useRouteParams', () => {
     expect(id.value).toBe('2')
     expect(route.hash).toBe('#hash')
     expect(route.query).toEqual({ foo: 'bar' })
+  })
+
+  it('should reset param when navigation is aborted', async () => {
+    const route = getRoute({ id: '1' })
+    const failureObject = { type: VueRouter.NavigationFailureType.aborted }
+    const router = { replace: vi.fn().mockResolvedValue(failureObject) } as any
+    const isNavigationFailureSpy = vi
+      .spyOn(VueRouter, 'isNavigationFailure')
+      .mockImplementation(
+        (failure, type) =>
+          failure === failureObject && type === VueRouter.NavigationFailureType.aborted,
+      )
+
+    try {
+      const id: Ref<any> = useRouteParams('id', null, { route, router })
+      expect(id.value).toBe('1')
+
+      id.value = '2'
+      expect(id.value).toBe('2')
+
+      await nextTick()
+      expect(router.replace).toHaveBeenCalled()
+
+      await new Promise(resolve => setTimeout(resolve, 0))
+      expect(id.value).toBe('1')
+    }
+    finally {
+      isNavigationFailureSpy.mockRestore()
+    }
   })
 
   it('should allow ref or getter as default value', () => {
