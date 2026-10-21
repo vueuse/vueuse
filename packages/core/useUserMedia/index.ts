@@ -27,6 +27,12 @@ export interface UseUserMediaOptions extends ConfigurableNavigator {
    * @default {}
    */
   constraints?: MaybeRef<MediaStreamConstraints>
+  /**
+   * Stop the stream when the component unmounted
+   *
+   * @default true
+   */
+  stopOnDispose?: boolean
 }
 
 export interface UseUserMediaReturn extends Supportable {
@@ -48,6 +54,7 @@ export interface UseUserMediaReturn extends Supportable {
 export function useUserMedia(options: UseUserMediaOptions = {}): UseUserMediaReturn {
   const enabled = shallowRef(options.enabled ?? false)
   const autoSwitch = shallowRef(options.autoSwitch ?? true)
+  const stopOnDispose = shallowRef(options.stopOnDispose ?? true)
   const constraints = deepRef(options.constraints)
   const { navigator = defaultNavigator } = options
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
@@ -121,7 +128,7 @@ export function useUserMedia(options: UseUserMediaOptions = {}): UseUserMediaRet
   )
 
   tryOnScopeDispose(() => {
-    stop()
+      if (stopOnDispose.value) stop()
   })
 
   return {
