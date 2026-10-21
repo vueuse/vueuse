@@ -1,6 +1,8 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
+import { createMemoryHistory, createRouter } from 'vue-router'
+import { nextTwoTick } from '../../.test'
 import { useRouteQuery } from './index'
 
 describe('useRouteQuery', () => {
@@ -406,5 +408,56 @@ describe('useRouteQuery', () => {
     await nextTick()
 
     expect(route.query.search).toBeUndefined()
+  })
+
+  describe('with a real router', () => {
+    const getRouter = async () => {
+      const router = createRouter({
+        history: createMemoryHistory(),
+        routes: [{ path: '/', component: {} }],
+      })
+      await router.push('/')
+      const route = reactive(Object.fromEntries(
+        Object.keys(router.currentRoute.value).map(key => [key, computed(() => (router.currentRoute.value as any)[key])]),
+      )) as any
+      return { router, route }
+    }
+
+    it('should keep the previous query when set in different ticks', async () => {
+      const { router, route } = await getRouter()
+
+      const page: Ref<any> = useRouteQuery('page', null, { route, router })
+      const size: Ref<any> = useRouteQuery('size', null, { route, router })
+
+      page.value = '1'
+
+      await nextTick()
+
+      size.value = '10'
+
+      await nextTwoTick()
+
+      expect(route.query).toEqual({ page: '1', size: '10' })
+      expect(page.value).toBe('1')
+      expect(size.value).toBe('10')
+    })
+
+    it('should flush queued queries after an aborted navigation', async () => {
+      const { router, route } = await getRouter()
+      router.beforeEach(to => to.query.page === '1' ? false : undefined)
+
+      const page: Ref<any> = useRouteQuery('page', null, { route, router })
+      const size: Ref<any> = useRouteQuery('size', null, { route, router })
+
+      page.value = '1'
+
+      await nextTick()
+
+      size.value = '10'
+
+      await nextTwoTick()
+
+      expect(route.query).toEqual({ size: '10' })
+    })
   })
 })
