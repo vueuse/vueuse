@@ -25,6 +25,7 @@ describe('watchPausable', () => {
     expect(cb).toHaveBeenCalledTimes(1)
 
     resume()
+    expect(cb).toHaveBeenCalledTimes(1)
     num.value = 3
     await nextTick()
     expect(isActive.value).toBeTruthy()
