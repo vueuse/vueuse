@@ -200,6 +200,22 @@ describe('useStorage', () => {
     expect(storage.removeItem).toBeCalledWith(KEY)
   })
 
+  it.each([true, false])('serializes defaults only when writing them (writeDefaults: %s)', async (writeDefaults) => {
+    const initial = { items: [{ name: 'a' }] }
+    const write = vi.fn(StorageSerializers.object.write)
+    const store = useStorage(KEY, initial, storage, {
+      writeDefaults,
+      serializer: { read: StorageSerializers.object.read, write },
+    })
+
+    await nextTwoTick()
+
+    expect(store.value).toEqual(initial)
+    expect(write).toHaveBeenCalledTimes(writeDefaults ? 1 : 0)
+    expect(storage.setItem).toHaveBeenCalledTimes(writeDefaults ? 1 : 0)
+    expect(storage.getItem(KEY)).toBe(writeDefaults ? JSON.stringify(initial) : undefined)
+  })
+
   it('map', async () => {
     const store = useStorage(KEY, new Map<number, string | number>([
       [1, 'a'],
