@@ -61,7 +61,7 @@ catalogs:
     postcss-nested: ^7.0.2
     prettier: ^3.9.6
     semver: ^7.8.5
-    sharp: ^0.35.4
+    sharp: ^0.35.5
     simple-git: ^3.36.0
     simple-git-hooks: ^2.14.0
     taze: ^21.1.0
