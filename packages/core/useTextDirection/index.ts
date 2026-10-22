@@ -59,7 +59,7 @@ export function useTextDirection(
 ) {
   const hasTarget = isTarget(targetOrOptions)
   const target = hasTarget ? targetOrOptions as MaybeComputedElementRef : undefined
-  const options = hasTarget ? targetOptions : targetOrOptions as UseTextDirectionOptions
+  const options: UseTextDirectionOptions = hasTarget ? targetOptions : targetOrOptions as UseTextDirectionOptions
   const {
     document = defaultDocument,
     selector = 'html',
