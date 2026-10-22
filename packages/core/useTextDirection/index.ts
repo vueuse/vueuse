@@ -1,8 +1,10 @@
 import type { ConfigurableDocument } from '../_configurable'
-import type { MaybeElement } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
+import type { ComputedRef } from 'vue'
 import { tryOnMounted } from '@vueuse/shared'
-import { computed, shallowRef } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
+import { unrefElement } from '../unrefElement'
 import { useMutationObserver } from '../useMutationObserver'
 
 export type UseTextDirectionValue = 'ltr' | 'rtl' | 'auto'
@@ -15,7 +17,7 @@ export interface UseTextDirectionOptions extends ConfigurableDocument {
    */
   selector?: string
   /**
-   * Observe `document.querySelector(selector)` changes using MutationObserve
+   * Observe target attribute changes using MutationObserver
    *
    * @default false
    */
@@ -28,14 +30,37 @@ export interface UseTextDirectionOptions extends ConfigurableDocument {
   initialValue?: UseTextDirectionValue
 }
 
+export type UseTextDirectionTargetOptions = Omit<UseTextDirectionOptions, 'document' | 'selector'>
+
+function isTarget(value: UseTextDirectionOptions | MaybeComputedElementRef): value is MaybeComputedElementRef {
+  if (value == null || typeof value === 'function')
+    return true
+
+  if (typeof value !== 'object')
+    return false
+
+  return 'nodeType' in value || '$el' in value || 'value' in value
+}
+
 /**
  * Reactive dir of the element's text.
+ *
+ * Pass an element or Vue component ref to read its computed CSS direction.
+ * Without a target, the direction is read from the configured element's dir attribute.
  *
  * @see https://vueuse.org/useTextDirection
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useTextDirection(options: UseTextDirectionOptions = {}) {
+export function useTextDirection(options?: UseTextDirectionOptions): ComputedRef<UseTextDirectionValue>
+export function useTextDirection(target: MaybeComputedElementRef, options?: UseTextDirectionTargetOptions): ComputedRef<UseTextDirectionValue>
+export function useTextDirection(
+  targetOrOptions: UseTextDirectionOptions | MaybeComputedElementRef = {},
+  targetOptions: UseTextDirectionTargetOptions = {},
+) {
+  const hasTarget = isTarget(targetOrOptions)
+  const target = hasTarget ? targetOrOptions as MaybeComputedElementRef : undefined
+  const options: UseTextDirectionOptions = hasTarget ? targetOptions : targetOrOptions as UseTextDirectionOptions
   const {
     document = defaultDocument,
     selector = 'html',
@@ -43,17 +68,41 @@ export function useTextDirection(options: UseTextDirectionOptions = {}) {
     initialValue = 'ltr',
   } = options
 
-  function getValue() {
-    return document?.querySelector(selector)?.getAttribute('dir') as UseTextDirectionValue ?? initialValue
+  function getElement(): Element | null {
+    return (hasTarget
+      ? unrefElement(target!)
+      : document?.querySelector(selector) ?? null) as Element | null
+  }
+
+  function getValue(): UseTextDirectionValue {
+    const element = getElement()
+
+    if (hasTarget) {
+      if (!element)
+        return initialValue
+
+      const direction = element.ownerDocument.defaultView?.getComputedStyle(element).direction
+      return (direction || initialValue) as UseTextDirectionValue
+    }
+
+    return (element?.getAttribute('dir') as UseTextDirectionValue) ?? initialValue
   }
 
   const dir = shallowRef<UseTextDirectionValue>(getValue())
 
   tryOnMounted(() => dir.value = getValue())
 
-  if (observe && document) {
+  if (hasTarget) {
+    watch(
+      () => unrefElement(target!),
+      () => dir.value = getValue(),
+      { flush: 'post' },
+    )
+  }
+
+  if (observe && (hasTarget || document)) {
     useMutationObserver(
-      document.querySelector(selector) as MaybeElement,
+      hasTarget ? target! : document?.querySelector(selector) as Element | null,
       () => dir.value = getValue(),
       { attributes: true },
     )
@@ -65,12 +114,13 @@ export function useTextDirection(options: UseTextDirectionOptions = {}) {
     },
     set(v) {
       dir.value = v
-      if (!document)
+      const element = getElement()
+      if (!element)
         return
       if (dir.value)
-        document.querySelector(selector)?.setAttribute('dir', dir.value)
+        element.setAttribute('dir', dir.value)
       else
-        document.querySelector(selector)?.removeAttribute('dir')
+        element.removeAttribute('dir')
     },
   })
 }
