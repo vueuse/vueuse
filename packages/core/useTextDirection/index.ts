@@ -1,5 +1,6 @@
 import type { ConfigurableDocument } from '../_configurable'
-import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
+import type { MaybeComputedElementRef } from '../unrefElement'
+import type { ComputedRef } from 'vue'
 import { tryOnMounted } from '@vueuse/shared'
 import { computed, shallowRef, watch } from 'vue'
 import { defaultDocument } from '../_configurable'
@@ -67,10 +68,10 @@ export function useTextDirection(
     initialValue = 'ltr',
   } = options
 
-  function getElement(): MaybeElement | Element | null {
-    return hasTarget
+  function getElement(): Element | null {
+    return (hasTarget
       ? unrefElement(target!)
-      : document?.querySelector(selector) ?? null
+      : document?.querySelector(selector) ?? null) as Element | null
   }
 
   function getValue(): UseTextDirectionValue {
@@ -101,7 +102,7 @@ export function useTextDirection(
 
   if (observe && (hasTarget || document)) {
     useMutationObserver(
-      hasTarget ? target! : document?.querySelector(selector) as MaybeElement,
+      hasTarget ? target! : document?.querySelector(selector) as Element | null,
       () => dir.value = getValue(),
       { attributes: true },
     )
