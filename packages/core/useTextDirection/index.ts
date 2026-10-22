@@ -51,8 +51,8 @@ function isTarget(value: UseTextDirectionOptions | MaybeComputedElementRef): val
  *
  * @__NO_SIDE_EFFECTS__
  */
-export function useTextDirection(options?: UseTextDirectionOptions): ReturnType<typeof computed<UseTextDirectionValue>>
-export function useTextDirection(target: MaybeComputedElementRef, options?: UseTextDirectionTargetOptions): ReturnType<typeof computed<UseTextDirectionValue>>
+export function useTextDirection(options?: UseTextDirectionOptions): ComputedRef<UseTextDirectionValue>
+export function useTextDirection(target: MaybeComputedElementRef, options?: UseTextDirectionTargetOptions): ComputedRef<UseTextDirectionValue>
 export function useTextDirection(
   targetOrOptions: UseTextDirectionOptions | MaybeComputedElementRef = {},
   targetOptions: UseTextDirectionTargetOptions = {},
