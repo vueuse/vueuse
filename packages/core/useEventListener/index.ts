@@ -110,7 +110,20 @@ export function useEventListener<Names extends string, EventType = Event>(
 /**
  * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
  *
- * Overload 7: Custom event target fallback
+ * Overload 7: Omitted Window target fallback
+ *
+ * @see https://vueuse.org/useEventListener
+ */
+export function useEventListener<EventType = Event>(
+  event: MaybeRefOrGetter<Arrayable<string>>,
+  listener: MaybeRef<Arrayable<(this: Window, ev: EventType) => any>>,
+  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>,
+): Fn
+
+/**
+ * Register using addEventListener on mounted, and removeEventListener automatically on unmounted.
+ *
+ * Overload 8: Custom event target fallback
  *
  * @see https://vueuse.org/useEventListener
  */
