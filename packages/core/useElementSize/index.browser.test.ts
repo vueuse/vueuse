@@ -1,4 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { page } from 'vitest/browser'
+import { defineComponent, nextTick, useTemplateRef, watch } from 'vue'
 import { useElementSize } from './index'
 
 // The element uses `box-sizing: border-box` with a 200x100 outer size,
@@ -34,5 +36,35 @@ describe('useElementSize', () => {
     const { width, height } = useElementSize(el)
     expect(width.value).toBe(170)
     expect(height.value).toBe(70)
+  })
+
+  it('should keep the size measured on mount when the template ref is set', async () => {
+    const widths: number[] = []
+    const Component = defineComponent({
+      template: `<div ref="target" style="width: 200px; height: 100px; padding: 10px; border: 5px solid black; box-sizing: border-box;" />`,
+      setup() {
+        const { width } = useElementSize(useTemplateRef<HTMLElement>('target'))
+        watch(width, value => widths.push(value), { flush: 'sync' })
+      },
+    })
+    page.render(Component)
+    await nextTick()
+
+    expect(widths).toEqual([170])
+  })
+
+  it('should not report a negative size for a hidden element with padding', async () => {
+    const sizes: number[] = []
+    const Component = defineComponent({
+      template: `<div ref="target" style="display: none; padding: 10px; border: 5px solid black;" />`,
+      setup() {
+        const { width, height } = useElementSize(useTemplateRef<HTMLElement>('target'))
+        watch([width, height], value => sizes.push(...value), { flush: 'sync' })
+      },
+    })
+    page.render(Component)
+    await nextTick()
+
+    expect(sizes.filter(size => size < 0)).toEqual([])
   })
 })

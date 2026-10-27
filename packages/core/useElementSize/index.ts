@@ -69,7 +69,7 @@ export function useElementSize(
     options,
   )
 
-  tryOnMounted(() => {
+  function measure() {
     const ele = unrefElement(target)
     if (ele && 'offsetWidth' in ele) {
       if (box === 'content-box' && window) {
@@ -78,8 +78,9 @@ export function useElementSize(
         const padY = Number.parseFloat(cs.paddingTop) + Number.parseFloat(cs.paddingBottom)
         const bdX = Number.parseFloat(cs.borderLeftWidth) + Number.parseFloat(cs.borderRightWidth)
         const bdY = Number.parseFloat(cs.borderTopWidth) + Number.parseFloat(cs.borderBottomWidth)
-        width.value = ele.offsetWidth - padX - bdX
-        height.value = ele.offsetHeight - padY - bdY
+        // hidden elements have no size but keep their padding and border
+        width.value = Math.max(0, ele.offsetWidth - padX - bdX)
+        height.value = Math.max(0, ele.offsetHeight - padY - bdY)
       }
       else {
         width.value = ele.offsetWidth
@@ -90,13 +91,20 @@ export function useElementSize(
       width.value = initialSize.width
       height.value = initialSize.height
     }
-  })
+  }
+
+  tryOnMounted(measure)
 
   const stop2 = watch(
     () => unrefElement(target),
     (ele) => {
-      width.value = ele ? initialSize.width : 0
-      height.value = ele ? initialSize.height : 0
+      if (ele) {
+        measure()
+      }
+      else {
+        width.value = 0
+        height.value = 0
+      }
     },
   )
 

@@ -692,6 +692,7 @@ export interface UseFetchReturn<T> {
   patch: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
   head: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
   options: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
+  query: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
   json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>;
   text: () => UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>;
   blob: () => UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>;
@@ -777,7 +778,7 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
 export interface UseIdleReturn extends Stoppable {
   idle: ShallowRef<boolean>;
   lastActive: ShallowRef<number>;
-  reset: () => void;
+  reset: (_?: boolean) => void;
 }
 export interface UseImageOptions {
   src: string;
