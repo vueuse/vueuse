@@ -47,6 +47,9 @@ function tryRequestAnimationFrame(
   }
 }
 
+/**
+ * @deprecated Use CSS `field-sizing: content` instead when supported by target browsers.
+ */
 export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}): UseTextareaAutosizeReturn {
   const { window = defaultWindow } = options
   const textarea = toRef(options?.element)
