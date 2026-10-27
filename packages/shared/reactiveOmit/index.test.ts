@@ -164,6 +164,53 @@ describe('reactiveOmit', () => {
     expect('bar' in state).toBe(false)
   })
 
+  it('should support sources with non-configurable symbols', () => {
+    const source = Object.defineProperty({ foo: 'foo', bar: 'bar' }, Symbol('baz'), { value: 'baz' })
+    const state = reactiveOmit(source, 'bar')
+
+    expect(Object.keys(state)).toEqual(['foo'])
+    expect({ ...state }).toEqual({ foo: 'foo' })
+  })
+
+  it('should read non-writable refs in the source', () => {
+    const source = Object.defineProperty({ bar: 'bar' } as Record<string, unknown>, 'foo', { value: deepRef('foo'), enumerable: true })
+    const state = reactiveOmit(source, 'bar')
+
+    expect(state.foo).toBe('foo')
+  })
+
+  it('should support `hasOwnProperty` calls', () => {
+    const source = reactive<TargetObject>({ foo: 'foo', bar: 'bar' })
+    const state = reactiveOmit(source, 'bar')
+
+    const results: boolean[] = []
+    // eslint-disable-next-line e18e/prefer-object-has-own, no-prototype-builtins
+    watchSyncEffect(() => results.push(state.hasOwnProperty('foo'), state.hasOwnProperty('bar'), state.hasOwnProperty('qux')))
+
+    expect(results).toEqual([true, false, false])
+
+    source.qux = true
+
+    expect(results.slice(3)).toEqual([true, false, true])
+  })
+
+  it('should omit numeric keys', () => {
+    const source = reactive<Record<number, string>>({ 1: 'a', 2: 'b' })
+    const state = reactiveOmit(source, 1)
+
+    expect(Object.keys(state)).toEqual(['2'])
+    expect(state[1]).toBeUndefined()
+  })
+
+  it('should not define omitted keys on the source', () => {
+    const source = reactive({ foo: 'foo', bar: 'bar' })
+    const state = reactiveOmit(source, 'bar')
+
+    Object.defineProperty(state, 'bar', { value: 'bar2', configurable: true, enumerable: true, writable: true })
+
+    expect(source.bar).toBe('bar')
+  })
+
   it('should support frozen sources', () => {
     const source = Object.freeze({ foo: 'foo', bar: 'bar' })
     const state = reactiveOmit(source, 'bar')

@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-restricted-imports -- function values must not be called
-import { isReadonly, isRef, toRefs, toValue, unref } from 'vue'
+import { isReadonly, isRef, toRefs, toValue } from 'vue'
 import { reactiveComputed } from '../reactiveComputed'
 
 export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined = undefined>
@@ -8,6 +7,60 @@ export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined =
     : Omit<T, Extract<K, keyof T>>
 
 export type ReactiveOmitPredicate<T> = (value: T[keyof T], key: keyof T) => boolean
+
+function createOmitView(source: any, omitted: PropertyKey[], isRawView: boolean): any {
+  const isOmitted = (key: PropertyKey) => typeof key === 'symbol' || omitted.includes(key)
+  // eslint-disable-next-line e18e/prefer-object-has-own, no-prototype-builtins -- reactive sources track `hasOwnProperty` calls
+  const hasOwnProperty = (key: PropertyKey) => !isOmitted(key) && source.hasOwnProperty(key)
+  let rawView: any
+
+  return new Proxy({}, {
+    get(_, key) {
+      if (isOmitted(key))
+        return undefined
+      // a raw view with the same keys omitted, so `toRaw` and `v-bind` copies keep omitting them
+      if (key === '__v_raw')
+        return isRawView ? undefined : (rawView ??= createOmitView(isReadonly(source) ? source.__v_raw : source, omitted, true))
+      if (key === 'hasOwnProperty')
+        return hasOwnProperty
+      const value = source[key]
+      return isRef(value) ? value.value : value
+    },
+    set(_, key, value) {
+      if (isOmitted(key))
+        return true
+      const oldValue = source[key]
+      if (isRef(oldValue) && !isRef(value))
+        oldValue.value = value
+      else
+        source[key] = value
+      return true
+    },
+    deleteProperty(_, key) {
+      return isOmitted(key) || Reflect.deleteProperty(source, key)
+    },
+    defineProperty(_, key, descriptor) {
+      return isOmitted(key) || Reflect.defineProperty(source, key, descriptor)
+    },
+    has(_, key) {
+      return !isOmitted(key) && key in source
+    },
+    ownKeys() {
+      return Reflect.ownKeys(source).filter(key => !isOmitted(key))
+    },
+    getOwnPropertyDescriptor(_, key) {
+      if (isOmitted(key))
+        return undefined
+      const descriptor = Reflect.getOwnPropertyDescriptor(source, key)
+      if (descriptor)
+        descriptor.configurable = true
+      return descriptor
+    },
+    getPrototypeOf() {
+      return Reflect.getPrototypeOf(source)
+    },
+  })
+}
 
 export function reactiveOmit<T extends object, K extends keyof T>(
   obj: T,
@@ -29,49 +82,9 @@ export function reactiveOmit<T extends object, K extends keyof T>(
   const flatKeys = keys.flat() as K[]
   const predicate = flatKeys[0] as unknown as ReactiveOmitPredicate<T>
 
-  const isHideable = (key: K) => Object.getOwnPropertyDescriptor(obj, key)?.configurable !== false
-
-  if (typeof predicate !== 'function' && Object.isExtensible(obj) && flatKeys.every(isHideable)) {
-    const isOmitted = (key: PropertyKey) => typeof key === 'symbol' || flatKeys.includes(key as K)
-    let rawView: any
-
-    const handler: ProxyHandler<any> = {
-      get(target, key, receiver) {
-        if (isOmitted(key))
-          return undefined
-        // a raw view with the same keys omitted, so `toRaw` and `v-bind` copies keep omitting them
-        if (key === '__v_raw')
-          return receiver === rawView ? undefined : (rawView ??= new Proxy(isReadonly(obj) ? (obj as any).__v_raw : obj, handler))
-        return unref(target[key])
-      },
-      set(target, key, value) {
-        if (isOmitted(key))
-          return true
-        if (isRef(target[key]) && !isRef(value))
-          target[key].value = value
-        else
-          target[key] = value
-        return true
-      },
-      deleteProperty(target, key) {
-        return isOmitted(key) || Reflect.deleteProperty(target, key)
-      },
-      has(target, key) {
-        return !isOmitted(key) && key in target
-      },
-      ownKeys(target) {
-        return Reflect.ownKeys(target).filter(key => !isOmitted(key))
-      },
-      getOwnPropertyDescriptor(target, key) {
-        return isOmitted(key) ? undefined : Reflect.getOwnPropertyDescriptor(target, key)
-      },
-    }
-
-    return new Proxy(obj, handler)
-  }
+  if (typeof predicate !== 'function')
+    return createOmitView(obj, flatKeys.map(key => typeof key === 'number' ? String(key) : key), false)
 
   return reactiveComputed<any>(() =>
-    typeof predicate === 'function'
-      ? Object.fromEntries(Object.entries(toRefs(obj)).filter(([k, v]) => !predicate(toValue(v) as T[K], k as K)))
-      : Object.fromEntries(Object.entries(toRefs(obj)).filter(e => !flatKeys.includes(e[0] as K))))
+    Object.fromEntries(Object.entries(toRefs(obj)).filter(([k, v]) => !predicate(toValue(v) as T[K], k as K))))
 }
