@@ -33,6 +33,7 @@ ipcRenderer.on('custom-event', (event, ...args) => {
 | `on(channel, listener)`                    | Listen to channel. Auto-removes listener on unmount. |
 | `once(channel, listener)`                  | Listen to channel once                               |
 | `removeListener(channel, listener)`        | Remove specific listener                             |
+| `off(channel, listener)`                   | Alias for `removeListener`                           |
 | `removeAllListeners(channel)`              | Remove all listeners for channel                     |
 | `send(channel, ...args)`                   | Send async message to main process                   |
 | `invoke(channel, ...args)`                 | Send message and get response as `ShallowRef`        |

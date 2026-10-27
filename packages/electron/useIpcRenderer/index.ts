@@ -34,6 +34,13 @@ export interface UseIpcRendererReturn {
   removeListener: (channel: string, listener: (...args: any[]) => void) => IpcRenderer
 
   /**
+   * Alias for removeListener.
+   *
+   * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendereroffchannel-listener
+   */
+  off: (channel: string, listener: (...args: any[]) => void) => IpcRenderer
+
+  /**
    * Removes all listeners, or those of the specified channel.
    *
    * @see https://www.electronjs.org/docs/api/ipc-renderer#ipcrendererremovealllistenerschannel
@@ -114,6 +121,7 @@ export function useIpcRenderer(ipcRenderer?: IpcRenderer): UseIpcRendererReturn 
     on: (channel: string, listener: IpcRendererListener) => useIpcRendererOn(channel, listener),
     once: ipcRenderer.once.bind(ipcRenderer),
     removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
+    off: ipcRenderer.off.bind(ipcRenderer),
     removeAllListeners: ipcRenderer.removeAllListeners.bind(ipcRenderer),
     send: ipcRenderer.send,
     invoke: <T>(channel: string, ...args: any[]) => useIpcRendererInvoke<T>(ipcRenderer!, channel, ...args),
