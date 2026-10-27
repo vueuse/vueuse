@@ -10,8 +10,11 @@ export type ReactiveOmitPredicate<T> = (value: T[keyof T], key: keyof T) => bool
 
 function createOmitView(source: any, omitted: PropertyKey[], isRawView: boolean): any {
   const isOmitted = (key: PropertyKey) => typeof key === 'symbol' || omitted.includes(key)
-  // eslint-disable-next-line e18e/prefer-object-has-own, no-prototype-builtins -- reactive sources track `hasOwnProperty` calls
-  const hasOwnProperty = (key: PropertyKey) => !isOmitted(key) && source.hasOwnProperty(key)
+  const hasOwnProperty = (key: PropertyKey) => {
+    key = typeof key === 'symbol' ? key : String(key)
+    // eslint-disable-next-line e18e/prefer-object-has-own, no-prototype-builtins -- reactive sources track `hasOwnProperty` calls
+    return !isOmitted(key) && source.hasOwnProperty(key)
+  }
   let rawView: any
 
   return new Proxy({}, {
@@ -40,6 +43,8 @@ function createOmitView(source: any, omitted: PropertyKey[], isRawView: boolean)
       return isOmitted(key) || Reflect.deleteProperty(source, key)
     },
     defineProperty(_, key, descriptor) {
+      if (descriptor.configurable === false)
+        return false
       return isOmitted(key) || Reflect.defineProperty(source, key, descriptor)
     },
     has(_, key) {
@@ -55,9 +60,6 @@ function createOmitView(source: any, omitted: PropertyKey[], isRawView: boolean)
       if (descriptor)
         descriptor.configurable = true
       return descriptor
-    },
-    getPrototypeOf() {
-      return Reflect.getPrototypeOf(source)
     },
   })
 }

@@ -200,6 +200,28 @@ describe('reactiveOmit', () => {
 
     expect(Object.keys(state)).toEqual(['2'])
     expect(state[1]).toBeUndefined()
+    // eslint-disable-next-line e18e/prefer-object-has-own, no-prototype-builtins
+    expect(state.hasOwnProperty(1)).toBe(false)
+  })
+
+  it('should not enumerate omitted inherited keys', () => {
+    const source = reactive(Object.assign(Object.create({ bar: 'bar' }), { foo: 'foo' }))
+    const state = reactiveOmit(source, 'bar')
+
+    const keys: string[] = []
+    for (const key in state)
+      keys.push(key)
+
+    expect(keys).toEqual(['foo'])
+  })
+
+  it('should reject non-configurable definitions without changing the source', () => {
+    const source = reactive({ foo: 'foo', bar: 'bar' })
+    const state = reactiveOmit(source, 'bar')
+
+    expect(() => Object.defineProperty(state, 'foo', { value: 'foo2', configurable: false })).toThrow(TypeError)
+    expect(source.foo).toBe('foo')
+    expect(Object.getOwnPropertyDescriptor(source, 'foo')?.configurable).toBe(true)
   })
 
   it('should not define omitted keys on the source', () => {
