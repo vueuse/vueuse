@@ -43,6 +43,12 @@ by [dayjs](https://github.com/iamkun/dayjs).
 | `dd`   | S-S                      | The min name of the day of the week     |
 | `ddd`  | Sun-Sat                  | The short name of the day of the week   |
 | `dddd` | Sunday-Saturday          | The name of the day of the week         |
+| `X`    | -01, +0123, Z            | ISO 8601                                |
+| `XX`   | -0100, +0123, Z          | ISO 8601                                |
+| `XXX`  | -01:00, +01:23, Z        | ISO 8601                                |
+| `x`    | -01, +0123, +00          | ISO 8601                                |
+| `xx`   | -0100, +0123, +0000      | ISO 8601                                |
+| `xxx`  | -01:00, +01:23, +00:00   | ISO 8601                                |
 | `z`    | GMT, GMT+1               | The timezone with offset                |
 | `zz`   | GMT, GMT+1               | The timezone with offset                |
 | `zzz`  | GMT, GMT+1               | The timezone with offset                |
