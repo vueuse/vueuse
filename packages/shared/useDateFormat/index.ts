@@ -20,7 +20,7 @@ export interface UseDateFormatOptions {
 
 // eslint-disable-next-line regexp/no-misleading-capturing-group
 const REGEX_PARSE = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[T\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/i
-const REGEX_FORMAT = /[YMDHhms]o|\[([^\]]+)\]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|z{1,4}|SSS/g
+const REGEX_FORMAT = /[YMDHhms]o|\[([^\]]+)\]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|X{1,3}|x{1,3}|Z{1,2}|z{1,4}|SSS/g
 
 function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   let m = (hours < 12 ? 'AM' : 'PM')
@@ -47,6 +47,20 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const meridiem = options.customMeridiem ?? defaultMeridiem
   const stripTimeZone = (dateString: string) => {
     return dateString.split(' ')[1] ?? ''
+  }
+  const formatISO8601 = (date: Date, opt?: { separator?: string, z?: boolean, short?: boolean }) => {
+    if (opt?.z && date.getTimezoneOffset() === 0) {
+      return 'Z'
+    }
+
+    let timezoneOffset = date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'longOffset' }).split('GMT')[1]
+    if (opt?.short && timezoneOffset.endsWith('00')) {
+      timezoneOffset = timezoneOffset.slice(0, -3)
+    }
+    if (opt?.separator !== undefined) {
+      timezoneOffset = timezoneOffset.replace(':', opt.separator)
+    }
+    return timezoneOffset
   }
   const matches: Record<string, () => string | number> = {
     Yo: () => formatOrdinal(years),
@@ -81,6 +95,12 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     AA: () => meridiem(hours, minutes, false, true),
     a: () => meridiem(hours, minutes, true),
     aa: () => meridiem(hours, minutes, true, true),
+    X: () => formatISO8601(date, { z: true, separator: '', short: true }),
+    XX: () => formatISO8601(date, { z: true, separator: '' }),
+    XXX: () => formatISO8601(date, { z: true }),
+    x: () => formatISO8601(date, { separator: '', short: true }),
+    xx: () => formatISO8601(date, { separator: '' }),
+    xxx: () => formatISO8601(date),
     z: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
     zz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
     zzz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
