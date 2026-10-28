@@ -28,7 +28,7 @@ export default defineConfig({
   test: {
     reporters: 'dot',
     env: {
-      TZ: 'UTC-1', // to have some actual results with timezone offset
+      TZ: 'Etc/GMT-1', // to have some actual results with timezone offset
     },
     exclude: [
       '**/node_modules/**',
