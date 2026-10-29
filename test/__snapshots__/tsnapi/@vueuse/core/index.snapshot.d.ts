@@ -2074,6 +2074,14 @@ export declare const breakpointsBootstrapV5: {
   xl: number;
   xxl: number;
 };
+export declare const breakpointsBootstrapV6: {
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
+  xl: number;
+  '2xl': number;
+};
 export declare const breakpointsElement: {
   xs: number;
   sm: number;
