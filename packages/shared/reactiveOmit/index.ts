@@ -8,8 +8,8 @@ export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined =
 
 export type ReactiveOmitPredicate<T> = (value: T[keyof T], key: keyof T) => boolean
 
-function createOmitView(source: any, omitted: PropertyKey[], isRawView: boolean): any {
-  const isOmitted = (key: PropertyKey) => typeof key === 'symbol' || omitted.includes(key)
+function createOmitView<T extends object, TKey extends keyof T>(source: T, omitted: TKey[], isRawView: boolean): ReactiveOmitReturn<T, TKey> {
+  const isOmitted = (key: PropertyKey) => typeof key === 'symbol' || omitted.includes(key as TKey)
   const hasOwnProperty = (key: PropertyKey) => {
     key = typeof key === 'symbol' ? key : String(key)
     // eslint-disable-next-line e18e/prefer-object-has-own, no-prototype-builtins -- reactive sources track `hasOwnProperty` calls
@@ -17,26 +17,26 @@ function createOmitView(source: any, omitted: PropertyKey[], isRawView: boolean)
   }
   let rawView: any
 
-  return new Proxy({}, {
+  return new Proxy<T>({} as T, {
     get(_, key) {
       if (isOmitted(key))
         return undefined
       // a raw view with the same keys omitted, so `toRaw` and `v-bind` copies keep omitting them
       if (key === '__v_raw')
-        return isRawView ? undefined : (rawView ??= createOmitView(isReadonly(source) ? source.__v_raw : source, omitted, true))
+        return isRawView ? undefined : (rawView ??= createOmitView(isReadonly(source) ? (source as { __v_raw: T }).__v_raw : source, omitted, true))
       if (key === 'hasOwnProperty')
         return hasOwnProperty
-      const value = source[key]
+      const value = source[key as keyof T]
       return isRef(value) ? value.value : value
     },
     set(_, key, value) {
       if (isOmitted(key))
         return true
-      const oldValue = source[key]
+      const oldValue = source[key as keyof T]
       if (isRef(oldValue) && !isRef(value))
         oldValue.value = value
       else
-        source[key] = value
+        source[key as keyof T] = value
       return true
     },
     deleteProperty(_, key) {
@@ -85,7 +85,7 @@ export function reactiveOmit<T extends object, K extends keyof T>(
   const predicate = flatKeys[0] as unknown as ReactiveOmitPredicate<T>
 
   if (typeof predicate !== 'function')
-    return createOmitView(obj, flatKeys.map(key => typeof key === 'number' ? String(key) : key), false)
+    return createOmitView(obj, flatKeys.map(key => typeof key === 'number' ? String(key) as K : key), false)
 
   return reactiveComputed<any>(() =>
     Object.fromEntries(Object.entries(toRefs(obj)).filter(([k, v]) => !predicate(toValue(v) as T[K], k as K))))
