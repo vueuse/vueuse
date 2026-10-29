@@ -54,7 +54,7 @@ catalogs:
     eslint-plugin-unimport: ^2.0.0
     export-size: ^0.8.0
     lint-staged: ^17.4.1
-    nuxt: ^4.5.2
+    nuxt: ^4.6.2
     ofetch: ^1.5.1
     pnpm: ^11.25.0
     postcss: ^8.5.26
