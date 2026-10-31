@@ -334,7 +334,7 @@ The `onFetchError` event hook only receives the thrown `Error`, not the response
 ```ts
 import { useFetch } from '@vueuse/core'
 // ---cut---
-const { data, response, error } = useFetch(url, {
+const { data, response, error } = await useFetch(url, {
   updateDataOnError: true,
   onFetchError(ctx) {
     console.log(ctx.response?.status, ctx.data) // parsed error body
@@ -342,7 +342,7 @@ const { data, response, error } = useFetch(url, {
   },
 }).json()
 
-// or, after the request fails, with `updateDataOnError: true`
+// or, once the awaited request has failed, with `updateDataOnError: true`
 console.log(error.value, response.value?.status, data.value)
 ```
 
