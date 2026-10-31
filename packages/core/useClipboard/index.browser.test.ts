@@ -1,5 +1,5 @@
 import { useClipboard, usePermission } from '@vueuse/core'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 describe('useClipboard', () => {
   it('should be be supported', () => {
@@ -8,7 +8,13 @@ describe('useClipboard', () => {
   })
 
   describe('without permissions', () => {
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
     it('should write to legacy clipboard', async () => {
+      // Without a user gesture the browser refuses execCommand('copy'), so the test stands in for a copy that works.
+      vi.spyOn(document, 'execCommand').mockReturnValue(true)
       const writePermission = usePermission('clipboard-write')
       expect(writePermission.value).toBe(undefined) // currently no permissions testing legacy fallback
       const { text, copy, copied } = useClipboard()
@@ -20,6 +26,7 @@ describe('useClipboard', () => {
     })
 
     it('should copy text from async function', async () => {
+      vi.spyOn(document, 'execCommand').mockReturnValue(true)
       const { text, copy, copied, copyPending } = useClipboard()
       expect(text.value).toBe('')
       expect(copied.value).toBe(false)
@@ -31,6 +38,23 @@ describe('useClipboard', () => {
 
       expect(text.value).toBe('async text')
       expect(copied.value).toBe(true)
+    })
+
+    it('should not set copied when the legacy copy fails', async () => {
+      const execCommand = vi.spyOn(document, 'execCommand').mockReturnValue(false)
+      const { copy, copied, error } = useClipboard()
+
+      await copy('hello')
+
+      expect(execCommand).toHaveBeenCalledWith('copy')
+      expect(copied.value).toBe(false)
+      expect(error.value).toBeInstanceOf(Error)
+
+      execCommand.mockReturnValue(true)
+      await copy('hello')
+
+      expect(copied.value).toBe(true)
+      expect(error.value).toBe(undefined)
     })
 
     it.todo('should read from legacy clipboard')

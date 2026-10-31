@@ -49,6 +49,7 @@ const { text, copy, copied, isSupported } = useClipboard({ source })
 | `isSupported` | `ComputedRef<boolean>`             | Whether clipboard is supported (native or legacy) |
 | `text`        | `Ref<string>`                      | Current clipboard content (when `read: true`)     |
 | `copied`      | `Ref<boolean>`                     | `true` after successful copy, auto-resets         |
+| `error`       | `Ref<unknown>`                     | Why the last copy failed, `undefined` on success  |
 | `copy`        | `(text?: string) => Promise<void>` | Copy text to clipboard                            |
 
 ### Legacy Mode
