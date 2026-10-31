@@ -143,6 +143,8 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
         timeout.start()
       }
       else {
+        copied.value = false
+        timeout.stop()
         error.value = writeError ?? new Error('document.execCommand(\'copy\') failed')
       }
       copyPending.value = false

@@ -57,6 +57,20 @@ describe('useClipboard', () => {
       expect(error.value).toBe(undefined)
     })
 
+    it('should reset copied when a copy fails right after one succeeds', async () => {
+      const execCommand = vi.spyOn(document, 'execCommand').mockReturnValue(true)
+      const { copy, copied, error } = useClipboard()
+
+      await copy('hello')
+      expect(copied.value).toBe(true)
+
+      execCommand.mockReturnValue(false)
+      await copy('hello')
+
+      expect(copied.value).toBe(false)
+      expect(error.value).toBeInstanceOf(Error)
+    })
+
     it.todo('should read from legacy clipboard')
   })
 
