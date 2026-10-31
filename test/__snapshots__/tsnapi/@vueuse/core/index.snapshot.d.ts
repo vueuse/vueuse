@@ -408,6 +408,7 @@ export interface UseClipboardReturn<Optional> extends Supportable {
   text: Readonly<ShallowRef<string>>;
   copied: Readonly<ShallowRef<boolean>>;
   copyPending: Readonly<ShallowRef<boolean>>;
+  error: Readonly<ShallowRef<unknown>>;
   copy: Optional extends true ? (text?: ClipboardValue) => Promise<void> : (text: ClipboardValue) => Promise<void>;
 }
 export interface UseClonedOptions<T = any> extends WatchOptions {
