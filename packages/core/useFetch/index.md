@@ -327,3 +327,23 @@ onFetchError((error) => {
   console.error(error.message)
 })
 ```
+
+::: tip
+The `onFetchError` event hook only receives the thrown `Error`, not the response body. To read the body of an error response (e.g. a `problem+json` payload), use the `onFetchError` option, whose context includes the parsed `data` and the raw `response`, or set `updateDataOnError: true` and read the returned `data` and `response` refs.
+
+```ts
+import { useFetch } from '@vueuse/core'
+// ---cut---
+const { data, response, error } = await useFetch(url, {
+  updateDataOnError: true,
+  onFetchError(ctx) {
+    console.log(ctx.response?.status, ctx.data) // parsed error body
+    return ctx
+  },
+}).json()
+
+// or, once the awaited request has failed, with `updateDataOnError: true`
+console.log(error.value, response.value?.status, data.value)
+```
+
+:::
