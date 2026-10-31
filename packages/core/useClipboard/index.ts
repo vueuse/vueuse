@@ -44,9 +44,6 @@ export interface UseClipboardReturn<Optional> extends Supportable {
   text: Readonly<ShallowRef<string>>
   copied: Readonly<ShallowRef<boolean>>
   copyPending: Readonly<ShallowRef<boolean>>
-  /**
-   * Why the last `copy()` failed, or `undefined` when it succeeded.
-   */
   error: Readonly<ShallowRef<unknown>>
   copy: Optional extends true
     ? (text?: ClipboardValue) => Promise<void>
