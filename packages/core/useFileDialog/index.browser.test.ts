@@ -218,4 +218,30 @@ describe('useFileDialog', () => {
 
     expect(input.capture).toBe('environment')
   })
+
+  it('should remove capture attribute when capture option is falsy', async () => {
+    const input = document.createElement('input')
+    input.click = vi.fn()
+    // Reflecting browsers (e.g. iOS Safari) expose capture as an attribute;
+    // seed it to reproduce the stuck-attribute state from the issue.
+    input.setAttribute('capture', 'user')
+
+    const captureRef = shallowRef<string | undefined>('user')
+
+    const { open } = useFileDialog({
+      input,
+      capture: captureRef,
+    })
+
+    expect(input.getAttribute('capture')).toBe('user')
+
+    captureRef.value = undefined
+    await nextTick()
+
+    expect(input.hasAttribute('capture')).toBe(false)
+
+    open()
+
+    expect(input.hasAttribute('capture')).toBe(false)
+  })
 })
