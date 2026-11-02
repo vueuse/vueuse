@@ -37,6 +37,7 @@ describe('useEventSource', () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 
   it('should be defined', () => {
@@ -146,6 +147,35 @@ describe('useEventSource', () => {
     close()
 
     expect(status.value).toBe('CLOSED')
+  })
+
+  it('does not reconnect from a retry scheduled before close()', () => {
+    vi.useFakeTimers()
+
+    let created = 0
+    vi.stubGlobal('EventSource', class extends MockEventSource {
+      constructor() {
+        super()
+        created += 1
+      }
+    })
+
+    const { eventSource, close, open } = useEventSource('https://localhost', [], {
+      autoReconnect: { delay: 1000 },
+    })
+
+    const source = eventSource.value!
+    source.close()
+    source.onerror!(new Event('error'))
+
+    close()
+    open()
+    const reopened = eventSource.value
+
+    vi.advanceTimersByTime(1000)
+
+    expect(created).toBe(2)
+    expect(eventSource.value).toBe(reopened)
   })
 
   it('should apply custom serializer function', () => {
