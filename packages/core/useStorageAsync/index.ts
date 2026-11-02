@@ -101,7 +101,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     }
   }
 
-  const promise = new Promise((resolve) => {
+  const promise = new Promise<RemovableRef<T>>((resolve) => {
     read().then(() => {
       onReady?.(data.value)
       resolve(data)
@@ -133,10 +133,22 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
     )
   }
 
-  Object.assign(data, {
+  // Expose the promise methods on a proxy instead of assigning them to `data`,
+  // so that `promise` settles with a non-thenable ref. Resolving it with a
+  // thenable `data` would make the promise wait for itself and never settle.
+  // https://github.com/vueuse/vueuse/issues/5195
+  const promiseHandlers = {
     then: promise.then.bind(promise),
     catch: promise.catch.bind(promise),
-  })
+    finally: promise.finally.bind(promise),
+  }
 
-  return data as RemovableRef<T> & Promise<RemovableRef<T>>
+  return new Proxy(data, {
+    get(target, prop, receiver) {
+      if (Object.hasOwn(promiseHandlers, prop))
+        return promiseHandlers[prop as keyof typeof promiseHandlers]
+
+      return Reflect.get(target, prop, receiver)
+    },
+  }) as RemovableRef<T> & Promise<RemovableRef<T>>
 }
