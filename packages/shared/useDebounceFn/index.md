@@ -130,6 +130,39 @@ debouncedFn.flush()
 
 This is useful when you need to ensure the debounced function runs right away, for example, before navigating away from a page or submitting a form.
 
+## Immediate Initial Execution
+
+By default, even the first call to a debounced function is delayed. If you want the first call to execute immediately (without delay) and only debounce subsequent calls, set `leading` to `true`.
+
+```ts
+import { useDebounceFn, useEventListener } from '@vueuse/core'
+
+const debouncedFn = useDebounceFn(() => {
+  // do something
+}, 1000, { leading: true })
+
+// The first call executes immediately
+debouncedFn()
+
+// Subsequent calls within the debounce window are delayed
+debouncedFn() // This will be debounced
+```
+
+This is useful for scenarios like search-as-you-type, where you want the initial query to execute right away but debounce rapid subsequent keystrokes.
+
+```ts
+import { useDebounceFn } from '@vueuse/core'
+
+const search = useDebounceFn(async (query: string) => {
+  const results = await fetchSearchResults(query)
+  updateResults(results)
+}, 300, { leading: true })
+
+// First keystroke triggers immediate search
+// Rapid subsequent keystrokes are debounced at 300ms
+watch(searchInput, value => search(value))
+```
+
 ## Recommended Reading
 
 - [**Debounce vs Throttle**: Definitive Visual Guide](https://kettanaito.com/blog/debounce-vs-throttle)
