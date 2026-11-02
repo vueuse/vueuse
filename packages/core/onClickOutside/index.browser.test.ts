@@ -142,4 +142,78 @@ describe('onClickOutside', () => {
     await userEvent.click(other)
     expect(consoleSpy).toHaveBeenCalled()
   })
+
+  it('should trigger handler when clicking dialog backdrop', async () => {
+    const handler = vi.fn()
+
+    const component = defineComponent({
+      template: `<dialog ref="dialog" style="width:200px;height:200px;margin:auto;padding:0;"><div>Dialog Content</div></dialog>`,
+      setup() {
+        const dialog = useTemplateRef<HTMLDialogElement>('dialog')
+        onClickOutside(dialog, handler)
+        return { dialog }
+      },
+      mounted() {
+        (this.$refs.dialog as HTMLDialogElement).showModal()
+      },
+    })
+
+    const screen = page.render(component)
+    await expect.element(screen.getByText('Dialog Content')).toBeInTheDocument()
+
+    const dialog = document.querySelector('dialog')!
+    const rect = dialog.getBoundingClientRect()
+
+    dialog.dispatchEvent(new PointerEvent('pointerdown', {
+      bubbles: true,
+      composed: true,
+      clientX: rect.left - 10,
+      clientY: rect.top - 10,
+    }))
+    dialog.dispatchEvent(new PointerEvent('click', {
+      bubbles: true,
+      composed: true,
+      clientX: rect.left - 10,
+      clientY: rect.top - 10,
+    }))
+
+    expect(handler).toHaveBeenCalledOnce()
+  })
+
+  it('should not trigger handler when clicking inside modal dialog', async () => {
+    const handler = vi.fn()
+
+    const component = defineComponent({
+      template: `<dialog ref="dialog" style="width:200px;height:200px;margin:auto;padding:0;"><div>Dialog Content</div></dialog>`,
+      setup() {
+        const dialog = useTemplateRef<HTMLDialogElement>('dialog')
+        onClickOutside(dialog, handler)
+        return { dialog }
+      },
+      mounted() {
+        (this.$refs.dialog as HTMLDialogElement).showModal()
+      },
+    })
+
+    const screen = page.render(component)
+    await expect.element(screen.getByText('Dialog Content')).toBeInTheDocument()
+
+    const dialog = document.querySelector('dialog')!
+    const rect = dialog.getBoundingClientRect()
+
+    dialog.dispatchEvent(new PointerEvent('pointerdown', {
+      bubbles: true,
+      composed: true,
+      clientX: rect.left + rect.width / 2,
+      clientY: rect.top + rect.height / 2,
+    }))
+    dialog.dispatchEvent(new PointerEvent('click', {
+      bubbles: true,
+      composed: true,
+      clientX: rect.left + rect.width / 2,
+      clientY: rect.top + rect.height / 2,
+    }))
+
+    expect(handler).not.toHaveBeenCalled()
+  })
 })
