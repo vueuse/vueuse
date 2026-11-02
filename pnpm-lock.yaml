@@ -189,8 +189,8 @@ catalogs:
       specifier: ^4.0.0
       version: 4.0.0
     local-pkg:
-      specifier: ^1.2.1
-      version: 1.2.1
+      specifier: ^2.0.0
+      version: 2.0.0
     nprogress:
       specifier: ^0.2.0
       version: 0.2.0
@@ -657,7 +657,7 @@ importers:
         version: link:../metadata
       local-pkg:
         specifier: catalog:integrations
-        version: 1.2.1
+        version: 2.0.0
       vue:
         specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)
@@ -6697,6 +6697,10 @@ packages:
   local-pkg@1.2.1:
     resolution: {integrity: sha512-++gUqRDEvcnN6Zhqrr+y/CkVEHhlrR96vZn3nZZPYzMcBUyBtTKzB9NadClFIsIVSsu+3i9tfk/erqy9kAmt7Q==}
     engines: {node: '>=14'}
+
+  local-pkg@2.0.0:
+    resolution: {integrity: sha512-xvTNwM27EpU+fkLSpo33Pq/nm8m5zNf0aU/hF4W4ZM9RHQjVZa5KTmmXIzEzVsdI09NOUqj0djHhTv96sUowSQ==}
+    engines: {node: '>=20.19.0'}
 
   locate-path@5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
@@ -15728,6 +15732,12 @@ snapshots:
       mlly: 1.8.2
       pkg-types: 2.3.1
       quansync: 0.2.11
+
+  local-pkg@2.0.0:
+    dependencies:
+      mlly: 1.8.2
+      pkg-types: 2.3.1
+      quansync: 1.0.0
 
   locate-path@5.0.0:
     dependencies:

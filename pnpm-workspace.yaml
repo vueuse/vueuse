@@ -104,7 +104,7 @@ catalogs:
     fuse.js: ^7.5.0
     idb-keyval: ^6.3.0
     jwt-decode: ^4.0.0
-    local-pkg: ^1.2.1
+    local-pkg: ^2.0.0
     nprogress: ^0.2.0
     qrcode: ^1.5.4
     rxjs: ^6.6.7
