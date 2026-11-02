@@ -90,6 +90,12 @@ export interface UseColorModeOptions<T extends string = BasicColorMode> extends 
    * @default true
    */
   disableTransition?: boolean
+
+  /**
+   * Nonce value for CSP (Content Security Policy)
+   *  @default undefined
+   */
+  nonce?: string
 }
 
 export type UseColorModeReturn<T extends string = BasicColorMode>
@@ -121,6 +127,7 @@ export function useColorMode<T extends string = BasicColorMode>(
     storageRef,
     emitAuto,
     disableTransition = true,
+    nonce = undefined,
   } = options
 
   const modes = {
@@ -180,10 +187,12 @@ export function useColorMode<T extends string = BasicColorMode>(
       let style: HTMLStyleElement | undefined
       if (disableTransition) {
         style = window!.document.createElement('style')
+        if (nonce) {
+          style.nonce = nonce
+        }
         style.appendChild(document.createTextNode(CSS_DISABLE_TRANS))
         window!.document.head.appendChild(style)
       }
-
       for (const c of classesToAdd) {
         el.classList.add(c)
       }
