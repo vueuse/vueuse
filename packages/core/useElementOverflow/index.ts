@@ -53,7 +53,13 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
     return [el, ...Array.from(el.children).filter(i => i instanceof HTMLElement)]
   }
 
-  useResizeObserver(targets, (entries, observer) => {
+  const stopFnList: Array<() => void> = []
+  function stop() {
+    stopFnList.forEach(fn => fn())
+    stopFnList.length = 0
+  }
+
+  const { stop: stopResizeObserver } = useResizeObserver(targets, (entries, observer) => {
     const el = targetEl.value
     if (el) {
       update(el)
@@ -61,9 +67,11 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
     onResizeUpdated?.(entries, observer)
   }, { window })
 
+  stopFnList.push(stopResizeObserver)
+
   if (observeMutation) {
     const onMutationUpdated = onUpdated as MutationCallback | undefined
-    useMutationObserver(
+    const { stop: stopMutationObserver } = useMutationObserver(
       targets,
       (entries, observer) => {
         const el = targetEl.value
@@ -79,11 +87,13 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
           : { childList: true, subtree: true, characterData: true }),
       },
     )
+
+    stopFnList.push(stopMutationObserver)
   }
+
   return {
     isXOverflowed: shallowReadonly(isXOverflowed),
     isYOverflowed: shallowReadonly(isYOverflowed),
-    // stop effectScope
     stop,
     // update overflow state immediately
     update: () => {
