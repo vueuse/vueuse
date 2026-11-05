@@ -1874,7 +1874,7 @@ export declare function useElementHover(_: MaybeRefOrGetter<EventTarget | null |
 export declare function useElementOverflow(_: MaybeComputedElementRef, _?: UseElementOverflowOptions): {
   isXOverflowed: Readonly<import("vue").ShallowRef<boolean, boolean>>;
   isYOverflowed: Readonly<import("vue").ShallowRef<boolean, boolean>>;
-  stop: typeof stop;
+  stop: () => void;
   update: () => void;
 };
 export declare function useElementSize(_: MaybeComputedElementRef, _?: ElementSize, _?: UseElementSizeOptions): UseElementSizeReturn;
