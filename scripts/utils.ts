@@ -5,12 +5,12 @@ import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
 import { $fetch } from 'ofetch'
-import Git from 'simple-git'
+import { simpleGit } from 'simple-git'
 import yaml from 'yaml'
 import { packages } from '../meta/packages'
 import { getCategories } from '../packages/metadata/utils'
 
-export const git = Git()
+export const git = simpleGit()
 
 export const DOCS_URL = 'https://vueuse.org'
 
