@@ -1,5 +1,6 @@
 import type { RemovableRef } from '@vueuse/shared'
 import type { MaybeRefOrGetter } from 'vue'
+import type { StorageLike } from '../ssr-handlers'
 import type { UseStorageOptions } from '../useStorage'
 import { defaultWindow } from '../_configurable'
 import { useStorage } from '../useStorage'
@@ -23,6 +24,20 @@ export function useLocalStorage<T extends(string | number | boolean | object | n
   initialValue: MaybeRefOrGetter<T>,
   options: UseStorageOptions<T> = {},
 ): RemovableRef<any> {
-  const { window = defaultWindow } = options
-  return useStorage(key, initialValue, window?.localStorage, options)
+  const { window = defaultWindow, onError = (error: unknown) => console.error(error) } = options
+  let storage: StorageLike | undefined
+  try {
+    storage = window?.localStorage
+  }
+  catch (error) {
+    // Reading `localStorage` throws a `SecurityError` when site data is blocked.
+    // Report it and keep the ref usable with a storage that drops every write.
+    onError(error)
+    storage = {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+    }
+  }
+  return useStorage(key, initialValue, storage, options)
 }
