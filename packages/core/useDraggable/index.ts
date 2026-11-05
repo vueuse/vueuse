@@ -415,7 +415,7 @@ export function useDraggable(
     })
     useEventListener(draggingHandle, 'pointerdown', start, config)
     useEventListener(draggingElement, 'pointermove', move, config)
-    useEventListener(draggingElement, 'pointerup', end, config)
+    useEventListener(draggingElement, ['pointerup', 'pointercancel'], end, config)
   }
 
   return {

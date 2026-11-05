@@ -10,7 +10,8 @@ defineProps<{
   <div text-center h-full relative flex="~ col">
     <img
       loading="lazy"
-      m-auto rounded-full min-w-25 min-h-25 h-30 w-30 mb--15
+      class="m-auto! mb--15!"
+      rounded-full min-w-25 min-h-25 h-30 w-30
       shadow
       :src="data.avatar"
       :alt="`${data.name}'s avatar`"

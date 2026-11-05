@@ -45,6 +45,7 @@ export interface UseClipboardItemsReturn<Optional> extends Supportable {
  */
 export function useClipboardItems(options?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>
 export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems>>): UseClipboardItemsReturn<true>
+/* @__NO_SIDE_EFFECTS__ */
 export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems> | undefined> = {}): UseClipboardItemsReturn<boolean> {
   const {
     navigator = defaultNavigator,

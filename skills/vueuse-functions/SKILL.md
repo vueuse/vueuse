@@ -59,6 +59,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useDraggable`](references/useDraggable.md) | Make elements draggable | AUTO |
 | [`useDropZone`](references/useDropZone.md) | Create a zone where files can be dropped | AUTO |
 | [`useElementBounding`](references/useElementBounding.md) | Reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element | AUTO |
+| [`useElementOverflow`](references/useElementOverflow.md) | Reactive element's overflow state | AUTO |
 | [`useElementSize`](references/useElementSize.md) | Reactive size of an HTML element | AUTO |
 | [`useElementVisibility`](references/useElementVisibility.md) | Tracks the visibility of an element within the viewport | AUTO |
 | [`useIntersectionObserver`](references/useIntersectionObserver.md) | Detects changes to a target element's visibility | AUTO |
@@ -92,6 +93,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useFullscreen`](references/useFullscreen.md) | Reactive [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) | AUTO |
 | [`useGamepad`](references/useGamepad.md) | Provides reactive bindings for the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API) | AUTO |
 | [`useImage`](references/useImage.md) | Reactive load an image in the browser | AUTO |
+| [`useLiveAnnouncer`](references/useLiveAnnouncer.md) | Accessible way to announce messages to screen reader users (ARIA live regions) | AUTO |
 | [`useMediaControls`](references/useMediaControls.md) | Reactive media controls for both `audio` and `video` elements | AUTO |
 | [`useMediaQuery`](references/useMediaQuery.md) | Reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries) | AUTO |
 | [`useMemory`](references/useMemory.md) | Reactive Memory Info | AUTO |
@@ -108,7 +110,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useScreenSafeArea`](references/useScreenSafeArea.md) | Reactive `env(safe-area-inset-*)` | AUTO |
 | [`useScriptTag`](references/useScriptTag.md) | Creates a script tag | AUTO |
 | [`useShare`](references/useShare.md) | Reactive [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share) | AUTO |
-| [`useSSRWidth`](references/useSSRWidth.md) | Used to set a global viewport width which will be used when rendering SSR components that rely on the viewport width like [`useMediaQuery`](../useMediaQuery/index.md) or [`useBreakpoints`](../useBreakpoints/index.md) | AUTO |
+| [`useSSRWidth`](references/useSSRWidth.md) | Used to set a global viewport width which will be used when rendering SSR components that rely on the viewport width like [`useMediaQuery`](references/useMediaQuery.md) or [`useBreakpoints`](references/useBreakpoints.md) | AUTO |
 | [`useStyleTag`](references/useStyleTag.md) | Inject reactive `style` element in head | AUTO |
 | [`useTextareaAutosize`](references/useTextareaAutosize.md) | Automatically update the height of a textarea depending on the content | AUTO |
 | [`useTextDirection`](references/useTextDirection.md) | Reactive [dir](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir) of the element's text | AUTO |
@@ -116,6 +118,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`useUrlSearchParams`](references/useUrlSearchParams.md) | Reactive [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) | AUTO |
 | [`useVibrate`](references/useVibrate.md) | Reactive [Vibration API](https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API) | AUTO |
 | [`useWakeLock`](references/useWakeLock.md) | Reactive [Screen Wake Lock API](https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API) | AUTO |
+| [`useWebMCP`](references/useWebMCP.md) | Register a [WebMCP](https://github.com/webmachinelearning/webmcp) tool and tie its lifecycle to the current Vue scope | AUTO |
 | [`useWebNotification`](references/useWebNotification.md) | Reactive [Notification](https://developer.mozilla.org/en-US/docs/Web/API/notification) | AUTO |
 | [`useWebWorker`](references/useWebWorker.md) | Simple [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) registration and communication | AUTO |
 | [`useWebWorkerFn`](references/useWebWorkerFn.md) | Run expensive functions without blocking the UI | AUTO |
@@ -192,7 +195,6 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 | [`computedInject`](references/computedInject.md) | Combine `computed` and `inject` | AUTO |
 | [`createReusableTemplate`](references/createReusableTemplate.md) | Define and reuse template inside the component scope | AUTO |
 | [`createTemplatePromise`](references/createTemplatePromise.md) | Template as Promise | AUTO |
-| [`templateRef`](references/templateRef.md) | Shorthand for binding ref to template element | AUTO |
 | [`tryOnBeforeMount`](references/tryOnBeforeMount.md) | Safe `onBeforeMount` | AUTO |
 | [`tryOnBeforeUnmount`](references/tryOnBeforeUnmount.md) | Safe `onBeforeUnmount` | AUTO |
 | [`tryOnMounted`](references/tryOnMounted.md) | Safe `onMounted` | AUTO |
@@ -274,6 +276,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 |----------|-------------|------------|
 | [`useCountdown`](references/useCountdown.md) | Reactive countdown timer in seconds | AUTO |
 | [`useDateFormat`](references/useDateFormat.md) | Get the formatted date according to the string of tokens passed in | AUTO |
+| [`useTemporalNow`](references/useTemporalNow.md) | Reactive [Temporal API](https://tc39.es/proposal-temporal/docs/) with timezone conversion and calendar system support | AUTO |
 | [`useTimeAgo`](references/useTimeAgo.md) | Reactive time ago | AUTO |
 | [`useTimeAgoIntl`](references/useTimeAgoIntl.md) | Reactive time ago with i18n supported | AUTO |
 
@@ -281,6 +284,7 @@ IMPORTANT: Each function entry includes a short `Description` and a detailed `Re
 
 | Function | Description | Invocation |
 |----------|-------------|------------|
+| [`createDisposableDirective`](references/createDisposableDirective.md) | Utility for authoring disposable directives | AUTO |
 | [`createEventHook`](references/createEventHook.md) | Utility for creating event hooks | AUTO |
 | [`createUnrefFn`](references/createUnrefFn.md) | Make a plain function accepting ref and raw values as arguments | AUTO |
 | [`get`](references/get.md) | Shorthand for accessing `ref.value` | EXPLICIT_ONLY |

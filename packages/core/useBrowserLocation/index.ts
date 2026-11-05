@@ -51,14 +51,6 @@ export function useBrowserLocation(options: UseBrowserLocationOptions = {}): Use
     WRITABLE_PROPERTIES.map(key => [key, deepRef()]),
   ) as Record<typeof WRITABLE_PROPERTIES[number], Ref<string | undefined>>
 
-  for (const [key, ref] of objectEntries(refs)) {
-    watch(ref, (value) => {
-      if (!window?.location || window.location[key] === value)
-        return
-      window.location[key] = value!
-    })
-  }
-
   const buildState = (trigger: string): BrowserLocationState => {
     const { state, length } = window?.history || {}
     const { origin } = window?.location || {}
@@ -77,6 +69,13 @@ export function useBrowserLocation(options: UseBrowserLocationOptions = {}): Use
 
   const state = deepRef<BrowserLocationState>(buildState('load'))
 
+  for (const [key, ref] of objectEntries(refs)) {
+    watch(ref, (value) => {
+      if (!window?.location || window.location[key] === value)
+        return
+      window.location[key] = value!
+    })
+  }
   if (window) {
     const listenerOptions = { passive: true }
     useEventListener(window, 'popstate', () => state.value = buildState('popstate'), listenerOptions)

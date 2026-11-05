@@ -17,7 +17,7 @@ const isPreferredDark = useMediaQuery('(prefers-color-scheme: dark)')
 
 #### Server Side Rendering and Nuxt
 
-If you are using `useMediaQuery` with SSR enabled, then you need to specify which screen size you would like to render on the server and before hydration to avoid an hydration mismatch
+If you are using `useMediaQuery` with SSR enabled, then you need to specify which screen size you would like to render on the server and before hydration to avoid a hydration mismatch
 
 ```ts
 import { useMediaQuery } from '@vueuse/core'
@@ -32,7 +32,7 @@ onMounted(() => {
 })
 ```
 
-Alternatively you can set this up globally for your app using [`provideSSRWidth`](../useSSRWidth/index.md)
+Alternatively you can set this up globally for your app using [`provideSSRWidth`](./useSSRWidth.md)
 
 ## Type Declarations
 

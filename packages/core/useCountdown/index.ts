@@ -4,26 +4,7 @@ import type { ConfigurableScheduler } from '../_configurable'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef, toValue } from 'vue'
 
-function getDefaultScheduler(options: UseCountdownOptions) {
-  if ('interval' in options || 'immediate' in options) {
-    const {
-      interval = 1000,
-      immediate = false,
-    } = options
-
-    return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
-  }
-
-  return (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false })
-}
-
 export interface UseCountdownOptions extends ConfigurableScheduler {
-  /**
-   *  Interval for the countdown in milliseconds. Default is 1000ms.
-   *
-   * @deprecated Please use `scheduler` option instead
-   */
-  interval?: MaybeRefOrGetter<number>
   /**
    * Callback function called when the countdown reaches 0.
    */
@@ -32,13 +13,6 @@ export interface UseCountdownOptions extends ConfigurableScheduler {
    * Callback function called on each tick of the countdown.
    */
   onTick?: () => void
-  /**
-   * Start the countdown immediately
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default false
-   */
-  immediate?: boolean
 }
 
 export interface UseCountdownReturn extends Pausable {
@@ -72,7 +46,7 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
   const remaining = shallowRef(toValue(initialCountdown))
 
   const {
-    scheduler = getDefaultScheduler(options),
+    scheduler = (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false }),
     onTick,
     onComplete,
   } = options

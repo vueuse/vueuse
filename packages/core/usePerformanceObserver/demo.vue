@@ -2,11 +2,11 @@
 import { usePerformanceObserver } from '@vueuse/core'
 import { shallowRef } from 'vue'
 
-const entrys = shallowRef<PerformanceEntry[]>([])
+const entries = shallowRef<PerformanceEntry[]>([])
 usePerformanceObserver({
   entryTypes: ['paint'],
 }, (list) => {
-  entrys.value = list.getEntries()
+  entries.value = list.getEntries()
 })
 function refresh() {
   return window.location.reload()
@@ -18,5 +18,5 @@ function refresh() {
     refresh
   </button>
 
-  <pre lang="json">{{ entrys }}</pre>
+  <pre lang="json">{{ entries }}</pre>
 </template>

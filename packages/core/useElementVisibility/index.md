@@ -54,6 +54,38 @@ const targetIsVisible = useElementVisibility(target, {
 })
 ```
 
+### controls
+
+By default `useElementVisibility` returns a `ShallowRef<boolean>`. Set `controls: true` to receive the visibility ref together with the controls of the underlying `useIntersectionObserver`:
+
+```ts
+import { useElementVisibility } from '@vueuse/core'
+// ---cut---
+const { isVisible, isActive, pause, resume, stop, isSupported } = useElementVisibility(target, {
+  controls: true,
+})
+```
+
+| State         | Type                   | Description                                                                                                                  |
+| ------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `isVisible`   | `ShallowRef<boolean>`  | Whether the target is currently visible in the viewport.                                                                     |
+| `isActive`    | `ShallowRef<boolean>`  | Whether the observer is currently running. Turns `false` once the observer is stopped, for example after `once: true` fires. |
+| `isSupported` | `ComputedRef<boolean>` | Whether the `IntersectionObserver` API is available.                                                                         |
+| `pause`       | `() => void`           | Pause observing and set `isActive` to `false`.                                                                               |
+| `resume`      | `() => void`           | Resume observing.                                                                                                            |
+| `stop`        | `() => void`           | Stop observing permanently.                                                                                                  |
+
+With `once: true`, read `isActive` to tell whether tracking has already stopped after the element first became visible:
+
+```ts
+import { useElementVisibility } from '@vueuse/core'
+// ---cut---
+const { isVisible, isActive } = useElementVisibility(target, {
+  controls: true,
+  once: true,
+})
+```
+
 ## Component Usage
 
 ```vue

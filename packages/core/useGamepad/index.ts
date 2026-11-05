@@ -107,8 +107,12 @@ export function useGamepad(options: UseGamepadOptions = {}): UseGamepadReturn {
     const _gamepads = navigator?.getGamepads() || []
 
     for (const gamepad of _gamepads) {
-      if (gamepad && gamepads.value[gamepad.index])
-        gamepads.value[gamepad.index] = stateFromGamepad(gamepad)
+      if (!gamepad)
+        continue
+
+      const index = gamepads.value.findIndex(x => x.index === gamepad.index)
+      if (index > -1)
+        gamepads.value[index] = stateFromGamepad(gamepad)
     }
   }
 

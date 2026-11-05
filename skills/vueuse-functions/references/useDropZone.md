@@ -56,8 +56,7 @@ export interface UseDropZoneOptions {
    * Also can be a function to check the data types.
    */
   dataTypes?:
-    | MaybeRef<readonly string[]>
-    | ((types: readonly string[]) => boolean)
+    MaybeRef<readonly string[]> | ((types: readonly string[]) => boolean)
   /**
    * Similar to dataTypes, but exposes the DataTransferItemList for custom validation.
    * If provided, this function takes precedence over dataTypes.

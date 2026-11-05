@@ -1,6 +1,6 @@
 # Add-ons
 
-The core package aims to be lightweight and dependence free. While the add-ons are wrapping popular packages into the consistent API style.
+The core package aims to be lightweight and dependency-free. While the add-ons are wrapping popular packages into the consistent API style.
 
 ## Head - [`@vueuse/head`](https://github.com/vueuse/head) <carbon-link class="external-link"/>
 

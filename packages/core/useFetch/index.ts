@@ -79,6 +79,7 @@ export interface UseFetchReturn<T> {
   patch: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
   head: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
   options: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
+  query: (payload?: MaybeRefOrGetter<unknown>, type?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>
 
   // type
   json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>
@@ -89,7 +90,7 @@ export interface UseFetchReturn<T> {
 }
 
 type DataType = 'text' | 'json' | 'blob' | 'arrayBuffer' | 'formData'
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS' | 'QUERY'
 type Combination = 'overwrite' | 'chain'
 
 const payloadMapping: Record<string, string> = {
@@ -484,14 +485,17 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
       },
     )
       .then(async (fetchResponse) => {
-        response.value = fetchResponse
-        statusCode.value = fetchResponse.status
+        if (currentExecuteCounter === executeCounter) {
+          response.value = fetchResponse
+          statusCode.value = fetchResponse.status
+        }
 
         responseData = await fetchResponse.clone()[config.type]()
 
         // see: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
         if (!fetchResponse.ok) {
-          data.value = initialData || null
+          if (currentExecuteCounter === executeCounter)
+            data.value = initialData || null
           throw new Error(fetchResponse.statusText)
         }
 
@@ -503,7 +507,8 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
             execute,
           }))
         }
-        data.value = responseData
+        if (currentExecuteCounter === executeCounter)
+          data.value = responseData
 
         responseEvent.trigger(fetchResponse)
         return fetchResponse
@@ -521,9 +526,11 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
           }))
         }
 
-        error.value = errorData
-        if (options.updateDataOnError)
-          data.value = responseData
+        if (currentExecuteCounter === executeCounter) {
+          error.value = errorData
+          if (options.updateDataOnError)
+            data.value = responseData
+        }
 
         errorEvent.trigger(fetchError)
         if (throwOnFailed)
@@ -572,6 +579,7 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>, ...args: any[]): UseF
     patch: setMethod('PATCH'),
     head: setMethod('HEAD'),
     options: setMethod('OPTIONS'),
+    query: setMethod('QUERY'),
     // type
     json: setType('json'),
     text: setType('text'),

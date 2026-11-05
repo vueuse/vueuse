@@ -86,91 +86,92 @@ export type UseOffsetPaginationEmits = {
 // #endregion
 
 // #region Variables
-export declare const OnClickOutside: _$vue.DefineSetupFnComponent<OnClickOutsideProps, OnClickOutsideEmits, {}, OnClickOutsideProps & {
+export declare const OnClickOutside: import("vue").DefineSetupFnComponent<OnClickOutsideProps, OnClickOutsideEmits, {}, OnClickOutsideProps & {
   onTrigger?: ((event: Event) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const OnLongPress: _$vue.DefineSetupFnComponent<OnLongPressProps, OnLongPressEmits, SlotsType<OnLongPressSlots>, OnLongPressProps & {
+}, import("vue").PublicProps>;
+export declare const OnLongPress: import("vue").DefineSetupFnComponent<OnLongPressProps, OnLongPressEmits, SlotsType<OnLongPressSlots>, OnLongPressProps & {
   onTrigger?: ((event: PointerEvent) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseActiveElement: _$vue.DefineSetupFnComponent<UseActiveElementProps, Record<string, never>, SlotsType<UseActiveElementSlots>, UseActiveElementProps & {
+}, import("vue").PublicProps>;
+export declare const UseActiveElement: import("vue").DefineSetupFnComponent<UseActiveElementProps, Record<string, never>, SlotsType<UseActiveElementSlots>, UseActiveElementProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseBattery: _$vue.DefineSetupFnComponent<UseBatteryProps, Record<string, never>, SlotsType<UseBatterySlots>, UseBatteryProps & {
+}, import("vue").PublicProps>;
+export declare const UseBattery: import("vue").DefineSetupFnComponent<UseBatteryProps, Record<string, never>, SlotsType<UseBatterySlots>, UseBatteryProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseBrowserLocation: _$vue.DefineSetupFnComponent<UseBrowserLocationProps, Record<string, never>, SlotsType<UseBrowserLocationSlots>, UseBrowserLocationProps & {
+}, import("vue").PublicProps>;
+export declare const UseBrowserLocation: import("vue").DefineSetupFnComponent<UseBrowserLocationProps, Record<string, never>, SlotsType<UseBrowserLocationSlots>, UseBrowserLocationProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseClipboard: _$vue.DefineSetupFnComponent<UseClipboardProps<string>, Record<string, never>, SlotsType<UseClipboardSlots>, UseClipboardProps<string> & {
+}, import("vue").PublicProps>;
+export declare const UseClipboard: import("vue").DefineSetupFnComponent<UseClipboardProps<string>, Record<string, never>, SlotsType<UseClipboardSlots>, UseClipboardProps<string> & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseColorMode: _$vue.DefineSetupFnComponent<UseColorModeProps, Record<string, never>, SlotsType<UseColorModeSlots>, UseColorModeProps & {
+}, import("vue").PublicProps>;
+export declare const UseColorMode: import("vue").DefineSetupFnComponent<UseColorModeProps, Record<string, never>, SlotsType<UseColorModeSlots>, UseColorModeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseDark: _$vue.DefineSetupFnComponent<UseDarkProps, Record<string, never>, SlotsType<UseDarkSlots>, UseDarkProps & {
+}, import("vue").PublicProps>;
+export declare const UseDark: import("vue").DefineSetupFnComponent<UseDarkProps, Record<string, never>, SlotsType<UseDarkSlots>, UseDarkProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseDeviceMotion: _$vue.DefineSetupFnComponent<UseDeviceMotionProps, Record<string, never>, SlotsType<UseDeviceMotionSlots>, UseDeviceMotionProps & {
+}, import("vue").PublicProps>;
+export declare const UseDeviceMotion: import("vue").DefineSetupFnComponent<UseDeviceMotionProps, Record<string, never>, SlotsType<UseDeviceMotionSlots>, UseDeviceMotionProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseDeviceOrientation: _$vue.DefineSetupFnComponent<UseDeviceOrientationProps, Record<string, never>, SlotsType<UseDeviceOrientationSlots>, UseDeviceOrientationProps & {
+}, import("vue").PublicProps>;
+export declare const UseDeviceOrientation: import("vue").DefineSetupFnComponent<UseDeviceOrientationProps, Record<string, never>, SlotsType<UseDeviceOrientationSlots>, UseDeviceOrientationProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseDevicePixelRatio: _$vue.DefineSetupFnComponent<UseDevicePixelRatioProps, Record<string, never>, SlotsType<UseDevicePixelRatioSlots>, UseDevicePixelRatioProps & {
+}, import("vue").PublicProps>;
+export declare const UseDevicePixelRatio: import("vue").DefineSetupFnComponent<UseDevicePixelRatioProps, Record<string, never>, SlotsType<UseDevicePixelRatioSlots>, UseDevicePixelRatioProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseDevicesList: _$vue.DefineSetupFnComponent<UseDevicesListProps, Record<string, never>, SlotsType<UseDevicesListSlots>, UseDevicesListProps & {
+}, import("vue").PublicProps>;
+export declare const UseDevicesList: import("vue").DefineSetupFnComponent<UseDevicesListProps, Record<string, never>, SlotsType<UseDevicesListSlots>, UseDevicesListProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseDocumentVisibility: _$vue.DefineSetupFnComponent<UseDocumentVisibilityProps, Record<string, never>, SlotsType<UseDocumentVisibilitySlots>, UseDocumentVisibilityProps & {
+}, import("vue").PublicProps>;
+export declare const UseDocumentVisibility: import("vue").DefineSetupFnComponent<UseDocumentVisibilityProps, Record<string, never>, SlotsType<UseDocumentVisibilitySlots>, UseDocumentVisibilityProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseDraggable: _$vue.DefineSetupFnComponent<UseDraggableProps, Record<string, never>, SlotsType<any>, UseDraggableProps & {
+}, import("vue").PublicProps>;
+export declare const UseDraggable: import("vue").DefineSetupFnComponent<UseDraggableProps, Record<string, never>, SlotsType<any>, UseDraggableProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseElementBounding: _$vue.DefineSetupFnComponent<UseElementBoundingProps, Record<string, never>, SlotsType<UseElementBoundingSlots>, UseElementBoundingProps & {
+}, import("vue").PublicProps>;
+export declare const UseElementBounding: import("vue").DefineSetupFnComponent<UseElementBoundingProps, Record<string, never>, SlotsType<UseElementBoundingSlots>, UseElementBoundingProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseElementSize: _$vue.DefineSetupFnComponent<UseElementSizeProps, Record<string, never>, SlotsType<UseElementSizeSlots>, UseElementSizeProps & {
+}, import("vue").PublicProps>;
+export declare const UseElementOverflow: import("vue").DefineComponent<UseElementOverflowOptions & RenderableComponent, {}, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<UseElementOverflowOptions & RenderableComponent> & Readonly<{}>, {}, {}, {}, {}, string, import("vue").ComponentProvideOptions, false, {}, any>;
+export declare const UseElementSize: import("vue").DefineSetupFnComponent<UseElementSizeProps, Record<string, never>, SlotsType<UseElementSizeSlots>, UseElementSizeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseElementVisibility: _$vue.DefineSetupFnComponent<UseElementVisibilityProps, Record<string, never>, SlotsType<UseElementVisibilitySlots>, UseElementVisibilityProps & {
+}, import("vue").PublicProps>;
+export declare const UseElementVisibility: import("vue").DefineSetupFnComponent<UseElementVisibilityProps, Record<string, never>, SlotsType<UseElementVisibilitySlots>, UseElementVisibilityProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseEyeDropper: _$vue.DefineSetupFnComponent<UseEyeDropperProps, Record<string, never>, SlotsType<UseEyeDropperSlots>, UseEyeDropperProps & {
+}, import("vue").PublicProps>;
+export declare const UseEyeDropper: import("vue").DefineSetupFnComponent<UseEyeDropperProps, Record<string, never>, SlotsType<UseEyeDropperSlots>, UseEyeDropperProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseFullscreen: _$vue.DefineSetupFnComponent<UseFullscreenProps, Record<string, never>, SlotsType<UseFullscreenSlots>, UseFullscreenProps & {
+}, import("vue").PublicProps>;
+export declare const UseFullscreen: import("vue").DefineSetupFnComponent<UseFullscreenProps, Record<string, never>, SlotsType<UseFullscreenSlots>, UseFullscreenProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseGeolocation: _$vue.DefineSetupFnComponent<UseGeolocationProps, Record<string, never>, SlotsType<UseGeolocationSlots>, UseGeolocationProps & {
+}, import("vue").PublicProps>;
+export declare const UseGeolocation: import("vue").DefineSetupFnComponent<UseGeolocationProps, Record<string, never>, SlotsType<UseGeolocationSlots>, UseGeolocationProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseIdle: _$vue.DefineSetupFnComponent<UseIdleProps, Record<string, never>, SlotsType<UseIdleSlots>, UseIdleProps & {
+}, import("vue").PublicProps>;
+export declare const UseIdle: import("vue").DefineSetupFnComponent<UseIdleProps, Record<string, never>, SlotsType<UseIdleSlots>, UseIdleProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseImage: _$vue.DefineSetupFnComponent<UseImageProps, Record<string, never>, SlotsType<UseImageSlots>, UseImageProps & {
+}, import("vue").PublicProps>;
+export declare const UseImage: import("vue").DefineSetupFnComponent<UseImageProps, Record<string, never>, SlotsType<UseImageSlots>, UseImageProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseMouse: _$vue.DefineSetupFnComponent<UseMouseProps, Record<string, never>, SlotsType<UseMouseSlots>, UseMouseProps & {
+}, import("vue").PublicProps>;
+export declare const UseMouse: import("vue").DefineSetupFnComponent<UseMouseProps, Record<string, never>, SlotsType<UseMouseSlots>, UseMouseProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseMouseInElement: _$vue.DefineSetupFnComponent<UseMouseInElementProps, Record<string, never>, SlotsType<UseMouseInElementSlots>, UseMouseInElementProps & {
+}, import("vue").PublicProps>;
+export declare const UseMouseInElement: import("vue").DefineSetupFnComponent<UseMouseInElementProps, Record<string, never>, SlotsType<UseMouseInElementSlots>, UseMouseInElementProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseMousePressed: _$vue.DefineSetupFnComponent<UseMousePressedProps, Record<string, never>, SlotsType<UseMousePressedSlots>, UseMousePressedProps & {
+}, import("vue").PublicProps>;
+export declare const UseMousePressed: import("vue").DefineSetupFnComponent<UseMousePressedProps, Record<string, never>, SlotsType<UseMousePressedSlots>, UseMousePressedProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseNetwork: _$vue.DefineSetupFnComponent<UseNetworkProps, Record<string, never>, SlotsType<UseNetworkSlots>, UseNetworkProps & {
+}, import("vue").PublicProps>;
+export declare const UseNetwork: import("vue").DefineSetupFnComponent<UseNetworkProps, Record<string, never>, SlotsType<UseNetworkSlots>, UseNetworkProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseNow: _$vue.DefineSetupFnComponent<UseNowProps, Record<string, never>, SlotsType<UseNowSlots>, UseNowProps & {
+}, import("vue").PublicProps>;
+export declare const UseNow: import("vue").DefineSetupFnComponent<UseNowProps, Record<string, never>, SlotsType<UseNowSlots>, UseNowProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseObjectUrl: _$vue.DefineSetupFnComponent<UseObjectUrlProps, Record<string, never>, SlotsType<UseObjectUrlSlots>, UseObjectUrlProps & {
+}, import("vue").PublicProps>;
+export declare const UseObjectUrl: import("vue").DefineSetupFnComponent<UseObjectUrlProps, Record<string, never>, SlotsType<UseObjectUrlSlots>, UseObjectUrlProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseOffsetPagination: _$vue.DefineSetupFnComponent<UseOffsetPaginationProps, UseOffsetPaginationEmits, SlotsType<UseOffsetPaginationSlots>, UseOffsetPaginationProps & {
+}, import("vue").PublicProps>;
+export declare const UseOffsetPagination: import("vue").DefineSetupFnComponent<UseOffsetPaginationProps, UseOffsetPaginationEmits, SlotsType<UseOffsetPaginationSlots>, UseOffsetPaginationProps & {
   "onPage-change"?: ((returnValue: {
     currentPage: number;
     currentPageSize: number;
@@ -198,66 +199,250 @@ export declare const UseOffsetPagination: _$vue.DefineSetupFnComponent<UseOffset
     prev: () => void;
     next: () => void;
   }) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseOnline: _$vue.DefineSetupFnComponent<UseOnlineProps, Record<string, never>, SlotsType<UseOnlineSlots>, UseOnlineProps & {
+}, import("vue").PublicProps>;
+export declare const UseOnline: import("vue").DefineSetupFnComponent<UseOnlineProps, Record<string, never>, SlotsType<UseOnlineSlots>, UseOnlineProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePageLeave: _$vue.DefineSetupFnComponent<UsePageLeaveProps, Record<string, never>, SlotsType<UsePageLeaveSlots>, UsePageLeaveProps & {
+}, import("vue").PublicProps>;
+export declare const UsePageLeave: import("vue").DefineSetupFnComponent<UsePageLeaveProps, Record<string, never>, SlotsType<UsePageLeaveSlots>, UsePageLeaveProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePointer: _$vue.DefineSetupFnComponent<UsePointerProps, Record<string, never>, SlotsType<UsePointerSlots>, UsePointerProps & {
+}, import("vue").PublicProps>;
+export declare const UsePointer: import("vue").DefineSetupFnComponent<UsePointerProps, Record<string, never>, SlotsType<UsePointerSlots>, UsePointerProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePointerLock: _$vue.DefineSetupFnComponent<UsePointerLockProps, Record<string, never>, SlotsType<UsePointerLockSlots>, UsePointerLockProps & {
+}, import("vue").PublicProps>;
+export declare const UsePointerLock: import("vue").DefineSetupFnComponent<UsePointerLockProps, Record<string, never>, SlotsType<UsePointerLockSlots>, UsePointerLockProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePreferredColorScheme: _$vue.DefineSetupFnComponent<UsePreferredColorSchemeProps, Record<string, never>, SlotsType<UsePreferredColorSchemeSlots>, UsePreferredColorSchemeProps & {
+}, import("vue").PublicProps>;
+export declare const UsePreferredColorScheme: import("vue").DefineSetupFnComponent<UsePreferredColorSchemeProps, Record<string, never>, SlotsType<UsePreferredColorSchemeSlots>, UsePreferredColorSchemeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePreferredContrast: _$vue.DefineSetupFnComponent<UsePreferredContrastProps, Record<string, never>, SlotsType<UsePreferredContrastSlots>, UsePreferredContrastProps & {
+}, import("vue").PublicProps>;
+export declare const UsePreferredContrast: import("vue").DefineSetupFnComponent<UsePreferredContrastProps, Record<string, never>, SlotsType<UsePreferredContrastSlots>, UsePreferredContrastProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePreferredDark: _$vue.DefineSetupFnComponent<UsePreferredDarkProps, Record<string, never>, SlotsType<UsePreferredDarkSlots>, UsePreferredDarkProps & {
+}, import("vue").PublicProps>;
+export declare const UsePreferredDark: import("vue").DefineSetupFnComponent<UsePreferredDarkProps, Record<string, never>, SlotsType<UsePreferredDarkSlots>, UsePreferredDarkProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePreferredLanguages: _$vue.DefineSetupFnComponent<UsePreferredLanguagesProps, Record<string, never>, SlotsType<UsePreferredLanguagesSlots>, UsePreferredLanguagesProps & {
+}, import("vue").PublicProps>;
+export declare const UsePreferredLanguages: import("vue").DefineSetupFnComponent<UsePreferredLanguagesProps, Record<string, never>, SlotsType<UsePreferredLanguagesSlots>, UsePreferredLanguagesProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePreferredReducedMotion: _$vue.DefineSetupFnComponent<UsePreferredReducedMotionProps, Record<string, never>, SlotsType<UsePreferredReducedMotionSlots>, UsePreferredReducedMotionProps & {
+}, import("vue").PublicProps>;
+export declare const UsePreferredReducedMotion: import("vue").DefineSetupFnComponent<UsePreferredReducedMotionProps, Record<string, never>, SlotsType<UsePreferredReducedMotionSlots>, UsePreferredReducedMotionProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UsePreferredReducedTransparency: _$vue.DefineComponent<{}, () => _$vue.VNode<_$vue.RendererNode, _$vue.RendererElement, {
+}, import("vue").PublicProps>;
+export declare const UsePreferredReducedTransparency: import("vue").DefineComponent<{}, () => import("vue").VNode<import("vue").RendererNode, import("vue").RendererElement, {
   [key: string]: any;
-}>[] | undefined, {}, {}, {}, _$vue.ComponentOptionsMixin, _$vue.ComponentOptionsMixin, {}, string, _$vue.PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, _$vue.ComponentProvideOptions, true, {}, any>;
-export declare const UseScreenSafeArea: _$vue.DefineSetupFnComponent<UseScreenSafeAreaProps, Record<string, never>, SlotsType<UseScreenSafeAreaSlots>, UseScreenSafeAreaProps & {
+}>[] | undefined, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, import("vue").ComponentProvideOptions, true, {}, any>;
+export declare const UseScreenSafeArea: import("vue").DefineSetupFnComponent<UseScreenSafeAreaProps, Record<string, never>, SlotsType<UseScreenSafeAreaSlots>, UseScreenSafeAreaProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseTimeAgo: _$vue.DefineSetupFnComponent<UseTimeAgoProps, Record<string, never>, SlotsType<UseTimeAgoSlots>, UseTimeAgoProps & {
+}, import("vue").PublicProps>;
+export declare const UseTimeAgo: import("vue").DefineSetupFnComponent<UseTimeAgoProps, Record<string, never>, SlotsType<UseTimeAgoSlots>, UseTimeAgoProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseTimestamp: _$vue.DefineSetupFnComponent<UseTimestampProps, Record<string, never>, SlotsType<UseTimestampSlots>, UseTimestampProps & {
+}, import("vue").PublicProps>;
+export declare const UseTimestamp: import("vue").DefineSetupFnComponent<UseTimestampProps, Record<string, never>, SlotsType<UseTimestampSlots>, UseTimestampProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseVirtualList: _$vue.DefineSetupFnComponent<UseVirtualListProps, {}, {}, UseVirtualListProps & {}, _$vue.PublicProps>;
-export declare const UseWindowFocus: _$vue.DefineSetupFnComponent<UseWindowFocusProps, Record<string, never>, SlotsType<UseWindowFocusSlots>, UseWindowFocusProps & {
+}, import("vue").PublicProps>;
+export declare const UseVirtualList: import("vue").DefineSetupFnComponent<UseVirtualListProps, {}, {}, UseVirtualListProps & {}, import("vue").PublicProps>;
+export declare const UseWindowFocus: import("vue").DefineSetupFnComponent<UseWindowFocusProps, Record<string, never>, SlotsType<UseWindowFocusSlots>, UseWindowFocusProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const UseWindowSize: _$vue.DefineSetupFnComponent<UseWindowSizeProps, Record<string, never>, SlotsType<UseWindowSizeSlots>, UseWindowSizeProps & {
+}, import("vue").PublicProps>;
+export declare const UseWindowSize: import("vue").DefineSetupFnComponent<UseWindowSizeProps, Record<string, never>, SlotsType<UseWindowSizeSlots>, UseWindowSizeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
-}, _$vue.PublicProps>;
-export declare const vElementBounding: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any>;
-export declare const vElementHover: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any>;
-export declare const vElementSize: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: _$_vueuse_core0.UseElementSizeOptions | undefined], string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: _$_vueuse_core0.UseElementSizeOptions | undefined], string, any>;
-export declare const vElementVisibility: _$vue.FunctionDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any>;
-export declare const vInfiniteScroll: _$vue.FunctionDirective<HTMLElement, ((state: _$vue.UnwrapNestedRefs<_$_vueuse_core0.UseScrollReturn>) => _$_vueuse_shared0.Awaitable<void>) | BindingValueArray$4, string, any> | _$vue.ObjectDirective<HTMLElement, ((state: _$vue.UnwrapNestedRefs<_$_vueuse_core0.UseScrollReturn>) => _$_vueuse_shared0.Awaitable<void>) | BindingValueArray$4, string, any>;
-export declare const vIntersectionObserver: _$vue.FunctionDirective<HTMLElement, IntersectionObserverCallback | BindingValueArray$3, string, any> | _$vue.ObjectDirective<HTMLElement, IntersectionObserverCallback | BindingValueArray$3, string, any>;
-export declare const vMouseInElement: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$2 | BindingValueArray$2, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$2 | BindingValueArray$2, string, any>;
+}, import("vue").PublicProps>;
+export declare const vElementBounding: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any>;
+export declare const vElementHover: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any>;
+export declare const vElementOverflow: import("vue").FunctionDirective<HTMLElement, VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions$1], string, any> | import("vue").ObjectDirective<HTMLElement, VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions$1], string, any>;
+export declare const vElementSize: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: import("@vueuse/core").UseElementSizeOptions | undefined], string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: import("@vueuse/core").UseElementSizeOptions | undefined], string, any>;
+export declare const vElementVisibility: import("vue").FunctionDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any>;
+export declare const vInfiniteScroll: import("vue").FunctionDirective<HTMLElement, ((state: import("vue").UnwrapNestedRefs<import("@vueuse/core").UseScrollReturn>) => import("@vueuse/shared").Awaitable<void>) | BindingValueArray$4, string, any> | import("vue").ObjectDirective<HTMLElement, ((state: import("vue").UnwrapNestedRefs<import("@vueuse/core").UseScrollReturn>) => import("@vueuse/shared").Awaitable<void>) | BindingValueArray$4, string, any>;
+export declare const vIntersectionObserver: import("vue").FunctionDirective<HTMLElement, IntersectionObserverCallback | BindingValueArray$3, string, any> | import("vue").ObjectDirective<HTMLElement, IntersectionObserverCallback | BindingValueArray$3, string, any>;
+export declare const vMouseInElement: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$2 | BindingValueArray$2, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$2 | BindingValueArray$2, string, any>;
 export declare const vOnClickOutside: ObjectDirective<HTMLElement, OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>]>;
+/** @deprecated */
 export declare const VOnClickOutside: ObjectDirective<HTMLElement, OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions<false>, "controls">], string, any>;
-export declare const vOnKeyStroke: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$9 | BindingValueArray$8, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$9 | BindingValueArray$8, string, any>;
-export declare const vOnLongPress: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any>;
-export declare const VOnLongPress: _$vue.FunctionDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any>;
-export declare const vResizeObserver: _$vue.FunctionDirective<HTMLElement, ResizeObserverCallback | BindingValueArray$1, string, any> | _$vue.ObjectDirective<HTMLElement, ResizeObserverCallback | BindingValueArray$1, string, any>;
-export declare const vScroll: _$vue.FunctionDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any> | _$vue.ObjectDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any>;
-export declare const vScrollLock: _$vue.FunctionDirective<HTMLElement, boolean, string, any> | _$vue.ObjectDirective<HTMLElement, boolean, string, any>;
+export declare const vOnKeyStroke: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$9 | BindingValueArray$8, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$9 | BindingValueArray$8, string, any>;
+export declare const vOnLongPress: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any>;
+/** @deprecated */
+export declare const VOnLongPress: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any>;
+export declare const vResizeObserver: import("vue").FunctionDirective<HTMLElement, ResizeObserverCallback | BindingValueArray$1, string, any> | import("vue").ObjectDirective<HTMLElement, ResizeObserverCallback | BindingValueArray$1, string, any>;
+export declare const vScroll: import("vue").FunctionDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any>;
+export declare const vScrollLock: import("vue").FunctionDirective<HTMLElement, boolean, string, any> | import("vue").ObjectDirective<HTMLElement, boolean, string, any>;
+// #endregion
+
+// #region Referenced (internal)
+type BindingValueArray = [BindingValueFunction, UseScrollOptions];
+type BindingValueArray$1 = [BindingValueFunction$1, UseResizeObserverOptions];
+type BindingValueArray$2 = [BindingValueFunction$2, MouseInElementOptions];
+type BindingValueArray$3 = [BindingValueFunction$3, UseIntersectionObserverOptions];
+type BindingValueArray$4 = [BindingValueFunction$4, UseInfiniteScrollOptions];
+type BindingValueArray$5 = [BindingValueFunctionWithoutControls, UseElementVisibilityOptions<false>] | [BindingValueFunctionWithControls, UseElementVisibilityOptions<true>];
+type BindingValueArray$6 = [BindingValueFunction$7, UseElementBoundingOptions];
+type BindingValueArray$7 = [BindingValueFunction$8, OnLongPressOptions];
+type BindingValueArray$8 = [BindingValueFunction$9, OnKeyStrokeOptions];
+type BindingValueFunction = (_: UseScrollReturn) => void;
+type BindingValueFunction$2 = (_: Reactive<MouseInElement>) => void;
+type BindingValueFunction$5 = (_: ElementSize) => void;
+type BindingValueFunction$6 = (_: boolean) => void;
+type BindingValueFunction$7 = (_: ElementBounding) => void;
+type BindingValueFunction$8 = (_: PointerEvent) => void;
+type BindingValueFunction$9 = (_: KeyboardEvent) => void;
+type BindingValueFunctionWithoutControls = (_: boolean) => void;
+interface OnLongPressSlots {
+  default: (_: UseOnLongPressReturn) => any;
+}
+interface RenderableComponent$1 {
+  as?: object | string;
+}
+interface UseActiveElementSlots {
+  default: (_: Reactive<{
+    element: UseActiveElementReturn;
+  }>) => any;
+}
+interface UseBatterySlots {
+  default: (_: Reactive<UseBatteryReturn>) => any;
+}
+interface UseBrowserLocationProps extends ConfigurableWindow {}
+interface UseBrowserLocationSlots {
+  default: (_: Reactive<UseBrowserLocationReturn>) => any;
+}
+interface UseClipboardSlots {
+  default: (_: Reactive<UseClipboardReturn<true>>) => any;
+}
+interface UseColorModeSlots {
+  default: (_: Reactive<{
+    mode: UseColorModeReturn<BasicColorMode>;
+    system: UseColorModeReturn['system'];
+    store: UseColorModeReturn['store'];
+  }>) => any;
+}
+interface UseDarkSlots {
+  default: (_: Reactive<{
+    isDark: UseDarkReturn;
+    toggleDark: ToggleFn;
+  }>) => any;
+}
+interface UseDeviceMotionSlots {
+  default: (_: UseDeviceMotionReturn) => any;
+}
+interface UseDeviceOrientationSlots {
+  default: (_: Reactive<UseDeviceOrientationReturn>) => any;
+}
+interface UseDevicePixelRatioSlots {
+  default: (_: Reactive<UseDevicePixelRatioReturn>) => any;
+}
+interface UseDevicesListSlots {
+  default: (_: Reactive<UseDevicesListReturn>) => any;
+}
+interface UseDocumentVisibilitySlots {
+  default: (_: Reactive<{
+    visibility: UseDocumentVisibilityReturn;
+  }>) => any;
+}
+interface UseElementBoundingSlots {
+  default: (_: Reactive<UseElementBoundingReturn>) => any;
+}
+interface UseElementOverflowOptions$1 extends ConfigurableWindow$1 {
+  observeMutation?: boolean | MutationObserverInit;
+  onUpdated?: ResizeObserverCallback | MutationCallback;
+}
+interface UseElementSizeSlots {
+  default: (_: Reactive<UseElementSizeReturn>) => any;
+}
+interface UseElementVisibilitySlots {
+  default: (_: Reactive<UseElementVisibilityReturn<true>>) => any;
+}
+interface UseEyeDropperSlots {
+  default: (_: Reactive<UseEyeDropperReturn>) => any;
+}
+interface UseFullscreenSlots {
+  default: (_: Reactive<UseFullscreenReturn>) => any;
+}
+interface UseGeolocationSlots {
+  default: (_: Reactive<UseGeolocationReturn>) => any;
+}
+interface UseIdleSlots {
+  default: (_: Reactive<UseIdleReturn>) => any;
+}
+interface UseImageSlots {
+  default: (_: Reactive<UseImageReturn>) => any;
+  loading: (_: Reactive<UseImageReturn>) => any;
+  error: (_: UnwrapRef<UseImageReturn['error']>) => any;
+}
+interface UseMouseInElementSlots {
+  default: (_: Reactive<UseMouseInElementReturn>) => any;
+}
+interface UseMousePressedSlots {
+  default: (_: Reactive<UseMousePressedReturn>) => any;
+}
+interface UseMouseSlots {
+  default: (_: Reactive<UseMouseReturn>) => any;
+}
+interface UseNetworkSlots {
+  default: (_: Reactive<UseNetworkReturn>) => any;
+}
+interface UseNowSlots {
+  default: (_: Reactive<UseNowReturn<true>>) => any;
+}
+interface UseObjectUrlSlots {
+  default: (_: Readonly<string | undefined>) => any;
+}
+interface UseOffsetPaginationSlots {
+  default: (_: Reactive<UseOffsetPaginationReturn>) => any;
+}
+interface UseOnlineSlots {
+  default: (_: Reactive<{
+    isOnline: UseNetworkReturn['isOnline'];
+  }>) => any;
+}
+interface UsePageLeaveSlots {
+  default: (_: Reactive<{
+    isLeft: UsePageLeaveReturn;
+  }>) => any;
+}
+interface UsePointerLockSlots {
+  default: (_: Reactive<UsePointerLockReturn>) => any;
+}
+interface UsePointerSlots {
+  default: (_: Reactive<UsePointerReturn>) => any;
+}
+interface UsePreferredColorSchemeSlots {
+  default: (_: Reactive<{
+    colorScheme: ComputedRef<ColorSchemeType>;
+  }>) => any;
+}
+interface UsePreferredContrastSlots {
+  default: (_: Reactive<{
+    contrast: ComputedRef<ContrastType>;
+  }>) => any;
+}
+interface UsePreferredDarkSlots {
+  default: (_: Reactive<{
+    prefersDark: ComputedRef<boolean>;
+  }>) => any;
+}
+interface UsePreferredLanguagesSlots {
+  default: (_: Reactive<{
+    languages: Ref<readonly string[]>;
+  }>) => any;
+}
+interface UsePreferredReducedMotionSlots {
+  default: (_: Reactive<{
+    motion: ComputedRef<ReducedMotionType>;
+  }>) => any;
+}
+interface UseScreenSafeAreaSlots {
+  default: (_: Reactive<UseScreenSafeAreaReturn>) => any;
+}
+interface UseTimeAgoSlots {
+  default: (_: Reactive<UseTimeAgoReturn<true>>) => any;
+}
+interface UseTimestampSlots {
+  default: (_: Reactive<UseTimestampReturn<true>>) => any;
+}
+interface UseWindowFocusSlots {
+  default: (_: Reactive<{
+    focused: ShallowRef<boolean>;
+  }>) => any;
+}
+interface UseWindowSizeSlots {
+  default: (_: Reactive<UseWindowSizeReturn>) => any;
+}
+type VElementOverflowHandler = (_: UseElementOverflowReturn) => void;
 // #endregion

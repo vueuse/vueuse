@@ -30,7 +30,7 @@ export declare function useAuth(_: Auth): {
     readonly tenantId: string | null;
     delete: () => Promise<void>;
     getIdToken: (forceRefresh?: boolean) => Promise<string>;
-    getIdTokenResult: (forceRefresh?: boolean) => Promise<_$firebase_auth0.IdTokenResult>;
+    getIdTokenResult: (forceRefresh?: boolean) => Promise<import("firebase/auth").IdTokenResult>;
     reload: () => Promise<void>;
     toJSON: () => object;
     readonly displayName: string | null;
@@ -58,7 +58,7 @@ export declare function useAuth(_: Auth): {
     readonly tenantId: string | null;
     delete: () => Promise<void>;
     getIdToken: (forceRefresh?: boolean) => Promise<string>;
-    getIdTokenResult: (forceRefresh?: boolean) => Promise<_$firebase_auth0.IdTokenResult>;
+    getIdTokenResult: (forceRefresh?: boolean) => Promise<import("firebase/auth").IdTokenResult>;
     reload: () => Promise<void>;
     toJSON: () => object;
     readonly displayName: string | null;
