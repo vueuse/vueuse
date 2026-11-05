@@ -53,12 +53,6 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
     return [el, ...Array.from(el.children).filter(i => i instanceof HTMLElement)]
   }
 
-  const stopFnList: Array<() => void> = []
-  function stop() {
-    stopFnList.forEach(fn => fn())
-    stopFnList.length = 0
-  }
-
   const { stop: stopResizeObserver } = useResizeObserver(targets, (entries, observer) => {
     const el = targetEl.value
     if (el) {
@@ -67,11 +61,11 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
     onResizeUpdated?.(entries, observer)
   }, { window })
 
-  stopFnList.push(stopResizeObserver)
+  let stopMutationObserver = () => {}
 
   if (observeMutation) {
     const onMutationUpdated = onUpdated as MutationCallback | undefined
-    const { stop: stopMutationObserver } = useMutationObserver(
+    const { stop: stopMutation } = useMutationObserver(
       targets,
       (entries, observer) => {
         const el = targetEl.value
@@ -87,8 +81,12 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
           : { childList: true, subtree: true, characterData: true }),
       },
     )
+    stopMutationObserver = stopMutation
+  }
 
-    stopFnList.push(stopMutationObserver)
+  function stop() {
+    stopResizeObserver()
+    stopMutationObserver()
   }
 
   return {
