@@ -45,7 +45,7 @@ describe('useIntersectionObserver', () => {
         },
       })
 
-      page.render(Component)
+      await page.render(Component)
 
       // immediate call
       await vi.waitFor(() => {
@@ -86,7 +86,7 @@ describe('useIntersectionObserver', () => {
         },
       })
 
-      page.render(Component)
+      await page.render(Component)
 
       // immediate call
       await vi.waitFor(() => {
@@ -144,7 +144,7 @@ describe('useIntersectionObserver', () => {
         },
       })
 
-      page.render(Component)
+      await page.render(Component)
 
       // The target is 10px below the rootNode, but the rootMargin is 10px, so it should be intersecting
       await vi.waitFor(() => {
@@ -173,7 +173,7 @@ describe('useIntersectionObserver', () => {
         },
       })
 
-      page.render(Component)
+      await page.render(Component)
 
       await vi.waitFor(() => {
         expect(callbackMock).toHaveBeenCalledTimes(1)
@@ -239,7 +239,7 @@ describe('useIntersectionObserver', () => {
       },
     })
 
-    page.render(Component, {
+    await page.render(Component, {
       props: {
         target,
       },
@@ -307,7 +307,7 @@ describe('useIntersectionObserver', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     // root is viewport by default
     // immediate call
@@ -372,7 +372,7 @@ describe('useIntersectionObserver', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     await expectFunctionHasNotBeenCalled(callbackMock)
 
@@ -391,7 +391,7 @@ describe('useIntersectionObserver', () => {
     })
   })
 
-  it('isSupport is always true when in the browser mode', () => {
+  it('isSupport is always true when in the browser mode', async () => {
     let observerReturn: UseIntersectionObserverReturn
 
     const Component = defineComponent({
@@ -406,7 +406,7 @@ describe('useIntersectionObserver', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
     expect(observerReturn!.isSupported.value).toBe(true)
   })
 
@@ -430,7 +430,7 @@ describe('useIntersectionObserver', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
     expect(observerReturn!.isActive.value).toBe(true)
 
     // immediate call
@@ -496,7 +496,7 @@ describe('useIntersectionObserver', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     // immediate call
     await vi.waitFor(() => {
@@ -542,7 +542,7 @@ describe('useIntersectionObserver', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     cleanup()
 

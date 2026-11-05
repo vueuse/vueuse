@@ -110,7 +110,7 @@ describe('useCssSupports', () => {
   })
 
   it('should correctly support existing features', async () => {
-    const screen = page.render(BasicComponent)
+    const screen = await page.render(BasicComponent)
     const pre = screen.getByTestId('data')
     await expect.element(pre).toBeVisible()
 
@@ -126,7 +126,7 @@ describe('useCssSupports', () => {
   })
 
   it('should reactively update if condition, prop or value changes', async () => {
-    const screen = page.render(ReactiveComponent)
+    const screen = await page.render(ReactiveComponent)
     const conditionResult = screen.getByTestId('conditionResult')
     const propValueResult = screen.getByTestId('propValueResult')
     await expect.element(conditionResult).toBeVisible()
@@ -149,7 +149,7 @@ describe('useCssSupports', () => {
   })
 
   it('should not treat conditionText as prop when options is set and value is undefined', async () => {
-    const screen = page.render(ConditionTextComponent)
+    const screen = await page.render(ConditionTextComponent)
     const noOptions = screen.getByTestId('noOptions')
     const withOptions = screen.getByTestId('withOptions')
     await expect.element(noOptions).toBeVisible()
@@ -160,7 +160,7 @@ describe('useCssSupports', () => {
   })
 
   it('should use prop + value instead of condition if value is explicitly undefined', async () => {
-    const screen = page.render(PropValueOverloadComponent)
+    const screen = await page.render(PropValueOverloadComponent)
     const conditionOnly = screen.getByTestId('conditionOnly')
     const withUndefined = screen.getByTestId('withUndefined')
     const withRefUndefined = screen.getByTestId('withRefUndefined')

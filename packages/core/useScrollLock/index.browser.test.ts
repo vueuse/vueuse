@@ -3,6 +3,14 @@ import { defineComponent, h } from 'vue'
 import { mount } from '../../.test'
 import { useScrollLock } from './index'
 
+vi.mock('@vueuse/shared', async () => {
+  const actual = await vi.importActual('@vueuse/shared')
+  return {
+    ...actual,
+    isIOS: true,
+  }
+})
+
 describe('useScrollLock', () => {
   let targetEl: HTMLElement
 
@@ -52,14 +60,6 @@ describe('useScrollLock', () => {
   })
 
   it('handles touchmove event on IOS devices', () => {
-    vi.mock('@vueuse/shared', async () => {
-      const actual = await vi.importActual('@vueuse/shared')
-      return {
-        ...actual,
-        isIOS: true,
-      }
-    })
-
     const addEventListener = vi.spyOn(targetEl, 'addEventListener')
     const removeEventListener = vi.spyOn(targetEl, 'removeEventListener')
     const isLock = useScrollLock(targetEl)

@@ -82,7 +82,7 @@ const Component = defineComponent({
 
 describe('useScroll', () => {
   it('should correctly detect leftArrived and rightArrived states when reaching the X-axis boundaries', async () => {
-    const screen = page.render(Component, { props: { observe: true } })
+    const screen = await page.render(Component, { props: { observe: true } })
     expect(screen).toBeDefined()
     const arrivedState = screen.getByTestId('arrivedState')
     await expect.element(arrivedState).toBeVisible()
@@ -111,7 +111,7 @@ describe('useScroll', () => {
   })
 
   it('should correctly detect topArrived and bottomArrived states when reaching the Y-axis boundaries', async () => {
-    const screen = page.render(Component, { props: { observe: true } })
+    const screen = await page.render(Component, { props: { observe: true } })
     expect(screen).toBeDefined()
     const arrivedState = screen.getByTestId('arrivedState')
     await expect.element(arrivedState).toBeVisible()
@@ -141,7 +141,7 @@ describe('useScroll', () => {
 
   describe('observe DOM mutations when observe is enabled', () => {
     it('should detect boundary changes when child element size is modified', async () => {
-      const screen = page.render(Component, { props: { observe: true } })
+      const screen = await page.render(Component, { props: { observe: true } })
       expect(screen).toBeDefined()
       const arrivedState = screen.getByTestId('arrivedState')
       await expect.element(arrivedState).toBeVisible()
@@ -172,7 +172,7 @@ describe('useScroll', () => {
     })
 
     it('should detect boundary changes when child element is added or removed', async () => {
-      const screen = page.render(Component, { props: { observe: true } })
+      const screen = await page.render(Component, { props: { observe: true } })
       expect(screen).toBeDefined()
       const arrivedState = screen.getByTestId('arrivedState')
       await expect.element(arrivedState).toBeVisible()
