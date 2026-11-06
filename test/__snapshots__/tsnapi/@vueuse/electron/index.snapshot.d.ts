@@ -6,6 +6,7 @@ export interface UseIpcRendererReturn {
   on: (_: string, _: IpcRendererListener) => IpcRenderer;
   once: (_: string, _: (_: IpcRendererEvent, ..._: any[]) => void) => IpcRenderer;
   removeListener: (_: string, _: (..._: any[]) => void) => IpcRenderer;
+  off: (_: string, _: (..._: any[]) => void) => IpcRenderer;
   removeAllListeners: (_: string) => IpcRenderer;
   send: (_: string, ..._: any[]) => void;
   invoke: <T>(_: string, ..._: any[]) => ShallowRef<T | null>;
