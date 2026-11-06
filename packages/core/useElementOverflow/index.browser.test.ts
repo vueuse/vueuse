@@ -160,6 +160,26 @@ describe('useElementOverflow', () => {
     expect(disconnect).toHaveBeenCalled()
   })
 
+  it('should disconnect observers when stop is called', async () => {
+    const disconnect = vi.fn()
+    const observe = vi.fn()
+
+    vi.stubGlobal('ResizeObserver', class {
+      constructor(_callback: ResizeObserverCallback) {}
+
+      observe = observe
+      disconnect = disconnect
+    })
+
+    const el = document.createElement('div')
+    const { stop } = useElementOverflow(el)
+
+    await nextTick()
+    stop()
+
+    expect(disconnect).toHaveBeenCalled()
+  })
+
   it('should update and call onUpdated from mutation observer', async () => {
     const onUpdated = vi.fn()
     const el = document.createElement('div')
