@@ -3,6 +3,26 @@ import { ref as deepRef } from 'vue'
 import { useArrayDifference } from './index'
 
 describe('useArrayDifference', () => {
+  it('should compare numeric property keys', () => {
+    const list = deepRef([{ 0: 'a' }, { 0: 'b' }])
+    const values = deepRef([{ 0: 'b' }])
+    const result = useArrayDifference(list, values, 0)
+
+    expect(result.value).toEqual([{ 0: 'a' }])
+    values.value.push({ 0: 'a' })
+    expect(result.value).toEqual([])
+  })
+
+  it('should compare symbol property keys in symmetric mode', () => {
+    const key = Symbol('id')
+    const first = { [key]: 1 }
+    const second = { [key]: 2 }
+    const third = { [key]: 3 }
+
+    expect(useArrayDifference([first, second], [{ [key]: 2 }, third], key, { symmetric: true }).value)
+      .toEqual([first, third])
+  })
+
   it('should be defined', () => {
     expect(useArrayDifference).toBeDefined()
   })
