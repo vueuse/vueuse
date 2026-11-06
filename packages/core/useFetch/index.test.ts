@@ -605,6 +605,24 @@ describe('useFetch', () => {
     })
   })
 
+  it('should reset response before a new execute so onFetchError never sees a stale response', async () => {
+    const responses: (Response | null)[] = []
+    const { execute } = useFetch(`${baseUrl}?text=hello`, {
+      immediate: false,
+      onFetchError(ctx) {
+        responses.push(ctx.response)
+        return ctx
+      },
+    })
+
+    await execute()
+
+    fetchSpy.mockImplementationOnce(() => Promise.reject(new Error('Network error')))
+    await execute()
+
+    expect(responses).toEqual([null])
+  })
+
   it('should emit onFetchResponse event', async () => {
     const { onFetchResponse, onFetchError, onFetchFinally } = useFetch(baseUrl)
 
