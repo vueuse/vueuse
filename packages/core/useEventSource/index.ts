@@ -163,11 +163,17 @@ export function useEventSource<Events extends string[], Data = any>(
     eventSource.value = es
 
     es.onopen = () => {
+      if (eventSource.value !== es)
+        return
+
       status.value = 'OPEN'
       error.value = null
     }
 
     es.onerror = (e) => {
+      if (eventSource.value !== es)
+        return
+
       status.value = 'CLOSED'
       error.value = e
 
@@ -193,6 +199,9 @@ export function useEventSource<Events extends string[], Data = any>(
     events = events.length > 0 ? events : [DEFAULT_EVENT] as unknown as Events
     for (const event_name of events) {
       useEventListener(es, event_name, (e: Event & { data?: string, lastEventId?: string }) => {
+        if (eventSource.value !== es)
+          return
+
         event.value = event_name
         data.value = serializer.read(e.data) ?? null
         lastEventId.value = e.lastEventId ?? null
