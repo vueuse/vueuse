@@ -173,13 +173,21 @@ export function useWebNFC(options: UseWebNFCOptions = {}): UseWebNFCReturn {
     scanController?.abort()
   }
 
+  // Aborted on scope dispose so a pending write / makeReadOnly does not write to (or permanently lock)
+  // a later tag tap after the component no longer exists
+  const disposeController = new AbortController()
+
+  function withDisposeSignal(signal?: AbortSignal): AbortSignal {
+    return signal ? AbortSignal.any([signal, disposeController.signal]) : disposeController.signal
+  }
+
   async function write(source: NDEFMessageSource, writeOptions: UseWebNFCWriteOptions = {}) {
     if (!isSupported.value)
       return
 
     error.value = undefined
     try {
-      await getReader().write(source, { overwrite: true, ...writeOptions })
+      await getReader().write(source, { overwrite: true, ...writeOptions, signal: withDisposeSignal(writeOptions.signal) })
     }
     catch (e) {
       error.value = e
@@ -193,7 +201,7 @@ export function useWebNFC(options: UseWebNFCOptions = {}): UseWebNFCReturn {
 
     error.value = undefined
     try {
-      await getReader().makeReadOnly(makeReadOnlyOptions)
+      await getReader().makeReadOnly({ ...makeReadOnlyOptions, signal: withDisposeSignal(makeReadOnlyOptions?.signal) })
     }
     catch (e) {
       error.value = e
@@ -204,7 +212,10 @@ export function useWebNFC(options: UseWebNFCOptions = {}): UseWebNFCReturn {
   if (immediate)
     void scan()
 
-  tryOnScopeDispose(stop)
+  tryOnScopeDispose(() => {
+    stop()
+    disposeController.abort()
+  })
 
   return {
     isSupported,

@@ -334,9 +334,42 @@ describe('useWebNFC', () => {
     const message = { records: [{ recordType: 'url', data: 'https://vueuse.org' }] }
     await vm.api.write(message, { overwrite: false, signal: controller.signal })
 
-    expect(mock.write).toHaveBeenCalledWith(message, { overwrite: false, signal: controller.signal })
+    expect(mock.write).toHaveBeenCalledWith(message, { overwrite: false, signal: expect.any(AbortSignal) })
 
     vm.unmount()
+  })
+
+  it('should abort write() when the passed signal aborts', async () => {
+    const mock = createMockWindow()
+    const vm = useSetup(() => {
+      const api = useWebNFC({ window: mock.window })
+      return { api }
+    })
+
+    mock.write.mockImplementationOnce((_message, options) => rejectOnAbort(options as { signal?: AbortSignal }))
+
+    const controller = new AbortController()
+    const pending = vm.api.write('hello', { signal: controller.signal })
+    controller.abort()
+
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+
+    vm.unmount()
+  })
+
+  it('should abort a pending write() on unmount', async () => {
+    const mock = createMockWindow()
+    const vm = useSetup(() => {
+      const api = useWebNFC({ window: mock.window })
+      return { api }
+    })
+
+    mock.write.mockImplementationOnce((_message, options) => rejectOnAbort(options as { signal?: AbortSignal }))
+
+    const pending = vm.api.write('hello')
+    vm.unmount()
+
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
   })
 
   it('should set error and reject when write() fails', async () => {
@@ -365,9 +398,42 @@ describe('useWebNFC', () => {
     const controller = new AbortController()
     await vm.api.makeReadOnly({ signal: controller.signal })
 
-    expect(mock.makeReadOnly).toHaveBeenCalledWith({ signal: controller.signal })
+    expect(mock.makeReadOnly).toHaveBeenCalledWith({ signal: expect.any(AbortSignal) })
 
     vm.unmount()
+  })
+
+  it('should abort makeReadOnly() when the passed signal aborts', async () => {
+    const mock = createMockWindow()
+    const vm = useSetup(() => {
+      const api = useWebNFC({ window: mock.window })
+      return { api }
+    })
+
+    mock.makeReadOnly.mockImplementationOnce(options => rejectOnAbort(options as { signal?: AbortSignal }))
+
+    const controller = new AbortController()
+    const pending = vm.api.makeReadOnly({ signal: controller.signal })
+    controller.abort()
+
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
+
+    vm.unmount()
+  })
+
+  it('should abort a pending makeReadOnly() on unmount', async () => {
+    const mock = createMockWindow()
+    const vm = useSetup(() => {
+      const api = useWebNFC({ window: mock.window })
+      return { api }
+    })
+
+    mock.makeReadOnly.mockImplementationOnce(options => rejectOnAbort(options as { signal?: AbortSignal }))
+
+    const pending = vm.api.makeReadOnly()
+    vm.unmount()
+
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' })
   })
 
   it('should set error and reject when makeReadOnly() fails', async () => {
