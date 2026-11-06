@@ -11,7 +11,7 @@ import { computed, toValue } from 'vue'
 function accurateMultiply(value: number, power: number): number {
   const valueStr = value.toString()
 
-  if (value > 0 && valueStr.includes('.')) {
+  if (value !== 0 && valueStr.includes('.')) {
     const decimalPlaces = valueStr.split('.')[1].length
     const multiplier = 10 ** decimalPlaces
 
