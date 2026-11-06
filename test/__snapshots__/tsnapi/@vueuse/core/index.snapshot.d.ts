@@ -146,6 +146,45 @@ export interface MouseInElementOptions extends UseMouseOptions {
 export interface NavigatorLanguageState extends Supportable {
   language: ShallowRef<string | undefined>;
 }
+export interface NDEFMessage {
+  readonly records: ReadonlyArray<NDEFRecord>;
+}
+export interface NDEFMessageInit {
+  records: NDEFRecordInit[];
+}
+export interface NDEFReader extends EventTarget {
+  scan: (_?: {
+    signal?: AbortSignal;
+  }) => Promise<void>;
+  write: (_: NDEFMessageSource, _?: {
+    overwrite?: boolean;
+    signal?: AbortSignal;
+  }) => Promise<void>;
+  makeReadOnly: (_?: {
+    signal?: AbortSignal;
+  }) => Promise<void>;
+}
+export interface NDEFReadingEvent extends Event {
+  readonly serialNumber: string;
+  readonly message: NDEFMessage;
+}
+export interface NDEFRecord {
+  readonly recordType: string;
+  readonly mediaType?: string;
+  readonly id?: string;
+  readonly data?: DataView;
+  readonly encoding?: string;
+  readonly lang?: string;
+  toRecords?: () => NDEFRecord[];
+}
+export interface NDEFRecordInit {
+  recordType: string;
+  mediaType?: string;
+  id?: string;
+  encoding?: string;
+  lang?: string;
+  data?: string | BufferSource | NDEFMessageInit;
+}
 export interface NetworkState extends Supportable {
   isOnline: Readonly<ShallowRef<boolean>>;
   offlineAt: Readonly<ShallowRef<number | undefined>>;
@@ -1441,6 +1480,30 @@ export interface UseWebMCPReturn extends Supportable {
   isRegistered: ShallowRef<boolean>;
   error: ShallowRef<Error | null>;
 }
+export interface UseWebNFCMakeReadOnlyOptions {
+  signal?: AbortSignal;
+}
+export interface UseWebNFCOptions extends ConfigurableWindow {
+  immediate?: boolean;
+}
+export interface UseWebNFCReturn extends Supportable {
+  isScanning: Readonly<ShallowRef<boolean>>;
+  serialNumber: Readonly<ShallowRef<string | undefined>>;
+  message: Readonly<ShallowRef<NDEFMessage | undefined>>;
+  records: ComputedRef<ReadonlyArray<NDEFRecord>>;
+  texts: ComputedRef<string[]>;
+  error: Readonly<ShallowRef<unknown>>;
+  scan: () => Promise<void>;
+  stop: () => void;
+  write: (_: NDEFMessageSource, _?: UseWebNFCWriteOptions) => Promise<void>;
+  makeReadOnly: (_?: UseWebNFCMakeReadOnlyOptions) => Promise<void>;
+  onReading: EventHookOn<NDEFReadingEvent>;
+  onReadingError: EventHookOn<Event>;
+}
+export interface UseWebNFCWriteOptions {
+  overwrite?: boolean;
+  signal?: AbortSignal;
+}
 export interface UseWebNotificationOptions extends ConfigurableWindow, WebNotificationOptions {
   requestPermissions?: boolean;
 }
@@ -1607,6 +1670,7 @@ export type MaybeElement = HTMLElement | SVGElement | VueInstance | undefined | 
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>;
 /** @deprecated */
 export type MousePressedOptions = UseMousePressedOptions;
+export type NDEFMessageSource = string | BufferSource | NDEFMessageInit;
 export type NetworkEffectiveType = 'slow-2g' | '2g' | '3g' | '4g' | undefined;
 export type NetworkType = 'bluetooth' | 'cellular' | 'ethernet' | 'none' | 'wifi' | 'wimax' | 'other' | 'unknown';
 export type OnClickOutsideHandler<T extends OnClickOutsideOptions<boolean> = OnClickOutsideOptions> = (_: (T['detectIframe'] extends true ? FocusEvent : never) | (T['controls'] extends true ? Event : never) | PointerEvent) => void;
@@ -2045,6 +2109,7 @@ export declare function useVModels<P extends object, Name extends string>(_: P, 
 export declare function useVModels<P extends object, Name extends string>(_: P, _?: (_: Name, ..._: any[]) => void, _?: UseVModelOptions<any, false>): ToRefs<P>;
 export declare function useWakeLock(_?: UseWakeLockOptions): UseWakeLockReturn;
 export declare function useWebMCP<Args = Record<string, any>, Result = unknown>(_: UseWebMCPOptions<Args, Result>): UseWebMCPReturn;
+export declare function useWebNFC(_?: UseWebNFCOptions): UseWebNFCReturn;
 export declare function useWebNotification(_?: UseWebNotificationOptions): UseWebNotificationReturn;
 export declare function useWebSocket<Data = any>(_: MaybeRefOrGetter<string | URL | undefined>, _?: UseWebSocketOptions): UseWebSocketReturn<Data>;
 export declare function useWebWorker<T = any>(_: string, _?: WorkerOptions, _?: ConfigurableWindow): UseWebWorkerReturn<T>;
@@ -2165,7 +2230,7 @@ export * from "@vueuse/shared";
 type CacheKey = any;
 type ClipboardValue = string | (() => Promise<string | undefined>);
 type Combination = 'overwrite' | 'chain';
-type DescriptorNamePolyfill = 'accelerometer' | 'accessibility-events' | 'ambient-light-sensor' | 'background-sync' | 'camera' | 'clipboard-read' | 'clipboard-write' | 'gyroscope' | 'magnetometer' | 'microphone' | 'notifications' | 'payment-handler' | 'persistent-storage' | 'push' | 'speaker' | 'local-fonts';
+type DescriptorNamePolyfill = 'accelerometer' | 'accessibility-events' | 'ambient-light-sensor' | 'background-sync' | 'camera' | 'clipboard-read' | 'clipboard-write' | 'gyroscope' | 'magnetometer' | 'microphone' | 'nfc' | 'notifications' | 'payment-handler' | 'persistent-storage' | 'push' | 'speaker' | 'local-fonts';
 interface FileSystemWritableFileStream extends WritableStream {
   write: FileSystemWritableFileStreamWrite;
   seek: (_: number) => Promise<void>;
