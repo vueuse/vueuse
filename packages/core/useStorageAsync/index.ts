@@ -12,7 +12,9 @@ import { guessSerializerType } from '../useStorage/guess'
 
 export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 'serializer'> {
   /**
-   * Custom data serialization
+   * Custom data serialization.
+   *
+   * `false` can be passed to store values as-is without serialization.
    */
   serializer?: SerializerAsync<T>
 
@@ -22,11 +24,19 @@ export interface UseStorageAsyncOptions<T> extends Omit<UseStorageOptions<T>, 's
   onReady?: (value: T) => void
 }
 
+export interface UseStorageAsyncRawOptions<T> extends Omit<UseStorageAsyncOptions<T>, 'serializer'> {
+  /**
+   * Store values as-is without serialization.
+   */
+  serializer: false
+}
+
+export function useStorageAsync<T>(key: string, initialValue: MaybeRefOrGetter<T>, storage: StorageLikeAsync<T>, options: UseStorageAsyncRawOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<string>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<string>): RemovableRef<string> & Promise<RemovableRef<string>>
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<boolean>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<boolean>): RemovableRef<boolean> & Promise<RemovableRef<boolean>>
 export function useStorageAsync(key: string, initialValue: MaybeRefOrGetter<number>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<number>): RemovableRef<number> & Promise<RemovableRef<number>>
 export function useStorageAsync<T>(key: string, initialValue: MaybeRefOrGetter<T>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
-export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRefOrGetter<null>, storage?: StorageLikeAsync, options?: UseStorageAsyncOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
+export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRefOrGetter<null>, storage?: StorageLikeAsync<T>, options?: UseStorageAsyncOptions<T>): RemovableRef<T> & Promise<RemovableRef<T>>
 
 /**
  * Reactive Storage with async support.
@@ -40,8 +50,8 @@ export function useStorageAsync<T = unknown>(key: string, initialValue: MaybeRef
 export function useStorageAsync<T extends(string | number | boolean | object | null)>(
   key: string,
   initialValue: MaybeRefOrGetter<T>,
-  storage: StorageLikeAsync | undefined,
-  options: UseStorageAsyncOptions<T> = {},
+  storage: StorageLikeAsync<T> | StorageLikeAsync | undefined,
+  options: UseStorageAsyncOptions<T> | UseStorageAsyncRawOptions<T> = {},
 ): RemovableRef<T> & Promise<RemovableRef<T>> {
   const {
     flush = 'pre',
@@ -63,6 +73,8 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
 
   const data = (shallow ? shallowRef : deepRef)(toValue(initialValue)) as RemovableRef<T>
   const serializer = options.serializer ?? StorageSerializers[type]
+  const readValue = async (raw: any): Promise<T> => serializer === false ? raw : await serializer.read(raw)
+  const writeValue = async (value: T): Promise<any> => serializer === false ? value : await serializer.write(value)
 
   if (!storage) {
     try {
@@ -82,18 +94,21 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
       if (rawValue == null) {
         data.value = rawInit
         if (writeDefaults && rawInit !== null)
-          await storage.setItem(key, await serializer.write(rawInit))
+          await storage.setItem(key, await writeValue(rawInit))
+      }
+      else if (serializer === false) {
+        data.value = rawValue as T
       }
       else if (mergeDefaults) {
-        const value = await serializer.read(rawValue)
+        const value = await readValue(rawValue)
         if (typeof mergeDefaults === 'function')
           data.value = mergeDefaults(value, rawInit)
         else if (type === 'object' && !Array.isArray(value))
-          data.value = { ...(rawInit as any), ...value }
+          data.value = { ...(rawInit as any), ...(value as any) }
         else data.value = value
       }
       else {
-        data.value = await serializer.read(rawValue)
+        data.value = await readValue(rawValue)
       }
     }
     catch (e) {
@@ -119,7 +134,7 @@ export function useStorageAsync<T extends(string | number | boolean | object | n
           if (data.value == null)
             await storage!.removeItem(key)
           else
-            await storage!.setItem(key, await serializer.write(data.value))
+            await storage!.setItem(key, await writeValue(data.value))
         }
         catch (e) {
           onError(e)
