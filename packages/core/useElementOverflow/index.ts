@@ -61,11 +61,10 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
     onResizeUpdated?.(entries, observer)
   }, { window })
 
-  let stopMutationObserver = () => {}
-
+  let stopMutationObserver: (() => void) | undefined
   if (observeMutation) {
     const onMutationUpdated = onUpdated as MutationCallback | undefined
-    const { stop: stopMutation } = useMutationObserver(
+    stopMutationObserver = useMutationObserver(
       targets,
       (entries, observer) => {
         const el = targetEl.value
@@ -80,13 +79,12 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
           ? observeMutation
           : { childList: true, subtree: true, characterData: true }),
       },
-    )
-    stopMutationObserver = stopMutation
+    ).stop
   }
 
   function stop() {
     stopResizeObserver()
-    stopMutationObserver()
+    stopMutationObserver?.()
   }
 
   return {

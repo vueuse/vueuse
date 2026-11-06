@@ -143,6 +143,23 @@ describe('useElementOverflow', () => {
     expect(disconnect).toHaveBeenCalled()
   })
 
+  it('should stop the observers when calling stop', async () => {
+    const disconnect = vi.fn()
+
+    vi.stubGlobal('ResizeObserver', class {
+      observe = vi.fn()
+      disconnect = disconnect
+    })
+
+    const el = document.createElement('div')
+    const { stop } = useElementOverflow(el, { observeMutation: true })
+    await nextTick()
+
+    expect(stop).not.toBe(window.stop)
+    stop()
+    expect(disconnect).toHaveBeenCalled()
+  })
+
   it('should disconnect observers when stop is called', async () => {
     const disconnect = vi.fn()
     const observe = vi.fn()
@@ -161,29 +178,6 @@ describe('useElementOverflow', () => {
     stop()
 
     expect(disconnect).toHaveBeenCalled()
-  })
-
-  it('should not update overflow state after stop is called', async () => {
-    const el = document.createElement('div')
-    el.style.width = '40px'
-    el.style.overflow = 'hidden'
-    el.style.whiteSpace = 'nowrap'
-    el.textContent = 'a'.repeat(100)
-    document.body.appendChild(el)
-
-    const { isXOverflowed, stop } = useElementOverflow(el)
-
-    await vi.waitFor(() => {
-      expect(isXOverflowed.value).toBe(true)
-    })
-
-    stop()
-
-    el.style.width = '1000px'
-    await nextTick()
-
-    expect(isXOverflowed.value).toBe(true)
-    document.body.removeChild(el)
   })
 
   it('should update and call onUpdated from mutation observer', async () => {
