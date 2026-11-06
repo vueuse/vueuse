@@ -161,6 +161,9 @@ export function useWebNFC(options: UseWebNFCOptions = {}): UseWebNFCReturn {
         isScanning.value = true
     }
     catch (e) {
+      // if an aborted scan was canceled on purpose (stop / dispose) or superseded by a newer scan
+      if (signal.aborted)
+        return
       error.value = e
       controller.abort()
     }

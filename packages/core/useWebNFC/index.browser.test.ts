@@ -54,6 +54,14 @@ function createMockWindow() {
   }
 }
 
+function rejectOnAbort(options?: { signal?: AbortSignal }) {
+  return new Promise<void>((_, reject) => {
+    options?.signal?.addEventListener('abort', () => {
+      reject(new DOMException('aborted', 'AbortError'))
+    }, { once: true })
+  })
+}
+
 function createMessage(text: string): NDEFMessage {
   return {
     records: [{
@@ -199,6 +207,54 @@ describe('useWebNFC', () => {
     await expect(vm.api.scan()).resolves.toBeUndefined()
     expect(vm.api.error.value).toBe(failure)
     expect(vm.api.isScanning.value).toBe(false)
+
+    vm.unmount()
+  })
+
+  it('should not set error when stop() cancels a pending scan', async () => {
+    const mock = createMockWindow()
+    const vm = useSetup(() => {
+      const api = useWebNFC({ window: mock.window })
+      return { api }
+    })
+
+    // like the real NDEFReader, a pending scan rejects with AbortError once its signal aborts
+    mock.scan.mockImplementationOnce(rejectOnAbort)
+
+    const pending = vm.api.scan()
+    vm.api.stop()
+    await pending
+
+    expect(vm.api.error.value).toBeUndefined()
+    expect(vm.api.isScanning.value).toBe(false)
+
+    vm.unmount()
+  })
+
+  it('should not let a superseded scan overwrite the state of a newer scan', async () => {
+    const mock = createMockWindow()
+    const vm = useSetup(() => {
+      const api = useWebNFC({ window: mock.window })
+      return { api }
+    })
+
+    // the first scan only rejects after the second scan has started
+    let rejectFirst!: (e: unknown) => void
+    mock.scan.mockImplementationOnce(() => new Promise((_, reject) => {
+      rejectFirst = reject
+    }))
+
+    const first = vm.api.scan()
+    vm.api.stop()
+    await vm.api.scan()
+    expect(vm.api.isScanning.value).toBe(true)
+
+    rejectFirst(new DOMException('aborted', 'AbortError'))
+    await first
+
+    expect(vm.api.error.value).toBeUndefined()
+    expect(vm.api.isScanning.value).toBe(true)
+    expect(mock.scanSignal?.aborted).toBe(false)
 
     vm.unmount()
   })
