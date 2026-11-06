@@ -1,6 +1,8 @@
 import type { Ref } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { computed, ref as deepRef, effectScope, nextTick, reactive, shallowRef, watch } from 'vue'
+import { createMemoryHistory, createRouter } from 'vue-router'
+import { nextTwoTick } from '../../.test'
 import { useRouteParams } from './index'
 
 describe('useRouteParams', () => {
@@ -15,6 +17,18 @@ describe('useRouteParams', () => {
     path: '',
     redirectedFrom: undefined,
   })
+
+  const getRouter = async (path: string) => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: '/:page', component: {} }],
+    })
+    await router.push(path)
+    const route = reactive(Object.fromEntries(
+      Object.keys(router.currentRoute.value).map(key => [key, computed(() => (router.currentRoute.value as any)[key])]),
+    )) as any
+    return { router, route }
+  }
 
   it('should export', () => {
     expect(useRouteParams).toBeDefined()
@@ -140,6 +154,22 @@ describe('useRouteParams', () => {
     expect(route.params.page).toBe('1')
     expect(lang.value).toBe('en')
     expect(route.params.lang).toBe('en')
+  })
+
+  it('should roll back the value when navigation is aborted', async () => {
+    const { router, route } = await getRouter('/1')
+    router.beforeEach(() => false)
+
+    const page: Ref<any> = useRouteParams('page', null, { route, router })
+
+    page.value = '2'
+
+    expect(page.value).toBe('2')
+
+    await nextTwoTick()
+
+    expect(route.params.page).toBe('1')
+    expect(page.value).toBe('1')
   })
 
   it('should return default value', () => {
