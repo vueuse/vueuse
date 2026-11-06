@@ -76,10 +76,6 @@ export interface UseWebNFCReturn extends Supportable {
   serialNumber: Readonly<ShallowRef<string | undefined>>
   message: Readonly<ShallowRef<NDEFMessage | undefined>>
   records: ComputedRef<ReadonlyArray<NDEFRecord>>
-  /**
-   * Decoded contents of all `text` records of the last read message
-   */
-  texts: ComputedRef<string[]>
   error: Readonly<ShallowRef<unknown>>
 
   scan: () => Promise<void>
@@ -113,9 +109,6 @@ export function useWebNFC(options: UseWebNFCOptions = {}): UseWebNFCReturn {
   const serialNumber = shallowRef<string>()
   const message = shallowRef<NDEFMessage>()
   const records = computed<ReadonlyArray<NDEFRecord>>(() => message.value?.records ?? [])
-  const texts = computed(() => records.value
-    .filter(record => record.recordType === 'text' && record.data)
-    .map(record => new TextDecoder(record.encoding ?? 'utf-8').decode(record.data)))
   const error = shallowRef<unknown>()
 
   const readingHook = createEventHook<NDEFReadingEvent>()
@@ -223,7 +216,6 @@ export function useWebNFC(options: UseWebNFCOptions = {}): UseWebNFCReturn {
     serialNumber: shallowReadonly(serialNumber),
     message: shallowReadonly(message),
     records,
-    texts,
     error: shallowReadonly(error),
     scan,
     stop,
