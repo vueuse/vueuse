@@ -174,6 +174,7 @@ export function useWindowSize(_) {}
 export var asyncComputed /* const */
 export var breakpointsAntDesign /* const */
 export var breakpointsBootstrapV5 /* const */
+export var breakpointsBootstrapV6 /* const */
 export var breakpointsElement /* const */
 export var breakpointsMasterCss /* const */
 export var breakpointsPrimeFlex /* const */

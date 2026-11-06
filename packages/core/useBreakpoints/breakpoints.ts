@@ -26,6 +26,20 @@ export const breakpointsBootstrapV5 = {
 }
 
 /**
+ * Breakpoints from Bootstrap V6
+ *
+ * @see https://getbootstrap.com/docs/6.0/layout/breakpoints
+ */
+export const breakpointsBootstrapV6 = {
+  'xs': 0,
+  'sm': 576,
+  'md': 768,
+  'lg': 1024,
+  'xl': 1280,
+  '2xl': 1536,
+}
+
+/**
  * Breakpoints from Vuetify V2
  *
  * @see https://v2.vuetifyjs.com/en/features/breakpoints/
