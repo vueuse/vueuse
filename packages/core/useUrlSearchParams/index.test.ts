@@ -384,4 +384,27 @@ describe('useUrlSearchParams', () => {
     window.location.hash = newHash
     expect(window.location.hash).toBe(newHash)
   })
+
+  it('works when URLSearchParams.keys() iterator is not iterable', async () => {
+    const originalKeys = URLSearchParams.prototype.keys
+
+    URLSearchParams.prototype.keys = function () {
+      const iterator = originalKeys.call(this)
+      return Object.assign(iterator, { [Symbol.iterator]: undefined })
+    }
+
+    try {
+      window.location.search = '?test=value&foo=bar&foo=baz'
+
+      const params = useUrlSearchParams('history')
+
+      await nextTick()
+
+      expect(params.test).toBe('value')
+      expect(params.foo).toEqual(['bar', 'baz'])
+    }
+    finally {
+      URLSearchParams.prototype.keys = originalKeys
+    }
+  })
 })

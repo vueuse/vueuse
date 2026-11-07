@@ -105,7 +105,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
 
   function updateState(params: URLSearchParams) {
     const unusedKeys = new Set(Object.keys(state))
-    for (const key of params.keys()) {
+    for (const [key] of params) {
       const paramsForKey = params.getAll(key)
       state[key] = paramsForKey.length > 1
         ? paramsForKey
@@ -175,7 +175,7 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
     useEventListener(window, 'hashchange', onChanged, listenerOptions)
 
   const initial = read()
-  if (initial.keys().next().value)
+  if (initial.toString())
     updateState(initial)
   else
     Object.assign(state, initialValue)
