@@ -15,10 +15,10 @@ export interface AsyncComputedOptions<Lazy = boolean> extends ConfigurableFlushS
   onError?: (_: unknown) => void;
 }
 export interface BatteryManager extends EventTarget {
-  charging: boolean;
-  chargingTime: number;
-  dischargingTime: number;
-  level: number;
+  readonly charging: boolean;
+  readonly chargingTime: number;
+  readonly dischargingTime: number;
+  readonly level: number;
 }
 export interface BeforeFetchContext {
   url: string;
@@ -351,10 +351,10 @@ export interface UseBase64Return {
 }
 export interface UseBatteryOptions extends ConfigurableNavigator {}
 export interface UseBatteryReturn extends Supportable {
-  charging: ShallowRef<boolean>;
-  chargingTime: ShallowRef<number>;
-  dischargingTime: ShallowRef<number>;
-  level: ShallowRef<number>;
+  charging: Readonly<ShallowRef<boolean>>;
+  chargingTime: Readonly<ShallowRef<number>>;
+  dischargingTime: Readonly<ShallowRef<number>>;
+  level: Readonly<ShallowRef<number>>;
 }
 export interface UseBluetoothOptions extends UseBluetoothRequestDeviceOptions, ConfigurableNavigator {
   acceptAllDevices?: boolean;
@@ -692,6 +692,7 @@ export interface UseFetchReturn<T> {
   patch: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
   head: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
   options: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
+  query: (_?: MaybeRefOrGetter<unknown>, _?: string) => UseFetchReturn<T> & PromiseLike<UseFetchReturn<T>>;
   json: <JSON = any>() => UseFetchReturn<JSON> & PromiseLike<UseFetchReturn<JSON>>;
   text: () => UseFetchReturn<string> & PromiseLike<UseFetchReturn<string>>;
   blob: () => UseFetchReturn<Blob> & PromiseLike<UseFetchReturn<Blob>>;
@@ -777,7 +778,7 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
 export interface UseIdleReturn extends Stoppable {
   idle: ShallowRef<boolean>;
   lastActive: ShallowRef<number>;
-  reset: () => void;
+  reset: (_?: boolean) => void;
 }
 export interface UseImageOptions {
   src: string;
@@ -1873,7 +1874,7 @@ export declare function useElementHover(_: MaybeRefOrGetter<EventTarget | null |
 export declare function useElementOverflow(_: MaybeComputedElementRef, _?: UseElementOverflowOptions): {
   isXOverflowed: Readonly<import("vue").ShallowRef<boolean, boolean>>;
   isYOverflowed: Readonly<import("vue").ShallowRef<boolean, boolean>>;
-  stop: typeof stop;
+  stop: () => void;
   update: () => void;
 };
 export declare function useElementSize(_: MaybeComputedElementRef, _?: ElementSize, _?: UseElementSizeOptions): UseElementSizeReturn;

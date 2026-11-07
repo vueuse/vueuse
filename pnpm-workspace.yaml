@@ -1,7 +1,5 @@
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
-  - '@iconify/json@2.2.525'
-  - vue-router@5.3.1
   - bumpp@12.3.0
 
 trustPolicy: no-downgrade
@@ -20,8 +18,8 @@ packages:
   - '!playgrounds'
 
 overrides:
-  chokidar: ^5.0.0
-  semver: ^7.8.5
+  chokidar: ^6.0.0
+  semver: ^7.8.6
   vue: catalog:dev
   # 7.4.1 swaps @surma/rollup-plugin-off-main-thread for the @trickfilm400 fork,
   # whose 3.0.0-pre1 has no provenance attestation and trips trustPolicy.
@@ -36,104 +34,105 @@ allowBuilds:
   electron: false
   esbuild: false
   msw: false
+  pnpm: false
   protobufjs: false
   simple-git-hooks: false
 
 catalogs:
   dev:
-    '@antfu/eslint-config': ^9.5.1
-    '@antfu/ni': ^30.5.0
-    '@iconify/json': ^2.2.525
-    '@vitejs/plugin-vue': ^6.0.8
-    '@vue/compiler-sfc': ^3.6.0-rc.3
+    '@antfu/eslint-config': ^10.0.0
+    '@antfu/ni': ^30.6.0
+    '@iconify/json': ^2.2.553
+    '@vitejs/plugin-vue': ^6.0.10
+    '@vue/compiler-sfc': ^3.6.0-rc.14
     bumpp: ^12.3.0
-    chokidar: ^5.0.0
+    chokidar: ^6.0.0
     consola: ^3.4.2
-    eslint: ^10.9.1
+    eslint: ^10.14.0
     eslint-factory: ^0.1.2
     eslint-plugin-format: ^2.0.1
     eslint-plugin-unimport: ^2.0.0
-    export-size: ^0.8.0
-    lint-staged: ^17.4.1
-    nuxt: ^4.5.2
+    export-size: ^0.9.0
+    lint-staged: ^17.6.0
+    nuxt: ^4.6.4
     ofetch: ^1.5.1
-    pnpm: ^11.25.0
-    postcss: ^8.5.26
-    postcss-nested: ^7.0.2
-    prettier: ^3.9.6
-    semver: ^7.8.5
-    sharp: ^0.35.4
-    simple-git: ^3.36.0
+    pnpm: ^12.16.1
+    postcss: ^8.5.32
+    postcss-nested: ^9.0.1
+    prettier: ^3.9.10
+    semver: ^7.8.6
+    sharp: ^0.35.5
+    simple-git: ^4.0.2
     simple-git-hooks: ^2.14.0
-    taze: ^21.1.0
+    taze: ^21.3.0
     tinyglobby: ^0.2.17
-    tsdown: ^0.22.14
+    tsdown: ^0.23.5
     tsdown-stale-guard: ^0.1.3
-    tsx: ^4.23.13
-    turbo: ^2.10.12
+    tsx: ^4.23.15
+    turbo: ^2.11.10
     typescript: ^6.0.3
-    unimport: ^6.4.0
-    unocss: ^66.9.2
-    vite: ^8.2.2
-    vite-plugin-inspect: ^11.4.1
-    vue: ^3.6.0-rc.3
-    vue-tsc: ^3.3.11
+    unimport: ^7.0.2
+    unocss: ^66.12.0
+    vite: ^8.3.5
+    vite-plugin-inspect: ^12.1.0
+    vue: ^3.6.0-rc.14
+    vue-tsc: ^3.3.14
   docs:
-    '@shikijs/vitepress-twoslash': ^4.4.3
+    '@shikijs/vitepress-twoslash': ^4.6.0
     '@vite-pwa/vitepress': ^1.1.0
     '@vue/repl': ^4.7.2
     google-font-installer: ^1.2.0
     gray-matter: ^4.0.3
-    markdown-table: ^3.0.4
+    markdown-table: ^3.1.0
     md5: ^2.3.0
-    remove-markdown: ^0.6.4
-    unplugin-icons: ^23.0.1
+    remove-markdown: ^0.8.0
+    unplugin-icons: ^24.0.0
     unplugin-vue-components: ^32.1.0
     vite-plugin-pwa: ^1.3.0
-    vitepress: ^2.0.0-alpha.19
-    yaml: ^2.9.0
+    vitepress: ^2.0.0-alpha.21
+    yaml: ^2.9.1
   integrations:
-    '@nuxt/kit': ^4.5.2
-    '@nuxt/schema': ^4.5.2
+    '@nuxt/kit': ^4.6.4
+    '@nuxt/schema': ^4.6.4
     async-validator: ^4.2.5
-    axios: ^1.20.0
+    axios: ^1.21.0
     change-case: ^5.4.4
     drauu: ^1.0.0
     electron: ^13.1.0
-    firebase: ^12.18.0
-    focus-trap: ^8.2.2
+    firebase: ^13.2.0
+    focus-trap: ^8.2.4
     fuse.js: ^7.5.0
     idb-keyval: ^6.3.0
     jwt-decode: ^4.0.0
-    local-pkg: ^1.2.1
+    local-pkg: ^2.0.0
     nprogress: ^0.2.0
     qrcode: ^1.5.4
     rxjs: ^6.6.7
     sortablejs: ^1.15.7
     universal-cookie: ^8.1.2
-    vue-router: ^5.3.1
+    vue-router: ^5.4.0
   test:
     '@arethetypeswrong/core': ^0.18.5
     '@js-temporal/polyfill': ^0.5.1
-    '@vitest/browser-playwright': ^4.1.11
-    '@vitest/coverage-v8': ^4.1.11
-    '@vitest/ui': ^4.1.11
-    '@vue/test-utils': ^2.5.0
-    fake-indexeddb: ^6.2.5
-    jsdom: ^30.0.1
+    '@vitest/browser-playwright': ^5.1.0
+    '@vitest/coverage-v8': ^5.1.0
+    '@vitest/ui': ^5.1.0
+    '@vue/test-utils': ^2.5.1
+    fake-indexeddb: ^6.2.7
+    jsdom: ^30.1.3
     msw: ^2.15.0
-    playwright: 1.60.0
-    temporal-polyfill: ^1.0.4
-    tsnapi: ^1.4.2
-    vitest: ^4.1.11
-    vitest-browser-vue: ^2.1.0
+    playwright: 1.64.1
+    temporal-polyfill: ^1.0.7
+    tsnapi: ^1.6.1
+    vitest: ^5.1.0
+    vitest-browser-vue: ^3.1.0
   types:
     '@type-challenges/utils': ^0.1.1
     '@types/md5': ^2.3.6
-    '@types/node': ^26.4.1
+    '@types/node': ^26.6.6
     '@types/nprogress': ^0.2.3
     '@types/qrcode': ^1.5.6
     '@types/remove-markdown': ^0.3.4
     '@types/semver': ^7.8.0
     '@types/sortablejs': ^1.15.9
-    '@types/web-bluetooth': ^0.0.21
+    '@types/web-bluetooth': ^0.0.22

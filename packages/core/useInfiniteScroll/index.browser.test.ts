@@ -26,9 +26,9 @@ describe('useInfiniteScroll', () => {
         const el = useTemplateRef<HTMLElement>('el')
 
         handlerSpy.mockImplementation(() => data.value.push(1))
-        useInfiniteScroll(el, handlerSpy)
+        const { isLoading } = useInfiniteScroll(el, handlerSpy)
 
-        return { data, el }
+        return { data, el, isLoading }
       },
     }), { attachTo: document.body })
 
@@ -49,6 +49,10 @@ describe('useInfiniteScroll', () => {
 
     await flushPromises()
     expect(vm.el!.scrollHeight).toBe(200)
+
+    await vi.waitFor(() => {
+      expect(vm.isLoading).toBe(false)
+    })
   })
 
   it('should not call loadMore when canLoadMore returns false', async () => {

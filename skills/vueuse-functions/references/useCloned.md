@@ -97,6 +97,6 @@ export type CloneFn<F, T = F> = (x: F) => T
 export declare function cloneFnJSON<T>(source: T): T
 export declare function useCloned<T>(
   source: MaybeRefOrGetter<T>,
-  options?: UseClonedOptions,
+  options?: UseClonedOptions<T>,
 ): UseClonedReturn<T>
 ```

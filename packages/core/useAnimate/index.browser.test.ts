@@ -38,6 +38,24 @@ describe('useAnimate', () => {
     wrapper.unmount()
   })
 
+  it('should apply the persist and playbackRate options', async () => {
+    const wrapper = mount(defineComponent({
+      template: '<p ref="el">test</p>',
+      setup() {
+        const el = shallowRef<HTMLElement>()
+        const animate = useAnimate(el, { transform: 'rotate(360deg)' }, { duration: 100, persist: true, playbackRate: 2 })
+
+        return { ...animate, el }
+      },
+    }))
+    const vm = wrapper.vm
+    await vi.waitFor(() => {
+      expect(vm.animate?.playbackRate).toBe(2)
+      expect(vm.animate?.replaceState).toBe('persisted')
+    })
+    wrapper.unmount()
+  })
+
   it('should support keyframes refs', async () => {
     const keyframes = shallowRef<PropertyIndexedKeyframes>({
       transform: 'rotate(360deg)',
