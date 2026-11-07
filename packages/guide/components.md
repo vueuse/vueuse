@@ -77,3 +77,25 @@ You can access return values with `v-slot`:
 ```
 
 Refer to each function's documentation for the detailed usage of component style.
+
+## Vapor Directives
+
+VueUse directives provide `Vapor`-suffixed exports for components using Vue Vapor mode:
+
+```vue
+<script setup lang="ts" vapor>
+import { vOnClickOutsideVapor } from '@vueuse/components'
+
+function close() {
+  /* ... */
+}
+</script>
+
+<template>
+  <div v-on-click-outside-vapor="close">
+    Click Outside of Me
+  </div>
+</template>
+```
+
+Use the existing directive exports, such as `vOnClickOutside`, with VDOM components.
