@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { formatDate, useCounter, useManualRefHistory } from '@vueuse/core'
+import { formatDate, useManualRefHistory, useCounter } from '@vueuse/core'
 
 function format(ts: number) {
   return formatDate(new Date(ts), 'YYYY-MM-DD HH:mm:ss')
 }
 
-const { inc, dec, count } = useCounter()
-const { canUndo, canRedo, history, commit, undo, redo } = useManualRefHistory(count, { capacity: 10 })
+const { inc, dec, count, set } = useCounter()
+
+const { canUndo, canRedo, history, commit, undo, redo } = useManualRefHistory(
+  count,
+  { capacity: 10, setSource: (_source, value: number) => set(value) },
+)
 </script>
 
 <template>
