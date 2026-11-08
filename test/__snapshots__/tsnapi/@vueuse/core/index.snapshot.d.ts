@@ -1491,7 +1491,6 @@ export interface UseWebNFCReturn extends Supportable {
   serialNumber: Readonly<ShallowRef<string | undefined>>;
   message: Readonly<ShallowRef<NDEFMessage | undefined>>;
   records: ComputedRef<ReadonlyArray<NDEFRecord>>;
-  texts: ComputedRef<string[]>;
   error: Readonly<ShallowRef<unknown>>;
   scan: () => Promise<void>;
   stop: () => void;
