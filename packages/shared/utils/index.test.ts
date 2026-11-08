@@ -234,6 +234,39 @@ describe('filters', () => {
       expect(debouncedFilterSpy).not.toHaveBeenCalled()
     })
 
+    it.each([false, true])('should resolve with the callback result when the regular timer fires before maxWait (rejectOnCancel: %s)', async (rejectOnCancel) => {
+      const filter = debounceFilter(100, { maxWait: 500, rejectOnCancel })
+      const wrapped = createFilterWrapper(filter, () => 'result')
+
+      const promise = wrapped()
+      vi.advanceTimersByTime(100)
+
+      await expect(promise).resolves.toBe('result')
+    })
+
+    it.each([false, true])('should resolve with the callback result when the maxWait timer fires (rejectOnCancel: %s)', async (rejectOnCancel) => {
+      const filter = debounceFilter(1000, { maxWait: 500, rejectOnCancel })
+      const wrapped = createFilterWrapper(filter, () => 'result')
+
+      const promise = wrapped()
+      vi.advanceTimersByTime(500)
+
+      await expect(promise).resolves.toBe('result')
+    })
+
+    it('should resolve the latest call when the maxWait timer fires', async () => {
+      const filter = debounceFilter(1000, { maxWait: 500, rejectOnCancel: true })
+      const wrapped = createFilterWrapper(filter, (value: number) => value)
+
+      const first = wrapped(1)
+      vi.advanceTimersByTime(200)
+      const second = wrapped(2)
+      vi.advanceTimersByTime(300)
+
+      await expect(first).rejects.toBeUndefined()
+      await expect(second).resolves.toBe(2)
+    })
+
     it('should allow calling after cancel', () => {
       const debouncedFilterSpy = vi.fn()
       const filter = debounceFilter(1000)
