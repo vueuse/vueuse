@@ -48,6 +48,29 @@ describe('useIdle', () => {
     expect(idle.value).toBe(true)
   })
 
+  it('should update lastActive only when reset is called with resetLastActive', () => {
+    const timeout = 1000
+    const { idle, lastActive, reset } = useIdle(timeout)
+    const initialLastActive = lastActive.value
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+
+    reset()
+    expect(idle.value).toBe(false)
+    expect(lastActive.value).toBe(initialLastActive)
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+
+    reset(true)
+    expect(idle.value).toBe(false)
+    expect(lastActive.value).toBe(initialLastActive + 2 * timeout)
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+  })
+
   it('should accept custom events list', async () => {
     document.body.innerHTML = ''
     const button = document.createElement('button')
@@ -86,6 +109,20 @@ describe('useIdle', () => {
     document.dispatchEvent(new Event('visibilitychange'))
 
     expect(idle.value).toBe(false)
+  })
+
+  it('should ignore visibility change events while the document is hidden', () => {
+    const timeout = 1000
+    const { idle } = useIdle(timeout)
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+
+    Object.defineProperty(document, 'hidden', { value: true, writable: true })
+    document.dispatchEvent(new Event('visibilitychange'))
+    Object.defineProperty(document, 'hidden', { value: false, writable: true })
+
+    expect(idle.value).toBe(true)
   })
 
   it('should not respond to visibility change when disabled', () => {
