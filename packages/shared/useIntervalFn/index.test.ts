@@ -116,7 +116,7 @@ describe('useIntervalFn', () => {
     expect(callback).toHaveBeenCalledTimes(2)
   })
 
-  it('останавливает текущий таймер при переходе к нулю', async () => {
+  it('stops the current timer when the interval changes to zero', async () => {
     const interval = shallowRef(50)
     const controls = useIntervalFn(callback, interval)
     await vi.advanceTimersByTimeAsync(50)
@@ -130,7 +130,7 @@ describe('useIntervalFn', () => {
     controls.pause()
   })
 
-  it('возобновляет запрошенный таймер после начального нуля', async () => {
+  it('resumes a requested timer after an initial zero interval', async () => {
     const interval = shallowRef(0)
     const controls = useIntervalFn(callback, interval)
     interval.value = 50
@@ -141,7 +141,7 @@ describe('useIntervalFn', () => {
     controls.pause()
   })
 
-  it('сохраняет явную паузу при изменении интервала', async () => {
+  it('preserves an explicit pause when the interval changes', async () => {
     const interval = shallowRef(50)
     const controls = useIntervalFn(callback, interval)
     controls.pause()
@@ -154,7 +154,7 @@ describe('useIntervalFn', () => {
     expect(controls.isActive.value).toBe(false)
   })
 
-  it.each([0, -1])('возобновляет таймер после недопустимого интервала %s', async (value) => {
+  it.each([0, -1])('resumes the timer after a non-positive interval of %s', async (value) => {
     const interval = shallowRef(20)
     const controls = useIntervalFn(callback, () => interval.value, { immediateCallback: true })
     expect(callback).toHaveBeenCalledTimes(1)
@@ -173,7 +173,7 @@ describe('useIntervalFn', () => {
     controls.pause()
   })
 
-  it('не запускает таймер при immediate: false до явного resume', async () => {
+  it('does not start with immediate: false until resume is called', async () => {
     const interval = shallowRef(0)
     const controls = useIntervalFn(callback, interval, { immediate: false })
     interval.value = 10
@@ -191,7 +191,7 @@ describe('useIntervalFn', () => {
     controls.pause()
   })
 
-  it('не возобновляет таймер после удаления scope', async () => {
+  it('does not resume after the scope is disposed', async () => {
     const interval = shallowRef(0)
     const scope = effectScope()
     scope.run(() => useIntervalFn(callback, interval))
