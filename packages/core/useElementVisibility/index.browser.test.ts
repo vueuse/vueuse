@@ -1,6 +1,18 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useElementVisibility } from './index'
 
+vi.mock('../useIntersectionObserver', () => ({
+  useIntersectionObserver: vi.fn((_target) => {
+    return {
+      isSupported: { value: true },
+      isActive: { value: true },
+      pause: vi.fn(),
+      resume: vi.fn(),
+      stop: vi.fn(),
+    }
+  }),
+}))
+
 describe('useElementVisibility', () => {
   let el: HTMLDivElement
 
@@ -33,17 +45,6 @@ describe('useElementVisibility', () => {
   describe('when internally using useIntersectionObserver', async () => {
     beforeAll(() => {
       vi.resetAllMocks()
-      vi.mock('../useIntersectionObserver', () => ({
-        useIntersectionObserver: vi.fn((_target) => {
-          return {
-            isSupported: { value: true },
-            isActive: { value: true },
-            pause: vi.fn(),
-            resume: vi.fn(),
-            stop: vi.fn(),
-          }
-        }),
-      }))
     })
 
     const { useIntersectionObserver } = await import('../useIntersectionObserver')

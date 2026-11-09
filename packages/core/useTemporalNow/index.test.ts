@@ -195,7 +195,7 @@ describe('useTemporalNow', () => {
   it('should use a custom `temporal` implementation instead of the global one', async () => {
     // A separate, independently imported implementation (not the polyfilled
     // global one), to prove `useTemporalNow` doesn't just fall back to `globalThis.Temporal`.
-    const { Temporal: CustomTemporal } = await import('temporal-polyfill')
+    const { Temporal: CustomTemporal } = await import('temporal-polyfill/implementation')
 
     const temporal = useTemporalNow({ scheduler: (cb: AnyFn) => useRafFn(cb, { immediate: false }), temporal: CustomTemporal })
 
@@ -204,7 +204,7 @@ describe('useTemporalNow', () => {
   })
 
   it('should work even when the global Temporal object is unavailable, given a custom implementation', async () => {
-    const { Temporal: CustomTemporal } = await import('temporal-polyfill')
+    const { Temporal: CustomTemporal } = await import('temporal-polyfill/implementation')
     const original = globalThis.Temporal
     // @ts-expect-error simulate an environment without Temporal support
     delete globalThis.Temporal

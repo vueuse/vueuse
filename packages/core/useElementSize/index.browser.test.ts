@@ -47,7 +47,7 @@ describe('useElementSize', () => {
         watch(width, value => widths.push(value), { flush: 'sync' })
       },
     })
-    page.render(Component)
+    await page.render(Component)
     await nextTick()
 
     expect(widths).toEqual([170])
@@ -62,7 +62,7 @@ describe('useElementSize', () => {
         watch([width, height], value => sizes.push(...value), { flush: 'sync' })
       },
     })
-    page.render(Component)
+    await page.render(Component)
     await nextTick()
 
     expect(sizes.filter(size => size < 0)).toEqual([])
