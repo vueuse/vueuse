@@ -116,6 +116,93 @@ describe('useIntervalFn', () => {
     expect(callback).toHaveBeenCalledTimes(2)
   })
 
+  it('останавливает текущий таймер при переходе к нулю', async () => {
+    const interval = shallowRef(50)
+    const controls = useIntervalFn(callback, interval)
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    interval.value = 0
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(200)
+    expect(callback).toHaveBeenCalledTimes(1)
+    expect(vi.getTimerCount()).toBe(0)
+    controls.pause()
+  })
+
+  it('возобновляет запрошенный таймер после начального нуля', async () => {
+    const interval = shallowRef(0)
+    const controls = useIntervalFn(callback, interval)
+    interval.value = 50
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(50)
+    expect(callback).toHaveBeenCalledTimes(1)
+    expect(controls.isActive.value).toBe(true)
+    controls.pause()
+  })
+
+  it('сохраняет явную паузу при изменении интервала', async () => {
+    const interval = shallowRef(50)
+    const controls = useIntervalFn(callback, interval)
+    controls.pause()
+    interval.value = 0
+    await nextTick()
+    interval.value = 25
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(100)
+    expect(callback).not.toHaveBeenCalled()
+    expect(controls.isActive.value).toBe(false)
+  })
+
+  it.each([0, -1])('возобновляет таймер после недопустимого интервала %s', async (value) => {
+    const interval = shallowRef(20)
+    const controls = useIntervalFn(callback, () => interval.value, { immediateCallback: true })
+    expect(callback).toHaveBeenCalledTimes(1)
+    interval.value = value
+    await nextTick()
+    expect(controls.isActive.value).toBe(false)
+    expect(vi.getTimerCount()).toBe(0)
+    await vi.advanceTimersByTimeAsync(100)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    interval.value = 10
+    await nextTick()
+    expect(callback).toHaveBeenCalledTimes(2)
+    await vi.advanceTimersByTimeAsync(10)
+    expect(callback).toHaveBeenCalledTimes(3)
+    controls.pause()
+  })
+
+  it('не запускает таймер при immediate: false до явного resume', async () => {
+    const interval = shallowRef(0)
+    const controls = useIntervalFn(callback, interval, { immediate: false })
+    interval.value = 10
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(100)
+    expect(callback).not.toHaveBeenCalled()
+    interval.value = 0
+    await nextTick()
+    controls.resume()
+    expect(controls.isActive.value).toBe(false)
+    interval.value = 10
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(10)
+    expect(callback).toHaveBeenCalledTimes(1)
+    controls.pause()
+  })
+
+  it('не возобновляет таймер после удаления scope', async () => {
+    const interval = shallowRef(0)
+    const scope = effectScope()
+    scope.run(() => useIntervalFn(callback, interval))
+    scope.stop()
+    interval.value = 10
+    await nextTick()
+    await vi.advanceTimersByTimeAsync(100)
+    expect(callback).not.toHaveBeenCalled()
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
   it('cant work when interval is negative', async () => {
     const { isActive } = useIntervalFn(callback, -1)
 
