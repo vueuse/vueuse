@@ -52,6 +52,7 @@ catalogs:
     eslint-plugin-format: ^2.0.1
     eslint-plugin-unimport: ^2.0.0
     export-size: ^0.9.0
+    filesize: ^11.0.15
     lint-staged: ^17.6.0
     nuxt: ^4.6.4
     ofetch: ^1.5.1

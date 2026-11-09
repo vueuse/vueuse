@@ -200,6 +200,9 @@ catalogs:
     export-size:
       specifier: ^0.9.0
       version: 0.9.0
+    filesize:
+      specifier: ^11.0.15
+      version: 11.0.30
     lint-staged:
       specifier: ^17.6.0
       version: 17.6.0
@@ -553,6 +556,9 @@ importers:
       fake-indexeddb:
         specifier: catalog:test
         version: 6.2.7
+      filesize:
+        specifier: catalog:dev
+        version: 11.0.30
       firebase:
         specifier: catalog:integrations
         version: 13.2.0(supports-color@10.0.0)
@@ -6321,6 +6327,10 @@ packages:
 
   filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
+
+  filesize@11.0.30:
+    resolution: {integrity: sha512-qaIUqg5pU4bdTZQG8w+v5IhPAlOHm/ifT+1NlBuPTlmIAKeBwG1CEYkaLYNLJCfDOGWb7QqXUyQnsYlIC7pAwA==}
+    engines: {node: '>= 10.8.0'}
 
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
@@ -15827,6 +15837,8 @@ snapshots:
   filelist@1.0.4:
     dependencies:
       minimatch: 5.1.6
+
+  filesize@11.0.30: {}
 
   fill-range@7.1.1:
     dependencies:
