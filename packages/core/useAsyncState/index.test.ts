@@ -170,4 +170,18 @@ describe('useAsyncState', () => {
     ])
     expect(error.value).toBeUndefined()
   })
+
+  it('should work with optional initialState omitted', async () => {
+    const { state } = useAsyncState(p1)
+    expect(state.value).toBeUndefined()
+    await promiseTimeout(100)
+    expect(state.value).toBe(1)
+  })
+
+  it('should work with optional initialState passed as undefined', async () => {
+    const { state } = useAsyncState(p1, undefined)
+    expect(state.value).toBeUndefined()
+    await promiseTimeout(100)
+    expect(state.value).toBe(1)
+  })
 })
