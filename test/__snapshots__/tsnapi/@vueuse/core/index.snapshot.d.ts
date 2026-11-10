@@ -2017,6 +2017,7 @@ export declare function useSupported(_: () => unknown): UseSupportedReturn;
 export declare function useSwipe(_: MaybeRefOrGetter<EventTarget | null | undefined>, _?: UseSwipeOptions): UseSwipeReturn;
 export declare function useTemplateRefsList<T = Element>(): Readonly<Ref<Readonly<TemplateRefsList<T>>>>;
 export declare function useTemporalNow(_?: UseTemporalNowOptions): UseTemporalNowReturn;
+/** @deprecated */
 export declare function useTextareaAutosize(_?: UseTextareaAutosizeOptions): UseTextareaAutosizeReturn;
 export declare function useTextDirection(_?: UseTextDirectionOptions): import("vue").WritableComputedRef<UseTextDirectionValue, UseTextDirectionValue>;
 export declare function useTextSelection(_?: UseTextSelectionOptions): UseTextSelectionReturn;
