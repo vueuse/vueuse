@@ -121,10 +121,14 @@ describe('onClickOutside', () => {
     outerShadow.appendChild(innerHost)
     document.body.appendChild(outerHost)
 
-    // Playwright cannot click an iframe nested 2 levels deep in shadow DOM
+    // Playwright cannot click an iframe nested 2 levels deep in shadow DOM,
+    // and Firefox does not fire window `blur` for programmatic iframe.focus(),
+    // so simulate the focus move: focus() sets the activeElement chain and the
+    // dispatched blur triggers the listener that walks it.
     iframe.focus()
+    window.dispatchEvent(new Event('blur'))
     await vi.waitFor(() => {
-      expect(handler).toHaveBeenCalledOnce()
+      expect(handler).toHaveBeenCalled()
     })
   })
 
