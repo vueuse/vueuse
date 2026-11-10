@@ -153,4 +153,20 @@ describe('useDateFormat', () => {
       },
     )
   })
+
+  describe('timezone-iso8601', () => {
+    it.each([
+      { dateStr: '2026-10-28 01:23:45', formatStr: 'X', expected: '+01' },
+      { dateStr: '2026-10-28 01:23:45', formatStr: 'XX', expected: '+0100' },
+      { dateStr: '2026-10-28 01:23:45', formatStr: 'XXX', expected: '+01:00' },
+      { dateStr: '2026-10-28 01:23:45', formatStr: 'x', expected: '+01' },
+      { dateStr: '2026-10-28 01:23:45', formatStr: 'xx', expected: '+0100' },
+      { dateStr: '2026-10-28 01:23:45', formatStr: 'xxx', expected: '+01:00' },
+    ])(
+      'should work with $formatStr',
+      ({ dateStr, formatStr, expected }) => {
+        expect(useDateFormat(new Date(dateStr), formatStr).value).toBe(expected)
+      },
+    )
+  })
 })
