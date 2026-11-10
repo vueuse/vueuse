@@ -1,4 +1,5 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { watch } from 'vue'
 import { dispatchKeyboardEvent } from '../../.test'
 import { useMagicKeys } from './index'
 
@@ -153,6 +154,101 @@ describe('useMagicKeys', () => {
 
     window.dispatchEvent(new Event('focus'))
     expect(alt_tab.value).toBe(false)
+  })
+
+  it('release modifiers whose keyup was missed', () => {
+    // e.g. keyups swallowed by macOS Cmd+Shift+5
+    const { meta, shift, ShiftLeft, ArrowRight, Shift_ArrowRight } = useMagicKeys({ target })
+
+    dispatchKeyboardEvent({ target, key: 'Meta', code: 'MetaLeft', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'Shift', code: 'ShiftLeft', metaKey: true, shiftKey: true })
+    expect(meta.value).toBe(true)
+    expect(shift.value).toBe(true)
+    expect(ShiftLeft.value).toBe(true)
+
+    dispatchKeyboardEvent({ target, key: 'ArrowRight', code: 'ArrowRight' })
+    expect(meta.value).toBe(false)
+    expect(shift.value).toBe(false)
+    expect(ShiftLeft.value).toBe(false)
+    expect(ArrowRight.value).toBe(true)
+    expect(Shift_ArrowRight.value).toBe(false)
+  })
+
+  it('release modifiers released outside the target', () => {
+    const { shift } = useMagicKeys({ target })
+
+    dispatchKeyboardEvent({ target, key: 'Shift', shiftKey: true })
+    // Released while focus was elsewhere
+    dispatchKeyboardEvent({ target: document.body, eventType: 'keyup', key: 'Shift' })
+    expect(shift.value).toBe(true)
+
+    dispatchKeyboardEvent({ target, key: 'a' })
+    expect(shift.value).toBe(false)
+  })
+
+  it('release missed modifiers before updating the pressed key', () => {
+    const { shift_a } = useMagicKeys({ target })
+    const onShiftA = vi.fn()
+    watch(shift_a, onShiftA, { flush: 'sync' })
+
+    dispatchKeyboardEvent({ target, key: 'Shift', shiftKey: true })
+    // Shift's keyup was missed
+    dispatchKeyboardEvent({ target, key: 'a' })
+    expect(onShiftA).not.toHaveBeenCalled()
+  })
+
+  it('release keys pressed with a missed meta keyup', () => {
+    const { current } = useMagicKeys({ target })
+
+    dispatchKeyboardEvent({ target, key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'k', metaKey: true })
+    // Keyups of k and Meta were missed
+    dispatchKeyboardEvent({ target, key: 'a' })
+    expect(current).toStrictEqual(new Set(['a']))
+  })
+
+  it('keep held modifiers when releasing a missed meta', () => {
+    const { shift_a } = useMagicKeys({ target })
+    expect(shift_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'Shift', metaKey: true, shiftKey: true })
+    // Meta's keyup was missed, Shift is still held
+    dispatchKeyboardEvent({ target, key: 'a', shiftKey: true })
+    expect(shift_a.value).toBe(true)
+  })
+
+  it('keep held modifiers when meta is released', () => {
+    const { shift_a } = useMagicKeys({ target })
+    expect(shift_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Meta', metaKey: true })
+    dispatchKeyboardEvent({ target, key: 'Shift', metaKey: true, shiftKey: true })
+    dispatchKeyboardEvent({ target, eventType: 'keyup', key: 'Meta', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'a', shiftKey: true })
+    expect(shift_a.value).toBe(true)
+  })
+
+  it('keep held modifiers when releasing a missed shift', () => {
+    const { alt_a } = useMagicKeys({ target })
+    expect(alt_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Shift', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'Alt', shiftKey: true, altKey: true })
+    // Shift's keyup was missed, Alt is still held
+    dispatchKeyboardEvent({ target, key: 'a', altKey: true })
+    expect(alt_a.value).toBe(true)
+  })
+
+  it('keep held modifiers when shift is released', () => {
+    const { alt_a } = useMagicKeys({ target })
+    expect(alt_a.value).toBe(false)
+
+    dispatchKeyboardEvent({ target, key: 'Shift', shiftKey: true })
+    dispatchKeyboardEvent({ target, key: 'Alt', shiftKey: true, altKey: true })
+    dispatchKeyboardEvent({ target, eventType: 'keyup', key: 'Shift', altKey: true })
+    dispatchKeyboardEvent({ target, key: 'a', altKey: true })
+    expect(alt_a.value).toBe(true)
   })
 
   it('should handle empty or undefined key events without errors', async () => {
