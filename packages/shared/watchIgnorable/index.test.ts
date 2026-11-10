@@ -35,6 +35,30 @@ describe('watchIgnorable', () => {
     expect(target.value).toBe(5)
   })
 
+  it('ignore async updates after changes with no net effect', async () => {
+    const source = deepRef(0)
+    const callback = vi.fn()
+    const { ignoreUpdates } = watchIgnorable(source, callback)
+
+    source.value = 1
+    source.value = 0
+
+    await nextTick()
+    expect(callback).toHaveBeenCalledTimes(0)
+
+    ignoreUpdates(() => {
+      source.value = 2
+    })
+
+    await nextTick()
+    expect(callback).toHaveBeenCalledTimes(0)
+
+    source.value = 3
+
+    await nextTick()
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
   it('ignore prev async updates', async () => {
     const source = shallowRef(0)
     const target = shallowRef(0)
