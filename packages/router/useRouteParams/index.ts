@@ -16,7 +16,7 @@ export function useRouteParams<
   K = T,
 >(
   name: string,
-  defaultValue?: MaybeRefOrGetter<T>,
+  defaultValue: MaybeRefOrGetter<null | undefined>,
   options?: ReactiveRouteOptionsWithTransform<T, K>,
 ): Ref<K>
 
@@ -26,6 +26,15 @@ export function useRouteParams<
 >(
   name: string,
   defaultValue?: MaybeRefOrGetter<T>,
+  options?: ReactiveRouteOptionsWithTransform<T, K>,
+): Ref<K>
+
+export function useRouteParams<
+  T extends RouteParamValueRaw = RouteParamValueRaw,
+  K = T,
+>(
+  name: string,
+  defaultValue?: MaybeRefOrGetter<T> | null,
   options: ReactiveRouteOptionsWithTransform<T, K> = {},
 ): Ref<K> {
   const {
