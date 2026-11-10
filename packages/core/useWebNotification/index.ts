@@ -119,10 +119,13 @@ export function useWebNotification(
     requestPermissions: _requestForPermissions = true,
   } = options
 
+  const notificationWindow: (Window & { Notification?: typeof globalThis.Notification }) | undefined = window
+  const Notification = notificationWindow?.Notification
+
   const defaultWebNotificationOptions: WebNotificationOptions = options
 
   const isSupported = useSupported(() => {
-    if (!window || !('Notification' in window))
+    if (!Notification)
       return false
     if (Notification.permission === 'granted')
       return true
@@ -144,12 +147,12 @@ export function useWebNotification(
     return true
   })
 
-  const permissionGranted = shallowRef(isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
+  const permissionGranted = shallowRef(!!Notification && isSupported.value && 'permission' in Notification && Notification.permission === 'granted')
 
   const notification = shallowRef<Notification | null>(null)
 
   const ensurePermissions = async () => {
-    if (!isSupported.value)
+    if (!isSupported.value || !Notification)
       return
 
     if (!permissionGranted.value && Notification.permission !== 'denied') {
@@ -170,7 +173,7 @@ export function useWebNotification(
   const show = async (overrides?: WebNotificationOptions) => {
     // If either the browser does not support notifications or the user has
     // not granted permission, do nothing:
-    if (!isSupported.value || !permissionGranted.value)
+    if (!isSupported.value || !permissionGranted.value || !Notification)
       return
 
     const options = Object.assign({}, defaultWebNotificationOptions, overrides)
