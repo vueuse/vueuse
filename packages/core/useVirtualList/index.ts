@@ -127,14 +127,13 @@ function useVirtualListResources<T>(list: MaybeRef<readonly T[]>): UseVirtualLis
   return { state, source, currentList, size, containerRef }
 }
 
-function createGetViewCapacity<T>(state: UseVirtualListResources<T>['state'], source: UseVirtualListResources<T>['source'], itemSize: UseVirtualListItemSize) {
-  return (containerSize: number) => {
+function createGetViewCapacity<T>(source: UseVirtualListResources<T>['source'], itemSize: UseVirtualListItemSize) {
+  return (containerSize: number, start: number) => {
     if (typeof itemSize === 'number')
       return Math.ceil(containerSize / itemSize)
 
-    const { start = 0 } = state.value
     let sum = 0
-    let capacity = 0
+    let capacity = start
     for (let i = start; i < source.value.length; i++) {
       const size = itemSize(i)
       sum += size
@@ -171,13 +170,20 @@ function createCalculateRange<T>(
   overscan: number,
   getOffset: ReturnType<typeof createGetOffset>,
   getViewCapacity: ReturnType<typeof createGetViewCapacity>,
+  totalSize: ComputedRef<number>,
   { containerRef, state, currentList, source }: UseVirtualListResources<T>,
 ) {
   return () => {
     const element = containerRef.value
     if (element) {
-      const offset = getOffset(type === 'vertical' ? element.scrollTop : element.scrollLeft)
-      const viewCapacity = getViewCapacity(type === 'vertical' ? element.clientHeight : element.clientWidth)
+      const scrollKey = type === 'vertical' ? 'scrollTop' : 'scrollLeft'
+      const containerSize = type === 'vertical' ? element.clientHeight : element.clientWidth
+      const scrollPosition = Math.min(element[scrollKey], Math.max(0, totalSize.value - containerSize))
+      if (element[scrollKey] !== scrollPosition)
+        element[scrollKey] = scrollPosition
+
+      const offset = getOffset(scrollPosition)
+      const viewCapacity = getViewCapacity(containerSize, offset - 1)
 
       const from = offset - overscan
       const to = offset + viewCapacity + overscan
@@ -287,17 +293,17 @@ function useHorizontalVirtualList<T>(options: UseHorizontalVirtualListOptions, l
 
   const { itemWidth, overscan = 5 } = options
 
-  const getViewCapacity = createGetViewCapacity(state, source, itemWidth)
+  const getViewCapacity = createGetViewCapacity(source, itemWidth)
 
   const getOffset = createGetOffset(source, itemWidth)
 
-  const calculateRange = createCalculateRange('horizontal', overscan, getOffset, getViewCapacity, resources)
+  const totalWidth = createComputedTotalSize(itemWidth, source)
+
+  const calculateRange = createCalculateRange('horizontal', overscan, getOffset, getViewCapacity, totalWidth, resources)
 
   const getDistanceLeft = createGetDistance(itemWidth, source)
 
   const offsetLeft = computed(() => getDistanceLeft(state.value.start))
-
-  const totalWidth = createComputedTotalSize(itemWidth, source)
 
   useWatchForSizes(size, source, totalWidth, containerRef, calculateRange)
 
@@ -333,17 +339,17 @@ function useVerticalVirtualList<T>(options: UseVerticalVirtualListOptions, list:
 
   const { itemHeight, overscan = 5 } = options
 
-  const getViewCapacity = createGetViewCapacity(state, source, itemHeight)
+  const getViewCapacity = createGetViewCapacity(source, itemHeight)
 
   const getOffset = createGetOffset(source, itemHeight)
 
-  const calculateRange = createCalculateRange('vertical', overscan, getOffset, getViewCapacity, resources)
+  const totalHeight = createComputedTotalSize(itemHeight, source)
+
+  const calculateRange = createCalculateRange('vertical', overscan, getOffset, getViewCapacity, totalHeight, resources)
 
   const getDistanceTop = createGetDistance(itemHeight, source)
 
   const offsetTop = computed(() => getDistanceTop(state.value.start))
-
-  const totalHeight = createComputedTotalSize(itemHeight, source)
 
   useWatchForSizes(size, source, totalHeight, containerRef, calculateRange)
 
