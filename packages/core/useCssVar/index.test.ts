@@ -223,4 +223,153 @@ describe('useCssVar', () => {
     expect(vm.variable).toBe('red')
     expect(vm.el?.style.getPropertyValue('--color')).toBe('red')
   })
+
+  it('should handle ref target changing from element to undefined', async () => {
+    const vm = mount(defineComponent({
+      setup() {
+        const el = useTemplateRef<HTMLDivElement>('el')
+        const target = shallowRef<HTMLDivElement | null | undefined>(undefined)
+
+        const color = '--test-color'
+        const variable = useCssVar(color, target, { initialValue: 'green' })
+
+        function setTarget() {
+          target.value = el.value
+        }
+
+        function clearTarget() {
+          target.value = undefined
+        }
+
+        return {
+          el,
+          target,
+          variable,
+          setTarget,
+          clearTarget,
+        }
+      },
+      render() {
+        return h('div', { ref: 'el' })
+      },
+    }))
+
+    await nextTick()
+
+    // Initially target is undefined, should use documentElement
+    expect(vm.variable).toBe('green')
+    expect(document.documentElement.style.getPropertyValue('--test-color')).toBe('green')
+
+    // Set target to actual element
+    vm.setTarget()
+    await nextTick()
+
+    // Should now use the element and remove from documentElement
+    expect(vm.el?.style.getPropertyValue('--test-color')).toBe('green')
+    expect(document.documentElement.style.getPropertyValue('--test-color')).toBe('')
+
+    // Clear target back to undefined
+    vm.clearTarget()
+    await nextTick()
+
+    // Should NOT go back to documentElement since target had a value before
+    expect(vm.el?.style.getPropertyValue('--test-color')).toBe('')
+    expect(document.documentElement.style.getPropertyValue('--test-color')).toBe('')
+
+    // Clean up
+    document.documentElement.style.removeProperty('--test-color')
+  })
+
+  it('should not use documentElement when target is initially null', async () => {
+    const vm = mount(defineComponent({
+      setup() {
+        const target = shallowRef<HTMLDivElement | null>(null)
+        const color = '--test-null-color'
+        const variable = useCssVar(color, target, { initialValue: 'purple' })
+
+        function setVariable(value: string) {
+          variable.value = value
+        }
+
+        return {
+          target,
+          variable,
+          setVariable,
+        }
+      },
+      render() {
+        return h('div')
+      },
+    }))
+
+    await nextTick()
+
+    // When target is initially null, should NOT use documentElement
+    expect(vm.variable).toBe('purple')
+    expect(document.documentElement.style.getPropertyValue('--test-null-color')).toBe('')
+
+    // Set variable value (should not be applied to any element)
+    vm.setVariable('orange')
+    await nextTick()
+    expect(document.documentElement.style.getPropertyValue('--test-null-color')).toBe('')
+
+    // Clean up
+    document.documentElement.style.removeProperty('--test-null-color')
+  })
+
+  it('should handle ref target changing from element to null', async () => {
+    const vm = mount(defineComponent({
+      setup() {
+        const el = useTemplateRef<HTMLDivElement>('el')
+        const target = shallowRef<HTMLDivElement | null>(null)
+
+        const color = '--test-null-transition-color'
+        const variable = useCssVar(color, target, { initialValue: 'yellow' })
+
+        function setTarget() {
+          target.value = el.value
+        }
+
+        function clearTargetToNull() {
+          target.value = null
+        }
+
+        return {
+          el,
+          target,
+          variable,
+          setTarget,
+          clearTargetToNull,
+        }
+      },
+      render() {
+        return h('div', { ref: 'el' })
+      },
+    }))
+
+    await nextTick()
+
+    // Initially target is null, should NOT use documentElement
+    expect(vm.variable).toBe('yellow')
+    expect(document.documentElement.style.getPropertyValue('--test-null-transition-color')).toBe('')
+
+    // Set target to actual element
+    vm.setTarget()
+    await nextTick()
+
+    // Should now use the element
+    expect(vm.el?.style.getPropertyValue('--test-null-transition-color')).toBe('yellow')
+    expect(document.documentElement.style.getPropertyValue('--test-null-transition-color')).toBe('')
+
+    // Clear target back to null
+    vm.clearTargetToNull()
+    await nextTick()
+
+    // Should NOT go back to documentElement since target had a value before
+    expect(vm.el?.style.getPropertyValue('--test-null-transition-color')).toBe('')
+    expect(document.documentElement.style.getPropertyValue('--test-null-transition-color')).toBe('')
+
+    // Clean up
+    document.documentElement.style.removeProperty('--test-null-transition-color')
+  })
 })
