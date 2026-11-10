@@ -492,7 +492,7 @@ describe('useWebSocket', () => {
         const ref = useWebSocket(url, {
           heartbeat: {
             message: messageSpy,
-            interval: 500,
+            scheduler: cb => useIntervalFn(cb, 500, { immediate: false }),
             pongTimeout: 1000,
           },
         })
