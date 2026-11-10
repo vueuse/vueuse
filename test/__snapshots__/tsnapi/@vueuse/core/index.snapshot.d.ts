@@ -442,7 +442,7 @@ export interface UseConfirmDialogReturn<RevealData, ConfirmData, CancelData> {
 }
 export interface UseCountdownOptions extends ConfigurableScheduler {
   onComplete?: () => void;
-  onTick?: () => void;
+  onTick?: (_: number) => void;
 }
 export interface UseCountdownReturn extends Pausable {
   remaining: ShallowRef<number>;

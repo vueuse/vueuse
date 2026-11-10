@@ -16,8 +16,8 @@ const { remaining, start, stop, pause, resume } = useCountdown(countdownSeconds,
   onComplete() {
 
   },
-  onTick() {
-
+  onTick(remaining) {
+    console.log(remaining)
   }
 })
 ```
