@@ -1,4 +1,4 @@
-import type { FuseResult, IFuseOptions } from 'fuse.js'
+import type { Expression, FuseResult, IFuseOptions } from 'fuse.js'
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import Fuse from 'fuse.js'
 import { computed, shallowRef, toValue, triggerRef, watch } from 'vue'
@@ -16,7 +16,7 @@ export interface UseFuseReturn<DataItem> {
 }
 
 export function useFuse<DataItem>(
-  search: MaybeRefOrGetter<string>,
+  search: MaybeRefOrGetter<string | Expression>,
   data: MaybeRefOrGetter<DataItem[]>,
   options?: MaybeRefOrGetter<UseFuseOptions<DataItem>>,
 ): UseFuseReturn<DataItem> {
