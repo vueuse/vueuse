@@ -18,6 +18,7 @@ type DescriptorNamePolyfill
     | 'gyroscope'
     | 'magnetometer'
     | 'microphone'
+    | 'nfc'
     | 'notifications'
     | 'payment-handler'
     | 'persistent-storage'
