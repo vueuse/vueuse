@@ -101,6 +101,23 @@ useStorage(
 )
 ```
 
+If your storage backend can store JavaScript values directly, set `serializer` to `false` to skip serialization. This is useful for storage wrappers around APIs such as `chrome.storage` or IndexedDB, where values do not need to be converted to strings.
+
+```ts
+import { useStorage } from '@vueuse/core'
+
+const state = useStorage(
+  'key',
+  { count: 0 },
+  objectStorage,
+  { serializer: false },
+)
+
+state.value = { count: 1 } // stored as the object itself
+```
+
+Native `localStorage` and `sessionStorage` only store strings, so `serializer: false` should be used with a compatible custom storage backend.
+
 Please note when you provide `null` as the default value, `useStorage` can't assume the data type from it. In this case, you can provide a custom serializer or reuse the built-in ones explicitly.
 
 ```ts
