@@ -246,44 +246,54 @@ export declare const UseWindowFocus: import("vue").DefineSetupFnComponent<UseWin
 export declare const UseWindowSize: import("vue").DefineSetupFnComponent<UseWindowSizeProps, Record<string, never>, SlotsType<UseWindowSizeSlots>, UseWindowSizeProps & {
   [x: `on${Capitalize<string>}`]: ((...args: unknown[]) => any) | undefined;
 }, import("vue").PublicProps>;
-export declare const vElementBounding: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$7 | BindingValueArray$6, string, any>;
-export declare const vElementHover: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions], string, any>;
-export declare const vElementOverflow: import("vue").FunctionDirective<HTMLElement, VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions$1], string, any> | import("vue").ObjectDirective<HTMLElement, VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions$1], string, any>;
-export declare const vElementSize: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: import("@vueuse/core").UseElementSizeOptions | undefined], string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$5 | [BindingValueFunction$5, initialSize?: ElementSize | undefined, options?: import("@vueuse/core").UseElementSizeOptions | undefined], string, any>;
-export declare const vElementVisibility: import("vue").FunctionDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunctionWithoutControls | BindingValueArray$5, string, any>;
-export declare const vInfiniteScroll: import("vue").FunctionDirective<HTMLElement, ((state: import("vue").UnwrapNestedRefs<import("@vueuse/core").UseScrollReturn>) => import("@vueuse/shared").Awaitable<void>) | BindingValueArray$4, string, any> | import("vue").ObjectDirective<HTMLElement, ((state: import("vue").UnwrapNestedRefs<import("@vueuse/core").UseScrollReturn>) => import("@vueuse/shared").Awaitable<void>) | BindingValueArray$4, string, any>;
-export declare const vIntersectionObserver: import("vue").FunctionDirective<HTMLElement, IntersectionObserverCallback | BindingValueArray$3, string, any> | import("vue").ObjectDirective<HTMLElement, IntersectionObserverCallback | BindingValueArray$3, string, any>;
-export declare const vMouseInElement: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$2 | BindingValueArray$2, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$2 | BindingValueArray$2, string, any>;
-export declare const vOnClickOutside: ObjectDirective<HTMLElement, OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>]>;
+export declare const vElementBounding: import("vue").FunctionDirective<HTMLElement, BindingValue$9, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$9, string, any>;
+export declare const vElementBoundingVapor: VaporDirective<HTMLElement, BindingValue$9>;
+export declare const vElementHover: import("vue").FunctionDirective<HTMLElement, BindingValue$8, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$8, string, any>;
+export declare const vElementHoverVapor: VaporDirective<HTMLElement, BindingValue$8>;
+export declare const vElementOverflow: import("vue").FunctionDirective<HTMLElement, BindingValue$7, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$7, string, any>;
+export declare const vElementOverflowVapor: VaporDirective<HTMLElement, BindingValue$7>;
+export declare const vElementSize: import("vue").FunctionDirective<HTMLElement, BindingValue$6, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$6, string, any>;
+export declare const vElementSizeVapor: VaporDirective<HTMLElement, BindingValue$6>;
+export declare const vElementVisibility: import("vue").FunctionDirective<HTMLElement, BindingValue$5, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$5, string, any>;
+export declare const vElementVisibilityVapor: VaporDirective<HTMLElement, BindingValue$5>;
+export declare const vInfiniteScroll: import("vue").FunctionDirective<HTMLElement, BindingValue$4, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$4, string, any>;
+export declare const vInfiniteScrollVapor: VaporDirective<HTMLElement, BindingValue$4>;
+export declare const vIntersectionObserver: import("vue").FunctionDirective<HTMLElement, BindingValue$3, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$3, string, any>;
+export declare const vIntersectionObserverVapor: VaporDirective<HTMLElement, BindingValue$3>;
+export declare const vMouseInElement: import("vue").FunctionDirective<HTMLElement, BindingValue$2, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$2, string, any>;
+export declare const vMouseInElementVapor: VaporDirective<HTMLElement, BindingValue$2>;
+export declare const vOnClickOutside: ObjectDirective<HTMLElement, BindingValue$12>;
 /** @deprecated */
-export declare const VOnClickOutside: ObjectDirective<HTMLElement, OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions<false>, "controls">], string, any>;
-export declare const vOnKeyStroke: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$9 | BindingValueArray$8, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$9 | BindingValueArray$8, string, any>;
-export declare const vOnLongPress: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any>;
+export declare const VOnClickOutside: ObjectDirective<HTMLElement, BindingValue$12, string, any>;
+export declare const vOnClickOutsideVapor: VaporDirective<HTMLElement, BindingValue$12, 'bubble'>;
+export declare const vOnKeyStroke: import("vue").FunctionDirective<HTMLElement, BindingValue$11, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$11, string, any>;
+export declare const vOnKeyStrokeVapor: VaporDirective<HTMLElement, BindingValue$11, never, string>;
+export declare const vOnLongPress: import("vue").FunctionDirective<HTMLElement, BindingValue$10, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$10, string, any>;
 /** @deprecated */
-export declare const VOnLongPress: import("vue").FunctionDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction$8 | BindingValueArray$7, string, any>;
-export declare const vResizeObserver: import("vue").FunctionDirective<HTMLElement, ResizeObserverCallback | BindingValueArray$1, string, any> | import("vue").ObjectDirective<HTMLElement, ResizeObserverCallback | BindingValueArray$1, string, any>;
-export declare const vScroll: import("vue").FunctionDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValueFunction | BindingValueArray, string, any>;
+export declare const VOnLongPress: import("vue").FunctionDirective<HTMLElement, BindingValue$10, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$10, string, any>;
+export declare const vOnLongPressVapor: VaporDirective<HTMLElement, BindingValue$10, keyof OnLongPressModifiers>;
+export declare const vResizeObserver: import("vue").FunctionDirective<HTMLElement, BindingValue$1, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue$1, string, any>;
+export declare const vResizeObserverVapor: VaporDirective<HTMLElement, BindingValue$1>;
+export declare const vScroll: import("vue").FunctionDirective<HTMLElement, BindingValue, string, any> | import("vue").ObjectDirective<HTMLElement, BindingValue, string, any>;
 export declare const vScrollLock: import("vue").FunctionDirective<HTMLElement, boolean, string, any> | import("vue").ObjectDirective<HTMLElement, boolean, string, any>;
+export declare const vScrollLockVapor: VaporDirective<HTMLElement, boolean>;
+export declare const vScrollVapor: VaporDirective<HTMLElement, BindingValue>;
 // #endregion
 
 // #region Referenced (internal)
-type BindingValueArray = [BindingValueFunction, UseScrollOptions];
-type BindingValueArray$1 = [BindingValueFunction$1, UseResizeObserverOptions];
-type BindingValueArray$2 = [BindingValueFunction$2, MouseInElementOptions];
-type BindingValueArray$3 = [BindingValueFunction$3, UseIntersectionObserverOptions];
-type BindingValueArray$4 = [BindingValueFunction$4, UseInfiniteScrollOptions];
-type BindingValueArray$5 = [BindingValueFunctionWithoutControls, UseElementVisibilityOptions<false>] | [BindingValueFunctionWithControls, UseElementVisibilityOptions<true>];
-type BindingValueArray$6 = [BindingValueFunction$7, UseElementBoundingOptions];
-type BindingValueArray$7 = [BindingValueFunction$8, OnLongPressOptions];
-type BindingValueArray$8 = [BindingValueFunction$9, OnKeyStrokeOptions];
-type BindingValueFunction = (_: UseScrollReturn) => void;
-type BindingValueFunction$2 = (_: Reactive<MouseInElement>) => void;
-type BindingValueFunction$5 = (_: ElementSize) => void;
-type BindingValueFunction$6 = (_: boolean) => void;
-type BindingValueFunction$7 = (_: ElementBounding) => void;
-type BindingValueFunction$8 = (_: PointerEvent) => void;
-type BindingValueFunction$9 = (_: KeyboardEvent) => void;
-type BindingValueFunctionWithoutControls = (_: boolean) => void;
+type BindingValue = BindingValueFunction | BindingValueArray;
+type BindingValue$1 = BindingValueFunction$1 | BindingValueArray$1;
+type BindingValue$10 = BindingValueFunction$8 | BindingValueArray$8;
+type BindingValue$11 = BindingValueFunction$9 | BindingValueArray$9;
+type BindingValue$12 = OnClickOutsideHandler | [(evt: any) => void, Omit<OnClickOutsideOptions, 'controls'>];
+type BindingValue$2 = BindingValueFunction$2 | BindingValueArray$2;
+type BindingValue$3 = BindingValueFunction$3 | BindingValueArray$3;
+type BindingValue$4 = BindingValueFunction$4 | BindingValueArray$4;
+type BindingValue$5 = BindingValueFunctionWithoutControls | BindingValueArray$5;
+type BindingValue$6 = BindingValueFunction$5 | BindingValueArray$6;
+type BindingValue$7 = VElementOverflowHandler | [VElementOverflowHandler, UseElementOverflowOptions$1];
+type BindingValue$8 = BindingValueFunction$6 | [handler: BindingValueFunction$6, options: UseElementHoverOptions];
+type BindingValue$9 = BindingValueFunction$7 | BindingValueArray$7;
 interface OnLongPressSlots {
   default: (_: UseOnLongPressReturn) => any;
 }
@@ -337,10 +347,6 @@ interface UseDocumentVisibilitySlots {
 }
 interface UseElementBoundingSlots {
   default: (_: Reactive<UseElementBoundingReturn>) => any;
-}
-interface UseElementOverflowOptions$1 extends ConfigurableWindow$1 {
-  observeMutation?: boolean | MutationObserverInit;
-  onUpdated?: ResizeObserverCallback | MutationCallback;
 }
 interface UseElementSizeSlots {
   default: (_: Reactive<UseElementSizeReturn>) => any;
@@ -444,5 +450,4 @@ interface UseWindowFocusSlots {
 interface UseWindowSizeSlots {
   default: (_: Reactive<UseWindowSizeReturn>) => any;
 }
-type VElementOverflowHandler = (_: UseElementOverflowReturn) => void;
 // #endregion
