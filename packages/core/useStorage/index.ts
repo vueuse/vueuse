@@ -302,8 +302,7 @@ export function useStorage<T extends (string | number | boolean | object | null)
     pauseWatch()
 
     try {
-      const serializedData = serializer.write(data.value)
-      if (event === undefined || event?.newValue !== serializedData) {
+      if (event === undefined || event.newValue !== serializer.write(data.value)) {
         data.value = read(event)
       }
     }
