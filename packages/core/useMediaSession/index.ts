@@ -130,6 +130,8 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
   const actionHandlers = deepRef<Partial<Record<MediaSessionAction, MediaSessionActionHandler>>>()
 
+  const registeredHandlers = new Map<MediaSessionAction, MediaSessionActionHandler>()
+
   const cameraActive = shallowRef(false)
   const microphoneActive = shallowRef(false)
 
@@ -159,20 +161,7 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
         })
       })
 
-      watchDeep(actionHandlers, (newHandlers = {}, oldHandlers = {}) => {
-        Object.entries(oldHandlers).forEach(([action]) => {
-          try {
-            navigator!.mediaSession.setActionHandler(action as MediaSessionAction, null)
-          }
-          catch {}
-        })
-        Object.entries(newHandlers).forEach(([action, handler]) => {
-          try {
-            navigator!.mediaSession.setActionHandler(action as MediaSessionAction, handler)
-          }
-          catch {}
-        })
-      })
+      watchDeep(actionHandlers, syncActionHandlers, { immediate: true })
 
       if (isSetCameraSupported.value) {
         watchEffect(() => navigator!.mediaSession.setCameraActive(cameraActive.value))
@@ -183,6 +172,28 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
       }
     })
   }
+  function syncActionHandlers(handlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> = {}) {
+    for (const action of registeredHandlers.keys()) {
+      if (!handlers[action]) {
+        try {
+          navigator!.mediaSession.setActionHandler(action, null)
+        }
+        catch {}
+        registeredHandlers.delete(action)
+      }
+    }
+    for (const [key, handler] of Object.entries(handlers)) {
+      const action = key as MediaSessionAction
+      if (handler && registeredHandlers.get(action) !== handler) {
+        try {
+          navigator!.mediaSession.setActionHandler(action, handler)
+          registeredHandlers.set(action, handler)
+        }
+        catch {}
+      }
+    }
+  }
+
   /**
    * Method for clearing the MediaSession
    */
@@ -203,12 +214,7 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
     playbackState.value = 'none'
     navigator!.mediaSession.playbackState = 'none'
-    Object.entries(actionHandlers.value || {}).forEach(([action]) => {
-      try {
-        navigator!.mediaSession.setActionHandler(action as MediaSessionAction, null)
-      }
-      catch {}
-    })
+    syncActionHandlers()
     actionHandlers.value = {}
   }
 
