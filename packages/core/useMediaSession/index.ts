@@ -40,7 +40,7 @@ export interface UseMediaSessionReturn extends Supportable {
   title: ShallowRef<MediaMetadataInit['title']>
   /**
    * A floating-point value giving the total duration of the current media in seconds.
-   * This should always be a positive number, with positive infinity (`Infinity`) indicating media
+   * This should always be a non-negative number, with positive infinity (`Infinity`) indicating media
    * without a defined end, such as a live stream.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#duration)
@@ -56,7 +56,7 @@ export interface UseMediaSessionReturn extends Supportable {
    */
   playbackRate: ShallowRef<MediaPositionState['playbackRate']>
   /**
-   * A floating-point value indicating the last reported playback position of the media in seconds. This must always be a positive value.
+   * A floating-point value indicating the last reported playback position of the media in seconds. This must be between zero and the duration, inclusive.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#position)
    */
@@ -82,7 +82,7 @@ export interface UseMediaSessionReturn extends Supportable {
    */
   cameraActive: ShallowRef<boolean>
   /**
-   * Indicate to the user agent whether the user's microphone is considered to be currently muted.
+   * Indicate to the user agent whether the user's microphone is considered to be active.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setMicrophoneActive)
    */
@@ -107,7 +107,7 @@ export interface UseMediaSessionReturn extends Supportable {
 }
 
 /**
- * Reactive Media Query.
+ * Reactive Media Session API.
  *
  * @see https://vueuse.org/useMediaSession
  */
@@ -158,6 +158,11 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
       })
 
       watchEffect(() => {
+        // A nonempty position state requires a duration, which may not be loaded yet.
+        if (duration.value === undefined) {
+          navigator!.mediaSession.setPositionState()
+          return
+        }
         navigator!.mediaSession.setPositionState({
           duration: duration.value,
           playbackRate: playbackRate.value,
@@ -176,6 +181,7 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
       }
     })
   }
+
   function syncActionHandlers(handlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> = {}) {
     for (const action of registeredHandlers.keys()) {
       if (!handlers[action]) {

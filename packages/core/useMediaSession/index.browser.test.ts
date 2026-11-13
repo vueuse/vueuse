@@ -98,6 +98,43 @@ describe('useMediaSession', () => {
     })
   })
 
+  it('should wait for duration before publishing native position state', async () => {
+    const navigator = createMockNavigator()
+    const setPositionState = vi.mocked(navigator.mediaSession.setPositionState)
+    setPositionState.mockImplementation(state => window.navigator.mediaSession.setPositionState(state))
+    const { duration, playbackRate, position } = setupMediaSession(navigator).api
+    setPositionState.mockClear()
+
+    playbackRate.value = 2
+    position.value = 10
+    await nextTick()
+    expect(setPositionState).not.toHaveBeenCalled()
+
+    duration.value = 120
+    await nextTick()
+    expect(setPositionState).toHaveBeenLastCalledWith({ duration: 120, playbackRate: 2, position: 10 })
+
+    duration.value = undefined
+    await nextTick()
+    expect(setPositionState).toHaveBeenLastCalledWith()
+  })
+
+  it('should accept a zero duration', async () => {
+    const navigator = createMockNavigator()
+    const setPositionState = vi.mocked(navigator.mediaSession.setPositionState)
+    setPositionState.mockImplementation(state => window.navigator.mediaSession.setPositionState(state))
+    const { duration } = setupMediaSession(navigator).api
+
+    duration.value = 0
+    await nextTick()
+
+    expect(setPositionState).toHaveBeenLastCalledWith({
+      duration: 0,
+      playbackRate: undefined,
+      position: undefined,
+    })
+  })
+
   it('should register handlers assigned during setup', () => {
     const navigator = createMockNavigator()
     const play = vi.fn()

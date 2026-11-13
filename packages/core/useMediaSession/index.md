@@ -60,6 +60,13 @@ function updatePositionState() {
 </template>
 ```
 
+## Position state
+
+Position updates are published once `duration` is defined. You can set `position`
+and `playbackRate` before the media duration is available; their latest values are
+used when `duration` is set. Setting `duration` back to `undefined` clears the
+browser's position state.
+
 ## Clearing the session
 
 Call `clear()` to reset metadata, playback state, position state, action handlers,
