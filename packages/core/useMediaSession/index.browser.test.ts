@@ -231,7 +231,7 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(true)
   })
 
-  it('should be reset when unmounted', async () => {
+  it.each(['clear', 'unmount'] as const)('should reset the session on %s', async (operation) => {
     const navigator = createMockNavigator()
 
     const vm = setupMediaSession(navigator, (api) => {
@@ -245,6 +245,8 @@ describe('useMediaSession', () => {
       api.position.value = 100
 
       api.playbackState.value = 'playing'
+      api.cameraActive.value = true
+      api.microphoneActive.value = true
       api.actionHandlers.value = {
         play: () => api.playbackState.value = 'playing',
       }
@@ -253,15 +255,41 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.metadata?.title).toBe(sampleMedia.title)
     expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', expect.any(Function))
 
-    vm.unmount()
+    expect(navigator.mediaSession.setCameraActive).toHaveBeenLastCalledWith(true)
+    expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(true)
+
+    if (operation === 'clear')
+      vm.api.clear()
+    else
+      vm.unmount()
     await nextTick()
 
-    expect(navigator.mediaSession.metadata?.album).not.toBeDefined()
-    expect(navigator.mediaSession.metadata?.artist).not.toBeDefined()
-    expect(navigator.mediaSession.metadata?.artwork).not.toBeDefined()
-    expect(navigator.mediaSession.metadata?.title).not.toBeDefined()
+    expect(navigator.mediaSession.metadata).toBeNull()
+    expect(vm.api.cameraActive.value).toBe(false)
+    expect(vm.api.microphoneActive.value).toBe(false)
+    expect(navigator.mediaSession.setCameraActive).toHaveBeenLastCalledWith(false)
+    expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(false)
     expect(navigator.mediaSession.setPositionState).toHaveBeenCalledWith()
     expect(navigator.mediaSession.playbackState).toBe<MediaSessionPlaybackState>('none')
     expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', null)
+  })
+
+  it('should allow publishing a new session after clearing', async () => {
+    const navigator = createMockNavigator()
+    const api = setupMediaSession(navigator, (api) => {
+      api.title.value = 'First track'
+      api.actionHandlers.value = { play: vi.fn() }
+    }).api
+    api.clear()
+    await nextTick()
+    expect(navigator.mediaSession.metadata).toBeNull()
+
+    const play = vi.fn()
+    api.title.value = 'Next track'
+    api.actionHandlers.value = { play }
+    await nextTick()
+
+    expect(navigator.mediaSession.metadata?.title).toBe('Next track')
+    expect(navigator.mediaSession.setActionHandler).toHaveBeenLastCalledWith('play', play)
   })
 })

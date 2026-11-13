@@ -59,3 +59,9 @@ function updatePositionState() {
   />
 </template>
 ```
+
+## Clearing the session
+
+Call `clear()` to reset metadata, playback state, position state, action handlers,
+and camera/microphone activity. The session is also cleared when its scope is disposed.
+After calling `clear()`, you can update the returned refs to populate a new session.

@@ -100,7 +100,8 @@ export interface UseMediaSessionReturn extends Supportable {
    */
   isSetMicrophoneSupported: UseSupportedReturn
   /**
-   * Method for clearing the Media Session.
+   * Reset metadata, playback, action handlers, and camera/microphone state.
+   * The session can be populated again after clearing.
    */
   clear: () => void
 }
@@ -141,12 +142,15 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
   if (isSupported.value) {
     tryOnMounted(() => {
       watchEffect(() => {
-        navigator!.mediaSession.metadata = new MediaMetadata({
+        const metadata: MediaMetadataInit = {
           album: album.value,
           artist: artist.value,
           artwork: artwork.value,
           title: title.value,
-        })
+        }
+        navigator!.mediaSession.metadata = Object.values(metadata).every(value => value === undefined)
+          ? null
+          : new MediaMetadata(metadata)
       })
 
       watchEffect(() => {
@@ -216,6 +220,13 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
     navigator!.mediaSession.playbackState = 'none'
     syncActionHandlers()
     actionHandlers.value = {}
+
+    cameraActive.value = false
+    microphoneActive.value = false
+    if (isSetCameraSupported.value)
+      navigator!.mediaSession.setCameraActive(false)
+    if (isSetMicrophoneSupported.value)
+      navigator!.mediaSession.setMicrophoneActive(false)
   }
 
   // Clear MediaSession on dispose
