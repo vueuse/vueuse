@@ -110,7 +110,7 @@ export function watchDebounced(
 
 We use the `controls` option allowing users to use functions with a single return for simple usages, while being able to have more controls and flexibility when needed. Read more: [#362](https://github.com/vueuse/vueuse/pull/362).
 
-#### When to provide a `controls` option
+### When to provide a `controls` option
 
 - The function is more commonly used with single `ref` or
 - Examples: `useTimestamp`, `useInterval`,
@@ -125,7 +125,7 @@ const { timestamp, pause, resume } = useTimestamp({ controls: true })
 
 Refer to `useTimestamp`'s source code for the implementation of proper TypeScript support.
 
-#### When **NOT** to provide a `controls` option
+### When **NOT** to provide a `controls` option
 
 - The function is more commonly used with multiple returns
 - Examples: `useRafFn`, `useRefHistory`,

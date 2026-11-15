@@ -14,13 +14,7 @@ npm i @vueuse/core
 
 [Add ons](/add-ons.html) | [Nuxt Module](/guide/index.html#nuxt)
 
-###### Demos
-
-- [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
-- [Nuxt 4 + Vue 3](https://github.com/antfu/vitesse-nuxt)
-- [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
-
-### CDN
+## CDN
 
 ```vue
 <script src="https://unpkg.com/@vueuse/shared"></script>
@@ -30,9 +24,9 @@ npm i @vueuse/core
 
 It will be exposed to global as `window.VueUse`
 
-### Nuxt
+## Nuxt
 
-From v7.2.0, we shipped a Nuxt module to enable auto importing for Nuxt 3 and Nuxt Bridge.
+VueUse ships a Nuxt module that enables auto-imports.
 
 Install the vueuse module into your application using [@nuxt/cli](https://nuxt.com/docs/api/commands/module):
 
@@ -46,7 +40,7 @@ Or use npm:
 npm i -D @vueuse/nuxt @vueuse/core
 ```
 
-Nuxt 3
+Then add it to the `modules` in your `nuxt.config.ts`:
 
 ```ts
 // nuxt.config.ts
@@ -72,6 +66,12 @@ const { x, y } = useMouse()
   <div>pos: {{ x }}, {{ y }}</div>
 </template>
 ```
+
+## Demos
+
+- [Vite + Vue 3](https://github.com/vueuse/vueuse-vite-starter)
+- [Nuxt 4 + Vue 3](https://github.com/antfu/vitesse-nuxt)
+- [Webpack + Vue 3](https://github.com/vueuse/vueuse-vue3-example)
 
 ## Usage Example
 

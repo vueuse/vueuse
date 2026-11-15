@@ -60,7 +60,8 @@ const { pause, resume } = watchPausable(
 - `'post'`: async like 'pre' but fires after component updates so you can access the updated DOM
 - `'sync'`: forces the effect to always trigger synchronously
 
-**Note:** For `computed`-like composables (e.g. `syncRef`, `computedWithControl`), when flush timing is configurable, the default is changed to `{ flush: 'sync' }` to align them with the way computed refs works in Vue.
+> [!NOTE]
+> For `computed`-like composables (e.g. `syncRef`, `computedWithControl`), when flush timing is configurable, the default is changed to `{ flush: 'sync' }` to align them with the way computed refs work in Vue.
 
 ## Global Dependencies
 

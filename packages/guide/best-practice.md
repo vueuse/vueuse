@@ -1,6 +1,6 @@
 # Best Practice
 
-### Destructuring
+## Destructuring
 
 Most of the functions in VueUse return an **object of refs** that you can use [ES6's object destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) syntax on to take what you need. For example:
 
@@ -29,7 +29,7 @@ const mouse = reactive(useMouse())
 console.log(mouse.x)
 ```
 
-### Side-effect Clean Up
+## Side-effect Clean Up
 
 Similar to Vue's `watch` and `computed` that will be disposed when the component is unmounted, VueUse's functions also clean up the side-effects automatically.
 
@@ -78,13 +78,13 @@ scope.stop()
 
 You can learn more about `effectScope` in [this RFC](https://github.com/vuejs/rfcs/blob/master/active-rfcs/0041-reactivity-effect-scope.md).
 
-### Reactive Arguments
+## Reactive Arguments
 
 In Vue, we use the `setup()` function to construct the "connections" between data and logic. To make it flexible, most of the VueUse functions also accept refs for the arguments because refs are reactive.
 
 Take `useTitle` as an example:
 
-###### Non-reactive Argument
+### Non-reactive Argument
 
 The `useTitle` composable helps you get and set the current page's `document.title` property.
 
@@ -103,7 +103,7 @@ watch(isDark, () => {
 })
 ```
 
-###### Ref Argument
+### Ref Argument
 
 You can pass a ref into `useTitle` instead of using the returned ref.
 
@@ -117,7 +117,7 @@ const title = computed(() => isDark.value ? '🌙 Good evening!' : '☀️ Good 
 useTitle(title)
 ```
 
-###### Reactive Getter Argument
+### Reactive Getter Argument
 
 Since VueUse 9.0, we introduced a new convention for passing a "Reactive Getter" as the argument, which works great with reactive objects and [Reactivity Transform](https://vuejs.org/guide/extras/reactivity-transform.html#reactivity-transform).
 
