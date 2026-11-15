@@ -65,7 +65,7 @@ export function useElementBounding(_, _) {}
 export function useElementByPoint(_) {}
 export function useElementHover(_, _) {}
 export function useElementOverflow(_, _) {}
-export function useElementSize(_, _, _) {}
+export function useElementSize(_, ..._) {}
 export function useElementVisibility(_, _) {}
 export function useEventBus(_) {}
 export function useEventListener(..._) {}

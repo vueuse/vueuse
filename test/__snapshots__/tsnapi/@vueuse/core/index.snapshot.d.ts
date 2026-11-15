@@ -603,11 +603,15 @@ export interface UseElementOverflowOptions extends ConfigurableWindow {
   observeMutation?: boolean | MutationObserverInit;
   onUpdated?: ResizeObserverCallback | MutationCallback;
 }
-export interface UseElementSizeOptions extends UseResizeObserverOptions {}
-export interface UseElementSizeReturn {
-  width: ShallowRef<number>;
-  height: ShallowRef<number>;
+export interface UseElementSizeOptions extends UseResizeObserverOptions {
+  initials?: MaybeRefInitials<UseElementSizeState>;
+}
+export interface UseElementSizeReturn extends ReadonlyRefs<UseElementSizeState> {
   stop: () => void;
+}
+export interface UseElementSizeState {
+  width: number;
+  height: number;
 }
 export interface UseElementVisibilityOptions<Controls extends boolean = false> extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'rootMargin' | 'threshold'> {
   initialValue?: boolean;
@@ -933,6 +937,7 @@ export interface UseMouseInElementReturn extends UseMouseReturn {
   stop: () => void;
 }
 export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
+  initials?: MaybeRefInitials<UseMouseState>;
   type?: UseMouseCoordType | UseMouseEventExtractor;
   target?: MaybeRefOrGetter<Window | EventTarget | null | undefined>;
   touch?: boolean;
@@ -941,6 +946,7 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   initialValue?: Position;
 }
 export interface UseMousePressedOptions extends ConfigurableWindow {
+  initials?: MaybeRefInitials<UseMousePressedState>;
   touch?: boolean;
   drag?: boolean;
   capture?: boolean;
@@ -949,14 +955,18 @@ export interface UseMousePressedOptions extends ConfigurableWindow {
   onPressed?: (_: MouseEvent | TouchEvent | DragEvent) => void;
   onReleased?: (_: MouseEvent | TouchEvent | DragEvent) => void;
 }
-export interface UseMousePressedReturn {
-  pressed: ShallowRef<boolean>;
-  sourceType: ShallowRef<UseMouseSourceType>;
+export interface UseMousePressedReturn extends ReadonlyRefs<UseMousePressedState> {
+  sourceType: Readonly<ShallowRef<UseMouseSourceType>>;
 }
-export interface UseMouseReturn {
-  x: ShallowRef<number>;
-  y: ShallowRef<number>;
-  sourceType: ShallowRef<UseMouseSourceType>;
+export interface UseMousePressedState {
+  pressed: boolean;
+}
+export interface UseMouseReturn extends ReadonlyRefs<UseMouseState> {
+  sourceType: Readonly<ShallowRef<UseMouseSourceType>>;
+}
+export interface UseMouseState {
+  x: number;
+  y: number;
 }
 export interface UseMutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
 export interface UseMutationObserverReturn extends Supportable {
@@ -1013,22 +1023,11 @@ export interface UsePointerLockReturn extends Supportable {
 }
 export interface UsePointerOptions extends ConfigurableWindow {
   pointerTypes?: PointerType[];
-  initialValue?: MaybeRef<Partial<UsePointerState>>;
+  initials?: MaybeRefInitials<UsePointerState>;
+  initialValue?: MaybeRef<Partial<UsePointerEventState>>;
   target?: MaybeRef<EventTarget | null | undefined> | Document | Window;
 }
-export interface UsePointerReturn {
-  pressure: Ref<number>;
-  pointerId: Ref<number>;
-  tiltX: Ref<number>;
-  tiltY: Ref<number>;
-  width: Ref<number>;
-  height: Ref<number>;
-  twist: Ref<number>;
-  pointerType: Ref<PointerType | null>;
-  x: Ref<number>;
-  y: Ref<number>;
-  isInside: ShallowRef<boolean>;
-}
+export interface UsePointerReturn extends ReadonlyRefs<UsePointerState> {}
 export interface UsePointerState extends Position {
   pressure: number;
   pointerId: number;
@@ -1038,6 +1037,7 @@ export interface UsePointerState extends Position {
   height: number;
   twist: number;
   pointerType: PointerType | null;
+  isInside: boolean;
 }
 export interface UsePointerSwipeOptions {
   threshold?: number;
@@ -1502,15 +1502,17 @@ export interface UseWebWorkerReturn<Data = any> {
 export interface UseWindowScrollOptions extends ConfigurableWindow, UseScrollOptions {}
 export interface UseWindowScrollReturn extends UseScrollReturn {}
 export interface UseWindowSizeOptions extends ConfigurableWindow {
+  initials?: MaybeRefInitials<UseWindowSizeState>;
   initialWidth?: number;
   initialHeight?: number;
   listenOrientation?: boolean;
   includeScrollbar?: boolean;
   type?: 'inner' | 'outer' | 'visual';
 }
-export interface UseWindowSizeReturn {
-  width: ShallowRef<number>;
-  height: ShallowRef<number>;
+export interface UseWindowSizeReturn extends ReadonlyRefs<UseWindowSizeState> {}
+export interface UseWindowSizeState {
+  width: number;
+  height: number;
 }
 export interface WakeLockSentinel extends EventTarget {
   type: WakeLockType;
@@ -1877,7 +1879,9 @@ export declare function useElementOverflow(_: MaybeComputedElementRef, _?: UseEl
   stop: () => void;
   update: () => void;
 };
-export declare function useElementSize(_: MaybeComputedElementRef, _?: ElementSize, _?: UseElementSizeOptions): UseElementSizeReturn;
+/** @deprecated */
+export declare function useElementSize(_: MaybeComputedElementRef, _: ElementSize | undefined, _?: UseElementSizeOptions): UseElementSizeReturn;
+export declare function useElementSize(_: MaybeComputedElementRef, _?: UseElementSizeOptions): UseElementSizeReturn;
 export declare function useElementVisibility(_: MaybeComputedElementRef, _?: UseElementVisibilityOptions<false>): UseElementVisibilityReturn<false>;
 export declare function useElementVisibility(_: MaybeComputedElementRef, _?: UseElementVisibilityOptions<true>): UseElementVisibilityReturn<true>;
 export declare function useEventBus<T = unknown, P = any>(_: EventBusIdentifier<T>): UseEventBusReturn<T, P>;
@@ -1935,9 +1939,9 @@ export declare function useMemory(_?: UseMemoryOptions): UseMemoryReturn;
 export declare function useMounted(): import("vue").ShallowRef<boolean, boolean>;
 export declare function useMouse(_?: UseMouseOptions): UseMouseReturn;
 export declare function useMouseInElement(_?: MaybeElementRef, _?: MouseInElementOptions): {
-  x: ShallowRef<number>;
-  y: ShallowRef<number>;
-  sourceType: ShallowRef<UseMouseSourceType>;
+  x: Readonly<ShallowRef<number>>;
+  y: Readonly<ShallowRef<number>>;
+  sourceType: Readonly<ShallowRef<UseMouseSourceType>>;
   elementX: ShallowRef<number, number>;
   elementY: ShallowRef<number, number>;
   elementPositionX: ShallowRef<number, number>;
@@ -2213,6 +2217,7 @@ interface UseMediaControlsOptions extends ConfigurableDocument {
   src?: MaybeRefOrGetter<string | UseMediaSource | UseMediaSource[]>;
   tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>;
 }
+type UsePointerEventState = Omit<UsePointerState, 'isInside'>;
 type UseTimeAgoReturn$1<Controls extends boolean = false> = Controls extends true ? {
   timeAgoIntl: ComputedRef<string>;
   parts: ComputedRef<Intl.RelativeTimeFormatPart[]>;
