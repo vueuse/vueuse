@@ -29,6 +29,34 @@ const mouse = reactive(useMouse())
 console.log(mouse.x)
 ```
 
+### Initial Values & Readonly State
+
+State that only the composable writes, like a window size or a mouse position, is returned as **readonly refs**. To set the values used before the first update (e.g. during SSR or in tests), pass them through the `initials` option:
+
+```ts twoslash
+import { useWindowSize } from '@vueuse/core'
+
+const { width, height } = useWindowSize({
+  initials: { width: 1280, height: 720 },
+})
+```
+
+If you need to own the state, pass your own refs. The composable writes into them, and the returned refs are readonly views of the same state:
+
+```ts twoslash
+import { useWindowSize } from '@vueuse/core'
+import { shallowRef } from 'vue'
+
+const width = shallowRef(1280)
+const height = shallowRef(720)
+
+useWindowSize({ initials: { width, height } })
+
+width.value = 1024 // allowed, you own this ref
+```
+
+Don't pass a `computed` in `initials`: the composable writes into it on the first update.
+
 ### Side-effect Clean Up
 
 Similar to Vue's `watch` and `computed` that will be disposed when the component is unmounted, VueUse's functions also clean up the side-effects automatically.
