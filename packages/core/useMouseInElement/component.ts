@@ -30,6 +30,7 @@ export const UseMouseInElement = /* #__PURE__ */ defineComponent<
       'eventFilter',
       'handleOutside',
       'initialValue',
+      'initials',
       'resetOnTouchEnds',
       'scroll',
       'target',

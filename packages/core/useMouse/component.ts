@@ -27,6 +27,7 @@ export const UseMouse = /* #__PURE__ */ defineComponent<
     props: [
       'eventFilter',
       'initialValue',
+      'initials',
       'resetOnTouchEnds',
       'scroll',
       'target',
