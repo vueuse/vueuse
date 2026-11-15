@@ -45,8 +45,7 @@ export interface UseLastChangedOptions<
   initialValue?: InitialValue
 }
 export type UseLastChangedReturn =
-  | Readonly<ShallowRef<number | null>>
-  | Readonly<ShallowRef<number>>
+  Readonly<ShallowRef<number | null>> | Readonly<ShallowRef<number>>
 /**
  * Records the timestamp of the last change
  *

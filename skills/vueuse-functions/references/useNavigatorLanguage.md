@@ -21,8 +21,7 @@ watch(language, () => {
 ## Type Declarations
 
 ```ts
-export interface NavigatorLanguageState {
-  isSupported: ComputedRef<boolean>
+export interface NavigatorLanguageState extends Supportable {
   /**
    *
    * ISO 639-1 standard Language Code
@@ -41,6 +40,8 @@ export interface NavigatorLanguageState {
    */
   language: ShallowRef<string | undefined>
 }
+export interface UseNavigatorLanguageOptions extends ConfigurableWindow {}
+export type UseNavigatorLanguageReturn = Readonly<NavigatorLanguageState>
 /**
  *
  * Reactive useNavigatorLanguage
@@ -51,7 +52,6 @@ export interface NavigatorLanguageState {
  * @__NO_SIDE_EFFECTS__
  */
 export declare function useNavigatorLanguage(
-  options?: ConfigurableWindow,
-): Readonly<NavigatorLanguageState>
-export type UseNavigatorLanguageReturn = ReturnType<typeof useNavigatorLanguage>
+  options?: UseNavigatorLanguageOptions,
+): UseNavigatorLanguageReturn
 ```

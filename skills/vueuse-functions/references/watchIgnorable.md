@@ -79,7 +79,7 @@ await nextTick() // logs: Changed to after!
 
 ## Recommended Readings
 
-- [Ignorable Watch](https://patak.dev/vue/ignorable-watch.html) - by [@patak-dev](https://github.com/patak-dev)
+- [Ignorable Watch](https://patak.dev/vue/ignorable-watch.html) - by [@patak-cat](https://github.com/patak-cat)
 
 ## Type Declarations
 
@@ -92,19 +92,19 @@ export interface WatchIgnorableReturn {
   stop: WatchStopHandle
 }
 export declare function watchIgnorable<
-  T extends Readonly<MultiWatchSources>,
-  Immediate extends Readonly<boolean> = false,
->(
-  sources: [...T],
-  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
-  options?: WatchWithFilterOptions<Immediate>,
-): WatchIgnorableReturn
-export declare function watchIgnorable<
   T,
   Immediate extends Readonly<boolean> = false,
 >(
   source: WatchSource<T>,
   cb: WatchCallback<T, Immediate extends true ? T | undefined : T>,
+  options?: WatchWithFilterOptions<Immediate>,
+): WatchIgnorableReturn
+export declare function watchIgnorable<
+  T extends Readonly<MultiWatchSources>,
+  Immediate extends Readonly<boolean> = false,
+>(
+  sources: [...T],
+  cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>,
   options?: WatchWithFilterOptions<Immediate>,
 ): WatchIgnorableReturn
 export declare function watchIgnorable<

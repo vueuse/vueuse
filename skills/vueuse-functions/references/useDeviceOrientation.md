@@ -43,6 +43,13 @@ You can find [more information about the state on the MDN](https://developer.moz
 ## Type Declarations
 
 ```ts
+export interface UseDeviceOrientationOptions extends ConfigurableWindow {}
+export interface UseDeviceOrientationReturn extends Supportable {
+  isAbsolute: ShallowRef<boolean, boolean>
+  alpha: Ref<number | null, number | null>
+  beta: Ref<number | null, number | null>
+  gamma: Ref<number | null, number | null>
+}
 /**
  * Reactive DeviceOrientationEvent.
  *
@@ -51,12 +58,7 @@ You can find [more information about the state on the MDN](https://developer.moz
  *
  * @__NO_SIDE_EFFECTS__
  */
-export declare function useDeviceOrientation(options?: ConfigurableWindow): {
-  isSupported: ComputedRef<boolean>
-  isAbsolute: ShallowRef<boolean, boolean>
-  alpha: Ref<number | null, number | null>
-  beta: Ref<number | null, number | null>
-  gamma: Ref<number | null, number | null>
-}
-export type UseDeviceOrientationReturn = ReturnType<typeof useDeviceOrientation>
+export declare function useDeviceOrientation(
+  options?: UseDeviceOrientationOptions,
+): UseDeviceOrientationReturn
 ```

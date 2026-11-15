@@ -30,7 +30,7 @@ const { data, post, terminate, worker } = useWebWorker('/path/to/worker.js')
 ```ts
 type PostMessage = (typeof Worker.prototype)["postMessage"]
 export interface UseWebWorkerReturn<Data = any> {
-  data: Ref<Data>
+  data: ShallowRef<Data>
   post: PostMessage
   terminate: () => void
   worker: ShallowRef<Worker | undefined>

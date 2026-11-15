@@ -71,6 +71,11 @@ export interface UseImageOptions {
   /** The partial URL (starting with #) of an image map associated with the element */
   usemap?: HTMLImageElement["useMap"]
 }
+export type UseImageReturn = UseAsyncStateReturn<
+  HTMLImageElement | undefined,
+  any[],
+  true
+>
 /**
  * Reactive load an image in the browser, you can wait the result to display it or show a fallback.
  *
@@ -81,6 +86,5 @@ export interface UseImageOptions {
 export declare function useImage<Shallow extends true>(
   options: MaybeRefOrGetter<UseImageOptions>,
   asyncStateOptions?: UseAsyncStateOptions<Shallow>,
-): UseAsyncStateReturn<HTMLImageElement | undefined, any[], true>
-export type UseImageReturn = ReturnType<typeof useImage>
+): UseImageReturn
 ```

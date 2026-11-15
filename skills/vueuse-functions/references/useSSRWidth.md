@@ -4,7 +4,7 @@ category: Browser
 
 # useSSRWidth
 
-Used to set a global viewport width which will be used when rendering SSR components that rely on the viewport width like [`useMediaQuery`](../useMediaQuery/index.md) or [`useBreakpoints`](../useBreakpoints/index.md)
+Used to set a global viewport width which will be used when rendering SSR components that rely on the viewport width like [`useMediaQuery`](./useMediaQuery.md) or [`useBreakpoints`](./useBreakpoints.md)
 
 ## Usage
 

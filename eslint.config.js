@@ -67,6 +67,7 @@ export default antfu(
       'ts/unified-signatures': 'off',
       'ts/no-unsafe-function-type': 'off',
       'ts/no-dynamic-delete': 'off',
+      'antfu/reasonable-newline': 'off',
     },
   },
   {
@@ -171,6 +172,15 @@ export default antfu(
         name: 'ref',
         as: 'deepRef',
       },
+      {
+        from: 'vue',
+        name: 'shallowReadonly',
+      },
+      {
+        from: 'vue',
+        name: 'readonly',
+        as: 'deepReadonly',
+      },
     ],
   }),
   createSimplePlugin({
@@ -179,14 +189,26 @@ export default antfu(
     create(context) {
       return {
         CallExpression(node) {
-          if (node.callee.type === 'Identifier' && node.callee.name === 'ref') {
-            context.report({
-              node,
-              message: 'Usage of ref() is restricted. Use shallowRef() or deepRef() instead.',
-            })
+          if (node.callee.type === 'Identifier') {
+            if (node.callee.name === 'ref') {
+              context.report({
+                node,
+                message: 'Usage of ref() is restricted. Use shallowRef() or deepRef() instead.',
+              })
+            }
+            else if (node.callee.name === 'readonly') {
+              context.report({
+                node,
+                message: 'Usage of readonly() is restricted. Use shallowReadonly() or deepReadonly() instead.',
+              })
+            }
           }
         },
       }
     },
   }),
 )
+  .removeRules(
+    'markdown/heading-increment',
+    'markdown/no-missing-link-fragments',
+  )

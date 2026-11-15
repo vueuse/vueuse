@@ -245,8 +245,7 @@ export interface UseAxiosOptionsWithInitialData<
   initialData: T
 }
 export type UseAxiosOptions<T = any> =
-  | UseAxiosOptionsBase<T>
-  | UseAxiosOptionsWithInitialData<T>
+  UseAxiosOptionsBase<T> | UseAxiosOptionsWithInitialData<T>
 export declare function useAxios<
   T = any,
   R = AxiosResponse<T>,

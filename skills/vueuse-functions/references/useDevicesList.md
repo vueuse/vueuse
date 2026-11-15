@@ -35,7 +35,7 @@ await ensurePermissions()
 console.log(permissionsGranted.value)
 ```
 
-# Component
+## Component
 
 ```vue
 <template>
@@ -66,17 +66,16 @@ export interface UseDevicesListOptions extends ConfigurableNavigator {
    */
   constraints?: MediaStreamConstraints
 }
-export interface UseDevicesListReturn {
+export interface UseDevicesListReturn extends Supportable {
   /**
    * All devices
    */
-  devices: Ref<MediaDeviceInfo[]>
+  devices: ShallowRef<MediaDeviceInfo[]>
   videoInputs: ComputedRef<MediaDeviceInfo[]>
   audioInputs: ComputedRef<MediaDeviceInfo[]>
   audioOutputs: ComputedRef<MediaDeviceInfo[]>
   permissionGranted: ShallowRef<boolean>
   ensurePermissions: () => Promise<boolean>
-  isSupported: ComputedRef<boolean>
 }
 /**
  * Reactive `enumerateDevices` listing available input/output devices

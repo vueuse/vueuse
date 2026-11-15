@@ -1,7 +1,6 @@
-import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Supportable } from '../types'
-import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
+import type { MaybeComputedElementRefOrArray } from '../unrefElement'
 import { tryOnScopeDispose } from '@vueuse/shared'
 import { computed, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
@@ -51,7 +50,7 @@ export interface UseResizeObserverReturn extends Supportable {
  * @param options
  */
 export function useResizeObserver(
-  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
+  target: MaybeComputedElementRefOrArray,
   callback: globalThis.ResizeObserverCallback,
   options: UseResizeObserverOptions = {},
 ): UseResizeObserverReturn {
@@ -80,7 +79,7 @@ export function useResizeObserver(
       if (isSupported.value && window) {
         observer = new ResizeObserver(callback)
         for (const _el of els) {
-          if (_el)
+          if (_el instanceof Element)
             observer!.observe(_el, observerOptions)
         }
       }

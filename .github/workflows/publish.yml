@@ -4,28 +4,60 @@ permissions:
   id-token: write
   contents: write
 
+# Releases are cut with `nr release` (bumpp --pr), which opens a `release/*`
+# pull request. Merging that PR tags the merge commit and publishes from here.
 on:
-  push:
-    tags:
-      - v*
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   publish-npm:
+    # Only merged `release/*` pull requests that originate from this repository.
+    # The same-repo check is essential: a fork can name its branch `release/*`
+    # too, and this job runs with publishing credentials.
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # The merge commit is what carries the bumped version
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: lts/*
           registry-url: https://registry.npmjs.org/
           cache: pnpm
+
+      - name: Read version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >>
+          "$GITHUB_OUTPUT"
+
+      - name: Create tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/git/refs" \
+            -f ref="refs/tags/v$VERSION" \
+            -f sha="$SHA"
+          # Mirror it locally, changelogithub resolves the release from git tags
+          git tag "v$VERSION"
 
       - run: npm i -g npm@latest
 

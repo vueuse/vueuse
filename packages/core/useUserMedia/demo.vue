@@ -6,7 +6,7 @@ const currentCamera = shallowRef<string>()
 const { videoInputs: cameras } = useDevicesList({
   requestPermissions: true,
   onUpdated() {
-    if (!cameras.value.find(i => i.deviceId === currentCamera.value))
+    if (!cameras.value.some(i => i.deviceId === currentCamera.value))
       currentCamera.value = cameras.value[0]?.deviceId
   },
 })

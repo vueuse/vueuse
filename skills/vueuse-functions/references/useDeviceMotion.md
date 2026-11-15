@@ -47,7 +47,7 @@ You can find [more information about the state on the MDN](https://developer.moz
 ## Type Declarations
 
 ```ts
-export interface DeviceMotionOptions
+export interface UseDeviceMotionOptions
   extends ConfigurableWindow, ConfigurableEventFilter {
   /**
    * Request for permissions immediately if it's not granted,
@@ -57,30 +57,24 @@ export interface DeviceMotionOptions
    */
   requestPermissions?: boolean
 }
+/** @deprecated use {@link UseDeviceMotionOptions} instead */
+export type DeviceMotionOptions = UseDeviceMotionOptions
+export interface UseDeviceMotionReturn extends Supportable {
+  acceleration: Ref<DeviceMotionEventAcceleration | null>
+  accelerationIncludingGravity: Ref<DeviceMotionEventAcceleration | null>
+  rotationRate: Ref<DeviceMotionEventRotationRate | null>
+  interval: ShallowRef<number>
+  requirePermissions: ComputedRef<boolean>
+  ensurePermissions: () => Promise<void>
+  permissionGranted: ShallowRef<boolean>
+}
 /**
  * Reactive DeviceMotionEvent.
  *
  * @see https://vueuse.org/useDeviceMotion
  * @param options
  */
-export declare function useDeviceMotion(options?: DeviceMotionOptions): {
-  acceleration: Ref<
-    DeviceMotionEventAcceleration | null,
-    DeviceMotionEventAcceleration | null
-  >
-  accelerationIncludingGravity: Ref<
-    DeviceMotionEventAcceleration | null,
-    DeviceMotionEventAcceleration | null
-  >
-  rotationRate: Ref<
-    DeviceMotionEventRotationRate | null,
-    DeviceMotionEventRotationRate | null
-  >
-  interval: ShallowRef<number, number>
-  isSupported: ComputedRef<boolean>
-  requirePermissions: ComputedRef<boolean>
-  ensurePermissions: () => Promise<void>
-  permissionGranted: ShallowRef<boolean, boolean>
-}
-export type UseDeviceMotionReturn = ReturnType<typeof useDeviceMotion>
+export declare function useDeviceMotion(
+  options?: UseDeviceMotionOptions,
+): UseDeviceMotionReturn
 ```

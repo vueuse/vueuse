@@ -93,6 +93,8 @@ export type UseTitleOptionsBase = {
     }
 )
 export type UseTitleOptions = ConfigurableDocument & UseTitleOptionsBase
+export type UseTitleReturn =
+  ComputedRef<string | null | undefined> | Ref<string | null | undefined>
 /**
  * Reactive document title.
  *
@@ -109,5 +111,4 @@ export declare function useTitle(
   newTitle?: MaybeRef<string | null | undefined>,
   options?: UseTitleOptions,
 ): Ref<string | null | undefined>
-export type UseTitleReturn = ReturnType<typeof useTitle>
 ```

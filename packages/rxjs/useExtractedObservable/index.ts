@@ -1,10 +1,10 @@
 import type { MapOldSources, MapSources } from '@vueuse/shared'
 import type { Subscription } from 'rxjs'
-import type { MultiWatchSources, ShallowRef, WatchOptions, WatchSource } from 'vue'
+import type { DeepReadonly, MultiWatchSources, ShallowRef, WatchOptions, WatchSource } from 'vue'
 import type { UseObservableOptions } from '../useObservable'
 import type { WatchExtractedObservableCallback } from '../watchExtractedObservable'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { readonly, shallowRef, watch } from 'vue'
+import { readonly as deepReadonly, shallowRef, watch } from 'vue'
 
 export interface UseExtractedObservableOptions<E> extends UseObservableOptions<E> {
   onComplete?: () => void
@@ -24,7 +24,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 
 // overload: multiple sources w/ `as const`
 // watch([foo, bar] as const, () => {})
@@ -42,7 +42,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 
 // overload: single source + cb
 export function useExtractedObservable<
@@ -58,7 +58,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 
 // overload: watching reactive object w/ cb
 export function useExtractedObservable<
@@ -74,7 +74,7 @@ export function useExtractedObservable<
   >,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>>
+): DeepReadonly<ShallowRef<E>>
 
 // implementation
 export function useExtractedObservable<T = any, E = unknown, Immediate extends Readonly<boolean> = false>(
@@ -82,7 +82,7 @@ export function useExtractedObservable<T = any, E = unknown, Immediate extends R
   extractor: WatchExtractedObservableCallback<any, any, E>,
   options?: UseExtractedObservableOptions<E>,
   watchOptions?: WatchOptions<Immediate>,
-): Readonly<ShallowRef<E>> {
+): DeepReadonly<ShallowRef<E>> {
   let subscription: Subscription | undefined
 
   tryOnScopeDispose(() => {
@@ -120,5 +120,5 @@ export function useExtractedObservable<T = any, E = unknown, Immediate extends R
     ...watchOptions,
   })
 
-  return readonly(obsRef) as Readonly<ShallowRef<E>>
+  return deepReadonly(obsRef) as DeepReadonly<ShallowRef<E>>
 }

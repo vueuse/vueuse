@@ -195,11 +195,14 @@ export type OnClickOutsideHandler<
     | (T["controls"] extends true ? Event : never)
     | PointerEvent,
 ) => void
-interface OnClickOutsideControlsReturn {
-  stop: Fn
-  cancel: Fn
-  trigger: (event: Event) => void
-}
+export type OnClickOutsideReturn<Controls extends boolean = false> =
+  Controls extends false
+    ? Fn
+    : {
+        stop: Fn
+        cancel: Fn
+        trigger: (event: Event) => void
+      }
 /**
  * Listen for clicks outside of an element.
  *
@@ -217,5 +220,9 @@ export declare function onClickOutside<T extends OnClickOutsideOptions<true>>(
   target: MaybeComputedElementRef,
   handler: OnClickOutsideHandler<T>,
   options: T,
-): OnClickOutsideControlsReturn
+): {
+  stop: Fn
+  cancel: Fn
+  trigger: (event: Event) => void
+}
 ```

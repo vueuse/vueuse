@@ -3,7 +3,7 @@ import { defaultDocument } from '../_configurable'
 /* this implementation is original ported from https://github.com/streamich/react-use by Vadim Dalecky */
 import { useEventListener } from '../useEventListener'
 
-function isFocusedElementEditable() {
+export function isFocusedElementEditable(): boolean {
   const { activeElement, body } = document
 
   if (!activeElement)
@@ -24,12 +24,12 @@ function isFocusedElementEditable() {
   return activeElement.hasAttribute('contenteditable')
 }
 
-function isTypedCharValid({
+export function isTypedCharValid({
   keyCode,
   metaKey,
   ctrlKey,
   altKey,
-}: KeyboardEvent) {
+}: KeyboardEvent): boolean {
   if (metaKey || ctrlKey || altKey)
     return false
 
@@ -45,6 +45,11 @@ function isTypedCharValid({
   return false
 }
 
+export interface OnStartTypingOptions extends ConfigurableDocument {
+  isTypedCharValid?: (event: KeyboardEvent) => boolean
+  isFocusedElementEditable?: () => boolean
+}
+
 /**
  * Fires when users start typing on non-editable elements.
  *
@@ -52,11 +57,11 @@ function isTypedCharValid({
  * @param callback
  * @param options
  */
-export function onStartTyping(callback: (event: KeyboardEvent) => void, options: ConfigurableDocument = {}) {
-  const { document = defaultDocument } = options
+export function onStartTyping(callback: (event: KeyboardEvent) => void, options: OnStartTypingOptions = {}) {
+  const { document = defaultDocument, isTypedCharValid: isTypedCharValidFn = isTypedCharValid, isFocusedElementEditable: isFocusedElementEditableFn = isFocusedElementEditable } = options
 
   const keydown = (event: KeyboardEvent) => {
-    if (!isFocusedElementEditable() && isTypedCharValid(event)) {
+    if (!isFocusedElementEditableFn() && isTypedCharValidFn(event)) {
       callback(event)
     }
   }

@@ -102,4 +102,18 @@ describe('createInjectionState', () => {
     expect(vm.count).toBe(114514)
     vm.unmount()
   })
+
+  it('should have useInjectedState return default value when not providing state', async () => {
+    const [_useProvideCountState, useCountState] = createInjectionState(() => {
+      return shallowRef(663512)
+    }, { defaultValue: shallowRef(543742) })
+    const vm = useSetup(() => {
+      const count = useCountState()
+
+      return { count }
+    })
+    await nextTick()
+    expect(vm.count).toBe(543742)
+    vm.unmount()
+  })
 })

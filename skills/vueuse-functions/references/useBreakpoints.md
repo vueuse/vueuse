@@ -90,7 +90,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind, {
 
 #### Server Side Rendering and Nuxt
 
-If you are using `useBreakpoints` with SSR enabled, then you need to specify which screen size you would like to render on the server and before hydration to avoid an hydration mismatch
+If you are using `useBreakpoints` with SSR enabled, then you need to specify which screen size you would like to render on the server and before hydration to avoid a hydration mismatch
 
 ```ts
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
@@ -100,7 +100,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind, {
 })
 ```
 
-Alternatively you can set this up globally for your app using [`provideSSRWidth`](../useSSRWidth/index.md)
+Alternatively you can set this up globally for your app using [`provideSSRWidth`](./useSSRWidth.md)
 
 ## Presets
 
@@ -142,6 +142,26 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
   strategy?: "min-width" | "max-width"
   ssrWidth?: number
 }
+export type UseBreakpointReturn<K extends string = string> = Record<
+  K,
+  ComputedRef<boolean>
+> & {
+  greaterOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  smallerOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  greater: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  smaller: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
+  between: (
+    a: MaybeRefOrGetter<K>,
+    b: MaybeRefOrGetter<K>,
+  ) => ComputedRef<boolean>
+  isGreater: (k: MaybeRefOrGetter<K>) => boolean
+  isGreaterOrEqual: (k: MaybeRefOrGetter<K>) => boolean
+  isSmaller: (k: MaybeRefOrGetter<K>) => boolean
+  isSmallerOrEqual: (k: MaybeRefOrGetter<K>) => boolean
+  isInBetween: (a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>) => boolean
+  current: () => ComputedRef<K[]>
+  active: () => ComputedRef<K | "">
+}
 /**
  * Reactively viewport breakpoints
  *
@@ -152,21 +172,5 @@ export interface UseBreakpointsOptions extends ConfigurableWindow {
 export declare function useBreakpoints<K extends string>(
   breakpoints: Breakpoints<K>,
   options?: UseBreakpointsOptions,
-): Record<K, ComputedRef<boolean>> & {
-  greaterOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  smallerOrEqual: (k: MaybeRefOrGetter<K>) => ComputedRef<boolean>
-  greater(k: MaybeRefOrGetter<K>): ComputedRef<boolean>
-  smaller(k: MaybeRefOrGetter<K>): ComputedRef<boolean>
-  between(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>): ComputedRef<boolean>
-  isGreater(k: MaybeRefOrGetter<K>): boolean
-  isGreaterOrEqual(k: MaybeRefOrGetter<K>): boolean
-  isSmaller(k: MaybeRefOrGetter<K>): boolean
-  isSmallerOrEqual(k: MaybeRefOrGetter<K>): boolean
-  isInBetween(a: MaybeRefOrGetter<K>, b: MaybeRefOrGetter<K>): boolean
-  current: () => ComputedRef<K[]>
-  active(): ComputedRef<"" | K>
-}
-export type UseBreakpointsReturn<K extends string = string> = ReturnType<
-  typeof useBreakpoints<K>
->
+): UseBreakpointReturn<K>
 ```

@@ -1,7 +1,15 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createEventHook } from './index'
 
 describe('createEventHook', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should be defined', () => {
     expect(createEventHook).toBeDefined()
   })
@@ -129,6 +137,7 @@ describe('createEventHook', () => {
         message = result
         resolve(2)
       }, 100)
+      vi.advanceTimersByTime(100)
     }))
     const result = await exec()
 

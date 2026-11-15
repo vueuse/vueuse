@@ -4,7 +4,7 @@ import * as fs from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
-import Git from 'simple-git'
+import { simpleGit } from 'simple-git'
 import { glob } from 'tinyglobby'
 import { ecosystemFunctions } from '../../../meta/ecosystem-functions'
 import { packages } from '../../../meta/packages'
@@ -18,7 +18,7 @@ export const DIR_ROOT = resolve(__dirname, '../../..')
 export const DIR_SRC = resolve(DIR_ROOT, 'packages')
 export const DIR_TYPES = resolve(DIR_ROOT, 'types/packages')
 
-export const git = Git(DIR_ROOT)
+export const git = simpleGit(DIR_ROOT)
 
 export async function listFunctions(dir: string, ignore: string[] = []) {
   const files = await glob('*', {
@@ -94,6 +94,9 @@ export async function readMetadata() {
       let variants = frontmatter.variants
       if (typeof variants === 'string')
         variants = variants.split(',').map(s => s.trim()).filter(Boolean)
+      let utils = frontmatter.utils
+      if (typeof utils === 'string')
+        utils = utils.split(',').map(s => s.trim()).filter(Boolean)
       let related = frontmatter.related
       if (typeof related === 'string')
         related = related.split(',').map(s => s.trim()).filter(Boolean)
@@ -113,7 +116,7 @@ export async function readMetadata() {
       description = description.trim()
 
       // convert description to leading lowercase, except for abbv.
-      if (!description.match(/^[A-Z][A-Z]/))
+      if (!/^[A-Z][A-Z]/.test(description))
         description = description.charAt(0).toLowerCase() + description.slice(1)
 
       fn.category = ['core', 'shared'].includes(pkg.name) ? category : `@${pkg.display}`
@@ -126,6 +129,8 @@ export async function readMetadata() {
         fn.alias = alias
       if (variants?.length)
         fn.variants = variants
+      if (utils?.length)
+        fn.utils = utils
 
       if (related?.length)
         fn.related = related

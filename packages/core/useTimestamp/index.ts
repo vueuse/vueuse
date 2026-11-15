@@ -1,24 +1,9 @@
-import type { AnyFn, Pausable } from '@vueuse/shared'
+import type { Pausable } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableScheduler } from '../_configurable'
-import { timestamp, useIntervalFn } from '@vueuse/shared'
+import { timestamp } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { useRafFn } from '../useRafFn'
-
-function getDefaultScheduler(options: UseTimestampOptions<boolean>) {
-  if ('interval' in options || 'immediate' in options) {
-    const {
-      interval = 'requestAnimationFrame',
-      immediate = true,
-    } = options
-
-    return interval === 'requestAnimationFrame'
-      ? (cb: AnyFn) => useRafFn(cb, { immediate })
-      : (cb: AnyFn) => useIntervalFn(cb, interval, { immediate })
-  }
-
-  return useRafFn
-}
 
 export interface UseTimestampOptions<Controls extends boolean> extends ConfigurableScheduler {
   /**
@@ -35,21 +20,6 @@ export interface UseTimestampOptions<Controls extends boolean> extends Configura
    */
   offset?: number
 
-  /**
-   * Update the timestamp immediately
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default true
-   */
-  immediate?: boolean
-
-  /**
-   * Update interval, or use requestAnimationFrame
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default requestAnimationFrame
-   */
-  interval?: 'requestAnimationFrame' | number
   /**
    * Callback on each update
    */
@@ -73,7 +43,7 @@ export function useTimestamp(options: UseTimestampOptions<boolean> = {}): UseTim
   const {
     controls: exposeControls = false,
     offset = 0,
-    scheduler = getDefaultScheduler(options),
+    scheduler = useRafFn,
     callback,
   } = options
 

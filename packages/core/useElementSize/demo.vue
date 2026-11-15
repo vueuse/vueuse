@@ -30,5 +30,5 @@ const text = stringify(size)
   <note class="mb-2">
     Resize the box to see changes
   </note>
-  <textarea ref="el" class="resizer" v-text="text" />
+  <textarea ref="el" readonly class="resizer" v-text="text" />
 </template>

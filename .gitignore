@@ -1,6 +1,7 @@
 .DS_Store
 .idea
 .nuxt
+.ghfs
 .temp
 .turbo
 *.log
@@ -14,6 +15,7 @@ node_modules
 cache
 packages/*/LICENSE
 packages/contributing.md
+packages/core/README.md
 packages/public/badge-*
 packages/**/*.js
 packages/**/*.[cm]js
@@ -26,5 +28,6 @@ types
 coverage
 .eslintcache
 .vitepress/cache
-
 packages/**/__screenshots__
+.vitest-attachments
+.vitest

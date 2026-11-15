@@ -4,7 +4,7 @@ category: Elements
 
 # useIntersectionObserver
 
-Detects that a target element's visibility.
+Detects changes to a target element's visibility.
 
 ## Usage
 
@@ -29,6 +29,34 @@ const { stop } = useIntersectionObserver(
     <h1>Hello world</h1>
   </div>
 </template>
+```
+
+### Controls and cleanup
+
+`useIntersectionObserver` returns controls for the underlying observer:
+
+| State         | Type                   | Description                                                                           |
+| ------------- | ---------------------- | ------------------------------------------------------------------------------------- |
+| `isSupported` | `ComputedRef<boolean>` | Whether the `IntersectionObserver` API is available.                                  |
+| `isActive`    | `ShallowRef<boolean>`  | Whether the observer is currently running. Turns `false` after `pause()` or `stop()`. |
+| `pause`       | `() => void`           | Pause observing and set `isActive` to `false`.                                        |
+| `resume`      | `() => void`           | Resume observing.                                                                     |
+| `stop`        | `() => void`           | Stop observing permanently.                                                           |
+
+The observer is disconnected automatically via [`tryOnScopeDispose`](https://vueuse.org/shared/tryOnScopeDispose/) when the component or effect scope that created it is disposed, so in most cases you don't need to call `stop` yourself. Call `stop()` to disconnect the observer earlier, for example once the element has become visible:
+
+```ts
+import { useIntersectionObserver } from '@vueuse/core'
+// ---cut---
+const { stop } = useIntersectionObserver(
+  target,
+  ([entry]) => {
+    if (entry?.isIntersecting) {
+      // react to the element becoming visible once, then stop observing
+      stop()
+    }
+  },
+)
 ```
 
 ## Directive Usage
@@ -95,12 +123,11 @@ export interface UseIntersectionObserverOptions extends ConfigurableWindow {
    */
   threshold?: number | number[]
 }
-export interface UseIntersectionObserverReturn extends Pausable {
-  isSupported: ComputedRef<boolean>
+export interface UseIntersectionObserverReturn extends Supportable, Pausable {
   stop: () => void
 }
 /**
- * Detects that a target element's visibility.
+ * Detects changes to a target element's visibility.
  *
  * @see https://vueuse.org/useIntersectionObserver
  * @param target
@@ -108,10 +135,7 @@ export interface UseIntersectionObserverReturn extends Pausable {
  * @param options
  */
 export declare function useIntersectionObserver(
-  target:
-    | MaybeComputedElementRef
-    | MaybeRefOrGetter<MaybeElement[]>
-    | MaybeComputedElementRef[],
+  target: MaybeComputedElementRefOrArray,
   callback: IntersectionObserverCallback,
   options?: UseIntersectionObserverOptions,
 ): UseIntersectionObserverReturn

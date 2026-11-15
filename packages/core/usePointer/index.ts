@@ -50,7 +50,7 @@ export interface UsePointerReturn {
   isInside: ShallowRef<boolean>
 }
 
-const defaultState: UsePointerState = /* #__PURE__ */ {
+const defaultState: UsePointerState = {
   x: 0,
   y: 0,
   pointerId: 0,
@@ -90,7 +90,7 @@ export function usePointer(options: UsePointerOptions = {}): UsePointerReturn {
   if (target) {
     const listenerOptions = { passive: true }
     useEventListener(target, ['pointerdown', 'pointermove', 'pointerup'], handler, listenerOptions)
-    useEventListener(target, 'pointerleave', () => isInside.value = false, listenerOptions)
+    useEventListener(target, ['pointerleave', 'pointercancel'], () => isInside.value = false, listenerOptions)
   }
 
   return {

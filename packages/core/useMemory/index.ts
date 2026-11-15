@@ -1,27 +1,9 @@
-import type { AnyFn } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableScheduler } from '../_configurable'
 import type { Supportable } from '../types'
 import { useIntervalFn } from '@vueuse/shared'
 import { shallowRef } from 'vue'
 import { useSupported } from '../useSupported'
-
-function getDefaultScheduler(options: UseMemoryOptions) {
-  if ('interval' in options || 'immediate' in options || 'immediateCallback' in options) {
-    const {
-      interval = 1000,
-      immediate,
-      immediateCallback,
-    } = options
-
-    return (cb: AnyFn) => useIntervalFn(cb, interval, {
-      immediate,
-      immediateCallback,
-    })
-  }
-
-  return useIntervalFn
-}
 
 /**
  * Performance.memory
@@ -46,24 +28,6 @@ export interface MemoryInfo {
 }
 
 export interface UseMemoryOptions extends ConfigurableScheduler {
-  /**
-   * Start the timer immediately
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default true
-   */
-  immediate?: boolean
-
-  /**
-   * Execute the callback immediately after calling `resume`
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default false
-   */
-  immediateCallback?: boolean
-
-  /** @deprecated Please use `scheduler` option instead */
-  interval?: number
 }
 
 export interface UseMemoryReturn extends Supportable {
@@ -88,7 +52,7 @@ export function useMemory(options: UseMemoryOptions = {}): UseMemoryReturn {
 
   if (isSupported.value) {
     const {
-      scheduler = getDefaultScheduler,
+      scheduler = useIntervalFn,
     } = options
 
     scheduler(() => {

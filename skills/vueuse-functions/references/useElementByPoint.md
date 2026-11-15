@@ -23,15 +23,9 @@ export interface UseElementByPointOptions<Multiple extends boolean = false>
   x: MaybeRefOrGetter<number>
   y: MaybeRefOrGetter<number>
   multiple?: MaybeRefOrGetter<Multiple>
-  /** @deprecated Please use `scheduler` option instead */
-  immediate?: boolean
-  /** @deprecated Please use `scheduler` option instead */
-  interval?: "requestAnimationFrame" | number
 }
-export interface UseElementByPointReturn<
-  Multiple extends boolean = false,
-> extends Pausable {
-  isSupported: ComputedRef<boolean>
+export interface UseElementByPointReturn<Multiple extends boolean = false>
+  extends Supportable, Pausable {
   element: ShallowRef<
     Multiple extends true ? HTMLElement[] : HTMLElement | null
   >

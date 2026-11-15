@@ -153,7 +153,7 @@ export function onLongPress(
   const cleanup = [
     useEventListener(elementRef, 'pointerdown', onDown, listenerOptions),
     useEventListener(elementRef, 'pointermove', onMove, listenerOptions),
-    useEventListener(elementRef, ['pointerup', 'pointerleave'], onRelease, listenerOptions),
+    useEventListener(elementRef, ['pointerup', 'pointerleave', 'pointercancel'], onRelease, listenerOptions),
   ]
 
   const stop = () => cleanup.forEach(fn => fn())

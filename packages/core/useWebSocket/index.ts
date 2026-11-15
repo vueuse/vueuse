@@ -35,14 +35,6 @@ export interface UseWebSocketOptions {
     responseMessage?: MaybeRefOrGetter<WebSocketHeartbeatMessage>
 
     /**
-     * Interval, in milliseconds
-     *
-     * @deprecated Please use `scheduler` option instead
-     * @default 1000
-     */
-    interval?: number
-
-    /**
      * Heartbeat response timeout, in milliseconds
      *
      * @default 1000
@@ -153,18 +145,6 @@ function resolveNestedOptions<T>(options: T | true): T {
   return options
 }
 
-function getDefaultScheduler(options: Extract<UseWebSocketOptions['heartbeat'], { interval?: number }>) {
-  if ('interval' in options) {
-    const {
-      interval = 1000,
-    } = options
-
-    return (cb: AnyFn) => useIntervalFn(cb, interval, { immediate: false })
-  }
-
-  return (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false })
-}
-
 /**
  * Reactive WebSocket client.
  *
@@ -232,6 +212,7 @@ export function useWebSocket<Data = any>(
     heartbeatPause?.()
     wsRef.value.close(code, reason)
     wsRef.value = undefined
+    status.value = 'CLOSED'
   }
 
   const send = (data: string | ArrayBuffer | Blob, useBuffer = true) => {
@@ -254,6 +235,9 @@ export function useWebSocket<Data = any>(
     status.value = 'CONNECTING'
 
     ws.onopen = () => {
+      if (wsRef.value !== ws)
+        return
+
       status.value = 'OPEN'
       retried = 0
       onConnected?.(ws!)
@@ -262,9 +246,13 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onclose = (ev) => {
-      status.value = 'CLOSED'
-      resetHeartbeat()
-      heartbeatPause?.()
+      if (wsRef.value === ws)
+        status.value = 'CLOSED'
+
+      if (!wsRef.value || wsRef.value === ws) {
+        resetHeartbeat()
+        heartbeatPause?.()
+      }
       onDisconnected?.(ws, ev)
 
       if (!explicitlyClosed && options.autoReconnect && (wsRef.value == null || ws === wsRef.value)) {
@@ -274,11 +262,11 @@ export function useWebSocket<Data = any>(
           onFailed,
         } = resolveNestedOptions(options.autoReconnect)
 
-        const checkRetires = typeof retries === 'function'
+        const checkRetries = typeof retries === 'function'
           ? retries
           : () => typeof retries === 'number' && (retries < 0 || retried < retries)
 
-        if (checkRetires(retried)) {
+        if (checkRetries(retried)) {
           retried += 1
           const delayTime = typeof delay === 'function' ? delay(retried) : delay
           retryTimeout = setTimeout(_init, delayTime)
@@ -294,6 +282,9 @@ export function useWebSocket<Data = any>(
     }
 
     ws.onmessage = (e: MessageEvent) => {
+      if (wsRef.value !== ws)
+        return
+
       if (options.heartbeat) {
         resetHeartbeat()
         const {
@@ -312,7 +303,7 @@ export function useWebSocket<Data = any>(
   if (options.heartbeat) {
     const {
       message = DEFAULT_PING_MESSAGE,
-      scheduler = getDefaultScheduler(resolveNestedOptions(options.heartbeat)),
+      scheduler = (cb: AnyFn) => useIntervalFn(cb, 1000, { immediate: false }),
       pongTimeout = 1000,
     } = resolveNestedOptions(options.heartbeat)
 

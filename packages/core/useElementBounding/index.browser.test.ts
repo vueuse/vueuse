@@ -41,7 +41,7 @@ const Component = defineComponent({
 
 describe('useElementBounding', () => {
   it('should return width and height of element', async () => {
-    const screen = page.render(Component)
+    const screen = await page.render(Component)
     const pre = screen.getByTestId('data')
     await expect.element(pre).toBeVisible()
     expect(pre.query()?.textContent).toMatchInlineSnapshot(`
@@ -59,7 +59,7 @@ describe('useElementBounding', () => {
   })
 
   it('should have reactive values', async () => {
-    const screen = page.render(Component)
+    const screen = await page.render(Component)
     const pre = screen.getByTestId('data')
     const widthButton = screen.getByTestId('width')
     const marginButton = screen.getByTestId('margin')
@@ -83,7 +83,7 @@ describe('useElementBounding', () => {
   })
 
   it('should respect padding and margin', async () => {
-    const screen = page.render(Component, { props: { margin: '400px', padding: '123px' } })
+    const screen = await page.render(Component, { props: { margin: '400px', padding: '123px' } })
     const pre = screen.getByTestId('data')
     await expect.element(pre).toBeVisible()
     expect(pre.query()?.textContent).toMatchInlineSnapshot(`
@@ -101,7 +101,7 @@ describe('useElementBounding', () => {
   })
 
   it('should reset values to 0 if el is unmounted', async () => {
-    const screen = page.render(Component)
+    const screen = await page.render(Component)
     const pre = screen.getByTestId('data')
     const button = screen.getByTestId('remove')
     await expect.element(pre).toBeVisible()
@@ -122,7 +122,7 @@ describe('useElementBounding', () => {
   })
 
   it('should not reset values to 0 if el is unmounted with options.reset set to false', async () => {
-    const screen = page.render(Component, { props: { options: { reset: false } } })
+    const screen = await page.render(Component, { props: { options: { reset: false } } })
     const pre = screen.getByTestId('data')
     const button = screen.getByTestId('remove')
     await expect.element(pre).toBeVisible()
@@ -133,7 +133,7 @@ describe('useElementBounding', () => {
   })
 
   it('should not update immediate with options.immediate set to false', async () => {
-    const screen = page.render(Component, { props: { options: { immediate: false } } })
+    const screen = await page.render(Component, { props: { options: { immediate: false } } })
     const pre = screen.getByTestId('data')
     const updateButton = screen.getByTestId('update')
     await expect.element(pre).toBeVisible()

@@ -150,6 +150,19 @@ export interface UseWebNotificationOptions
    */
   requestPermissions?: boolean
 }
+export interface UseWebNotificationReturn extends Supportable {
+  notification: ShallowRef<Notification | null>
+  ensurePermissions: () => Promise<boolean | undefined>
+  permissionGranted: ShallowRef<boolean>
+  show: (
+    overrides?: WebNotificationOptions,
+  ) => Promise<Notification | undefined>
+  close: () => void
+  onClick: EventHookOn<Event>
+  onShow: EventHookOn<Event>
+  onError: EventHookOn<Event>
+  onClose: EventHookOn<Event>
+}
 /**
  * Reactive useWebNotification
  *
@@ -158,19 +171,5 @@ export interface UseWebNotificationOptions
  */
 export declare function useWebNotification(
   options?: UseWebNotificationOptions,
-): {
-  isSupported: ComputedRef<boolean>
-  notification: Ref<Notification | null, Notification | null>
-  ensurePermissions: () => Promise<boolean | undefined>
-  permissionGranted: ShallowRef<boolean, boolean>
-  show: (
-    overrides?: WebNotificationOptions,
-  ) => Promise<Notification | undefined>
-  close: () => void
-  onClick: EventHookOn<any>
-  onShow: EventHookOn<any>
-  onError: EventHookOn<any>
-  onClose: EventHookOn<any>
-}
-export type UseWebNotificationReturn = ReturnType<typeof useWebNotification>
+): UseWebNotificationReturn
 ```

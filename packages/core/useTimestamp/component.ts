@@ -27,8 +27,6 @@ export const UseTimestamp = /* #__PURE__ */ defineComponent<
     props: [
       'scheduler',
       'callback',
-      'immediate',
-      'interval',
       'offset',
     ],
   },

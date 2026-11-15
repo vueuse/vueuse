@@ -31,25 +31,26 @@ const color = shallowRef('transparent')
 if (speech.isSupported.value) {
   // @ts-expect-error missing types
   const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
-  const speechRecognitionList = new SpeechGrammarList()
-  speechRecognitionList.addFromString(grammar, 1)
-  speech.recognition!.grammars = speechRecognitionList
+  if (SpeechGrammarList) {
+    const speechRecognitionList = new SpeechGrammarList()
+    speechRecognitionList.addFromString(grammar, 1)
+    speech.recognition!.grammars = speechRecognitionList
 
-  watch(speech.result, () => {
-    for (const i of speech.result.value.toLowerCase().split(' ').reverse()) {
-      if (colors.includes(i)) {
-        color.value = i
-        break
+    watch(speech.result, () => {
+      for (const i of speech.result.value.toLowerCase().split(' ').reverse()) {
+        if (colors.includes(i)) {
+          color.value = i
+          break
+        }
       }
-    }
-  })
+    })
+  }
 }
 
 const sampled = shallowRef<string[]>([])
 
 function start() {
   color.value = 'transparent'
-  speech.result.value = ''
   sampled.value = sample(colors, 5)
   speech.start()
 }

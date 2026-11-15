@@ -71,18 +71,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
   emit?: (name: Name, ...args: any[]) => void,
   options?: UseVModelOptions<P[K], true>,
 ): Ref<UnwrapRef<P[K]>>
-
-/**
- * Shorthand for v-model binding, props + emit -> ref
- *
- * @see https://vueuse.org/useVModel
- * @param props
- * @param key (default 'modelValue')
- * @param emit
- * @param options
- *
- * @__NO_SIDE_EFFECTS__
- */
+/* @__NO_SIDE_EFFECTS__ */
 export function useVModel<P extends object, K extends keyof P, Name extends string, Passive extends boolean>(
   props: P,
   key?: K,

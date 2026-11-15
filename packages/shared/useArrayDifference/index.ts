@@ -47,7 +47,7 @@ export function useArrayDifference<T>(...args: any[]): UseArrayDifferenceReturn<
     symmetric = false,
   } = args[3] ?? {}
 
-  if (typeof compareFn === 'string') {
+  if (typeof compareFn !== 'function') {
     const key = compareFn as keyof T
     compareFn = (value: T, othVal: T) => value[key] === othVal[key]
   }

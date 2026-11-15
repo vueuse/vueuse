@@ -316,4 +316,103 @@ describe('useSortable', () => {
       }
     })
   })
+
+  // Regression: 14.2 wrapped element lookup in a computed with no reactive
+  // deps for the string-selector branch, so a null result from the mount-time
+  // query was cached forever — later start()/stop()+start() calls never
+  // re-queried the DOM. These tests pin that start() must always re-query.
+  describe('string selector regression', () => {
+    it('attaches Sortable when start() is called after the target appears', async () => {
+      const wrapper = mount(defineComponent({
+        template: '<div v-if="show" ref="el" id="late-el"></div>',
+        setup() {
+          const el = useTemplateRef<HTMLElement>('el')
+          const show = shallowRef(false)
+          const list = shallowRef<string[]>([])
+          const result = useSortable('#late-el', list, {})
+
+          return { ...result, el, show }
+        },
+      }), { attachTo: document.body })
+      const vm = wrapper.vm
+      try {
+        // Target does not exist on mount — tryOnMounted(start) finds nothing.
+        expect(document.querySelector('#late-el')).toBeNull()
+
+        vm.show = true
+        await wrapper.vm.$nextTick()
+        expect(vm.el).toBeDefined()
+
+        vm.start()
+        expect(Sortable.get(vm.el!)).toBeDefined()
+      }
+      finally {
+        wrapper.unmount()
+      }
+    })
+
+    it('attaches Sortable when stop()+start() is called after the target appears', async () => {
+      const wrapper = mount(defineComponent({
+        template: '<div v-if="show" ref="el" id="late-el-2"></div>',
+        setup() {
+          const el = useTemplateRef<HTMLElement>('el')
+          const show = shallowRef(false)
+          const list = shallowRef<string[]>([])
+          const result = useSortable('#late-el-2', list, {})
+
+          return { ...result, el, show }
+        },
+      }), { attachTo: document.body })
+      const vm = wrapper.vm
+      try {
+        expect(document.querySelector('#late-el-2')).toBeNull()
+
+        vm.show = true
+        await wrapper.vm.$nextTick()
+        expect(vm.el).toBeDefined()
+
+        // Common workaround: destroy first, then retry. Must still work.
+        vm.stop()
+        vm.start()
+        expect(Sortable.get(vm.el!)).toBeDefined()
+      }
+      finally {
+        wrapper.unmount()
+      }
+    })
+
+    it('re-queries the DOM on every start() when the target is replaced', async () => {
+      const wrapper = mount(defineComponent({
+        template: '<div v-if="show" ref="el" id="toggle-el"></div>',
+        setup() {
+          const el = useTemplateRef<HTMLElement>('el')
+          const show = shallowRef(true)
+          const list = shallowRef<string[]>([])
+          const result = useSortable('#toggle-el', list, {})
+
+          return { ...result, el, show }
+        },
+      }), { attachTo: document.body })
+      const vm = wrapper.vm
+      try {
+        const firstElement = vm.el!
+        expect(Sortable.get(firstElement)).toBeDefined()
+
+        vm.show = false
+        await wrapper.vm.$nextTick()
+        vm.stop()
+
+        vm.show = true
+        await wrapper.vm.$nextTick()
+        const secondElement = vm.el!
+        expect(secondElement).not.toBe(firstElement)
+
+        vm.start()
+        expect(Sortable.get(secondElement)).toBeDefined()
+      }
+      finally {
+        wrapper.unmount()
+      }
+    })
+  })
 })

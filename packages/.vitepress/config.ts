@@ -7,7 +7,7 @@ import { currentVersion, versions } from '../../meta/versions'
 import { addonCategoryNames, categoryNames, coreCategoryNames, metadata } from '../metadata/metadata'
 import { PWAVirtual } from './plugins/pwa-virtual'
 import { transformHead } from './transformHead'
-import { FILE_IMPORTS } from './twoslash'
+import { FILE_IMPORTS, hideDocsNoiseTags } from './twoslash'
 import viteConfig from './vite.config'
 
 const Guide = [
@@ -77,9 +77,13 @@ export default withPwa(defineConfig({
     codeTransformers: [
       transformerTwoslash({
         twoslashOptions: {
+          compilerOptions: {
+            ignoreDeprecations: '6.0',
+          },
           handbookOptions: {
             noErrors: true,
           },
+          filterNode: hideDocsNoiseTags,
         },
         includesMap: new Map([['imports', `// ---cut-start---\n${FILE_IMPORTS}\n// ---cut-end---`]]),
         typesCache: createFileSystemTypesCache({
@@ -102,10 +106,13 @@ export default withPwa(defineConfig({
       copyright: 'Copyright © 2020-PRESENT Anthony Fu and VueUse contributors',
     },
 
-    algolia: {
-      appId: 'NBQWY48OOR',
-      apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
-      indexName: 'vueuse',
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: 'NBQWY48OOR',
+        apiKey: 'c5fd82eb1100c2110c1690e0756d8ba5',
+        indexName: 'vueuse',
+      },
     },
 
     socialLinks: [

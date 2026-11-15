@@ -54,19 +54,8 @@ export interface UseVibrateOptions
    *
    */
   pattern?: MaybeRefOrGetter<Arrayable<number>>
-  /**
-   * Interval to run a persistent vibration, in ms
-   *
-   * Pass `0` to disable
-   *
-   * @deprecated Please use `scheduler` option instead
-   * @default 0
-   *
-   */
-  interval: number
 }
-export interface UseVibrateReturn {
-  isSupported: ComputedRef<boolean>
+export interface UseVibrateReturn extends Supportable {
   pattern: MaybeRefOrGetter<Arrayable<number>>
   intervalControls?: Pausable
   vibrate: (pattern?: Arrayable<number>) => void

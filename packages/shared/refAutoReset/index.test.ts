@@ -1,10 +1,16 @@
 import type { Ref } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { effectScope, shallowRef } from 'vue'
 import { autoResetRef, refAutoReset } from './index'
 
 describe('refAutoReset', () => {
-  vi.useFakeTimers()
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 
   it('should be defined', () => {
     expect(refAutoReset).toBeDefined()

@@ -1,15 +1,22 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, shallowRef } from 'vue'
 import { throttledWatch, watchThrottled } from './index'
 
 describe('watchThrottled', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should export module', () => {
     expect(watchThrottled).toBeDefined()
     expect(throttledWatch).toBeDefined()
   })
 
   it('should work', async () => {
-    vi.useFakeTimers()
     const num = shallowRef(0)
     const cb = vi.fn()
     watchThrottled(num, cb, { throttle: 100 })

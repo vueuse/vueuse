@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter, Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator } from '../_configurable'
 import type { Supportable } from '../types'
 import { useTimeoutFn } from '@vueuse/shared'
-import { readonly, shallowReadonly, shallowRef, toValue } from 'vue'
+import { shallowReadonly, shallowRef, toValue } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useSupported } from '../useSupported'
@@ -45,6 +45,7 @@ export interface UseClipboardItemsReturn<Optional> extends Supportable {
  */
 export function useClipboardItems(options?: UseClipboardItemsOptions<undefined>): UseClipboardItemsReturn<false>
 export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems>>): UseClipboardItemsReturn<true>
+/* @__NO_SIDE_EFFECTS__ */
 export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGetter<ClipboardItems> | undefined> = {}): UseClipboardItemsReturn<boolean> {
   const {
     navigator = defaultNavigator,
@@ -83,7 +84,7 @@ export function useClipboardItems(options: UseClipboardItemsOptions<MaybeRefOrGe
   return {
     isSupported,
     content: shallowReadonly(content),
-    copied: readonly(copied),
+    copied: shallowReadonly(copied),
     copy,
     read: updateContent,
   }

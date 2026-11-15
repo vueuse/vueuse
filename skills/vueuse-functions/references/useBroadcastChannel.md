@@ -62,10 +62,9 @@ export interface UseBroadcastChannelOptions extends ConfigurableWindow {
 export declare function useBroadcastChannel<D, P>(
   options: UseBroadcastChannelOptions,
 ): UseBroadcastChannelReturn<D, P>
-export interface UseBroadcastChannelReturn<D, P> {
-  isSupported: ComputedRef<boolean>
-  channel: Ref<BroadcastChannel | undefined>
-  data: Ref<D>
+export interface UseBroadcastChannelReturn<D, P> extends Supportable {
+  channel: ShallowRef<BroadcastChannel | undefined>
+  data: ShallowRef<D>
   post: (data: P) => void
   close: () => void
   error: ShallowRef<Event | null>

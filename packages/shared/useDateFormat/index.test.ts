@@ -17,7 +17,9 @@ describe('useDateFormat', () => {
     expect(normalizeDate(null).toString()).toBe('Invalid Date')
     expect(normalizeDate(new Date()).toDateString()).toBe(currentDate)
     expect(normalizeDate(new Date().toString()).toDateString()).toBe(currentDate)
-    expect.soft(normalizeDate(new Date().toISOString().replace('Z', '')).toDateString()).toBe(currentDate)
+    // Use a fixed date to avoid timezone edge cases near midnight
+    const fixedDate = new Date(2022, 5, 15, 12, 0, 0)
+    expect.soft(normalizeDate(fixedDate.toISOString().replace('Z', '')).toDateString()).toBe(fixedDate.toDateString())
 
     expect(normalizeDate('2022-01')).toEqual(date)
     expect(normalizeDate('2022-01-01')).toEqual(date)

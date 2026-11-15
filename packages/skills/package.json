@@ -1,7 +1,7 @@
 {
   "name": "@vueuse/skills",
   "type": "module",
-  "version": "14.2.0",
+  "version": "15.0.0",
   "description": "Agent Skills for VueUse",
   "author": "SerKo <https://github.com/serkodev>",
   "license": "MIT",
@@ -24,8 +24,11 @@
   "files": [
     "skills"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "build": "tsx build.ts"
+    "update": "tsx build.ts"
   },
   "dependencies": {
     "@vueuse/metadata": "workspace:*"
