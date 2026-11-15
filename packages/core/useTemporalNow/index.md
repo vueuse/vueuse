@@ -40,13 +40,14 @@ This function relies on the [`Temporal`](https://developer.mozilla.org/en-US/doc
   const temporal = useTemporalNow({ temporal: Temporal })
   ```
 
-  [`@js-temporal/polyfill`](https://github.com/js-temporal/temporal-polyfill) is another common alternative. It does not install a global `Temporal` object by itself, so the `temporal` option is the natural way to use it. Its type declarations are authored independently from TypeScript's own ambient `Temporal` types (unlike `temporal-polyfill`, which derives its types from the same source), so a cast is needed to satisfy the `temporal` option at compile time — the runtime objects are spec-compliant and interoperate fine:
+  [`@js-temporal/polyfill`](https://github.com/js-temporal/temporal-polyfill) is another common alternative. It does not install a global `Temporal` object by itself, so the `temporal` option is the natural way to use it. Its type declarations are authored independently from the `temporal-spec` types used here (unlike `temporal-polyfill`, which uses the same types), so a cast is needed to satisfy the `temporal` option at compile time — the runtime objects are spec-compliant and interoperate fine:
 
   ```ts
+  import type { UseTemporalNowOptions } from '@vueuse/core'
   import { Temporal } from '@js-temporal/polyfill'
   import { useTemporalNow } from '@vueuse/core'
 
-  const temporal = useTemporalNow({ temporal: Temporal as unknown as typeof globalThis.Temporal })
+  const temporal = useTemporalNow({ temporal: Temporal as unknown as NonNullable<UseTemporalNowOptions['temporal']> })
   ```
 
 If no `Temporal` implementation can be found (neither passed via the `temporal` option nor available globally), calling `useTemporalNow` will throw an error.
