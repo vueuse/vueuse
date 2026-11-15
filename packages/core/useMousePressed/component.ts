@@ -30,6 +30,7 @@ export const UseMousePressed = /* #__PURE__ */ defineComponent<
       'capture',
       'drag',
       'initialValue',
+      'initials',
       'onPressed',
       'onReleased',
       'touch',

@@ -1,13 +1,29 @@
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseMouseSourceType } from '../useMouse'
-import { computed, shallowRef } from 'vue'
+import { computed, shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
 
+export interface UseMousePressedState {
+  /**
+   * Whether the mouse (or touch) is pressed
+   *
+   * @default false
+   */
+  pressed: boolean
+}
+
 export interface UseMousePressedOptions extends ConfigurableWindow {
+  /**
+   * Initial values for the returned state, used before the first event.
+   * A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseMousePressedState>
+
   /**
    * Listen to `touchstart` `touchend` events
    *
@@ -31,9 +47,7 @@ export interface UseMousePressedOptions extends ConfigurableWindow {
   capture?: boolean
 
   /**
-   * Initial values
-   *
-   * @default false
+   * @deprecated Use `initials.pressed` instead. Will be removed in v17.
    */
   initialValue?: boolean
 
@@ -60,9 +74,11 @@ export interface UseMousePressedOptions extends ConfigurableWindow {
 /** @deprecated use {@link UseMousePressedOptions} instead */
 export type MousePressedOptions = UseMousePressedOptions
 
-export interface UseMousePressedReturn {
-  pressed: ShallowRef<boolean>
-  sourceType: ShallowRef<UseMouseSourceType>
+export interface UseMousePressedReturn extends ReadonlyRefs<UseMousePressedState> {
+  /**
+   * Source of the current press, `null` when released
+   */
+  sourceType: Readonly<ShallowRef<UseMouseSourceType>>
 }
 
 /**
@@ -76,19 +92,23 @@ export function useMousePressed(options: UseMousePressedOptions = {}): UseMouseP
     touch = true,
     drag = true,
     capture = false,
-    initialValue = false,
+    initialValue: deprecatedInitialValue,
+    initials: {
+      pressed: initialPressed = deprecatedInitialValue ?? false,
+    } = {},
     window = defaultWindow,
   } = options
 
-  const pressed = shallowRef(initialValue)
+  const pressed = shallowRef(initialPressed)
   const sourceType = shallowRef<UseMouseSourceType>(null)
 
-  if (!window) {
-    return {
-      pressed,
-      sourceType,
-    }
+  const returnValue: UseMousePressedReturn = {
+    pressed: shallowReadonly(pressed),
+    sourceType: shallowReadonly(sourceType),
   }
+
+  if (!window)
+    return returnValue
 
   const onPressed = (srcType: UseMouseSourceType) => (event: MouseEvent | TouchEvent | DragEvent) => {
     pressed.value = true
@@ -123,8 +143,5 @@ export function useMousePressed(options: UseMousePressedOptions = {}): UseMouseP
     useEventListener<TouchEvent>(window, 'touchcancel', onReleased, listenerOptions)
   }
 
-  return {
-    pressed,
-    sourceType,
-  }
+  return returnValue
 }

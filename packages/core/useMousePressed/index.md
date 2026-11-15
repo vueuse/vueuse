@@ -42,6 +42,18 @@ const { pressed } = useMousePressed({ target: el })
 </template>
 ```
 
+## Initial Values
+
+Before the first event (e.g. during SSR), `pressed` is `false`. Set your own initial value with `initials`:
+
+```ts
+import { useMousePressed } from '@vueuse/core'
+// ---cut---
+const { pressed } = useMousePressed({ initials: { pressed: true } })
+```
+
+The returned refs are readonly. To own the state, pass your own ref to `initials`, `useMousePressed` writes into it.
+
 ## Component Usage
 
 ```vue
