@@ -1,6 +1,6 @@
-import type { UseMediaSessionOptions } from './index'
+import type { UseMediaSessionOptions, UseMediaSessionState } from './index'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
-import { computed, ref as deepRef, nextTick, shallowRef } from 'vue'
+import { computed, ref as deepRef, nextTick, reactive, shallowRef } from 'vue'
 import { useSetup } from '../../.test'
 import { useMediaSession } from './index'
 
@@ -30,13 +30,8 @@ function createMockNavigator(withCamera = true, withMicrophone = true) {
 
 function createState() {
   return {
-    album: shallowRef<string>(),
-    artist: shallowRef<string>(),
-    artwork: shallowRef<MediaImage[]>(),
-    title: shallowRef<string>(),
-    duration: shallowRef<number>(),
-    playbackRate: shallowRef<number>(),
-    position: shallowRef<number>(),
+    metadata: shallowRef<MediaMetadataInit>(),
+    positionState: shallowRef<MediaPositionState>(),
     playbackState: shallowRef<MediaSessionPlaybackState>('none'),
     cameraActive: shallowRef(false),
     microphoneActive: shallowRef(false),
@@ -46,7 +41,7 @@ function createState() {
 type MediaSessionTestState = ReturnType<typeof createState>
 
 /**
- * Passes a ref for every state option, unless the test passes its own options.
+ * Passes a ref for every state key.
  */
 function setupMediaSession(
   navigator: Navigator,
@@ -55,7 +50,7 @@ function setupMediaSession(
 ) {
   const state = createState()
   const vm = useSetup(() => {
-    const api = useMediaSession({ ...state, ...options, navigator })
+    const api = useMediaSession(state, { ...options, navigator })
     initialize?.(state)
     return { api }
   })
@@ -92,12 +87,9 @@ describe('useMediaSession', () => {
 
   it('should update MediaSession `metadata` on states update', async () => {
     const navigator = createMockNavigator()
-    const { album, artist, artwork, title } = setupMediaSession(navigator).state
+    const { metadata } = setupMediaSession(navigator).state
 
-    album.value = sampleMedia.album
-    artist.value = sampleMedia.artist
-    artwork.value = sampleMedia.artwork
-    title.value = sampleMedia.title
+    metadata.value = sampleMedia
 
     await nextTick()
 
@@ -120,49 +112,46 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.playbackState).toBe<MediaSessionPlaybackState>('playing')
   })
 
-  it.each([
-    { state: 'duration', value: 180 },
-    { state: 'playbackRate', value: 2 },
-    { state: 'position', value: 100 },
-  ] as const)('should update position state when `$state` changes', async ({ state, value }) => {
+  it('should publish position state changes', async () => {
     const navigator = createMockNavigator()
-    const { state: session } = setupMediaSession(navigator, (session) => {
-      session.duration.value = 120
-      session.playbackRate.value = 1
-      session.position.value = 10
-    })
+    const { positionState } = setupMediaSession(navigator).state
     const setPositionState = vi.mocked(navigator.mediaSession.setPositionState)
     setPositionState.mockClear()
 
-    session[state].value = value
+    positionState.value = { duration: 120, playbackRate: 1, position: 10 }
     await nextTick()
+    expect(setPositionState).toHaveBeenCalledExactlyOnceWith({ duration: 120, playbackRate: 1, position: 10 })
 
-    expect(setPositionState).toHaveBeenCalledExactlyOnceWith({
-      duration: 120,
-      playbackRate: 1,
-      position: 10,
-      [state]: value,
-    })
+    positionState.value = { duration: 120, playbackRate: 2, position: 50 }
+    await nextTick()
+    expect(setPositionState).toHaveBeenLastCalledWith({ duration: 120, playbackRate: 2, position: 50 })
   })
 
-  it('should wait for duration before publishing native position state', async () => {
+  it('should track in-place changes of a reactive position state', async () => {
+    const navigator = createMockNavigator()
+    const positionState = reactive<MediaPositionState>({ duration: 120, position: 10 })
+    useSetup(() => useMediaSession({ positionState }, { navigator }))
+
+    positionState.position = 60
+    await nextTick()
+
+    expect(navigator.mediaSession.setPositionState).toHaveBeenLastCalledWith({ duration: 120, position: 60 })
+  })
+
+  it.each([
+    { label: 'undefined', value: undefined },
+    { label: 'null', value: null },
+    { label: 'a state without duration', value: { position: 10, playbackRate: 2 } },
+  ])('should clear the native position state for $label', async ({ value }) => {
     const navigator = createMockNavigator()
     const setPositionState = vi.mocked(navigator.mediaSession.setPositionState)
     setPositionState.mockImplementation(state => window.navigator.mediaSession.setPositionState(state))
-    const { duration, playbackRate, position } = setupMediaSession(navigator).state
-    setPositionState.mockClear()
+    const positionState = shallowRef<MediaPositionState | null | undefined>({ duration: 120, position: 10 })
+    useSetup(() => useMediaSession({ positionState }, { navigator }))
 
-    playbackRate.value = 2
-    position.value = 10
+    positionState.value = value
     await nextTick()
-    expect(setPositionState).not.toHaveBeenCalled()
 
-    duration.value = 120
-    await nextTick()
-    expect(setPositionState).toHaveBeenLastCalledWith({ duration: 120, playbackRate: 2, position: 10 })
-
-    duration.value = undefined
-    await nextTick()
     expect(setPositionState).toHaveBeenLastCalledWith()
   })
 
@@ -170,16 +159,12 @@ describe('useMediaSession', () => {
     const navigator = createMockNavigator()
     const setPositionState = vi.mocked(navigator.mediaSession.setPositionState)
     setPositionState.mockImplementation(state => window.navigator.mediaSession.setPositionState(state))
-    const { duration } = setupMediaSession(navigator).state
+    const { positionState } = setupMediaSession(navigator).state
 
-    duration.value = 0
+    positionState.value = { duration: 0 }
     await nextTick()
 
-    expect(setPositionState).toHaveBeenLastCalledWith({
-      duration: 0,
-      playbackRate: undefined,
-      position: undefined,
-    })
+    expect(setPositionState).toHaveBeenLastCalledWith({ duration: 0 })
   })
 
   it('should register handlers from `on*` options during setup', () => {
@@ -295,14 +280,9 @@ describe('useMediaSession', () => {
     const navigator = createMockNavigator()
 
     const vm = setupMediaSession(navigator, (state) => {
-      state.album.value = sampleMedia.album
-      state.artist.value = sampleMedia.artist
-      state.artwork.value = sampleMedia.artwork
-      state.title.value = sampleMedia.title
+      state.metadata.value = sampleMedia
 
-      state.duration.value = 120
-      state.playbackRate.value = 2
-      state.position.value = 100
+      state.positionState.value = { duration: 120, playbackRate: 2, position: 100 }
 
       state.playbackState.value = 'playing'
       state.cameraActive.value = true
@@ -338,9 +318,9 @@ describe('useMediaSession', () => {
     vi.mocked(navigator.mediaSession.setCameraActive).mockClear()
     vi.mocked(navigator.mediaSession.setMicrophoneActive).mockClear()
 
-    vm.state.title.value = 'After unmount'
+    vm.state.metadata.value = { title: 'After unmount' }
     vm.state.playbackState.value = 'playing'
-    vm.state.duration.value = 120
+    vm.state.positionState.value = { duration: 120 }
     vm.state.cameraActive.value = true
     vm.state.microphoneActive.value = true
     await nextTick()
@@ -354,7 +334,7 @@ describe('useMediaSession', () => {
 
   it('should default to an empty session', () => {
     const navigator = createMockNavigator()
-    useSetup(() => useMediaSession({ navigator }))
+    useSetup(() => useMediaSession({}, { navigator }))
 
     expect(navigator.mediaSession.metadata).toBeNull()
     expect(navigator.mediaSession.playbackState).toBe('none')
@@ -366,15 +346,12 @@ describe('useMediaSession', () => {
   it('should publish plain values on setup', () => {
     const navigator = createMockNavigator()
     useSetup(() => useMediaSession({
-      navigator,
-      ...sampleMedia,
-      duration: 100,
-      playbackRate: 1,
-      position: 10,
+      metadata: sampleMedia,
+      positionState: { duration: 100, playbackRate: 1, position: 10 },
       playbackState: 'paused',
       cameraActive: true,
       microphoneActive: true,
-    }))
+    }, { navigator }))
 
     expect(navigator.mediaSession.metadata?.title).toBe(sampleMedia.title)
     expect(navigator.mediaSession.metadata?.album).toBe(sampleMedia.album)
@@ -389,11 +366,9 @@ describe('useMediaSession', () => {
     const track = shallowRef({ title: 'First', artist: 'Artist' })
     const playing = shallowRef(false)
     useSetup(() => useMediaSession({
-      navigator,
-      title: () => track.value.title,
-      artist: () => track.value.artist,
+      metadata: () => ({ title: track.value.title, artist: track.value.artist }),
       playbackState: computed(() => playing.value ? 'playing' : 'paused'),
-    }))
+    }, { navigator }))
 
     expect(navigator.mediaSession.metadata?.title).toBe('First')
     expect(navigator.mediaSession.playbackState).toBe('paused')
@@ -409,7 +384,7 @@ describe('useMediaSession', () => {
   it('should track in-place changes of a deep artwork ref', async () => {
     const navigator = createMockNavigator()
     const artwork = deepRef<MediaImage[]>([])
-    useSetup(() => useMediaSession({ navigator, title: sampleMedia.title, artwork }))
+    useSetup(() => useMediaSession({ metadata: () => ({ title: sampleMedia.title, artwork: artwork.value }) }, { navigator }))
 
     artwork.value.push(sampleMedia.artwork[0])
     await nextTick()
@@ -417,9 +392,100 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.metadata?.artwork[0].sizes).toBe(sampleMedia.artwork[0].sizes)
   })
 
-  it('should only return support flags', () => {
+  it('should accept a reactive metadata object', async () => {
+    const navigator = createMockNavigator()
+    const metadata = reactive<MediaMetadataInit>({ title: 'First' })
+    useSetup(() => useMediaSession({ metadata }, { navigator }))
+
+    expect(navigator.mediaSession.metadata?.title).toBe('First')
+
+    metadata.title = 'Second'
+    await nextTick()
+
+    expect(navigator.mediaSession.metadata?.title).toBe('Second')
+  })
+
+  it('should clear the metadata when it is unset', async () => {
+    const navigator = createMockNavigator()
+    const metadata = shallowRef<MediaMetadataInit | undefined>(sampleMedia)
+    useSetup(() => useMediaSession({ metadata }, { navigator }))
+
+    expect(navigator.mediaSession.metadata?.title).toBe(sampleMedia.title)
+
+    metadata.value = undefined
+    await nextTick()
+
+    expect(navigator.mediaSession.metadata).toBeNull()
+  })
+
+  it('should not rebuild the metadata when other state changes', async () => {
+    const navigator = createMockNavigator()
+    const { state } = setupMediaSession(navigator, (state) => {
+      state.metadata.value = sampleMedia
+    })
+    const metadata = navigator.mediaSession.metadata
+
+    state.playbackState.value = 'playing'
+    state.positionState.value = { duration: 120 }
+    await nextTick()
+
+    expect(navigator.mediaSession.metadata).toBe(metadata)
+  })
+
+  it('should track a reactive state object', async () => {
+    const navigator = createMockNavigator()
+    const state = reactive<UseMediaSessionState>({ playbackState: 'paused' })
+    useSetup(() => useMediaSession(state, { navigator }))
+
+    state.playbackState = 'playing'
+    state.metadata = { title: 'Track' }
+    await nextTick()
+
+    expect(navigator.mediaSession.playbackState).toBe('playing')
+    expect(navigator.mediaSession.metadata?.title).toBe('Track')
+  })
+
+  it('should reset the session and stop syncing on stop', async () => {
+    const navigator = createMockNavigator()
+    const play = vi.fn()
+    const { api, state } = setupMediaSession(navigator, (state) => {
+      state.metadata.value = sampleMedia
+      state.playbackState.value = 'playing'
+    }, { onPlay: play })
+    await nextTick()
+    const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
+    setActionHandler.mockClear()
+
+    api.stop()
+
+    expect(navigator.mediaSession.metadata).toBeNull()
+    expect(navigator.mediaSession.playbackState).toBe('none')
+    expect(navigator.mediaSession.setPositionState).toHaveBeenLastCalledWith()
+    expect(setActionHandler).toHaveBeenCalledExactlyOnceWith('play', null)
+
+    state.metadata.value = { title: 'After stop' }
+    await nextTick()
+    expect(navigator.mediaSession.metadata).toBeNull()
+
+    // Stopping twice is a no-op
+    api.stop()
+    expect(setActionHandler).toHaveBeenCalledOnce()
+  })
+
+  it('should allow stopping a session created outside of a scope', () => {
+    const navigator = createMockNavigator()
+    const { stop } = useMediaSession({ metadata: sampleMedia }, { navigator, onPlay: vi.fn() })
+    expect(navigator.mediaSession.metadata?.title).toBe(sampleMedia.title)
+
+    stop()
+
+    expect(navigator.mediaSession.metadata).toBeNull()
+    expect(navigator.mediaSession.setActionHandler).toHaveBeenLastCalledWith('play', null)
+  })
+
+  it('should only return support flags and stop', () => {
     const api = setupMediaSession(createMockNavigator()).api
 
-    expect(Object.keys(api).sort()).toEqual(['isSetCameraSupported', 'isSetMicrophoneSupported', 'isSupported'])
+    expect(Object.keys(api).sort()).toEqual(['isSetCameraSupported', 'isSetMicrophoneSupported', 'isSupported', 'stop'])
   })
 })

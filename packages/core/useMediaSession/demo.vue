@@ -22,20 +22,21 @@ function formatDuration(seconds: number) {
   return new Date(1000 * seconds).toISOString().slice(14, 19)
 }
 
-// Browsers extrapolate the position from `playbackRate`, so it only needs updating after seeking
+// Browsers extrapolate the position from `playbackRate`, so it only needs updating after seeking and rate changes
 const position = shallowRef(0)
 
 useMediaSession({
-  title: 'Sintel',
-  artist: 'Blender Foundation',
-  album: 'Sintel',
-  artwork: [
-    { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-  ],
-  duration,
-  playbackRate: rate,
-  position,
+  metadata: {
+    title: 'Sintel',
+    artist: 'Blender Foundation',
+    album: 'Sintel',
+    artwork: [
+      { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
+    ],
+  },
   playbackState: () => playing.value ? 'playing' : 'paused',
+  positionState: () => ({ duration: duration.value, playbackRate: rate.value, position: position.value }),
+}, {
   onPlay: () => playing.value = true,
   onPause: () => playing.value = false,
   onSeekBackward: details => currentTime.value -= details.seekOffset ?? 10,
@@ -62,6 +63,7 @@ useMediaSession({
         :loop="false"
         @click="playing = !playing"
         @seeked="position = currentTime"
+        @ratechange="position = currentTime"
       />
       <div
         v-if="waiting"
