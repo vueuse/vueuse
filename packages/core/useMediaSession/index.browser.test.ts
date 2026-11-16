@@ -51,6 +51,20 @@ describe('useMediaSession', () => {
     expect(isSupported.value).toBe(false)
   })
 
+  it('should initialize the session during setup without waiting for mount', () => {
+    const navigator = createMockNavigator()
+    navigator.mediaSession.metadata = new MediaMetadata({ title: 'Previous track' })
+    navigator.mediaSession.playbackState = 'playing'
+
+    setupMediaSession(navigator, () => {
+      expect(navigator.mediaSession.metadata).toBeNull()
+      expect(navigator.mediaSession.playbackState).toBe('none')
+      expect(navigator.mediaSession.setPositionState).toHaveBeenCalledExactlyOnceWith()
+      expect(navigator.mediaSession.setCameraActive).toHaveBeenCalledExactlyOnceWith(false)
+      expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenCalledExactlyOnceWith(false)
+    })
+  })
+
   it('should update MediaSession `metadata` on states update', async () => {
     const navigator = createMockNavigator()
     const { album, artist, artwork, title } = setupMediaSession(navigator).api
@@ -294,6 +308,12 @@ describe('useMediaSession', () => {
 
     expect(navigator.mediaSession.setCameraActive).toHaveBeenLastCalledWith(true)
     expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(true)
+    expect(navigator.mediaSession.setPositionState).toHaveBeenLastCalledWith({
+      duration: 120,
+      playbackRate: 2,
+      position: 100,
+    })
+    vi.mocked(navigator.mediaSession.setPositionState).mockClear()
 
     if (operation === 'clear')
       vm.api.clear()
@@ -311,12 +331,39 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', null)
   })
 
+  it('should stop synchronizing after unmount', async () => {
+    const navigator = createMockNavigator()
+    const vm = setupMediaSession(navigator)
+    vm.unmount()
+    vi.mocked(navigator.mediaSession.setActionHandler).mockClear()
+    vi.mocked(navigator.mediaSession.setPositionState).mockClear()
+    vi.mocked(navigator.mediaSession.setCameraActive).mockClear()
+    vi.mocked(navigator.mediaSession.setMicrophoneActive).mockClear()
+
+    vm.api.title.value = 'After unmount'
+    vm.api.playbackState.value = 'playing'
+    vm.api.duration.value = 120
+    vm.api.actionHandlers.value = { play: vi.fn() }
+    vm.api.cameraActive.value = true
+    vm.api.microphoneActive.value = true
+    await nextTick()
+
+    expect(navigator.mediaSession.metadata).toBeNull()
+    expect(navigator.mediaSession.playbackState).toBe('none')
+    expect(navigator.mediaSession.setActionHandler).not.toHaveBeenCalled()
+    expect(navigator.mediaSession.setPositionState).not.toHaveBeenCalled()
+    expect(navigator.mediaSession.setCameraActive).not.toHaveBeenCalled()
+    expect(navigator.mediaSession.setMicrophoneActive).not.toHaveBeenCalled()
+  })
+
   it('should allow publishing a new session after clearing', async () => {
     const navigator = createMockNavigator()
     const api = setupMediaSession(navigator, (api) => {
       api.title.value = 'First track'
       api.actionHandlers.value = { play: vi.fn() }
     }).api
+    expect(navigator.mediaSession.metadata?.title).toBe('First track')
+
     api.clear()
     await nextTick()
     expect(navigator.mediaSession.metadata).toBeNull()

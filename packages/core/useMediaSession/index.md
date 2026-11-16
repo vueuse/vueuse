@@ -6,6 +6,9 @@ category: Browser
 
 Reactive [Media Session API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API). The Media Session API provides a way to customize media notifications.
 
+When supported, the session is initialized as soon as `useMediaSession()` is called,
+without waiting for the component to mount.
+
 ## Basic Usage
 
 ```vue

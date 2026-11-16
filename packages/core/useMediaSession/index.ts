@@ -1,7 +1,7 @@
 import type { Ref, ShallowRef } from 'vue'
 import type { ConfigurableNavigator, Supportable } from '../types'
 import type { UseSupportedReturn } from '../useSupported'
-import { tryOnMounted, tryOnScopeDispose, watchDeep } from '@vueuse/shared'
+import { tryOnScopeDispose, watchDeep } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, watchEffect } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -140,46 +140,44 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
   const isSetMicrophoneSupported = useSupported(() => navigator && 'mediaSession' in navigator && 'setMicrophoneActive' in navigator.mediaSession)
 
   if (isSupported.value) {
-    tryOnMounted(() => {
-      watchEffect(() => {
-        const metadata: MediaMetadataInit = {
-          album: album.value,
-          artist: artist.value,
-          artwork: artwork.value,
-          title: title.value,
-        }
-        navigator!.mediaSession.metadata = Object.values(metadata).every(value => value === undefined)
-          ? null
-          : new MediaMetadata(metadata)
-      })
-
-      watchEffect(() => {
-        navigator!.mediaSession.playbackState = playbackState.value
-      })
-
-      watchEffect(() => {
-        // A nonempty position state requires a duration, which may not be loaded yet.
-        if (duration.value === undefined) {
-          navigator!.mediaSession.setPositionState()
-          return
-        }
-        navigator!.mediaSession.setPositionState({
-          duration: duration.value,
-          playbackRate: playbackRate.value,
-          position: position.value,
-        })
-      })
-
-      watchDeep(actionHandlers, syncActionHandlers, { immediate: true })
-
-      if (isSetCameraSupported.value) {
-        watchEffect(() => navigator!.mediaSession.setCameraActive(cameraActive.value))
+    watchEffect(() => {
+      const metadata: MediaMetadataInit = {
+        album: album.value,
+        artist: artist.value,
+        artwork: artwork.value,
+        title: title.value,
       }
-
-      if (isSetMicrophoneSupported.value) {
-        watchEffect(() => navigator!.mediaSession.setMicrophoneActive(microphoneActive.value))
-      }
+      navigator!.mediaSession.metadata = Object.values(metadata).every(value => value === undefined)
+        ? null
+        : new MediaMetadata(metadata)
     })
+
+    watchEffect(() => {
+      navigator!.mediaSession.playbackState = playbackState.value
+    })
+
+    watchEffect(() => {
+      // A nonempty position state requires a duration, which may not be loaded yet.
+      if (duration.value === undefined) {
+        navigator!.mediaSession.setPositionState()
+        return
+      }
+      navigator!.mediaSession.setPositionState({
+        duration: duration.value,
+        playbackRate: playbackRate.value,
+        position: position.value,
+      })
+    })
+
+    watchDeep(actionHandlers, syncActionHandlers, { immediate: true })
+
+    if (isSetCameraSupported.value) {
+      watchEffect(() => navigator!.mediaSession.setCameraActive(cameraActive.value))
+    }
+
+    if (isSetMicrophoneSupported.value) {
+      watchEffect(() => navigator!.mediaSession.setMicrophoneActive(microphoneActive.value))
+    }
   }
 
   function syncActionHandlers(handlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> = {}) {
