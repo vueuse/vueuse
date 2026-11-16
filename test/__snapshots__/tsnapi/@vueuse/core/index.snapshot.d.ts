@@ -873,22 +873,26 @@ export interface UseMediaControlsReturn {
   onSourceError: EventHookOn<Event>;
   onPlaybackError: EventHookOn<Event>;
 }
-export interface UseMediaSessionOptions extends ConfigurableNavigator {}
-export interface UseMediaSessionReturn extends Supportable {
-  album: ShallowRef<MediaMetadataInit['album']>;
-  artist: ShallowRef<MediaMetadataInit['artist']>;
-  artwork: Ref<MediaMetadataInit['artwork']>;
-  title: ShallowRef<MediaMetadataInit['title']>;
-  duration: ShallowRef<MediaPositionState['duration']>;
-  playbackRate: ShallowRef<MediaPositionState['playbackRate']>;
-  position: ShallowRef<MediaPositionState['position']>;
-  playbackState: ShallowRef<MediaSessionPlaybackState>;
-  actionHandlers: Ref<Partial<Record<MediaSessionAction, MediaSessionActionHandler> | undefined>>;
-  cameraActive: ShallowRef<boolean>;
-  microphoneActive: ShallowRef<boolean>;
+export interface UseMediaSessionOptions extends ConfigurableNavigator {
+  initials?: MaybeRefInitials<UseMediaSessionState>;
+}
+export interface UseMediaSessionReturn extends Supportable, ToRefs<UseMediaSessionState> {
   isSetCameraSupported: UseSupportedReturn;
   isSetMicrophoneSupported: UseSupportedReturn;
   clear: () => void;
+}
+export interface UseMediaSessionState {
+  album: MediaMetadataInit['album'];
+  artist: MediaMetadataInit['artist'];
+  artwork: MediaMetadataInit['artwork'];
+  title: MediaMetadataInit['title'];
+  duration: MediaPositionState['duration'];
+  playbackRate: MediaPositionState['playbackRate'];
+  position: MediaPositionState['position'];
+  playbackState: MediaSessionPlaybackState;
+  actionHandlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> | undefined;
+  cameraActive: boolean;
+  microphoneActive: boolean;
 }
 export interface UseMediaSource {
   src: string;

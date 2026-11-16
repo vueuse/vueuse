@@ -63,6 +63,20 @@ function updatePositionState() {
 </template>
 ```
 
+### Initial values
+
+Before you update them, the metadata and position refs are `undefined`, `playbackState` is `'none'` and `cameraActive` / `microphoneActive` are `false`. Set your own initial values with `initials`; they are published to the session on setup:
+
+```ts
+import { useMediaSession } from '@vueuse/core'
+
+const { title, playbackState } = useMediaSession({
+  initials: { title: 'Sintel', artist: 'Blender Foundation', playbackState: 'paused' },
+})
+```
+
+The returned refs stay writable, since writing to them is how the session is updated. To own the state, pass your own refs to `initials`; `useMediaSession` uses them as its state and keeps the session in sync with them.
+
 ## Position state
 
 Position updates are published once `duration` is defined. You can set `position`

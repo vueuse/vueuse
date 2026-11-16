@@ -1,4 +1,5 @@
-import type { Ref, ShallowRef } from 'vue'
+import type { MaybeRefInitials } from '@vueuse/shared'
+import type { ToRefs } from 'vue'
 import type { ConfigurableNavigator, Supportable } from '../types'
 import type { UseSupportedReturn } from '../useSupported'
 import { tryOnScopeDispose, watchDeep } from '@vueuse/shared'
@@ -11,41 +12,49 @@ import { useSupported } from '../useSupported'
  * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/MediaSession)
  */
 
-export interface UseMediaSessionOptions extends ConfigurableNavigator {}
-
-export interface UseMediaSessionReturn extends Supportable {
+export interface UseMediaSessionState {
   /**
    * The **`album`** property of the `MediaMetadata` interface returns or sets the name of the album or collection containing the media to be played.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/album)
+   *
+   * @default undefined
    */
-  album: ShallowRef<MediaMetadataInit['album']>
+  album: MediaMetadataInit['album']
   /**
    * The **`artist`** property of the `MediaMetadata` interface returns or sets the name of the artist, group, creator, etc., of the media to be played.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/artist)
+   *
+   * @default undefined
    */
-  artist: ShallowRef<MediaMetadataInit['artist']>
+  artist: MediaMetadataInit['artist']
   /**
    * The **`artwork`** property of the `MediaMetadata` interface returns or sets an array of objects representing images associated with playing media.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/artwork)
+   *
+   * @default undefined
    */
-  artwork: Ref<MediaMetadataInit['artwork']>
+  artwork: MediaMetadataInit['artwork']
   /**
    * The **`title`** property of the `MediaMetadata` interface returns or sets the title of the media to be played.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaMetadata/title)
+   *
+   * @default undefined
    */
-  title: ShallowRef<MediaMetadataInit['title']>
+  title: MediaMetadataInit['title']
   /**
    * A floating-point value giving the total duration of the current media in seconds.
    * This should always be a non-negative number, with positive infinity (`Infinity`) indicating media
    * without a defined end, such as a live stream.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#duration)
+   *
+   * @default undefined
    */
-  duration: ShallowRef<MediaPositionState['duration']>
+  duration: MediaPositionState['duration']
   /**
    * A floating-point value indicating the rate at which the media is being played,
    * as a ratio relative to its normal playback speed. Thus, a value of 1 is playing at normal speed,
@@ -53,40 +62,66 @@ export interface UseMediaSessionReturn extends Supportable {
    * -1 indicates playback at the normal speed but backward, -2 is double speed in reverse, and so on.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#playbackrate)
+   *
+   * @default undefined
    */
-  playbackRate: ShallowRef<MediaPositionState['playbackRate']>
+  playbackRate: MediaPositionState['playbackRate']
   /**
    * A floating-point value indicating the last reported playback position of the media in seconds. This must be between zero and the duration, inclusive.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState#position)
+   *
+   * @default undefined
    */
-  position: ShallowRef<MediaPositionState['position']>
+  position: MediaPositionState['position']
   /**
    * The **`playbackState`** property of the `MediaSession` interface indicates whether the current media session is playing or paused.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/playbackState)
+   *
+   * @default 'none'
    */
-  playbackState: ShallowRef<MediaSessionPlaybackState>
+  playbackState: MediaSessionPlaybackState
   /**
    * Handlers for a media session action. These actions let a web app receive notifications
    * when the user engages a device's built-in physical or onscreen media controls,
    * such as play, stop, or seek buttons.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler)
+   *
+   * @default undefined
    */
-  actionHandlers: Ref<Partial<Record<MediaSessionAction, MediaSessionActionHandler> | undefined>>
+  actionHandlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> | undefined
   /**
    * Indicate to the user agent whether the user's camera is considered to be active.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setCameraActive)
+   *
+   * @default false
    */
-  cameraActive: ShallowRef<boolean>
+  cameraActive: boolean
   /**
    * Indicate to the user agent whether the user's microphone is considered to be active.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setMicrophoneActive)
+   *
+   * @default false
    */
-  microphoneActive: ShallowRef<boolean>
+  microphoneActive: boolean
+}
+
+export interface UseMediaSessionOptions extends ConfigurableNavigator {
+  /**
+   * Initial values for the returned state, published to the session on setup.
+   * A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseMediaSessionState>
+}
+
+/**
+ * The state refs stay writable: writing to them is how the session is updated.
+ */
+export interface UseMediaSessionReturn extends Supportable, ToRefs<UseMediaSessionState> {
   /**
    * Whether `mediaSession.setCameraActive()` is supported by the browser.
    *
@@ -114,27 +149,40 @@ export interface UseMediaSessionReturn extends Supportable {
 export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaSessionReturn {
   const {
     navigator = defaultNavigator,
+    initials: {
+      album: initialAlbum,
+      artist: initialArtist,
+      artwork: initialArtwork,
+      title: initialTitle,
+      duration: initialDuration,
+      playbackRate: initialPlaybackRate,
+      position: initialPosition,
+      playbackState: initialPlaybackState = 'none',
+      actionHandlers: initialActionHandlers,
+      cameraActive: initialCameraActive = false,
+      microphoneActive: initialMicrophoneActive = false,
+    } = {},
   } = options
 
   const isSupported = useSupported(() => navigator && 'mediaSession' in navigator)
 
-  const album = shallowRef<MediaMetadataInit['album']>()
-  const artist = shallowRef<MediaMetadataInit['artist']>()
-  const artwork = deepRef<MediaMetadataInit['artwork']>()
-  const title = shallowRef<MediaMetadataInit['title']>()
+  const album = shallowRef(initialAlbum)
+  const artist = shallowRef(initialArtist)
+  const artwork = deepRef(initialArtwork)
+  const title = shallowRef(initialTitle)
 
-  const duration = shallowRef<MediaPositionState['duration']>()
-  const playbackRate = shallowRef<MediaPositionState['playbackRate']>()
-  const position = shallowRef<MediaPositionState['position']>()
+  const duration = shallowRef(initialDuration)
+  const playbackRate = shallowRef(initialPlaybackRate)
+  const position = shallowRef(initialPosition)
 
-  const playbackState = shallowRef<MediaSessionPlaybackState>('none')
+  const playbackState = shallowRef(initialPlaybackState)
 
-  const actionHandlers = deepRef<Partial<Record<MediaSessionAction, MediaSessionActionHandler>>>()
+  const actionHandlers = deepRef(initialActionHandlers)
 
   const registeredHandlers = new Map<MediaSessionAction, MediaSessionActionHandler>()
 
-  const cameraActive = shallowRef(false)
-  const microphoneActive = shallowRef(false)
+  const cameraActive = shallowRef(initialCameraActive)
+  const microphoneActive = shallowRef(initialMicrophoneActive)
 
   const isSetCameraSupported = useSupported(() => navigator && 'mediaSession' in navigator && 'setCameraActive' in navigator.mediaSession)
   const isSetMicrophoneSupported = useSupported(() => navigator && 'mediaSession' in navigator && 'setMicrophoneActive' in navigator.mediaSession)

@@ -1,6 +1,6 @@
-import type { UseMediaSessionReturn } from './index'
+import type { UseMediaSessionOptions, UseMediaSessionReturn } from './index'
 import { describe, expect, it, onTestFinished, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { useSetup } from '../../.test'
 import { useMediaSession } from './index'
 
@@ -28,9 +28,13 @@ function createMockNavigator(withCamera = true, withMicrophone = true) {
   } as unknown as Navigator
 }
 
-function setupMediaSession(navigator: Navigator, initialize?: (api: UseMediaSessionReturn) => void) {
+function setupMediaSession(
+  navigator: Navigator,
+  initialize?: (api: UseMediaSessionReturn) => void,
+  options: Omit<UseMediaSessionOptions, 'navigator'> = {},
+) {
   const vm = useSetup(() => {
-    const api = useMediaSession({ navigator })
+    const api = useMediaSession({ ...options, navigator })
     initialize?.(api)
     return { api }
   })
@@ -368,5 +372,74 @@ describe('useMediaSession', () => {
 
     expect(navigator.mediaSession.metadata?.title).toBe('Next track')
     expect(navigator.mediaSession.setActionHandler).toHaveBeenLastCalledWith('play', play)
+  })
+
+  describe('initials', () => {
+    it('should default to an empty session', () => {
+      const api = setupMediaSession(createMockNavigator()).api
+
+      expect(api.title.value).toBeUndefined()
+      expect(api.artwork.value).toBeUndefined()
+      expect(api.duration.value).toBeUndefined()
+      expect(api.actionHandlers.value).toBeUndefined()
+      expect(api.playbackState.value).toBe('none')
+      expect(api.cameraActive.value).toBe(false)
+      expect(api.microphoneActive.value).toBe(false)
+    })
+
+    it('should seed from plain values and publish them on setup', () => {
+      const navigator = createMockNavigator()
+      const play = vi.fn()
+
+      const api = setupMediaSession(navigator, undefined, {
+        initials: {
+          ...sampleMedia,
+          duration: 100,
+          playbackRate: 1,
+          position: 10,
+          playbackState: 'paused',
+          actionHandlers: { play },
+          cameraActive: true,
+          microphoneActive: true,
+        },
+      }).api
+
+      expect(api.title.value).toBe(sampleMedia.title)
+      expect(api.playbackState.value).toBe('paused')
+      expect(navigator.mediaSession.metadata?.title).toBe(sampleMedia.title)
+      expect(navigator.mediaSession.metadata?.album).toBe(sampleMedia.album)
+      expect(navigator.mediaSession.playbackState).toBe('paused')
+      expect(navigator.mediaSession.setPositionState).toHaveBeenCalledExactlyOnceWith({ duration: 100, playbackRate: 1, position: 10 })
+      expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledExactlyOnceWith('play', play)
+      expect(navigator.mediaSession.setCameraActive).toHaveBeenCalledExactlyOnceWith(true)
+      expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenCalledExactlyOnceWith(true)
+    })
+
+    it('should use passed refs as internal state', async () => {
+      const navigator = createMockNavigator()
+      const title = shallowRef('Initial')
+
+      const api = setupMediaSession(navigator, undefined, { initials: { title } }).api
+
+      expect(api.title).toBe(title)
+      expect(navigator.mediaSession.metadata?.title).toBe('Initial')
+
+      title.value = 'Updated'
+      await nextTick()
+
+      expect(navigator.mediaSession.metadata?.title).toBe('Updated')
+    })
+
+    it('should reset seeded state on clear', () => {
+      const api = setupMediaSession(createMockNavigator(), undefined, {
+        initials: { title: sampleMedia.title, playbackState: 'playing', cameraActive: true },
+      }).api
+
+      api.clear()
+
+      expect(api.title.value).toBeUndefined()
+      expect(api.playbackState.value).toBe('none')
+      expect(api.cameraActive.value).toBe(false)
+    })
   })
 })
