@@ -95,20 +95,28 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.playbackState).toBe<MediaSessionPlaybackState>('playing')
   })
 
-  it('should call `setPositionState` on states update', async () => {
+  it.each([
+    { state: 'duration', value: 180 },
+    { state: 'playbackRate', value: 2 },
+    { state: 'position', value: 100 },
+  ] as const)('should update position state when `$state` changes', async ({ state, value }) => {
     const navigator = createMockNavigator()
-    const { duration, playbackRate, position } = setupMediaSession(navigator).api
+    const { api } = setupMediaSession(navigator, (api) => {
+      api.duration.value = 120
+      api.playbackRate.value = 1
+      api.position.value = 10
+    })
+    const setPositionState = vi.mocked(navigator.mediaSession.setPositionState)
+    setPositionState.mockClear()
 
-    duration.value = 120
-    playbackRate.value = 2
-    position.value = 100
-
+    api[state].value = value
     await nextTick()
 
-    expect(navigator.mediaSession.setPositionState).toHaveBeenLastCalledWith({
+    expect(setPositionState).toHaveBeenCalledExactlyOnceWith({
       duration: 120,
-      playbackRate: 2,
-      position: 100,
+      playbackRate: 1,
+      position: 10,
+      [state]: value,
     })
   })
 
@@ -242,44 +250,26 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', play)
   })
 
-  it('should have `isSetCameraSupport` as false if `setCameraActive()` not available', () => {
-    const navigator = createMockNavigator(false, false)
-    const { isSetCameraSupported } = setupMediaSession(navigator).api
+  it.each([
+    { camera: false, microphone: false },
+    { camera: true, microphone: false },
+    { camera: false, microphone: true },
+    { camera: true, microphone: true },
+  ])('should handle camera=$camera and microphone=$microphone support', async ({ camera, microphone }) => {
+    const navigator = createMockNavigator(camera, microphone)
+    const { cameraActive, isSetCameraSupported, isSetMicrophoneSupported, microphoneActive } = setupMediaSession(navigator).api
 
-    expect(isSetCameraSupported.value).toBe(false)
-  })
-
-  it('should set camera active on states update', async () => {
-    const navigator = createMockNavigator()
-    const { cameraActive, isSetCameraSupported } = setupMediaSession(navigator).api
-
-    expect(isSetCameraSupported.value).toBe(true)
+    expect(isSetCameraSupported.value).toBe(camera)
+    expect(isSetMicrophoneSupported.value).toBe(microphone)
 
     cameraActive.value = true
-
-    await nextTick()
-
-    expect(navigator.mediaSession.setCameraActive).toHaveBeenLastCalledWith(true)
-  })
-
-  it('should have `isSetMicrophoneSupported` as false if `setMicrophoneActive()` not available', () => {
-    const navigator = createMockNavigator(false, false)
-    const { isSetMicrophoneSupported } = setupMediaSession(navigator).api
-
-    expect(isSetMicrophoneSupported.value).toBe(false)
-  })
-
-  it('should set microphone active on states update', async () => {
-    const navigator = createMockNavigator()
-    const { microphoneActive, isSetMicrophoneSupported } = setupMediaSession(navigator).api
-
-    expect(isSetMicrophoneSupported.value).toBe(true)
-
     microphoneActive.value = true
-
     await nextTick()
 
-    expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(true)
+    if (camera)
+      expect(navigator.mediaSession.setCameraActive).toHaveBeenLastCalledWith(true)
+    if (microphone)
+      expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(true)
   })
 
   it.each(['clear', 'unmount'] as const)('should reset the session on %s', async (operation) => {
@@ -322,11 +312,14 @@ describe('useMediaSession', () => {
     await nextTick()
 
     expect(navigator.mediaSession.metadata).toBeNull()
+    expect(vm.api.duration.value).toBeUndefined()
+    expect(vm.api.playbackRate.value).toBeUndefined()
+    expect(vm.api.position.value).toBeUndefined()
     expect(vm.api.cameraActive.value).toBe(false)
     expect(vm.api.microphoneActive.value).toBe(false)
     expect(navigator.mediaSession.setCameraActive).toHaveBeenLastCalledWith(false)
     expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(false)
-    expect(navigator.mediaSession.setPositionState).toHaveBeenCalledWith()
+    expect(navigator.mediaSession.setPositionState).toHaveBeenLastCalledWith()
     expect(navigator.mediaSession.playbackState).toBe<MediaSessionPlaybackState>('none')
     expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', null)
   })
