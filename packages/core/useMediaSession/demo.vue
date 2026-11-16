@@ -7,7 +7,6 @@ import Scrubber from '../useMediaControls/components/Scrubber.vue'
 import Spinner from '../useMediaControls/components/Spinner.vue'
 
 const video = useTemplateRef('video')
-const loop = shallowRef(false)
 const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
 
 const controls = useMediaControls(video, {
@@ -23,6 +22,9 @@ function formatDuration(seconds: number) {
   return new Date(1000 * seconds).toISOString().slice(14, 19)
 }
 
+// Browsers extrapolate the position from `playbackRate`, so it only needs updating after seeking
+const position = shallowRef(0)
+
 useMediaSession({
   title: 'Sintel',
   artist: 'Blender Foundation',
@@ -32,7 +34,7 @@ useMediaSession({
   ],
   duration,
   playbackRate: rate,
-  position: currentTime,
+  position,
   playbackState: () => playing.value ? 'playing' : 'paused',
   onPlay: () => playing.value = true,
   onPause: () => playing.value = false,
@@ -57,8 +59,9 @@ useMediaSession({
         crossorigin="anonymous"
         class="w-full block"
         :poster="poster"
-        :loop="loop"
+        :loop="false"
         @click="playing = !playing"
+        @seeked="position = currentTime"
       />
       <div
         v-if="waiting"
