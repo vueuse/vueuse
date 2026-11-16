@@ -105,8 +105,18 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
 
       if (!useLegacy) {
         try {
-          const clipboardItem = createClipboardItem(resolvedValue)
-          await navigator!.clipboard.write([clipboardItem])
+          if (isClipboardItemSupported()) {
+            const clipboardItem = createClipboardItem(resolvedValue)
+            await navigator!.clipboard.write([clipboardItem])
+          }
+          else {
+            // Some browsers support the Clipboard API but not `ClipboardItem`
+            const resolvedText = typeof resolvedValue === 'string'
+              ? resolvedValue
+              : (await resolvedValue()) ?? ''
+            text.value = resolvedText
+            await navigator!.clipboard.writeText(resolvedText)
+          }
         }
         catch {
           useLegacy = true
@@ -148,6 +158,10 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
         }),
       })
     }
+  }
+
+  function isClipboardItemSupported() {
+    return typeof ClipboardItem !== 'undefined'
   }
 
   function legacyCopy(value: string) {
