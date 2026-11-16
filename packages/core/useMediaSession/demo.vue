@@ -1,114 +1,143 @@
 <script setup lang="ts">
-import { useMediaControls, useMediaSession } from '@vueuse/core'
+import { useMediaSession } from '@vueuse/core'
 import { computed, shallowRef, useTemplateRef } from 'vue'
-import Menu from '../useMediaControls/components/Menu.vue'
-import MenuItem from '../useMediaControls/components/MenuItem.vue'
-import Scrubber from '../useMediaControls/components/Scrubber.vue'
-import Spinner from '../useMediaControls/components/Spinner.vue'
 
-const video = useTemplateRef('video')
-const poster = 'https://cdn.bitmovin.com/content/assets/sintel/poster.png'
+const audio = useTemplateRef('audio')
 
-const controls = useMediaControls(video, {
-  src: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Sintel_movie_4K.webm',
-    type: 'video/webm',
-  },
-})
+const title = shallowRef('Sintel')
+const artist = shallowRef('Blender Foundation')
+const album = shallowRef('Open Movies')
+const artworkSrc = shallowRef('https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp')
 
-const { playing, buffered, currentTime, duration, rate, waiting } = controls
-const endBuffer = computed(() => buffered.value.length > 0 ? buffered.value[buffered.value.length - 1][1] : 0)
-function formatDuration(seconds: number) {
-  return new Date(1000 * seconds).toISOString().slice(14, 19)
+const playbackState = shallowRef<MediaSessionPlaybackState>('paused')
+
+const duration = shallowRef(888)
+const position = shallowRef(0)
+const playbackRate = shallowRef(1)
+
+const cameraActive = shallowRef(false)
+const microphoneActive = shallowRef(false)
+
+const log = shallowRef<string[]>([])
+function logAction(action: string, details?: MediaSessionActionDetails) {
+  const value = details?.seekTime ?? details?.seekOffset
+  log.value = [`${action}${value === undefined ? '' : ` (${value})`}`, ...log.value].slice(0, 5)
 }
 
-// Browsers extrapolate the position from `playbackRate`, so it only needs updating after seeking and rate changes
-const position = shallowRef(0)
+function seekTo(time: number) {
+  position.value = Math.min(Math.max(time, 0), duration.value)
+}
 
-useMediaSession({
-  metadata: {
-    title: 'Sintel',
-    artist: 'Blender Foundation',
-    album: 'Sintel',
-    artwork: [
-      { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-    ],
-  },
-  playbackState: () => playing.value ? 'playing' : 'paused',
-  positionState: () => ({ duration: duration.value, playbackRate: rate.value, position: position.value }),
+const { isSupported, isSetCameraSupported, isSetMicrophoneSupported } = useMediaSession({
+  metadata: () => ({
+    title: title.value,
+    artist: artist.value,
+    album: album.value,
+    artwork: artworkSrc.value ? [{ src: artworkSrc.value }] : [],
+  }),
+  playbackState,
+  positionState: computed(() => ({
+    duration: duration.value,
+    position: Math.min(position.value, duration.value),
+    playbackRate: playbackRate.value,
+  })),
+  cameraActive,
+  microphoneActive,
 }, {
-  onPlay: () => playing.value = true,
-  onPause: () => playing.value = false,
-  onSeekBackward: details => currentTime.value -= details.seekOffset ?? 10,
-  onSeekForward: details => currentTime.value += details.seekOffset ?? 10,
-  onSeekTo: details => currentTime.value = details.seekTime ?? 0,
+  onPlay: () => {
+    logAction('play')
+    audio.value?.play()
+  },
+  onPause: () => {
+    logAction('pause')
+    audio.value?.pause()
+  },
+  onStop: () => {
+    logAction('stop')
+    audio.value?.pause()
+    playbackState.value = 'none'
+  },
+  onSeekBackward: (details) => {
+    logAction('seekbackward', details)
+    seekTo(position.value - (details.seekOffset ?? 10))
+  },
+  onSeekForward: (details) => {
+    logAction('seekforward', details)
+    seekTo(position.value + (details.seekOffset ?? 10))
+  },
+  onSeekTo: (details) => {
+    logAction('seekto', details)
+    seekTo(details.seekTime ?? 0)
+  },
+  onPreviousTrack: () => logAction('previoustrack'),
+  onNextTrack: () => logAction('nexttrack'),
 })
 </script>
 
 <template>
-  <div
-    class="outline-none"
-    :tabindex="0"
-    autofocus
-    @keydown.prevent.space="playing = !playing"
-    @keydown.right="currentTime += 10"
-    @keydown.left="currentTime -= 10"
-  >
-    <div class="mt-5 relative bg-black rounded-md shadow overflow-hidden">
-      <video
-        ref="video"
-        crossorigin="anonymous"
-        class="w-full block"
-        :poster="poster"
-        :loop="false"
-        @click="playing = !playing"
-        @seeked="position = currentTime"
-        @ratechange="position = currentTime"
-      />
-      <div
-        v-if="waiting"
-        class="absolute inset-0 grid place-items-center pointer-events-none bg-black bg-opacity-20"
-      >
-        <Spinner />
-      </div>
+  <div v-if="isSupported">
+    <note>
+      Browsers only show media controls while audible media plays. Start the audio, then edit the session and watch your OS media controls.
+    </note>
+    <audio
+      ref="audio"
+      src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg"
+      controls
+      loop
+      class="w-full my-2"
+      @play="playbackState = 'playing'"
+      @pause="playbackState = 'paused'"
+    />
+
+    <h4>Metadata</h4>
+    <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 items-center">
+      <label for="media-session-title">Title</label>
+      <input id="media-session-title" v-model="title" type="text">
+      <label for="media-session-artist">Artist</label>
+      <input id="media-session-artist" v-model="artist" type="text">
+      <label for="media-session-album">Album</label>
+      <input id="media-session-album" v-model="album" type="text">
+      <label for="media-session-artwork">Artwork URL</label>
+      <input id="media-session-artwork" v-model="artworkSrc" type="url">
     </div>
 
-    <Scrubber v-model="currentTime" :max="duration" :secondary="endBuffer" class="mt-2">
-      <template #default="{ position, pendingValue }">
-        <div
-          class="absolute transform -translate-x-1/2 bg-black rounded px-2 bottom-0 mb-4 py-1 text-xs text-white"
-          :style="{ left: position }"
-        >
-          {{ formatDuration(pendingValue) }}
-        </div>
-      </template>
-    </Scrubber>
-
-    <div class="flex flex-row items-center gap-2">
-      <button @click="playing = !playing">
-        <i v-if="!playing" inline-block align-middle i-carbon-play />
-        <i v-else i-carbon-pause inline-block align-middle />
-      </button>
-      <Menu>
-        <template #default="{ open }">
-          <button class="block" @click="open()">
-            <i i-carbon-meter inline-block align-middle />
-          </button>
-        </template>
-        <template #menu="{ close }">
-          <div class="absolute bottom-0 right-0 shadow py-2 bg-black rounded">
-            <MenuItem @click="() => { rate = 2; close(); }">
-              <i i-carbon-meter-alt />2x
-            </MenuItem>
-            <MenuItem @click="() => { rate = 1; close(); }">
-              <i i-carbon-meter-alt />1x
-            </MenuItem>
-          </div>
-        </template>
-      </Menu>
-      <div class="flex flex-col flex-1 text-sm">
-        {{ formatDuration(currentTime) }} / {{ formatDuration(duration) }}
-      </div>
+    <h4>Playback</h4>
+    <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 items-center">
+      <label for="media-session-state">State</label>
+      <select id="media-session-state" v-model="playbackState">
+        <option value="none">
+          none
+        </option>
+        <option value="paused">
+          paused
+        </option>
+        <option value="playing">
+          playing
+        </option>
+      </select>
+      <label for="media-session-duration">Duration (s)</label>
+      <input id="media-session-duration" v-model.number="duration" type="number" min="0">
+      <label for="media-session-position">Position ({{ position }} s)</label>
+      <input id="media-session-position" v-model.number="position" type="range" min="0" :max="duration">
+      <label for="media-session-rate">Playback rate</label>
+      <input id="media-session-rate" v-model.number="playbackRate" type="number" min="0.25" max="4" step="0.25">
     </div>
+
+    <h4>Devices</h4>
+    <label class="mr-4">
+      <input v-model="cameraActive" type="checkbox" :disabled="!isSetCameraSupported">
+      Camera active
+    </label>
+    <label>
+      <input v-model="microphoneActive" type="checkbox" :disabled="!isSetMicrophoneSupported">
+      Microphone active
+    </label>
+
+    <h4>Actions</h4>
+    <note>Latest actions from the OS media controls</note>
+    <pre>{{ log.length ? log.join('\n') : 'none yet' }}</pre>
   </div>
+  <p v-else>
+    Your browser does not support the Media Session API
+  </p>
 </template>
