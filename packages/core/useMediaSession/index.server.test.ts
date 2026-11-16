@@ -6,7 +6,7 @@ describe('useMediaSession SSR', () => {
   it('should allow state updates and cleanup without browser APIs', async () => {
     const scope = effectScope()
     try {
-      const api = scope.run(() => useMediaSession())!
+      const api = scope.run(() => useMediaSession({ onPlay: () => {} }))!
 
       expect(api.isSupported.value).toBe(false)
       expect(api.isSetCameraSupported.value).toBe(false)
@@ -15,7 +15,6 @@ describe('useMediaSession SSR', () => {
       api.title.value = 'Track'
       api.playbackState.value = 'playing'
       api.playbackRate.value = 1
-      api.actionHandlers.value = { play: () => {} }
       api.cameraActive.value = true
       api.microphoneActive.value = true
       await nextTick()

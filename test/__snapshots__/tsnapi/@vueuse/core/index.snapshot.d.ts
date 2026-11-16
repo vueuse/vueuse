@@ -875,6 +875,15 @@ export interface UseMediaControlsReturn {
 }
 export interface UseMediaSessionOptions extends ConfigurableNavigator {
   initials?: MaybeRefInitials<UseMediaSessionState>;
+  onPlay?: MediaSessionActionHandler;
+  onPause?: MediaSessionActionHandler;
+  onStop?: MediaSessionActionHandler;
+  onSeekBackward?: MediaSessionActionHandler;
+  onSeekForward?: MediaSessionActionHandler;
+  onSeekTo?: MediaSessionActionHandler;
+  onPreviousTrack?: MediaSessionActionHandler;
+  onNextTrack?: MediaSessionActionHandler;
+  onSkipAd?: MediaSessionActionHandler;
 }
 export interface UseMediaSessionReturn extends Supportable, ToRefs<UseMediaSessionState> {
   isSetCameraSupported: UseSupportedReturn;
@@ -890,7 +899,6 @@ export interface UseMediaSessionState {
   playbackRate: MediaPositionState['playbackRate'];
   position: MediaPositionState['position'];
   playbackState: MediaSessionPlaybackState;
-  actionHandlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> | undefined;
   cameraActive: boolean;
   microphoneActive: boolean;
 }

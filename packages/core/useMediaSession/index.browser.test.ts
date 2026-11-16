@@ -161,83 +161,50 @@ describe('useMediaSession', () => {
     })
   })
 
-  it('should register handlers assigned during setup', () => {
+  it('should register handlers from `on*` options during setup', () => {
     const navigator = createMockNavigator()
     const play = vi.fn()
-    setupMediaSession(navigator, (api) => {
-      api.actionHandlers.value = { play }
-    })
+    const seekto = vi.fn()
+    setupMediaSession(navigator, undefined, { onPlay: play, onSeekTo: seekto })
 
-    expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledExactlyOnceWith('play', play)
+    const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
+    expect(setActionHandler).toHaveBeenCalledTimes(2)
+    expect(setActionHandler).toHaveBeenCalledWith('play', play)
+    expect(setActionHandler).toHaveBeenCalledWith('seekto', seekto)
   })
 
-  it('should only update added, changed, and removed handlers', async () => {
+  it('should not register any handlers without `on*` options', () => {
     const navigator = createMockNavigator()
-    const play = vi.fn()
-    const pause = vi.fn()
-    const nexttrack = vi.fn()
-    const { actionHandlers } = setupMediaSession(navigator, (api) => {
-      api.actionHandlers.value = { play, pause, nexttrack }
-    }).api
-    const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
-    setActionHandler.mockClear()
+    setupMediaSession(navigator)
 
-    const newPlay = vi.fn()
-    const stop = vi.fn()
-    actionHandlers.value = { play: newPlay, nexttrack, stop }
-    await nextTick()
-
-    expect(setActionHandler).toHaveBeenCalledTimes(3)
-    expect(setActionHandler).toHaveBeenCalledWith('pause', null)
-    expect(setActionHandler).toHaveBeenCalledWith('play', newPlay)
-    expect(setActionHandler).toHaveBeenCalledWith('stop', stop)
-    expect(setActionHandler).not.toHaveBeenCalledWith('nexttrack', expect.anything())
+    expect(navigator.mediaSession.setActionHandler).not.toHaveBeenCalled()
   })
 
-  it('should unregister handlers deleted in place', async () => {
+  it('should map every `on*` option to its action', () => {
     const navigator = createMockNavigator()
-    const play = vi.fn()
-    const pause = vi.fn()
-    const { actionHandlers } = setupMediaSession(navigator).api
-    actionHandlers.value = { play, pause }
-    await nextTick()
+    const handlers = {
+      onPlay: vi.fn(),
+      onPause: vi.fn(),
+      onStop: vi.fn(),
+      onSeekBackward: vi.fn(),
+      onSeekForward: vi.fn(),
+      onSeekTo: vi.fn(),
+      onPreviousTrack: vi.fn(),
+      onNextTrack: vi.fn(),
+      onSkipAd: vi.fn(),
+    }
+    setupMediaSession(navigator, undefined, handlers)
+
     const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
-    setActionHandler.mockClear()
-
-    delete actionHandlers.value.pause
-    await nextTick()
-
-    expect(setActionHandler).toHaveBeenCalledExactlyOnceWith('pause', null)
-  })
-
-  it('should unregister handlers when the handler map is unset', async () => {
-    const navigator = createMockNavigator()
-    const { actionHandlers } = setupMediaSession(navigator, (api) => {
-      api.actionHandlers.value = { play: vi.fn() }
-    }).api
-    const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
-    setActionHandler.mockClear()
-
-    actionHandlers.value = undefined
-    await nextTick()
-
-    expect(setActionHandler).toHaveBeenCalledExactlyOnceWith('play', null)
-  })
-
-  it('should clean up registered handlers before pending updates run', async () => {
-    const navigator = createMockNavigator()
-    const vm = setupMediaSession(navigator, (api) => {
-      api.actionHandlers.value = { play: vi.fn() }
-    })
-    const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
-    expect(setActionHandler).toHaveBeenCalledWith('play', expect.any(Function))
-    setActionHandler.mockClear()
-
-    delete vm.api.actionHandlers.value!.play
-    vm.unmount()
-    await nextTick()
-
-    expect(setActionHandler).toHaveBeenCalledExactlyOnceWith('play', null)
+    expect(setActionHandler).toHaveBeenCalledWith('play', handlers.onPlay)
+    expect(setActionHandler).toHaveBeenCalledWith('pause', handlers.onPause)
+    expect(setActionHandler).toHaveBeenCalledWith('stop', handlers.onStop)
+    expect(setActionHandler).toHaveBeenCalledWith('seekbackward', handlers.onSeekBackward)
+    expect(setActionHandler).toHaveBeenCalledWith('seekforward', handlers.onSeekForward)
+    expect(setActionHandler).toHaveBeenCalledWith('seekto', handlers.onSeekTo)
+    expect(setActionHandler).toHaveBeenCalledWith('previoustrack', handlers.onPreviousTrack)
+    expect(setActionHandler).toHaveBeenCalledWith('nexttrack', handlers.onNextTrack)
+    expect(setActionHandler).toHaveBeenCalledWith('skipad', handlers.onSkipAd)
   })
 
   it('should continue registering supported actions when an action is unsupported', () => {
@@ -247,11 +214,39 @@ describe('useMediaSession', () => {
       if (action === 'skipad')
         throw new DOMException('Unsupported action', 'NotSupportedError')
     })
-    setupMediaSession(navigator, (api) => {
-      api.actionHandlers.value = { skipad: vi.fn(), play }
-    })
+    setupMediaSession(navigator, undefined, { onSkipAd: vi.fn(), onPlay: play })
 
     expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', play)
+  })
+
+  it('should keep handlers registered on clear and unregister them on unmount', () => {
+    const navigator = createMockNavigator()
+    const vm = setupMediaSession(navigator, undefined, { onPlay: vi.fn(), onPause: vi.fn() })
+    const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
+    setActionHandler.mockClear()
+
+    vm.api.clear()
+    expect(setActionHandler).not.toHaveBeenCalled()
+
+    vm.unmount()
+    expect(setActionHandler).toHaveBeenCalledTimes(2)
+    expect(setActionHandler).toHaveBeenCalledWith('play', null)
+    expect(setActionHandler).toHaveBeenCalledWith('pause', null)
+  })
+
+  it('should not unregister actions that failed to register', () => {
+    const navigator = createMockNavigator()
+    const setActionHandler = vi.mocked(navigator.mediaSession.setActionHandler)
+    setActionHandler.mockImplementation((action) => {
+      if (action === 'skipad')
+        throw new DOMException('Unsupported action', 'NotSupportedError')
+    })
+    const vm = setupMediaSession(navigator, undefined, { onSkipAd: vi.fn(), onPlay: vi.fn() })
+    setActionHandler.mockClear()
+
+    vm.unmount()
+
+    expect(setActionHandler).toHaveBeenCalledExactlyOnceWith('play', null)
   })
 
   it.each([
@@ -292,13 +287,9 @@ describe('useMediaSession', () => {
       api.playbackState.value = 'playing'
       api.cameraActive.value = true
       api.microphoneActive.value = true
-      api.actionHandlers.value = {
-        play: () => api.playbackState.value = 'playing',
-      }
     })
 
     expect(navigator.mediaSession.metadata?.title).toBe(sampleMedia.title)
-    expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', expect.any(Function))
 
     expect(navigator.mediaSession.setCameraActive).toHaveBeenLastCalledWith(true)
     expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(true)
@@ -325,14 +316,12 @@ describe('useMediaSession', () => {
     expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenLastCalledWith(false)
     expect(navigator.mediaSession.setPositionState).toHaveBeenLastCalledWith()
     expect(navigator.mediaSession.playbackState).toBe<MediaSessionPlaybackState>('none')
-    expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledWith('play', null)
   })
 
   it('should stop synchronizing after unmount', async () => {
     const navigator = createMockNavigator()
     const vm = setupMediaSession(navigator)
     vm.unmount()
-    vi.mocked(navigator.mediaSession.setActionHandler).mockClear()
     vi.mocked(navigator.mediaSession.setPositionState).mockClear()
     vi.mocked(navigator.mediaSession.setCameraActive).mockClear()
     vi.mocked(navigator.mediaSession.setMicrophoneActive).mockClear()
@@ -340,14 +329,12 @@ describe('useMediaSession', () => {
     vm.api.title.value = 'After unmount'
     vm.api.playbackState.value = 'playing'
     vm.api.duration.value = 120
-    vm.api.actionHandlers.value = { play: vi.fn() }
     vm.api.cameraActive.value = true
     vm.api.microphoneActive.value = true
     await nextTick()
 
     expect(navigator.mediaSession.metadata).toBeNull()
     expect(navigator.mediaSession.playbackState).toBe('none')
-    expect(navigator.mediaSession.setActionHandler).not.toHaveBeenCalled()
     expect(navigator.mediaSession.setPositionState).not.toHaveBeenCalled()
     expect(navigator.mediaSession.setCameraActive).not.toHaveBeenCalled()
     expect(navigator.mediaSession.setMicrophoneActive).not.toHaveBeenCalled()
@@ -355,19 +342,17 @@ describe('useMediaSession', () => {
 
   it('should allow publishing a new session after clearing', async () => {
     const navigator = createMockNavigator()
+    const play = vi.fn()
     const api = setupMediaSession(navigator, (api) => {
       api.title.value = 'First track'
-      api.actionHandlers.value = { play: vi.fn() }
-    }).api
+    }, { onPlay: play }).api
     expect(navigator.mediaSession.metadata?.title).toBe('First track')
 
     api.clear()
     await nextTick()
     expect(navigator.mediaSession.metadata).toBeNull()
 
-    const play = vi.fn()
     api.title.value = 'Next track'
-    api.actionHandlers.value = { play }
     await nextTick()
 
     expect(navigator.mediaSession.metadata?.title).toBe('Next track')
@@ -381,7 +366,6 @@ describe('useMediaSession', () => {
       expect(api.title.value).toBeUndefined()
       expect(api.artwork.value).toBeUndefined()
       expect(api.duration.value).toBeUndefined()
-      expect(api.actionHandlers.value).toBeUndefined()
       expect(api.playbackState.value).toBe('none')
       expect(api.cameraActive.value).toBe(false)
       expect(api.microphoneActive.value).toBe(false)
@@ -389,8 +373,6 @@ describe('useMediaSession', () => {
 
     it('should seed from plain values and publish them on setup', () => {
       const navigator = createMockNavigator()
-      const play = vi.fn()
-
       const api = setupMediaSession(navigator, undefined, {
         initials: {
           ...sampleMedia,
@@ -398,7 +380,6 @@ describe('useMediaSession', () => {
           playbackRate: 1,
           position: 10,
           playbackState: 'paused',
-          actionHandlers: { play },
           cameraActive: true,
           microphoneActive: true,
         },
@@ -410,7 +391,6 @@ describe('useMediaSession', () => {
       expect(navigator.mediaSession.metadata?.album).toBe(sampleMedia.album)
       expect(navigator.mediaSession.playbackState).toBe('paused')
       expect(navigator.mediaSession.setPositionState).toHaveBeenCalledExactlyOnceWith({ duration: 100, playbackRate: 1, position: 10 })
-      expect(navigator.mediaSession.setActionHandler).toHaveBeenCalledExactlyOnceWith('play', play)
       expect(navigator.mediaSession.setCameraActive).toHaveBeenCalledExactlyOnceWith(true)
       expect(navigator.mediaSession.setMicrophoneActive).toHaveBeenCalledExactlyOnceWith(true)
     })

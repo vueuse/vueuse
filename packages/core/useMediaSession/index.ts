@@ -2,7 +2,7 @@ import type { MaybeRefInitials } from '@vueuse/shared'
 import type { ToRefs } from 'vue'
 import type { ConfigurableNavigator, Supportable } from '../types'
 import type { UseSupportedReturn } from '../useSupported'
-import { tryOnScopeDispose, watchDeep } from '@vueuse/shared'
+import { tryOnScopeDispose } from '@vueuse/shared'
 import { ref as deepRef, shallowRef, watchEffect } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
@@ -83,16 +83,6 @@ export interface UseMediaSessionState {
    */
   playbackState: MediaSessionPlaybackState
   /**
-   * Handlers for a media session action. These actions let a web app receive notifications
-   * when the user engages a device's built-in physical or onscreen media controls,
-   * such as play, stop, or seek buttons.
-   *
-   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler)
-   *
-   * @default undefined
-   */
-  actionHandlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> | undefined
-  /**
    * Indicate to the user agent whether the user's camera is considered to be active.
    *
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setCameraActive)
@@ -116,7 +106,82 @@ export interface UseMediaSessionOptions extends ConfigurableNavigator {
    * A passed ref is used as the internal state.
    */
   initials?: MaybeRefInitials<UseMediaSessionState>
+  /**
+   * Called when the user asks to start playback.
+   * Registers the `play` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#play)
+   */
+  onPlay?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to pause playback.
+   * Registers the `pause` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#pause)
+   */
+  onPause?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to stop playback and clear the state.
+   * Registers the `stop` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#stop)
+   */
+  onStop?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to seek backward. `details.seekOffset` holds the offset in seconds, if any.
+   * Registers the `seekbackward` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#seekbackward)
+   */
+  onSeekBackward?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to seek forward. `details.seekOffset` holds the offset in seconds, if any.
+   * Registers the `seekforward` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#seekforward)
+   */
+  onSeekForward?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to seek to a position. `details.seekTime` holds the target time in seconds.
+   * Registers the `seekto` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#seekto)
+   */
+  onSeekTo?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to go to the previous track.
+   * Registers the `previoustrack` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#previoustrack)
+   */
+  onPreviousTrack?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to go to the next track.
+   * Registers the `nexttrack` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#nexttrack)
+   */
+  onNextTrack?: MediaSessionActionHandler
+  /**
+   * Called when the user asks to skip the currently playing advertisement.
+   * Registers the `skipad` action, so the browser may show a matching control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler#skipad)
+   */
+  onSkipAd?: MediaSessionActionHandler
 }
+
+const actionOptions = {
+  play: 'onPlay',
+  pause: 'onPause',
+  stop: 'onStop',
+  seekbackward: 'onSeekBackward',
+  seekforward: 'onSeekForward',
+  seekto: 'onSeekTo',
+  previoustrack: 'onPreviousTrack',
+  nexttrack: 'onNextTrack',
+  skipad: 'onSkipAd',
+} as const satisfies Record<MediaSessionAction, keyof UseMediaSessionOptions>
 
 /**
  * The state refs stay writable: writing to them is how the session is updated.
@@ -135,7 +200,8 @@ export interface UseMediaSessionReturn extends Supportable, ToRefs<UseMediaSessi
    */
   isSetMicrophoneSupported: UseSupportedReturn
   /**
-   * Reset metadata, playback, action handlers, and camera/microphone state.
+   * Reset metadata, playback, and camera/microphone state.
+   * Action handlers from the `on*` options stay registered until the scope is disposed.
    * The session can be populated again after clearing.
    */
   clear: () => void
@@ -158,7 +224,6 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
       playbackRate: initialPlaybackRate,
       position: initialPosition,
       playbackState: initialPlaybackState = 'none',
-      actionHandlers: initialActionHandlers,
       cameraActive: initialCameraActive = false,
       microphoneActive: initialMicrophoneActive = false,
     } = {},
@@ -177,9 +242,7 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
   const playbackState = shallowRef(initialPlaybackState)
 
-  const actionHandlers = deepRef(initialActionHandlers)
-
-  const registeredHandlers = new Map<MediaSessionAction, MediaSessionActionHandler>()
+  const registeredActions: MediaSessionAction[] = []
 
   const cameraActive = shallowRef(initialCameraActive)
   const microphoneActive = shallowRef(initialMicrophoneActive)
@@ -217,7 +280,17 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
       })
     })
 
-    watchDeep(actionHandlers, syncActionHandlers, { immediate: true })
+    for (const [action, option] of Object.entries(actionOptions) as [MediaSessionAction, keyof typeof options][]) {
+      const handler = options[option] as MediaSessionActionHandler | undefined
+      if (!handler)
+        continue
+      try {
+        navigator!.mediaSession.setActionHandler(action, handler)
+        registeredActions.push(action)
+      }
+      // The browser throws for actions it does not support
+      catch {}
+    }
 
     if (isSetCameraSupported.value) {
       watchEffect(() => navigator!.mediaSession.setCameraActive(cameraActive.value))
@@ -225,28 +298,6 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
     if (isSetMicrophoneSupported.value) {
       watchEffect(() => navigator!.mediaSession.setMicrophoneActive(microphoneActive.value))
-    }
-  }
-
-  function syncActionHandlers(handlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> = {}) {
-    for (const action of registeredHandlers.keys()) {
-      if (!handlers[action]) {
-        try {
-          navigator!.mediaSession.setActionHandler(action, null)
-        }
-        catch {}
-        registeredHandlers.delete(action)
-      }
-    }
-    for (const [key, handler] of Object.entries(handlers)) {
-      const action = key as MediaSessionAction
-      if (handler && registeredHandlers.get(action) !== handler) {
-        try {
-          navigator!.mediaSession.setActionHandler(action, handler)
-          registeredHandlers.set(action, handler)
-        }
-        catch {}
-      }
     }
   }
 
@@ -270,8 +321,6 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
     playbackState.value = 'none'
     navigator!.mediaSession.playbackState = 'none'
-    syncActionHandlers()
-    actionHandlers.value = {}
 
     cameraActive.value = false
     microphoneActive.value = false
@@ -281,8 +330,16 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
       navigator!.mediaSession.setMicrophoneActive(false)
   }
 
-  // Clear MediaSession on dispose
-  tryOnScopeDispose(clear)
+  // Clear MediaSession and unregister action handlers on dispose
+  tryOnScopeDispose(() => {
+    clear()
+    for (const action of registeredActions.splice(0)) {
+      try {
+        navigator!.mediaSession.setActionHandler(action, null)
+      }
+      catch {}
+    }
+  })
 
   return {
     isSupported,
@@ -294,7 +351,6 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
     playbackRate,
     position,
     playbackState,
-    actionHandlers,
     cameraActive,
     microphoneActive,
     isSetCameraSupported,

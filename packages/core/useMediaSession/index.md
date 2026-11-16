@@ -25,8 +25,13 @@ const {
   playbackRate,
   position,
   playbackState,
-  actionHandlers,
-} = useMediaSession()
+} = useMediaSession({
+  onPlay: () => sampleVideo.value?.play(),
+  onPause: () => sampleVideo.value?.pause(),
+  onSeekBackward: details => sampleVideo.value.currentTime -= details.seekOffset ?? 10,
+  onSeekForward: details => sampleVideo.value.currentTime += details.seekOffset ?? 10,
+  onSeekTo: details => sampleVideo.value.currentTime = details.seekTime ?? 0,
+})
 
 title.value = 'Sintel'
 artist.value = 'Blender Foundation'
@@ -34,14 +39,6 @@ album.value = 'Sintel'
 artwork.value = [
   { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
 ]
-
-actionHandlers.value = {
-  play: () => sampleVideo.value?.play(),
-  pause: () => sampleVideo.value?.pause(),
-  seekbackward: details => sampleVideo.value.currentTime -= details.seekOffset ?? 10,
-  seekforward: details => sampleVideo.value.currentTime += details.seekOffset ?? 10,
-  seekto: details => sampleVideo.value.currentTime = details.seekTime ?? 0,
-}
 
 function updatePositionState() {
   duration.value = sampleVideo.value?.duration
@@ -77,6 +74,12 @@ const { title, playbackState } = useMediaSession({
 
 The returned refs stay writable, since writing to them is how the session is updated. To own the state, pass your own refs to `initials`; `useMediaSession` uses them as its state and keeps the session in sync with them.
 
+## Action handlers
+
+Pass `on*` options (`onPlay`, `onPause`, `onStop`, `onSeekBackward`, `onSeekForward`, `onSeekTo`, `onPreviousTrack`, `onNextTrack`, `onSkipAd`) to react to the device's media controls. Only the actions you pass a handler for are registered, so the browser shows only the matching controls. Actions the browser does not support are skipped.
+
+Handlers are registered on setup and unregistered when the scope is disposed.
+
 ## Position state
 
 Position updates are published once `duration` is defined. You can set `position`
@@ -86,6 +89,6 @@ browser's position state.
 
 ## Clearing the session
 
-Call `clear()` to reset metadata, playback state, position state, action handlers,
-and camera/microphone activity. The session is also cleared when its scope is disposed.
+Call `clear()` to reset metadata, playback state, position state, and camera/microphone
+activity. Action handlers stay registered. The session is also cleared when its scope is disposed.
 After calling `clear()`, you can update the returned refs to populate a new session.
