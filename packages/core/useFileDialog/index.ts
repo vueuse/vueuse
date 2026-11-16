@@ -2,7 +2,7 @@ import type { EventHookOn } from '@vueuse/shared'
 import type { MaybeRef, Ref } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
-import { createEventHook, hasOwn } from '@vueuse/shared'
+import { createEventHook } from '@vueuse/shared'
 import { computed, readonly as deepReadonly, ref as deepRef, toValue, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
@@ -124,8 +124,11 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     el.accept = toValue(options.accept)!
     // webkitdirectory key is not stabled, maybe replaced in the future.
     el.webkitdirectory = toValue(options.directory)!
-    if (hasOwn(options, 'capture'))
-      el.capture = toValue(options.capture)!
+    const capture = toValue(options.capture)
+    if (capture)
+      el.capture = capture
+    else
+      el.removeAttribute('capture')
   }
 
   const open = (localOptions?: Partial<UseFileDialogOptions>) => {
