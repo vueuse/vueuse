@@ -279,20 +279,21 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
     )
   }
 
-  const registeredActions: MediaSessionAction[] = []
   for (const [action, option] of Object.entries(actionOptions) as [MediaSessionAction, keyof typeof options][]) {
     const handler = options[option] as MediaSessionActionHandler | undefined
     if (!handler)
       continue
     try {
       mediaSession.setActionHandler(action, handler)
-      registeredActions.push(action)
     }
     // The browser throws for actions it does not support
-    catch {}
+    catch {
+      continue
+    }
+    tryOnScopeDispose(() => mediaSession.setActionHandler(action, null))
   }
 
-  // Reset the session and unregister action handlers on dispose
+  // Reset the session on dispose
   tryOnScopeDispose(() => {
     mediaSession.metadata = null
     mediaSession.setPositionState()
@@ -301,12 +302,6 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
       mediaSession.setCameraActive(false)
     if (isSetMicrophoneSupported.value)
       mediaSession.setMicrophoneActive(false)
-    for (const action of registeredActions.splice(0)) {
-      try {
-        mediaSession.setActionHandler(action, null)
-      }
-      catch {}
-    }
   })
 
   return returnValue
