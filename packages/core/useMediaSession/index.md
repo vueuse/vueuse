@@ -6,9 +6,6 @@ category: Browser
 
 Reactive [Media Session API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API). The Media Session API provides a way to customize media notifications.
 
-When supported, the session is initialized as soon as `useMediaSession()` is called,
-without waiting for the component to mount.
-
 ::: warning
 `useMediaSession` assumes it owns the page's media session. The Media Session API has no change events, so changes made to `navigator.mediaSession` outside of `useMediaSession` (e.g. by another player library) are not detected and may be overwritten on the next update. Use a single `useMediaSession` per page.
 :::

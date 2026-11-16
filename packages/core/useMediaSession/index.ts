@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator, Supportable } from '../types'
 import type { UseSupportedReturn } from '../useSupported'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { toValue, watchEffect } from 'vue'
+import { toValue, watch } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -224,41 +224,60 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
   const mediaSession = navigator!.mediaSession
 
-  watchEffect(() => {
-    const metadata: MediaMetadataInit = {
-      album: toValue(album),
-      artist: toValue(artist),
-      artwork: toValue(artwork),
-      title: toValue(title),
-    }
-    mediaSession.metadata = Object.values(metadata).every(value => value === undefined)
-      ? null
-      : new MediaMetadata(metadata)
-  })
+  watch(
+    [() => toValue(album), () => toValue(artist), () => toValue(artwork), () => toValue(title)],
+    ([album, artist, artwork, title]) => {
+      const metadata: MediaMetadataInit = { album, artist, artwork, title }
+      mediaSession.metadata = Object.values(metadata).every(value => value === undefined)
+        ? null
+        : new MediaMetadata(metadata)
+    },
+    // `deep` picks up in-place changes of a reactive `artwork` array
+    { immediate: true, deep: true },
+  )
 
-  watchEffect(() => {
-    mediaSession.playbackState = toValue(playbackState)
-  })
+  watch(
+    () => toValue(playbackState),
+    (playbackState) => {
+      mediaSession.playbackState = playbackState
+    },
+    { immediate: true },
+  )
 
-  watchEffect(() => {
-    const durationValue = toValue(duration)
-    // A nonempty position state requires a duration, which may not be loaded yet.
-    if (durationValue === undefined) {
-      mediaSession.setPositionState()
-      return
-    }
-    mediaSession.setPositionState({
-      duration: durationValue,
-      playbackRate: toValue(playbackRate),
-      position: toValue(position),
-    })
-  })
+  // A nonempty position state requires a duration, which may not be loaded yet.
+  // Clear any position state left on the session until the duration is available.
+  if (toValue(duration) === undefined)
+    mediaSession.setPositionState()
 
-  if (isSetCameraSupported.value)
-    watchEffect(() => mediaSession.setCameraActive(toValue(cameraActive)))
+  watch(
+    [() => toValue(duration), () => toValue(playbackRate), () => toValue(position)],
+    ([duration, playbackRate, position], [previousDuration]) => {
+      if (duration === undefined) {
+        // Only clear when the duration is unset, not on every change while waiting for it
+        if (previousDuration !== undefined)
+          mediaSession.setPositionState()
+        return
+      }
+      mediaSession.setPositionState({ duration, playbackRate, position })
+    },
+    { immediate: true },
+  )
 
-  if (isSetMicrophoneSupported.value)
-    watchEffect(() => mediaSession.setMicrophoneActive(toValue(microphoneActive)))
+  if (isSetCameraSupported.value) {
+    watch(
+      () => toValue(cameraActive),
+      cameraActive => mediaSession.setCameraActive(cameraActive),
+      { immediate: true },
+    )
+  }
+
+  if (isSetMicrophoneSupported.value) {
+    watch(
+      () => toValue(microphoneActive),
+      microphoneActive => mediaSession.setMicrophoneActive(microphoneActive),
+      { immediate: true },
+    )
+  }
 
   const registeredActions: MediaSessionAction[] = []
   for (const [action, option] of Object.entries(actionOptions) as [MediaSessionAction, keyof typeof options][]) {
