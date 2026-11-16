@@ -44,6 +44,7 @@ export interface UseClipboardReturn<Optional> extends Supportable {
   text: Readonly<ShallowRef<string>>
   copied: Readonly<ShallowRef<boolean>>
   copyPending: Readonly<ShallowRef<boolean>>
+  error: Readonly<ShallowRef<unknown>>
   copy: Optional extends true
     ? (text?: ClipboardValue) => Promise<void>
     : (text: ClipboardValue) => Promise<void>
@@ -76,6 +77,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
   const text = shallowRef('')
   const copied = shallowRef(false)
   const copyPending = shallowRef(false)
+  const error = shallowRef<unknown>()
   const timeout = useTimeoutFn(() => copied.value = false, copiedDuring, { immediate: false })
   let lastLegacyId = 0
 
@@ -101,22 +103,26 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     const resolvedValue = value ?? toValue(source)
     if (isSupported.value && resolvedValue != null) {
       copyPending.value = true
+      error.value = undefined
       let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value))
+      let writeError: unknown
+      let succeeded = true
 
       if (!useLegacy) {
         try {
           const clipboardItem = createClipboardItem(resolvedValue)
           await navigator!.clipboard.write([clipboardItem])
         }
-        catch {
+        catch (e) {
           useLegacy = true
+          writeError = e
         }
       }
 
       if (useLegacy) {
         if (typeof resolvedValue === 'string') {
           text.value = resolvedValue
-          legacyCopy(resolvedValue)
+          succeeded = legacyCopy(resolvedValue)
         }
         else {
           // For async functions in legacy mode, resolve and copy
@@ -124,13 +130,20 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
           const resolvedText = await resolvedValue()
           if (resolvedText != null && currentId === lastLegacyId) {
             text.value = resolvedText
-            legacyCopy(resolvedText)
+            succeeded = legacyCopy(resolvedText)
           }
         }
       }
 
-      copied.value = true
-      timeout.start()
+      if (succeeded) {
+        copied.value = true
+        timeout.start()
+      }
+      else {
+        copied.value = false
+        timeout.stop()
+        error.value = writeError ?? new Error('document.execCommand(\'copy\') failed')
+      }
       copyPending.value = false
     }
   }
@@ -150,7 +163,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     }
   }
 
-  function legacyCopy(value: string) {
+  function legacyCopy(value: string): boolean {
     const ta = document.createElement('textarea')
     ta.value = value
     ta.style.position = 'absolute'
@@ -158,8 +171,9 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     ta.setAttribute('readonly', '')
     document.body.appendChild(ta)
     ta.select()
-    document.execCommand('copy')
+    const succeeded = document.execCommand('copy')
     ta.remove()
+    return succeeded
   }
 
   function legacyRead() {
@@ -175,6 +189,7 @@ export function useClipboard(options: UseClipboardOptions<MaybeRefOrGetter<strin
     isSupported,
     text: shallowReadonly(text),
     copied: shallowReadonly(copied),
+    error: shallowReadonly(error),
     copy,
   }
 }
