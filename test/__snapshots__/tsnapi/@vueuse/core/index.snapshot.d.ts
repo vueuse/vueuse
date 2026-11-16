@@ -885,7 +885,7 @@ export interface UseMediaSessionOptions extends ConfigurableNavigator {
   onNextTrack?: MediaSessionActionHandler;
   onSkipAd?: MediaSessionActionHandler;
 }
-export interface UseMediaSessionReturn extends Supportable, ToRefs<UseMediaSessionState> {
+export interface UseMediaSessionReturn extends Supportable, ReadonlyRefs<UseMediaSessionState> {
   isSetCameraSupported: UseSupportedReturn;
   isSetMicrophoneSupported: UseSupportedReturn;
   clear: () => void;

@@ -1,9 +1,8 @@
-import type { MaybeRefInitials } from '@vueuse/shared'
-import type { ToRefs } from 'vue'
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
 import type { ConfigurableNavigator, Supportable } from '../types'
 import type { UseSupportedReturn } from '../useSupported'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { ref as deepRef, shallowRef, watchEffect } from 'vue'
+import { shallowReadonly, shallowRef, watchEffect } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -103,7 +102,7 @@ export interface UseMediaSessionState {
 export interface UseMediaSessionOptions extends ConfigurableNavigator {
   /**
    * Initial values for the returned state, published to the session on setup.
-   * A passed ref is used as the internal state.
+   * A passed ref is used as the internal state: write to it to update the session.
    */
   initials?: MaybeRefInitials<UseMediaSessionState>
   /**
@@ -183,10 +182,7 @@ const actionOptions = {
   skipad: 'onSkipAd',
 } as const satisfies Record<MediaSessionAction, keyof UseMediaSessionOptions>
 
-/**
- * The state refs stay writable: writing to them is how the session is updated.
- */
-export interface UseMediaSessionReturn extends Supportable, ToRefs<UseMediaSessionState> {
+export interface UseMediaSessionReturn extends Supportable, ReadonlyRefs<UseMediaSessionState> {
   /**
    * Whether `mediaSession.setCameraActive()` is supported by the browser.
    *
@@ -233,7 +229,7 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
   const album = shallowRef(initialAlbum)
   const artist = shallowRef(initialArtist)
-  const artwork = deepRef(initialArtwork)
+  const artwork = shallowRef(initialArtwork)
   const title = shallowRef(initialTitle)
 
   const duration = shallowRef(initialDuration)
@@ -343,16 +339,16 @@ export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaS
 
   return {
     isSupported,
-    album,
-    artist,
-    artwork,
-    title,
-    duration,
-    playbackRate,
-    position,
-    playbackState,
-    cameraActive,
-    microphoneActive,
+    album: shallowReadonly(album),
+    artist: shallowReadonly(artist),
+    artwork: shallowReadonly(artwork),
+    title: shallowReadonly(title),
+    duration: shallowReadonly(duration),
+    playbackRate: shallowReadonly(playbackRate),
+    position: shallowReadonly(position),
+    playbackState: shallowReadonly(playbackState),
+    cameraActive: shallowReadonly(cameraActive),
+    microphoneActive: shallowReadonly(microphoneActive),
     isSetCameraSupported,
     isSetMicrophoneSupported,
     clear,

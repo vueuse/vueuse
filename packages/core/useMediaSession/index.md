@@ -14,31 +14,33 @@ without waiting for the component to mount.
 ```vue
 <script setup lang="ts">
 import { useMediaSession } from '@vueuse/core'
+import { shallowRef, useTemplateRef } from 'vue'
 
 const sampleVideo = useTemplateRef('sampleVideo')
-const {
-  album,
-  artist,
-  artwork,
-  title,
-  duration,
-  playbackRate,
-  position,
-  playbackState,
-} = useMediaSession({
+const duration = shallowRef<number>()
+const playbackRate = shallowRef<number>()
+const position = shallowRef<number>()
+const playbackState = shallowRef<MediaSessionPlaybackState>('none')
+
+useMediaSession({
+  initials: {
+    title: 'Sintel',
+    artist: 'Blender Foundation',
+    album: 'Sintel',
+    artwork: [
+      { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
+    ],
+    duration,
+    playbackRate,
+    position,
+    playbackState,
+  },
   onPlay: () => sampleVideo.value?.play(),
   onPause: () => sampleVideo.value?.pause(),
   onSeekBackward: details => sampleVideo.value.currentTime -= details.seekOffset ?? 10,
   onSeekForward: details => sampleVideo.value.currentTime += details.seekOffset ?? 10,
   onSeekTo: details => sampleVideo.value.currentTime = details.seekTime ?? 0,
 })
-
-title.value = 'Sintel'
-artist.value = 'Blender Foundation'
-album.value = 'Sintel'
-artwork.value = [
-  { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-]
 
 function updatePositionState() {
   duration.value = sampleVideo.value?.duration
@@ -60,9 +62,9 @@ function updatePositionState() {
 </template>
 ```
 
-### Initial values
+### Initial values & owning the state
 
-Before you update them, the metadata and position refs are `undefined`, `playbackState` is `'none'` and `cameraActive` / `microphoneActive` are `false`. Set your own initial values with `initials`; they are published to the session on setup:
+The returned refs are readonly. Before the first update, the metadata and position refs are `undefined`, `playbackState` is `'none'` and `cameraActive` / `microphoneActive` are `false`. Set static values with `initials`; they are published to the session on setup:
 
 ```ts
 import { useMediaSession } from '@vueuse/core'
@@ -72,7 +74,20 @@ const { title, playbackState } = useMediaSession({
 })
 ```
 
-The returned refs stay writable, since writing to them is how the session is updated. To own the state, pass your own refs to `initials`; `useMediaSession` uses them as its state and keeps the session in sync with them.
+To update the session later, pass your own refs to `initials`. `useMediaSession` uses them as its state and keeps the session in sync with them:
+
+```ts
+import { useMediaSession } from '@vueuse/core'
+import { shallowRef } from 'vue'
+
+const title = shallowRef('Sintel')
+
+useMediaSession({ initials: { title } })
+
+title.value = 'Big Buck Bunny' // published to the session
+```
+
+Don't pass a `computed` in `initials`: `clear()` writes into the passed refs.
 
 ## Action handlers
 
@@ -91,4 +106,4 @@ browser's position state.
 
 Call `clear()` to reset metadata, playback state, position state, and camera/microphone
 activity. Action handlers stay registered. The session is also cleared when its scope is disposed.
-After calling `clear()`, you can update the returned refs to populate a new session.
+After calling `clear()`, you can update your refs to populate a new session.

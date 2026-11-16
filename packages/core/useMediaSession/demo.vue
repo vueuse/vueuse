@@ -23,29 +23,30 @@ function formatDuration(seconds: number) {
   return new Date(1000 * seconds).toISOString().slice(14, 19)
 }
 
-const {
-  album,
-  artist,
-  artwork,
-  title,
-  duration: msDuration,
-  playbackRate,
-  position,
-  playbackState,
-} = useMediaSession({
+const msDuration = shallowRef<number>()
+const playbackRate = shallowRef<number>()
+const position = shallowRef<number>()
+const playbackState = shallowRef<MediaSessionPlaybackState>('none')
+
+useMediaSession({
+  initials: {
+    title: 'Sintel',
+    artist: 'Blender Foundation',
+    album: 'Sintel',
+    artwork: [
+      { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
+    ],
+    duration: msDuration,
+    playbackRate,
+    position,
+    playbackState,
+  },
   onPlay: () => playing.value = true,
   onPause: () => playing.value = false,
   onSeekBackward: details => currentTime.value -= details.seekOffset ?? 10,
   onSeekForward: details => currentTime.value += details.seekOffset ?? 10,
   onSeekTo: details => currentTime.value = details.seekTime ?? 0,
 })
-
-title.value = 'Sintel'
-artist.value = 'Blender Foundation'
-album.value = 'Sintel'
-artwork.value = [
-  { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-]
 
 watchEffect(() => {
   msDuration.value = duration.value
