@@ -17,55 +17,54 @@ function onFileInput(e: Event) {
 </script>
 
 <template>
-  <div space-y-4>
-    <div grid md:grid-cols-2 gap-2>
+  <div class="space-y-4">
+    <div class="grid md:grid-cols-2 gap-2">
       <div>
         <span>Text Input</span>
-        <textarea v-model="text" h-40 type="text" placeholder="Type something..." />
+        <textarea v-model="text" class="h-40" type="text" placeholder="Type something..." />
       </div>
       <div>
         <span>Base64</span>
-        <textarea h-40 :value="textBase64" readonly />
+        <textarea class="h-40" :value="textBase64" readonly />
       </div>
     </div>
 
-    <div grid md:grid-cols-2 gap-2>
+    <div class="grid md:grid-cols-2 gap-2">
       <div>
         <span>Buffer Input</span>
-        <pre mt-2>new ArrayBuffer(1024)</pre>
+        <pre class="mt-2">new ArrayBuffer(1024)</pre>
       </div>
       <div>
         <span>Base64</span>
-        <textarea h-40 :value="bufferBase64" readonly />
+        <textarea class="h-40" :value="bufferBase64" readonly />
       </div>
     </div>
 
-    <div grid md:grid-cols-2 gap-2>
+    <div class="grid md:grid-cols-2 gap-2">
       <div>
         <span>File Input</span>
         <div>
-          <input mt-2 type="file" @input="onFileInput">
+          <input class="mt-2" type="file" @input="onFileInput">
         </div>
       </div>
       <div>
         <span>Base64</span>
-        <textarea h-40 :value="fileBase64" readonly />
+        <textarea class="h-40" :value="fileBase64" readonly />
       </div>
     </div>
 
-    <div grid md:grid-cols-2 gap-2>
+    <div class="grid md:grid-cols-2 gap-2">
       <div>
         <span>Image Input</span>
         <img
           ref="image"
-          w-full h-40 object-cover
-          class="rounded mt-2"
+          class="rounded mt-2 w-full h-40 object-cover"
           src="https://images.unsplash.com/photo-1494256997604-768d1f608cac?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
         >
       </div>
       <div>
         <span>Base64</span>
-        <textarea h-40 :value="imageBase64" readonly />
+        <textarea class="h-40" :value="imageBase64" readonly />
       </div>
     </div>
   </div>
