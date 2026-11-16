@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMediaControls, useMediaSession } from '@vueuse/core'
-import { computed, shallowRef, useTemplateRef, watchEffect } from 'vue'
+import { computed, shallowRef, useTemplateRef } from 'vue'
 import Menu from '../useMediaControls/components/Menu.vue'
 import MenuItem from '../useMediaControls/components/MenuItem.vue'
 import Scrubber from '../useMediaControls/components/Scrubber.vue'
@@ -23,38 +23,22 @@ function formatDuration(seconds: number) {
   return new Date(1000 * seconds).toISOString().slice(14, 19)
 }
 
-const msDuration = shallowRef<number>()
-const playbackRate = shallowRef<number>()
-const position = shallowRef<number>()
-const playbackState = shallowRef<MediaSessionPlaybackState>('none')
-
 useMediaSession({
-  initials: {
-    title: 'Sintel',
-    artist: 'Blender Foundation',
-    album: 'Sintel',
-    artwork: [
-      { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-    ],
-    duration: msDuration,
-    playbackRate,
-    position,
-    playbackState,
-  },
+  title: 'Sintel',
+  artist: 'Blender Foundation',
+  album: 'Sintel',
+  artwork: [
+    { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
+  ],
+  duration,
+  playbackRate: rate,
+  position: currentTime,
+  playbackState: () => playing.value ? 'playing' : 'paused',
   onPlay: () => playing.value = true,
   onPause: () => playing.value = false,
   onSeekBackward: details => currentTime.value -= details.seekOffset ?? 10,
   onSeekForward: details => currentTime.value += details.seekOffset ?? 10,
   onSeekTo: details => currentTime.value = details.seekTime ?? 0,
-})
-
-watchEffect(() => {
-  msDuration.value = duration.value
-  playbackRate.value = rate.value
-})
-
-watchEffect(() => {
-  playbackState.value = playing.value ? 'playing' : 'paused'
 })
 </script>
 
@@ -75,7 +59,6 @@ watchEffect(() => {
         :poster="poster"
         :loop="loop"
         @click="playing = !playing"
-        @seeked="position = currentTime"
       />
       <div
         v-if="waiting"

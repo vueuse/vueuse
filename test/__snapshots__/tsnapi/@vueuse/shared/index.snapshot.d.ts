@@ -242,7 +242,6 @@ export type IsAny<T> = IfAny<T, true, false>;
 export type IsDefinedReturn = boolean;
 export type MapOldSources<T, Immediate> = { [K in keyof T]: T[K] extends WatchSource<infer V> ? Immediate extends true ? V | undefined : V : never; };
 export type MapSources<T> = { [K in keyof T]: T[K] extends WatchSource<infer V> ? V : never; };
-export type MaybeRefInitials<T> = { [K in keyof T]?: MaybeRef<T[K]>; };
 export type Mutable<T> = { -readonly [P in keyof T]: T[P]; };
 export type Promisify<T> = Promise<Awaited<T>>;
 export type PromisifyFn<T extends AnyFn> = (..._: ArgumentsType<T>) => Promisify<ReturnType<T>>;
@@ -257,7 +256,6 @@ export type ReactiveOmitReturn<T extends object, K extends keyof T | undefined =
 export type ReactivePickPredicate<T> = (_: T[keyof T], _: keyof T) => boolean;
 export type ReactivePickReturn<T extends object, K extends keyof T> = { [S in K]: UnwrapRef<T[S]>; };
 export type ReadonlyRefOrGetter<T> = ComputedRef<T> | (() => T);
-export type ReadonlyRefs<T> = { [K in keyof T]: Readonly<ShallowRef<T[K]>>; };
 export type RefAutoResetReturn<T = any> = Ref<T>;
 export type RefDebouncedReturn<T = any> = Readonly<Ref<T>>;
 export type RefThrottledReturn<T = any> = Ref<T>;

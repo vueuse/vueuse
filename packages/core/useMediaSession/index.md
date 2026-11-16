@@ -10,7 +10,7 @@ When supported, the session is initialized as soon as `useMediaSession()` is cal
 without waiting for the component to mount.
 
 ::: warning
-`useMediaSession` assumes it owns the page's media session. The Media Session API has no change events, so changes made to `navigator.mediaSession` outside of `useMediaSession` (e.g. by another player library) are not reflected in the returned refs and may be overwritten on the next update. Use a single `useMediaSession` per page.
+`useMediaSession` assumes it owns the page's media session. The Media Session API has no change events, so changes made to `navigator.mediaSession` outside of `useMediaSession` (e.g. by another player library) are not detected and may be overwritten on the next update. Use a single `useMediaSession` per page.
 :::
 
 ## Basic Usage
@@ -27,18 +27,16 @@ const position = shallowRef<number>()
 const playbackState = shallowRef<MediaSessionPlaybackState>('none')
 
 useMediaSession({
-  initials: {
-    title: 'Sintel',
-    artist: 'Blender Foundation',
-    album: 'Sintel',
-    artwork: [
-      { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
-    ],
-    duration,
-    playbackRate,
-    position,
-    playbackState,
-  },
+  title: 'Sintel',
+  artist: 'Blender Foundation',
+  album: 'Sintel',
+  artwork: [
+    { src: 'https://studio.blender.org/files/public/thumbnail/47/a9/47a954682dbd4f064da7e78ad6c2d32f044a3e85_m.webp', sizes: '640x360', type: 'image/webp' },
+  ],
+  duration,
+  playbackRate,
+  position,
+  playbackState,
   onPlay: () => sampleVideo.value?.play(),
   onPause: () => sampleVideo.value?.pause(),
   onSeekBackward: details => sampleVideo.value.currentTime -= details.seekOffset ?? 10,
@@ -66,32 +64,25 @@ function updatePositionState() {
 </template>
 ```
 
-### Initial values & owning the state
+### Reactive state
 
-The returned refs are readonly. Before the first update, the metadata and position refs are `undefined`, `playbackState` is `'none'` and `cameraActive` / `microphoneActive` are `false`. Set static values with `initials`; they are published to the session on setup:
+Every state option (`title`, `artist`, `album`, `artwork`, `duration`, `playbackRate`, `position`, `playbackState`, `cameraActive`, `microphoneActive`) accepts a plain value, a ref or a getter. `useMediaSession` only reads them and publishes every change to the session:
 
 ```ts
 import { useMediaSession } from '@vueuse/core'
+import { computed, shallowRef } from 'vue'
 
-const { title, playbackState } = useMediaSession({
-  initials: { title: 'Sintel', artist: 'Blender Foundation', playbackState: 'paused' },
+const track = shallowRef({ title: 'Sintel', artist: 'Blender Foundation' })
+const playing = shallowRef(false)
+
+useMediaSession({
+  title: () => track.value.title,
+  artist: () => track.value.artist,
+  playbackState: computed(() => playing.value ? 'playing' : 'paused'),
 })
 ```
 
-To update the session later, pass your own refs to `initials`. `useMediaSession` uses them as its state and keeps the session in sync with them:
-
-```ts
-import { useMediaSession } from '@vueuse/core'
-import { shallowRef } from 'vue'
-
-const title = shallowRef('Sintel')
-
-useMediaSession({ initials: { title } })
-
-title.value = 'Big Buck Bunny' // published to the session
-```
-
-Don't pass a `computed` in `initials`: `clear()` writes into the passed refs.
+Left out, the metadata and position options are `undefined`, `playbackState` is `'none'` and `cameraActive` / `microphoneActive` are `false`.
 
 ## Action handlers
 
@@ -108,6 +99,4 @@ browser's position state.
 
 ## Clearing the session
 
-Call `clear()` to reset metadata, playback state, position state, and camera/microphone
-activity. Action handlers stay registered. The session is also cleared when its scope is disposed.
-After calling `clear()`, you can update your refs to populate a new session.
+The session is reset and all action handlers are unregistered when the scope is disposed. To clear the metadata or position state while the scope is active, set the corresponding sources to `undefined`.

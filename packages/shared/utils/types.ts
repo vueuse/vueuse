@@ -41,34 +41,6 @@ export type DeepMaybeRef<T> = T extends Ref<infer V>
     ? { [K in keyof T]: DeepMaybeRef<T[K]> }
     : MaybeRef<T>
 
-/**
- * Initial values for a composable's state.
- *
- * Every key is optional and accepts a plain value or a ref. A passed ref is used
- * as the composable's internal state, so the composable writes into it.
- *
- * ```ts
- * export interface UseFooState { width: number, height: number }
- * export interface UseFooOptions { initials?: MaybeRefInitials<UseFooState> }
- * ```
- */
-export type MaybeRefInitials<T> = {
-  [K in keyof T]?: MaybeRef<T[K]>
-}
-
-/**
- * Maps a state shape to readonly shallow refs. Used for the return type of
- * state that only the composable writes.
- *
- * ```ts
- * export interface UseFooState { width: number, height: number }
- * export interface UseFooReturn extends ReadonlyRefs<UseFooState> {}
- * ```
- */
-export type ReadonlyRefs<T> = {
-  [K in keyof T]: Readonly<ShallowRef<T[K]>>
-}
-
 export type Arrayable<T> = T[] | T
 
 /**

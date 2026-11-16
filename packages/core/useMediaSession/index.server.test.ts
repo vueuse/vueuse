@@ -12,7 +12,11 @@ describe('useMediaSession SSR', () => {
       const cameraActive = shallowRef(false)
       const microphoneActive = shallowRef(false)
       const api = scope.run(() => useMediaSession({
-        initials: { title, playbackState, playbackRate, cameraActive, microphoneActive },
+        title,
+        playbackState,
+        playbackRate,
+        cameraActive,
+        microphoneActive,
         onPlay: () => {},
       }))!
 
@@ -26,8 +30,6 @@ describe('useMediaSession SSR', () => {
       cameraActive.value = true
       microphoneActive.value = true
       await nextTick()
-
-      expect(() => api.clear()).not.toThrow()
     }
     finally {
       scope.stop()

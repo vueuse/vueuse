@@ -1,8 +1,8 @@
-import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
+import type { MaybeRefOrGetter } from 'vue'
 import type { ConfigurableNavigator, Supportable } from '../types'
 import type { UseSupportedReturn } from '../useSupported'
 import { tryOnScopeDispose } from '@vueuse/shared'
-import { shallowReadonly, shallowRef, watchEffect } from 'vue'
+import { toValue, watchEffect } from 'vue'
 import { defaultNavigator } from '../_configurable'
 import { useSupported } from '../useSupported'
 
@@ -11,7 +11,7 @@ import { useSupported } from '../useSupported'
  * documentation from MDN(https://developer.mozilla.org/en-US/docs/Web/API/MediaSession)
  */
 
-export interface UseMediaSessionState {
+export interface UseMediaSessionOptions extends ConfigurableNavigator {
   /**
    * The **`album`** property of the `MediaMetadata` interface returns or sets the name of the album or collection containing the media to be played.
    *
@@ -19,7 +19,7 @@ export interface UseMediaSessionState {
    *
    * @default undefined
    */
-  album: MediaMetadataInit['album']
+  album?: MaybeRefOrGetter<MediaMetadataInit['album']>
   /**
    * The **`artist`** property of the `MediaMetadata` interface returns or sets the name of the artist, group, creator, etc., of the media to be played.
    *
@@ -27,7 +27,7 @@ export interface UseMediaSessionState {
    *
    * @default undefined
    */
-  artist: MediaMetadataInit['artist']
+  artist?: MaybeRefOrGetter<MediaMetadataInit['artist']>
   /**
    * The **`artwork`** property of the `MediaMetadata` interface returns or sets an array of objects representing images associated with playing media.
    *
@@ -35,7 +35,7 @@ export interface UseMediaSessionState {
    *
    * @default undefined
    */
-  artwork: MediaMetadataInit['artwork']
+  artwork?: MaybeRefOrGetter<MediaMetadataInit['artwork']>
   /**
    * The **`title`** property of the `MediaMetadata` interface returns or sets the title of the media to be played.
    *
@@ -43,7 +43,7 @@ export interface UseMediaSessionState {
    *
    * @default undefined
    */
-  title: MediaMetadataInit['title']
+  title?: MaybeRefOrGetter<MediaMetadataInit['title']>
   /**
    * A floating-point value giving the total duration of the current media in seconds.
    * This should always be a non-negative number, with positive infinity (`Infinity`) indicating media
@@ -53,7 +53,7 @@ export interface UseMediaSessionState {
    *
    * @default undefined
    */
-  duration: MediaPositionState['duration']
+  duration?: MaybeRefOrGetter<MediaPositionState['duration']>
   /**
    * A floating-point value indicating the rate at which the media is being played,
    * as a ratio relative to its normal playback speed. Thus, a value of 1 is playing at normal speed,
@@ -64,7 +64,7 @@ export interface UseMediaSessionState {
    *
    * @default undefined
    */
-  playbackRate: MediaPositionState['playbackRate']
+  playbackRate?: MaybeRefOrGetter<MediaPositionState['playbackRate']>
   /**
    * A floating-point value indicating the last reported playback position of the media in seconds. This must be between zero and the duration, inclusive.
    *
@@ -72,7 +72,7 @@ export interface UseMediaSessionState {
    *
    * @default undefined
    */
-  position: MediaPositionState['position']
+  position?: MaybeRefOrGetter<MediaPositionState['position']>
   /**
    * The **`playbackState`** property of the `MediaSession` interface indicates whether the current media session is playing or paused.
    *
@@ -80,7 +80,7 @@ export interface UseMediaSessionState {
    *
    * @default 'none'
    */
-  playbackState: MediaSessionPlaybackState
+  playbackState?: MaybeRefOrGetter<MediaSessionPlaybackState>
   /**
    * Indicate to the user agent whether the user's camera is considered to be active.
    *
@@ -88,7 +88,7 @@ export interface UseMediaSessionState {
    *
    * @default false
    */
-  cameraActive: boolean
+  cameraActive?: MaybeRefOrGetter<boolean>
   /**
    * Indicate to the user agent whether the user's microphone is considered to be active.
    *
@@ -96,15 +96,7 @@ export interface UseMediaSessionState {
    *
    * @default false
    */
-  microphoneActive: boolean
-}
-
-export interface UseMediaSessionOptions extends ConfigurableNavigator {
-  /**
-   * Initial values for the returned state, published to the session on setup.
-   * A passed ref is used as the internal state: write to it to update the session.
-   */
-  initials?: MaybeRefInitials<UseMediaSessionState>
+  microphoneActive?: MaybeRefOrGetter<boolean>
   /**
    * Called when the user asks to start playback.
    * Registers the `play` action, so the browser may show a matching control.
@@ -182,7 +174,7 @@ const actionOptions = {
   skipad: 'onSkipAd',
 } as const satisfies Record<MediaSessionAction, keyof UseMediaSessionOptions>
 
-export interface UseMediaSessionReturn extends Supportable, ReadonlyRefs<UseMediaSessionState> {
+export interface UseMediaSessionReturn extends Supportable {
   /**
    * Whether `mediaSession.setCameraActive()` is supported by the browser.
    *
@@ -195,12 +187,6 @@ export interface UseMediaSessionReturn extends Supportable, ReadonlyRefs<UseMedi
    * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setMicrophoneActive)
    */
   isSetMicrophoneSupported: UseSupportedReturn
-  /**
-   * Reset metadata, playback, and camera/microphone state.
-   * Action handlers from the `on*` options stay registered until the scope is disposed.
-   * The session can be populated again after clearing.
-   */
-  clear: () => void
 }
 
 /**
@@ -211,146 +197,98 @@ export interface UseMediaSessionReturn extends Supportable, ReadonlyRefs<UseMedi
 export function useMediaSession(options: UseMediaSessionOptions = {}): UseMediaSessionReturn {
   const {
     navigator = defaultNavigator,
-    initials: {
-      album: initialAlbum,
-      artist: initialArtist,
-      artwork: initialArtwork,
-      title: initialTitle,
-      duration: initialDuration,
-      playbackRate: initialPlaybackRate,
-      position: initialPosition,
-      playbackState: initialPlaybackState = 'none',
-      cameraActive: initialCameraActive = false,
-      microphoneActive: initialMicrophoneActive = false,
-    } = {},
+    album,
+    artist,
+    artwork,
+    title,
+    duration,
+    playbackRate,
+    position,
+    playbackState = 'none',
+    cameraActive = false,
+    microphoneActive = false,
   } = options
 
   const isSupported = useSupported(() => navigator && 'mediaSession' in navigator)
-
-  const album = shallowRef(initialAlbum)
-  const artist = shallowRef(initialArtist)
-  const artwork = shallowRef(initialArtwork)
-  const title = shallowRef(initialTitle)
-
-  const duration = shallowRef(initialDuration)
-  const playbackRate = shallowRef(initialPlaybackRate)
-  const position = shallowRef(initialPosition)
-
-  const playbackState = shallowRef(initialPlaybackState)
-
-  const registeredActions: MediaSessionAction[] = []
-
-  const cameraActive = shallowRef(initialCameraActive)
-  const microphoneActive = shallowRef(initialMicrophoneActive)
-
   const isSetCameraSupported = useSupported(() => navigator && 'mediaSession' in navigator && 'setCameraActive' in navigator.mediaSession)
   const isSetMicrophoneSupported = useSupported(() => navigator && 'mediaSession' in navigator && 'setMicrophoneActive' in navigator.mediaSession)
 
-  if (isSupported.value) {
-    watchEffect(() => {
-      const metadata: MediaMetadataInit = {
-        album: album.value,
-        artist: artist.value,
-        artwork: artwork.value,
-        title: title.value,
-      }
-      navigator!.mediaSession.metadata = Object.values(metadata).every(value => value === undefined)
-        ? null
-        : new MediaMetadata(metadata)
-    })
-
-    watchEffect(() => {
-      navigator!.mediaSession.playbackState = playbackState.value
-    })
-
-    watchEffect(() => {
-      // A nonempty position state requires a duration, which may not be loaded yet.
-      if (duration.value === undefined) {
-        navigator!.mediaSession.setPositionState()
-        return
-      }
-      navigator!.mediaSession.setPositionState({
-        duration: duration.value,
-        playbackRate: playbackRate.value,
-        position: position.value,
-      })
-    })
-
-    for (const [action, option] of Object.entries(actionOptions) as [MediaSessionAction, keyof typeof options][]) {
-      const handler = options[option] as MediaSessionActionHandler | undefined
-      if (!handler)
-        continue
-      try {
-        navigator!.mediaSession.setActionHandler(action, handler)
-        registeredActions.push(action)
-      }
-      // The browser throws for actions it does not support
-      catch {}
-    }
-
-    if (isSetCameraSupported.value) {
-      watchEffect(() => navigator!.mediaSession.setCameraActive(cameraActive.value))
-    }
-
-    if (isSetMicrophoneSupported.value) {
-      watchEffect(() => navigator!.mediaSession.setMicrophoneActive(microphoneActive.value))
-    }
+  const returnValue: UseMediaSessionReturn = {
+    isSupported,
+    isSetCameraSupported,
+    isSetMicrophoneSupported,
   }
 
-  /**
-   * Method for clearing the MediaSession
-   */
-  function clear() {
-    if (!isSupported.value)
-      return false
+  if (!isSupported.value)
+    return returnValue
 
-    album.value = undefined
-    artist.value = undefined
-    artwork.value = undefined
-    title.value = undefined
-    navigator!.mediaSession.metadata = null
+  const mediaSession = navigator!.mediaSession
 
-    duration.value = undefined
-    playbackRate.value = undefined
-    position.value = undefined
-    navigator!.mediaSession.setPositionState()
+  watchEffect(() => {
+    const metadata: MediaMetadataInit = {
+      album: toValue(album),
+      artist: toValue(artist),
+      artwork: toValue(artwork),
+      title: toValue(title),
+    }
+    mediaSession.metadata = Object.values(metadata).every(value => value === undefined)
+      ? null
+      : new MediaMetadata(metadata)
+  })
 
-    playbackState.value = 'none'
-    navigator!.mediaSession.playbackState = 'none'
+  watchEffect(() => {
+    mediaSession.playbackState = toValue(playbackState)
+  })
 
-    cameraActive.value = false
-    microphoneActive.value = false
-    if (isSetCameraSupported.value)
-      navigator!.mediaSession.setCameraActive(false)
-    if (isSetMicrophoneSupported.value)
-      navigator!.mediaSession.setMicrophoneActive(false)
+  watchEffect(() => {
+    const durationValue = toValue(duration)
+    // A nonempty position state requires a duration, which may not be loaded yet.
+    if (durationValue === undefined) {
+      mediaSession.setPositionState()
+      return
+    }
+    mediaSession.setPositionState({
+      duration: durationValue,
+      playbackRate: toValue(playbackRate),
+      position: toValue(position),
+    })
+  })
+
+  if (isSetCameraSupported.value)
+    watchEffect(() => mediaSession.setCameraActive(toValue(cameraActive)))
+
+  if (isSetMicrophoneSupported.value)
+    watchEffect(() => mediaSession.setMicrophoneActive(toValue(microphoneActive)))
+
+  const registeredActions: MediaSessionAction[] = []
+  for (const [action, option] of Object.entries(actionOptions) as [MediaSessionAction, keyof typeof options][]) {
+    const handler = options[option] as MediaSessionActionHandler | undefined
+    if (!handler)
+      continue
+    try {
+      mediaSession.setActionHandler(action, handler)
+      registeredActions.push(action)
+    }
+    // The browser throws for actions it does not support
+    catch {}
   }
 
-  // Clear MediaSession and unregister action handlers on dispose
+  // Reset the session and unregister action handlers on dispose
   tryOnScopeDispose(() => {
-    clear()
+    mediaSession.metadata = null
+    mediaSession.setPositionState()
+    mediaSession.playbackState = 'none'
+    if (isSetCameraSupported.value)
+      mediaSession.setCameraActive(false)
+    if (isSetMicrophoneSupported.value)
+      mediaSession.setMicrophoneActive(false)
     for (const action of registeredActions.splice(0)) {
       try {
-        navigator!.mediaSession.setActionHandler(action, null)
+        mediaSession.setActionHandler(action, null)
       }
       catch {}
     }
   })
 
-  return {
-    isSupported,
-    album: shallowReadonly(album),
-    artist: shallowReadonly(artist),
-    artwork: shallowReadonly(artwork),
-    title: shallowReadonly(title),
-    duration: shallowReadonly(duration),
-    playbackRate: shallowReadonly(playbackRate),
-    position: shallowReadonly(position),
-    playbackState: shallowReadonly(playbackState),
-    cameraActive: shallowReadonly(cameraActive),
-    microphoneActive: shallowReadonly(microphoneActive),
-    isSetCameraSupported,
-    isSetMicrophoneSupported,
-    clear,
-  }
+  return returnValue
 }

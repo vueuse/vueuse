@@ -874,7 +874,16 @@ export interface UseMediaControlsReturn {
   onPlaybackError: EventHookOn<Event>;
 }
 export interface UseMediaSessionOptions extends ConfigurableNavigator {
-  initials?: MaybeRefInitials<UseMediaSessionState>;
+  album?: MaybeRefOrGetter<MediaMetadataInit['album']>;
+  artist?: MaybeRefOrGetter<MediaMetadataInit['artist']>;
+  artwork?: MaybeRefOrGetter<MediaMetadataInit['artwork']>;
+  title?: MaybeRefOrGetter<MediaMetadataInit['title']>;
+  duration?: MaybeRefOrGetter<MediaPositionState['duration']>;
+  playbackRate?: MaybeRefOrGetter<MediaPositionState['playbackRate']>;
+  position?: MaybeRefOrGetter<MediaPositionState['position']>;
+  playbackState?: MaybeRefOrGetter<MediaSessionPlaybackState>;
+  cameraActive?: MaybeRefOrGetter<boolean>;
+  microphoneActive?: MaybeRefOrGetter<boolean>;
   onPlay?: MediaSessionActionHandler;
   onPause?: MediaSessionActionHandler;
   onStop?: MediaSessionActionHandler;
@@ -885,22 +894,9 @@ export interface UseMediaSessionOptions extends ConfigurableNavigator {
   onNextTrack?: MediaSessionActionHandler;
   onSkipAd?: MediaSessionActionHandler;
 }
-export interface UseMediaSessionReturn extends Supportable, ReadonlyRefs<UseMediaSessionState> {
+export interface UseMediaSessionReturn extends Supportable {
   isSetCameraSupported: UseSupportedReturn;
   isSetMicrophoneSupported: UseSupportedReturn;
-  clear: () => void;
-}
-export interface UseMediaSessionState {
-  album: MediaMetadataInit['album'];
-  artist: MediaMetadataInit['artist'];
-  artwork: MediaMetadataInit['artwork'];
-  title: MediaMetadataInit['title'];
-  duration: MediaPositionState['duration'];
-  playbackRate: MediaPositionState['playbackRate'];
-  position: MediaPositionState['position'];
-  playbackState: MediaSessionPlaybackState;
-  cameraActive: boolean;
-  microphoneActive: boolean;
 }
 export interface UseMediaSource {
   src: string;
