@@ -36,7 +36,9 @@ export function createSharedComposable<Fn extends AnyFn>(composable: Fn): Shared
       scope = effectScope(true)
       state = scope.run(() => composable(...args))
     }
-    tryOnScopeDispose(dispose)
+    if(!tryOnScopeDispose(dispose)) {
+      dispose()
+    }
     return state
   })
 }
