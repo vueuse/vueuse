@@ -85,6 +85,21 @@ Pass `on*` options (`onPlay`, `onPause`, `onStop`, `onSeekBackward`, `onSeekForw
 
 Handlers are registered on setup and unregistered when the scope is disposed.
 
+Please noted that the action handlers are NOT reactive. If you need conditional logic for the handlers, please handle it inside the function directly:
+
+```ts
+useMediaSession({}, {
+  onPlay: () => {
+    if (playable.value) {
+      toast.info('play')
+    }
+    else {
+      toast.error('Unplayable')
+    }
+  }
+})
+```
+
 ## Position state
 
 `positionState` takes the same object as [`setPositionState()`](https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setPositionState): `duration`, `position` and `playbackRate`. Pass them together, so `position` never exceeds the `duration` of another track. The position state is published once `duration` is defined; `null`, `undefined` or a state without `duration` clears it.
