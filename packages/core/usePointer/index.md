@@ -20,7 +20,7 @@ Before the first event (e.g. during SSR), all values are `0`, `pointerType` is `
 
 ```ts
 import { usePointer } from '@vueuse/core'
-
+// ---cut---
 const { x, y } = usePointer({ initials: { x: 100, y: 100 } })
 ```
 

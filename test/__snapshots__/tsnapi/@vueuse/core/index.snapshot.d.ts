@@ -652,13 +652,16 @@ export interface UseEventSourceReturn<Events extends string[], Data = any> {
   lastEventId: ShallowRef<string | null>;
 }
 export interface UseEyeDropperOptions {
+  initials?: MaybeRefInitials<UseEyeDropperState>;
   initialValue?: string;
 }
-export interface UseEyeDropperReturn extends Supportable {
-  sRGBHex: ShallowRef<string>;
+export interface UseEyeDropperReturn extends Supportable, ReadonlyRefs<UseEyeDropperState> {
   open: (_?: EyeDropperOpenOptions) => Promise<{
     sRGBHex: string;
   } | undefined>;
+}
+export interface UseEyeDropperState {
+  sRGBHex: string;
 }
 export interface UseFaviconOptions extends ConfigurableDocument {
   baseUrl?: string;
