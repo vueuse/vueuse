@@ -712,15 +712,18 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
   capture?: MaybeRef<string>;
   reset?: MaybeRef<boolean>;
   directory?: MaybeRef<boolean>;
+  initials?: MaybeRefInitials<UseFileDialogState>;
   initialFiles?: Array<File> | FileList;
   input?: MaybeElementRef<HTMLInputElement>;
 }
-export interface UseFileDialogReturn {
-  files: Ref<FileList | null>;
+export interface UseFileDialogReturn extends ReadonlyRefs<UseFileDialogState> {
   open: (_?: Partial<UseFileDialogOptions>) => void;
   reset: () => void;
   onChange: EventHookOn<FileList | null>;
   onCancel: EventHookOn;
+}
+export interface UseFileDialogState {
+  files: FileList | null;
 }
 export interface UseFileSystemAccessReturn<T = string> extends Supportable {
   data: ShallowRef<T | undefined>;
