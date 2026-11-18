@@ -783,12 +783,15 @@ export interface UseHorizontalVirtualListOptions extends UseVirtualListOptionsBa
 export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
   events?: WindowEventName[];
   listenForVisibilityChange?: boolean;
+  initials?: MaybeRefInitials<UseIdleState>;
   initialState?: boolean;
 }
-export interface UseIdleReturn extends Stoppable {
-  idle: ShallowRef<boolean>;
-  lastActive: ShallowRef<number>;
+export interface UseIdleReturn extends Stoppable, ReadonlyRefs<UseIdleState> {
   reset: (_?: boolean) => void;
+}
+export interface UseIdleState {
+  idle: boolean;
+  lastActive: number;
 }
 export interface UseImageOptions {
   src: string;
