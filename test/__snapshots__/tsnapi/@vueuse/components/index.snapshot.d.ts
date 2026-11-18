@@ -27,7 +27,7 @@ export interface UseElementSizeProps extends UseElementSizeOptions, RenderableCo
   width?: number;
   height?: number;
 }
-export interface UseElementVisibilityProps extends Omit<UseElementVisibilityOptions<true>, 'controls'>, RenderableComponent {}
+export interface UseElementVisibilityProps extends Omit<UseElementVisibilityOptions<true>, 'controls' | 'initialValue'>, RenderableComponent {}
 export interface UseEyeDropperProps extends UseEyeDropperOptions {}
 export interface UseFullscreenProps extends UseFullscreenOptions, RenderableComponent {}
 export interface UseGeolocationProps extends UseGeolocationOptions {}

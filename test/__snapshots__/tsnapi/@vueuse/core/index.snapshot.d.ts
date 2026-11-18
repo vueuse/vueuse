@@ -614,13 +614,15 @@ export interface UseElementSizeState {
   height: number;
 }
 export interface UseElementVisibilityOptions<Controls extends boolean = false> extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'rootMargin' | 'threshold'> {
+  initials?: MaybeRefInitials<UseElementVisibilityState>;
   initialValue?: boolean;
   scrollTarget?: UseIntersectionObserverOptions['root'];
   once?: boolean;
   controls?: Controls;
 }
-export interface UseElementVisibilityReturnWithControls extends UseIntersectionObserverReturn {
-  isVisible: ShallowRef<boolean>;
+export interface UseElementVisibilityReturnWithControls extends UseIntersectionObserverReturn, ReadonlyRefs<UseElementVisibilityState> {}
+export interface UseElementVisibilityState {
+  isVisible: boolean;
 }
 export interface UseEventBusReturn<T, P> {
   on: (_: EventBusListener<T, P>) => Fn;
@@ -1694,7 +1696,7 @@ export type UseConfirmDialogRevealResult<C, D> = {
 export type UseDarkReturn = WritableComputedRef<boolean>;
 export type UseDocumentVisibilityReturn = ShallowRef<DocumentVisibilityState>;
 export type UseElementOverflowReturn = ReturnType<typeof useElementOverflow>;
-export type UseElementVisibilityReturn<Controls extends boolean = false> = Controls extends true ? UseElementVisibilityReturnWithControls : ShallowRef<boolean>;
+export type UseElementVisibilityReturn<Controls extends boolean = false> = Controls extends true ? UseElementVisibilityReturnWithControls : Readonly<ShallowRef<boolean>>;
 export type UseFaviconReturn = ComputedRef<string | null | undefined> | Ref<string | null | undefined>;
 export type UseFileSystemAccessCommonOptions = Pick<FileSystemAccessShowOpenFileOptions, 'types' | 'excludeAcceptAllOption'>;
 export type UseFileSystemAccessOptions = ConfigurableWindow & UseFileSystemAccessCommonOptions & {
