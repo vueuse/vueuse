@@ -1,9 +1,19 @@
-import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { PointerType, Position } from '../types'
-import { isClient, toRefs } from '@vueuse/shared'
-import { computed, ref as deepRef, toValue, watch } from 'vue'
+import { isClient } from '@vueuse/shared'
+import { computed, ref as deepRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
+
+export interface UseDraggableState {
+  /**
+   * Current position
+   *
+   * @default { x: 0, y: 0 }
+   */
+  position: Position
+}
 
 export interface UseDraggableOptions {
   /**
@@ -63,9 +73,13 @@ export interface UseDraggableOptions {
   pointerTypes?: PointerType[]
 
   /**
-   * Initial position of the element.
-   *
-   * @default { x: 0, y: 0 }
+   * Initial values for the returned state.
+   * A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseDraggableState>
+
+  /**
+   * @deprecated Use `initials.position` instead. Will be removed in v17.
    */
   initialValue?: MaybeRefOrGetter<Position>
 
@@ -151,10 +165,15 @@ export interface UseDraggableOptions {
   }>
 }
 
-export interface UseDraggableReturn {
-  x: Ref<number>
-  y: Ref<number>
-  position: Ref<Position>
+export interface UseDraggableReturn extends ReadonlyRefs<UseDraggableState> {
+  /**
+   * Current x position, derived from `position`
+   */
+  x: ComputedRef<number>
+  /**
+   * Current y position, derived from `position`
+   */
+  y: ComputedRef<number>
   isDragging: ComputedRef<boolean>
   style: ComputedRef<string>
 }
@@ -187,7 +206,10 @@ export function useDraggable(
     onMove,
     onEnd,
     onStart,
-    initialValue,
+    initialValue: deprecatedInitialValue,
+    initials: {
+      position: initialPosition = toValue(deprecatedInitialValue) ?? { x: 0, y: 0 },
+    } = {},
     axis = 'both',
     draggingElement = defaultWindow,
     containerElement,
@@ -197,9 +219,7 @@ export function useDraggable(
     autoScroll = false,
   } = options
 
-  const position = deepRef<Position>(
-    toValue(initialValue) ?? { x: 0, y: 0 },
-  )
+  const position = shallowRef(initialPosition)
 
   const pressedDelta = deepRef<Position>()
 
@@ -389,10 +409,7 @@ export function useDraggable(
       }
     }
 
-    position.value = {
-      x,
-      y,
-    }
+    position.value = { x, y }
     onMove?.(position.value, e)
     handleEvent(e)
   }
@@ -419,8 +436,9 @@ export function useDraggable(
   }
 
   return {
-    ...toRefs(position),
-    position,
+    x: computed(() => position.value.x),
+    y: computed(() => position.value.y),
+    position: shallowReadonly(position),
     isDragging: computed(() => !!pressedDelta.value),
     style: computed(() => `
       left: ${position.value.x}px;

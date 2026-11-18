@@ -533,6 +533,7 @@ export interface UseDraggableOptions {
   containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>;
   handle?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>;
   pointerTypes?: PointerType[];
+  initials?: MaybeRefInitials<UseDraggableState>;
   initialValue?: MaybeRefOrGetter<Position>;
   onStart?: (_: Position, _: PointerEvent) => void | false;
   onMove?: (_: Position, _: PointerEvent) => void;
@@ -547,12 +548,14 @@ export interface UseDraggableOptions {
     direction?: 'x' | 'y' | 'both';
   }>;
 }
-export interface UseDraggableReturn {
-  x: Ref<number>;
-  y: Ref<number>;
-  position: Ref<Position>;
+export interface UseDraggableReturn extends ReadonlyRefs<UseDraggableState> {
+  x: ComputedRef<number>;
+  y: ComputedRef<number>;
   isDragging: ComputedRef<boolean>;
   style: ComputedRef<string>;
+}
+export interface UseDraggableState {
+  position: Position;
 }
 export interface UseDropZoneOptions {
   dataTypes?: MaybeRef<readonly string[]> | ((_: readonly string[]) => boolean);
