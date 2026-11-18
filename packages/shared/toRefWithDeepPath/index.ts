@@ -3,16 +3,27 @@ import type { AnyFn } from '../utils/types'
 import { computed, toValue } from 'vue'
 
 /**
+ * Longest path the types accept.
+ * `Prev` has to stay longer than this value.
+ */
+type MaxDepth = 6
+
+/** `Prev[D]` is `D - 1`. Index `0` is `never` and stops the walk. */
+type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+/**
  * Keys of `T` that hold data.
  * Array paths use numeric indexes. Methods are left out, so a path cannot end on `toString` or a function field.
  */
-type DataKey<T> = [T] extends [readonly unknown[]]
-  ? number
-  : [T] extends [object]
-      ? {
-          [K in keyof T]-?: [NonNullable<T[K]>] extends [AnyFn] ? never : K
-        }[keyof T]
-      : never
+type DataKey<T> = [T] extends [never]
+  ? never
+  : [T] extends [readonly unknown[]]
+      ? number
+      : [T] extends [object]
+          ? {
+              [K in keyof T]-?: [NonNullable<T[K]>] extends [AnyFn] ? never : K
+            }[keyof T]
+          : never
 
 /** Object reached by `K`, after dropping `null` and `undefined`. `never` when that segment is not an object. */
 type ChildAt<T, K extends PropertyKey> = [K] extends [keyof T]
@@ -22,28 +33,6 @@ type ChildAt<T, K extends PropertyKey> = [K] extends [keyof T]
         : never
     : never
   : never
-
-/**
- * Value type at `P`.
- * A `null` or `undefined` segment along the way adds `undefined`, because a read stops there.
- */
-type PathValue<T, P extends readonly PropertyKey[]> = P extends readonly [infer K, ...infer R]
-  ? K extends keyof T
-    ? R extends readonly []
-      ? T[K]
-      : R extends readonly PropertyKey[]
-        ? Exclude<T[K], null | undefined> extends infer C
-          ? [C] extends [object]
-              ? undefined extends T[K]
-                ? PathValue<C, R> | undefined
-                : null extends T[K]
-                  ? PathValue<C, R> | undefined
-                  : PathValue<C, R>
-              : undefined
-          : undefined
-        : undefined
-    : undefined
-  : T
 
 type UnwrapRoot<T> = T extends Ref<infer V>
   ? V extends object
@@ -58,86 +47,84 @@ type SourceOf<S> = S extends AnyFn
   ? UnwrapRoot<ReturnType<S>>
   : UnwrapRoot<S>
 
-type At<S, K1 extends PropertyKey, K2 extends PropertyKey = never, K3 extends PropertyKey = never, K4 extends PropertyKey = never, K5 extends PropertyKey = never>
-  = [K2] extends [never]
-    ? ChildAt<SourceOf<S>, K1>
-    : [K3] extends [never]
-        ? ChildAt<ChildAt<SourceOf<S>, K1>, K2>
-        : [K4] extends [never]
-            ? ChildAt<ChildAt<ChildAt<SourceOf<S>, K1>, K2>, K3>
-            : [K5] extends [never]
-                ? ChildAt<ChildAt<ChildAt<ChildAt<SourceOf<S>, K1>, K2>, K3>, K4>
-                : ChildAt<ChildAt<ChildAt<ChildAt<ChildAt<SourceOf<S>, K1>, K2>, K3>, K4>, K5>
+/**
+ * Value reached by walking `P` from `S`.
+ * `D` is how many keys are still allowed. An empty `P` is `S` itself.
+ */
+type At<S, P extends readonly PropertyKey[] = [], D extends number = MaxDepth>
+  = P extends readonly []
+    ? SourceOf<S>
+    : [D] extends [0 | never]
+        ? never
+        : P extends readonly [infer K extends PropertyKey, ...infer R extends readonly PropertyKey[]]
+          ? K extends keyof SourceOf<S>
+            ? At<ChildAt<SourceOf<S>, K>, R, Prev[D]>
+            : never
+          : never
+
+/**
+ * `P` when every key exists and the walk stays within `D`.
+ * Otherwise the keys that were legal at the first mismatch, or a depth error.
+ */
+type ValidPath<S, P extends readonly PropertyKey[], D extends number = MaxDepth>
+  = P extends readonly []
+    ? never
+    : [D] extends [0 | never]
+        ? `A path can have at most ${MaxDepth} keys`
+        : P extends readonly [infer K extends PropertyKey, ...infer R extends readonly PropertyKey[]]
+          ? K extends DataKey<SourceOf<S>>
+            ? R extends readonly []
+              ? readonly [K]
+              : ValidPath<At<S, readonly [K], D>, R, Prev[D]> extends infer Next
+                ? [Next] extends [readonly PropertyKey[]]
+                    ? readonly [K, ...Next]
+                    : Next
+                : never
+            : readonly [DataKey<SourceOf<S>>]
+          : never
+
+/**
+ * Value type at `P`.
+ * A `null` or `undefined` segment along the way adds `undefined`, because a read stops there.
+ */
+type PathValue<T, P extends readonly PropertyKey[], D extends number = MaxDepth>
+  = P extends readonly []
+    ? T
+    : [D] extends [0 | never]
+        ? never
+        : P extends readonly [infer K extends PropertyKey, ...infer R extends readonly PropertyKey[]]
+          ? K extends keyof T
+            ? R extends readonly []
+              ? T[K]
+              : Exclude<T[K], null | undefined> extends infer C
+                ? [C] extends [object]
+                    ? undefined extends T[K]
+                      ? PathValue<C, R, Prev[D]> | undefined
+                      : null extends T[K]
+                        ? PathValue<C, R, Prev[D]> | undefined
+                        : PathValue<C, R, Prev[D]>
+                    : undefined
+                : undefined
+            : undefined
+          : undefined
+
+type CheckedPath<S, P extends readonly PropertyKey[]> = [P] extends [ValidPath<S, P>] ? P : ValidPath<S, P>
 
 /**
  * Writable ref synced with a nested property of a reactive object, a ref, or a getter.
  *
- * The path is a tuple of up to 6 keys. A call-site array literal is inferred as a tuple.
+ * The path is a tuple of up to `MaxDepth` keys. A call-site array literal is inferred as a tuple.
  * A widened `string[]` is rejected.
  *
  * @see https://vueuse.org/shared/toRefWithDeepPath/
  */
 export function toRefWithDeepPath<
   S extends MaybeRefOrGetter<object>,
-  K1 extends DataKey<SourceOf<S>>,
+  const P extends readonly PropertyKey[],
 >(
   source: S,
-  path: readonly [K1],
-): WritableComputedRef<PathValue<SourceOf<S>, [K1]>>
-export function toRefWithDeepPath<
-  S extends MaybeRefOrGetter<object>,
-  K1 extends DataKey<SourceOf<S>>,
-  K2 extends DataKey<At<S, K1>>,
->(
-  source: S,
-  path: readonly [K1, K2],
-): WritableComputedRef<PathValue<SourceOf<S>, [K1, K2]>>
-export function toRefWithDeepPath<
-  S extends MaybeRefOrGetter<object>,
-  K1 extends DataKey<SourceOf<S>>,
-  K2 extends DataKey<At<S, K1>>,
-  K3 extends DataKey<At<S, K1, K2>>,
->(
-  source: S,
-  path: readonly [K1, K2, K3],
-): WritableComputedRef<PathValue<SourceOf<S>, [K1, K2, K3]>>
-export function toRefWithDeepPath<
-  S extends MaybeRefOrGetter<object>,
-  K1 extends DataKey<SourceOf<S>>,
-  K2 extends DataKey<At<S, K1>>,
-  K3 extends DataKey<At<S, K1, K2>>,
-  K4 extends DataKey<At<S, K1, K2, K3>>,
->(
-  source: S,
-  path: readonly [K1, K2, K3, K4],
-): WritableComputedRef<PathValue<SourceOf<S>, [K1, K2, K3, K4]>>
-export function toRefWithDeepPath<
-  S extends MaybeRefOrGetter<object>,
-  K1 extends DataKey<SourceOf<S>>,
-  K2 extends DataKey<At<S, K1>>,
-  K3 extends DataKey<At<S, K1, K2>>,
-  K4 extends DataKey<At<S, K1, K2, K3>>,
-  K5 extends DataKey<At<S, K1, K2, K3, K4>>,
->(
-  source: S,
-  path: readonly [K1, K2, K3, K4, K5],
-): WritableComputedRef<PathValue<SourceOf<S>, [K1, K2, K3, K4, K5]>>
-export function toRefWithDeepPath<
-  S extends MaybeRefOrGetter<object>,
-  K1 extends DataKey<SourceOf<S>>,
-  K2 extends DataKey<At<S, K1>>,
-  K3 extends DataKey<At<S, K1, K2>>,
-  K4 extends DataKey<At<S, K1, K2, K3>>,
-  K5 extends DataKey<At<S, K1, K2, K3, K4>>,
-  K6 extends DataKey<At<S, K1, K2, K3, K4, K5>>,
->(
-  source: S,
-  path: readonly [K1, K2, K3, K4, K5, K6],
-): WritableComputedRef<PathValue<SourceOf<S>, [K1, K2, K3, K4, K5, K6]>>
-export function toRefWithDeepPath(
-  source: MaybeRefOrGetter<object>,
-  path: readonly PropertyKey[],
-) {
+  path: CheckedPath<S, P>,
+): WritableComputedRef<PathValue<SourceOf<S>, P>> {
   return computed({
     get() {
       return readPath(readRoot(source), path)
@@ -145,7 +132,7 @@ export function toRefWithDeepPath(
     set(value) {
       writePath(readRoot(source), path, value)
     },
-  })
+  }) as WritableComputedRef<PathValue<SourceOf<S>, P>>
 }
 
 function readRoot(source: MaybeRefOrGetter<object>): unknown {

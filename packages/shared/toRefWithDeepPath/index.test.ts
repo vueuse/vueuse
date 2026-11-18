@@ -128,7 +128,8 @@ describe('toRefWithDeepPath', () => {
     const n = toRefWithDeepPath(state, ['box', 'n'])
 
     expect(() => {
-      n.value = 2
+      // The path is rejected by the types. The write is what the runtime still does.
+      (n as unknown as { value: number }).value = 2
     }).toThrowError(/number/)
     expect(state.box).toBe(1)
   })
