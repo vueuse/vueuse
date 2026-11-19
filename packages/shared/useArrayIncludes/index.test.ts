@@ -3,6 +3,20 @@ import { ref as deepRef } from 'vue'
 import { useArrayIncludes } from './index'
 
 describe('useArrayIncludes', () => {
+  it('should accept fromIndex without a comparator', () => {
+    const array = deepRef([1, 2, 3])
+    const result = useArrayIncludes(array, 1, { fromIndex: 1 })
+    expect(result.value).toBe(false)
+    array.value.push(1)
+    expect(result.value).toBe(true)
+    expect(useArrayIncludes(array, 2, { fromIndex: -2 }).value).toBe(false)
+  })
+
+  it('should accept an empty options object', () => {
+    expect(useArrayIncludes([1, 2, 3], 2, {}).value).toBe(true)
+    expect(useArrayIncludes([1, 2, 3], 4, {}).value).toBe(false)
+  })
+
   it('should be defined', () => {
     expect(useArrayIncludes).toBeDefined()
   })
