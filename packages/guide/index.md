@@ -73,6 +73,23 @@ const { x, y } = useMouse()
 </template>
 ```
 
+You may also disable certain functions if there are name conflicts with other nuxt modules.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  vueuse: {
+    autoImports: {
+      disableFunctions: [
+        'useColorMode',
+        'useDark',
+        // Any other VueUse functions
+      ],
+    }
+  },
+})
+```
+
 ## Usage Example
 
 Simply importing the functions you need from `@vueuse/core`
