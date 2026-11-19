@@ -46,6 +46,9 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
   const timeZoneName = (style: 'shortOffset' | 'longOffset') => {
+    // formatToParts throws on an invalid date
+    if (Number.isNaN(date.getTime()))
+      return ''
     const parts = new Intl.DateTimeFormat(toValue(options.locales), { timeZoneName: style }).formatToParts(date)
     return parts.find(part => part.type === 'timeZoneName')?.value ?? ''
   }

@@ -162,5 +162,10 @@ describe('useDateFormat', () => {
         expect(useDateFormat(date, 'zzzz', { locales }).value).toBe('GMT+01:00')
       },
     )
+
+    it('should not throw on an invalid date', () => {
+      expect(useDateFormat(new Date(Number.NaN), 'z').value).toBe('')
+      expect(useDateFormat(new Date(Number.NaN), 'zzzz').value).toBe('')
+    })
   })
 })
