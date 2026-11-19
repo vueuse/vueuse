@@ -100,7 +100,8 @@ export function normalizeDate(date: DateLike) {
     const d = date.match(REGEX_PARSE) as any
     if (d) {
       const m = d[2] - 1 || 0
-      const ms = (d[7] || '0').substring(0, 3)
+      // the digits are a fraction of a second: ".5" is 500ms, not 5ms
+      const ms = (d[7] || '0').substring(0, 3).padEnd(3, '0')
       return new Date(d[1], m, d[3]
         || 1, d[4] || 0, d[5] || 0, d[6] || 0, ms)
     }

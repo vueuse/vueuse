@@ -26,6 +26,14 @@ describe('useDateFormat', () => {
     expect(normalizeDate('2022-01-01T00:00:00.000')).toEqual(date)
   })
 
+  it('should read fractional seconds as a fraction', () => {
+    expect(normalizeDate('2022-01-01 10:00:00.5').getMilliseconds()).toBe(500)
+    expect(normalizeDate('2022-01-01T10:00:00.05').getMilliseconds()).toBe(50)
+    expect(normalizeDate('2022-01-01 10:00:00.123').getMilliseconds()).toBe(123)
+    expect(normalizeDate('2022-01-01 10:00:00.123456').getMilliseconds()).toBe(123)
+    expect(useDateFormat('2022-01-01 10:00:00.5', 'ss.SSS').value).toBe('00.500')
+  })
+
   it('should work with default', () => {
     expect(useDateFormat(new Date('2022-01-01 10:24:00')).value).toBe('10:24:00')
   })
