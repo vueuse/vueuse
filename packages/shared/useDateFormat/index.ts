@@ -45,8 +45,9 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const milliseconds = date.getMilliseconds()
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
-  const stripTimeZone = (dateString: string) => {
-    return dateString.split(' ')[1] ?? ''
+  const timeZoneName = (style: 'shortOffset' | 'longOffset') => {
+    const parts = new Intl.DateTimeFormat(toValue(options.locales), { timeZoneName: style }).formatToParts(date)
+    return parts.find(part => part.type === 'timeZoneName')?.value ?? ''
   }
   const matches: Record<string, () => string | number> = {
     Yo: () => formatOrdinal(years),
@@ -81,10 +82,10 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     AA: () => meridiem(hours, minutes, false, true),
     a: () => meridiem(hours, minutes, true),
     aa: () => meridiem(hours, minutes, true, true),
-    z: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
-    zz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
-    zzz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
-    zzzz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'longOffset' })),
+    z: () => timeZoneName('shortOffset'),
+    zz: () => timeZoneName('shortOffset'),
+    zzz: () => timeZoneName('shortOffset'),
+    zzzz: () => timeZoneName('longOffset'),
   }
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 ?? matches[match]?.() ?? match)
 }

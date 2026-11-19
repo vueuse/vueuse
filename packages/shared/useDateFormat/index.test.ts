@@ -152,5 +152,15 @@ describe('useDateFormat', () => {
         expect(useDateFormat(new Date(dateStr), formatStr).value).toBe(expected)
       },
     )
+
+    // these locales write dates with spaces, e.g. "2022. 1. 1. GMT+1"
+    it.each(['ko-KR', 'hu', 'cs'])(
+      'should work with locale %s',
+      (locales) => {
+        const date = new Date('2022-01-01 03:05:05')
+        expect(useDateFormat(date, 'z', { locales }).value).toBe('GMT+1')
+        expect(useDateFormat(date, 'zzzz', { locales }).value).toBe('GMT+01:00')
+      },
+    )
   })
 })
