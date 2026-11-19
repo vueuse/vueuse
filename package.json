@@ -82,6 +82,7 @@
     "eslint-plugin-unimport": "catalog:dev",
     "export-size": "catalog:dev",
     "fake-indexeddb": "catalog:test",
+    "filesize": "catalog:dev",
     "firebase": "catalog:integrations",
     "fuse.js": "catalog:integrations",
     "google-font-installer": "catalog:docs",
