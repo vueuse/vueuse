@@ -142,8 +142,7 @@ export function useEventListener(...args: Parameters<typeof useEventListener>) {
       firstParamTargets.value?.map(e => unrefElement(e as never)) ?? [defaultWindow].filter(e => e != null),
       toArray(toValue(firstParamTargets.value ? args[1] : args[0]) as string[]),
       toArray(unref(firstParamTargets.value ? args[2] : args[1]) as Function[]),
-      // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
-      toValue(firstParamTargets.value ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
+      toValue((firstParamTargets.value ? args[3] : args[2]) as MaybeRefOrGetter<boolean | AddEventListenerOptions> | undefined),
     ] as const,
     ([raw_targets, raw_events, raw_listeners, raw_options], _, onCleanup) => {
       if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
