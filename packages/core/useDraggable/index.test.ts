@@ -154,4 +154,41 @@ describe('useDraggable', () => {
     expect(onMove).toHaveBeenCalledOnce()
     expect(onEnd).toHaveBeenCalledOnce()
   })
+
+  it('component persists the position to storage', async () => {
+    localStorage.removeItem('use-draggable-test')
+
+    const wrapper = mount({
+      render: () => h(UseDraggable, { storageKey: 'use-draggable-test', initials: { position: { x: 5, y: 5 } } }, {
+        default: ({ x, y }: any) => h('span', { 'data-x': x, 'data-y': y }),
+      }),
+    })
+
+    await nextTick()
+    expect(wrapper.get('span').element.getAttribute('data-x')).toBe('5')
+    expect(JSON.parse(localStorage.getItem('use-draggable-test')!)).toEqual({ x: 5, y: 5 })
+
+    wrapper.get('span').element.dispatchEvent(new PointerEvent('pointerdown', { clientX: 0, clientY: 0 }))
+    window.dispatchEvent(new PointerEvent('pointermove', { clientX: 10, clientY: 20 }))
+    window.dispatchEvent(new PointerEvent('pointerup'))
+    await nextTick()
+
+    expect(wrapper.get('span').element.getAttribute('data-x')).toBe('10')
+    expect(JSON.parse(localStorage.getItem('use-draggable-test')!)).toEqual({ x: 10, y: 20 })
+
+    wrapper.unmount()
+
+    // a remount restores the stored position
+    const remounted = mount({
+      render: () => h(UseDraggable, { storageKey: 'use-draggable-test' }, {
+        default: ({ x, y }: any) => h('span', { 'data-x': x, 'data-y': y }),
+      }),
+    })
+    await nextTick()
+    expect(remounted.get('span').element.getAttribute('data-x')).toBe('10')
+    expect(remounted.get('span').element.getAttribute('data-y')).toBe('20')
+
+    remounted.unmount()
+    localStorage.removeItem('use-draggable-test')
+  })
 })

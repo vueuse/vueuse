@@ -14,6 +14,18 @@ import { usePointer } from '@vueuse/core'
 const { x, y, pressure, pointerType } = usePointer()
 ```
 
+## Initial Values
+
+Before the first event (e.g. during SSR), all values are `0`, `pointerType` is `null` and `isInside` is `false`. Set your own initial values with `initials`:
+
+```ts
+import { usePointer } from '@vueuse/core'
+// ---cut---
+const { x, y } = usePointer({ initials: { x: 100, y: 100 } })
+```
+
+The returned refs are readonly. To own the state, pass your own refs to `initials`, `usePointer` writes into them.
+
 ## Component Usage
 
 By default, the component will track the pointer on `window`

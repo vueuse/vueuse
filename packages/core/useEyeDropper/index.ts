@@ -1,6 +1,6 @@
-import type { ShallowRef } from 'vue'
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
 import type { Supportable } from '../types'
-import { shallowRef } from 'vue'
+import { shallowReadonly, shallowRef } from 'vue'
 import { useSupported } from '../useSupported'
 
 export interface EyeDropperOpenOptions {
@@ -17,17 +17,29 @@ export interface EyeDropper {
   [Symbol.toStringTag]: 'EyeDropper'
 }
 
-export interface UseEyeDropperOptions {
+export interface UseEyeDropperState {
   /**
-   * Initial sRGBHex.
+   * The last picked color, as a hex string
    *
    * @default ''
+   */
+  sRGBHex: string
+}
+
+export interface UseEyeDropperOptions {
+  /**
+   * Initial values for the returned state, used before a color is picked.
+   * A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseEyeDropperState>
+
+  /**
+   * @deprecated Use `initials.sRGBHex` instead. Will be removed in v17.
    */
   initialValue?: string
 }
 
-export interface UseEyeDropperReturn extends Supportable {
-  sRGBHex: ShallowRef<string>
+export interface UseEyeDropperReturn extends Supportable, ReadonlyRefs<UseEyeDropperState> {
   open: (openOptions?: EyeDropperOpenOptions) => Promise<{ sRGBHex: string } | undefined>
 }
 
@@ -39,9 +51,14 @@ export interface UseEyeDropperReturn extends Supportable {
  * @__NO_SIDE_EFFECTS__
  */
 export function useEyeDropper(options: UseEyeDropperOptions = {}): UseEyeDropperReturn {
-  const { initialValue = '' } = options
+  const {
+    initialValue: deprecatedInitialValue,
+    initials: {
+      sRGBHex: initialSRGBHex = deprecatedInitialValue ?? '',
+    } = {},
+  } = options
   const isSupported = useSupported(() => typeof window !== 'undefined' && 'EyeDropper' in window)
-  const sRGBHex = shallowRef(initialValue)
+  const sRGBHex = shallowRef(initialSRGBHex)
 
   async function open(openOptions?: EyeDropperOpenOptions) {
     if (!isSupported.value)
@@ -52,5 +69,9 @@ export function useEyeDropper(options: UseEyeDropperOptions = {}): UseEyeDropper
     return result
   }
 
-  return { isSupported, sRGBHex, open }
+  return {
+    isSupported,
+    sRGBHex: shallowReadonly(sRGBHex),
+    open,
+  }
 }

@@ -32,3 +32,17 @@ onCancel(() => {
   </button>
 </template>
 ```
+
+## Initial Values
+
+Before files are selected, `files` is `null`. Set your own initial value with `initials`:
+
+```ts
+import { useFileDialog } from '@vueuse/core'
+
+declare const previousFiles: FileList
+// ---cut---
+const { files } = useFileDialog({ initials: { files: previousFiles } })
+```
+
+The returned `files` is readonly. To own the state, pass your own ref to `initials`, `useFileDialog` writes into it.

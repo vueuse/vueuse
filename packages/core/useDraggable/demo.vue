@@ -10,7 +10,7 @@ const innerWidth = isClient ? window.innerWidth : 200
 
 const disabled = shallowRef(false)
 const { x, y, style } = useDraggable(el, {
-  initialValue: { x: innerWidth / 4.2, y: 80 },
+  initials: { position: { x: innerWidth / 4.2, y: 80 } },
   preventDefault: true,
   disabled,
 })
@@ -51,7 +51,7 @@ const { x, y, style } = useDraggable(el, {
       border="~ gray-400/30 rounded"
       shadow="~ hover:lg"
       class="fixed bg-$vp-c-bg select-none cursor-move z-31"
-      :initial-value="{ x: innerWidth / 3.9, y: 150 }"
+      :initials="{ position: { x: innerWidth / 3.9, y: 150 } }"
       prevent-default
       storage-key="vueuse-draggable-pos"
       storage-type="session"

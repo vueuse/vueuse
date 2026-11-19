@@ -1,39 +1,75 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, shallowRef } from 'vue'
+import { isReadonly, nextTick, shallowRef } from 'vue'
 import { useFileDialog } from './index'
 
 describe('useFileDialog', () => {
   const file1 = new File(['content1'], 'file1.txt', { type: 'text/plain' })
   const file2 = new File(['content2'], 'file2.txt', { type: 'text/plain' })
 
-  it('should initialize with initialFiles as FileList', () => {
-    const initialFiles = new DataTransfer()
-    initialFiles.items.add(file1)
-    initialFiles.items.add(file2)
+  function toFileList(...items: File[]) {
+    const dt = new DataTransfer()
+    for (const item of items)
+      dt.items.add(item)
+    return dt.files
+  }
 
-    const { files } = useFileDialog({ initialFiles: initialFiles.files })
-
-    expect(files.value).toEqual(initialFiles.files)
-  })
-
-  it('should initialize with initialFiles as Array<File>', () => {
-    const { files } = useFileDialog({ initialFiles: [file1, file2] })
-
-    const expectedFiles = new DataTransfer()
-    expectedFiles.items.add(file1)
-    expectedFiles.items.add(file2)
-
-    expect(files.value).toEqual(expectedFiles.files)
-  })
-
-  it('should initialize with initialFiles as null', () => {
+  it('should return readonly files', () => {
     const { files } = useFileDialog()
 
-    expect(files.value).toBeNull()
+    expect(isReadonly(files)).toBe(true)
+  })
+
+  describe('initials', () => {
+    it('should default to null', () => {
+      const { files } = useFileDialog()
+
+      expect(files.value).toBeNull()
+    })
+
+    it('should seed from a plain FileList', () => {
+      const initialFiles = toFileList(file1, file2)
+      const { files } = useFileDialog({ initials: { files: initialFiles } })
+
+      expect(files.value).toBe(initialFiles)
+    })
+
+    it('should use a passed ref as internal state', () => {
+      const input = document.createElement('input')
+      input.click = vi.fn()
+      const files = shallowRef<FileList | null>(toFileList(file1))
+      const dialog = useFileDialog({ input, initials: { files } })
+
+      expect(dialog.files).not.toBe(files)
+
+      dialog.reset()
+      expect(files.value).toBeNull()
+
+      files.value = toFileList(file2)
+      expect(dialog.files.value?.[0]).toBe(file2)
+    })
+
+    it('should support deprecated initialFiles as FileList', () => {
+      const initialFiles = toFileList(file1, file2)
+      const { files } = useFileDialog({ initialFiles })
+
+      expect(files.value).toEqual(initialFiles)
+    })
+
+    it('should support deprecated initialFiles as Array<File>', () => {
+      const { files } = useFileDialog({ initialFiles: [file1, file2] })
+
+      expect(files.value).toEqual(toFileList(file1, file2))
+    })
+
+    it('should prefer initials over deprecated initialFiles', () => {
+      const { files } = useFileDialog({ initialFiles: [file1], initials: { files: null } })
+
+      expect(files.value).toBeNull()
+    })
   })
 
   it('should reset files when reset option is true', () => {
-    const { files, open } = useFileDialog({ initialFiles: [file1], reset: true })
+    const { files, open } = useFileDialog({ initials: { files: toFileList(file1) }, reset: true })
 
     open()
     expect(files.value).toBeNull()

@@ -1,8 +1,8 @@
-import type { ShallowRef } from 'vue'
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseResizeObserverOptions } from '../useResizeObserver'
 import { toArray, tryOnMounted } from '@vueuse/shared'
-import { computed, shallowRef, watch } from 'vue'
+import { computed, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useResizeObserver } from '../useResizeObserver'
@@ -12,12 +12,30 @@ export interface ElementSize {
   height: number
 }
 
-export interface UseElementSizeOptions extends UseResizeObserverOptions {
+export interface UseElementSizeState {
+  /**
+   * Element width
+   *
+   * @default 0
+   */
+  width: number
+  /**
+   * Element height
+   *
+   * @default 0
+   */
+  height: number
 }
 
-export interface UseElementSizeReturn {
-  width: ShallowRef<number>
-  height: ShallowRef<number>
+export interface UseElementSizeOptions extends UseResizeObserverOptions {
+  /**
+   * Initial values for the returned state, used before the element is measured
+   * (e.g. during SSR). A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseElementSizeState>
+}
+
+export interface UseElementSizeReturn extends ReadonlyRefs<UseElementSizeState> {
   stop: () => void
 }
 
@@ -25,16 +43,40 @@ export interface UseElementSizeReturn {
  * Reactive size of an HTML element.
  *
  * @see https://vueuse.org/useElementSize
+ * @deprecated Passing the initial size as second argument is deprecated. Use `useElementSize(target, { initials: { width, height } })` instead. Will be removed in v17.
  */
 export function useElementSize(
   target: MaybeComputedElementRef,
-  initialSize: ElementSize = { width: 0, height: 0 },
-  options: UseElementSizeOptions = {},
+  initialSize: ElementSize | undefined,
+  options?: UseElementSizeOptions,
+): UseElementSizeReturn
+/**
+ * Reactive size of an HTML element.
+ *
+ * @see https://vueuse.org/useElementSize
+ */
+export function useElementSize(
+  target: MaybeComputedElementRef,
+  options?: UseElementSizeOptions,
+): UseElementSizeReturn
+export function useElementSize(
+  target: MaybeComputedElementRef,
+  ...args: [options?: UseElementSizeOptions] | [initialSize: ElementSize | undefined, options?: UseElementSizeOptions]
 ): UseElementSizeReturn {
+  const {
+    initials: {
+      width: initialWidth = 0,
+      height: initialHeight = 0,
+    } = {},
+    ...options
+  } = normalizeArgs(args)
   const { window = defaultWindow, box = 'content-box' } = options
   const isSVG = computed(() => unrefElement(target)?.namespaceURI?.includes('svg'))
-  const width = shallowRef(initialSize.width)
-  const height = shallowRef(initialSize.height)
+  const width = shallowRef(initialWidth)
+  const height = shallowRef(initialHeight)
+  // snapshot, since a passed ref is overwritten by the measurements
+  const fallbackWidth = toValue(initialWidth)
+  const fallbackHeight = toValue(initialHeight)
 
   const { stop: stop1 } = useResizeObserver(
     target,
@@ -88,8 +130,8 @@ export function useElementSize(
       }
     }
     else if (ele) {
-      width.value = initialSize.width
-      height.value = initialSize.height
+      width.value = fallbackWidth
+      height.value = fallbackHeight
     }
   }
 
@@ -114,8 +156,27 @@ export function useElementSize(
   }
 
   return {
-    width,
-    height,
+    width: shallowReadonly(width),
+    height: shallowReadonly(height),
     stop,
+  }
+}
+
+function normalizeArgs(
+  args: [options?: UseElementSizeOptions] | [initialSize: ElementSize | undefined, options?: UseElementSizeOptions],
+): UseElementSizeOptions {
+  const [first, second] = args
+  const isDeprecatedCall = args.length > 1 || (first != null && ('width' in first || 'height' in first))
+  if (!isDeprecatedCall)
+    return (first ?? {}) as UseElementSizeOptions
+
+  const initialSize = first as ElementSize | undefined
+  const options = second ?? {}
+  return {
+    ...options,
+    initials: {
+      width: options.initials?.width ?? initialSize?.width,
+      height: options.initials?.height ?? initialSize?.height,
+    },
   }
 }

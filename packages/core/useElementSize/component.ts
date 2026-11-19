@@ -1,9 +1,18 @@
-import type { ElementSize, RenderableComponent, UseElementSizeReturn, UseResizeObserverOptions } from '@vueuse/core'
+import type { RenderableComponent, UseElementSizeOptions, UseElementSizeReturn } from '@vueuse/core'
 import type { Reactive, SlotsType } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { defineComponent, h, reactive, shallowRef, toRefs, toValue } from 'vue'
+import { defineComponent, h, reactive, shallowRef } from 'vue'
 
-export interface UseElementSizeProps extends Partial<ElementSize>, UseResizeObserverOptions, RenderableComponent {}
+export interface UseElementSizeProps extends UseElementSizeOptions, RenderableComponent {
+  /**
+   * @deprecated Use `initials.width` instead. Will be removed in v17.
+   */
+  width?: number
+  /**
+   * @deprecated Use `initials.height` instead. Will be removed in v17.
+   */
+  height?: number
+}
 interface UseElementSizeSlots {
   default: (data: Reactive<UseElementSizeReturn>) => any
 }
@@ -16,10 +25,13 @@ export const UseElementSize = /* #__PURE__ */ defineComponent<
 >(
   (props, { slots }) => {
     const target = shallowRef<HTMLDivElement>()
-    const { width, height } = toRefs(props)
-    const data = reactive(useElementSize(target, { width: toValue(width) ?? 0, height: toValue(height) ?? 0 }, {
+    const data = reactive(useElementSize(target, {
       box: props.box,
       window: props.window,
+      initials: {
+        width: props.initials?.width ?? props.width,
+        height: props.initials?.height ?? props.height,
+      },
     }))
 
     return () => {
@@ -33,6 +45,7 @@ export const UseElementSize = /* #__PURE__ */ defineComponent<
       'as',
       'box',
       'height',
+      'initials',
       'width',
       'window',
     ],

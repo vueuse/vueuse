@@ -28,6 +28,7 @@ export const UseWindowSize = /* #__PURE__ */ defineComponent<
       'includeScrollbar',
       'initialHeight',
       'initialWidth',
+      'initials',
       'listenOrientation',
       'type',
       'window',

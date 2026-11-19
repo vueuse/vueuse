@@ -1,5 +1,4 @@
-import type { ConfigurableEventFilter, Stoppable, TimerHandle } from '@vueuse/shared'
-import type { ShallowRef } from 'vue'
+import type { ConfigurableEventFilter, MaybeRefInitials, ReadonlyRefs, Stoppable, TimerHandle } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import type { WindowEventName } from '../useEventListener'
 import { createFilterWrapper, throttleFilter, timestamp } from '@vueuse/shared'
@@ -9,6 +8,21 @@ import { useEventListener } from '../useEventListener'
 
 const defaultEvents: WindowEventName[] = ['mousemove', 'mousedown', 'resize', 'keydown', 'touchstart', 'wheel']
 const oneMinute = 60_000
+
+export interface UseIdleState {
+  /**
+   * Whether the user is idle. Also the value `stop()` resets to.
+   *
+   * @default false
+   */
+  idle: boolean
+  /**
+   * Timestamp of the last user activity
+   *
+   * @default Date.now()
+   */
+  lastActive: number
+}
 
 export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFilter {
   /**
@@ -24,16 +38,17 @@ export interface UseIdleOptions extends ConfigurableWindow, ConfigurableEventFil
    */
   listenForVisibilityChange?: boolean
   /**
-   * Initial state of the ref idle
-   *
-   * @default false
+   * Initial values for the returned state.
+   * A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseIdleState>
+  /**
+   * @deprecated Use `initials.idle` instead. Will be removed in v17.
    */
   initialState?: boolean
 }
 
-export interface UseIdleReturn extends Stoppable {
-  idle: ShallowRef<boolean>
-  lastActive: ShallowRef<number>
+export interface UseIdleReturn extends Stoppable, ReadonlyRefs<UseIdleState> {
   /**
    * Restart the idle timer.
    *
@@ -55,14 +70,20 @@ export function useIdle(
   options: UseIdleOptions = {},
 ): UseIdleReturn {
   const {
-    initialState = false,
+    initialState: deprecatedInitialState,
+    initials: {
+      idle: initialIdle = deprecatedInitialState ?? false,
+      lastActive: initialLastActive = timestamp(),
+    } = {},
     listenForVisibilityChange = true,
     events = defaultEvents,
     window = defaultWindow,
     eventFilter = throttleFilter(50),
   } = options
-  const idle = shallowRef(initialState)
-  const lastActive = shallowRef(timestamp())
+  const idle = shallowRef(initialIdle)
+  const lastActive = shallowRef(initialLastActive)
+  // snapshot, as `stop()` resets to it even when a ref is passed
+  const initialState = idle.value
   const isPending = shallowRef(false)
 
   let timer: TimerHandle
@@ -118,8 +139,8 @@ export function useIdle(
   }
 
   return {
-    idle,
-    lastActive,
+    idle: shallowReadonly(idle),
+    lastActive: shallowReadonly(lastActive),
     reset,
     stop,
     start,

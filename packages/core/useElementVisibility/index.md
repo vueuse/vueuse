@@ -56,7 +56,7 @@ const targetIsVisible = useElementVisibility(target, {
 
 ### controls
 
-By default `useElementVisibility` returns a `ShallowRef<boolean>`. Set `controls: true` to receive the visibility ref together with the controls of the underlying `useIntersectionObserver`:
+By default `useElementVisibility` returns a readonly `ShallowRef<boolean>`. Set `controls: true` to receive the visibility ref together with the controls of the underlying `useIntersectionObserver`:
 
 ```ts
 import { useElementVisibility } from '@vueuse/core'
@@ -66,14 +66,14 @@ const { isVisible, isActive, pause, resume, stop, isSupported } = useElementVisi
 })
 ```
 
-| State         | Type                   | Description                                                                                                                  |
-| ------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `isVisible`   | `ShallowRef<boolean>`  | Whether the target is currently visible in the viewport.                                                                     |
-| `isActive`    | `ShallowRef<boolean>`  | Whether the observer is currently running. Turns `false` once the observer is stopped, for example after `once: true` fires. |
-| `isSupported` | `ComputedRef<boolean>` | Whether the `IntersectionObserver` API is available.                                                                         |
-| `pause`       | `() => void`           | Pause observing and set `isActive` to `false`.                                                                               |
-| `resume`      | `() => void`           | Resume observing.                                                                                                            |
-| `stop`        | `() => void`           | Stop observing permanently.                                                                                                  |
+| State         | Type                            | Description                                                                                                                  |
+| ------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `isVisible`   | `Readonly<ShallowRef<boolean>>` | Whether the target is currently visible in the viewport.                                                                     |
+| `isActive`    | `ShallowRef<boolean>`           | Whether the observer is currently running. Turns `false` once the observer is stopped, for example after `once: true` fires. |
+| `isSupported` | `ComputedRef<boolean>`          | Whether the `IntersectionObserver` API is available.                                                                         |
+| `pause`       | `() => void`                    | Pause observing and set `isActive` to `false`.                                                                               |
+| `resume`      | `() => void`                    | Resume observing.                                                                                                            |
+| `stop`        | `() => void`                    | Stop observing permanently.                                                                                                  |
 
 With `once: true`, read `isActive` to tell whether tracking has already stopped after the element first became visible:
 
@@ -85,6 +85,18 @@ const { isVisible, isActive } = useElementVisibility(target, {
   once: true,
 })
 ```
+
+### Initial Values
+
+Before the first intersection (e.g. during SSR), the visibility is `false`. Set your own initial value with `initials`:
+
+```ts
+import { useElementVisibility } from '@vueuse/core'
+// ---cut---
+const targetIsVisible = useElementVisibility(target, { initials: { isVisible: true } })
+```
+
+The returned ref is readonly. To own the state, pass your own ref to `initials`, `useElementVisibility` writes into it.
 
 ## Component Usage
 

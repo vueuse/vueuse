@@ -23,6 +23,18 @@ import { useMouse } from '@vueuse/core'
 const { x, y } = useMouse({ touch: false })
 ```
 
+## Initial Values
+
+Before the first event (e.g. during SSR), `x` and `y` are `0`. Set your own initial values with `initials`. They are also restored on `touchend` when `resetOnTouchEnds` is set:
+
+```ts twoslash
+import { useMouse } from '@vueuse/core'
+// ---cut---
+const { x, y } = useMouse({ initials: { x: 100, y: 100 } })
+```
+
+The returned refs are readonly. To own the state, pass your own refs to `initials`, `useMouse` writes into them.
+
 ## Custom Extractor
 
 It's also possible to provide a custom extractor function to get the position from the event.

@@ -36,6 +36,22 @@ watch(idle, (idleValue) => {
 })
 ```
 
+## Initial Values
+
+Before the first timeout, `idle` is `false` and `lastActive` is the time `useIdle` was called. Set your own initial values with `initials`, e.g. to restore the last activity:
+
+```ts
+import { useIdle } from '@vueuse/core'
+
+declare const storedLastActive: number
+// ---cut---
+const { idle, lastActive } = useIdle(5 * 60 * 1000, {
+  initials: { idle: true, lastActive: storedLastActive },
+})
+```
+
+`stop()` resets `idle` to its initial value. The returned refs are readonly. To own the state, pass your own refs to `initials`, `useIdle` writes into them.
+
 ## Component Usage
 
 ```vue

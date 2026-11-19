@@ -24,6 +24,6 @@ export const UseEyeDropper = /* #__PURE__ */ defineComponent<
   },
   {
     name: 'UseEyeDropper',
-    props: ['initialValue'],
+    props: ['initialValue', 'initials'],
   },
 )
