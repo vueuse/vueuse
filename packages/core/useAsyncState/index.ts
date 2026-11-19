@@ -120,14 +120,15 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
       if (executionId === executionsCount) {
         state.value = data
         isReady.value = true
+        onSuccess(data)
       }
-      onSuccess(data)
       return data
     }
     catch (e) {
-      if (executionId === executionsCount)
+      if (executionId === executionsCount) {
         error.value = e
-      onError(e)
+        onError(e)
+      }
       if (throwError)
         throw e
     }
