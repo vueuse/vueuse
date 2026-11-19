@@ -40,6 +40,9 @@ export function toReactive<T extends object>(
         configurable: true,
       }
     },
+    getPrototypeOf() {
+      return Object.getPrototypeOf(objectRef.value ?? {})
+    },
   })
 
   return reactive(proxy) as UnwrapNestedRefs<T>
