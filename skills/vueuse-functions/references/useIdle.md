@@ -31,6 +31,7 @@ watch(idle, (idleValue) => {
     inc()
     console.log(`Triggered ${count.value} times`)
     reset() // restarts the idle timer. Does not change lastActive value
+    // reset(true) // also sets lastActive to now
   }
 })
 ```
