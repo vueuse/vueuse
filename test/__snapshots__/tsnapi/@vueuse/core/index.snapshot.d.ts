@@ -1749,8 +1749,12 @@ export type WindowEventName = keyof WindowEventMap;
 
 // #region Functions
 export declare function cloneFnJSON<T>(_: T): T;
-export declare function computedAsync<T>(_: (_: AsyncComputedOnCancel) => T | Promise<T>, _: T, _: AsyncComputedOptions<true>): ComputedRef<T>;
-export declare function computedAsync<T>(_: (_: AsyncComputedOnCancel) => T | Promise<T>, _: undefined, _: AsyncComputedOptions<true>): ComputedRef<T | undefined>;
+export declare function computedAsync<T>(_: (_: AsyncComputedOnCancel) => T | Promise<T>, _: T, _: AsyncComputedOptions<true> & {
+  lazy: true;
+}): ComputedRef<T>;
+export declare function computedAsync<T>(_: (_: AsyncComputedOnCancel) => T | Promise<T>, _: undefined, _: AsyncComputedOptions<true> & {
+  lazy: true;
+}): ComputedRef<T | undefined>;
 export declare function computedAsync<T>(_: (_: AsyncComputedOnCancel) => T | Promise<T>, _: T, _?: Ref<boolean> | AsyncComputedOptions): Ref<T>;
 export declare function computedAsync<T>(_: (_: AsyncComputedOnCancel) => T | Promise<T>, _?: undefined, _?: Ref<boolean> | AsyncComputedOptions): Ref<T | undefined>;
 export declare function computedInject<T, K = any>(_: InjectionKey<T> | string, _: ComputedInjectGetter<T, K>): ComputedRef<K | undefined>;
