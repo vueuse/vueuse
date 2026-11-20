@@ -54,7 +54,7 @@ export function useArrayIncludes<T, V = any>(
     comparator = comparator.comparator!
   }
 
-  if (typeof comparator === 'string') {
+  if (comparator != null && typeof comparator !== 'function') {
     const key = comparator as keyof T
     comparator = (element: T, value: V) => element[key] === toValue(value)
   }
