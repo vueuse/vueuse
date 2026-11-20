@@ -63,6 +63,21 @@ describe('computedAsync', () => {
     expectTypeOf(data2).toEqualTypeOf<ComputedRef<string>>()
   })
 
+  it('types are correct when options do not set lazy', async () => {
+    const func = vi.fn(() => Promise.resolve('data'))
+    const evaluating = shallowRef(false)
+
+    const data1 = computedAsync(func, undefined, { evaluating })
+    const data2 = computedAsync(func, 'initialState', { evaluating })
+    const data3 = computedAsync(func, 'initialState', { lazy: false })
+    const data4 = computedAsync(func, 'initialState', evaluating)
+
+    expectTypeOf(data1).toEqualTypeOf<Ref<string | undefined>>()
+    expectTypeOf(data2).toEqualTypeOf<Ref<string>>()
+    expectTypeOf(data3).toEqualTypeOf<Ref<string>>()
+    expectTypeOf(data4).toEqualTypeOf<Ref<string>>()
+  })
+
   it('default onError in computedAsync uses globalThis.reportError', async () => {
     const originalReportError = globalThis.reportError
     const mockReportError = vi.fn()
@@ -315,7 +330,8 @@ describe('computedAsync', () => {
   })
 
   it('type when lazy is a boolean', async () => {
-    const lazy: boolean = true
+    const isLazy = (): boolean => true
+    const lazy = isLazy()
     const data: string[] = []
     const data1 = computedAsync(async () => data, [], { lazy })
     const data2 = computedAsync(async () => data, undefined, { lazy })
