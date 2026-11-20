@@ -441,6 +441,9 @@ catalogs:
     '@types/web-bluetooth':
       specifier: ^0.0.22
       version: 0.0.22
+    temporal-spec:
+      specifier: ^1.0.1
+      version: 1.0.1
 
 overrides:
   chokidar: ^6.0.0
@@ -703,6 +706,9 @@ importers:
       '@vueuse/shared':
         specifier: workspace:*
         version: link:../shared
+      temporal-spec:
+        specifier: catalog:types
+        version: 1.0.1
       vue:
         specifier: ^3.5.0
         version: 3.5.42(typescript@6.0.3)

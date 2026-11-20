@@ -1,6 +1,7 @@
 import type { AnyFn } from '@vueuse/shared'
+import type { UseTemporalNowOptions, UseTemporalNowReturn } from '.'
 import { useIntervalFn } from '@vueuse/shared'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useTemporalNow } from '.'
 import { useRafFn } from '../useRafFn'
@@ -11,6 +12,13 @@ import { useRafFn } from '../useRafFn'
 import 'temporal-polyfill/full/global'
 
 describe('useTemporalNow', () => {
+  it('should preserve compatibility with native Temporal types', () => {
+    expectTypeOf<NonNullable<UseTemporalNowOptions['temporal']>>().toMatchTypeOf<typeof globalThis.Temporal>()
+    expectTypeOf<typeof globalThis.Temporal>().toMatchTypeOf<NonNullable<UseTemporalNowOptions['temporal']>>()
+    expectTypeOf<UseTemporalNowReturn['now']['value']>().toMatchTypeOf<Temporal.ZonedDateTime>()
+    expectTypeOf<Temporal.ZonedDateTime>().toMatchTypeOf<UseTemporalNowReturn['now']['value']>()
+  })
+
   beforeEach(() => {
     vi.useFakeTimers()
   })
