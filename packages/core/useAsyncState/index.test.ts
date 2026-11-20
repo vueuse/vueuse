@@ -109,6 +109,28 @@ describe('useAsyncState', () => {
     await expect(execute()).rejects.toThrowError('error')
   })
 
+  it.each([false, true])('should handle synchronous task errors with throwError=%s', async (throwError) => {
+    const onError = vi.fn()
+    const readCachedData = (cached: string): Promise<string> => Promise.resolve(JSON.parse(cached))
+    const { execute, error, isLoading, isReady } = useAsyncState(readCachedData, '', {
+      immediate: false,
+      onError,
+      throwError,
+    })
+
+    const execution = execute(0, 'invalid JSON')
+    if (throwError)
+      await expect(execution).rejects.toBeInstanceOf(SyntaxError)
+    else
+      await expect(execution).resolves.toBeUndefined()
+
+    expect(isLoading.value).toBe(false)
+    expect(isReady.value).toBe(false)
+    expect(error.value).toBeInstanceOf(SyntaxError)
+    expect(onError).toHaveBeenCalledOnce()
+    expect(onError).toHaveBeenCalledWith(error.value)
+  })
+
   it('default onError uses globalThis.reportError', async () => {
     const originalReportError = globalThis.reportError
     const mockReportError = vi.fn()

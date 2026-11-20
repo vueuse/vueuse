@@ -111,11 +111,11 @@ export function useAsyncState<Data, Params extends any[] = any[], Shallow extend
     if (delay > 0)
       await promiseTimeout(delay)
 
-    const _promise = typeof promise === 'function'
-      ? promise(...args as Params)
-      : promise
-
     try {
+      const _promise = typeof promise === 'function'
+        ? promise(...args as Params)
+        : promise
+
       const data = await _promise
       if (executionId === executionsCount) {
         state.value = data
