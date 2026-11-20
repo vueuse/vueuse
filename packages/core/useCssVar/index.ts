@@ -30,11 +30,38 @@ export function useCssVar(
 ) {
   const { window = defaultWindow, initialValue, observe = false } = options
   const variable = shallowRef(initialValue)
-  const elRef = computed(() => unrefElement(target) || window?.document?.documentElement)
+
+  // Track if target has ever had a truthy value
+  let targetHadValue = false
+  // Track the initial target value to distinguish undefined from null
+  const initialTargetValue = toValue(target)
+
+  const elRef = computed(() => {
+    const element = unrefElement(target)
+
+    if (element) {
+      targetHadValue = true
+      return element
+    }
+
+    // If target had a value before, don't use fallback
+    if (targetHadValue) {
+      return null
+    }
+
+    // If initial target was explicitly null, don't use documentElement
+    if (initialTargetValue === null) {
+      return null
+    }
+
+    // If initial target was undefined, use documentElement as fallback
+    return window?.document?.documentElement
+  })
 
   function updateCssVar() {
     const key = toValue(prop)
     const el = toValue(elRef)
+    // Only update CSS variable if we have a valid element
     if (el && window && key) {
       const value = window.getComputedStyle(el).getPropertyValue(key)?.trim()
       variable.value = value || variable.value || initialValue
@@ -62,6 +89,7 @@ export function useCssVar(
     [variable, elRef],
     ([val, el]) => {
       const raw_prop = toValue(prop)
+      // Only set CSS property if we have a valid element
       if (el?.style && raw_prop) {
         if (val == null)
           el.style.removeProperty(raw_prop)
