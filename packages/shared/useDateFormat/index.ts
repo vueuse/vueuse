@@ -22,6 +22,8 @@ export interface UseDateFormatOptions {
 const REGEX_PARSE = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[T\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/i
 const REGEX_FORMAT = /[YMDHhms]o|\[([^\]]+)\]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|z{1,4}|SSS/g
 
+type TimeZoneNameStyle = 'shortOffset' | 'longOffset'
+
 function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   let m = (hours < 12 ? 'AM' : 'PM')
   if (hasPeriod)
@@ -45,8 +47,15 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const milliseconds = date.getMilliseconds()
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
-  const stripTimeZone = (dateString: string) => {
-    return dateString.split(' ')[1] ?? ''
+  const timeZoneFormatters: Partial<Record<TimeZoneNameStyle, Intl.DateTimeFormat>> = {}
+  const timeZoneName = (style: TimeZoneNameStyle) => {
+    // formatToParts throws on an invalid date
+    if (Number.isNaN(date.getTime()))
+      return ''
+    if (!timeZoneFormatters[style])
+      timeZoneFormatters[style] = new Intl.DateTimeFormat(toValue(options.locales), { timeZoneName: style })
+    const parts = timeZoneFormatters[style].formatToParts(date)
+    return parts.find(part => part.type === 'timeZoneName')?.value ?? ''
   }
   const matches: Record<string, () => string | number> = {
     Yo: () => formatOrdinal(years),
@@ -81,10 +90,10 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
     AA: () => meridiem(hours, minutes, false, true),
     a: () => meridiem(hours, minutes, true),
     aa: () => meridiem(hours, minutes, true, true),
-    z: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
-    zz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
-    zzz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'shortOffset' })),
-    zzzz: () => stripTimeZone(date.toLocaleDateString(toValue(options.locales), { timeZoneName: 'longOffset' })),
+    z: () => timeZoneName('shortOffset'),
+    zz: () => timeZoneName('shortOffset'),
+    zzz: () => timeZoneName('shortOffset'),
+    zzzz: () => timeZoneName('longOffset'),
   }
   return formatStr.replace(REGEX_FORMAT, (match, $1) => $1 ?? matches[match]?.() ?? match)
 }
