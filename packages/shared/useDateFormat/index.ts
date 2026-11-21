@@ -47,7 +47,6 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const milliseconds = date.getMilliseconds()
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
-  // created on first use, once per style, so "z zz zzz" shares one formatter
   const timeZoneFormatters: Partial<Record<TimeZoneNameStyle, Intl.DateTimeFormat>> = {}
   const timeZoneName = (style: TimeZoneNameStyle) => {
     // formatToParts throws on an invalid date
