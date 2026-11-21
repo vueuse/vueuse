@@ -22,6 +22,8 @@ export interface UseDateFormatOptions {
 const REGEX_PARSE = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[T\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/i
 const REGEX_FORMAT = /[YMDHhms]o|\[([^\]]+)\]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a{1,2}|A{1,2}|m{1,2}|s{1,2}|Z{1,2}|z{1,4}|SSS/g
 
+type TimeZoneNameStyle = 'shortOffset' | 'longOffset'
+
 function defaultMeridiem(hours: number, minutes: number, isLowercase?: boolean, hasPeriod?: boolean) {
   let m = (hours < 12 ? 'AM' : 'PM')
   if (hasPeriod)
@@ -45,11 +47,15 @@ export function formatDate(date: Date, formatStr: string, options: UseDateFormat
   const milliseconds = date.getMilliseconds()
   const day = date.getDay()
   const meridiem = options.customMeridiem ?? defaultMeridiem
-  const timeZoneName = (style: 'shortOffset' | 'longOffset') => {
+  // created on first use, once per style, so "z zz zzz" shares one formatter
+  const timeZoneFormatters: Partial<Record<TimeZoneNameStyle, Intl.DateTimeFormat>> = {}
+  const timeZoneName = (style: TimeZoneNameStyle) => {
     // formatToParts throws on an invalid date
     if (Number.isNaN(date.getTime()))
       return ''
-    const parts = new Intl.DateTimeFormat(toValue(options.locales), { timeZoneName: style }).formatToParts(date)
+    if (!timeZoneFormatters[style])
+      timeZoneFormatters[style] = new Intl.DateTimeFormat(toValue(options.locales), { timeZoneName: style })
+    const parts = timeZoneFormatters[style].formatToParts(date)
     return parts.find(part => part.type === 'timeZoneName')?.value ?? ''
   }
   const matches: Record<string, () => string | number> = {

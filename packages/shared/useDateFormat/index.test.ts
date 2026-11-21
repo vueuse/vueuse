@@ -159,12 +159,16 @@ describe('useDateFormat', () => {
       (locales) => {
         const date = new Date('2022-01-01 03:05:05')
         expect(useDateFormat(date, 'z', { locales }).value).toBe('GMT+1')
+        expect(useDateFormat(date, 'zz', { locales }).value).toBe('GMT+1')
+        expect(useDateFormat(date, 'zzz', { locales }).value).toBe('GMT+1')
         expect(useDateFormat(date, 'zzzz', { locales }).value).toBe('GMT+01:00')
       },
     )
 
     it('should not throw on an invalid date', () => {
       expect(useDateFormat(new Date(Number.NaN), 'z').value).toBe('')
+      expect(useDateFormat(new Date(Number.NaN), 'zz').value).toBe('')
+      expect(useDateFormat(new Date(Number.NaN), 'zzz').value).toBe('')
       expect(useDateFormat(new Date(Number.NaN), 'zzzz').value).toBe('')
     })
   })
