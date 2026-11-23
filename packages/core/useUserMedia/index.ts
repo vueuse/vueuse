@@ -53,6 +53,8 @@ export function useUserMedia(options: UseUserMediaOptions = {}): UseUserMediaRet
   const isSupported = useSupported(() => navigator?.mediaDevices?.getUserMedia)
 
   const stream: Ref<MediaStream | undefined> = shallowRef()
+  let starting = false
+  let startId = 0
 
   function getDeviceOptions(type: 'video' | 'audio') {
     switch (type) {
@@ -70,16 +72,35 @@ export function useUserMedia(options: UseUserMediaOptions = {}): UseUserMediaRet
   }
 
   async function _start() {
-    if (!isSupported.value || stream.value)
+    if (!isSupported.value || stream.value || starting)
       return
-    stream.value = await navigator!.mediaDevices.getUserMedia({
-      video: getDeviceOptions('video'),
-      audio: getDeviceOptions('audio'),
-    })
-    return stream.value
+
+    starting = true
+    const id = ++startId
+
+    try {
+      const mediaStream = await navigator!.mediaDevices.getUserMedia({
+        video: getDeviceOptions('video'),
+        audio: getDeviceOptions('audio'),
+      })
+
+      if (id !== startId) {
+        mediaStream.getTracks().forEach(t => t.stop())
+        return
+      }
+
+      stream.value = mediaStream
+      return stream.value
+    }
+    finally {
+      if (id === startId)
+        starting = false
+    }
   }
 
   function _stop() {
+    startId++
+    starting = false
     stream.value?.getTracks().forEach(t => t.stop())
     stream.value = undefined
   }
