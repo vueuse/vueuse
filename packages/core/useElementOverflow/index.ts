@@ -90,7 +90,6 @@ export function useElementOverflow(target: MaybeComputedElementRef, option: UseE
   return {
     isXOverflowed: shallowReadonly(isXOverflowed),
     isYOverflowed: shallowReadonly(isYOverflowed),
-    // stop effectScope
     stop,
     // update overflow state immediately
     update: () => {
