@@ -53,12 +53,12 @@ export interface AsyncComputedOptions<Lazy = boolean> extends ConfigurableFlushS
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState: T,
-  optionsOrRef: AsyncComputedOptions<true>,
+  optionsOrRef: AsyncComputedOptions<true> & { lazy: true },
 ): ComputedRef<T>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
   initialState: undefined,
-  optionsOrRef: AsyncComputedOptions<true>,
+  optionsOrRef: AsyncComputedOptions<true> & { lazy: true },
 ): ComputedRef<T | undefined>
 export function computedAsync<T>(
   evaluationCallback: (onCancel: AsyncComputedOnCancel) => T | Promise<T>,
