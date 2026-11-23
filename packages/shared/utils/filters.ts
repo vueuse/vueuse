@@ -127,18 +127,25 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
       // Create the maxTimer. Clears the regular timer on invoke
       if (maxDuration && !maxTimer) {
         maxTimer = setTimeout(() => {
+          // Use native clearTimeout (not _clearTimeout) so the latest call
+          // is settled by its own invoker instead of being cancelled
           if (timer)
-            _clearTimeout(timer)
+            clearTimeout(timer)
           maxTimer = undefined
           _pending.value = false
+          const resolve = lastResolve
+          lastRejector = noop
+          lastResolve = noop
           resolve(lastInvoker())
         }, maxDuration)
       }
 
       // Create the regular timer. Clears the max timer on invoke
       timer = setTimeout(() => {
+        // Use native clearTimeout (not _clearTimeout) to avoid
+        // cancelling the promise that is about to resolve
         if (maxTimer)
-          _clearTimeout(maxTimer)
+          clearTimeout(maxTimer)
         maxTimer = undefined
         _pending.value = false
         resolve(invoke())
