@@ -161,6 +161,7 @@ export function useVModel(_, _, _, _) {}
 export function useVModels(_, _, _) {}
 export function useWakeLock(_) {}
 export function useWebMCP(_) {}
+export function useWebNFC(_) {}
 export function useWebNotification(_) {}
 export function useWebSocket(_, _) {}
 export function useWebWorker(_, _, _) {}
