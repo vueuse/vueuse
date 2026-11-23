@@ -873,6 +873,29 @@ export interface UseMediaControlsReturn {
   onSourceError: EventHookOn<Event>;
   onPlaybackError: EventHookOn<Event>;
 }
+export interface UseMediaSessionOptions extends ConfigurableNavigator {
+  onPlay?: MediaSessionActionHandler;
+  onPause?: MediaSessionActionHandler;
+  onStop?: MediaSessionActionHandler;
+  onSeekBackward?: MediaSessionActionHandler;
+  onSeekForward?: MediaSessionActionHandler;
+  onSeekTo?: MediaSessionActionHandler;
+  onPreviousTrack?: MediaSessionActionHandler;
+  onNextTrack?: MediaSessionActionHandler;
+  onSkipAd?: MediaSessionActionHandler;
+}
+export interface UseMediaSessionReturn extends Supportable {
+  isSetCameraSupported: UseSupportedReturn;
+  isSetMicrophoneSupported: UseSupportedReturn;
+  stop: () => void;
+}
+export interface UseMediaSessionState {
+  metadata?: MaybeRefOrGetter<MediaMetadataInit | null | undefined>;
+  playbackState?: MaybeRefOrGetter<MediaSessionPlaybackState>;
+  positionState?: MaybeRefOrGetter<MediaPositionState | null | undefined>;
+  cameraActive?: MaybeRefOrGetter<boolean>;
+  microphoneActive?: MaybeRefOrGetter<boolean>;
+}
 export interface UseMediaSource {
   src: string;
   type?: string;
@@ -1930,6 +1953,7 @@ export declare function useMediaControls(_: MaybeRef<HTMLMediaElement | null | u
 export declare function useMediaQuery(_: MaybeRefOrGetter<string>, _?: ConfigurableWindow & {
   ssrWidth?: number;
 }): import("vue").ComputedRef<boolean>;
+export declare function useMediaSession(_?: UseMediaSessionState, _?: UseMediaSessionOptions): UseMediaSessionReturn;
 export declare function useMemoize<Result, Args extends unknown[]>(_: (..._: Args) => Result, _?: UseMemoizeOptions<Result, Args>): UseMemoizeReturn<Result, Args>;
 export declare function useMemory(_?: UseMemoryOptions): UseMemoryReturn;
 export declare function useMounted(): import("vue").ShallowRef<boolean, boolean>;
