@@ -1,11 +1,11 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
-import { containsProp, isObject } from '../utils'
+import { isObject } from '../utils'
 
 export type UseArrayIncludesComparatorFn<T, V> = ((element: T, value: V, index: number, array: MaybeRefOrGetter<T>[]) => boolean)
 
 function isArrayIncludesOptions<T, V>(obj: any): obj is UseArrayIncludesOptions<T, V> {
-  return isObject(obj) && containsProp(obj, 'formIndex', 'comparator')
+  return isObject(obj)
 }
 
 export interface UseArrayIncludesOptions<T, V> {
