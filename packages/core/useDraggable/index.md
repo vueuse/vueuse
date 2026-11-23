@@ -17,7 +17,7 @@ const el = useTemplateRef('el')
 
 // `style` will be a helper computed for `left: ?px; top: ?px;`
 const { x, y, style } = useDraggable(el, {
-  initialValue: { x: 40, y: 40 },
+  initials: { position: { x: 40, y: 40 } },
 })
 </script>
 
@@ -30,20 +30,20 @@ const { x, y, style } = useDraggable(el, {
 
 ### Return Values
 
-| Property     | Type                   | Description                             |
-| ------------ | ---------------------- | --------------------------------------- |
-| `x`          | `Ref<number>`          | Current x position                      |
-| `y`          | `Ref<number>`          | Current y position                      |
-| `position`   | `Ref<{x, y}>`          | Current position object                 |
-| `isDragging` | `ComputedRef<boolean>` | Whether currently dragging              |
-| `style`      | `ComputedRef<string>`  | CSS style string `left: ?px; top: ?px;` |
+| Property     | Type                           | Description                             |
+| ------------ | ------------------------------ | --------------------------------------- |
+| `x`          | `ComputedRef<number>`          | Current x position                      |
+| `y`          | `ComputedRef<number>`          | Current y position                      |
+| `position`   | `Readonly<ShallowRef<{x, y}>>` | Current position object                 |
+| `isDragging` | `ComputedRef<boolean>`         | Whether currently dragging              |
+| `style`      | `ComputedRef<string>`          | CSS style string `left: ?px; top: ?px;` |
 
 ### Options
 
 ```ts
 useDraggable(el, {
   // Initial position (default: { x: 0, y: 0 })
-  initialValue: { x: 40, y: 40 },
+  initials: { position: { x: 40, y: 40 } },
   // Restrict dragging to specific axis: 'x', 'y', or 'both' (default)
   axis: 'both',
   // Only trigger when clicking directly on the element (default: false)
@@ -111,11 +111,35 @@ const { x, y, style } = useDraggable(el, {
 })
 ```
 
+### Initial Values
+
+Before the first drag, the position is `{ x: 0, y: 0 }`. Set your own initial position with `initials`:
+
+```ts
+import { useDraggable } from '@vueuse/core'
+
+const { x, y } = useDraggable(el, { initials: { position: { x: 40, y: 40 } } })
+```
+
+The returned refs are readonly, `x` and `y` are derived from `position`. To move the element programmatically, own the state by passing your own ref to `initials`. `useDraggable` writes into it and follows your writes:
+
+```ts
+import { useDraggable } from '@vueuse/core'
+import { shallowRef } from 'vue'
+
+const position = shallowRef({ x: 40, y: 40 })
+const { style } = useDraggable(el, { initials: { position } })
+
+function resetPosition() {
+  position.value = { x: 40, y: 40 }
+}
+```
+
 ## Component Usage
 
 ```vue
 <template>
-  <UseDraggable v-slot="{ x, y }" :initial-value="{ x: 10, y: 10 }">
+  <UseDraggable v-slot="{ x, y }" :initials="{ position: { x: 10, y: 10 } }">
     Drag me! I am at {{ x }}, {{ y }}
   </UseDraggable>
 </template>

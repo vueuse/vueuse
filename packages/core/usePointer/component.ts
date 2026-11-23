@@ -33,6 +33,7 @@ export const UsePointer = /* #__PURE__ */ defineComponent<
     name: 'UsePointer',
     props: [
       'initialValue',
+      'initials',
       'pointerTypes',
       'target',
       'window',

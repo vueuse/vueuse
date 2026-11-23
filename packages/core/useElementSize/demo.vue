@@ -17,11 +17,7 @@ const stringify = reactify(
 
 const el = useTemplateRef('el')
 const size = reactive(
-  useElementSize(
-    el,
-    { width: 0, height: 0 },
-    { box: 'border-box' },
-  ),
+  useElementSize(el, { box: 'border-box' }),
 )
 const text = stringify(size)
 </script>

@@ -1,5 +1,6 @@
 import type { UseMousePressedReturn } from './index'
 import { describe, expect, it, vi } from 'vitest'
+import { isReadonly, shallowRef } from 'vue'
 import { useMousePressed } from './index'
 
 type expectSourceType = 'mouse' | 'touch' | null
@@ -29,6 +30,12 @@ describe('useMousePressed', () => {
     expect(useMousePressed).toBeDefined()
   })
 
+  it('should return readonly refs', () => {
+    const { pressed, sourceType } = useMousePressed()
+    expect(isReadonly(pressed)).toBe(true)
+    expect(isReadonly(sourceType)).toBe(true)
+  })
+
   describe('params', () => {
     describe('initial value', () => {
       it('default value', () => {
@@ -37,8 +44,36 @@ describe('useMousePressed', () => {
       })
 
       it('custom value', () => {
+        const returnValue = useMousePressed({ initials: { pressed: true } })
+        assertReturnValue({ returnValue, expect: { pressed: true, sourceType: null } })
+      })
+
+      it('passed ref is used as internal state', () => {
+        const pressed = shallowRef(false)
+        const returnValue = useMousePressed({ initials: { pressed } })
+        expect(returnValue.pressed).not.toBe(pressed)
+
+        window.dispatchEvent(new Event('mousedown'))
+        expect(pressed.value).toBe(true)
+
+        pressed.value = false
+        expect(returnValue.pressed.value).toBe(false)
+      })
+
+      it('deprecated initialValue', () => {
         const returnValue = useMousePressed({ initialValue: true })
         assertReturnValue({ returnValue, expect: { pressed: true, sourceType: null } })
+      })
+
+      it('initials wins over deprecated initialValue', () => {
+        const returnValue = useMousePressed({ initialValue: true, initials: { pressed: false } })
+        assertReturnValue({ returnValue, expect: { pressed: false, sourceType: null } })
+      })
+
+      it('without window', () => {
+        const returnValue = useMousePressed({ window: null as unknown as undefined, initials: { pressed: true } })
+        assertReturnValue({ returnValue, expect: { pressed: true, sourceType: null } })
+        expect(isReadonly(returnValue.pressed)).toBe(true)
       })
     })
 

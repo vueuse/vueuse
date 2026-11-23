@@ -13,6 +13,7 @@ You can also find some reasons for those design decisions and also some tips for
 - Use `ref` instead of `reactive` whenever possible
 - Use options object as arguments whenever possible to be more flexible for future extensions.
 - Prefer `shallowRef` over `ref` whenever possible
+- Return state that only the composable writes as readonly refs and accept its initial values through an `initials` option (see [State & Initial Values](#state-initial-values))
 - In case of deep reactivity, prefer explicitly named `deepRef` instead of `ref`
 - Use `configurableWindow` (etc.) when using global variables like `window` to be flexible when working with multi-windows, testing mocks, and SSR.
 - When involved with Web APIs that are not yet implemented by the browser widely, also outputs `isSupported` flag
@@ -41,6 +42,59 @@ export function useFetch<T>(url: MaybeRefOrGetter<string>) {
   /* ... */
 }
 ```
+
+## State & Initial Values
+
+Composables that own state follow the same shape:
+
+- Describe the seedable state once as a plain `UseXState` interface (values, not refs). Document each key there; the docs carry over to `initials` and the returned refs.
+- Let `UseXReturn` extend `ReadonlyRefs<UseXState>`. Refs that can't be seeded and methods go into `UseXReturn` only.
+- Accept initial values through an `initials` option typed `MaybeRefInitials<UseXState>`. Every key is optional and accepts a value or a ref.
+- Return state that only the composable writes as readonly refs: `shallowReadonly` for primitives and objects replaced as a whole, `readonly` for deeply reactive objects.
+- Keep refs writable when writing to them is the point (e.g. `useFocus().focused` focuses the element, `useCssVar` writes the CSS variable).
+
+```ts
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
+import { shallowReadonly, shallowRef } from 'vue'
+
+export interface UseWindowSizeState {
+  width: number
+  height: number
+}
+
+export interface UseWindowSizeOptions {
+  initials?: MaybeRefInitials<UseWindowSizeState>
+}
+
+export interface UseWindowSizeReturn extends ReadonlyRefs<UseWindowSizeState> {}
+
+export function useWindowSize(options: UseWindowSizeOptions = {}): UseWindowSizeReturn {
+  const {
+    initials: {
+      // defaults live next to the option name
+      width: initialWidth = Number.POSITIVE_INFINITY,
+      height: initialHeight = Number.POSITIVE_INFINITY,
+    } = {},
+  } = options
+
+  // a passed ref is reused as the internal state
+  const width = shallowRef(initialWidth)
+  const height = shallowRef(initialHeight)
+
+  /* ... */
+
+  return {
+    width: shallowReadonly(width),
+    height: shallowReadonly(height),
+  }
+}
+```
+
+Rules:
+
+- Every key of `initials` must be a ref the composable returns, under the same name. Internal state (timers, previous events, offsets) is never seedable.
+- A returned ref may be left out of the state shape if seeding it makes no sense (e.g. `useMouse().sourceType`).
+- `initials` itself is a plain object; only its values may be refs. Getters are not accepted, because a getter cannot hold state.
 
 ## Configurable Globals
 

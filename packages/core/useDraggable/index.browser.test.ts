@@ -4,7 +4,7 @@ import type { UseDraggableOptions } from './index'
 import { mount } from '@vue/test-utils'
 import { useDraggable } from '@vueuse/core'
 import { afterEach, describe, expect, it } from 'vitest'
-import { defineComponent, nextTick, shallowRef, useTemplateRef } from 'vue'
+import { defineComponent, isReadonly, nextTick, shallowRef, useTemplateRef } from 'vue'
 
 interface DraggableAutoScrollOptions {
   initialValue?: { x: number, y: number }
@@ -159,7 +159,7 @@ describe('useDraggable', () => {
         const el = useTemplateRef<HTMLElement>('el')
         const container = useTemplateRef<HTMLElement>('container')
         useDraggable(el, {
-          initialValue,
+          initials: { position: initialValue },
           autoScroll,
           containerElement: container,
         })
@@ -237,29 +237,63 @@ describe('useDraggable', () => {
       expect(style.value).toContain('top: 0px')
     })
 
-    it('should respect initial values', () => {
+    it('should return readonly refs', () => {
       const el = shallowRef<HTMLElement>()
-      const { x, y, style } = useDraggable(el, { initialValue: { x: 100, y: 200 } })
+      const { x, y, position } = useDraggable(el)
+
+      expect(isReadonly(x)).toBe(true)
+      expect(isReadonly(y)).toBe(true)
+      expect(isReadonly(position)).toBe(true)
+    })
+  })
+
+  describe('initials', () => {
+    const el = shallowRef<HTMLElement>()
+
+    it('should seed from a plain position', () => {
+      const { x, y, position, style } = useDraggable(el, { initials: { position: { x: 100, y: 200 } } })
 
       expect(x.value).toBe(100)
       expect(y.value).toBe(200)
+      expect(position.value).toEqual({ x: 100, y: 200 })
       expect(style.value).toContain('left: 100px')
       expect(style.value).toContain('top: 200px')
     })
 
-    it('should update position when x/y changed', async () => {
-      const el = shallowRef<HTMLElement>()
-      const { x, y, style } = useDraggable(el)
+    it('should use a passed position ref as internal state', () => {
+      const position = shallowRef({ x: 10, y: 20 })
+      const draggable = useDraggable(el, { initials: { position } })
 
-      x.value = 50
-      y.value = 75
+      expect(draggable.position).not.toBe(position)
 
-      await nextTick()
-
-      expect(style.value).toContain('left: 50px')
-      expect(style.value).toContain('top: 75px')
+      position.value = { x: 50, y: 75 }
+      expect(draggable.x.value).toBe(50)
+      expect(draggable.y.value).toBe(75)
+      expect(draggable.style.value).toContain('left: 50px')
+      expect(draggable.style.value).toContain('top: 75px')
     })
 
+    it('should support deprecated initialValue', () => {
+      const { x, y } = useDraggable(el, { initialValue: { x: 100, y: 200 } })
+
+      expect(x.value).toBe(100)
+      expect(y.value).toBe(200)
+    })
+
+    it('should support a deprecated initialValue getter', () => {
+      const { position } = useDraggable(el, { initialValue: () => ({ x: 100, y: 200 }) })
+
+      expect(position.value).toEqual({ x: 100, y: 200 })
+    })
+
+    it('should prefer initials over deprecated initialValue', () => {
+      const { position } = useDraggable(el, { initialValue: { x: 1, y: 2 }, initials: { position: { x: 100, y: 200 } } })
+
+      expect(position.value).toEqual({ x: 100, y: 200 })
+    })
+  })
+
+  describe('component integration', () => {
     it('should handle component integration', () => {
       const wrapper = mount(defineComponent({
         template: '<div ref="el" />',
@@ -291,7 +325,7 @@ describe('useDraggable', () => {
 
       const wrapper = createDraggableComponent({
         useDraggableOptions: {
-          initialValue,
+          initials: { position: initialValue },
         },
       })
 
@@ -311,7 +345,7 @@ describe('useDraggable', () => {
       const initialValue = { x: 50, y: 50 }
 
       const wrapper = createDraggableComponent({
-        useDraggableOptions: { initialValue, axis: 'y' },
+        useDraggableOptions: { initials: { position: initialValue }, axis: 'y' },
       })
 
       await simulateDrag(wrapper, {
@@ -331,7 +365,7 @@ describe('useDraggable', () => {
 
       const wrapper = createDraggableComponent({
         useDraggableOptions: {
-          initialValue,
+          initials: { position: initialValue },
           disabled: true,
         },
       })

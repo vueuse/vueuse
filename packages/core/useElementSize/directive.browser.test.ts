@@ -16,7 +16,7 @@ const Component = defineComponent({
   template: `<div
     data-testid="target"
     style="width: 200px; height: 100px; padding: 10px; border: 5px solid black; box-sizing: border-box;"
-    v-element-size="[onResize, { width: 0, height: 0 }, options]"
+    v-element-size="[onResize, options]"
   >Hello world!</div>`,
 })
 

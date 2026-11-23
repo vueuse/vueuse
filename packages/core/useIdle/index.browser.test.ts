@@ -1,7 +1,7 @@
 import type { WindowEventName } from '@vueuse/core'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { userEvent } from 'vitest/browser'
-import { nextTick } from 'vue'
+import { isReadonly, nextTick, shallowRef } from 'vue'
 import { useIdle } from '.'
 
 describe('useIdle', () => {
@@ -93,9 +93,63 @@ describe('useIdle', () => {
     expect(idle.value).toBe(false)
   })
 
-  it('should respect initialState option', () => {
-    const { idle } = useIdle(1000, { initialState: true })
-    expect(idle.value).toBe(true)
+  it('should return readonly refs', () => {
+    const { idle, lastActive } = useIdle(1000)
+
+    expect(isReadonly(idle)).toBe(true)
+    expect(isReadonly(lastActive)).toBe(true)
+  })
+
+  describe('initials', () => {
+    it('should default lastActive to now', () => {
+      const { lastActive } = useIdle(1000)
+
+      expect(lastActive.value).toBe(Date.now())
+    })
+
+    it('should seed from plain values', () => {
+      const { idle, lastActive } = useIdle(1000, { initials: { idle: true, lastActive: 42 } })
+
+      expect(idle.value).toBe(true)
+      expect(lastActive.value).toBe(42)
+    })
+
+    it('should use passed refs as internal state', async () => {
+      const idle = shallowRef(true)
+      const lastActive = shallowRef(0)
+      const result = useIdle(1000, { initials: { idle, lastActive } })
+
+      expect(result.idle).not.toBe(idle)
+
+      await userEvent.keyboard('foo')
+      expect(idle.value).toBe(false)
+      expect(lastActive.value).toBe(Date.now())
+
+      lastActive.value = 1
+      expect(result.lastActive.value).toBe(1)
+    })
+
+    it('should reset to the initial idle value on stop', async () => {
+      const { idle, stop } = useIdle(1000, { initials: { idle: true } })
+
+      await userEvent.keyboard('foo')
+      expect(idle.value).toBe(false)
+
+      stop()
+      expect(idle.value).toBe(true)
+    })
+
+    it('should support deprecated initialState', () => {
+      const { idle } = useIdle(1000, { initialState: true })
+
+      expect(idle.value).toBe(true)
+    })
+
+    it('should prefer initials over deprecated initialState', () => {
+      const { idle } = useIdle(1000, { initialState: true, initials: { idle: false } })
+
+      expect(idle.value).toBe(false)
+    })
   })
 
   it('should handle visibility change events', () => {
@@ -147,7 +201,7 @@ describe('useIdle', () => {
     stop()
     vi.advanceTimersByTime(timeout)
 
-    // Should remain in initialState (false)
+    // Should remain in initials.idle (false)
     expect(idle.value).toBe(false)
   })
 
@@ -216,8 +270,8 @@ describe('useIdle', () => {
     expect(isPending.value).toBe(false)
   })
 
-  it('should use initialState when starting after start', async () => {
-    const { idle, stop, start } = useIdle(1000, { initialState: true })
+  it('should use initials.idle when starting after start', async () => {
+    const { idle, stop, start } = useIdle(1000, { initials: { idle: true } })
 
     expect(idle.value).toBe(true)
 
@@ -235,8 +289,8 @@ describe('useIdle', () => {
     expect(idle.value).toBe(false)
   })
 
-  it('should handle false initialState correctly', () => {
-    const { idle, stop, start } = useIdle(1000, { initialState: false })
+  it('should handle false initials.idle correctly', () => {
+    const { idle, stop, start } = useIdle(1000, { initials: { idle: false } })
 
     // Initially idle should be false
     expect(idle.value).toBe(false)
@@ -245,7 +299,7 @@ describe('useIdle', () => {
     vi.advanceTimersByTime(1000)
     expect(idle.value).toBe(true)
 
-    // Stop should set idle to initialState (false)
+    // Stop should set idle to initials.idle (false)
     stop()
     expect(idle.value).toBe(false)
 

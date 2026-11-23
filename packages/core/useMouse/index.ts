@@ -1,8 +1,8 @@
-import type { ConfigurableEventFilter } from '@vueuse/shared'
+import type { ConfigurableEventFilter, MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
-import { shallowRef } from 'vue'
+import { shallowReadonly, shallowRef, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 
@@ -10,7 +10,28 @@ export type UseMouseCoordType = 'page' | 'client' | 'screen' | 'movement'
 export type UseMouseSourceType = 'mouse' | 'touch' | null
 export type UseMouseEventExtractor = (event: MouseEvent | Touch) => [x: number, y: number] | null | undefined
 
+export interface UseMouseState {
+  /**
+   * Mouse position on the x axis
+   *
+   * @default 0
+   */
+  x: number
+  /**
+   * Mouse position on the y axis
+   *
+   * @default 0
+   */
+  y: number
+}
+
 export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFilter {
+  /**
+   * Initial values for the returned state, used before the first event and
+   * restored by `resetOnTouchEnds`. A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseMouseState>
+
   /**
    * Mouse position based by page, client, screen, or relative to previous position
    *
@@ -40,22 +61,23 @@ export interface UseMouseOptions extends ConfigurableWindow, ConfigurableEventFi
   scroll?: boolean
 
   /**
-   * Reset to initial value when `touchend` or `touchcancel` event fired
+   * Reset to initial values when `touchend` or `touchcancel` event fired
    *
    * @default false
    */
   resetOnTouchEnds?: boolean
 
   /**
-   * Initial values
+   * @deprecated Use `initials` instead. Will be removed in v17.
    */
   initialValue?: Position
 }
 
-export interface UseMouseReturn {
-  x: ShallowRef<number>
-  y: ShallowRef<number>
-  sourceType: ShallowRef<UseMouseSourceType>
+export interface UseMouseReturn extends ReadonlyRefs<UseMouseState> {
+  /**
+   * Source of the last position update
+   */
+  sourceType: Readonly<ShallowRef<UseMouseSourceType>>
 }
 
 const UseMouseBuiltinExtractors: Record<UseMouseCoordType, UseMouseEventExtractor> = {
@@ -79,7 +101,11 @@ export function useMouse(options: UseMouseOptions = {}): UseMouseReturn {
     type = 'page',
     touch = true,
     resetOnTouchEnds = false,
-    initialValue = { x: 0, y: 0 },
+    initialValue: deprecatedInitialValue,
+    initials: {
+      x: initialX = deprecatedInitialValue?.x ?? 0,
+      y: initialY = deprecatedInitialValue?.y ?? 0,
+    } = {},
     window = defaultWindow,
     target = window,
     scroll = true,
@@ -90,8 +116,11 @@ export function useMouse(options: UseMouseOptions = {}): UseMouseReturn {
   let _prevScrollX = 0
   let _prevScrollY = 0
 
-  const x = shallowRef(initialValue.x)
-  const y = shallowRef(initialValue.y)
+  const x = shallowRef(initialX)
+  const y = shallowRef(initialY)
+  // snapshot, since a passed ref is overwritten by the events
+  const resetX = toValue(initialX)
+  const resetY = toValue(initialY)
   const sourceType = shallowRef<UseMouseSourceType>(null)
 
   const extractor = typeof type === 'function'
@@ -135,8 +164,8 @@ export function useMouse(options: UseMouseOptions = {}): UseMouseReturn {
   }
 
   const reset = () => {
-    x.value = initialValue.x
-    y.value = initialValue.y
+    x.value = resetX
+    y.value = resetY
   }
 
   const mouseHandlerWrapper = eventFilter
@@ -164,8 +193,8 @@ export function useMouse(options: UseMouseOptions = {}): UseMouseReturn {
   }
 
   return {
-    x,
-    y,
-    sourceType,
+    x: shallowReadonly(x),
+    y: shallowReadonly(y),
+    sourceType: shallowReadonly(sourceType),
   }
 }

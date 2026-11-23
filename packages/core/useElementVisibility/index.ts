@@ -1,17 +1,30 @@
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
 import type { ShallowRef } from 'vue'
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef } from '../unrefElement'
 import type { UseIntersectionObserverOptions, UseIntersectionObserverReturn } from '../useIntersectionObserver'
 import { watchOnce } from '@vueuse/shared'
-import { shallowRef } from 'vue'
+import { shallowReadonly, shallowRef } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useIntersectionObserver } from '../useIntersectionObserver'
 
-export interface UseElementVisibilityOptions<Controls extends boolean = false> extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'rootMargin' | 'threshold'> {
+export interface UseElementVisibilityState {
   /**
-   * Initial value.
+   * Whether the target is currently visible in the viewport
    *
    * @default false
+   */
+  isVisible: boolean
+}
+
+export interface UseElementVisibilityOptions<Controls extends boolean = false> extends ConfigurableWindow, Pick<UseIntersectionObserverOptions, 'rootMargin' | 'threshold'> {
+  /**
+   * Initial values for the returned state, used before the first intersection.
+   * A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseElementVisibilityState>
+  /**
+   * @deprecated Use `initials.isVisible` instead. Will be removed in v17.
    */
   initialValue?: boolean
   /**
@@ -35,11 +48,9 @@ export interface UseElementVisibilityOptions<Controls extends boolean = false> e
 export type UseElementVisibilityReturn<Controls extends boolean = false>
   = Controls extends true
     ? UseElementVisibilityReturnWithControls
-    : ShallowRef<boolean>
+    : Readonly<ShallowRef<boolean>>
 
-export interface UseElementVisibilityReturnWithControls extends UseIntersectionObserverReturn {
-  isVisible: ShallowRef<boolean>
-}
+export interface UseElementVisibilityReturnWithControls extends UseIntersectionObserverReturn, ReadonlyRefs<UseElementVisibilityState> {}
 
 /**
  * Tracks the visibility of an element within the viewport.
@@ -64,9 +75,12 @@ export function useElementVisibility(
     threshold = 0,
     rootMargin,
     once = false,
-    initialValue = false,
+    initialValue: deprecatedInitialValue,
+    initials: {
+      isVisible: initialIsVisible = deprecatedInitialValue ?? false,
+    } = {},
   } = options
-  const isVisible = shallowRef(initialValue)
+  const isVisible = shallowRef(initialIsVisible)
 
   const observerController = useIntersectionObserver(
     element,
@@ -97,7 +111,9 @@ export function useElementVisibility(
     },
   )
 
+  const readonlyIsVisible = shallowReadonly(isVisible)
+
   return options.controls
-    ? { ...observerController, isVisible }
-    : isVisible
+    ? { ...observerController, isVisible: readonlyIsVisible }
+    : readonlyIsVisible
 }

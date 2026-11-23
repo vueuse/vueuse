@@ -3,7 +3,7 @@ import type { Reactive, SlotsType } from 'vue'
 import { useElementVisibility } from '@vueuse/core'
 import { defineComponent, h, reactive, shallowRef } from 'vue'
 
-export interface UseElementVisibilityProps extends Omit<UseElementVisibilityOptions<true>, 'controls'>, RenderableComponent {}
+export interface UseElementVisibilityProps extends Omit<UseElementVisibilityOptions<true>, 'controls' | 'initialValue'>, RenderableComponent {}
 interface UseElementVisibilitySlots {
   default: (data: Reactive<UseElementVisibilityReturn<true>>) => any
 }
@@ -27,6 +27,7 @@ export const UseElementVisibility = /* #__PURE__ */ defineComponent<
     name: 'UseElementVisibility',
     props: [
       'as',
+      'initials',
       'once',
       'rootMargin',
       'scrollTarget',

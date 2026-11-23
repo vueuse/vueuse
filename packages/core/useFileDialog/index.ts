@@ -1,11 +1,20 @@
-import type { EventHookOn } from '@vueuse/shared'
-import type { MaybeRef, Ref } from 'vue'
+import type { EventHookOn, MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
+import type { MaybeRef } from 'vue'
 import type { ConfigurableDocument } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 import { createEventHook, hasOwn } from '@vueuse/shared'
-import { computed, readonly as deepReadonly, ref as deepRef, toValue, watchEffect } from 'vue'
+import { computed, shallowReadonly, shallowRef, toValue, watchEffect } from 'vue'
 import { defaultDocument } from '../_configurable'
 import { unrefElement } from '../unrefElement'
+
+export interface UseFileDialogState {
+  /**
+   * The selected files
+   *
+   * @default null
+   */
+  files: FileList | null
+}
 
 export interface UseFileDialogOptions extends ConfigurableDocument {
   /**
@@ -34,8 +43,13 @@ export interface UseFileDialogOptions extends ConfigurableDocument {
   directory?: MaybeRef<boolean>
 
   /**
-   * Initial files to set.
-   * @default null
+   * Initial values for the returned state, used before files are selected.
+   * A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseFileDialogState>
+
+  /**
+   * @deprecated Use `initials.files` instead. Will be removed in v17.
    */
   initialFiles?: Array<File> | FileList
 
@@ -53,8 +67,7 @@ const DEFAULT_OPTIONS: UseFileDialogOptions = {
   directory: false,
 }
 
-export interface UseFileDialogReturn {
-  files: Ref<FileList | null>
+export interface UseFileDialogReturn extends ReadonlyRefs<UseFileDialogState> {
   open: (localOptions?: Partial<UseFileDialogOptions>) => void
   reset: () => void
   onChange: EventHookOn<FileList | null>
@@ -85,9 +98,13 @@ function prepareInitialFiles(files: UseFileDialogOptions['initialFiles']): FileL
 export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialogReturn {
   const {
     document = defaultDocument,
+    initialFiles: deprecatedInitialFiles,
+    initials: {
+      files: initialFiles = prepareInitialFiles(deprecatedInitialFiles),
+    } = {},
   } = options
 
-  const files = deepRef<FileList | null>(prepareInitialFiles(options.initialFiles))
+  const files = shallowRef(initialFiles)
   const { on: onChange, trigger: changeTrigger } = createEventHook()
   const { on: onCancel, trigger: cancelTrigger } = createEventHook()
   const inputRef = computed(() => {
@@ -148,7 +165,7 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
   })
 
   return {
-    files: deepReadonly(files),
+    files: shallowReadonly(files),
     open,
     reset,
     onCancel,

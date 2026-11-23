@@ -1,4 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { isReadonly, shallowRef } from 'vue'
+import { useIntersectionObserver } from '../useIntersectionObserver'
 import { useElementVisibility } from './index'
 
 vi.mock('../useIntersectionObserver', () => ({
@@ -37,9 +39,46 @@ describe('useElementVisibility', () => {
     expect(visible.value).toBeFalsy()
   })
 
-  it('should allow set initial value', () => {
-    const visible = useElementVisibility(el, { initialValue: true })
-    expect(visible.value).toBeTruthy()
+  it('should return a readonly isVisible', () => {
+    expect(isReadonly(useElementVisibility(el))).toBe(true)
+    expect(isReadonly(useElementVisibility(el, { controls: true }).isVisible)).toBe(true)
+  })
+
+  describe('initials', () => {
+    function intersect(isIntersecting: boolean) {
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+    }
+
+    it('should default to false', () => {
+      expect(useElementVisibility(el).value).toBe(false)
+    })
+
+    it('should seed from a plain value', () => {
+      expect(useElementVisibility(el, { initials: { isVisible: true } }).value).toBe(true)
+      expect(useElementVisibility(el, { controls: true, initials: { isVisible: true } }).isVisible.value).toBe(true)
+    })
+
+    it('should use a passed ref as internal state', () => {
+      const isVisible = shallowRef(true)
+      const visible = useElementVisibility(el, { initials: { isVisible } })
+
+      expect(visible).not.toBe(isVisible)
+
+      intersect(false)
+      expect(isVisible.value).toBe(false)
+
+      isVisible.value = true
+      expect(visible.value).toBe(true)
+    })
+
+    it('should support deprecated initialValue', () => {
+      expect(useElementVisibility(el, { initialValue: true }).value).toBe(true)
+    })
+
+    it('should prefer initials over deprecated initialValue', () => {
+      expect(useElementVisibility(el, { initialValue: true, initials: { isVisible: false } }).value).toBe(false)
+    })
   })
 
   describe('when internally using useIntersectionObserver', async () => {

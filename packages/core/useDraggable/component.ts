@@ -1,4 +1,4 @@
-import type { Position, RenderableComponent, UseDraggableOptions } from '@vueuse/core'
+import type { RenderableComponent, UseDraggableOptions } from '@vueuse/core'
 import type { SlotsType } from 'vue'
 import { isClient, useDraggable, useStorage } from '@vueuse/core'
 import { computed, defineComponent, h, reactive, shallowRef, toValue } from 'vue'
@@ -30,27 +30,22 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<
     const disabled = computed(() => !!props.disabled)
     const storageValue = props.storageKey && useStorage(
       props.storageKey,
-      toValue(props.initialValue) || { x: 0, y: 0 },
+      props.initials?.position ?? props.initialValue ?? { x: 0, y: 0 },
       isClient
         ? props.storageType === 'session'
           ? sessionStorage
           : localStorage
         : undefined,
     )
-    const initialValue = storageValue || props.initialValue || { x: 0, y: 0 }
-    const onEnd = (position: Position, event: PointerEvent) => {
-      props.onEnd?.(position, event)
-      if (!storageValue)
-        return
-      storageValue.value.x = position.x
-      storageValue.value.y = position.y
-    }
+    // the storage ref is used as the internal state, so the position is persisted on change
+    const initials = storageValue
+      ? { position: storageValue }
+      : props.initials
 
     const data = reactive(useDraggable(target, {
       ...props,
       handle,
-      initialValue,
-      onEnd,
+      initials,
       disabled,
       containerElement,
     }))
@@ -66,6 +61,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<
       'storageKey',
       'storageType',
       'initialValue',
+      'initials',
       'exact',
       'preventDefault',
       'stopPropagation',

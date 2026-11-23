@@ -1,13 +1,39 @@
-import type { ShallowRef } from 'vue'
+import type { MaybeRefInitials, ReadonlyRefs } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import { tryOnMounted } from '@vueuse/shared'
-import { shallowRef, watch } from 'vue'
+import { shallowReadonly, shallowRef, watch } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { useMediaQuery } from '../useMediaQuery'
 
+export interface UseWindowSizeState {
+  /**
+   * Window width
+   *
+   * @default Number.POSITIVE_INFINITY
+   */
+  width: number
+  /**
+   * Window height
+   *
+   * @default Number.POSITIVE_INFINITY
+   */
+  height: number
+}
+
 export interface UseWindowSizeOptions extends ConfigurableWindow {
+  /**
+   * Initial values for the returned state, used before the window is measured
+   * (e.g. during SSR). A passed ref is used as the internal state.
+   */
+  initials?: MaybeRefInitials<UseWindowSizeState>
+  /**
+   * @deprecated Use `initials.width` instead. Will be removed in v17.
+   */
   initialWidth?: number
+  /**
+   * @deprecated Use `initials.height` instead. Will be removed in v17.
+   */
   initialHeight?: number
   /**
    * Listen to window `orientationchange` event
@@ -32,10 +58,7 @@ export interface UseWindowSizeOptions extends ConfigurableWindow {
   type?: 'inner' | 'outer' | 'visual'
 }
 
-export interface UseWindowSizeReturn {
-  width: ShallowRef<number>
-  height: ShallowRef<number>
-}
+export interface UseWindowSizeReturn extends ReadonlyRefs<UseWindowSizeState> {}
 
 /**
  * Reactive window size.
@@ -48,8 +71,12 @@ export interface UseWindowSizeReturn {
 export function useWindowSize(options: UseWindowSizeOptions = {}): UseWindowSizeReturn {
   const {
     window = defaultWindow,
-    initialWidth = Number.POSITIVE_INFINITY,
-    initialHeight = Number.POSITIVE_INFINITY,
+    initialWidth: deprecatedInitialWidth,
+    initialHeight: deprecatedInitialHeight,
+    initials: {
+      width: initialWidth = deprecatedInitialWidth ?? Number.POSITIVE_INFINITY,
+      height: initialHeight = deprecatedInitialHeight ?? Number.POSITIVE_INFINITY,
+    } = {},
     listenOrientation = true,
     includeScrollbar = true,
     type = 'inner',
@@ -95,5 +122,8 @@ export function useWindowSize(options: UseWindowSizeOptions = {}): UseWindowSize
     watch(matches, () => update())
   }
 
-  return { width, height }
+  return {
+    width: shallowReadonly(width),
+    height: shallowReadonly(height),
+  }
 }

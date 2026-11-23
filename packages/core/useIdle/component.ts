@@ -30,6 +30,7 @@ export const UseIdle = /* #__PURE__ */ defineComponent<
       'eventFilter',
       'events',
       'initialState',
+      'initials',
       'listenForVisibilityChange',
       'timeout',
       'window',
