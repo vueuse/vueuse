@@ -36,11 +36,15 @@ const packages = [
 
 const fullPackages = packages.map(p => `@vueuse/${p}`)
 
+interface AutoImportOptions {
+  disableFunctions?: string[]
+}
+
 export interface VueUseNuxtOptions {
   /**
    * @default true
    */
-  autoImports?: boolean
+  autoImports?: boolean | AutoImportOptions
 
   /**
    * @experimental
@@ -123,6 +127,13 @@ const module: NuxtModule<VueUseNuxtOptions, VueUseNuxtOptions, false> = defineNu
         // disable useColorMode in favor of nuxt color mode
         if (hasNuxtModule('@nuxtjs/color-mode')) {
           disabledFunctions.add('useColorMode')
+        }
+
+        // disable the functions specified in options provided by user
+        if (typeof options.autoImports === 'object') {
+          options.autoImports.disableFunctions?.forEach((f) => {
+            disabledFunctions.add(f)
+          })
         }
 
         for (const pkg of packages) {
