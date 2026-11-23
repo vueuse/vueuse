@@ -38,6 +38,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
 
   let timer: ReturnType<typeof setInterval> | null = null
   const isActive = shallowRef(false)
+  let isRequested = false
 
   function clean() {
     if (timer) {
@@ -47,18 +48,22 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
   }
 
   function pause() {
+    isRequested = false
     isActive.value = false
     clean()
   }
 
   function resume() {
+    isRequested = true
+    clean()
     const intervalValue = toValue(interval)
-    if (intervalValue <= 0)
+    if (intervalValue <= 0) {
+      isActive.value = false
       return
+    }
     isActive.value = true
     if (immediateCallback)
       cb()
-    clean()
     if (isActive.value)
       timer = setInterval(cb, intervalValue)
   }
@@ -68,7 +73,7 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
 
   if (isRef(interval) || typeof interval === 'function') {
     const stopWatch = watch(interval, () => {
-      if (isActive.value && isClient)
+      if (isRequested && isClient)
         resume()
     })
     tryOnScopeDispose(stopWatch)
