@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { nextTick, shallowRef, watch, watchEffect } from 'vue'
+import { nextTick, reactive, renderList, shallowRef, toRaw, watch, watchEffect } from 'vue'
 import { reactiveComputed } from './index'
 
 describe('reactiveComputed', () => {
@@ -52,6 +52,20 @@ describe('reactiveComputed', () => {
 
     expect(dummy).toBe(1)
     expect(type).toBe('foo')
+  })
+
+  it('should work with array', () => {
+    const list = reactive([0, 1])
+
+    const state = reactiveComputed(() => list)
+
+    expect(renderList(state, item => item)).toEqual([0, 1])
+    expect(state).toBeInstanceOf(Array)
+    expect(toRaw(state)).toEqual([0, 1])
+
+    list.push(2)
+
+    expect(renderList(state, item => item)).toEqual([0, 1, 2])
   })
 
   it('should allow for previous value access (for vue 3.4+)', () => {
