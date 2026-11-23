@@ -6,6 +6,7 @@ import { customRef, nextTick, toValue, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const _queue = new WeakMap<Router, Map<string, any>>()
+const _navigating = new WeakSet<Router>()
 
 export function useRouteQuery(
   name: string,
@@ -61,6 +62,33 @@ export function useRouteQuery<
 
   let _trigger: () => void
 
+  // `route.query` is only updated once a navigation finishes, so while one is
+  // pending, keep the queued values and flush them after it settles.
+  function flush() {
+    if (_navigating.has(router) || _queriesQueue.size === 0)
+      return
+
+    const newQueries = Object.fromEntries(_queriesQueue.entries())
+    _queriesQueue.clear()
+
+    const { params, query, hash } = route
+
+    const result = router[toValue(mode)]({
+      params,
+      query: { ...query, ...newQueries },
+      hash,
+    })
+
+    _navigating.add(router)
+
+    const done = () => {
+      _navigating.delete(router)
+      flush()
+    }
+
+    Promise.resolve(result).then(done, done)
+  }
+
   const proxy = customRef<any>((track, trigger) => {
     _trigger = trigger
 
@@ -81,21 +109,7 @@ export function useRouteQuery<
 
         trigger()
 
-        nextTick(() => {
-          if (_queriesQueue.size === 0)
-            return
-
-          const newQueries = Object.fromEntries(_queriesQueue.entries())
-          _queriesQueue.clear()
-
-          const { params, query, hash } = route
-
-          router[toValue(mode)]({
-            params,
-            query: { ...query, ...newQueries },
-            hash,
-          })
-        })
+        nextTick(flush)
       },
     }
   })
