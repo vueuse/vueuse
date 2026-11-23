@@ -100,6 +100,8 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     // need to commit
     let ignoreCounter = 0
     let syncCounter = 0
+    let committedValue: unknown
+    let latestValue: unknown
 
     ignorePrevAsyncUpdates = () => {
       ignoreCounter = syncCounter
@@ -114,7 +116,10 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     disposables.push(
       watch(
         source,
-        () => {
+        (value, oldValue) => {
+          if (syncCounter === 0)
+            committedValue = oldValue
+          latestValue = value
           syncCounter++
         },
         { ...countingWatchOptions, flush: 'sync' },
@@ -122,6 +127,13 @@ export function watchIgnorable<Immediate extends Readonly<boolean> = false>(
     )
 
     ignoreUpdates = (updater: () => void) => {
+      // If the source went back to its committed value, the actual watch won't
+      // run for those changes, so their count is stale and has to be dropped
+      if (syncCounter > 0 && typeof latestValue !== 'object' && Object.is(latestValue, committedValue)) {
+        ignoreCounter = 0
+        syncCounter = 0
+      }
+
       // Call the updater function and count how many sync updates are performed,
       // then add them to the ignore count
       const syncCounterPrev = syncCounter
