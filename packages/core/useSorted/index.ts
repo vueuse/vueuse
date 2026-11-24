@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
+import { toRef } from '@vueuse/shared'
 import { computed, isRef, toValue, watchEffect } from 'vue'
 
 export type UseSortedCompareFn<T = any> = (a: T, b: T) => number
@@ -61,12 +62,13 @@ export function useSorted(...args: any[]) {
 
   // dirty
   watchEffect(() => {
-    const result = sortFn(toValue(source), compareFn)
+    const array = toValue(source)
+    const result = sortFn(array, compareFn)
     if (isRef(source))
       source.value = result
     else
-      source.splice(0, source.length, ...result)
+      array.splice(0, array.length, ...result)
   })
 
-  return source
+  return toRef(source)
 }

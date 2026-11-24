@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { toValue } from 'vue'
+import { nextTick, shallowRef, toValue } from 'vue'
 import { useSorted } from './index'
 
 interface User {
@@ -77,6 +77,31 @@ describe('useSorted', () => {
 
     expect(toValue(sorted)).toMatchObject(arrSorted)
     expect(toValue(dirtyArr)).toMatchObject(toValue(sorted))
+  })
+
+  it('returns a ref for a raw source in dirty mode', () => {
+    const source = [3, 1, 2]
+    const sorted = useSorted(source, { dirty: true })
+
+    expect(sorted.value).toEqual([1, 2, 3])
+    expect(source).toEqual([1, 2, 3])
+  })
+
+  it('sorts the current getter source in dirty mode', async () => {
+    const source = shallowRef([3, 1, 2])
+    const sorted = useSorted(() => source.value, {
+      dirty: true,
+      sortFn: (values, compare) => [...values].sort(compare),
+    })
+
+    expect(sorted.value).toEqual([1, 2, 3])
+    expect(source.value).toEqual([1, 2, 3])
+
+    source.value = [6, 4, 5]
+    await nextTick()
+
+    expect(sorted.value).toEqual([4, 5, 6])
+    expect(source.value).toEqual([4, 5, 6])
   })
 
   it('should sort object', () => {
