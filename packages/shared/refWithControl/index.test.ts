@@ -135,5 +135,46 @@ describe('controlledRef', () => {
     expect(dummy).toBe(3)
     expect(dismissed).toBe(1)
     expect(onChanged).toHaveBeenCalledWith(-4, 1)
+
+    const asyncRef = refWithControl(0, {
+      onBeforeChange(value, oldValue) {
+        // disallow changes larger then ±5 in one operation
+        if (Math.abs(value - oldValue) > 5) {
+          dismissed += 1
+          return new Promise(resolve => resolve(false))
+        }
+      },
+      onChanged,
+    })
+
+    watchEffect(() => {
+      // eslint-disable-next-line ts/no-unused-expressions
+      asyncRef.value
+      dummy += 1
+    }, { flush: 'sync' })
+
+    expect(asyncRef.value).toBe(0)
+    expect(dummy).toBe(4)
+
+    asyncRef.value += 1
+
+    expect(asyncRef.value).toBe(1)
+    expect(dummy).toBe(5)
+    expect(dismissed).toBe(1)
+    expect(onChanged).toHaveBeenCalledWith(1, 0)
+
+    asyncRef.value += 6
+
+    expect(asyncRef.value).toBe(1)
+    expect(dummy).toBe(5)
+    expect(dismissed).toBe(2)
+    expect(onChanged).toHaveBeenCalledTimes(3)
+
+    asyncRef.value -= 5
+
+    expect(asyncRef.value).toBe(-4)
+    expect(dummy).toBe(6)
+    expect(dismissed).toBe(2)
+    expect(onChanged).toHaveBeenCalledWith(-4, 1)
   })
 })
