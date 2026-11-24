@@ -118,6 +118,9 @@ export function useUrlSearchParams<T extends Record<string, any> = UrlParams>(
   const { pause, resume } = watchPausable(
     state,
     () => {
+      if (!enableWrite)
+        return
+
       const params = new URLSearchParams('')
       Object.keys(state).forEach((key) => {
         const mapEntry = state[key]

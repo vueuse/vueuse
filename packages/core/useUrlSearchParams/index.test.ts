@@ -77,6 +77,23 @@ describe('useUrlSearchParams', () => {
     'hash-params',
   ] as const).forEach((mode) => {
     describe(`${mode} mode`, () => {
+      it.each(['replace', 'push'] as const)('does not %s history when writing is disabled', async (writeMode) => {
+        const params = useUrlSearchParams(mode, { write: false, writeMode })
+
+        params.foo = 'local value'
+        await nextTick()
+
+        expect(params.foo).toBe('local value')
+        expect(mockReplaceState).not.toHaveBeenCalled()
+        expect(mockPushState).not.toHaveBeenCalled()
+
+        delete params.foo
+        await nextTick()
+
+        expect(mockReplaceState).not.toHaveBeenCalled()
+        expect(mockPushState).not.toHaveBeenCalled()
+      })
+
       it('return initial params', async () => {
         if (mode === 'hash')
           window.location.hash = '#/test/?foo=bar'
