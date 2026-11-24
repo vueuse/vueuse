@@ -126,11 +126,13 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     watch(
       () => props[key!],
       (v) => {
-        if (!isUpdating) {
-          isUpdating = true
-          ;(proxy as any).value = cloneFn(v) as UnwrapRef<P[K]>
-          nextTick(() => isUpdating = false)
-        }
+        // `isUpdating` only has to mute the echo back to the parent, so it is set on every
+        // incoming value rather than used to skip one: a prop that changes twice within a
+        // tick (a parent computing the model through a chain of watchers) would otherwise
+        // leave the proxy stuck on the first value, with nothing emitted and no warning.
+        isUpdating = true
+        ;(proxy as any).value = cloneFn(v) as UnwrapRef<P[K]>
+        nextTick(() => isUpdating = false)
       },
     )
 
