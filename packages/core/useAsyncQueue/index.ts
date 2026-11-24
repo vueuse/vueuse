@@ -103,14 +103,11 @@ export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
           result[activeIndex.value]?.state === promiseState.rejected
           && interrupt
         ) {
-          onFinished()
           return
         }
 
         const done = curr(prevRes).then((currentRes: any) => {
           updateResult(promiseState.fulfilled, currentRes)
-          if (activeIndex.value === tasks.length - 1)
-            onFinished()
           return currentRes
         })
 
@@ -127,11 +124,9 @@ export function useAsyncQueue<T extends any[], S = MapQueueTask<T>>(
 
         updateResult(promiseState.rejected, e)
         onError()
-        if (activeIndex.value === tasks.length - 1)
-          onFinished()
         return e
       })
-  }, Promise.resolve())
+  }, Promise.resolve()).finally(onFinished)
 
   return {
     activeIndex,
