@@ -145,4 +145,31 @@ describe('useAsyncQueue', () => {
       expect(onFinishedSpy).toHaveBeenCalledOnce()
     })
   })
+
+  it('finishes once when an error interrupts several remaining tasks', async () => {
+    const onFinished = vi.fn()
+    const skippedTask = vi.fn(() => Promise.resolve(1))
+    useAsyncQueue([
+      () => Promise.reject(new Error('task failed')),
+      skippedTask,
+      skippedTask,
+      skippedTask,
+    ], { onFinished })
+
+    await vi.waitFor(() => expect(onFinished).toHaveBeenCalled())
+    expect(onFinished).toHaveBeenCalledOnce()
+    expect(skippedTask).not.toHaveBeenCalled()
+  })
+
+  it('finishes once when the signal is already aborted', async () => {
+    const controller = new AbortController()
+    controller.abort()
+    const task = vi.fn(() => Promise.resolve(1))
+    const onFinished = vi.fn()
+    const { result } = useAsyncQueue([task, task], { signal: controller.signal, onFinished })
+
+    await vi.waitFor(() => expect(result.map(item => item.state)).toEqual(['aborted', 'aborted']))
+    expect(onFinished).toHaveBeenCalledOnce()
+    expect(task).not.toHaveBeenCalled()
+  })
 })
