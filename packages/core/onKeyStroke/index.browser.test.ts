@@ -55,3 +55,25 @@ describe('onKeyStroke', () => {
     expect(callBackFn).toBeCalledTimes(1)
   })
 })
+
+describe('onKeyStroke passive option', () => {
+  it('does not register a passive listener in the capture phase', async () => {
+    const container = document.createElement('div')
+    const input = document.createElement('input')
+    container.appendChild(input)
+    document.body.appendChild(container)
+
+    const phases: number[] = []
+    const stop = onKeyStroke('a', (event) => {
+      phases.push(event.eventPhase)
+    }, { target: container, passive: true })
+
+    input.focus()
+    await userEvent.keyboard('a')
+
+    stop()
+    container.remove()
+
+    expect(phases).toEqual([Event.BUBBLING_PHASE])
+  })
+})
