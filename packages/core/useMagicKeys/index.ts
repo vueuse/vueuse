@@ -5,6 +5,14 @@ import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { DefaultMagicKeysAliasMap } from './aliasMap'
 
+const modifiers = ['Shift', 'Control', 'Alt', 'Meta']
+
+// Modifiers report their own state, so keep the ones still held
+function isHeldModifier(e: KeyboardEvent, key: string) {
+  const modifier = modifiers.find(m => key.startsWith(m.toLowerCase()))
+  return !!modifier && !!e.getModifierState?.(modifier)
+}
+
 export interface UseMagicKeysOptions<Reactive extends boolean> {
   /**
    * Returns a reactive object instead of an object of refs
@@ -116,7 +124,7 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     }
   }
 
-  function clearDeps(value: boolean, key: string) {
+  function clearDeps(value: boolean, e: KeyboardEvent, key: string) {
     if (value)
       return
     const depsMapKey = `${key[0].toUpperCase()}${key.slice(1)}`
@@ -127,12 +135,40 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     const depsArray = Array.from(deps)
     const depsIndex = depsArray.indexOf(key)
     depsArray.forEach((key, index) => {
-      if (index >= depsIndex) {
+      if (index >= depsIndex && !isHeldModifier(e, key)) {
         current.delete(key)
         setRefs(key, false)
       }
     })
     deps.clear()
+  }
+
+  function clearMetaDeps(e: KeyboardEvent) {
+    metaDeps.forEach((key) => {
+      if (isHeldModifier(e, key))
+        return
+      current.delete(key)
+      setRefs(key, false)
+    })
+    metaDeps.clear()
+  }
+
+  // Keyups can be missed without a blur, e.g. swallowed by macOS screenshot shortcuts,
+  // so trust the modifier state reported by each event
+  function releaseStaleModifiers(e: KeyboardEvent) {
+    if (typeof e.getModifierState !== 'function')
+      return
+    for (const modifier of modifiers) {
+      const key = modifier.toLowerCase()
+      if (!current.has(key) || e.getModifierState(modifier))
+        continue
+      current.delete(key)
+      for (const ref of [key, `${key}left`, `${key}right`])
+        setRefs(ref, false)
+      clearDeps(false, e, key)
+      if (key === 'meta')
+        clearMetaDeps(e)
+    }
   }
 
   function updateRefs(e: KeyboardEvent, value: boolean) {
@@ -142,6 +178,9 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
 
     if (!key)
       return
+
+    // Before updating this key, so its watchers see the real modifier state
+    releaseStaleModifiers(e)
 
     // current set
     if (key) {
@@ -157,18 +196,14 @@ export function useMagicKeys<T extends boolean = false>(options: UseMagicKeysOpt
     }
 
     updateDeps(value, e, [...current, ...values])
-    clearDeps(value, key)
+    clearDeps(value, e, key)
 
     // #1312
     // In macOS, keys won't trigger "keyup" event when Meta key is released
     // We track it's combination and release manually
     if (key === 'meta' && !value) {
       // Meta key released
-      metaDeps.forEach((key) => {
-        current.delete(key)
-        setRefs(key, false)
-      })
-      metaDeps.clear()
+      clearMetaDeps(e)
     }
   }
 
