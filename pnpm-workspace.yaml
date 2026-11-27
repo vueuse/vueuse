@@ -135,4 +135,3 @@ catalogs:
     '@types/semver': ^7.8.0
     '@types/sortablejs': ^1.15.9
     '@types/web-bluetooth': ^0.0.22
-    temporal-spec: ^1.0.1

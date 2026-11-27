@@ -2209,6 +2209,21 @@ interface SpeechRecognitionErrorEvent extends Event {
   readonly error: SpeechRecognitionErrorCode;
   readonly message: string;
 }
+declare namespace Temporal {
+  type ZonedDateTime = TemporalInstance<'ZonedDateTime'>;
+  type PlainDate = TemporalInstance<'PlainDate'>;
+  type PlainTime = TemporalInstance<'PlainTime'>;
+  type PlainDateTime = TemporalInstance<'PlainDateTime'>;
+  type DurationLike = typeof globalThis extends {
+    Temporal: {
+      ZonedDateTime: {
+        prototype: {
+          add: (duration: infer T) => unknown;
+        };
+      };
+    };
+  } ? T : any;
+}
 interface UseMediaControlsOptions extends ConfigurableDocument {
   src?: MaybeRefOrGetter<string | UseMediaSource | UseMediaSource[]>;
   tracks?: MaybeRefOrGetter<UseMediaTextTrackSource[]>;

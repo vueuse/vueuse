@@ -21,6 +21,7 @@ packages/**/*.js
 packages/**/*.[cm]js
 packages/**/*.d.ts
 packages/**/*.d.[cm]ts
+!packages/core/useTemporalNow/types.d.ts
 !packages/.vitepress/
 !packages/.vitepress/shims.d.ts
 playgrounds/*/pnpm-lock.yaml
