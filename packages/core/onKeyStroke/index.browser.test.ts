@@ -54,4 +54,12 @@ describe('onKeyStroke', () => {
     await userEvent.keyboard('{a>5/}')
     expect(callBackFn).toBeCalledTimes(1)
   })
+
+  it('pass passive option to listener', () => {
+    const addSpy = vi.spyOn(window, 'addEventListener')
+
+    onKeyStroke('a', callBackFn, { passive: true })
+
+    expect(addSpy).toBeCalledWith('keydown', expect.any(Function), { passive: true })
+  })
 })
