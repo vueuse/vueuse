@@ -1,6 +1,7 @@
 import type { Pausable } from '@vueuse/shared'
 import type { Ref } from 'vue'
 import type { ConfigurableScheduler } from '../_configurable'
+import type { Temporal } from './types'
 import { shallowRef, watch } from 'vue'
 import { useRafFn } from '../useRafFn'
 
@@ -81,7 +82,7 @@ export interface UseTemporalNowReturn extends Pausable {
 function resolveTemporal(custom?: typeof Temporal): typeof Temporal | undefined {
   if (custom)
     return custom
-  return typeof Temporal === 'undefined' ? undefined : Temporal
+  return (globalThis as typeof globalThis & { Temporal?: typeof Temporal }).Temporal
 }
 
 function assertTemporal(impl: typeof Temporal | undefined): typeof Temporal {
