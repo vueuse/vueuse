@@ -1,3 +1,4 @@
+import type { NuxtModule } from '@nuxt/schema'
 import type { Import, Preset } from 'unimport'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -63,7 +64,7 @@ export type ModuleOptions = VueUseNuxtOptions
  * }
  * ```
  */
-export default defineNuxtModule<ModuleOptions>({
+const module: NuxtModule<VueUseNuxtOptions, VueUseNuxtOptions, false> = defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'vueuse',
     configKey: 'vueuse',
@@ -167,3 +168,5 @@ export default defineNuxtModule<ModuleOptions>({
     }
   },
 })
+
+export default module

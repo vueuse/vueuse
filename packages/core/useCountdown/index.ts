@@ -10,9 +10,9 @@ export interface UseCountdownOptions extends ConfigurableScheduler {
    */
   onComplete?: () => void
   /**
-   * Callback function called on each tick of the countdown.
+   * Callback function called on each tick with the updated remaining value.
    */
-  onTick?: () => void
+  onTick?: (remaining: number) => void
 }
 
 export interface UseCountdownReturn extends Pausable {
@@ -54,7 +54,7 @@ export function useCountdown(initialCountdown: MaybeRefOrGetter<number>, options
   const controls = scheduler(() => {
     const value = remaining.value - 1
     remaining.value = value < 0 ? 0 : value
-    onTick?.()
+    onTick?.(remaining.value)
     if (remaining.value <= 0) {
       controls.pause()
       onComplete?.()

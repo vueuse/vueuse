@@ -67,6 +67,7 @@ export default antfu(
       'ts/unified-signatures': 'off',
       'ts/no-unsafe-function-type': 'off',
       'ts/no-dynamic-delete': 'off',
+      'antfu/reasonable-newline': 'off',
     },
   },
   {

@@ -23,7 +23,7 @@ const Component = defineComponent({
 describe('vElementSize', () => {
   it('should call the handler once with border-box dimensions', async () => {
     const onResize = vi.fn()
-    const screen = page.render(Component, { props: { onResize, options: { box: 'border-box' } } })
+    const screen = await page.render(Component, { props: { onResize, options: { box: 'border-box' } } })
     await expect.element(screen.getByTestId('target')).toBeVisible()
     // give the ResizeObserver a chance to report so a double-fire would surface
     await promiseTimeout(50)
@@ -34,7 +34,7 @@ describe('vElementSize', () => {
 
   it('should call the handler once with content-box dimensions', async () => {
     const onResize = vi.fn()
-    const screen = page.render(Component, { props: { onResize, options: { box: 'content-box' } } })
+    const screen = await page.render(Component, { props: { onResize, options: { box: 'content-box' } } })
     await expect.element(screen.getByTestId('target')).toBeVisible()
     await promiseTimeout(50)
 

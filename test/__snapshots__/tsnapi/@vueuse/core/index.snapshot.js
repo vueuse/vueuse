@@ -142,6 +142,7 @@ export function useSupported(_) {}
 export function useSwipe(_, _) {}
 export function useTemplateRefsList() {}
 export function useTemporalNow(_) {}
+/** @deprecated */
 export function useTextareaAutosize(_) {}
 export function useTextDirection(_) {}
 export function useTextSelection(_) {}

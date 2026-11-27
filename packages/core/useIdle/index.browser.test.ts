@@ -111,6 +111,20 @@ describe('useIdle', () => {
     expect(idle.value).toBe(false)
   })
 
+  it('should ignore visibility change events while the document is hidden', () => {
+    const timeout = 1000
+    const { idle } = useIdle(timeout)
+
+    vi.advanceTimersByTime(timeout)
+    expect(idle.value).toBe(true)
+
+    Object.defineProperty(document, 'hidden', { value: true, writable: true })
+    document.dispatchEvent(new Event('visibilitychange'))
+    Object.defineProperty(document, 'hidden', { value: false, writable: true })
+
+    expect(idle.value).toBe(true)
+  })
+
   it('should not respond to visibility change when disabled', () => {
     const timeout = 1000
     const { idle } = useIdle(timeout, { listenForVisibilityChange: false })

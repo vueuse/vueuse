@@ -52,9 +52,9 @@ describe('onClickOutside', () => {
 
   it('should work with ignored element', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const screen = page.render(getComplexComponent())
+    const screen = await page.render(getComplexComponent())
     const target = screen.getByText('Inside')
-    const outside = screen.getByText('Outside')
+    const outside = screen.getByText('Outside', { exact: false })
     const label = screen.getByText('Label')
     const other = screen.getByText('Other')
 
@@ -81,7 +81,7 @@ describe('onClickOutside', () => {
       },
     })
 
-    const screen = page.render(component)
+    const screen = await page.render(component)
     await expect.element(screen.getByText('Inside')).toBeInTheDocument()
 
     const host = document.createElement('div')
@@ -108,7 +108,7 @@ describe('onClickOutside', () => {
       },
     })
 
-    const screen = page.render(component)
+    const screen = await page.render(component)
     await expect.element(screen.getByText('Inside')).toBeInTheDocument()
 
     // <outer-host> > shadow-root > <inner-host> > shadow-root > <iframe>
@@ -130,7 +130,7 @@ describe('onClickOutside', () => {
 
   it('allow the value of target to be a getter', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const screen = page.render(getComplexComponent(true))
+    const screen = await page.render(getComplexComponent(true))
     const target = screen.getByText('Inside')
     const other = screen.getByText('Other')
 

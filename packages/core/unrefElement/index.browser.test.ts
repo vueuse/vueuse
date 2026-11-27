@@ -28,7 +28,7 @@ describe('unrefElement', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     await vi.waitFor(() => {
       expect(unrefElementReturn).toBeInstanceOf(HTMLDivElement)
@@ -64,7 +64,7 @@ describe('unrefElement', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     await vi.waitFor(() => {
       expect(unrefElementReturn).toBeInstanceOf(HTMLDivElement)
@@ -96,7 +96,7 @@ describe('unrefElement', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     await vi.waitFor(() => {
       expect(unrefElementReturn!.nodeType).toBe(Node.TEXT_NODE)
@@ -131,7 +131,7 @@ describe('unrefElement', () => {
       },
     })
 
-    page.render(Component)
+    await page.render(Component)
 
     await vi.waitFor(() => {
       expect(unrefElementReturn).toBeInstanceOf(Text)

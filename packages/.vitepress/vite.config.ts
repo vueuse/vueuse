@@ -1,7 +1,7 @@
-import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import postcssNested from 'postcss-nested'
 import UnoCSS from 'unocss/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
@@ -15,7 +15,6 @@ import { MarkdownTransform } from './plugins/markdownTransform'
 import { PWAVirtual } from './plugins/pwa-virtual'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
-const require = createRequire(import.meta.url)
 const [changeLog, contributions] = await Promise.all([
   getChangeLog(process.env.CI ? 1000 : 100),
   getFunctionContributors(),
@@ -95,7 +94,7 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [
-        require('postcss-nested'),
+        postcssNested,
       ],
     },
   },

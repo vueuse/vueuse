@@ -30,3 +30,4 @@ coverage
 .vitepress/cache
 packages/**/__screenshots__
 .vitest-attachments
+.vitest

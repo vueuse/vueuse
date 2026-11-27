@@ -5,16 +5,16 @@ import { nextTwoTick } from '../../.test'
 import { usePreferredDark } from '../usePreferredDark'
 import { useColorMode } from './index'
 
+vi.mock('../usePreferredDark', () => {
+  const mockPreferredDark = shallowRef(false)
+  return {
+    usePreferredDark: () => mockPreferredDark,
+  }
+})
+
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'
   const htmlEl = document.querySelector('html')
-
-  vi.mock('../usePreferredDark', () => {
-    const mockPreferredDark = shallowRef(false)
-    return {
-      usePreferredDark: () => mockPreferredDark,
-    }
-  })
 
   const mockPreferredDark = usePreferredDark() as Ref<boolean>
 
