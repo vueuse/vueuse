@@ -1,7 +1,7 @@
 import type { Awaitable } from '@vueuse/shared'
 import type { ComputedRef, MaybeRefOrGetter, UnwrapNestedRefs } from 'vue'
 import type { UseScrollOptions, UseScrollReturn } from '../useScroll'
-import { tryOnUnmounted } from '@vueuse/shared'
+import { tryOnScopeDispose, tryOnUnmounted } from '@vueuse/shared'
 import { computed, nextTick, reactive, shallowRef, toValue, watch } from 'vue'
 import { resolveElement } from '../_resolve-element'
 import { useElementVisibility } from '../useElementVisibility'
@@ -87,7 +87,12 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
     return canLoadMore(observedElement.value as T)
   })
 
+  let isDisposed = false
+
   function checkAndLoad() {
+    if (isDisposed)
+      return
+
     state.measure()
 
     if (!observedElement.value || !isElementVisible.value || !canLoad.value || promise.value)
@@ -117,6 +122,9 @@ export function useInfiniteScroll<T extends InfiniteScrollElement>(
   )
 
   tryOnUnmounted(stop)
+  tryOnScopeDispose(() => {
+    isDisposed = true
+  })
 
   return {
     isLoading,
