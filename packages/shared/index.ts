@@ -1,4 +1,5 @@
 export * from './computedEager'
+export * from './computedDebounced'
 export * from './computedWithControl'
 export * from './createDisposableDirective'
 export * from './createEventHook'
