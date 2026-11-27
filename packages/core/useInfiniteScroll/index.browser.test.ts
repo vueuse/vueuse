@@ -1,6 +1,6 @@
 import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ref as deepRef, defineComponent, useTemplateRef } from 'vue'
+import { ref as deepRef, defineComponent, effectScope, useTemplateRef } from 'vue'
 import { useInfiniteScroll } from './index'
 
 describe('useInfiniteScroll', () => {
@@ -75,5 +75,29 @@ describe('useInfiniteScroll', () => {
     await flushPromises()
     expect(canLoadMoreSpy).toHaveBeenCalledOnce()
     expect(handlerSpy).not.toBeCalled()
+  })
+
+  it('should not load more after the scope is disposed during a load', async () => {
+    const el = document.createElement('div')
+    document.body.appendChild(el)
+
+    let resolveLoad!: () => void
+    const handlerSpy = vi.fn(() => new Promise<void>(resolve => resolveLoad = resolve))
+    const scope = effectScope()
+    const { isLoading } = scope.run(() => useInfiniteScroll(el, handlerSpy))!
+
+    await vi.waitFor(() => {
+      expect(handlerSpy).toHaveBeenCalledOnce()
+    })
+
+    scope.stop()
+    el.remove()
+    resolveLoad()
+
+    await vi.waitFor(() => {
+      expect(isLoading.value).toBe(false)
+    })
+    await flushPromises()
+    expect(handlerSpy).toHaveBeenCalledOnce()
   })
 })
