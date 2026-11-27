@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { Fn, Pausable } from '../utils'
+import type { Pausable } from '../utils'
 import { isRef, shallowReadonly, shallowRef, toValue, watch } from 'vue'
 import { tryOnScopeDispose } from '../tryOnScopeDispose'
 import { isClient } from '../utils'
@@ -30,7 +30,7 @@ export type UseIntervalFnReturn = Pausable
  * @param interval
  * @param options
  */
-export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalFnOptions = {}): UseIntervalFnReturn {
+export function useIntervalFn(cb: (UseIntervalFnReturn: UseIntervalFnReturn) => any, interval: MaybeRefOrGetter<number> = 1000, options: UseIntervalFnOptions = {}): UseIntervalFnReturn {
   const {
     immediate = true,
     immediateCallback = false,
@@ -38,7 +38,13 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
 
   let timer: ReturnType<typeof setInterval> | null = null
   const isActive = shallowRef(false)
-
+  
+  const returnControl = {
+    isActive: shallowReadonly(isActive),
+    pause,
+    resume,
+  }
+  
   function clean() {
     if (timer) {
       clearInterval(timer)
@@ -57,10 +63,10 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
       return
     isActive.value = true
     if (immediateCallback)
-      cb()
+      cb(returnControl)
     clean()
     if (isActive.value)
-      timer = setInterval(cb, intervalValue)
+      timer = setInterval(() => cb(returnControl), intervalValue)
   }
 
   if (immediate && isClient)
@@ -76,9 +82,5 @@ export function useIntervalFn(cb: Fn, interval: MaybeRefOrGetter<number> = 1000,
 
   tryOnScopeDispose(pause)
 
-  return {
-    isActive: shallowReadonly(isActive),
-    pause,
-    resume,
-  }
+  return returnControl
 }
