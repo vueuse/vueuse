@@ -175,8 +175,13 @@ function createUntil<T>(r: any, isNot = false) {
   }
 
   if (Array.isArray(toValue(r))) {
-    const instance: UntilArrayInstance<T> = {
+    const instance: UntilArrayInstance<T> & Omit<UntilValueInstance<T, boolean>, 'not'> = {
       toMatch: toMatch as any,
+      toBe,
+      toBeTruthy: toBeTruthy as any,
+      toBeNull: toBeNull as any,
+      toBeNaN,
+      toBeUndefined: toBeUndefined as any,
       toContains,
       changed,
       changedTimes,
