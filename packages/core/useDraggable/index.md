@@ -22,7 +22,8 @@ const { x, y, style } = useDraggable(el, {
 </script>
 
 <template>
-  <div ref="el" :style="style" style="position: fixed">
+  <!-- Attention! Draggable will not work properly without  position: fixed; and touch-action: none; css properties -->
+  <div ref="el" :style="style" style="position: fixed; touch-action: none">
     Drag me! I am at {{ x }}, {{ y }}
   </div>
 </template>
