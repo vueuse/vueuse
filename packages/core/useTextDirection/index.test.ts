@@ -1,3 +1,4 @@
+import { nextTick, shallowRef } from 'vue'
 import { afterEach, describe, expect, it } from 'vitest'
 import { useTextDirection } from './index'
 
@@ -71,4 +72,51 @@ describe('useTextDirection', () => {
     `)
     expect(htmlEl.attributes).toMatchInlineSnapshot(`NamedNodeMap {}`)
   })
+
+  it('should read the computed direction from an element target', () => {
+    const element = document.createElement('div')
+    element.style.direction = 'rtl'
+
+    const dir = useTextDirection(element)
+
+    expect(dir.value).toBe('rtl')
+  })
+
+  it('should track a reactive element target', async () => {
+    const firstElement = document.createElement('div')
+    firstElement.style.direction = 'rtl'
+    const target = shallowRef<HTMLElement | null>(firstElement)
+    const dir = useTextDirection(target)
+
+    expect(dir.value).toBe('rtl')
+
+    const nextElement = document.createElement('div')
+    nextElement.style.direction = 'ltr'
+    target.value = nextElement
+    await nextTick()
+
+    expect(dir.value).toBe('ltr')
+  })
+
+  it('should set the dir attribute on an element target', () => {
+    const element = document.createElement('div')
+    const dir = useTextDirection(element)
+
+    dir.value = 'rtl'
+
+    expect(element.getAttribute('dir')).toBe('rtl')
+    expect(dir.value).toBe('rtl')
+  })
+
+  it('should observe an element target when requested', async () => {
+    const element = document.createElement('div')
+    const dir = useTextDirection(element, { observe: true })
+
+    await nextTick()
+    element.setAttribute('dir', 'rtl')
+    await new Promise(resolve => setTimeout(resolve, 0))
+
+    expect(dir.value).toBe('rtl')
+  })
+
 })
