@@ -211,6 +211,51 @@ describe('until', () => {
     })
   })
 
+  it('should support toBeUndefined for an optional array initialized with an array', async () => {
+    const r = shallowRef<number[] | undefined>([])
+    const promise = until(r).toBeUndefined()
+
+    r.value = undefined
+
+    expect(await promise).toBeUndefined()
+  })
+
+  it('should support toBeNull for a nullable array initialized with an array', async () => {
+    const r = shallowRef<number[] | null>([])
+    expect(await until(r).not.toBeNull()).toEqual([])
+
+    const promise = until(r).toBeNull()
+    r.value = null
+
+    expect(await promise).toBeNull()
+  })
+
+  it('should support value comparisons for an array in a union', async () => {
+    const r = shallowRef<number[] | number>([])
+    const instance = until(r)
+
+    expect(await instance.toBeTruthy()).toEqual([])
+    expect(await instance.toBe(r)).toEqual([])
+
+    const promise = instance.toBeNaN()
+    r.value = Number.NaN
+
+    expect(await promise).toBeNaN()
+  })
+
+  it('should keep value methods available through not when the value becomes an array', async () => {
+    const r = shallowRef<number[] | undefined>()
+    const instance = until(r)
+
+    r.value = []
+    expect(await instance.not.toBeUndefined()).toEqual([])
+
+    const promise = instance.not.not.toBeUndefined()
+    r.value = undefined
+
+    expect(await promise).toBeUndefined()
+  })
+
   it('should immediately timeout', () => {
     vi.useRealTimers()
     return new Promise<void>((resolve, reject) => {
@@ -259,6 +304,18 @@ describe('until', () => {
 
       const yNotNull = await until(y).not.toBeNull()
       'test' as any as Expect<Equal<typeof yNotNull, 'y'>>
+
+      const optionalArray = shallowRef<number[] | undefined>([])
+      const arrayUndefined = await until(optionalArray).toBeUndefined()
+      'test' as any as Expect<Equal<typeof arrayUndefined, undefined>>
+      const arrayNotUndefined = await until(optionalArray).not.toBeUndefined()
+      'test' as any as Expect<Equal<typeof arrayNotUndefined, number[]>>
+
+      const nullableArray = shallowRef<number[] | null>([])
+      const arrayNull = await until(nullableArray).toBeNull()
+      'test' as any as Expect<Equal<typeof arrayNull, null>>
+      const arrayNotNull = await until(nullableArray).not.toBeNull()
+      'test' as any as Expect<Equal<typeof arrayNotNull, number[]>>
 
       const z = shallowRef<1 | 2 | 3>(1)
       'test' as any as Expect<Equal<typeof z, ShallowRef<1 | 2 | 3>>>
