@@ -1,5 +1,20 @@
+import { mount } from '@vue/test-utils'
+import { watchOnce } from '@vueuse/shared'
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, nextTick } from 'vue'
 import { useElementVisibility } from './index'
+
+const { observerStop } = vi.hoisted(() => ({
+  observerStop: vi.fn(),
+}))
+
+vi.mock('@vueuse/shared', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@vueuse/shared')>()
+  return {
+    ...actual,
+    watchOnce: vi.fn(actual.watchOnce),
+  }
+})
 
 vi.mock('../useIntersectionObserver', () => ({
   useIntersectionObserver: vi.fn((_target) => {
@@ -8,7 +23,7 @@ vi.mock('../useIntersectionObserver', () => ({
       isActive: { value: true },
       pause: vi.fn(),
       resume: vi.fn(),
-      stop: vi.fn(),
+      stop: observerStop,
     }
   }),
 }))
@@ -48,6 +63,10 @@ describe('useElementVisibility', () => {
     })
 
     const { useIntersectionObserver } = await import('../useIntersectionObserver')
+    const callMockCallback = (isIntersecting: boolean) => {
+      const callback = vi.mocked(useIntersectionObserver).mock.lastCall?.[1]
+      callback?.([{ isIntersecting, time: 1 } as IntersectionObserverEntry], {} as IntersectionObserver)
+    }
 
     it('should call useIntersectionObserver internally', () => {
       expect(useIntersectionObserver).toHaveBeenCalledTimes(0)
@@ -92,6 +111,68 @@ describe('useElementVisibility', () => {
       // It should become true if the callback gets an isIntersecting = true
       callMockCallbackWithIsIntersectingValue(true)
       expect(visibilityState.isVisible.value).toBe(true)
+    })
+
+    it('stops after the first visibility change when once is enabled', async () => {
+      const visible = useElementVisibility(el, { once: true })
+
+      callMockCallback(false)
+      await nextTick()
+      expect(observerStop).not.toHaveBeenCalled()
+
+      callMockCallback(true)
+      await nextTick()
+      expect(visible.value).toBe(true)
+      expect(observerStop).toHaveBeenCalledTimes(1)
+
+      callMockCallback(false)
+      await nextTick()
+      expect(observerStop).toHaveBeenCalledTimes(1)
+    })
+
+    it('creates the once watcher only once for multiple observer callbacks', async () => {
+      useElementVisibility(el, { once: true })
+
+      callMockCallback(true)
+      callMockCallback(false)
+      callMockCallback(true)
+
+      expect(watchOnce).toHaveBeenCalledTimes(1)
+      await nextTick()
+      expect(observerStop).toHaveBeenCalledTimes(1)
+    })
+
+    it('cleans up the once watcher when the component unmounts', async () => {
+      const wrapper = mount(defineComponent({
+        setup() {
+          useElementVisibility(el, { once: true })
+          return () => null
+        },
+      }))
+
+      callMockCallback(false)
+      await nextTick()
+      expect(observerStop).not.toHaveBeenCalled()
+
+      wrapper.unmount()
+      callMockCallback(true)
+      await nextTick()
+
+      expect(observerStop).not.toHaveBeenCalled()
+    })
+
+    it('keeps tracking without a once watcher when once is disabled', async () => {
+      const visible = useElementVisibility(el)
+
+      callMockCallback(true)
+      await nextTick()
+      expect(visible.value).toBe(true)
+
+      callMockCallback(false)
+      await nextTick()
+      expect(visible.value).toBe(false)
+      expect(watchOnce).not.toHaveBeenCalled()
+      expect(observerStop).not.toHaveBeenCalled()
     })
 
     it('returns a plain visibility ref when controls is not set', () => {
